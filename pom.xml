@@ -65,7 +65,7 @@
     </pluginRepositories>
 
     <modules>
-        <module>modules/components/ues-admin</module>
+        <module>modules/components/store-admin</module>
 	    <module>modules/features/</module>
         <module>modules/p2-profile-gen</module>
         <module>modules/distribution</module>
