@@ -1,0 +1,40 @@
+<%
+var caramel;
+( function() {
+	var site, count,tag, type = 'gadget', types = store.assetTypes();
+	log = new Log(), store = require('/modules/store.js'), 
+	user = require('/modules/user.js').current(), 
+	tags = [], 
+	sso = configs.ssoConfiguration.enabled;
+	caramel = require('caramel');
+
+	if(!user) {
+		response.sendRedirect(caramel.configs().context);
+		return;
+	}
+	site = require('/modules/site.js');
+	recentGadgets = store.recentAssets("gadget", 3);
+	recentSites = store.recentAssets("site", 3);
+	var recentAssets = recentGadgets.concat(recentSites);
+	count = Object.keys(store.userAssets()).length;
+	 
+	for(var i = 0; i < types.length; i++) {
+		tag = {
+			url : '/assets/' + types[i] + '?page=1&tag=',
+			data : store.tags(types[i])
+		};
+		tags[i] = tag;
+	}
+
+	caramel.render({
+		'title' : 'Store | My Bookmarks',
+		'navigation' : site.navigation({
+			sso : sso,
+			user : user
+		}),
+		'userAssets' : count > 0 ? store.userAssets() : null,
+		'recentAssets' : recentAssets,
+		'tags' : tags
+	});
+}());
+%>

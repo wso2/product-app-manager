@@ -1,0 +1,10 @@
+<%
+//auto rediecting the user to SSO
+var user = request.getParameter('user'),
+        loged = session.get('Loged');
+if (user && !loged) {
+    include('login.jag');
+} else {
+    print('auto logged.');
+}
+%>

@@ -1,0 +1,45 @@
+{
+    "assets": ["gadget", "site"],
+    "assetsUrlPrefix": "/assets",
+    "assetUrlPrefix": "/asset",
+    "assetsPageSize": 16,
+    "commentsPageSize": 10,
+    "server": {
+        "https": "%https.host%/admin",
+        "http": "%http.host%"
+    },
+    "roles": {
+        "store": {
+            "/permission/admin/login": ["ui.execute"]
+        }
+    },
+    "user": {
+        "username": "admin",
+        "password": "admin"
+    },
+    "userRoles": ["store"],
+    "permissions": {
+        "login": {
+            "/permission/admin/login": ["ui.execute"]
+        }
+    },
+    "userSpace": {
+        "space": "store",
+        "options": {
+            "type": "registry",
+            "serverUrl": "%https.host%/admin",
+            "path": "/_system/governance/users",
+            "username": "admin",
+            "password": "admin"
+        }
+    },
+    "ssoConfiguration": {
+        "enabled": true,
+        "issuer": "store",
+        "identityProviderURL": "%https.host%/sso/samlsso.jag",
+        "keyStorePassword": "wso2carbon",
+        "identityAlias": "wso2carbon",
+        "responseSigningEnabled": "true",
+        "keyStoreName": "/repository/resources/security/wso2carbon.jks"
+    }
+}

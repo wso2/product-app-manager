@@ -1,0 +1,49 @@
+<%
+var caramel = require('caramel'),
+        log = new Log(),
+        matcher = new URIMatcher(request.getRequestURI());
+// http://localhost:9763/caramel/apis/asset/1234/comments
+(function () {
+    var store = require('/modules/store.js');
+
+    var type, total, assets,
+            tag = request.getParameter('tag'),
+            sort = request.getParameter('sort'),
+            paging = store.assetsPaging(request);
+    if (matcher.match('/{context}/apis/assets/{type}/paging') ||
+            matcher.match('/{context}/apis/assets/{type}')) {
+        type = matcher.elements().type;
+        if (tag) {
+            total = store.assetCount(type, {
+                tag: tag
+            });
+            if (paging.start > total || paging.start < 0) {
+                response.sendError(404, 'Requested page cannot be found');
+                return;
+            }
+            assets = store.tagged(type, tag, paging);
+        } else {
+            total = store.assetCount(type);
+            if (paging.start > total || paging.start < 0) {
+                response.sendError(404, 'Requested page cannot be found');
+                return;
+            }
+            assets = store.assets(type, paging);
+        }
+        if (matcher.match('/{context}/apis/assets/{type}/paging')) {
+            caramel.render({
+                type: type,
+                sort: sort,
+                start: paging.start || 0,
+                count: paging.count || store.ASSETS_PAGE_SIZE,
+                size: store.ASSETS_PAGE_SIZE,
+                total: total
+            });
+            return;
+        }
+        caramel.render(assets);
+        return;
+    }
+    response.sendError(404, 'API Endpoint Not Found');
+})();
+%>

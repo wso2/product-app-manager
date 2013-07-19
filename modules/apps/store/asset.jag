@@ -1,0 +1,32 @@
+<%
+	var log = new Log(),
+        caramel = require('caramel'),
+        store = require('/modules/store.js'),
+        config =  require('/store.js').config(),
+        site = require('/modules/site.js'),
+        user = require('/modules/user.js').current(),
+        aid = request.getParameter('asset'),
+        sso = configs.ssoConfiguration.enabled,
+        asset = store.asset(type, aid);
+	    inDashboard= false;
+
+	if(store.isuserasset(aid,type)){
+		inDashboard=true;
+	}
+
+caramel.render({
+    title: 'Store | Gadget',
+    user: user,
+	sso:sso,
+    navigation: site.navigation({sso:sso, user:user}),
+    type: type,
+    embedURL: config.server.http + '/gadgets/ifr?url=' + asset.attributes.overview_url,
+    inDashboard: inDashboard,
+    asset:asset,
+    tags: [{
+        url: '/assets/' + type + '/?page=1&tag=',
+        data: store.tags(type)
+    }],
+    recentAssets: store.recentAssets(type)
+});
+%>

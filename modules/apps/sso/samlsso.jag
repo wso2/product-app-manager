@@ -1,0 +1,137 @@
+<%
+
+var SAMLSSOProviderConstants = Packages.org.wso2.carbon.identity.sso.saml.ui.SAMLSSOProviderConstants,
+        SAMLSSOService = Packages.org.wso2.carbon.identity.sso.saml.SAMLSSOService,
+        MultitenantConstants = Packages.org.wso2.carbon.utils.multitenancy.MultitenantConstants,
+        SAMLSSOAuthnReqDTO = Packages.org.wso2.carbon.identity.sso.saml.dto.SAMLSSOAuthnReqDTO,
+        LogoutRequestSender = Packages.org.wso2.carbon.identity.sso.saml.ui.logout.LogoutRequestSender,
+        req = request, assertionConsumerURL, samlResp,
+        relayState = req.getParameter(String(SAMLSSOProviderConstants.RELAY_STATE)),
+        username = req.getParameter(String(SAMLSSOProviderConstants.USERNAME)),
+        password = req.getParameter(String(SAMLSSOProviderConstants.PASSWORD)),
+        ssoTokenID = session.getId(),
+        tokenCookie = req.getCookie(String(SAMLSSOProviderConstants.SSO_TOKEN_ID)),
+        samlRequest = req.getParameter("SAMLRequest"),
+        authMode = String(SAMLSSOProviderConstants.AuthnModes.USERNAME_PASSWORD),
+        rpSessionId = req.getParameter(String(MultitenantConstants.SSO_AUTH_SESSION_ID)),
+        TypesLogoutDTO = Packages.org.wso2.carbon.identity.sso.saml.stub.types.SingleLogoutRequestDTO,
+        LogoutDTO = Packages.org.wso2.carbon.identity.sso.saml.dto.SingleLogoutRequestDTO,
+        action = request.getParameter('action');
+log = new Log();
+
+(function () {
+    var registerUser = function (username, password) {
+        var userMod = require('/modules/user.js');
+        try {
+            userMod.register(username, password);
+            handleAuthentication();
+        } catch (e) {
+            log.debug(e);
+            session.put('error', {error: true, type: 'regError', msg: e.message});
+            response.sendRedirect('login.jag');
+        }
+    };
+
+    var sendResponse = function (relayState, respse, acUrl, subject) {
+        assertionConsumerURL = acUrl;
+        samlResp = respse;
+        samlResp = respse;
+        relayState = relayState;
+        include('redirect.jag');
+    };
+
+    var handleSAMLRequest = function (ssoTokenID, samlRequest, relayState, authMode) {
+        var ssoService = new SAMLSSOService();
+        var signInRespDTO = ssoService.validateRequest(samlRequest, "", ssoTokenID, rpSessionId, authMode);
+        session.put('signInRespDTO', signInRespDTO);
+        session.put('relayState', relayState);
+
+        // If it is a login request.
+        if (!signInRespDTO.isLogOutReq()) {
+            if (signInRespDTO.isValid() && signInRespDTO.getResponse() == null) {
+                response.sendRedirect('login.jag');
+            } else if (signInRespDTO.getResponse() != null) {
+                sendResponse(relayState, signInRespDTO.getResponse(), signInRespDTO.getAssertionConsumerURL(), signInRespDTO.getSubject());
+            }
+        } else {
+
+            // need to send signInRespDTO.getLogoutRespDTO() as the param
+            // signInRespDTO.getLogoutRespDTO().length = 0 hence sending []
+            // if not this method asks for a object array of org.wso2.carbon.identity.sso.saml.stub.types.SingleLogoutRequestDTO
+            // but signInRespDTO.getLogoutRespDTO() gives org.wso2.carbon.identity.sso.saml.dto.SingleLogoutRequestDTO
+            // So need to convert
+
+            var logoutArr = [];
+            if (signInRespDTO.getLogoutRespDTO().length > 0) {
+                for (var i = 0; i < signInRespDTO.getLogoutRespDTO().length; i++) {
+                    var logoutDTO = signInRespDTO.getLogoutRespDTO()[i];
+                    var typesLogoutDTO = new TypesLogoutDTO();
+                    typesLogoutDTO.setAssertionConsumerURL(logoutDTO.getAssertionConsumerURL());
+                    typesLogoutDTO.setLogoutResponse(logoutDTO.getLogoutResponse());
+                    typesLogoutDTO.setRpSessionId(logoutDTO.getRpSessionId());
+                    logoutArr.push(typesLogoutDTO);
+
+                }
+            }
+            LogoutRequestSender.getInstance().sendLogoutRequests(logoutArr);
+            // sending LogoutResponse back to the initiator
+            sendResponse(relayState, signInRespDTO.getLogoutResponse(), signInRespDTO.getAssertionConsumerURL(), signInRespDTO.getSubject());
+        }
+    };
+
+    var populateAuthnReqDTO = function () {
+        var authnReqDTO = new SAMLSSOAuthnReqDTO();
+        var signInRespDTO = session.get('signInRespDTO');
+
+        authnReqDTO.setAssertionConsumerURL(signInRespDTO.getAssertionConsumerURL());
+        authnReqDTO.setId(signInRespDTO.getId());
+        authnReqDTO.setIssuer(signInRespDTO.getIssuer());
+        authnReqDTO.setUsername(username);
+        authnReqDTO.setPassword(password);
+        authnReqDTO.setSubject(signInRespDTO.getSubject());
+        authnReqDTO.setRpSessionId(signInRespDTO.getRpSessionId());
+        authnReqDTO.setRequestMessageString(signInRespDTO.getRequestMessageString());
+
+        return authnReqDTO;
+    };
+
+    var handleAuthentication = function () {
+        var ssoService = new SAMLSSOService();
+        var authRespDTO = ssoService.authenticate(populateAuthnReqDTO(), ssoTokenID);
+        if (authRespDTO.isSessionEstablished()) { // authenticated
+            sendResponse(relayState, authRespDTO.getRespString(), authRespDTO.getAssertionConsumerURL(), authRespDTO.getSubject());
+        } else {
+            session.put('error', {error: true, type: 'loginError', msg: 'Authentication Failure, invalid username or password'});
+            response.sendRedirect('login.jag');
+        }
+    };
+
+    if (tokenCookie != null) {
+        ssoTokenID = tokenCookie.getValue();
+    }
+
+    if (username == null && password == null) {
+        if (relayState == null) {
+            log.warn("RelayState is not present in the request.");
+        }
+        if (samlRequest != null) { // this is a login request
+            handleSAMLRequest(ssoTokenID, samlRequest, relayState, authMode);
+        } else { // Non-SAML request are assumed to be logout requests
+            //handleLogout(req, resp);
+        }
+    } else {
+        if (relayState == null) {
+            relayState = session.get('relayState');
+        }
+
+        if (action == 'register') {
+            registerUser(username, password);
+        } else {
+            // Request coming from login page with username and password
+            handleAuthentication();
+        }
+    }
+
+}());
+
+%>

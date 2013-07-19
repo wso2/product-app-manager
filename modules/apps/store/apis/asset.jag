@@ -1,0 +1,78 @@
+<%
+response.addHeader("Access-Control-Allow-Origin", "*");
+response.addHeader("Content-Type", "application/json");
+
+(function () {
+
+    var elems,
+            store = require('/modules/store.js'),
+            paging = store.assetsPaging(request),
+            matcher = new URIMatcher(request.getRequestURI()),
+            query = request.getParameter('query'),
+            aid = request.getParameter('id');
+
+    var isMyAsset = false;
+    if(matcher.match('/{context}/apis/myAsset')){
+        isMyAsset = true;
+        if (!require('/modules/user.js').current()) {
+            response.sendError(401, 'Unauthorized');
+            return;
+        }
+    }
+
+    if (isMyAsset || matcher.match('/{context}/apis/asset/{type}')) {
+        var type = matcher.elements().type;
+        if (aid) {
+            //get information about a specific gadget.
+            //request format : GET /store/apis/asset/gadget?id=/_sys/gov/gadgets/1.0.0
+            var asset = store.asset(type, aid);
+            print(asset);
+        } else {
+            if(query){
+                //request format : GET /store/apis/asset/gadget?query=wso2
+                //                 GET /store/apis/asset/gadget?query=wso2&start=4&count=7
+                print(store.search({
+                    query: query,
+                    type: type
+                }, {
+                    start: Number(request.getParameter('start')) || 0,
+                    count: Number(request.getParameter('count')) || Number.MAX_VALUE,
+                    sort: 'recent'
+                }));
+            }else{
+                //request formats: GET /store/apis/asset/gadget?start=4
+                //                 GET /store/apis/asset/gadget?start=4&count=7
+                var assetsFunc = isMyAsset ? store.userAssets : store.assets ;
+                print(assetsFunc(type, {
+                    start: Number(request.getParameter('start')) || 0,
+                    count: Number(request.getParameter('count')) || Number.MAX_VALUE,
+                    sort: request.getParameter('sort') || 'recent'
+                }));
+            }
+        }
+    } 
+
+if (matcher.match('/{context}/apis/remove')) {
+    aid = request.getParameter('aid');
+    type = request.getParameter('type');
+
+        space = require('/modules/user.js').userSpace(),
+        configs = space.get('userAssets');
+
+    configs = configs ? parse(configs) : {};
+        
+        if(Object.keys(configs[type]).length > 1){
+            delete configs[type][aid];
+            }else{
+                delete configs[type];
+                }
+        
+    space.put('userAssets', stringify(configs));
+        return;
+    }   	
+
+    else {
+        //response.sendError(404, 'API Endpoint Not Found');
+    }
+})();
+%>

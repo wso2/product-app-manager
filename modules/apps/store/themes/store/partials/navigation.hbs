@@ -1,0 +1,58 @@
+<div class="navbar navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container-fluid">
+
+			<a class="brand" href="{{url "/"}}"></a>
+			<ul class="nav menu store-menu">
+				{{#itr assets}}
+				<li {{#if value.selected}} class="selected" {{/if}}>
+					<a href="{{url "/assets/"}}{{key}}"><i class="icon-{{key}}"></i> {{value.title}}</a>
+				</li>
+				{{/itr}}
+			</ul>
+
+			<ul class="nav menu pull-right">
+
+				{{#if user}}
+				<li class="nav-separator">
+							<a href="{{url "/dashboard.jag"}}"><i class="icon-bookmark store-topnav-bookmark"></i> {{t "My Bookmarks"}}</a>
+				</li>
+				<li>
+
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i> {{user.username}} <b class="caret"></b></a>
+					<ul class="dropdown-menu dropdown-account" role="menu" aria-labelledby="dLabel">
+						<li>
+							{{#if sso}}<a href="{{url "/logout.jag"}}"><i class="icon-signout"></i> {{t "Sign out"}}</a>{{else}}<a id="btn-signout" href="#"><i class="icon-signout"></i> {{t "Sign out"}}</a>{{/if}}
+						</li>
+					</ul>
+
+				</li>
+				{{else}}
+
+				{{#if sso}}
+				<li>
+					<a href="{{url "/login.jag"}}">{{t "Sign in"}}</a>
+				</li>
+				<li>
+					<a href="{{url "/login.jag"}}" id="btn-register" class="btn btn-primary">{{t "Register"}}</a>
+				</li>
+				{{else}}
+				<li>
+					<a href="#" data-toggle="modal" data-target="#modal-login">{{t "Sign in"}}</a>
+				</li>
+				<li>
+					<a id="btn-register" class="btn btn-primary"  data-toggle="modal" data-target="#modal-register">{{t "Register"}}</a>
+				</li>
+				{{/if}}
+
+				{{/if}}
+
+			</ul>
+		</div>
+	</div>
+</div>
+
+{{>login login}}
+
+{{>register}}
+

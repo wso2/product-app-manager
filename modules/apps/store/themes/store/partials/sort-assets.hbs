@@ -1,0 +1,14 @@
+<div class="row-border-bottom row-sort-assets">
+		<div class="row-fluid">
+			<div class="span8">
+				<ul id="ul-sort-assets" data-type="gadget">
+					<li><a href="{{url this.url}}popular" data-toggle="tooltip" data-sort="popular" title="{{t "Sort by Popularity"}}"><i class="icon-star"></i></a></li>
+					<li><a href="{{url this.url}}az" data-toggle="tooltip" data-sort="az" title="{{t "Sort by Alphabetical Order"}}"><i class="icon-sort-alphabetical"></i></a></li>
+					<li><a href="{{url this.url}}recent" data-toggle="tooltip" data-sort="recent" title="{{t "Sort by Created Date"}}"><i class="icon-calendar"></i></a></li>
+				</ul>
+			</div>
+			<div class="span4 pull-right txt-right">
+                {{t "Showing assets"}} <strong>{{start}}-{{end}}</strong> of {{total}}
+			</div>
+		</div>
+</div>

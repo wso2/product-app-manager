@@ -1,0 +1,40 @@
+<%
+var type;
+(function () {
+    var prefix, path, elements, theme, mapper,
+            log = new Log(),
+            config = require('/store.js').config(),
+            store = require('/modules/store.js'),
+            file = require('/modules/file.js'),
+            matcher = new URIMatcher(request.getRequestURI());
+
+    mapper = function (path) {
+        return function () {
+            return path;
+        };
+    };
+    if (matcher.match('/{context}' + config.assetUrlPrefix + '/{type}/{theme}/{+file}') ||
+            matcher.match('/{context}' + config.assetUrlPrefix + '/{type}/{+suffix}') ||
+            matcher.match('/{context}' + config.assetUrlPrefix + '/{type}')) {
+        elements = matcher.elements();
+        type = elements.type;
+        theme = elements.theme;
+        prefix = store.ASSETS_EXT_PATH + type;
+        if (theme) {
+            file.send(prefix + '/themes/' + elements.file);
+            return;
+        }
+        path = prefix + '/pages/asset.jag';
+        if (new File(path).isExists()) {
+            request.getMappedPath = mapper(path);
+            include(path);
+            return;
+        }
+        path = '/asset.jag';
+        request.getMappedPath = mapper(path);
+        include(path);
+        return;
+    }
+    response.sendError(404, 'API Endpoint Not Found');
+}());
+%>

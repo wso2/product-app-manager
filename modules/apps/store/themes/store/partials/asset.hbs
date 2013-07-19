@@ -1,0 +1,122 @@
+<div class="asset-description">
+    {{#with asset}}
+        {{#attributes}}
+            <div class="asset-description-header">
+                <div class="row">
+                    <div class="span9">
+                        <div class="asset-banner">
+                            <img src="{{#if images_banner}}{{images_banner}}{{/if}}">
+                        </div>
+                        <div class="asset-introduction-box">
+                            <img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}">
+
+                            <h3>{{overview_name}}</h3>
+                            <small> {{t "Version"}} 1.0.0</small>
+                            <small> {{t "by"}} {{overview_provider}} </small>
+					<span class="asset-rating">
+                        {{#if ../../user}}
+                            <span class="user-rating" data-rating="{{../../rating.user}}">
+							<input class="auto-submit-star" name="star2" type="radio" class="star"
+                                   value="1"/>
+							<input class="auto-submit-star" name="star2" type="radio" class="star"
+                                   value="2"/>
+							<input class="auto-submit-star" name="star2" type="radio" class="star"
+                                   value="3"/>
+							<input class="auto-submit-star" name="star2" type="radio" class="star"
+                                   value="4"/>
+							<input class="auto-submit-star" name="star2" type="radio" class="star"
+                                   value="5"/>
+						</span>  <div class="rate-num-assert">({{../../rating.user}})</div>
+                        {{else}}
+                            <div class="asset-rating-{{../../rating.average}}star"></div>
+                        {{/if}}
+
+                    </span>
+
+                        {{#if ../../inDashboard}}
+                            <a id="btn-add-gadget" class="btn disabled" href="#modal-add-gadget" data-toggle="modal"
+                            data-aid="{{../../path}}" data-type="{{../../type}}"> {{t "Bookmarked"}} </a>
+						{{else}}
+			
+							{{#if ../../../sso}}
+								{{#if ../../../../user.username}}
+ 									<a id="btn-add-gadget" class="btn btn-primary" href="#modal-add-gadget" data-toggle="modal"
+                             		data-aid="{{../../../../path}}" data-type="{{../../../../type}}"> {{t "Bookmark "}}</a>
+								{{else}}			
+			 						<a id="btn-add-gadget" class="btn btn-primary" href="{{url "/login.jag"}}" data-toggle="modal"
+                             		data-aid="{{../../../../path}}" data-type="{{../../../../type}}"> {{t "Bookmark "}}</a>
+								{{/if}}
+							{{else}}
+			 					<a id="btn-add-gadget" class="btn btn-primary" href="#modal-add-gadget" data-toggle="modal"
+                            	data-aid="{{../../path}}" data-type="{{../../type}}"> {{t "Bookmark "}}</a>
+							{{/if}}
+			    
+						{{/if}}
+				  		{{#if ../../user}}
+			     			 <a class="btn btn-popover btn-embed {{../../type}}" href="#" data-toggle="popover"  data-content='&lt;iframe src="{{../../../embedURL}}"&gt;&lt;/iframe&gt;' data-placement="bottom" title="{{t "Embed this Gadget"}}"><i
+                             class="icon-angle-left"></i><i class="icon-angle-right"></i></a>
+                           	
+				  	{{/if}}
+				  			<a class="btn btn-href" href="{{overview_url}}" target="_blank" data-placement="bottom" data-toggle="tooltip" title="{{>asset-overview-text}}">
+				  			<i class="icon-link"></i></a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="assetp-properties">
+
+                <ul class="nav nav-tabs" id="assetp-tabs" data-aid="{{../path}}">
+                    <li class="active">
+                        <a href="#tab-properties" data-toggle="tab" data-type="basic">{{t "Description"}}</a>
+                    </li>
+                    <li>
+                        <a href="#tab-reviews" data-toggle="tab" data-type="comments">{{t "User Reviews"}}</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-properties">
+                        <div class="content">
+                            {{>overview .}}
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-reviews">
+
+                       	{{#if ../../inDashboard}}
+                       		 <div id="comment-content" class="content"></div>
+						{{else}}
+							<div id="comment-content" class="content user-review"></div>
+						{{/if}}
+                    </div>
+
+                </div>
+
+            </div>
+        {{/attributes}}
+    {{/with}}
+</div>
+<!-- Modal -->
+<!--<div id="modal-add-gadget" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+<i class="icon-remove"></i>
+</button>
+<h3 id="modal-add-gadget-header">Modal header</h3>
+</div>
+<div class="modal-body">
+<code>
+embed code goes here
+</code>
+</div>
+<div class="modal-footer">
+<span class="copy-status">
+
+</span>
+<button id="btn-copy-gadget-code" class="btn btn-primary">
+Copy Gadget Code
+</button>
+</div>-->
