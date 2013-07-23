@@ -74,16 +74,14 @@
         </fileSet>
         <!--Multitenancy related file -->
         <fileSet>
-            <directory>
-                ../p2-profile-gen/target/wso2carbon-core-${wso2carbon.kernal.version}/repository/conf/multitenancy/
-            </directory>
+            <directory>../p2-profile-gen/target/wso2carbon-core-${carbon.kernal.version}/repository/conf/multitenancy/</directory>
             <outputDirectory>wso2store-${pom.version}/repository/conf/multitenancy</outputDirectory>
             <includes>
-                <include>**/stratos.xml</include>
-                <include>**/multitenancy-packages.xml</include>
-                <include>**/usage-throttling-agent-config.xml</include>
-                <include>**/cloud-services-desc.xml</include>
+                <include>*/**</include>
             </includes>
+            <excludes>
+                <exclude>**/cloud-services-desc.xml</exclude>
+            </excludes>
         </fileSet>
 
         <fileSet>
@@ -305,6 +303,11 @@
         <file>
             <source>src/repository/conf/log4j.properties</source>
             <outputDirectory>wso2store-${pom.version}/repository/conf/</outputDirectory>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>src/repository/conf/multitenancy/cloud-services-desc.xml</source>
+            <outputDirectory>wso2store-${pom.version}/repository/conf/multitenancy/</outputDirectory>
             <filtered>true</filtered>
         </file>
         <!-- Including coordination-client-config.xml file -->

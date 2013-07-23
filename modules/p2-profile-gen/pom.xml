@@ -13,8 +13,8 @@
     <version>1.0.0</version>
     <artifactId>wso2store-profile-gen</artifactId>
     <packaging>pom</packaging>
-    
-	
+
+
     <build>
         <plugins>
             <plugin>
@@ -86,52 +86,81 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.registry.extensions.feature:${carbon.platform.version}
                                 </featureArtifactDef>
-                                <feaureArtifactDef>
+                                <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.registry.core.feature:${carbon.platform.version}
-                                </feaureArtifactDef>
-                                <feaureArtifactDef>
+                                </featureArtifactDef>
+                                <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.registry.ui.menu.feature:${carbon.platform.version}
-                                </feaureArtifactDef>
-                                <feaureArtifactDef>
+                                </featureArtifactDef>
+                                <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.registry.resource.properties.feature:${carbon.platform.version}
-                                </feaureArtifactDef>
-                                <feaureArtifactDef>
+                                </featureArtifactDef>
+                                <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.jaxws.webapp.mgt.feature:${carbon.platform.version}
-                                </feaureArtifactDef>
-                                <feaureArtifactDef>
+                                </featureArtifactDef>
+                                <featureArtifactDef>
                                     org.wso2.store:org.wso2.store.feature:${project.version}
-                                </feaureArtifactDef>
-								<!-- SSO -->								
-                                <feaureArtifactDef>
+                                </featureArtifactDef>
+                                <!-- SSO -->
+                                <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.security.mgt.feature:${carbon.platform.version}
-                                </feaureArtifactDef>
-								<featureArtifactDef>
+                                </featureArtifactDef>
+                                <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.identity.authenticator.saml2.sso.server.feature:${carbon.platform.version}
                                 </featureArtifactDef>
-								<featureArtifactDef>
+                                <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.identity.authenticator.saml2.sso.ui.feature:${carbon.platform.version}
                                 </featureArtifactDef>
-								<feaureArtifactDef>
+                                <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.identity.sso.saml.feature:${carbon.platform.version}
-                                </feaureArtifactDef>
-								<feaureArtifactDef>
-                                   org.wso2.carbon:org.wso2.stratos.identity.saml2.sso.mgt.feature:${stratos.version}
-                                </feaureArtifactDef>
-                                <!--feaureArtifactDef>
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.stratos.identity.saml2.sso.mgt.feature:${stratos.version}
+                                </featureArtifactDef>
+                                <!--featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.identity.authenticator.token.feature:${patch.version.402}
-                                </feaureArtifactDef>                                
-                                <feaureArtifactDef>
+                                </featureArtifactDef>
+                                <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.identity.oauth.feature:${patch.version.405}
-                                </feaureArtifactDef-->								
-								<feaureArtifactDef>
+                                </featureArtifactDef-->
+                                <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.identity.core.feature:${carbon.platform.version}
-                                </feaureArtifactDef>
+                                </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.governance.metadata.server.feature:${carbon.platform.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.server.feature:${carbon.platform.version}
                                 </featureArtifactDef>
+
+                                <!-- Stratos features    -->
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.stratos.common.feature:${stratos.version.212}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.stratos.common.server.feature:${stratos.version.212}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.stratos.common.ui.feature:${stratos.version}
+                                </featureArtifactDef>
+                                <!--featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.stratos.common.feature:${stratos.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.stratos.usage.agent.feature:${stratos.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.stratos.throttling.agent.feature:${stratos.version}
+                                </featureArtifactDef-->
+                                <!--featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.core.server.feature:${carbon.platform.version}
+                                </featureArtifactDef-->
+                                <!--featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.tenant.mgt.core.feature:${stratos.version}
+                                </featureArtifactDef-->
+                                <!--featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.tenant.mgt.server.feature:${stratos.version}
+                                </featureArtifactDef-->
                             </featureArtifacts>
 
                         </configuration>
@@ -207,28 +236,28 @@
                                     <id>org.wso2.carbon.identity.oauth.feature.group</id>
                                     <version>${patch.version.405}</version>
                                 </feature-->
-								
-								<!-- sso -->								
-								<feature>
+
+                                <!-- sso -->
+                                <feature>
                                     <id>org.wso2.carbon.identity.authenticator.saml2.sso.server.feature.group</id>
                                     <version>${carbon.platform.version}</version>
                                 </feature>
-								<feature>
+                                <feature>
                                     <id>org.wso2.carbon.identity.authenticator.saml2.sso.ui.feature.group</id>
                                     <version>${carbon.platform.version}</version>
                                 </feature>
-								<feature>
-                                   <id>org.wso2.stratos.identity.saml2.sso.mgt.feature.group</id>
+                                <feature>
+                                    <id>org.wso2.stratos.identity.saml2.sso.mgt.feature.group</id>
                                     <version>${stratos.version}</version>
                                 </feature>
-								<feature>
+                                <feature>
                                     <id>org.wso2.carbon.identity.sso.saml.feature.group</id>
                                     <version>${carbon.platform.version}</version>
                                 </feature>
-								<feature>
+                                <feature>
                                     <id>org.wso2.carbon.identity.core.feature.group</id>
                                     <version>${carbon.platform.version}</version>
-                                </feature>								
+                                </feature>
                                 <feature>
                                     <id>org.wso2.carbon.governance.metadata.server.feature.group</id>
                                     <version>${carbon.platform.version}</version>
@@ -237,6 +266,42 @@
                                     <id>org.wso2.carbon.event.server.feature.group</id>
                                     <version>${carbon.platform.version}</version>
                                 </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.stratos.common.feature.group</id>
+                                    <version>${stratos.version.212}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.stratos.common.server.feature.group</id>
+                                    <version>${stratos.version.212}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.stratos.common.ui.feature.group</id>
+                                    <version>${stratos.version}</version>
+                                </feature>
+                                <!--feature>
+                                    <id>org.wso2.carbon.stratos.usage.agent.feature.group</id>
+                                    <version>${stratos.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.stratos.throttling.agent.feature.group</id>
+                                    <version>${stratos.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.stratos.deployment.feature.group</id>
+                                    <version>${stratos.version}</version>
+                                </feature-->
+                                <!--feature>
+                                    <id>org.wso2.carbon.core.server.feature.group</id>
+                                    <version>${carbon.platform.version}</version>
+                                </feature-->
+                                <!--feature>
+                                    <id>org.wso2.carbon.tenant.mgt.core.feature.group</id>
+                                    <version>${stratos.version}</version>
+                                </feature-->
+                                <!--feature>
+                                    <id>org.wso2.carbon.tenant.mgt.server.feature.group</id>
+                                    <version>${stratos.version}</version>
+                                </feature-->
                             </features>
 
                         </configuration>
