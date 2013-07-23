@@ -88,7 +88,7 @@ var logstoreUrl = function () {
     log.info("UES store URL : " + store.server.http + caramel.configs().context);
 };
 
-//populate();
+populate();
 addSSOConfig();
 /*
 setInterval(function () {

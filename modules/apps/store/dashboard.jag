@@ -1,8 +1,9 @@
 <%
 var caramel;
 ( function() {
-	var site, count,tag, type = 'gadget', types = store.assetTypes();
-	log = new Log(), store = require('/modules/store.js'), 
+	var site, count,tag, type = 'gadget',
+	log = new Log(), store = require('/modules/store.js'),
+    types = store.assetTypes(),
 	user = require('/modules/user.js').current(), 
 	tags = [], 
 	sso = configs.ssoConfiguration.enabled;
