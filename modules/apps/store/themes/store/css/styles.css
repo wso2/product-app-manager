@@ -56,46 +56,6 @@ h1, h2, h3, h4 {
     padding: 0 6px;
     margin-top: 0;
 }
-/*
- .navbar-inner {
- background: #2C3238;
- background-image: none;
- box-shadow: none !important;
- -webkit-box-shadow: none !important;
- -moz-box-shadow: none !important;
- padding-top: 0px;
- padding-bottom: 0px;
- }
-
- .navbar .nav > li > a {
- text-shadow: none;
- font-weight: bold;
- color: #cccccc;
- }
- .navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle {
- background-color: #505050;
- color: #FFFFFF;
- }
-
- .navbar .nav li.dropdown.open > .dropdown-toggle .caret, .navbar .nav li.dropdown.active > .dropdown-toggle .caret, .navbar .nav li.dropdown.open.active > .dropdown-toggle .caret {
- border-bottom-color: #FFFFFF;
- border-top-color: #FFFFFF;
- }
- .navbar .nav > li > a:hover {
- color: #FFFFFF
- }
- .nav-samples {
- font-size: 18px;
- }
- .nav-samples .dropdown-menu li {
-
- line-height: 20px;
- }
- .nav-samples .dropdown-menu li a {
- padding-top: 10px;
- padding-bottom: 10px;
- }
- */
 .hero-unit {
     text-align: center;
     background: none;
@@ -272,11 +232,6 @@ h1:hover, h2:hover, h3:hover {
 .container:not(#container-search) > .row > div:first-child {
     margin-left: 15px;
 }
-/*
- .container > .row > div.store-left{
- margin-left:0;
- }
- */
 .row-footer {
     border-bottom: 1px solid #ddd !important;
     padding: 15px 0;
@@ -305,7 +260,7 @@ section {
     display: block
 }
 
-/*----------------------------------------  BLOCKS */
+/*---------------  BLOCKS -----------------*/
 
 .scrollblock {
     position: relative;
@@ -319,10 +274,6 @@ section {
 
 .scrollblock3 {
     height: 300px;
-}
-
-#examples-transition {
-    /*overflow: hidden;*/
 }
 
 #feature-1-pollution {
@@ -439,11 +390,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 .store-right a {
     color: #34495E;
 }
-/*
- .store-right * {
- text-shadow: 0 1px 0 #fff;
- }
- */
+
 .store-right h4 i {
     margin-right: 8px;
 }
@@ -521,12 +468,6 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 }
 
 .asset-details {
-    /*
-     border-bottom: 1px solid #CCCCCC;
-     border-left: 1px solid #CCCCCC;
-     border-right: 1px solid #CCCCCC;
-     padding: 5px 5px 0;
-     */
     height: 244px;
     left: 0;
     padding: 5px 15px 0;
@@ -645,91 +586,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     margin-bottom: 20px;
 }
 
-/*************from portla css */
 
-/*
- .asset {
- border-bottom: 1px solid #CCCCCC;
- border-right: 1px solid #CCCCCC;
- height: 221px;
- overflow: hidden;
- position: relative;
- }
- .asset a:hover {
- text-decoration: none;
- }
-
- .asset-author {
- }
- .asset-author-category {
- font-size: 14px;
- }
- .asset-author-category h4 {
- font-size: 12px;
- text-transform: uppercase;
- color: #888;
- margin: 0;
- }
- .asset-author-category li {
- margin-bottom: 5px;
- }
- .asset-btn-cont {
- border-top: 1px solid #CCCCCC;
- margin-top: 10px;
- padding-top: 27px;
- text-align: center;
- }
- .asset-category {
- }
- .asset-description {
- padding-top: 0;
- }
- .asset-details {
- border-bottom: 1px solid #CCCCCC;
- border-left: 1px solid #CCCCCC;
- height: 221px;
- left: 0;
- padding: 5px 15px 0;
- position: absolute;
- right: 0;
- background: none repeat scroll 0 0 #FFFFFF;
- top: 175px;
- }
- .asset-icon {
- position: relative;
- }
- .asset-icon > img {
- border: medium none;
- width: 100%;
- border-top: 1px solid #CCCCCC;
- border-left: 1px solid #CCCCCC;
- border-right: 1px solid #CCCCCC;
- }
- .asset-icon-overlay {
- position: absolute;
- top: 0;
- right: 0;
- bottom: 0;
- left: 0;
- background: rgba(0,0,0,.7);
- }
- .asset-icon-overlay i {
- color: #FFFFFF;
- display: block;
- font-size: 44px;
- height: 100%;
- position: absolute;
- text-align: center;
- top: 45%;
- width: 100%;
- }
- .asset-name {
- color: #34495E;
- font-size: 18px;
- font-weight: 600;
- }
-
- */
 .recently-added {
     margin-bottom: 10px;
 }
@@ -975,14 +832,7 @@ div.rating-cancel, div.star-rating {
 #asset-slideshow-cont .html_carousel {
     margin-left: -417px;
 }
-/*
- #asset-slideshow-cont .html_carousel {
- position: absolute;
- left: -15px;
- right: -15px;
- top: 0;
- }
- */
+
 #container-assets {
     margin-top: 35px;
 }
@@ -1015,12 +865,7 @@ div.rating-cancel, div.star-rating {
 .nav-tabs > li > a:first-child {  
     border: none;
 }
-/*
-.nav-tabs > li.active > a {
-    color: #009E92;
-    border: none;
-}
-*/
+
 
 .nav-tabs > li.active > a {
   border: none;

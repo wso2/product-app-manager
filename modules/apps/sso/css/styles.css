@@ -59,13 +59,13 @@ body {
     background-image: none;
 }
 .btn-primary {
-    background: none repeat scroll 0 0 #16a085;
+    background: none repeat scroll 0 0 #229A55;
     color: #FFFFFF;
     text-shadow: none;
 }
 
 .btn-primary:hover, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary[disabled] {
-    background: #07BFAC;
+    background: #27ae60;
 }
 
 .row-footer {
@@ -85,7 +85,7 @@ body {
     color: #7f8c8d;
 }
 .row-footer li a:hover {
-    color: #07BFAC;
+    color: #27ae60;
     text-decoration: none;
 }
 

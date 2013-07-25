@@ -11,3 +11,11 @@ h1{
     color:#C9D5D8;
     text-shadow: 1px 1px 0 #FFFFFF;
 }
+
+.container > .row{
+    background:none;
+    border:none;
+}
+body{
+    background-image:none;
+}

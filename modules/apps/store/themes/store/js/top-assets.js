@@ -4,7 +4,6 @@
  var details;
  ;
  */
-
 var opened = false;
 
 $(function() {
@@ -23,22 +22,6 @@ $(function() {
 
 	mouseStop();
 
-	/*
-	 $("#asset-slideshow").carouFredSel({
-	 items : 1,
-	 width:800,
-	 height:300,
-
-	 fx      : "elastic",
-
-	 duration    : 1000,
-
-	 timeoutDuration: 2000,
-
-	 pauseOnHover: true
-	 });
-	 */
-
 	$("#asset-slideshow").carouFredSel({
 		items : {
 			visible : 3,
@@ -46,13 +29,6 @@ $(function() {
 		},
 		height : 300,
 		scroll : 1,
-		/*
-		 auto : {
-		 duration : 1000,
-		 timeoutDuration : 2000,
-		 pauseOnHover : true
-		 }
-		 */
 		auto : false,
 		prev : {
 			button : "#asset-slideshow-next",
@@ -68,7 +44,7 @@ $(function() {
 	}, function() {
 		$(this).find(".asset-intro-box").slideUp("fast");
 	});
-	
+
 	$("#top-asset-slideshow-gadget").carouFredSel({
 		items : 4,
 		width : "100%",
