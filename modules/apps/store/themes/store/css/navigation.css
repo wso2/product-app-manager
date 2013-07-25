@@ -47,7 +47,7 @@
     color: #FFFFFF;
 }
 .modal-blue .modal-body {
-    background: none repeat scroll 0 0 #16a085;
+    background: none repeat scroll 0 0 #229a55;
 }
 .modal-blue .btn-primary {
     color: #333333;
@@ -86,9 +86,9 @@ hr.emboss {
     background: url("../img/logo.png") no-repeat scroll 0 0 transparent;
     color: #FFFFFF;
     height: 24px;
-    margin: 11px 10px 0 0;
+    margin: 11px 0 0 0;
     padding: 0;
-    width: 230px;
+    width: 158px;
 }
 
 .navbar .nav > li > a {
@@ -102,7 +102,7 @@ hr.emboss {
     margin-top:7px;
 }
 .navbar .nav > li > a.btn:hover {
-    background: #07BFAC;
+    background: #27ae60;
 }
 .navbar .nav > li > a.selected {
     color: #ffffff;
@@ -167,7 +167,7 @@ hr.emboss {
     line-height: 30px;
 }
 .dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a {
-      background: #16a085;
+      background: #229a55;
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#0016a085,endColorstr=#0016a085); 
 }
 
@@ -193,7 +193,7 @@ hr.emboss {
 }
 
 .nav.store-menu li.selected:after {
-    background: none repeat scroll 0 0 #009F93;
+    background: none repeat scroll 0 0 #229A55;
     bottom: -1px;
     content: "";
     display: inline-block;
@@ -205,7 +205,7 @@ hr.emboss {
     position:relative;
 }
 .nav.store-menu  li.selected a {
-    /*background: #16A085;*/
+    /*background: #229a55;*/
 }
 
 
