@@ -826,8 +826,9 @@ div.rating-cancel, div.star-rating {
     position: relative;
     height: 300px;
     width: 580px;
-    display: inline-block;
+    display: block;
     overflow: hidden;
+    float:left;
 }
 #asset-slideshow-cont .html_carousel {
     margin-left: -417px;
