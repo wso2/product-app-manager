@@ -39,6 +39,7 @@ $(function() {
 		}, {
 			url : url,
 			success : function(data, status, xhr) {
+				/*
 				//TODO: Integrate a new History.js library to fix this
 				if ($.browser.msie == true && $.browser.version < 10) {
 					renderAssets(data);
@@ -48,6 +49,8 @@ $(function() {
 						context : data
 					}, document.title, url);
 				}
+				*/
+				renderAssets(data);
 			},
 			error : function(xhr, status, error) {
 				theme.loaded($('#assets-container').parent(), '<p>Error while retrieving data.</p>');
@@ -72,6 +75,15 @@ $(function() {
 			return;
 		}
 		loadAssets(url);
+	});
+		
+	$(window).scroll(function(){
+		if($(window).scrollTop() + $(window).height() == $(document).height()){
+			var page = parseInt($('#assets-container').data('page')) + 1;
+			
+			var url = '/store/assets/gadget/?sort=recent&page=' + page;
+			loadAssets(url);
+		}
 	});
 
 	$("a[data-toggle='tooltip']").tooltip();

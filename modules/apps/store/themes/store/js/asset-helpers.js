@@ -5,10 +5,59 @@ var renderAssets, mouseStop, isAssertTrue, addAssert;
         var el = $('.store-left');
         caramel.css($('head'), data.header['sort-assets'].resources.css, 'sort-assets');
         caramel.code($('head'), data.body['assets'].resources.code);
+        
+        var temp = '<div class="row-fluid">';
+        	temp += '{{#each assets}}';
+			temp += '<div class="span3 asset" data-path="{{path}}" data-type="{{type}}">';
+			temp += '	{{#attributes}}';
+			temp += '	<a href="{{url "/asset"}}/{{../type}}?asset={{../path}}">';
+			temp += '	<div class="asset-icon">';		
+			temp += '	<img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}">';
+			temp += '	</div> </a>';
+			temp += '	<div class="asset-details">';
+			temp += '		<div class="asset-name">';
+			temp += '			<a href="{{url "/asset"}}/{{../type}}?asset={{../path}}"> <h4>{{overview_name}}</h4> </a>';
+			temp += '		</div>';
+			temp += '		<div class="asset-rating">';
+			temp += '			<div class="asset-rating-{{../rating/average}}star">';
+			temp += '			</div>';
+			temp += '		</div>';
+			temp += '		<div class="asset-author-category">';
+			temp += '			<ul>';
+			temp += '				<li>';
+			temp += '					<h4>{{t "Category"}}</h4>';
+			temp += '					<a class="asset-category" href="#">{{cap ../type}}</a>';
+			temp += '				</li>';
+			temp += '				<li>';
+			temp += '					<h4>{{t "Author"}}</h4>';
+			temp += '					<a class="asset-author" href="#">{{overview_provider}}</a>';					
+			temp += '				</li>';
+			temp += '			</ul>';
+			temp += '		</div>';
+			temp += '	</div>';
+			temp += '	{{/attributes}}';
+			temp += '</div>';
+			temp += '{{/each}}';
+			temp += '</div>';
+			
+      var assetsTemp = Handlebars.compile(temp);
+ 
+  var render = assetsTemp(data.body.assets.context);
+               
+               // return render;
+               $('#assets-container').append(render);
+               
         async.parallel({
-            assets: function (callback) {
-                caramel.render('assets', data.body.assets.context, callback);
+           /* assets: function (callback) {
+            	  
+            	console.log(data.body.assets.context);
+                //caramel.render('assets', data.body.assets.context, callback);
+               var render = assetsTemp(data.body.assets.context);
+               
+               // return render;
+               $('#assets-container').append(render);
             },
+            */
             paging: function (callback) {
                 caramel.render('pagination', data.body.pagination.context, callback);
             },
@@ -16,9 +65,10 @@ var renderAssets, mouseStop, isAssertTrue, addAssert;
                 caramel.render('sort-assets', data.header['sort-assets'].context, callback);
             }
         }, function (err, result) {
-            theme.loaded(el, result.sort);
-            el.append(result.assets);
-            el.append(result.paging);
+            //theme.loaded(el, result.sort);
+            //el.append(result.assets);
+            $('.loading').hide();
+            //el.append(result.paging);
             caramel.js($('body'), data.body['assets'].resources.js, 'assets', function () {
                 mouseStop();
             });
