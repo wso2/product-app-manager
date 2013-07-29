@@ -19,12 +19,12 @@ var render = function (theme, data, meta, require) {
         body: [
             {
                 partial: 'assets',
-                context: require('/helpers/assets.js').currentPage(data.assets,data.sso,data.user)
-            },
+                context: require('/helpers/assets.js').currentPage(data.assets,data.sso,data.user, data.paging)
+            }/*,
             {
                 partial: 'pagination',
                 context: require('/helpers/pagination.js').format(data.paging)
-            }
+            } */
         ],
         right: [
             {

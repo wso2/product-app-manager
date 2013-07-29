@@ -2,7 +2,7 @@
     "assets": ["gadget", "site"],
     "assetsUrlPrefix": "/assets",
     "assetUrlPrefix": "/asset",
-    "assetsPageSize": 16,
+    "assetsPageSize": 12,
     "commentsPageSize": 10,
     "server": {
         "https": "%https.host%/admin",

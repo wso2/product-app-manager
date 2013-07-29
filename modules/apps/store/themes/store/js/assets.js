@@ -5,7 +5,7 @@
  ;
  */
 
-var opened = false;
+var opened = false, currentPage = 1, totalPages;
 
 $(function() {
 	var paging = store.asset.paging;
@@ -39,7 +39,6 @@ $(function() {
 		}, {
 			url : url,
 			success : function(data, status, xhr) {
-				/*
 				//TODO: Integrate a new History.js library to fix this
 				if ($.browser.msie == true && $.browser.version < 10) {
 					renderAssets(data);
@@ -49,11 +48,28 @@ $(function() {
 						context : data
 					}, document.title, url);
 				}
-				*/
-				renderAssets(data);
+
 			},
 			error : function(xhr, status, error) {
 				theme.loaded($('#assets-container').parent(), '<p>Error while retrieving data.</p>');
+			}
+		});
+		theme.loading($('.store-left'));
+	};
+
+	var loadAssetsScroll = function(url) {
+		caramel.data({
+			title : null,
+			header : ['sort-assets'],
+			body : ['assets', 'pagination']
+		}, {
+			url : url,
+			success : function(data, status, xhr) {
+				renderAssetsScroll(data);
+				$('.loading-inf-scroll').hide();
+			},
+			error : function(xhr, status, error) {
+
 			}
 		});
 		theme.loading($('.store-left'));
@@ -76,18 +92,29 @@ $(function() {
 		}
 		loadAssets(url);
 	});
-		
-	$(window).scroll(function(){
-		if($(window).scrollTop() + $(window).height() == $(document).height()){
-			var page = parseInt($('#assets-container').data('page')) + 1;
-			
-			var url = '/store/assets/gadget/?sort=recent&page=' + page;
-			loadAssets(url);
+
+	totalPages = $('#assets-container').data('pages');
+
+	var infiniteScroll = function() {
+		if (currentPage <= totalPages) {
+			if ($(window).scrollTop() + $(window).height() >= $(document).height() * .8) {
+				var url = '/store/assets/gadget/?sort=recent&page=' + currentPage++;
+				loadAssetsScroll(url)
+				$(window).unbind('scroll', infiniteScroll);
+				setTimeout(function() {
+					$(window).bind('scroll', infiniteScroll);
+				}, 500);
+			}
+		} else {
+			$(window).unbind('scroll');
 		}
-	});
+
+	}
+
+	$(window).bind('scroll', infiniteScroll);
 
 	$("a[data-toggle='tooltip']").tooltip();
 
 	caramel.loaded('js', 'assets');
 	caramel.loaded('js', 'sort-assets');
-}); 
+});

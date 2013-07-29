@@ -681,6 +681,12 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     top: 20%;
     opacity: .7;
 }
+.loading-inf-scroll{
+    text-align:center;
+}
+.loading-inf-scroll img{
+    opacity: .7;
+}
 
 .asset-banner {
     height: 299px;

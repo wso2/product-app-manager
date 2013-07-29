@@ -7,11 +7,12 @@ var resources = function (block, page, area, meta) {
     };
 };
 
-var currentPage = function (assetsx,ssox,userx) {
+var currentPage = function (assetsx,ssox,userx, paging) {
     var outx  = {
         'assets': assetsx,
         'sso': ssox,
-        'user': userx
+        'user': userx,
+        'pages': Math.ceil(paging.total/paging.size)
     };
     
     return outx;

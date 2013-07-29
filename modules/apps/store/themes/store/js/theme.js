@@ -1,13 +1,14 @@
 var theme = (function () {
     var loading, loaded,
-        loaderClass = 'loading';
+        //loaderClass = 'loading';
+        loaderClass = 'loading-inf-scroll';
 
     loading = function (el) {
         var loader;
         //el.children().hide();
         loader = $('.' + loaderClass, el);
         if (loader.length === 0) {
-            loader = el.prepend('<div class="overlay loading"><img src="' + caramel.context + '/themes/store/img/preloader-40x40.gif"></div>');
+            loader = el.append('<div class="' + loaderClass+ '"><img src="' + caramel.context + '/themes/store/img/preloader-40x40.gif"></div>');
         }
         loader.show();
     };
