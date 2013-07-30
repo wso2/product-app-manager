@@ -1023,6 +1023,10 @@ ol.linenums li {
      z-index: 998;
      }
      */
+    .store-right{
+        border-left:none;
+        padding-left: 0;
+    }
 
     .recently-added {
         float: left;

@@ -79,7 +79,7 @@ var caramel;
         tag: tag,
         tags: function () {
             return [{
-                url: '/assets/' + type + '/?page=1&tag=',
+                url: '/assets/' + type + '/?tag=',
                 data: store.tags(type)
             }];
         },

@@ -10,6 +10,7 @@ $(function() {
 	$('.store-tags').on('click', 'a', function(e) {
 		e.preventDefault();
 		var url = $(this).attr('href');
+		currentPage = 1;
 		caramel.data({
 			title : null,
 			header : ['sort-assets'],

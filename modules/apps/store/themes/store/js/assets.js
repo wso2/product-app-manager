@@ -76,6 +76,7 @@ $(function() {
 	};
 
 	$(document).on('click', '#ul-sort-assets li a', function(e) {
+		currentPage = 1;
 		$('#ul-sort-assets li a').removeClass('selected-type');
 		var thiz = $(this);
 		thiz.addClass('selected-type');
@@ -93,20 +94,25 @@ $(function() {
 		loadAssets(url);
 	});
 
-	totalPages = $('#assets-container').data('pages');
+	
 
 	var infiniteScroll = function() {
-		if (currentPage <= totalPages) {
+		totalPages = $('#assets-container').data('pages');
+		if (currentPage < totalPages) {
 			if ($(window).scrollTop() + $(window).height() >= $(document).height() * .8) {
-				var url = '/store/assets/gadget/?sort=recent&page=' + currentPage++;
-				loadAssetsScroll(url)
+				var selType = $('.selected-type').data('sort'),
+					pathName = window.location.pathname,
+					search = window.location.search;
+				search += (search != "") ? '&' : '?';
+					 
+				var	url = pathName + search + 'page=' + (++currentPage); 
+				
+				loadAssetsScroll(url); 
 				$(window).unbind('scroll', infiniteScroll);
 				setTimeout(function() {
 					$(window).bind('scroll', infiniteScroll);
 				}, 500);
 			}
-		} else {
-			$(window).unbind('scroll');
 		}
 
 	}
