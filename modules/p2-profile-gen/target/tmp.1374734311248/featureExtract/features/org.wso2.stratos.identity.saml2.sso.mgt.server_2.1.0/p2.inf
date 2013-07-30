@@ -1,0 +1,5 @@
+instructions.configure = \
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/features/org.wso2.stratos.identity.saml2.sso.mgt.server_2.1.0/conf/sso-idp-config.xml,target:${installFolder}/../conf/sso-idp-config.xml,overwrite:true);\
+
+properties.0.name=org.wso2.carbon.p2.category.type
+properties.0.value=server

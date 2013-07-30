@@ -1,0 +1,23 @@
+<%
+var matcher = new URIMatcher(request.getRequestURI());
+// http://localhost:9763/caramel/apis/asset/1234/comments
+(function () {
+    var aid,
+            store = require('/modules/store.js'),
+            user = require('/modules/user.js').current();
+
+    if (!user) {
+        response.sendError(401, 'Unauthorized');
+        return;
+    }
+
+    if (matcher.match('/{context}/apis/rate')) {
+        store = require('/modules/store.js');
+        aid = request.getParameter('asset');
+        store.rate(aid, request.getParameter('value'));
+        print(store.rating(aid));
+        return;
+    }
+    response.sendError(404, 'API Endpoint Not Found');
+})();
+%>

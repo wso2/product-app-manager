@@ -1,0 +1,92 @@
+<%
+//TODO : remove this and fix welcome page properly
+//response.sendRedirect('.' + require('/store.js').config().assetsUrlPrefix + '/gadget');
+
+var caramel;
+( function() {
+	var gadgets, sites, paging, count, current, total, loggedUser, popularAssets,
+            recent = false,
+            type = 'gadget',
+            options = {},
+            log = new Log(),
+            user = require('/modules/user.js'),
+            configs = require('/store.js').config(),
+            store = require('/modules/store.js'),
+            site = require('/modules/site.js'),
+            tag = request.getParameter('tag'),
+            query = request.getParameter('query'),
+            ssoLogin = require('/modules/sso-login.js'),
+            ssoUser = session.get('LOGGED_IN_USER');
+	caramel = require('caramel');
+	sso = configs.ssoConfiguration.enabled;
+	loggedUser = (sso && ssoUser) ? {
+		username : ssoUser
+	} : user.current();
+	paging = store.assetsPaging(request);
+	total = store.assetCount(type);
+
+	if(paging.start > total || paging.start < 0) {
+		response.sendError(404, 'Requested page cannot be found');
+		return;
+	}
+
+    if (query) {
+        gadgets = store.search({
+            query: query,
+            type: 'gadget'
+        }, paging);
+        sites = store.search({
+            query: query,
+            type: 'site'
+        }, paging);
+    } else if (tag) {
+        gadgets = store.tagged('gadget', tag, paging);
+        sites = store.tagged('site', tag, paging);
+    } else {
+        recent = true;
+        gadgets = store.assets('gadget', paging);
+        sites = store.assets('site', paging);
+    }
+	recentGadgets = store.recentAssets('gadget', 3);
+	recentSites = store.recentAssets('site', 3);
+	recentAssets = recentGadgets.concat(recentSites);
+
+	if(!query){
+	popularGadgets = store.popularAssets('gadget');
+	popularSites = store.popularAssets('site');
+	popularAssets = popularGadgets.concat(popularSites);
+	}
+
+	caramel.render({
+		title : 'Store | User Engagement Center',
+		user : loggedUser,
+		sso:sso,
+		navigation : site.navigation({
+			sso : sso,
+			ssoEncodedRequest : ssoLogin.ssoEncodedRequest,
+			ssoRelayState : ssoLogin.ssoRelayState,
+			ssoSessionId : ssoLogin.ssoSessionId,
+			ssoIdpURL : ssoLogin.ssoIdpURL,
+			user : loggedUser
+		}),
+		topAssets : {
+			recentAssets : {
+				gadget : gadgets,
+				site : sites
+			},
+			popularAssets : popularAssets,
+            recent : recent
+		},
+		tags : {
+			url : '/assets/' + type + '?page=1&tag=',
+			data : store.tags(type)
+		},
+		recentAssets : recentAssets
+
+		// type: type,  tag: tag,
+
+	});
+
+}());
+
+%>

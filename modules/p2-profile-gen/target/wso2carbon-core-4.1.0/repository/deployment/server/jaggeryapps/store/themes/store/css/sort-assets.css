@@ -1,0 +1,63 @@
+.asset-details:hover {
+    cursor: pointer;
+}
+
+.row-sort-assets .span3 .row-fluid > div {
+    margin-left: -10px;
+}
+
+.row-sort-assets {
+    height: 13px;
+    margin-top: -5px;
+    padding-top: 20px;
+}
+
+.row-border-bottom {
+    border-bottom: 1px solid #F3F3F3;
+    margin-bottom: 16px;
+    padding-bottom: 23px;
+}
+
+#ul-sort-assets {
+    display: inline-block;
+    margin-left: 10px;
+    margin-top: 3px;
+}
+
+#ul-sort-assets li {
+    display: inline-block;
+    margin-right: 20px;
+
+}
+
+#ul-sort-assets li a {
+    opacity: .5;
+    color: #333333;
+    font-weight: bold;
+}
+
+#ul-sort-assets li a i {
+    font-size: 17px;
+}
+
+.icon-sort-alphabetical {
+    background: url("../img/icon-sort-alphabetical.png") no-repeat scroll left top transparent;
+    height: 14px;
+    width: 16px;
+    display:inline-block!important;
+}
+
+#ul-sort-assets  li a.selected-type {
+    opacity: 1;
+    position: relative;
+}
+
+.row-sort-assets ul li a.selected-type:before {
+    content: "";
+    width: 11px;
+    height: 8px;
+    background: url(../img/store-sort-arrow.png) no-repeat top left;
+    position: absolute;
+    bottom: -12px;
+    left: 3px;
+}

@@ -1,0 +1,7 @@
+instructions.configure = \
+org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/../../modules); \
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/features/caramel_1.0.0.SNAPSHOT/core/,target:${installFolder}/../../modules,overwrite:false);\
+org.eclipse.equinox.p2.touchpoint.natives.remove(path:${installFolder}/features/caramel_1.0.0.SNAPSHOT/core);\
+
+
+

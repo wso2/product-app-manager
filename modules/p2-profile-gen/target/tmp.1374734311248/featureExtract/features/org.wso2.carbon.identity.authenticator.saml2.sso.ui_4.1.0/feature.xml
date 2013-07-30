@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.identity.authenticator.saml2.sso.ui" label="SAML2 based authenticator UI Feature" provider-name="%providerName" version="4.1.0">
+  <description>This feature contains the bundles required for SAML2 based authentication UI functionality</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="org.wso2.carbon.identity.sso.saml.stub" unpack="false" version="4.1.0"/>
+  <plugin id="opensaml2" unpack="false" version="2.4.1.wso2v1"/>
+  <plugin id="org.wso2.carbon.identity.authenticator.saml2.sso.common" unpack="false" version="4.1.0"/>
+  <plugin id="org.wso2.carbon.identity.authenticator.saml2.sso.stub" unpack="false" version="4.1.0"/>
+  <plugin id="org.wso2.carbon.identity.authenticator.saml2.sso.ui" unpack="false" version="4.1.0"/>
+  <require>
+    <import feature="org.wso2.carbon.core.ui" match="equivalent" version="4.1.0"/>
+  </require>
+</feature>

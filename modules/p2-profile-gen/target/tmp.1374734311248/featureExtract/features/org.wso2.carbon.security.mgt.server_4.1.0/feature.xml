@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.security.mgt.server" label="WSO2 Carbon - Security Management Core Feature" provider-name="%providerName" version="4.1.0">
+  <description>This feature contains the core bundles required for Back-end Security Management functionality</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="org.wso2.carbon.security.mgt" unpack="false" version="4.1.0"/>
+  <plugin id="rampart-policy" unpack="false" version="1.6.1.wso2v8"/>
+  <plugin id="rampart-core" unpack="false" version="1.6.1.wso2v8"/>
+  <plugin id="rampart-trust" unpack="false" version="1.6.1.wso2v8"/>
+  <require>
+    <import match="equivalent" plugin="xkms" version="2.4.0.wso2v1"/>
+    <import feature="org.wso2.carbon.core.server" match="equivalent" version="4.1.0"/>
+  </require>
+</feature>

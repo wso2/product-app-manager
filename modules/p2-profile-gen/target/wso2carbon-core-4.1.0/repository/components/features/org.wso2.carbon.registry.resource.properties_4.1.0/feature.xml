@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.registry.resource.properties" label="WSO2 Carbon - Registry Resource Properties Feature" provider-name="%providerName" version="4.1.0">
+  <description>This allows reading and writing properties of resources and collections in the registry
+        resource view.</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <require>
+    <import feature="org.wso2.carbon.registry.core.server" match="equivalent" version="4.1.0"/>
+    <import feature="org.wso2.carbon.registry.core.common" match="equivalent" version="4.1.0"/>
+    <import feature="org.wso2.carbon.registry.core.ui" match="equivalent" version="4.1.0"/>
+  </require>
+  <includes id="org.wso2.carbon.registry.resource.properties.server" optional="false" version="4.1.0"/>
+  <includes id="org.wso2.carbon.registry.resource.properties.ui" optional="false" version="4.1.0"/>
+</feature>

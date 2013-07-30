@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.registry.core.ui" label="WSO2 Carbon - Registry Core UI Feature" provider-name="%providerName" version="4.1.0">
+  <description>This feature contains the bundles required for Front-end Registry Core functionality</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="org.wso2.carbon.registry.resource.stub" unpack="false" version="4.1.0"/>
+  <plugin id="org.wso2.carbon.registry.resource.ui" unpack="false" version="4.1.0"/>
+  <plugin id="org.wso2.carbon.registry.common.ui" unpack="false" version="4.1.0"/>
+  <require>
+    <import feature="org.wso2.carbon.registry.core.common" match="equivalent" version="4.1.0"/>
+    <import feature="org.wso2.carbon.core.ui" match="equivalent" version="4.1.0"/>
+  </require>
+</feature>

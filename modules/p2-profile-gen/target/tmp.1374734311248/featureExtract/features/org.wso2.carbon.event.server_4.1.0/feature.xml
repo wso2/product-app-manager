@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.event.server" label="WSO2 Carbon - Event Server Feature" provider-name="%providerName" version="4.1.0">
+  <description>This feature contains the bundles required for Back-end Event functionality</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="org.wso2.carbon.event.ws" unpack="false" version="4.1.0"/>
+  <plugin id="org.wso2.carbon.qpid.stub" unpack="false" version="4.1.0"/>
+  <plugin id="org.wso2.carbon.event.admin" unpack="false" version="4.1.0"/>
+  <plugin id="org.wso2.carbon.event.core" unpack="false" version="4.1.0"/>
+  <require>
+    <import feature="org.wso2.carbon.core.server" match="equivalent" version="4.1.0"/>
+  </require>
+  <includes id="org.wso2.carbon.event.common" optional="false" version="4.1.0"/>
+</feature>

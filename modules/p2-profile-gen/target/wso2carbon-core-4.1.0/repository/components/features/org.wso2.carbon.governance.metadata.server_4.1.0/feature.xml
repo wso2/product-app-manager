@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.governance.metadata.server" label="WSO2 Carbon - Governance Metadata Server Feature" provider-name="%providerName" version="4.1.0">
+  <description>This feature contains the bundles required for Back-end Governance Metadata functionality</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="org.wso2.carbon.governance.wsdltool" unpack="false" version="4.1.0"/>
+  <plugin id="org.wso2.carbon.governance.api" unpack="false" version="4.1.0"/>
+  <plugin id="org.wso2.carbon.governance.list" unpack="false" version="4.1.0"/>
+  <plugin id="org.wso2.carbon.governance.generic" unpack="false" version="4.1.0"/>
+  <require>
+    <import feature="org.wso2.carbon.registry.core.server" match="equivalent" version="4.1.0"/>
+    <import feature="org.wso2.carbon.registry.extensions.server" match="equivalent" version="4.1.0"/>
+    <import feature="org.wso2.carbon.registry.associations.dependencies.server" match="equivalent" version="4.1.0"/>
+    <import feature="org.wso2.carbon.registry.community.features.server" match="equivalent" version="4.1.0"/>
+  </require>
+</feature>

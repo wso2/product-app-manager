@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.stratos.common.ui" label="WSO2 Stratos - Common UI Feature" provider-name="%providerName" version="2.1.0">
+  <description>This feature contains the bundles required for Front-end servlet functionality</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="org.wso2.carbon.redirector.servlet.stub" unpack="false" version="4.1.0"/>
+  <plugin id="org.wso2.carbon.stratos.common.stub" unpack="false" version="4.1.0"/>
+  <plugin id="org.wso2.carbon.tenant.mgt.ui" unpack="false" version="2.1.0"/>
+  <plugin id="org.wso2.carbon.sso.redirector.ui" unpack="false" version="2.1.0"/>
+  <plugin id="org.wso2.carbon.redirector.servlet.ui" unpack="false" version="2.1.0"/>
+  <plugin id="org.wso2.carbon.tenant.mgt.stub" unpack="false" version="4.1.0"/>
+  <plugin id="org.wso2.carbon.google.analytics.ui" unpack="false" version="2.1.0"/>
+  <require>
+    <import feature="org.wso2.carbon.core.ui" match="equivalent" version="4.1.0"/>
+    <import feature="org.wso2.carbon.identity.authenticator.saml2.sso.ui" match="equivalent" version="4.1.0"/>
+  </require>
+</feature>

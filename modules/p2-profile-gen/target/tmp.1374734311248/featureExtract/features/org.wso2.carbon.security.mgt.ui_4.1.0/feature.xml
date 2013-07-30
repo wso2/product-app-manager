@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.security.mgt.ui" label="WSO2 Carbon - Security Management UI Feature" provider-name="%providerName" version="4.1.0">
+  <description>This feature contains the bundles required for Front-end Security Management functionality</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="org.wso2.carbon.security.mgt.ui" unpack="false" version="4.1.0"/>
+  <plugin id="org.wso2.carbon.security.mgt.stub" unpack="false" version="4.1.0"/>
+  <require>
+    <import match="equivalent" plugin="rampart-policy" version="1.6.1.wso2v4"/>
+    <import match="equivalent" plugin="rampart-core" version="1.6.1.wso2v4"/>
+    <import match="equivalent" plugin="rampart-trust" version="1.6.1.wso2v4"/>
+    <import feature="org.wso2.carbon.core.ui" match="equivalent" version="4.1.0"/>
+  </require>
+</feature>

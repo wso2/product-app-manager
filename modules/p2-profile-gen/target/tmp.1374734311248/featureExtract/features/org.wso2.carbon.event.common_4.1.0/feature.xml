@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.event.common" label="WSO2 Carbon - Event Common Feature" provider-name="%providerName" version="4.1.0">
+  <description>This feature contains the bundles required for Back-end and Front-end Event functionality</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="org.wso2.carbon.event.common" unpack="false" version="4.1.0"/>
+  <plugin id="org.wso2.carbon.event.client" unpack="false" version="4.1.0"/>
+  <plugin id="org.wso2.carbon.event.client.stub" unpack="false" version="4.1.0"/>
+  <require>
+    <import feature="org.wso2.carbon.core.common" match="equivalent" version="4.1.0"/>
+  </require>
+</feature>

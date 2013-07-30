@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.stratos.identity.saml2.sso.mgt" label="WSO2 Stratos - Stratos SSO Management Feature" provider-name="%providerName" version="2.1.0">
+  <description>This feature contains the SSO Management Bundles used in Stratos.</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <includes id="org.wso2.stratos.identity.saml2.sso.mgt.server" optional="false" version="2.1.0"/>
+  <includes id="org.wso2.stratos.identity.saml2.sso.mgt.ui" optional="false" version="2.1.0"/>
+</feature>

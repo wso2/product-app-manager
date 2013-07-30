@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.registry.ui.menu" label="WSO2 Carbon - Registry UI Menu Feature" provider-name="%providerName" version="4.1.0">
+  <description>The Registry menu for the WSO2 Carbon Administration Console.</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="org.wso2.carbon.ui.menu.registry" unpack="false" version="4.1.0"/>
+  <require>
+    <import feature="org.wso2.carbon.core.ui" match="equivalent" version="4.1.0"/>
+  </require>
+</feature>

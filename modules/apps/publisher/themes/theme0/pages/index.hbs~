@@ -1,0 +1,11 @@
+<html>
+	<head>
+		<title>Asset Management</title>
+	</head>
+	<body>
+		<p>Test!!!</p>
+		{{> list}}
+		{{name}}
+	</body>
+</html>
+

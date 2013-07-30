@@ -1,0 +1,66 @@
+<%
+var dataConfi = require('/store.js').config(),
+        security = require("sso"),
+        process = require("process"),
+        ssoRelyingParty = new security.SSORelyingParty(dataConfi.ssoConfiguration.issuer),
+        sessionId = session.getId(),
+        isAuthenticated = ssoRelyingParty.isSessionAuthenticated(sessionId),
+        requestURI,
+        requestedPage = request.getParameter("requestedPage"),
+        log = new Log();
+
+print('<h2>Log in to Portal</h2>');
+
+var partWithContext = request.getRequestURL().split(
+        request.getRequestURI()
+)[0] + request.getContextPath();
+
+%>
+<script>
+var requestURL = '<%=partWithContext%>';
+var ssoEnabled = '<%=dataConfi.ssoConfiguration.enabled%>';
+</script>
+<%
+if (requestedPage != null) {
+    requestURI = requestedPage;
+} else {
+    requestURI = request.getRequestURI();
+    if (request.getQueryString() != null) {
+        requestURI = requestURI + '?' + request.getQueryString();
+    }
+}
+
+ssoRelyingParty.setProperty("identityProviderURL", dataConfi.ssoConfiguration.identityProviderURL);
+ssoRelyingParty.setProperty("keyStorePassword", dataConfi.ssoConfiguration.keyStorePassword);
+ssoRelyingParty.setProperty("identityAlias", dataConfi.ssoConfiguration.identityAlias);
+ssoRelyingParty.setProperty("keyStoreName", process.getProperty('carbon.home') + dataConfi.ssoConfiguration.keyStoreName);
+
+
+var samlAuthRequest = ssoRelyingParty.getSAMLAuthRequest();
+var encodedRequest = ssoRelyingParty.encode(samlAuthRequest);
+var relayState = ssoRelyingParty.getUUID();
+ssoRelyingParty.setRelayStateProperty(relayState, requestURI);
+var idpURL = ssoRelyingParty.getProperty("identityProviderURL");
+var isLogin = session.get("Loged");
+
+if (!isLogin) {
+    %>
+
+        <div>
+
+                    <p>You are now being redirected to Identity Server. If the
+                    redirection fails, please click on the button below.</p>
+                    <form method="post" action="<%= idpURL %>">
+                    <p>
+                       <input type="hidden" name="SAMLRequest" value="<%= encodedRequest %>"/>
+                       <input type="hidden" name="RelayState" value="<%= relayState %>"/>
+                       <input type="hidden" name="SSOAuthSessionID" value="<%= sessionId %>"/>
+                       <button type="submit">Redirect manually</button>
+                   </p>
+               </form>
+           </div>
+           <script type = "text/javascript" >
+                  document.forms[0].submit();
+           </script>
+   <%
+}%>

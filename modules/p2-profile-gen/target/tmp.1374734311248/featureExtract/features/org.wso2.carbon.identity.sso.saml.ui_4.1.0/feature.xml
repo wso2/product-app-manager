@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.identity.sso.saml.ui" label="Identity SAML2 Single Sign-on UI Feature" provider-name="%providerName" version="4.1.0">
+  <description>This feature contains the bundles required for Front-end Identity SAML2 based Single Sign-on functionality</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="org.wso2.carbon.identity.sso.saml.stub" unpack="false" version="4.1.0"/>
+  <plugin id="httpcore" unpack="false" version="4.1.0.wso2v1"/>
+  <plugin id="httpclient" unpack="false" version="4.1.1.wso2v1"/>
+  <plugin id="org.wso2.carbon.identity.sso.saml.ui" unpack="false" version="4.1.0"/>
+  <require>
+    <import feature="org.wso2.carbon.core.ui" match="equivalent" version="4.1.0"/>
+  </require>
+</feature>

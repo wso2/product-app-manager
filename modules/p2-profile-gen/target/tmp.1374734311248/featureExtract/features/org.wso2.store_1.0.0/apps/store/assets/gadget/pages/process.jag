@@ -1,0 +1,22 @@
+<%
+(function () {
+    var user = require('/modules/user.js');
+
+    if (!user.current()) {
+        response.sendError(401, 'Unauthorized');
+        return;
+    }
+
+    var aid = request.getParameter('asset'),
+            space = user.userSpace(),
+            configs = space.get('userAssets');
+
+    configs = configs ? parse(configs) : {};
+    if (!configs.gadget) {
+        configs.gadget = {};
+    }
+    configs.gadget[aid] = true;
+    space.put('userAssets', stringify(configs));
+    response.sendRedirect(request.getParameter('destination'));
+})();
+%>

@@ -1,0 +1,23 @@
+<%
+var caramel;
+
+
+(function () {
+    var context,
+            sso,
+            log = new Log(),
+            configs = require('/portal.json'),
+            user = require('/modules/user.js').current(),
+            ssoLogin = require('/modules/sso-login.js');
+    userSSO = session.get("Loged");
+    caramel = require('caramel');
+
+
+    caramel.render({
+        
+        'title': 'Internal Server Error - Error 500',
+        'error-500': {}
+    });
+
+}());
+%>

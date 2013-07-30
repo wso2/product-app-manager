@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.registry.community.features" label="WSO2 Carbon - Registry Community Features Feature" provider-name="%providerName" version="4.1.0">
+  <description>Adds community features for registry resources and collections, such as rating, tagging,
+        adding comments, and also creating subscriptions to receive notifications. This pack also
+        adds the WS-Eventing functionality (used by subscriptions and notifications) to the
+        underlying registry.</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <require>
+    <import feature="org.wso2.carbon.registry.core" match="equivalent" version="4.1.0"/>
+  </require>
+  <includes id="org.wso2.carbon.registry.community.features.server" optional="false" version="4.1.0"/>
+  <includes id="org.wso2.carbon.registry.community.features.ui" optional="false" version="4.1.0"/>
+</feature>

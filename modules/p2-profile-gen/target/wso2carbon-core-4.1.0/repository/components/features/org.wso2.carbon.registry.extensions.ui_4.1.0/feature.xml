@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.registry.extensions.ui" label="WSO2 Carbon - Registry Extensions UI Feature" provider-name="%providerName" version="4.1.0">
+  <description>Contains User Interface to install Extensions to the Registry</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="org.wso2.carbon.registry.extensions.ui" unpack="false" version="4.1.0"/>
+  <plugin id="org.wso2.carbon.registry.extensions.stub" unpack="false" version="4.1.0"/>
+  <require>
+    <import feature="org.wso2.carbon.registry.core.ui" match="equivalent" version="4.1.0"/>
+  </require>
+</feature>

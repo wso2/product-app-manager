@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.registry.extensions" label="WSO2 Carbon - Registry Extensions Feature -" provider-name="%providerName" version="4.1.0">
+  <description>Includes Mechanisms to Extend the Registry, and also some useful extensions for handling
+        metadata, managing repositories, and Indexing.</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <require>
+    <import feature="org.wso2.carbon.registry.core" match="equivalent" version="4.1.0"/>
+  </require>
+  <includes id="org.wso2.carbon.registry.extensions.server" optional="false" version="4.1.0"/>
+  <includes id="org.wso2.carbon.registry.extensions.ui" optional="false" version="4.1.0"/>
+</feature>

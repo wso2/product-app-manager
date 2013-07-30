@@ -1,0 +1,36 @@
+<%
+if(session.get("LOGGED_IN_USER") === null) {
+    response.sendRedirect('/store');
+} else {
+	var configs = require('/store.js').config();
+	var security =require("sso");
+    var sessionId = session.getId();
+	var ssoRelyingParty = new security.SSORelyingParty(configs.ssoConfiguration.issuer);
+	var samlLogoutRequest = ssoRelyingParty.getSAMLLogoutRequest(session.get("LOGGED_IN_USER"), sessionId);
+	var encodedRequest = ssoRelyingParty.encode(samlLogoutRequest);
+	var relayState = ssoRelyingParty.getUUID();
+	var idpURL = ssoRelyingParty.getProperty("identityProviderURL");
+
+%>
+
+<div>
+   <p>You are now redirected to Stratos Identity. If the
+   redirection fails, please click the post button.</p>
+
+    <form id="logoutForm" method="post" action="<%=idpURL%>">
+    <p>
+        <input type="hidden" name="SAMLRequest"
+              value="<%= encodedRequest %>"/>
+        <input type="hidden" name="RelayState" value="<%= relayState %>"/>
+         <input type="hidden" name="SSOAuthSessionID" value="<%= sessionId %>"/>
+        <button type="submit">POST</button>
+    </p>
+    </form>
+</div>
+<script type = "text/javascript" >
+               document.forms[0].submit();
+//        $(document).onload(function(){$('#logoutForm').submit();});
+
+</script>
+        
+ <%}%>

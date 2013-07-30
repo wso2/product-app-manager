@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.identity.sso.saml.server" label="Identity SAML Single Sign-on Server Feature" provider-name="%providerName" version="4.1.0">
+  <description>This feature contains the core bundles required for Back-end SAML2.0 based Single
+        Sign-on functionality</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="opensaml2" unpack="false" version="2.4.1.wso2v1"/>
+  <plugin id="org.wso2.carbon.identity.sso.saml" unpack="false" version="4.1.0"/>
+  <require>
+    <import feature="org.wso2.carbon.identity.core.server" match="equivalent" version="4.1.0"/>
+  </require>
+</feature>

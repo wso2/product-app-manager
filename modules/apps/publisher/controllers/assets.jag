@@ -1,0 +1,17 @@
+<%
+/*
+	Description: Provides CRUD operations on groups of assets
+		GET /assets/{type}    	      : Returns the number of assets of a given type
+		GET /assets/{type}/{pageSize} : Returns the assets of a given type with the provided pageSize
+	Filename:assets.js
+	Author: Sameera M.
+	Created Date: 29/7/2013
+*/
+
+var caramel=require('caramel');
+
+caramel.render({
+	sample: { name:'assets'}
+});
+
+%>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.registry.core" label="WSO2 Carbon - Registry Core Feature" provider-name="%providerName" version="4.1.0">
+  <description>Adds resources, collections, symbolic and remote links to the registry. Also, supports
+        copying, moving, renaming and deleting resources and collections. This pack also allows
+        users to edit and download resource content, and also manage read, write, delete permissions
+        assigned to resources and collections.</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <require>
+    <import feature="org.wso2.carbon.core" match="equivalent" version="4.1.0"/>
+  </require>
+  <includes id="org.wso2.carbon.registry.core.common" optional="false" version="4.1.0"/>
+  <includes id="org.wso2.carbon.registry.core.server" optional="false" version="4.1.0"/>
+  <includes id="org.wso2.carbon.registry.core.ui" optional="false" version="4.1.0"/>
+  <includes id="org.wso2.carbon.registry.search.ui" optional="false" version="4.1.0"/>
+</feature>

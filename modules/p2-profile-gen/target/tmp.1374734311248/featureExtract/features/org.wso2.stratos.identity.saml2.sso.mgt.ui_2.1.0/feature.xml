@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.stratos.identity.saml2.sso.mgt.ui" label="WSO2 Stratos - Stratos SSO Management UI Feature" provider-name="%providerName" version="2.1.0">
+  <description>features</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="org.wso2.stratos.identity.saml2.sso.mgt.ui" unpack="false" version="2.1.0"/>
+  <require>
+    <import feature="org.wso2.carbon.core.ui" match="equivalent" version="4.1.0"/>
+  </require>
+</feature>

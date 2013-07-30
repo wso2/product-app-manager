@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="caramel" label="Caramel Feature" provider-name="%providerName" version="1.0.0.SNAPSHOT">
+  <description>A bootstrap project to create fully dynamic websites using jaggery</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+</feature>

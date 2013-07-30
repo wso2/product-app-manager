@@ -1,0 +1,68 @@
+<%
+var type;
+(function () {
+    var prefix, pages, path, suffix, theme, links, link, i, length, elements, mapper,
+            config = require('/store.js').config(),
+            store = require('/modules/store.js'),
+            file = require('/modules/file.js'),
+            log = new Log(),
+            matcher = new URIMatcher(request.getRequestURI());
+    mapper = function (path) {
+        return function () {
+            return path;
+        };
+    };
+
+    if (matcher.match('/{context}' + config.assetsUrlPrefix + '/{type}/{theme}/{+file}') ||
+            matcher.match('/{context}' + config.assetsUrlPrefix + '/{type}/{+suffix}') ||
+            matcher.match('/{context}' + config.assetsUrlPrefix + '/{type}')) {
+        elements = matcher.elements();
+        type = elements.type;
+        theme = elements.theme;
+        prefix = store.ASSETS_EXT_PATH + type;
+        if (theme) {
+            file.send(prefix + '/themes/' + elements.file);
+            return;
+        }
+        if (type == "all") {
+            path = '/top-assets.jag';
+            request.getMappedPath = mapper(path);
+            include(path);
+            return;
+        }
+        suffix = elements.suffix;
+        pages = prefix + '/pages/';
+        if (suffix) {
+            links = store.assetLinks(type);
+            length = links.length;
+            for (i = 0; i < length; i++) {
+                link = links[i];
+                if (link.url === suffix) {
+                    path = link.path || link.url;
+                    break;
+                }
+            }
+            path = (suffix === 'process') ? 'process.jag' : path;
+            if (path) {
+                path = pages + path;
+                request.getMappedPath = mapper(path);
+                include(path);
+                return;
+            }
+        }
+
+        path = pages + 'assets.jag';
+
+        if (new File(path).isExists()) {
+            request.getMappedPath = mapper(path);
+            include(path);
+            return;
+        }
+        path = '/assets.jag';
+        request.getMappedPath = mapper(path);
+        include(path);
+        return;
+    }
+    response.sendError(404, 'API Endpoint Not Found');
+}());
+%>
