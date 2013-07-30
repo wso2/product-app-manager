@@ -143,6 +143,30 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.stratos.common.ui.feature:${stratos.version}
                                 </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.cassandra.explorer.feature:${carbon.platform.patch.version.412}
+                                </featureArtifactDef>
+								<featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.cassandra.feature:${carbon.platform.patch.version.412}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.bam.cassandra.data.archive.feature:${carbon.platform.patch.version.412}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.databridge.datapublisher.feature:${carbon.platform.patch.version.412}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.databridge.datareceiver.feature:${carbon.platform.patch.version.412}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.databridge.cassandra.feature:${carbon.platform.patch.version.412}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.module.mgt.server.feature:${carbon.platform.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.databridge.streamdefn.cassandra.feature:${carbon.platform.patch.version.412}
+                                </featureArtifactDef>
                                 <!--featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.stratos.common.feature:${stratos.version}
                                 </featureArtifactDef>
@@ -278,6 +302,30 @@
                                     <id>org.wso2.carbon.stratos.common.ui.feature.group</id>
                                     <version>${stratos.version}</version>
                                 </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.cassandra.explorer.feature.group</id>
+                                    <version>${carbon.platform.patch.version.412}</version>
+                                </feature>
+								<feature>
+                                    <id>org.wso2.carbon.bam.cassandra.data.archive.feature.group</id>
+                                    <version>${carbon.platform.patch.version.412}</version>
+                                </feature>
+								<feature>
+                                    <id>org.wso2.carbon.cassandra.feature.group</id>
+                                    <version>${carbon.platform.patch.version.412}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.datapublisher.feature.group</id>
+                                    <version>${carbon.platform.patch.version.412}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.datareceiver.feature.group</id>
+                                    <version>${carbon.platform.patch.version.412}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.cassandra.feature.group</id>
+                                    <version>${carbon.platform.patch.version.412}</version>
+                                </feature>
                                 <!--feature>
                                     <id>org.wso2.carbon.stratos.usage.agent.feature.group</id>
                                     <version>${stratos.version}</version>
@@ -344,6 +392,8 @@
             </plugin>
         </plugins>
     </build>
-
+    <properties>
+        <carbon.platform.patch.version.412>4.1.2</carbon.platform.patch.version.412>
+    </properties>
 
 </project>

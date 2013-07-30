@@ -204,6 +204,12 @@
                 <include>*/**</include>
             </includes>
         </fileSet>
+	<!--data-bridge configuration-->
+        <fileSet>
+            <directory>src/repository/conf/data-bridge</directory>
+            <outputDirectory>wso2store-${pom.version}/repository/conf/data-bridge</outputDirectory>
+            <fileMode>755</fileMode>
+        </fileSet>
     </fileSets>
 
     <dependencySets>
@@ -373,7 +379,16 @@
             <outputDirectory>wso2store-${pom.version}/dbscripts/identity</outputDirectory>
             <fileMode>644</fileMode>
         </file>
-
+        <file>
+            <source>src/repository/cassandra/cassandra.yaml</source>
+            <outputDirectory>wso2store-${pom.version}/repository/conf/etc</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>src/repository/cassandra/cassandra-component.xml</source>
+            <outputDirectory>wso2store-${pom.version}/repository/conf/etc</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
 
         <!--        <file>
             <source>conf/wso2is-user-certs.jks</source>
