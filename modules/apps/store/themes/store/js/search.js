@@ -48,6 +48,7 @@ $(function() {
 
 	var search = function() {
 		var url;
+		currentPage = 1;
 		if (store.asset) {
 			url = caramel.url('/assets/' + store.asset.type + '/?query=' + $('#search').val());
 			caramel.data({
