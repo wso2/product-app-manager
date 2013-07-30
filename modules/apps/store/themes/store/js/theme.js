@@ -1,7 +1,7 @@
 var theme = (function () {
     var loading, loaded,
         //loaderClass = 'loading';
-        loaderClass = 'loading-inf-scroll';
+        loaderClass = 'loading';
 
     loading = function (el) {
         var loader;

@@ -72,7 +72,7 @@ $(function() {
 
 			}
 		});
-		theme.loading($('.store-left'));
+		$('.loading-inf-scroll').show();
 	};
 
 	$(document).on('click', '#ul-sort-assets li a', function(e) {
