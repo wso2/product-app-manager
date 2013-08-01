@@ -1,0 +1,23 @@
+{
+	"app": {
+		"RXT_MANAGER":"rxt_manager",
+		"ROUTE_MANAGER":"route_manager"
+	},
+
+	"paths":{
+		"ASSET_EXT_PATH":"/assets",
+		"ASSET_DEFAULT_PATH":"/assets/default",
+		"ASSETS_EXT_PATH":"/assets",
+		"ASSETS_DEFAULT_PATH":"/assets/default"
+	},
+	
+	"urls":{
+		"ASSET":"/asset",
+		"ASSETS":"/assets"
+	},
+
+	"router":{
+		"RENDERER":"/modules/router.caramel-renderer.js"
+	}
+	
+}
