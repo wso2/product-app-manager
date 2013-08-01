@@ -1,3 +1,0 @@
-<%
-	print('Custom assets router for ');
-%>
