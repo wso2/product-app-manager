@@ -1,9 +1,0 @@
-instructions.configure = \
-org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/../deployment/server/jaggeryapps); \
-org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/features/org.wso2.store_1.0.0/apps/,target:${installFolder}/../deployment/server/jaggeryapps,overwrite:false);\
-org.eclipse.equinox.p2.touchpoint.natives.remove(path:${installFolder}/features/org.wso2.store_1.0.0/apps);\
-
-properties.0.name=org.wso2.carbon.p2.category.type
-properties.0.value=console
-properties.1.name=org.eclipse.equinox.p2.type.group
-properties.1.value=false

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<feature id="org.wso2.carbon.stratos.common" label="WSO2 Stratos - Common Composite Feature" provider-name="%providerName" version="2.1.2">
-  <description>This feature contains the bundles required for Common feature</description>
-  <copyright>%copyright</copyright>
-  <license url="%licenseURL">%license</license>
-  <includes id="org.wso2.carbon.stratos.common.server" optional="false" version="2.1.2"/>
-  <includes id="org.wso2.carbon.stratos.common.ui" optional="false" version="2.1.0"/>
-</feature>
