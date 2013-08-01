@@ -1,0 +1,12 @@
+<%
+/*
+ *  HTTP POST : /comments/assert-2324-4324-2435-22
+ *       BODY : {content : "hello this is my comment"}
+ */
+var matcher = new URIMatcher(request.getRequestURI());
+var uriParts =  matcher.match('/{context}/api/comments/{id}');
+if(uriParts){
+    var activiy = require('/modules/activity.js');
+    activiy.publishComment(JSON.parse(request.getContent()));
+}
+%>
