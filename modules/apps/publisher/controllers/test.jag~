@@ -1,0 +1,76 @@
+<%
+	var config=require('/config/publisher.json');
+	var carbon=require('carbon');
+	var url='https://localhost:9443/admin',
+	username='admin',
+	password='admin',
+	mediaType='application/vnd.wso2.registry-ext-type+xml'; //TODO: Change the url
+
+	var server=new carbon.server.Server(url);
+	var registry=new carbon.registry.Registry(server,{
+		systen:true,
+		username:username,
+		tenantId:carbon.server.superTenant.tenantId
+	});
+
+
+
+	var rxtManager=application.get(config.app.RXT_MANAGER);
+
+	//Obtain the template for uri
+	var uriRxtTemplate=rxtManager.findAssetTemplate(function(template){
+		return (template.shortName=='uri')?true:false;
+	});
+
+	//print(uriRxtTemplate.type);
+
+	//var path=registry.registry.getChrootedRegistry("/_system/governance/org.wso2.carbon.governance/types/");
+
+	//var GenericArtifactManager = Packages.org.wso2.carbon.governance.api.generic.GenericArtifactManager;
+
+	Packages.org.wso2.carbon.governance.api.util.GovernanceUtils.loadGovernanceArtifacts(registry.registry);
+		
+	var art=new carbon.registry.ArtifactManager(registry,uriRxtTemplate.shortName);
+
+	/*art.add({
+		name:'test-attribute4',
+		attributes: {
+			URI:'http://localhost:9763/rxtadmin',
+			Name:'rxtadmin',
+			overview_type:'a',
+			Type:'Generic'
+		}
+	});*/
+
+	var results=art.list(10);
+	var id='2ecee1c8-34c3-40ca-8aa1-d16f2bf53a02';
+
+
+	/*art.update({ 
+			id:id,
+			attributes:{
+				URI:'http://localhost:9763/publisher3',
+				overview_type:'a'
+			}
+	});*/
+
+	//art.remove(id);
+	try{
+		var artifact=art.get(id);
+
+		print(artifact);
+	}catch(e){
+		print('oops');
+	}
+	
+	//print(results);
+
+	/*for each(var asset in results){
+		print(asset.id+' ] [');
+	}*/
+	
+	//print('template is : '+stringify(art));
+	//var artifactManager=new art(rxtManager.registry,uriRxtTemplate.type);
+	
+	
+%>

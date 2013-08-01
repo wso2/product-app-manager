@@ -1,0 +1,21 @@
+<%
+/*
+	Description: Landing page of the app
+	Filename:app.js
+	Created Date: 29/7/2013
+*/
+
+var caramel=require('caramel');
+var config=require('/config/publisher.json');
+
+
+var gadgetCount=0;
+var siteCount=0;
+
+
+caramel.render({
+	gadgetCount:gadgetCount,
+	siteCount:siteCount
+});
+	
+%>

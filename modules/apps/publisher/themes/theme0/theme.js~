@@ -1,0 +1,9 @@
+var engine=require('caramel').engine('handlebars',(function(){
+	return{
+		helpers:function(Handlebars){
+			Handlerbars.registerHelper('testField',function(context,options){
+				return 'This is a test field';
+			});
+		}
+	};
+}()));
