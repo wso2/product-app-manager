@@ -20,7 +20,7 @@ API
 The following API calls have been implemented
 
 	Noun	Url					Description
-	---------------------------------------------------------------------------------------------------------------------
+	
 	GET  	/publisher/api/asset/{type}		Returns a template JSON object describing the structure of an asset
 	GET  	/publisher/api/asset/{type}/{id}	Returns an asset of the given {type} and matching the {id}
 
