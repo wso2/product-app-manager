@@ -223,7 +223,7 @@ input, button, select, textarea {
 	border:0;
 	box-shadow:none;
 	padding:2px 4px;
-	color:#B4BAC4;
+	color:#989898;
 	margin:0 10px 0 0;
 	position:relative;
 	right:10px;
@@ -482,6 +482,24 @@ td.asset-listing-btn{
     	width: 40px;
 	position:relative;
 }
+.badge{
+	background:none;
+}
+.text-green{
+	color:#74B749;
+}
+.text-orange{
+	color:#ED6D49;
+}
+.text-blue{
+	color:#0DAED3;
+}
+.text-yellow{
+	color:#FFB400;
+}
+.text-red{
+	color:#F63131;
+}
 .block-green{
 	background: none repeat scroll 0 0 #74B749;
 }
@@ -551,12 +569,12 @@ td.asset-listing-btn{
 	background:none;
 }
 .nav-tabs > li > a {
-    border-color: #FFFFFF;
     border-radius: 0 0 0 0;
     color: #628B73;
     font-size: 16px;
     font-weight: 600;
     padding: 20px 25px;
+	text-transform: uppercase;
 }
 .nav-tabs > li.active:after {
     background: none repeat scroll 0 0 #16A050;
@@ -605,4 +623,18 @@ td.asset-listing-btn{
     box-shadow: none;
     color: #FFFFFF;
     text-shadow: none;
+}
+.lifecycle-state{
+	text-transform:uppercase;
+	font-size:0.9em;
+}
+.content-div .form-horizontal {
+    background: none repeat scroll 0 0 #F5F5F5;
+    border: 1px solid #DCDCDC;
+    border-radius: 6px 6px 6px 6px;
+    margin: 20px 30px 30px 0;
+    padding: 30px 10px;
+}
+.tab-pane .form-horizontal{
+	margin: 0 30px 30px 0;
 }

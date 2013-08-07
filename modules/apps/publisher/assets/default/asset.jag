@@ -26,7 +26,7 @@ var rxtManager=application.get(config.app.RXT_MANAGER);
 routeManager.register('GET','publisher','/publisher/asset/{type}',function(context){
 
 	var shortName=(context.params.type)||'';
-	
+	var operation='create';
 	var rxtTemplate=rxtManager.findAssetTemplate(function(template){
 		return (template.shortName==shortName)?true:false;		
 	});
@@ -41,7 +41,7 @@ routeManager.register('GET','publisher','/publisher/asset/{type}',function(conte
 		
 		//print(artifact);
 		//print(model);
-		caramel.render({shortName:shortName,artifact:artifact,rxtTemplate:rxtTemplate,data:model});
+		caramel.render({op:operation,shortName:shortName,artifact:artifact,rxtTemplate:rxtTemplate,data:model});
 	}
 
 	//context.renderer.success({sample:{name:'asset form2'}});
@@ -80,7 +80,7 @@ routeManager.register('GET','publisher','/publisher/asset/{type}/{id}',function(
 	var shortName=context.params.type;
 	//print(context.params);
 	var id=context.params.id;
-	
+	var operation='view';
 	var artifactManager=rxtManager.getArtifactManager(shortName);
 
 	//If the id is not found it will throw a conversion exception
@@ -98,9 +98,9 @@ routeManager.register('GET','publisher','/publisher/asset/{type}/{id}',function(
 
 		var model=reverseModel(artifact);
 //		print(model);
-		caramel.render({shortName:shortName,artifact:artifact,rxtTemplate:rxtTemplate,data:model});
+		caramel.render({op:operation,shortName:shortName,artifact:artifact,rxtTemplate:rxtTemplate,data:model});
 	}catch(e){
-		response.sendError(404,'Asset with id '+id+' could not be found');
+		response.sendError(404,'Asset with id '+id+' could not be found'+e);
 	}
 	
 });
