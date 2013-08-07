@@ -1,0 +1,36 @@
+<div class='content-div'>
+	<div class="row-fluid">
+
+		<div class="tabbable">
+			<ul class="nav nav-tabs">
+				<li>
+					<a href='#A' data-toggle='tab'>Overview</a>
+				</li>
+				<li>
+					<a href='#B' data-toggle='tab'>Edit</a>
+				</li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-content">
+					<div class="tab-pane active" id="A">
+						<form class="form-horizontal">
+							{{#each data.attributes}}
+								<div class="control-group">
+									<label class="control-label">{{this.name}}:</label>
+									<div class="controls">
+										<input id='{{this.name}}' type='text' value='{{this.value}}' disabled/>
+									</div>		
+								</div>
+																				
+							{{/each}}
+						</form>
+					</div>
+					<div class="tab-pane" id="B">
+						<p>Nothing here!</p>
+					</div>	
+				</div>		
+			</div>
+
+		</div>
+	</div>
+</div>

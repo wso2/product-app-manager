@@ -12,10 +12,12 @@ var config=require('/config/publisher.json');
 var gadgetCount=0;
 var siteCount=0;
 
-
-caramel.render({
+response.sendRedirect('/publisher/assets/gadget/');
+/*caramel.render({
 	gadgetCount:gadgetCount,
 	siteCount:siteCount
-});
+});*/
+
+
 	
 %>

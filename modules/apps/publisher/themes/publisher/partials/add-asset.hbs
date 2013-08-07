@@ -1,0 +1,22 @@
+<div class="content-div">
+            <div class="row-fluid">
+                <form class="form-horizontal" id='form-asset-create'>
+                    {{#each data.attributes}}
+					<div class="control-group">
+						<b><label class="control-label">{{this.name}}:</label>
+						</b>
+						<div class="controls">
+							<input id='{{this.name}}' type='text' value='{{this.value}}'/>
+						</div>
+					</div>	
+		     {{/each}}
+
+                    <div id="saveButtons" class="form-actions">
+                        <input type="button" value="Create" class="btn btn-primary" name="addNewAssetButton" id="btn-create-asset">
+			<input type="hidden" value="{{shortName}}" name="{{shortName}}" id="meta-asset-type">
+                        <input type="reset" value="Cancel" class="btn">
+                    </div>
+                </form>
+            </div>
+	  
+        </div>
