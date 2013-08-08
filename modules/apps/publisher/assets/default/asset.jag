@@ -22,6 +22,7 @@ var routeManager=new router.Router();
 
 //var routeManager=application.get(config.app.ROUTE_MANAGER);
 var rxtManager=application.get(config.app.RXT_MANAGER);
+var modelManager=application.get(config.app.MODEL_MANAGER);
 
 routeManager.register('GET','publisher','/publisher/asset/{type}',function(context){
 
@@ -31,17 +32,19 @@ routeManager.register('GET','publisher','/publisher/asset/{type}',function(conte
 		return (template.shortName==shortName)?true:false;		
 	});
 
+	var model=modelManager.getModel(shortName);
+
 	if(!rxtTemplate){
 		response.sendError(404,'Asset type not found'); //TODO: Replace
 	}
 	else{	
-		//print(rxtTemplate);
+		var output=model.export('form');
+
+		//print(output);
 		var artifact=createEmptyArtifact(rxtTemplate);
-		var model=reverseModel(artifact);
+		//var model=reverseModel(artifact);
 		
-		//print(artifact);
-		//print(model);
-		caramel.render({op:operation,shortName:shortName,artifact:artifact,rxtTemplate:rxtTemplate,data:model});
+		caramel.render({op:operation,shortName:shortName,artifact:artifact,rxtTemplate:rxtTemplate,data:output});
 	}
 
 	//context.renderer.success({sample:{name:'asset form2'}});
@@ -94,11 +97,17 @@ routeManager.register('GET','publisher','/publisher/asset/{type}/{id}',function(
 			return (template.shortName==shortName)?true:false;		
 		});
 
+		var model=modelManager.getModel(shortName);
+		
+		model.import('asset',artifact);
+		//print(model.dataModel);
 		//print(artifact);
 
-		var model=reverseModel(artifact);
+		var output=model.export('form');
+		//print(output);
+		//var model=reverseModel(artifact);
 //		print(model);
-		caramel.render({op:operation,shortName:shortName,artifact:artifact,rxtTemplate:rxtTemplate,data:model});
+		caramel.render({op:operation,shortName:shortName,artifact:artifact,rxtTemplate:rxtTemplate,data:output});
 	}catch(e){
 		response.sendError(404,'Asset with id '+id+' could not be found'+e);
 	}
