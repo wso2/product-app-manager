@@ -11,7 +11,9 @@
 	*/
 
 	var router=require('/modules/router-g.js').router();
+    var config=require('/config/publisher.json');
 	var caramel=require('caramel');
+    var user = require('/modules/user.js');
 
 	var routeMnger=new router.Router();
 	//var routeManager=application.get(config.app.ROUTE_MANAGER);
@@ -38,6 +40,7 @@
 		var artifacts=artifactManager.list(DEFAULT_PAGE)||[];
 		
 		caramel.render({
+            cuser: user.current(),
 			shortName:context.params.type,
 			artifacts:artifacts
 		});
