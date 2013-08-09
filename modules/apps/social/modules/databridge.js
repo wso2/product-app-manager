@@ -3,14 +3,12 @@ var AgentConfiguration = org.wso2.carbon.databridge.agent.thrift.conf.AgentConfi
 var DataPublisher = org.wso2.carbon.databridge.agent.thrift.DataPublisher;
 var Event = org.wso2.carbon.databridge.commons.Event;
 
-var publishEvents = function (dataPublisher, streamId) {
-//TODO remove following values
-	var ext_str = new java.lang.String("external");
-       	var nokia_str = new java.lang.String("Nokia");
-       	var total_int = new java.lang.Integer(123);
-      	var quantity_int = new java.lang.Integer(12300);
-       	var user_str = new java.lang.String("UdaraR");
-	event = new Event(streamId, Date.now(),[ext_str], null,[nokia_str,total_int, quantity_int, user_str]);
+var publishEvent = function (dataPublisher, streamId, assetID, userID, comment) {
+       	var assetID = new java.lang.String(assetID);
+       	var userID = new java.lang.String(userID);
+      	var comment = new java.lang.String(comment);
+	var clientType = new java.lang.String("ex");
+	event = new Event(streamId, Date.now(),[clientType], null,[assetID,userID,comment]);
 	dataPublisher.publish(event);
 };
 
@@ -22,16 +20,21 @@ var getStreamId	= function(stream,version){
             streamId = dataPublisher.defineStream("{" +
                                                   "  'name':'" + stream + "'," +
                                                   "  'version':'" + version + "'," +
-                                                  "  'nickName': 'Phone_Retail_Shop'," +
-                                                  "  'description': 'Phone Sales'," +
+                                                  "  'nickName': 'social_comments'," +
+                                                  "  'description': 'Social comments feature'," +
                                                   "  'metaData':[" +
                                                   "          {'name':'clientType','type':'STRING'}" +
                                                   "  ]," +
                                                   "  'payloadData':[" +
-                                                  "          {'name':'brand','type':'STRING'}," +
-                                                  "          {'name':'quantity','type':'INT'}," +
-                                                  "          {'name':'total','type':'INT'}," +
-                                                  "          {'name':'user','type':'STRING'}" +
+						  "          {'name':'activity_type','type':'STRING'}," +	
+                                                  "          {'name':'asset','type':'STRING'}," +
+						  "          {'name':'parent_id','type':'STRING'}," +
+						  "          {'name':'parent_type','type':'STRING'}," +
+                                                  "          {'name':'user','type':'STRING'}," +
+                                                  "          {'name':'comment','type':'STRING'}" +
+						  "          {'name':'replies','type':'STRING'}" +
+						  "          {'name':'rating','type':'STRING'}" +
+						  "          {'name':'full','type':'STRING'}" +
                                                   "  ]" +
                                                   "}");
         }
@@ -39,14 +42,15 @@ var getStreamId	= function(stream,version){
 	return streamId;
 };
 
-var initPublisher = function(){
-//TODO remove following values
+var initPublisher = function(assetID,comment,parent){
+//TODO move following values to config
 	var host = "localhost";
 	var url = "tcp://" + host + ":" + "7611";
 	var username = "admin";
 	var password = "admin";
-	var stream = "org.wso2.bam.phone.retail.store.kpi";
+	var stream = "org.wso2.ues.social.comments";
 	var version = "1.0.0";
+	var userID = "udarakr";
 
 	agentConfiguration = new AgentConfiguration();
 	agent = new Agent(agentConfiguration);
@@ -54,10 +58,7 @@ var initPublisher = function(){
 	dataPublisher = new DataPublisher(url, username, password, agent);
 
 		if(getStreamId(stream, version)){
-			for (var i = 0; i < 100; i++) {
-		        publishEvents(dataPublisher, streamId);
-		        print("Events published : " + (i + 1)+"<br/>");
-		   	}
+		        publishEvent(dataPublisher, streamId, assetID, userID, comment);
 			dataPublisher.stop();
 		}
 };

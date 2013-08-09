@@ -1,0 +1,34 @@
+<%
+var matcher = new URIMatcher(request.getRequestURI());
+
+(function () {
+	//TODO remove DB con !
+    	var databridge = require('/modules/databridge.js'),
+	db = new Database("jdbc:cassandra://localhost:9160/EVENT_KS?version=2.0.0","admin","admin",{"driverClassName":"org.apache.cassandra.cql.jdbc.CassandraDriver"}),
+	aid,comment,parent,rate,cid;
+
+	//TODO check for authenticated user !
+
+    if (matcher.match('/{context}/api/comment/comments')) {
+	aid = request.getParameter('id');
+	var result = db.query("SELECT * FROM org_wso2_ues_social_comments");
+	print(result);
+        return;
+    }
+    if (matcher.match('/{context}/api/comment/comment')) {
+	aid = request.getParameter('id');
+	parent = true;
+	comment = request.getParameter('comment');
+	databridge.initPublisher(aid,comment,parent);
+        return;
+    }
+    if (matcher.match('/{context}/api/comment/rate/')) {
+	cid = request.getParameter('cid');
+	rate = request.getParameter('rate');
+	parent = false;
+	databridge.initPublisher(cid,rate,parent);
+        return;
+    }
+    response.sendError(404, 'API Endpoint Not Found');
+})();
+%>
