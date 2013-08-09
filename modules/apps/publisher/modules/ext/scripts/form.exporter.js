@@ -28,6 +28,7 @@ var module=function(){
 			data['label']=(fieldTemplate.label)?fieldTemplate.label:field.name;
 			data['isRequired']=(fieldTemplate.required)?true:false;
 			data['isTextBox']=(fieldTemplate.type=='text')?true:false;
+			data['isTextArea']=(fieldTemplate.type=='text-area')?true:false;
 			data['isOptions']=(fieldTemplate.type=='options')?true:false;
 			data['value']=field.value;
 			

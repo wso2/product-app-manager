@@ -16,6 +16,9 @@
 								{{/each}}
 								</select>
 							{{/if}}
+							{{#if this.isTextArea}}
+								<textarea id='{{this.name}}' value='{{this.value}}' ></textarea>
+							{{/if}}
 						</div>
 					</div>	
 		     {{/each}}

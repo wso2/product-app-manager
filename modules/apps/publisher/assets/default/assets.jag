@@ -1,55 +1,55 @@
 <%
-	//print('Default assets file');
+//print('Default assets file');
 
-	/*
-	Description: Provides CRUD operations on groups of assets
-		GET api/assets		      	 : Returns  a list of all asset types
-		GET api/assets/{type}            : Returns  a list of all assets  
-		GET api/assets/{type}/{pageSize} : Returns  a paged list of assets
-	Filename:assets.js
-	Created Date: 29/7/2013
-	*/
+/*
+ Description: Provides CRUD operations on groups of assets
+ GET api/assets		      	 : Returns  a list of all asset types
+ GET api/assets/{type}            : Returns  a list of all assets
+ GET api/assets/{type}/{pageSize} : Returns  a paged list of assets
+ Filename:assets.js
+ Created Date: 29/7/2013
+ */
 
-	var router=require('/modules/router-g.js').router();
-    var config=require('/config/publisher.json');
-	var caramel=require('caramel');
-    var user = require('/modules/user.js');
+var router = require('/modules/router-g.js').router();
+var config = require('/config/publisher.json');
+var caramel = require('caramel');
+var user = require('/modules/user.js');
 
-	var routeMnger=new router.Router();
-	//var routeManager=application.get(config.app.ROUTE_MANAGER);
-	var rxtManager=application.get(config.app.RXT_MANAGER);
-	var DEFAULT_PAGE=10;
+var routeMnger = new router.Router();
+//var routeManager=application.get(config.app.ROUTE_MANAGER);
+var rxtManager = application.get(config.app.RXT_MANAGER);
+var DEFAULT_PAGE = 10;
 
-	/*routeMnger.register('GET','publisher','/publisher/assets/list',function(context){
+/*routeMnger.register('GET','publisher','/publisher/assets/list',function(context){
 
-		//Print all of the rxt types 
-		for each(var template in rxtManager.rxtTemplates){
-			print(template.shortName+'</br>');
-		}
+ //Print all of the rxt types
+ for each(var template in rxtManager.rxtTemplates){
+ print(template.shortName+'</br>');
+ }
 
-		print('root asset');
-		//caramel.render({sample: {name: 'Default asset renderer'}});
-	
-	});*/
+ print('root asset');
+ //caramel.render({sample: {name: 'Default asset renderer'}});
 
-	routeMnger.register('GET','publisher','/publisher/assets/{type}/',function(context){
-	
-		//TODO: Check for valid asset types
-		var artifactManager=rxtManager.getArtifactManager(context.params.type);
+ });*/
 
-		var artifacts=artifactManager.list(DEFAULT_PAGE)||[];
-		
-		caramel.render({
-            cuser: user.current(),
-			shortName:context.params.type,
-			artifacts:artifacts
-		});
+routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function (context) {
 
-		/*for each(var artifact in artifacts){
-			print(artifact.id+'<br/><br/>');
-		}*/
-	});
+    //TODO: Check for valid asset types
+    var artifactManager = rxtManager.getArtifactManager(context.params.type);
+
+    var artifacts = artifactManager.list(DEFAULT_PAGE) || [];
+
+    caramel.render({
+        cuser: user.current(),
+        shortName: context.params.type,
+        artifacts: artifacts
+    });
+
+    /*for each(var artifact in artifacts){
+     print(artifact.id+'<br/><br/>');
+     }*/
+});
 
 
-	routeMnger.handle(request,response);
+routeMnger.handle(request, response);
 %>

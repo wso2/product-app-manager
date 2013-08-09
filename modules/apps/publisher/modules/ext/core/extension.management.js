@@ -1,6 +1,12 @@
 var ext_domain=require('extension.domain.js').extension_domain();
 var utility=require('/modules/utility.js').rxt_utility();
 
+/*
+Description: All operations on the rxt data are exposed through a proxy object
+FileName:extension.management.js
+Created Date: 8/8/2013
+ */
+
 var extension_management=function(){
 	
 	/*
@@ -29,29 +35,53 @@ var extension_management=function(){
 			}
 		}
 	}
-	
+
+    /*
+    Sets the field value
+    @fieldName: The field  name in the form {table}.{field_name}
+    @value: The value of the field
+     */
 	Model.prototype.set=function(fieldName,value){
 		this.dataModel.setField(fieldName,value);
 	}
-	
+
+    /*
+    Gets the field value
+    @fieldName: the field in the form {table_name}.{field_name}
+    @return:If the field is present then a field object is returned ,else null
+     */
 	Model.prototype.get=function(fieldName){
 		return this.dataModel.getField(fieldName);
 	}
-	
+
+    /*
+    Exports the model data to the provided type
+    @type: The exporter type to use
+    @returns: An object of the format outputed by the specified exporter
+     */
 	Model.prototype.export=function(type){
 		var adapter=this.adapterManager.find(type);
 		return adapter.execute({model:this.dataModel,template:this.template});
 	}
-	
+
+    /*
+    Imports the provided data into the model using the specified importer type
+    @type: The type of importer to use
+    @inputData: An object containing data that is to be imported into the model
+     */
 	Model.prototype.import=function(type,inputData){
 		var adapter=this.adapterManager.find(type);
 		var context=this.getContext();
 		context['inputData']=inputData;
-		//print('--==about to execute'+stringify(context));
 		adapter.execute(context);
-		//print('after execution');
 	}
-	
+
+    Model.prototype.save=function(){
+        //Obtain the actions
+
+    }
+
+    //TODO: Remove this method
 	Model.prototype.getContext=function(){
 		return {model:this.dataModel,template:this.template};
 	}
@@ -65,8 +95,11 @@ var extension_management=function(){
 		this.adapterManager=null;
 		utility.config(options,this);
 	}
+
 	/*
-	 * Creates a model instance that is used 
+	 Creates a model of the specified type
+	 @type: The type of model to create
+	 @return: A model of the provided type
 	 */
 	ModelManager.prototype.getModel=function(type){
 		//Obtain the template of the model from the parser

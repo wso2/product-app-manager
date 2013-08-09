@@ -28,29 +28,29 @@
             "password": "admin"
         }
     },
-	"app": {
-		"RXT_MANAGER":"rxt_manager",
-		"ROUTE_MANAGER":"route_manager",
-		"MODEL_MANAGER":"model_manager"
-	},
+    "app": {
+        "RXT_MANAGER": "rxt_manager",
+        "ROUTE_MANAGER": "route_manager",
+        "MODEL_MANAGER": "model_manager"
+    },
 
-	"paths":{
-		"ASSET_EXT_PATH":"/assets",
-		"ASSET_DEFAULT_PATH":"/assets/default",
-		"ASSETS_EXT_PATH":"/assets",
-		"ASSETS_DEFAULT_PATH":"/assets/default",
-		"RXT_EXTENSION_PATH":"/config/ext/"
-	},
-	
-	"urls":{
-		"ASSET":"/asset",
-		"ASSETS":"/assets"
-	},
+    "paths": {
+        "ASSET_EXT_PATH": "/assets",
+        "ASSET_DEFAULT_PATH": "/assets/default",
+        "ASSETS_EXT_PATH": "/assets",
+        "ASSETS_DEFAULT_PATH": "/assets/default",
+        "RXT_EXTENSION_PATH": "/config/ext/"
+    },
 
-	"router":{
-		"RENDERER":"/modules/router.caramel-renderer.js"
-	},
-	"ssoConfiguration": {
+    "urls": {
+        "ASSET": "/asset",
+        "ASSETS": "/assets"
+    },
+
+    "router": {
+        "RENDERER": "/modules/router.caramel-renderer.js"
+    },
+    "ssoConfiguration": {
         "enabled": true,
         "issuer": "publisher",
         "identityProviderURL": "%https.host%/sso/samlsso.jag",
@@ -59,6 +59,6 @@
         "responseSigningEnabled": "true",
         "publisherAcs": "%https.host%/publisher/sso",
         "keyStoreName": "/repository/resources/security/wso2carbon.jks"
-    	}
-	
+    }
+
 }
