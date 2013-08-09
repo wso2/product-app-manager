@@ -1,0 +1,87 @@
+<%
+/*
+ Description: Provides a means to attach life cycles to artifacts
+ Note: type: shortName in the Rxt templates
+ POST  api/lifecycle/{asset-type}/{artifact-id}   	: Provides the current life of the artifact
+ DELETE api/lifecycle/{asset-type}/{artifact-d}		: Detaches the lifecycle from the artifact
+ PUT  api/lifecycle/{state}/{asset-type}/{artifact-id}	: Promotes a life cycle to the next life cycle
+ Filename:lifecycle_api_router.js
+ Created Date: 6/8/2013
+ */
+
+var config = require('/config/publisher.json');
+var caramel = require('caramel');
+
+var router = require('/modules/router-g.js').router();
+var routeManager = new router.Router();
+var rxtManager = application.get(config.app.RXT_MANAGER);
+
+
+
+
+routeManager.register('POST', 'publisher', '/publisher/api/lifecycle/{type}/{id}', function (context) {
+
+
+    var shortName = context.params.type;
+    var id = context.params.id;
+    var lifecycle = context.post.lifecycle;
+
+    if (!lifecycle) {
+        response.sendError(400, 'Missing required parameter: lifecycle');
+        return;
+    }
+
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+
+    try {
+        var artifact = artifactManager.get(id);
+
+        artifactManager.attachLifecycle('SampleLifeCycle', artifact);
+    }
+    catch (e) {
+        response.sendError(404, 'The asset with id ' + id + ' could not be found.' + e);
+    }
+});
+
+routeManager.register('DELETE', 'publisher', '/publisher/api/lifecycle/{type}/{id}', function (context) {
+
+    var shortName = context.params.type;
+    var id = context.params.id;
+
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+
+    try {
+        var artifact = artifactManager.get(id);
+
+        var msg = artifactManager.detachLifecycle(artifact);
+        print(msg);
+    }
+    catch (e) {
+        response.sendError(404, 'The asset with id ' + id + ' could not be found.' + e);
+    }
+
+});
+
+routeManager.register('PUT', 'publisher', '/publisher/api/lifecycle/{state}/{type}/{id}', function (context) {
+
+    var shortName = context.params.type;
+    var state = context.params.state;
+    var id = context.params.id;
+
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+
+    try {
+        var artifact = artifactManager.get(id);
+        var msg = artifactManager.getLifecycleState(state, artifact);
+        print(msg);
+        //artifactManager.promoteLifecycleState(state,artifact);
+    }
+    catch (e) {
+        response.sendError(404, 'The asset with id ' + id + ' could not be found.' + e);
+    }
+
+});
+
+
+routeManager.handle(request, response);
+%>

@@ -1,150 +1,150 @@
 <%
-		//print('<br/> Default asset api file <br/>');
+//print('<br/> Default asset api file <br/>');
 
-	/*
-		Description: Provides CRUD support for assets
-		Note: type: shortName in the Rxt templates
-			GET  api/asset/{type} 	       	  : Provides the Rxt template 
-			GET  api/asset/{type}/{id}        : Provides artifact details on the provided type
-			POST api/asset/{type}             : Creates a new asset of the given type
-			PUT  api/asset/{type}/{id}	  : Updates an asset with the given type and id
-			DELETE asset/{type}/{id} 	  : Deletes an asset with the provided type and id
-		Filename:asset.js
-		Created Date: 29/7/2013
-	*/
-
-
-	var config=require('/config/publisher.json');
-	var caramel=require('caramel');
-
-	var router=require('/modules/router-g.js').router();
-	var routeManager=new router.Router(); 
-
-	//var routeManager=application.get(config.app.ROUTE_MANAGER);
-	var rxtManager=application.get(config.app.RXT_MANAGER);
-
-	routeManager.register('GET','publisher','/publisher/api/asset/{type}',function(context){
-
-		var shortName=(context.params.type)||'';
-	
-		var rxtTemplate=rxtManager.findAssetTemplate(function(template){
-			return (template.shortName==shortName)?true:false;		
-		});
-
-		if(!rxtTemplate){
-			response.sendError(404,'Asset type not found.'); //TODO: Replace
-		}
-		else{	
-			print(rxtTemplate);
-		}
-
-		//context.renderer.success({sample:{name:'asset form2'}});
-	});
-
-	routeManager.register('GET','publisher','/publisher/api/asset/{type}/{id}',function(context){
-	
-		var shortName=context.params.type;
-		//print(context.params);
-		var id=context.params.id;
-	
-		var artifactManager=rxtManager.getArtifactManager(shortName);
-
-		//If the id is not found it will throw a conversion exception
-		//TODO: Return an empty artifact or null
-		try{
-
-			var artifact=artifactManager.get(id);
-
-			print(artifact);
-
-			//caramel.render({shortName:shortName,artifact:artifact});
-		}catch(e){
-			response.sendError(404,'Asset with id '+id+' could not be found');
-		}
-	
-	});
-
-	routeManager.register('POST','publisher','/publisher/api/asset/{type}',function(context){
-		var shortName=context.params.type;
-		var artifactManager=rxtManager.getArtifactManager(shortName);
-
-		//Check if the type is valid
-		try{
-			var assetModel=getModel(context.post);
-			//print(assetModel);
-			var createdAsset=artifactManager.add(assetModel);
-			print({ok:'true', message: 'Asset created.'});
-		}
-		catch(e){
-			response.sendError(500,'Could not create asset');
-		}
-	
-	});
-	/*
-	The function converts the post parameters to a model
-	that can be passed to the artifact manager
-	*/
-	function getModel(data){
-		var model={ 
-			name:'',
-			attributes:{}
-		};
-
-		for(var key in data){
-			model.attributes[key]=data[key];
-
-			//Check if key is name and set the name of the
-			//model
-			if(key=='overview_name'){
-				model.name=data[key];
-			}		
-		}
-
-		//print(model);
-		return model;
-	}
+/*
+ Description: Provides CRUD support for assets
+ Note: type: shortName in the Rxt templates
+ GET  api/asset/{type} 	       	  : Provides the Rxt template
+ GET  api/asset/{type}/{id}        : Provides artifact details on the provided type
+ POST api/asset/{type}             : Creates a new asset of the given type
+ PUT  api/asset/{type}/{id}	  : Updates an asset with the given type and id
+ DELETE asset/{type}/{id} 	  : Deletes an asset with the provided type and id
+ Filename:asset.js
+ Created Date: 29/7/2013
+ */
 
 
-	routeManager.register('PUT','publisher','/publisher/api/asset/{type}/{id}/{attr}/{value}',function(context){
-		/*var shortName=context.params.type;
-		var id=context.params.id;
-		var attribute=context.params.attr;
-		var attributeValue=context.params.value;
-		var artifactManager=rxtManager.getArtifactManager(shortName);
+var config = require('/config/publisher.json');
+var caramel = require('caramel');
 
-		//Obtain the artifact
-		try{
-			var result=artifactManager.update({
-						id:id,
-						attributes: {
-							attribute:attributeValue,
-							overview_type:'default'
-						}
-					});	
-			print(result);
-		
-		}catch(e){
-			print('unable to update artifact with id'+e);
-		}*/
-	});
+var router = require('/modules/router-g.js').router();
+var routeManager = new router.Router();
 
-	routeManager.register('DELETE','publisher','/publisher/api/asset/{type}/{id}',function(context){
-		var shortName=context.params.type;
-		var id=context.params.id;
+//var routeManager=application.get(config.app.ROUTE_MANAGER);
+var rxtManager = application.get(config.app.RXT_MANAGER);
 
-		var artifactManager=rxtManager.getArtifactManager(shortName);
+routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}', function (context) {
 
-		try{
-			artifactManager.remove(id);
-			print({ok:'true', message: 'Asset deleted'});
-		}catch(e){
-			response.sendError(404,'Asset with id: '+shortName+' removed.');
-		}
+    var shortName = (context.params.type) || '';
 
-	
-	});
+    var rxtTemplate = rxtManager.findAssetTemplate(function (template) {
+        return (template.shortName == shortName) ? true : false;
+    });
 
-	routeManager.handle(request,response);
+    if (!rxtTemplate) {
+        response.sendError(404, 'Asset type not found.'); //TODO: Replace
+    }
+    else {
+        print(rxtTemplate);
+    }
+
+    //context.renderer.success({sample:{name:'asset form2'}});
+});
+
+routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
+
+    var shortName = context.params.type;
+    //print(context.params);
+    var id = context.params.id;
+
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+
+    //If the id is not found it will throw a conversion exception
+    //TODO: Return an empty artifact or null
+    try {
+
+        var artifact = artifactManager.get(id);
+
+        print(artifact);
+
+        //caramel.render({shortName:shortName,artifact:artifact});
+    } catch (e) {
+        response.sendError(404, 'Asset with id ' + id + ' could not be found');
+    }
+
+});
+
+routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}', function (context) {
+    var shortName = context.params.type;
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+
+    //Check if the type is valid
+    try {
+        var assetModel = getModel(context.post);
+        //print(assetModel);
+        var createdAsset = artifactManager.add(assetModel);
+        print({ok: 'true', message: 'Asset created.'});
+    }
+    catch (e) {
+        response.sendError(500, 'Could not create asset');
+    }
+
+});
+/*
+ The function converts the post parameters to a model
+ that can be passed to the artifact manager
+ */
+function getModel(data) {
+    var model = {
+        name: '',
+        attributes: {}
+    };
+
+    for (var key in data) {
+        model.attributes[key] = data[key];
+
+        //Check if key is name and set the name of the
+        //model
+        if (key == 'overview_name') {
+            model.name = data[key];
+        }
+    }
+
+    //print(model);
+    return model;
+}
+
+
+routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}/{attr}/{value}', function (context) {
+    /*var shortName=context.params.type;
+     var id=context.params.id;
+     var attribute=context.params.attr;
+     var attributeValue=context.params.value;
+     var artifactManager=rxtManager.getArtifactManager(shortName);
+
+     //Obtain the artifact
+     try{
+     var result=artifactManager.update({
+     id:id,
+     attributes: {
+     attribute:attributeValue,
+     overview_type:'default'
+     }
+     });
+     print(result);
+
+     }catch(e){
+     print('unable to update artifact with id'+e);
+     }*/
+});
+
+routeManager.register('DELETE', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
+    var shortName = context.params.type;
+    var id = context.params.id;
+
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+
+    try {
+        artifactManager.remove(id);
+        print({ok: 'true', message: 'Asset deleted'});
+    } catch (e) {
+        response.sendError(404, 'Asset with id: ' + shortName + ' removed.');
+    }
+
+
+});
+
+routeManager.handle(request, response);
 
 
 %>

@@ -30,14 +30,16 @@
     },
     "app": {
         "RXT_MANAGER": "rxt_manager",
-        "ROUTE_MANAGER": "route_manager"
+        "ROUTE_MANAGER": "route_manager",
+        "MODEL_MANAGER": "model_manager"
     },
 
     "paths": {
         "ASSET_EXT_PATH": "/assets",
         "ASSET_DEFAULT_PATH": "/assets/default",
         "ASSETS_EXT_PATH": "/assets",
-        "ASSETS_DEFAULT_PATH": "/assets/default"
+        "ASSETS_DEFAULT_PATH": "/assets/default",
+        "RXT_EXTENSION_PATH": "/config/ext/"
     },
 
     "urls": {
