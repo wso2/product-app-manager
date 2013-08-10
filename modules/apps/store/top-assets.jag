@@ -57,6 +57,8 @@ var caramel;
 	popularAssets = popularGadgets.concat(popularSites);
 	}
 
+    var rxtAttributes = require('modules/util.js').getRXTAttributes("gadget");
+
 	caramel.render({
 		title : 'Store | User Engagement Center',
 		user : loggedUser,
@@ -69,6 +71,10 @@ var caramel;
 			ssoIdpURL : ssoLogin.ssoIdpURL,
 			user : loggedUser
 		}),
+        search : {
+            isTopAssets : true,
+            searchFields : rxtAttributes
+        },
 		topAssets : {
 			recentAssets : {
 				gadget : gadgets,
