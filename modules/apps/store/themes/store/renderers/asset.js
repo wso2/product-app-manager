@@ -6,7 +6,8 @@ var render = function(theme, data, meta, require) {
 			partial : 'navigation',
 			context : require('/helpers/navigation.js').currentPage(data.navigation, data.type)
 		}, {
-			partial : 'search'
+			partial : 'search',
+            context: data.search
 		}],
 		body : [{
 			partial : 'asset',

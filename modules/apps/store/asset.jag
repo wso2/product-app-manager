@@ -13,12 +13,16 @@
 	if(store.isuserasset(aid,type)){
 		inDashboard=true;
 	}
-
+var rxtAttributes = require('modules/util.js').getRXTAttributes(type);
 caramel.render({
     title: 'Store | Gadget',
     user: user,
 	sso:sso,
     navigation: site.navigation({sso:sso, user:user}),
+    search : {
+        isTopAssets : false,
+        searchFields : rxtAttributes
+    },
     type: type,
     embedURL: config.server.http + '/gadgets/ifr?url=' + asset.attributes.overview_url,
     inDashboard: inDashboard,

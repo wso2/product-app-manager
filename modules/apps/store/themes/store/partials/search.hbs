@@ -24,3 +24,65 @@
 
 	</div>
 </div>
+
+<div class="row">
+     <div class="span8 offset2">
+          <div class="row-fluid">
+               <div class="span2 txt-right"></div>
+               <div class="span10"></div>
+          </div>
+     </div>
+</div>
+
+<div id="searchDropDown">
+{{#if isTopAssets}}
+  {{#each searchFields}}
+    {{#if this.search}}
+      <div class="row">
+         <div class="span8 offset2">
+                <div class="row-fluid">
+                    <div class="span2 txt-right">
+                        <label>{{field_label}}</label>
+                    </div>
+                    <div class="span10">
+                        <input type="text" class="span5" id={{field_name}} placeholder="">
+                    </div>
+                </div>
+         </div>
+      </div>
+    {{/if}}
+  {{/each}}
+
+ {{else}}
+   {{#each searchFields}}
+    <div class="row">
+            <div class="span8 offset2">
+                <div class="row-fluid">
+                    <div class="span2 txt-right">
+                        <label>{{field_label}}</label>
+                    </div>
+                    <div class="span10">
+                        <input type="text" class="span5" id={{field_name}} placeholder="">
+                    </div>
+                </div>
+            </div>
+      </div>
+   {{/each}}
+
+{{/if}}
+
+</div>
+
+<div class="row">
+     <div class="span8 offset2">
+          <div class="row-fluid">
+               <div class="span2 txt-right"></div>
+               <div class="span10">
+                    <button id="search-button22" class="btn span3">
+                       <i class="icon-search"></i>
+                    </button>
+               </div>
+          </div>
+     </div>
+</div>
+

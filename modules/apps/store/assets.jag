@@ -62,6 +62,8 @@ var caramel;
         }
     }
 
+    var rxtAttributes = require('modules/util.js').getRXTAttributes(type);
+
     caramel.render({
         title: 'Store | Assets',
         user: loggedUser,
@@ -75,6 +77,11 @@ var caramel;
                     ssoIdpURL: ssoLogin.ssoIdpURL,
                     user: loggedUser
                 }),
+        search : {
+            isTopAssets : false,
+            searchFields : rxtAttributes
+
+        },
         type: type,
         tag: tag,
         tags: function () {
