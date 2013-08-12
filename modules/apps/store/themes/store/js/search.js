@@ -197,11 +197,6 @@ $(function () {
 		e.stopPropagation();
 	});
 
-    var makeQuery = function () {
-        if ($('#name').val().length > 0 && $('#name').val() != undefined)
-            $('#search').val('name:' + $('#name').val() + ',provider:' + $('#provider').val());
-    }
-
 /*
     $('#search').keypress(function (e) {
         if (e.keyCode === 13) {
@@ -217,7 +212,7 @@ $(function () {
 
     var makeQuery = function () {
 
-        $('#searchDropDown').children('div').each(function() {
+        $('#search-dropdown-cont').children('div').each(function() {
             var $this = $(this);
             if ($('#search').val().length > 0 ){
                 if ($this.find('input').val().length>0){

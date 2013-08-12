@@ -13,9 +13,35 @@
 					<!-- dropdown -->
 					<div id="search-dropdown-cont">
 						<a href="#" id="search-dropdown-close"><i class="icon-remove"></i></a>
-						
+
+						<!--
 						<label>Label 1</label>
-						<input type="text" class="span12" class="search-dropdown-inp" placeholder="Author">
+						<input type="text" class="span12" class="search-dropdown-inp" placeholder="Author">-->
+
+						{{#if isTopAssets}}
+						{{#each searchFields}}
+						{{#if this.search}}
+						<div>
+							<label>{{field_label}}</label>
+							<input type="text" class="span12" id={{field_name}} placeholder="">
+						</div>
+						{{/if}}
+						{{/each}}
+
+						{{else}}
+						{{#each searchFields}}
+						<div>
+							<label>{{field_label}}</label>
+							<input type="text" class="span12" id={{field_name}} placeholder="">
+						</div>
+						{{/each}}
+
+						{{/if}}
+
+						<button id="search-button2" class="btn span3">
+							<i class="icon-search"></i>
+						</button>
+
 					</div>
 				</div>
 				<!--<div class="span9">
@@ -37,66 +63,5 @@
 		</div>
 
 	</div>
-</div>
-
-<div class="row">
-     <div class="span8 offset2">
-          <div class="row-fluid">
-               <div class="span2 txt-right"></div>
-               <div class="span10"></div>
-          </div>
-     </div>
-</div>
-
-<div id="searchDropDown">
-{{#if isTopAssets}}
-  {{#each searchFields}}
-    {{#if this.search}}
-      <div class="row">
-         <div class="span8 offset2">
-                <div class="row-fluid">
-                    <div class="span2 txt-right">
-                        <label>{{field_label}}</label>
-                    </div>
-                    <div class="span10">
-                        <input type="text" class="span5" id={{field_name}} placeholder="">
-                    </div>
-                </div>
-         </div>
-      </div>
-    {{/if}}
-  {{/each}}
-
- {{else}}
-   {{#each searchFields}}
-    <div class="row">
-            <div class="span8 offset2">
-                <div class="row-fluid">
-                    <div class="span2 txt-right">
-                        <label>{{field_label}}</label>
-                    </div>
-                    <div class="span10">
-                        <input type="text" class="span5" id={{field_name}} placeholder="">
-                    </div>
-                </div>
-            </div>
-      </div>
-   {{/each}}
-
-{{/if}}
-
-</div>
-
-<div class="row">
-     <div class="span8 offset2">
-          <div class="row-fluid">
-               <div class="span2 txt-right"></div>
-               <div class="span10">
-                    <button id="search-button2" class="btn span3">
-                       <i class="icon-search"></i>
-                    </button>
-               </div>
-          </div>
-     </div>
 </div>
 

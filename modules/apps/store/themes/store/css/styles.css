@@ -399,9 +399,12 @@ h3.asset-title-separator {
 .search-bar .span8 h2 .selType {
     color: #A4B6C4;
 }
-.search-bar .span4 {
+.search-bar > .row-fluid > .span4 {
     text-align: right;
     position: relative;
+}
+#search-dropdown-cont div{
+    text-align:left;
 }
 
 #search-dropdown-cont > a {
@@ -440,7 +443,7 @@ h3.asset-title-separator {
     right: 0;
     display: none;
     top: 40px;
-    z-index: 1;
+    z-index: 9999;
     padding: 11px;
 }
 #search-dropdown-arrow i {
