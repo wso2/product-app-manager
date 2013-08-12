@@ -19,6 +19,7 @@ caramel.render({
     user: user,
 	sso:sso,
     navigation: site.navigation({sso:sso, user:user}),
+    search : {title: type},
     type: type,
     embedURL: config.server.http + '/gadgets/ifr?url=' + asset.attributes.overview_url,
     inDashboard: inDashboard,

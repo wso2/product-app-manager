@@ -5,9 +5,11 @@
 			<a class="brand" href="{{url "/"}}"></a>
 			<ul class="nav menu store-menu">
 				{{#itr assets}}
-				<li {{#if value.selected}} class="selected" {{/if}}>
-					<a href="{{url "/assets/"}}{{key}}"><i class="icon-{{key}}"></i> {{value.title}}</a>
+				<li class="dropdown {{#if value.selected}} selected {{/if}}">
+					<a href="{{url "/assets/"}}{{key}}" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-{{key}}"></i> {{value.title}}</a>
+					
 				</li>
+
 				{{/itr}}
 			</ul>
 
@@ -15,7 +17,7 @@
 
 				{{#if user}}
 				<li class="nav-separator">
-							<a href="{{url "/dashboard.jag"}}"><i class="icon-bookmark store-topnav-bookmark"></i> {{t "My Bookmarks"}}</a>
+					<a href="{{url "/dashboard.jag"}}"><i class="icon-bookmark store-topnav-bookmark"></i> {{t "My Bookmarks"}}</a>
 				</li>
 				<li>
 

@@ -9,7 +9,9 @@ $(function() {
 
 	$('.store-tags').on('click', 'a', function(e) {
 		e.preventDefault();
-		var url = $(this).attr('href');
+		var url = $(this).attr('href'),
+			tagName = $(this).text();
+			
 		currentPage = 1;
 		caramel.data({
 			title : null,
@@ -27,6 +29,7 @@ $(function() {
 						context : data
 					}, document.title, url);
 				}
+				$('.search-bar h2').find('.page').text(' / Tag: "' + tagName + '"');
 
 			},
 			error : function(xhr, status, error) {

@@ -69,6 +69,9 @@ var caramel;
 			ssoIdpURL : ssoLogin.ssoIdpURL,
 			user : loggedUser
 		}),
+		search: {
+			title : "Top Assets"
+		},
 		topAssets : {
 			recentAssets : {
 				gadget : gadgets,
