@@ -31,41 +31,54 @@
         <dataSource>jdbc/WSO2CarbonDB</dataSource>
     </dbConfig>
 
-   <!--<handler class="org.wso2.carbon.registry.extensions.handlers.SynapseRepositoryHandler">
-        <filter class="org.wso2.carbon.registry.core.jdbc.handlers.filters.MediaTypeMatcher">
-            <property name="mediaType">application/vnd.apache.synapse</property>
-        </filter>
-    </handler>
+    <aspect name="SampleLifeCycle" class="org.wso2.carbon.governance.registry.extensions.aspects.ChecklistLifeCycle">
+        <configuration type="literal">
+            <lifecycle>
+                <state name="Created" location="/environment/created">
+                    <checkitem>Condition 1</checkitem>
+                    <checkitem>Condition 2</checkitem>
+                </state>
+                <state name="Deprecated" location="/environment/deprecated">
+                </state>
+            </lifecycle>
+        </configuration>
+    </aspect>
 
-    <handler class="org.wso2.carbon.registry.extensions.handlers.SynapseRepositoryHandler">
-        <filter class="org.wso2.carbon.registry.core.jdbc.handlers.filters.MediaTypeMatcher">
-            <property name="mediaType">application/vnd.apache.esb</property>
-        </filter>
-    </handler>
+    <!--<handler class="org.wso2.carbon.registry.extensions.handlers.SynapseRepositoryHandler">
+         <filter class="org.wso2.carbon.registry.core.jdbc.handlers.filters.MediaTypeMatcher">
+             <property name="mediaType">application/vnd.apache.synapse</property>
+         </filter>
+     </handler>
 
-    <handler class="org.wso2.carbon.registry.extensions.handlers.Axis2RepositoryHandler">
-        <filter class="org.wso2.carbon.registry.core.jdbc.handlers.filters.MediaTypeMatcher">
-            <property name="mediaType">application/vnd.apache.axis2</property>
-        </filter>
-    </handler>
+     <handler class="org.wso2.carbon.registry.extensions.handlers.SynapseRepositoryHandler">
+         <filter class="org.wso2.carbon.registry.core.jdbc.handlers.filters.MediaTypeMatcher">
+             <property name="mediaType">application/vnd.apache.esb</property>
+         </filter>
+     </handler>
 
-    <handler class="org.wso2.carbon.registry.extensions.handlers.Axis2RepositoryHandler">
-        <filter class="org.wso2.carbon.registry.core.jdbc.handlers.filters.MediaTypeMatcher">
-            <property name="mediaType">application/vnd.apache.wsas</property>
-        </filter>
-    </handler>
+     <handler class="org.wso2.carbon.registry.extensions.handlers.Axis2RepositoryHandler">
+         <filter class="org.wso2.carbon.registry.core.jdbc.handlers.filters.MediaTypeMatcher">
+             <property name="mediaType">application/vnd.apache.axis2</property>
+         </filter>
+     </handler>
 
-    <handler class="org.wso2.carbon.registry.extensions.handlers.WSDLMediaTypeHandler">
-        <filter class="org.wso2.carbon.registry.core.jdbc.handlers.filters.MediaTypeMatcher">
-            <property name="mediaType">application/wsdl+xml</property>
-        </filter>
-    </handler>
+     <handler class="org.wso2.carbon.registry.extensions.handlers.Axis2RepositoryHandler">
+         <filter class="org.wso2.carbon.registry.core.jdbc.handlers.filters.MediaTypeMatcher">
+             <property name="mediaType">application/vnd.apache.wsas</property>
+         </filter>
+     </handler>
 
-    <handler class="org.wso2.carbon.registry.extensions.handlers.XSDMediaTypeHandler">
-        <filter class="org.wso2.carbon.registry.core.jdbc.handlers.filters.MediaTypeMatcher">
-            <property name="mediaType">application/x-xsd+xml</property>
-        </filter>
-    </handler> -->
+     <handler class="org.wso2.carbon.registry.extensions.handlers.WSDLMediaTypeHandler">
+         <filter class="org.wso2.carbon.registry.core.jdbc.handlers.filters.MediaTypeMatcher">
+             <property name="mediaType">application/wsdl+xml</property>
+         </filter>
+     </handler>
+
+     <handler class="org.wso2.carbon.registry.extensions.handlers.XSDMediaTypeHandler">
+         <filter class="org.wso2.carbon.registry.core.jdbc.handlers.filters.MediaTypeMatcher">
+             <property name="mediaType">application/x-xsd+xml</property>
+         </filter>
+     </handler> -->
 
     <!--remoteInstance url="https://localhost:9443/registry">
         <id>instanceid</id>
@@ -109,7 +122,7 @@
             <exclusion pathRegEx="/_system/local/repository/components/org[.]wso2[.]carbon[.]registry/mount/.*"/>
         </exclusions>
     </indexingConfiguration>
-    
+
     <versionResourcesOnChange>true</versionResourcesOnChange>
 
     <!-- NOTE: You can edit the options under "StaticConfiguration" only before the
