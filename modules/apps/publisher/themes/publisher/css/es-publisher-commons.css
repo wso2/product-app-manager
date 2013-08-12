@@ -127,22 +127,6 @@ input, button, select, textarea {
 	border-right:1px solid #C4C1C1;
 	border-top:1px solid #C4C1C1;
 }
-.glow, .glow:hover
-{
-	text-decoration: none;
-	color: #000;
-	text-shadow: none;
-	-webkit-transition: 100ms linear 0s;
-	-moz-transition: 100ms linear 0s;
-	-o-transition: 100ms linear 0s;
-	transition: 100ms linear 0s;
-	outline: 0 none;
-}
-.glow:hover
-{
-	color: #fff;
-	text-shadow: -1px 1px 8px #ffc, 1px -1px 8px #fff;
-}
 .publisher-nav-list > li.active > a{
 	background:#00CC56;
 }
@@ -377,7 +361,7 @@ label, input, button, select, textarea{
 .context_menu > .dropdown-menu a, .user > .dropdown-menu a{
 	color:#999999;
 }
-.context_menu > .dropdown-menu a:hover,.context_menu > .dropdown-menu a:focus, .user > .dropdown-menu a:hover,  user > .dropdown-menu a:focus{
+.context_menu > .dropdown-menu a:hover,.context_menu > .dropdown-menu a:focus, .user > .dropdown-menu a:hover,  .user > .dropdown-menu a:focus{
 	background:none repeat scroll 0 0 #ED6D49;
 }
 .user > .dropdown-menu{
@@ -517,14 +501,14 @@ td.asset-listing-btn{
 }
 .infobox{
 	color: white;
-    	font-size: 16px;
+    font-size: 16px;
    	font-weight: 400;
-    	line-height: 16px;
-    	overflow: hidden;
-    	padding: 5px 10px;
-    	float:left;
+    line-height: 16px;
+    overflow: hidden;
+    padding: 5px 10px;
+    float:left;
 	margin:10px;
-    	text-overflow: ellipsis;
+    text-overflow: ellipsis;
    	vertical-align: top;
 	width:200px;
 	position:relative;
@@ -648,6 +632,31 @@ td.asset-listing-btn{
 	display:inline-block;
 	width:20px;
 	font-size:1.1em;
+}
+.emptyAssets-MsgDiv{
+    text-align: center;
+    font-size: 18px;
+    padding:40px 0;
+}
+.emptyAssets-MsgDiv .largeMsgIcon{
+    font-size:200px;
+    color:#E2EFE5;
+}
+.btn-addNewAssetLarge{
+    background: none repeat scroll 0 0 #16A059;
+    color: #FFFFFF;
+    font-size: 24px;
+    margin-top: 20px;
+    padding: 10px 20px;
+    text-shadow: none;
+}
+.btn-addNewAssetLarge:hover{
+    background: none repeat scroll 0 0 #1FAB3A;
+    color: #FFFFFF;
+    text-shadow: none;
+}
+.btn-addNewAssetLarge i{
+    margin-right: 10px;
 }
 .asset-listing-name a{
 	color:#4F4F4F;
