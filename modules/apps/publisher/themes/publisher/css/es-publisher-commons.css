@@ -55,6 +55,7 @@ input, button, select, textarea {
     margin: 0 20px 0 0;
     padding: 0 20px;
     vertical-align: middle;
+    min-width: 226px;
 }
 .left{
 	float:left;
@@ -89,7 +90,7 @@ input, button, select, textarea {
 .user .dropdown-toggle:hover,.user .dropdown-toggle:focus{
 	color:#FFFFFF;
 }
-.top-row{
+.ribbon{
 	padding-top:20px;
 	background:none repeat scroll 0 0 #E3E3E3;
 	padding-bottom:4px;
@@ -132,9 +133,13 @@ input, button, select, textarea {
 }
 
 .btn-addNewAsset,.btn-goBack{
-	background:none;
-	text-shadow:none;
-	margin-bottom:10px;
+    background: none repeat scroll 0 0 #EAE8E8;
+    color: #585858;
+    font-size: 16px;
+    margin-bottom: 10px;
+    padding: 6px 16px;
+    text-shadow: none;
+    margin-left: 10px;
 }
 .btn-addNewAsset:hover, .btn-addNewAsset:focus{
 	background:none repeat scroll 0 0 #24AB5D;
@@ -380,12 +385,13 @@ label, input, button, select, textarea{
 	color:#505151;
 }
 .nav-list > .prominent-link > a{
-	background: none repeat scroll 0 0 #16A059;
+	background: none repeat scroll 0 0 #27AE60;
     	color: #FFFFFF;
     	padding: 10px 20px;
 	margin-bottom:10px;
 	font-weight:normal;
 	border-right:4px solid #167E00;
+    font-size: 16px;
 }
 .nav-list > .prominent-link > a:hover{
 	background: none repeat scroll 0 0 #1FAB3A;
@@ -421,7 +427,7 @@ label, input, button, select, textarea{
 	padding:10px 40px 20px 10px;
 }
 .btn-primary{
-	background: none repeat scroll 0 0 #16A059;
+	background: none repeat scroll 0 0 #27AE60;
     	color: #FFFFFF;
 	text-shadow:none;
 }
@@ -620,10 +626,13 @@ td.asset-listing-btn{
 	width:14px;
 }
 .content-div .form-horizontal {
-    background: none repeat scroll 0 0 #F5F5F5;
+    background: none repeat scroll 0 0 #FCFCFC;
     border: 1px solid #DCDCDC;
     border-radius: 6px 6px 6px 6px;
     padding: 30px 10px;
+}
+.form-actions{
+    background-color: #FCFCFC;
 }
 .content-div > .row-fluid > .form-horizontal{
 	margin: 20px 30px 30px 0;
@@ -643,7 +652,7 @@ td.asset-listing-btn{
     color:#E2EFE5;
 }
 .btn-addNewAssetLarge{
-    background: none repeat scroll 0 0 #16A059;
+    background: none repeat scroll 0 0 #27AE60;
     color: #FFFFFF;
     font-size: 24px;
     margin-top: 20px;
@@ -653,7 +662,7 @@ td.asset-listing-btn{
 .btn-addNewAssetLarge:hover{
     background: none repeat scroll 0 0 #1FAB3A;
     color: #FFFFFF;
-    text-shadow: none;
+    text-shadow: 1px 1px 1px rgba(255, 252, 176, 0.6);
 }
 .btn-addNewAssetLarge i{
     margin-right: 10px;
@@ -667,7 +676,43 @@ td.asset-listing-btn{
 TODO:remove after edit asset feature implement
 */
 #editAssetButton{
-	background:none repeat scroll 0 0 #16A059;
+	background:none repeat scroll 0 0 #27AE60;
 	color:#FFFFFF;
 	text-shadow:none;
+}
+
+input.inp-ribbon[type="text"]{
+    background: #F5F5F5;
+    border-radius: 0;
+    font-size: 16px;
+}
+input.inp-ribbon[type="text"]:focus{
+    background: #FFFFFF;
+}
+.control-search{
+    position: relative;
+    margin-right: 10px;
+}
+#search-button {
+    border-left: 1px solid #CCCCCC;
+    color: #585858;
+    font-size: 18px;
+    opacity: 1;
+    padding-left: 7px;
+    position: absolute;
+    right: 8px;
+    top: 2px;
+    transition: opacity 0.4s ease 0s;
+    cursor: pointer;
+}
+#search-button:hover{
+    color: #737373;
+    text-decoration: none;
+    text-shadow: 1px 2px 2px #BBBBBB;
+}
+textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input{
+    border-radius: 0;
+}
+.ribbon .btn{
+    border-radius: 0;
 }
