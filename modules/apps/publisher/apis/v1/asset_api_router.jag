@@ -1,5 +1,4 @@
 <%
-//print('<br/> Default asset api file <br/>');
 
 /*
  Description: Provides CRUD support for assets
@@ -20,8 +19,11 @@ var caramel = require('caramel');
 var router = require('/modules/router-g.js').router();
 var routeManager = new router.Router();
 
+
 //var routeManager=application.get(config.app.ROUTE_MANAGER);
 var rxtManager = application.get(config.app.RXT_MANAGER);
+var modelManager = application.get(config.app.MODEL_MANAGER);
+var log=new Log();
 
 routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}', function (context) {
 
@@ -32,34 +34,40 @@ routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}', functio
     });
 
     if (!rxtTemplate) {
+        log.debug('The asset type: '+shortName+' could not be found');
         response.sendError(404, 'Asset type not found.'); //TODO: Replace
     }
     else {
-        print(rxtTemplate);
+        var model=modelManager.getModel(shortName);
+        var output=model.export('form');
+        print(output);
     }
-
-    //context.renderer.success({sample:{name:'asset form2'}});
 });
 
 routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
 
     var shortName = context.params.type;
-    //print(context.params);
+
     var id = context.params.id;
 
     var artifactManager = rxtManager.getArtifactManager(shortName);
 
     //If the id is not found it will throw a conversion exception
-    //TODO: Return an empty artifact or null
     try {
 
         var artifact = artifactManager.get(id);
 
-        print(artifact);
+        var model=modelManager.getModel(shortName);
 
-        //caramel.render({shortName:shortName,artifact:artifact});
+        model.import('asset',artifact);
+
+        var result=model.export('form');
+
+        print(result);
     } catch (e) {
-        response.sendError(404, 'Asset with id ' + id + ' could not be found');
+
+        log.debug('The asset type: '+shortName+' with id: '+id+' could not be found.The following exception was thrown: '+e);
+        response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check the server logs.');
     }
 
 });
@@ -70,40 +78,33 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}', functi
 
     //Check if the type is valid
     try {
-        var assetModel = getModel(context.post);
-        //print(assetModel);
-        var createdAsset = artifactManager.add(assetModel);
-        print({ok: 'true', message: 'Asset created.'});
+
+        var model=modelManager.getModel(shortName);
+        model.import('form.importer',context.post);
+
+        //var assetModel = getModel(context.post);
+
+        model.save();
+
+        //var createdAsset = artifactManager.add(assetModel);
+
+        //Get the model id
+        var idField=model.get('*.id');
+
+        if(idField){
+            print({ok: 'true', message: 'Asset created.', id:idField.value});
+        }
+        else{
+            log.debug('An asset of type: '+shortNa,e+' could not be created.Probably a fault with publisher logic!');
+        }
+
     }
     catch (e) {
-        response.sendError(500, 'Could not create asset');
+        log.debug('An asset of type: '+shortNa,e+' could not be created.The following exception was thrown: '+e);
+        response.sendError(500, 'An asset of type: '+shortNa,e+' could not be created.Please check the server logs.');
     }
 
 });
-/*
- The function converts the post parameters to a model
- that can be passed to the artifact manager
- */
-function getModel(data) {
-    var model = {
-        name: '',
-        attributes: {}
-    };
-
-    for (var key in data) {
-        model.attributes[key] = data[key];
-
-        //Check if key is name and set the name of the
-        //model
-        if (key == 'overview_name') {
-            model.name = data[key];
-        }
-    }
-
-    //print(model);
-    return model;
-}
-
 
 routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}/{attr}/{value}', function (context) {
     /*var shortName=context.params.type;
@@ -138,7 +139,8 @@ routeManager.register('DELETE', 'publisher', '/publisher/api/asset/{type}/{id}',
         artifactManager.remove(id);
         print({ok: 'true', message: 'Asset deleted'});
     } catch (e) {
-        response.sendError(404, 'Asset with id: ' + shortName + ' removed.');
+        log.debug('Asset '+id+'could not be removed.An exception was thrown: '+e);
+        response.sendError(404, 'Asset with id: ' + id + ' could not be removed.');
     }
 
 

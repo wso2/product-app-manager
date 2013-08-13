@@ -1,9 +1,17 @@
 var utility=require('/modules/utility.js').rxt_utility();
 
+/*
+ Description: The domain objects used in the extension process
+ FileName:extension.management.js
+ Created Date: 8/8/2013
+ */
+
+
 var extension_domain=function(){
 
-var DEFAULT_SCOPE='*';	// Applies to all template types
+    var DEFAULT_SCOPE='*';	// Applies to all template types
 	var EMPTY='';
+    var log=new Log();
 
 	function ExtTemplate(name){
 
@@ -40,7 +48,7 @@ var DEFAULT_SCOPE='*';	// Applies to all template types
 		}
 		
 		return null;
-	}
+	};
 	
 	/*
 	 * Finds specified field inside the provided table
@@ -60,7 +68,7 @@ var DEFAULT_SCOPE='*';	// Applies to all template types
 		}
 		
 		return null;
-	}
+	};
 
 
 	function Table(name){
@@ -103,7 +111,7 @@ var DEFAULT_SCOPE='*';	// Applies to all template types
     	}
     	
     	return nameArray;
-    }
+    };
     
     /*
 	 * Returns the table with the specified name
@@ -118,12 +126,14 @@ var DEFAULT_SCOPE='*';	// Applies to all template types
                 return table;
              }
          }
-
+         log.debug('The table with '+name+'was not found in the model.');
          return null;
-    }
+    };
 
     /*
      * Returns a field based on the provided name
+     * @name: The name of the field
+     * @returns: A DataField object if it is found,else null
      */
     DataModel.prototype.getField=function(name){
 
@@ -141,12 +151,13 @@ var DEFAULT_SCOPE='*';	// Applies to all template types
          
          //Returns nothing if the table is not found
          if(!table){
+             log.debug('The field: '+name+' was not located as the table was not found');
         	 return null;
          }
 
          // Obtain the field
         return table.getField(fieldName);
-    }
+    } ;
     
     /*
      * The function sets the value of a field
@@ -171,7 +182,7 @@ var DEFAULT_SCOPE='*';	// Applies to all template types
         } 
         
         table.setField(fieldName,value)
-    }
+    };
 
     // Describes an instance of artifact
 	function DataTable(options){
@@ -190,7 +201,7 @@ var DEFAULT_SCOPE='*';	// Applies to all template types
                 value:''
             }));
         }
-	}
+	};
 
    	 /*
 	 * The function finds a particular field
@@ -204,7 +215,7 @@ var DEFAULT_SCOPE='*';	// Applies to all template types
          }
 
          return null;
-	}
+	};
 	
 	/*
 	 * Sets the value of a field
@@ -219,10 +230,10 @@ var DEFAULT_SCOPE='*';	// Applies to all template types
 		}
 		
 		this.fields.push(new DataField({name:fieldName,value:value}));
-	}
+	};
 
     /*
-     * Describes a single property of an artifact
+     * Describes a single property of an asset
      */
 	function DataField(options){
             this.name='';
@@ -230,17 +241,18 @@ var DEFAULT_SCOPE='*';	// Applies to all template types
             utility.config(options,this);
 	}
 
+    //TODO: Consider removing these?
 	DataField.prototype.getName=function(){
             return this.name;
-	}
+	};
 
 	DataField.prototype.getValue=function(){
             return this.value;
-	}
+	};
 
 	DataField.prototype.setValue=function(value){
             this.value=value;
-	}
+	};
 	
 
 	return{

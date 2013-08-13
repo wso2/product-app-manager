@@ -14,8 +14,12 @@
         "overview.status:order=5"
     ],
 
-    "link": [
-        "overview.stage:value=*.lifecycleState"
+    "tables":[
+	
+	{
+		"name":"*"
+	}
+
     ],
 
     "fieldProperties": [
@@ -34,6 +38,27 @@
             "field": "*",
             "name": "visible",
             "value": "true"
-        }
+        },
+	{
+	    "field":"overview.*",
+	    "name":"save",
+	    "value":"default"
+	},
+	{
+	    "field":"*.lifeCycle",
+	    "name":"save",
+	    "value":"asset.lifecycle.action.save"
+	}
+    ],
+
+    "fields":[
+	{
+	    "name":"lifeCycle",
+	    "table":"*",
+	    "label":"Life Cycle",
+            "value":"SampleLifeCycle"
+
+	}
+
     ]
 }
