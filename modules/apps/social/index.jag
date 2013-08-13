@@ -1,0 +1,5 @@
+<%
+var caramel;
+caramel = require('caramel');
+
+%>
