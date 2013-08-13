@@ -59,7 +59,7 @@ var caramel;
 
     var rxtAttributes = require('modules/util.js').getRXTAttributes("gadget");
 
-	caramel.render({
+    caramel.render({
 		title : 'Store | User Engagement Center',
 		user : loggedUser,
 		sso:sso,
