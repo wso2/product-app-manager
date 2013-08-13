@@ -4,8 +4,15 @@ var meta={
 	required:['model','template']
 };
 
+/*
+ Description: Converts the data and template to format that can be used to render a form.
+ Filename:form.exporter.js
+ Created Dated: 11/8/2013
+ */
+
 var module=function(){
-	
+
+    var log=new Log();
 	
 	/*
 	 * Go through each table and extract field data
@@ -20,6 +27,7 @@ var module=function(){
 			
 			//We ignore the field if it is not in the template
 			if(!fieldTemplate){
+                log.debug('Ignoring field: '+stringify(fieldTemplate));
 				return;
 			}
 			var data={};
@@ -36,9 +44,7 @@ var module=function(){
 			
 			fieldArray.push(data);
 		}
-		
-		//print('<br/>'+stringify(fieldArray)+'<br/>');
-		
+
 		return fieldArray;
 	}
 	
@@ -48,21 +54,26 @@ var module=function(){
 	function fillTables(model,template){
 		
 		var fieldArray=[];
+
 		//Go through each table in the model
 		for each(var table in model.dataTables){
 			
 			//Ignore if *
 			if(table.name!='*'){
-				//print('filled '+table.name);
 				fillFields(table,fieldArray,template);
 			}
 		}
-		
-		//print(fieldArray);
+
+        log.info('Fields: '+stringify(fieldArray));
 		
 		return fieldArray;
 	}
-	
+
+    /*
+    The function converts a string comma seperated value list to an array
+    @str: A string representation of an array
+    TODO: Move to utility script
+     */
 	function csvToArray(str){
 		var array=str.split(',');
 		return array;
@@ -73,6 +84,8 @@ var module=function(){
 		meta['shortName']=template.shortName;
 		meta['singularLabel']=template.singularLabel;
 		meta['pluralLabel']=template.pluralLabel;
+
+        log.info('Meta: '+stringify(meta));
 		return meta;
 	}
 	
@@ -89,8 +102,10 @@ var module=function(){
 		info['version']=field?field.getValue():'';
 		
 		field=model.getField('*.lifecycleState');
-		//info['lifecycleState']=model.getField('*.lifecycleState').getValue()||'';
+
 		info['lifecycleState']=field?field.getValue():'';
+
+        log.info('Info: '+stringify(info));
 		
 		return info;
 	}
@@ -98,18 +113,16 @@ var module=function(){
 	return{
 		execute:function(context){
 
+            log.info('Entered: '+meta.type);
+
 			var model=context.model;
 			var template=context.template;
 			
 			var struct={};
-			
-			//var formTemplate={};
-			//var formMetaData={};
-			//var formAssetData={};
-			//var formTemplateFields=[];
-			//print(model);
+
 			//TODO: Move this check outside
 			if((!model)||(!template)){
+                log.debug('Required parameters: '+meta.required+'not available to adapter');
 				throw 'Required model and template data not present';
 			}
 
@@ -118,25 +131,11 @@ var module=function(){
 			struct['fields']=tables;
 			struct['meta']=fillMeta(model,template);
 			struct['info']=fillInfo(model);
-			
-			//print(tables);
+
+            log.info('Leaving: '+meta.type);
 			
 			return struct;
-			
-			/*formMetaData['shortName']=template.shortName;
-			formMetaData['singularName']=template.singularName;
-			formMetaData['pluralName']=template.pluralName;
-			
-			formAssetData['version']=1.0;
-			formAssetData['lifecycle']='';
-			formAssetData['lifecycleState']='';
-			
-			formTemplate['meta']=formMetaData;
-			formTemplate['asset']=formAssetData;
-			formTemplate['fields']=formTemplateFields;
-			
-			return formTemplate;*/
-			
+
 		}
 	}
 };

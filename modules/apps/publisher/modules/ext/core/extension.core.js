@@ -8,6 +8,11 @@ var utility = require('/modules/utility.js').rxt_utility();
 
 var extension_core = function () {
 
+    var log=new Log();
+
+    /*
+    Manages all of the external logic called adapters
+     */
     function AdapterManager(options) {
         this.parser = {};
         this.adapters = [];
@@ -15,7 +20,10 @@ var extension_core = function () {
     }
 
     /*
-     * Initializes the adapter by loading up all of the templates
+     * Loads all of the adapters by reading and requiring the import
+     * array found in each template
+     * TODO: The import should be locacalized for a template.At the moment
+     * once an adapter is loaded it is available to all templates.
      */
     AdapterManager.prototype.init = function () {
 
@@ -32,17 +40,23 @@ var extension_core = function () {
                 template.import
             )
                 {
-
                     var instance = require(item);
-
+                    log.info('Loaded adapter: '+item);
                     this.adapters.push(new AdapterContainer(instance));
                 }
             }
         }
 
 
-    }
+    };
 
+    /*
+    The action manager is responsible for managing actions of templates
+    Currently only;
+        Save
+     operations are supported.
+     TODO: Make it more generic so other user defined actions can also be managed
+     */
     function ActionManager(options){
         this.templates=[];
         this.actionContainers=[];
@@ -57,15 +71,19 @@ var extension_core = function () {
         var container=null;
         for each (var template in this.templates){
 
+             //Each template has its own action container
              container=new ActionContainer({template:template});
              container.init();
 
             this.actionContainers.push(container);
         }
-    }
+    };
 
     /*
-    Obtains the required action for the template
+    Locates the action map object for an action for a template
+    @templateName: Name of a template for which the action must be located
+    @actionName: The action to be located
+    @returns: An action map object for the action,else null;
      */
     ActionManager.prototype.getAction=function(templateName,actionName){
         var action=null;
@@ -74,7 +92,7 @@ var extension_core = function () {
         var container=this.findContainer(templateName);
 
         if(!container){
-
+            log.debug('The action: '+actionName+' was not found for template: '+templateName);
             return null;
         }
 
@@ -84,15 +102,18 @@ var extension_core = function () {
           case 'save':
                action=container.saveMap;
                break;
+            case 'fetch':
+               break;
           default:
+               log.debug('The action: '+actionName+' is not supported for the template '+templateName);
                break;
          }
 
         return action;
-    }
+    } ;
 
     /*
-    The function locates a particular action container
+    The function locates an ActionContainer for a given template
      */
     ActionManager.prototype.findContainer=function(templateName){
 
@@ -103,51 +124,53 @@ var extension_core = function () {
         }
 
         return null;
-    }
+    } ;
+
 
     /*
-    Stores the mapping of the actions
+    Stores the mapping of the actions on a template level
      */
     function ActionContainer(options){
         this.template=null;
         this.saveMap=null;
-
+        this.fetchMap=null;
         utility.config(options,this);
     }
 
+    /*
+    Creates save and fetch action map objects for the template
+     */
     ActionContainer.prototype.init=function(){
         this.saveMap=this.createActionMap('save',this.template);
-    }
+        this.fetchMap=this.createActionMap('fetch',this.template);
+    } ;
 
 
     /*
      Examines the template and creates a mapping of the actions based on meta fields
      */
     ActionContainer.prototype.createActionMap=function(action,template){
-
+        log.info('Processing action map for '+template.name+' operation: '+action);
         actionMap={};
-        var log=new Log();
+
         //Go through each field in the template and identify default save actions
         for each(var table in template.tables){
 
             //Go through each field
             for each(var field in table.fields){
-               // log.info(template.name+' ' +table.name+' '+stringify(field));
 
                 //Check if the field has meta properties
                 if(field.meta){
-
-
 
                     //Locate the save property
                     var actionInstance=field.meta[action];
 
                     if(actionInstance){
-                         log.info('save action');
+                         log.info('Action: '+actionInstance+' located for operation: '+action+' in field: '+field.name);
 
                         //Create a property if it is not already present
-                        if(!actionMap.hasOwnProperty(action)){
-                            log.info('inserted new array');
+                        if(!actionMap[actionInstance]){
+                            log.info('Created a new action'+actionInstance+' for the operation '+action);
                             actionMap[actionInstance]=[];//Create an array to store the field
                         }
 
@@ -157,27 +180,42 @@ var extension_core = function () {
                 }
             }
         }
-        log.info(stringify(actionMap));
+        log.info('Finished processing action map for '+template.name+' operation: '+action);
         return actionMap;
-    }
+    } ;
 
 
     /*
-     Locates an adapter matching the required type @type: The type of the
-      adapter
+     Locates an adapter matching the required type
+     @type: The type of the adapter
      @return: The adapter
      */
     AdapterManager.prototype.find = function (type) {
 
         for each(var adapter in this.adapters)
         {
-            //print(adapter.meta.type);
             if (adapter.meta.type == type) {
+                log.info('An adapter container of type: '+type+' was located.');
                 return adapter;
             }
         }
+        log.debug('An adapter of type: '+type+' was not found.');
         return null;
-    }
+    }  ;
+
+    /*
+
+     */
+    AdapterManager.prototype.findWith=function(fn){
+        for each(var adapter in this.adapters){
+            if(fn(adapter)){
+                log.info('The adapter :'+stringify(adapter.meta)+' was located.');
+                return adapter;
+            }
+        }
+        log.debug('An adapter was not located.');
+        return null;
+    } ;
 
     /*
     The class is used to store the instance of the adapter along with its meta data
@@ -195,7 +233,7 @@ var extension_core = function () {
      */
     AdapterContainer.prototype.execute = function (context) {
         return this.instance.execute(context);
-    }
+    }  ;
 
     /*
     The class is used to manage fields
@@ -203,7 +241,7 @@ var extension_core = function () {
     function FieldManager(options) {
         this.parser = null;
         utility.config(options, this);
-    }
+    } ;
 
     /*
      The function processes all templates in the parser
@@ -214,7 +252,7 @@ var extension_core = function () {
         {
             this.process(template);
         }
-    }
+    };
 
     /*
       The function goes through each field in the provided template injects any
@@ -252,7 +290,7 @@ var extension_core = function () {
 
             }
         }
-    }
+    };
 
 
     /*

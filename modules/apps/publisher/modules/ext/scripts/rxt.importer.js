@@ -3,27 +3,34 @@ var meta={
 	type:'asset',
 	required:['model','template','inputData']
 };
-var log=new Log();
+
 /*
- * Converts asset
+ Description: Reads and sets the data from an asset object
+ Filename: rxt.importer.js
+ Created Date: 8/8/2013
  */
 var module=function(){
-	
+
+    var log=new Log();
+
 	function processAttributes(model,data){
 		
 		//Go through each attribute
 		for(var key in data.attributes){
 
 			var value=data.attributes[key];
-			log.info('value: '+value);
+
 			//Break it up
 			var name=key.split('_');
-			log.info('name'+name);
+
+			log.info('Obtaining data from : '+name);
+
 			if((name.length>0)&&(name.length<=2)){
 
 				var table=name[0];
 				var field=name[1];
-//log.info('field'+field);
+
+                log.info('Saving field '+field+'= '+value+' in table: '+table);
 
 				model.setField(table+'.'+field,value);
 			}
@@ -41,17 +48,24 @@ var module=function(){
 	
 	return{
 		execute:function(context){
+
+            log.info('Entered: '+meta.type);
+
 			var model=context.model;
 			var template=context.template;
 			var data=context.inputData;
 			
 			if((!model)||(!template)||(!data)){
+                log.debug('Requir')
 				throw 'Required model,data and templates not within context';
 			}
 
 			processHeader(model,data);
 			processAttributes(model,data);
-					
+
+            log.info('Data extracted: '+stringify(this.model));
+
+            log.info('Exited: '+meta.type);
 		}
 	}
 };

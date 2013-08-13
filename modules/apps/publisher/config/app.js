@@ -77,7 +77,10 @@ fpManager.init();
 var ruleParser = new ext_parser.RuleParser({parser: parser});
 ruleParser.init();
 
-var modelManager = new ext_mng.ModelManager({parser: parser, adapterManager: adapterManager});
+var actionManager=new ext_core.ActionManager({templates:parser.templates});
+actionManager.init();
+
+var modelManager = new ext_mng.ModelManager({parser: parser, adapterManager: adapterManager,actionManager:actionManager});
 
 application.put(config.app.MODEL_MANAGER, modelManager);
 application.put(config.app.RXT_MANAGER, rxtManager);

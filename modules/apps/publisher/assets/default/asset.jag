@@ -1,5 +1,4 @@
 <%
-//print('<br/> Default asset file <br/>');
 
 /*
  Description: Provides CRUD support for assets
@@ -25,6 +24,8 @@ var routeManager = new router.Router();
 var rxtManager = application.get(config.app.RXT_MANAGER);
 var modelManager = application.get(config.app.MODEL_MANAGER);
 
+var log=new Log();
+
 routeManager.register('GET', 'publisher', '/publisher/asset/{type}', function (context) {
 
     var shortName = (context.params.type) || '';
@@ -36,48 +37,14 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}', function (c
     var model = modelManager.getModel(shortName);
 
     if (!rxtTemplate) {
+        log.debug('The requested asset type: '+shortName+' was not found');
         response.sendError(404, 'Asset type not found'); //TODO: Replace
     }
     else {
         var output = model.export('form');
-       // var artifact = createEmptyArtifact(rxtTemplate);
-
         caramel.render({op: operation, cuser: user.current(), shortName: shortName, rxtTemplate: rxtTemplate, data: output});
     }
 });
-
-/*
- Creates an empty artifact instance from an rxtTemplate
- TODO: Need to improve
- */
-/*function createEmptyArtifact(rxtTemplate) {
-    var artifact = {
-        id: '',
-        attributes: {
-        }
-    };
-
-    //Go through all of the tables in the template
-    for each(var table in rxtTemplate.contentBlock.tables)
-    {
-
-        var tableName = table.name.toLowerCase();
-
-
-        //Go through all of the fields in the table
-        for each(var field
-    in
-        table.getFields()
-    )
-        {
-            var fieldName = field.name.name.toLowerCase();
-
-            artifact.attributes[tableName + '_' + fieldName] = '';
-        }
-    }
-
-    return artifact;
-}    */
 
 routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', function (context) {
 
@@ -104,83 +71,36 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
 
         var output = model.export('form');
 
-        //var model=reverseModel(artifact);
-
         caramel.render({op: operation, cuser: user.current(), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output});
     } catch (e) {
-        response.sendError(404, 'Asset with id ' + id + ' could not be found' + e);
+        log.debug('The asset with id '+id+' could not be found due to : '+e);
+        response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check server log.');
     }
 
 });
 
-/*
- Converts artifacts attributes object into an array to allow traversal
- using Handlebars each  helper
- TODO: Find a better way! and change the name
- */
-/*function reverseModel(artifact) {
-    var model = {
-        attributes: []
-    }
-    var attributeArray = artifact.attributes;
-    //Go through each attribute
-    for (var attr in attributeArray) {
-        //print(attr);
-
-
-        model.attributes.push({
-            name: attr,
-            value: attributeArray[attr]
-        });
-
-    }
-
-    return model;
-}  */
-
 routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (context) {
+
     var shortName = context.params.type;
     var artifactManager = rxtManager.getArtifactManager(shortName);
+    var model=modelManager.getModel(shortName);
 
     //Check if the type is valid
     try {
-        var assetModel = getModel(context.post);
 
-        var createdAsset = artifactManager.add(assetModel);
+        model.import('form.importer',context.post);
 
-        //Attach to the default life cycle
+        model.save();
     }
     catch (e) {
-        response.sendError(500, 'Could not create asset');
+        log.debug('An instance could not be created for asset with type :'+shortName+'.The following exception was recorded: '+e);
+        response.sendError(500, 'The asset instance could not be created.Please check the server log.');
     }
 
 });
-/*
- The function converts the post parameters to a model
- that can be passed to the artifact manager
- */
-function getModel(data) {
-    var model = {
-        name: '',
-        attributes: {}
-    };
-
-    for (var key in data) {
-        model.attributes[key] = data[key];
-
-        //Check if key is name and set the name of the
-        //model
-        if (key == 'overview_name') {
-            model.name = data[key];
-        }
-    }
-
-    //print(model);
-    return model;
-}
-
 
 routeManager.register('PUT', 'publisher', '/publisher/asset/{type}/{id}/{attr}/{value}', function (context) {
+    log.info('Unsupported method PUT for /asset called.');
     /*var shortName=context.params.type;
      var id=context.params.id;
      var attribute=context.params.attr;
@@ -211,9 +131,10 @@ routeManager.register('DELETE', 'publisher', '/publisher/asset/{type}/{id}', fun
 
     try {
         artifactManager.remove(id);
-        print('artifact with id removed');
+
     } catch (e) {
-        response.sendError(404, 'Asset with id: ' + shortName + ' removed.');
+        log.debug('Asset id: '+id+'was not removed.Due to exception: '+e);
+        response.sendError(404, 'Asset with id: ' + id + 'was not removed.Please check the server log for more details.');
     }
 
 
