@@ -184,6 +184,7 @@ $(function () {
      });*/
 
     $('#search-button').click(function() {
+    	if($('#search').val() == '') return; 
         if($('#search-dropdown-cont').is(':visible')){
             $('#search').val('');
             makeQuery();
@@ -282,6 +283,7 @@ $(function () {
     $('#search-button2').click(function () {
         $('#search').val('');
         makeQuery();
+        if($('#search').val() == '') return; 
         search();
         return false;
     });

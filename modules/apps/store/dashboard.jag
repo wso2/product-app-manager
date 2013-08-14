@@ -8,7 +8,9 @@ var caramel;
 	tags = [], 
 	sso = configs.ssoConfiguration.enabled;
 	caramel = require('caramel');
-
+ 	
+ 	var rxtAttributes = require('modules/util.js').getRXTAttributes(type);
+ 	
 	if(!user) {
 		response.sendRedirect(caramel.configs().context);
 		return;
@@ -33,6 +35,12 @@ var caramel;
 			sso : sso,
 			user : user
 		}),
+		 search: {
+			mainPage : "My bookmarks",
+			subPage : "",
+			isTopAssets : false,
+            searchFields : rxtAttributes
+		},
 		'userAssets' : count > 0 ? store.userAssets() : null,
 		'recentAssets' : recentAssets,
 		'tags' : tags

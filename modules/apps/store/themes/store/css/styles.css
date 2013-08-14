@@ -434,7 +434,9 @@ h3.asset-title-separator {
 #search-button:hover {
     opacity: 0.2;
 }
-
+#search-button2{
+    margin-left:0;
+}
 #search-dropdown-cont {
     background: none repeat scroll 0 0 #FFFFFF;
     box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.1);
@@ -443,7 +445,7 @@ h3.asset-title-separator {
     right: 0;
     display: none;
     top: 40px;
-    z-index: 9999;
+    z-index: 1020;
     padding: 11px;
 }
 #search-dropdown-arrow i {
