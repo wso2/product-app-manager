@@ -1,0 +1,64 @@
+{
+    "applyTo": "book",
+
+
+    "import": [
+        "/modules/ext/scripts/rxt.importer.js",
+        "/modules/ext/scripts/form.exporter.js"],
+
+    "fieldPropertyRules": [
+        "overview.name:order=1",
+        "overview.provider:order=2",
+        "overview.description:order=3",
+        "overview.version:order=4",
+        "overview.status:order=5"
+    ],
+
+    "tables":[
+	
+	{
+		"name":"*"
+	}
+
+    ],
+
+    "fieldProperties": [
+
+        {
+            "field": "*",
+            "name": "order",
+            "value": ""
+        },
+        {
+            "field": "*",
+            "name": "hidden",
+            "value": "false"
+        },
+        {
+            "field": "*",
+            "name": "visible",
+            "value": "true"
+        },
+	{
+	    "field":"overview.*",
+	    "name":"save",
+	    "value":"default"
+	},
+	{
+	    "field":"*.lifeCycle",
+	    "name":"save",
+	    "value":"asset.lifecycle.action.save"
+	}
+    ],
+
+    "fields":[
+	{
+	    "name":"lifeCycle",
+	    "table":"*",
+	    "label":"Life Cycle",
+            "value":"SampleLifeCycle"
+
+	}
+
+    ]
+}
