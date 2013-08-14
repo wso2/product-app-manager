@@ -1,5 +1,5 @@
 {
-    "applyTo": "site",
+    "applyTo": "book",
 
 
     "import": [
@@ -11,7 +11,7 @@
         "overview.provider:order=2",
         "overview.description:order=3",
         "overview.version:order=4",
-        "overview.status:order=5",
+        "overview.isbn:order=5",
         "overview.name:search=true",
         "overview.provider:search=true",
         "overview.version:search=true"
