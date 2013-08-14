@@ -1,0 +1,50 @@
+<div class="row com-stream">
+	<div class="row com-sort">
+		<ul>
+			<li>
+				<a href="#" class="selected">Newest</a>
+			</li>
+			<li>
+				<a href="#">Oldest</a>
+			</li>
+			<li>
+				<a href="#">Popular</a>
+			</li>
+		</ul>
+	</div>
+	{{#each comments}}
+	<div class="row com-stream-comment">
+		<div class="com-left">
+			<img class="img-avatar" src="img/avatar.png">
+		</div>
+		<div class="com-right">
+			<div class="clear">
+				<strong class="com-author">{{author}}</strong>
+				<div class="com-rating">
+					<div class="com-rating-{{rating}}star"></div>
+				</div>
+				<p>
+					{{comment}}
+				</p>
+			</div>
+			<div class="row">
+
+				<div class="com-thumbs">
+					<ul>
+						<li>
+							<a href="#"><i class="icon icon-thumbs-up"></i><span>{{yea}}</span></a>
+						</li>
+						<li>
+							<a href="#"><i class="icon icon-thumbs-down"></i><span>{{nay}}</span></a>
+						</li>
+						<li class="com-thumbs-flag">
+							<a href="#">Flag</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	{{/each}}
+</div><!-- /.com-stream-->
