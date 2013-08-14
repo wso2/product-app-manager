@@ -115,6 +115,8 @@ var extension_parser=function(){
             log.info('Registering rxt template: '+rxtTemplate.shortName);
             this.processRxt(rxtTemplate);
 		}
+
+        log.info('Finished processing all rxt templates');
 	};
 
     /*
@@ -122,6 +124,8 @@ var extension_parser=function(){
 	 */
 	Parser.prototype.processRxt=function(rxtTemplate)
 	{
+
+        log.info('Processing template: '+rxtTemplate.shortName);
 		var extTemplate=new ext_domain.ExtTemplate(rxtTemplate.shortName);
 		extTemplate.applyTo=rxtTemplate.shortName;
 		extTemplate.shortName=rxtTemplate.shortName;
@@ -150,6 +154,7 @@ var extension_parser=function(){
 
 			extTemplate.tables.push(extTable);
 		}
+        log.info('Finished processing template: '+rxtTemplate.shortName);
 		this.templates.push(extTemplate);
 	};
 	
@@ -182,6 +187,7 @@ var extension_parser=function(){
      */
 	Parser.prototype.processExtension=function(extTemplate){
 
+        log.info('Processing extension : '+extTemplate.applyTo);
         // Assume the extension is applicable to a global scope
         var template=this.globalTemplate;
 
@@ -189,6 +195,11 @@ var extension_parser=function(){
         if(extTemplate.applyTo!=ext_domain.DEFAULT_SCOPE)
         {
             template=this.getTemplate(extTemplate.applyTo);
+        }
+
+        if(!template){
+            log.info('The extension references an rxt which is not available in the registry.');
+            return;
         }
 
         // Fill the tables first
@@ -201,6 +212,7 @@ var extension_parser=function(){
                this.fill(key,extTemplate,template);
 
 		}
+        log.info('Finished processing extension: '+extTemplate.applyTo);
 
 	};
 
@@ -272,8 +284,11 @@ var extension_parser=function(){
 	 * The function loads all of the extension files in a given directory
 	 */
 	Parser.prototype.load=function(path){
+        log.info('Looking for extension files in '+path);
 		var dir=new File(path);
+
 		if(!dir.isDirectory()){
+            log.debug('Extension path is not a directory.');
 			throw "RXT Extension path is not a directory.Please specify an directory for the extension path";
 		}
 		
@@ -285,8 +300,15 @@ var extension_parser=function(){
 			&&(file.getName().indexOf('~')==-1)){
 
 				var config=require(path+file.getName());
-				
-				this.processExtension(config);			
+				log.info('Processing extension file: '+file.getName());
+
+                //Only process the extension if there is a configuration
+                if(config){
+
+                    this.processExtension(config);
+                }
+
+                log.info('Finished extension file: '+file.getName());
 			}
 			
 		}
