@@ -40,6 +40,11 @@ server.init(pubConfig);
 var user = require('/modules/user.js');
 user.init(pubConfig);
 
+var publisher = require('/modules/publisher.js');
+publisher.init({
+
+});
+
 //var server=new carbon.server.Server(url);
 var registry = server.systemRegistry();
 /*var registry=new carbon.registry.Registry(server,{

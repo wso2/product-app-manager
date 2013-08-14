@@ -161,8 +161,7 @@ var tags, init, assets, asset, assetLinks, tagged, popularAssets, recentAssets, 
 			tag : tag
 		}, paging), length = assets.length;
 		for( i = 0; i < length; i++) {
-			
-			assets[i].rating = rating(assets[i].path);
+            assets[i].rating = rating(assets[i].path);
 			if(isuserasset(assets[i].path,type)){
 			assets[i].indashboard = true;
 				}else{

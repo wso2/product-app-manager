@@ -1,24 +1,69 @@
 var Manager,
     ASSETS_NS = 'http://www.wso2.org/governance/metadata';
 
+var log = new Log();
+
 (function () {
 
     var search = function (that, options) {
         if (options.query) {
-            var query = options.query.toLowerCase();
+
+            var queryArray, searchMap = {};
+            var searchQuery = (options.query.toLowerCase()).replace(/\s+/g, " ");
+
+            //if query contains multiple search params as provider:admin,name:bar chart
+            if (searchQuery.indexOf(",") != -1) {
+                queryArray = searchQuery.split(",");
+                if (queryArray.length > 1) {
+                    for (var i = 0; i < queryArray.length; i++) {
+                        searchMap["overview_" + queryArray[i].split(":")[0].trim()] = queryArray[i].split(":")[1].trim();
+                    }
+                }
+                //if it is a context search or contains only one param as name:bar chart
+            } else {
+                //contains only one param as name:bar chart
+                if (searchQuery.indexOf(":") != -1) {
+                    searchMap["overview_" + searchQuery.split(":")[0].trim()] = searchQuery.split(":")[1].trim();
+
+                    //context search
+                } else {
+                    searchMap["default"] = searchQuery;
+                }
+            }
+
+            //search for the searchMap params
             return that.manager.find(function (asset) {
                 var name,
                     attributes = asset.attributes;
-                for (name in attributes) {
-                    if (attributes.hasOwnProperty(name)) {
-                        if (attributes[name].toLowerCase().indexOf(query) !== -1) {
-                            return true;
+                var matchCount = 0, searchMapSize = 0;
+                for (searchKey in searchMap) {
+                    if (searchKey.indexOf("default") != -1) {
+                        for (name in attributes) {
+                            if (attributes.hasOwnProperty(name)) {
+                                if (attributes[name].toLowerCase().indexOf(searchMap[searchKey]) !== -1) {
+                                    return true;
+                                }
+                            }
+                        }
+                    } else {
+                        if (attributes.hasOwnProperty(searchKey)) {
+                            if (attributes[searchKey].toLowerCase().indexOf(searchMap[searchKey]) !== -1) {
+                                matchCount++;
+
+                            }
+                        } else { // if one key is misspelled or wrong in a query, skip it and search for other params
+                            matchCount++;
                         }
                     }
+                    searchMapSize++;
+                }
+                if (matchCount == searchMapSize) {
+                    return true;
                 }
                 return false;
             });
         }
+
         if (options.tag) {
             var registry = that.registry,
                 tag = options.tag;
