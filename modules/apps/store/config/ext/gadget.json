@@ -46,16 +46,7 @@
             "name": "search",
             "value": "false"
         }
-    ],
-
-    "fields": [
-        {
-            "name": "test",
-            "table": "overview",
-            "label": "test",
-            "type": "options-text",
-            "values": "Generic,Provided"
-        },
-
     ]
+
+
 }
