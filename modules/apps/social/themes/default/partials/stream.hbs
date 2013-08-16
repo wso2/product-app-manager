@@ -12,6 +12,8 @@
 			</li>
 		</ul>
 	</div>
+     
+     
 	{{#each comments}}
 	<div class="row com-stream-comment">
 		<div class="com-left">
@@ -19,12 +21,12 @@
 		</div>
 		<div class="com-right">
 			<div class="clear">
-				<strong class="com-author">{{author}}</strong>
+				<strong class="com-author">{{payload_user}}</strong>
 				<div class="com-rating">
-					<div class="com-rating-{{rating}}star"></div>
+					<div class="com-rating-{{payload_rating}}star"></div>
 				</div>
 				<p>
-					{{comment}}
+					{{payload_body}}
 				</p>
 			</div>
 			<div class="row">

@@ -6,13 +6,12 @@ var Event = org.wso2.carbon.databridge.commons.Event;
 var publishEvent = function (dataPublisher, streamId, activity_type, asset, parent_id, parent_type, user, body, replies, rating) {
 
 	var all = {activity_type:activity_type, asset:asset, parent_id:parent_id, parent_type:parent_type, user:user, body:body, replies:replies, rating:rating};
-
 	var activity_type = new java.lang.String(activity_type);
-       	var asset = new java.lang.String(asset);
+    var asset = new java.lang.String(asset);
 	var parent_id = new java.lang.String(parent_id);
 	var parent_type = new java.lang.String(parent_type);
-       	var user = new java.lang.String(user);
-      	var body = new java.lang.String(body);
+    var user = new java.lang.String(user);
+    var body = new java.lang.String(body);
 	var replies = new java.lang.String(replies);
 	var rating = new java.lang.String(rating);
 	var full = new java.lang.String(all);
@@ -54,6 +53,7 @@ var getStreamId	= function(stream,version){
 };
 
 var initPublisher = function(activity_type, asset, parent_id, parent_type, user, body, replies, rating){
+	
 //TODO move following values to the config
 	var host = "localhost";
 	var url = "tcp://" + host + ":" + "7611";
@@ -72,4 +72,10 @@ var initPublisher = function(activity_type, asset, parent_id, parent_type, user,
 			dataPublisher.stop();
 		}
 };
+
+var getComments = function(stream){
+	var db = new Database("jdbc:cassandra://localhost:9160/EVENT_KS?version=2.0.0","admin","admin",{"driverClassName":"org.apache.cassandra.cql.jdbc.CassandraDriver"});
+	var result = db.query("SELECT * FROM org_wso2_ues_social_comments_stream");
+	return result;
+}
 
