@@ -48,7 +48,7 @@ var populate = function () {
                     url: path + name + '.xml',
                     thumbnail: path + 'thumbnail.jpg',
                     banner: path + 'banner.jpg',
-                    status: 'CREATED'
+                    status: 'PUBLISHED'
                 });
             }
         }
