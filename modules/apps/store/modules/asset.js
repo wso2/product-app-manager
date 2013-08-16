@@ -38,22 +38,32 @@ var log = new Log();
                 var matchCount = 0, searchMapSize = 0;
                 for (searchKey in searchMap) {
                     if (searchKey.indexOf("default") != -1) {
-                        for (name in attributes) {
-                            if (attributes.hasOwnProperty(name)) {
-                                if (attributes[name].toLowerCase().indexOf(searchMap[searchKey]) !== -1) {
-                                    return true;
+                        if (attributes.hasOwnProperty('overview_status')) {
+                            if (attributes['overview_status'].toLowerCase().indexOf('published') !== -1) {
+                                for (name in attributes) {
+                                    if (attributes.hasOwnProperty(name)) {
+                                        if (attributes[name].toLowerCase().indexOf(searchMap[searchKey]) !== -1) {
+                                            return true;
+                                        }
+                                    }
                                 }
                             }
                         }
-                    } else {
-                        if (attributes.hasOwnProperty(searchKey)) {
-                            if (attributes[searchKey].toLowerCase().indexOf(searchMap[searchKey]) !== -1) {
-                                matchCount++;
 
+                    } else {
+                        if (attributes.hasOwnProperty('overview_status')) {
+                            if (attributes['overview_status'].toLowerCase().indexOf('published') !== -1) {
+                                if (attributes.hasOwnProperty(searchKey)) {
+                                    if (attributes[searchKey].toLowerCase().indexOf(searchMap[searchKey]) !== -1) {
+                                        matchCount++;
+
+                                    }
+                                } else { // if one key is misspelled or wrong in a query, skip it and search for other params
+                                    matchCount++;
+                                }
                             }
-                        } else { // if one key is misspelled or wrong in a query, skip it and search for other params
-                            matchCount++;
                         }
+
                     }
                     searchMapSize++;
                 }
@@ -68,7 +78,12 @@ var log = new Log();
             var registry = that.registry,
                 tag = options.tag;
             return that.manager.find(function (artifact) {
-                return registry.tags(artifact.path).indexOf(tag) != -1;
+                if(registry.tags(artifact.path).indexOf(tag) != -1){
+                    if (artifact.attributes['overview_status'].toLowerCase().indexOf('published') !== -1) {
+                        return true;
+                    }
+                }
+                return false;
             });
         }
         if (options.attributes) {
@@ -82,7 +97,12 @@ var log = new Log();
                         }
                     }
                 }
-                return true;
+                if (attributes.hasOwnProperty('overview_status')) {
+                    if (attributes['overview_status'].toLowerCase().indexOf('published') !== -1) {
+                        return true;
+                    }
+                }
+                return false;
             });
         }
         return [];
@@ -210,6 +230,10 @@ var log = new Log();
         return loadRatings(this, this.sorter.paginate(search(this, options), paging));
     };
 
+    Manager.prototype.checkTagAssets = function (options) {
+        return search(this, options);
+    };
+
     /*
      * Assets matching the filter
      */
@@ -251,7 +275,19 @@ var log = new Log();
      * Assets matching the filter
      */
     Manager.prototype.list = function (paging) {
-        var all = this.manager.list(paging);
+        var all = this.manager.find(function (asset) {
+            var name,
+                attributes = asset.attributes;
+            if (attributes.hasOwnProperty('overview_status')) {
+
+                if (attributes['overview_status'].toLowerCase().indexOf('published') !== -1) {
+                    return true;
+                }
+            }
+
+            return false;
+        });
+
         return loadRatings(this, this.sorter.paginate(all, paging));
     };
 
@@ -259,7 +295,20 @@ var log = new Log();
         if (options) {
             return search(this, options).length;
         }
-        return this.manager.count();
+        var publishedCount = 0;
+        this.manager.find(function (asset) {
+            var name,
+                attributes = asset.attributes;
+            if (attributes.hasOwnProperty('overview_status')) {
+
+                if (attributes['overview_status'].toLowerCase().indexOf('published') !== -1) {
+                    publishedCount ++;
+                }
+            }
+        });
+
+        //return this.manager.count();
+        return publishedCount;
     };
 
     /*
