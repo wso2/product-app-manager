@@ -104,7 +104,7 @@ var tags, init, assets, asset, assetLinks, tagged, popularAssets, recentAssets, 
 				assetType = tags[i].split(';')[0].split('/')[3];
 				if(assetType != undefined) {
 					if(assetType.contains(type)) {
-						tag = tags[i].split(';')[1].split(':')[1];
+                        tag = tags[i].split(';')[1].split(':')[1];
 						count = tz[tag];
 						count = count ? count + 1 : 1;
 						tz[tag] = count;
@@ -112,14 +112,17 @@ var tags, init, assets, asset, assetLinks, tagged, popularAssets, recentAssets, 
 				}
 			}
 		}
-		for(tag in tz) {
-			if(tz.hasOwnProperty(tag)) {
-				tagz.push({
-					name : String(tag),
-					count : tz[tag]
-				});
-			}
-		}
+        for(tag in tz) {
+            if(tz.hasOwnProperty(tag)) {
+                var result = assetManager(type).checkTagAssets({tag: tag });
+                if (result.length > 0) {
+                    tagz.push({
+                        name: String(tag),
+                        count: tz[tag]
+                    });
+                }
+            }
+        }
 
 		return tagz;
 	};
@@ -153,7 +156,7 @@ var tags, init, assets, asset, assetLinks, tagged, popularAssets, recentAssets, 
 						assetz[i].indashboard = false;
 					}
 				}
-			
+
 			return assetz;
 	};
 	tagged = function(type, tag, paging) {
@@ -216,7 +219,7 @@ var tags, init, assets, asset, assetLinks, tagged, popularAssets, recentAssets, 
 				recent[i].indashboard = true;
 					}else{
 						recent[i].indashboard = false;
-					}		
+					}
 		}
 		return recent;
 	};
@@ -282,7 +285,7 @@ var tags, init, assets, asset, assetLinks, tagged, popularAssets, recentAssets, 
 						assetz[i].indashboard = false;
 					}
 				}
-			
+
 			return assetz;
 
 
@@ -311,7 +314,7 @@ var tags, init, assets, asset, assetLinks, tagged, popularAssets, recentAssets, 
             if(userown.length>0){
                 return true;
                 }else{
-                    return false;                    
+                    return false;
                     }
         }
         }else{
