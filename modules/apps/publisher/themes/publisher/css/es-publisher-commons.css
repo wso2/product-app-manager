@@ -227,7 +227,7 @@ input, button, select, textarea {
     	overflow:hidden;
 }
 .publisher-left-nav + div.content-div{
-	margin-left: 220px;
+	margin-left: 205px;
 	overflow:hidden;
 }
 .asset-thumb-container:after,.content-div:after{
@@ -346,8 +346,8 @@ input, button, select, textarea {
 	margin-top:20px;
 	font-size:13px;
 }
-.form-horizontal{
-	font-size:13px;
+.content-div .form-horizontal{
+	font-size:14px;
 }
 label, input, button, select, textarea{
 	font-size:13px;
@@ -635,7 +635,7 @@ td.asset-listing-btn{
     background-color: #FCFCFC;
 }
 .content-div > .row-fluid > .form-horizontal{
-	margin: 20px 30px 30px 0;
+	margin: 20px 30px 30px 20px;
 }
 .icon_block{
 	display:inline-block;
@@ -715,4 +715,8 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 }
 .ribbon .btn{
     border-radius: 0;
+}
+span.title{
+    color:#848484;
+    font-size:1.2em;
 }
