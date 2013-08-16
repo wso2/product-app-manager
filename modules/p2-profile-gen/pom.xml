@@ -41,6 +41,44 @@
                             </artifactItems>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>1-unpack-kernel-patch</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.wso2.carbon</groupId>
+                                    <artifactId>WSO2-CARBON-PATCH-4.1.0</artifactId>
+                                    <version>0001</version>
+                                    <type>zip</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>target</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>2-unpack-kernel-patch</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.wso2.carbon</groupId>
+                                    <artifactId>WSO2-CARBON-PATCH-4.1.0</artifactId>
+                                    <version>0002</version>
+                                    <type>zip</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>target</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
@@ -75,25 +113,28 @@
                                 <featureArtifactDef>caramel:caramel.feature:${caramel.feature.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.governance.metadata.feature:${carbon.platform.version}
+                                    org.wso2.carbon:org.wso2.carbon.governance.metadata.feature:${patch.version.413}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.registry.associations.dependencies.feature:${carbon.platform.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.registry.community.features.feature:${carbon.platform.version}
+                                    org.wso2.carbon:org.wso2.carbon.registry.community.features.feature:${patch.version.413}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.registry.extensions.feature:${carbon.platform.version}
+                                    org.wso2.carbon:org.wso2.carbon.registry.extensions.feature:${patch.version.413}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.registry.core.feature:${carbon.platform.version}
+                                    org.wso2.carbon:org.wso2.carbon.registry.core.feature:${patch.version.413}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.registry.ui.menu.feature:${carbon.platform.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.registry.resource.properties.feature:${carbon.platform.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.registry.contentsearch.server.feature:${patch.version.413}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.jaxws.webapp.mgt.feature:${carbon.platform.version}
@@ -127,7 +168,7 @@
                                     org.wso2.carbon:org.wso2.carbon.identity.core.feature:${carbon.platform.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.governance.metadata.server.feature:${carbon.platform.version}
+                                    org.wso2.carbon:org.wso2.carbon.governance.metadata.server.feature:${patch.version.413}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.server.feature:${carbon.platform.version}
@@ -202,7 +243,7 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.registry.core.feature.group</id>
-                                    <version>${carbon.platform.version}</version>
+                                    <version>${patch.version.413}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.registry.ui.menu.feature.group</id>
@@ -213,8 +254,12 @@
                                     <version>${carbon.platform.version}</version>
                                 </feature>
                                 <feature>
+                                    <id>org.wso2.carbon.registry.contentsearch.server.feature.group</id>
+                                    <version>${patch.version.413}</version>
+                                </feature>
+                                <feature>
                                     <id>org.wso2.carbon.registry.extensions.feature.group</id>
-                                    <version>${carbon.platform.version}</version>
+                                    <version>${patch.version.413}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.jaxws.webapp.mgt.feature.group</id>
@@ -260,7 +305,7 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.governance.metadata.server.feature.group</id>
-                                    <version>${carbon.platform.version}</version>
+                                    <version>${patch.version.413}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.event.server.feature.group</id>
