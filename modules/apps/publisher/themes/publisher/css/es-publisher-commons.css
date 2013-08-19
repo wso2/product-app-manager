@@ -227,7 +227,7 @@ input, button, select, textarea {
     	overflow:hidden;
 }
 .publisher-left-nav + div.content-div{
-	margin-left: 220px;
+	margin-left: 205px;
 	overflow:hidden;
 }
 .asset-thumb-container:after,.content-div:after{
@@ -305,17 +305,17 @@ input, button, select, textarea {
 	top:0;
 	left:0;
 }
-.banner-div{
-	margin:10px 10px 20px;
+.thumbnail-div{
+	margin:4px;
 }
-.banner-div img{
+.thumbnail-div img{
 	max-width:300px;
 	max-height:300px;
 	width:100%;
 }
 .asset-view-details{
 	font-size:14px;
-	margin:0 10px 20px;
+	margin:30px 2px;
 }
 .asset-view-details h3{
 	font-size:22px;
@@ -343,11 +343,11 @@ input, button, select, textarea {
 	line-height:26px;
 }
 .asset-view-table{
-	margin-top:20px;
+	margin-top:30px;
 	font-size:13px;
 }
-.form-horizontal{
-	font-size:13px;
+.content-div .form-horizontal{
+	font-size:14px;
 }
 label, input, button, select, textarea{
 	font-size:13px;
@@ -512,8 +512,7 @@ td.asset-listing-btn{
     line-height: 16px;
     overflow: hidden;
     padding: 5px 10px;
-    float:left;
-	margin:10px;
+	margin:10px 0;
     text-overflow: ellipsis;
    	vertical-align: top;
 	width:200px;
@@ -526,6 +525,7 @@ td.asset-listing-btn{
 	top:10px;
 	font-size:20px;
 	font-weight:700;
+    text-transform: capitalize;
 }
 .infobox-bottom-text{
 	margin-top:4px;
@@ -635,7 +635,7 @@ td.asset-listing-btn{
     background-color: #FCFCFC;
 }
 .content-div > .row-fluid > .form-horizontal{
-	margin: 20px 30px 30px 0;
+	margin: 20px 30px 30px 20px;
 }
 .icon_block{
 	display:inline-block;
@@ -715,4 +715,40 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 }
 .ribbon .btn{
     border-radius: 0;
+}
+span.title{
+    color:#848484;
+    font-size:1.2em;
+}
+.banner-div{
+    height: 299px;
+    left: 0;
+    overflow: hidden;
+    position: relative;
+    width: 600px;
+    float: left;
+}
+.asset-details-box{
+    border-left: 1px solid #ECF0F1;
+    bottom: 0;
+    float: left;
+    height: 259px;
+    left: -20px;
+    padding: 20px;
+    position: relative;
+    top: 0;
+}
+.asset-details-box > .thumbnail-div > img{
+    width:100px;
+}
+.asset-details-box > h3{
+    color: #848484;
+    font-variant: small-caps;
+    font-weight: inherit;
+    letter-spacing: 2px;
+    list-style: none outside none;
+    text-transform: capitalize;
+}
+.asset-detail-top-row{
+    border-bottom: 1px solid #ECF0F1;
 }

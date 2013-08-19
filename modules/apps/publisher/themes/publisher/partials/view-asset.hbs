@@ -1,67 +1,72 @@
 <div class='content-div'>
+	<div class="row-fluid grid-options">
+        <span class="breadcrumb publisher-breadcrumb">Category > {{shortName}} > <span class="title">{{{snoop "fields(name=overview_name).value" this.data}}}</span></span>
+	</div>
 	<div class="row-fluid">
-		<div class="span12">
-                    <h3 class="publisher-heading1"><img src="{{url "/themes/publisher/img/twitter_logo_2012.png"}}" class="asset-header-icon" /> Twitter Mobile App</h3>
-                    <ul class="nav nav-tabs tabs" id="asset_view_tabs">
+	    <ul class="nav nav-tabs tabs" id="asset_view_tabs">
                         <li class="active"><a id="viewLink" data-toggle="tab" href="#view"><i class=" icon-list-alt"></i> Overview</a></li>
                         <li class=""><a id="editLink" data-toggle="tab" href="#edit"><i class="icon-edit"></i> Edit</a></li>
                         <li class=""><a id="lifecyclesLink" data-toggle="tab" href="#lifecycles"><i class="icon-lifecycle"></i> Life Cycle</a></li>
                         <li class=""><a id="versionsLink" data-toggle="tab" href="#versions"><i class="icon-th-list"></i> Versions</a></li>
                         <li class=""><a id="docsLink" data-toggle="tab" href="#docs"><i class="icon-file"></i> Docs</a></li>
-                    </ul>
-                </div>
+        </ul>
 	</div>
 	<div class="tab-content asset-tab-content">
 		<div id="view" class="tab-pane fade in active">
-                    	<div class="row-fluid">
-		                <div class="span3">
-		                    <div class="banner-div">
-                                <p></p>
-		                       <!-- <img src="{{url "/themes/publisher/img/twitter_logo_2012.png"}}" class="" />-->
-                                <img src="{{{snoop "fields(name=images_banner).value" this.data}}}" class=""/>
-		                    </div>
-		                </div>
-                        	<div class="span9">
-		                    	<div class="row-fluid">
-		                        	<div class="span12  asset-view-details info-box-container">
-		                            		<div class="infobox block-orange">
-						                <div class="infobox-icon">
-						                    <i class="icon-user icon-4x"></i>
-						                </div>
-		                                		<span class="infobox-bottom-text">Users</span>
-		                                		<span class="infobox-sub-text">203</span>
-		                            		</div>
-		                            		<div class="infobox block-green">
-		                                		<div class="infobox-icon">
-		                                    			<i class="icon-retweet"></i>
-		                                		</div>
-		                                		<span class="infobox-bottom-text">Lifecycle</span>
-		                                		<span class="infobox-sub-text">{{data.info.lifecycle}}</span>
-		                            		</div>
-		                            		<div class="infobox block-blue">
-		                                		<div class="infobox-icon">
-		                                    			<i class="icon-qrcode"></i>
-		                                		</div>
-		                                		<span class="infobox-bottom-text">Version</span>
-		                                		<span class="infobox-sub-text">{{data.info.version}}</span>
-		                            		</div>
-		                        	</div>
-		                    	</div>
-		                    	<table class="table table-bordered asset-view-table">
-		                        	<tbody>
-						{{#each data.fields}}
-							<tr>
-								<td class="span3">{{this.label}}</td>
-								<td>
-									{{this.value}}
-								</td>		
-							</tr>
-						{{/each}}
-		                        	</tbody>
-		                    	</table>
-				</div>
+            <div class="row-fluid">
+                <div class="span12 asset-detail-top-row">
+                        <div class="banner-div">
+		                    <img src="{{{snoop "fields(name=images_banner).value" this.data}}">
+		               	</div>
+		               	<div class="asset-details-box">
+                            <div class="thumbnail-div">
+                                <img src="{{{snoop "fields(name=images_thumbnail).value" this.data}}}" class=""/>
+
+                            </div>
+                            <h3>{{{snoop "fields(name=overview_name).value" this.data}}}</h3>
                         </div>
                 </div>
+            </div>
+		    <div class="row-fluid asset-details-row">
+		                <div class="span3">
+		                    <div class="asset-view-details info-box-container">
+                                <div class="infobox block-orange">
+                                    <div class="infobox-icon">
+                                        <i class="icon-user icon-4x"></i>
+                                    </div>
+                                    <span class="infobox-bottom-text">Provider</span>
+                                    <span class="infobox-sub-text">{{{snoop "fields(name=overview_provider).value" this.data}}}</span>
+                                </div>
+                                <div class="infobox block-green">
+                                    <div class="infobox-icon">
+                                        <i class="icon-retweet"></i>
+                                    </div>
+                                    <span class="infobox-bottom-text">Lifecycle</span>
+                                    <span class="infobox-sub-text">{{{snoop "fields(name=overview_status).value" this.data}}}</span>
+                                </div>
+                                <div class="infobox block-blue">
+                                    <div class="infobox-icon">
+                                        <i class="icon-qrcode"></i>
+                                    </div>
+                                    <span class="infobox-bottom-text">Version</span>
+                                    <span class="infobox-sub-text">{{data.info.version}}</span>
+                                </div>
+		                    </div>
+		                </div>
+		                <div class="span9">
+		                    <table class="table table-bordered asset-view-table">
+                                <tbody>
+                                {{#each data.fields}}
+                                    <tr>
+                                        <td class="span3">{{this.label}}</td>
+                                        <td>{{this.value}}</td>
+                                    </tr>
+                                {{/each}}
+                                </tbody>
+                            </table>
+		                </div>
+		    </div>
+        </div>
 		<div id="edit" class="tab-pane fade in">
                 	<div class="row-fluid">
                         	<div class="span12">

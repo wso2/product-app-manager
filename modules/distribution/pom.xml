@@ -27,7 +27,11 @@
             <artifactId>el-api</artifactId>
             <version>2.2</version>
         </dependency>
-		
+        <dependency>
+            <groupId>org.wso2.carbon</groupId>
+            <artifactId>org.wso2.carbon.registry.common</artifactId>
+            <version>${patch.version.413}</version>
+        </dependency>
     </dependencies>
 
     <build>
