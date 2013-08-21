@@ -10,6 +10,6 @@
         "overview_provider": "admin",
         "overview_description": "This redirects you to the Smashing Magazine site which is an online magazine for professional Web designers and developers, with a focus on useful techniques, best practices and valuable resources",
         "images_thumbnail": "/smashingMagazine/thumbnail.jpg",
-        "images_banner": "/smashingMagazine/banner.jpg"
+        "images_banner": "/smashingMagazine/banner.png"
     }
 }
