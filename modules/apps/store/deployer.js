@@ -1,6 +1,8 @@
 var gadgetRxtPath = '/gadgets/';
+var siteRxtPath = '/sites/';
 
 var repoPath = '/gadgets';
+var repoSitePath = '/sites';
 
 var lastUpdated = 0;
 
@@ -11,13 +13,17 @@ require('/app.js');
 
 var store = require('/store.js').config();
 
+
+var deployer = require('/modules/deployer.js'),
+    context = caramel.configs().context,
+    log = new Log('store.deployer');
+
+//var log = new Log();
+
 var populate = function () {
     var i, name, length, gadgets, file, path, xml,
-        log = new Log('store.deployer'),
-        repo = new File(repoPath),
-        deployer = require('/modules/deployer.js'),
-        context = caramel.configs().context,
-        base = store.server.http + context + gadgetRxtPath;
+    repo = new File(repoPath),
+    base = store.server.http + context + gadgetRxtPath;
 
     if (repo.isDirectory()) {
         gadgets = repo.listFiles();
@@ -33,6 +39,7 @@ var populate = function () {
                     log.info('Deploying Gadget : ' + name);
                 }
                 path = base + name + '/';
+
                 file.open('r');
                 var fileContent = file.readAll();
                 fileContent = fileContent.replace(/^\s*<\?.*\?>\s*/, "");
@@ -55,10 +62,7 @@ var populate = function () {
         if (typeof(Session["started"]) == "undefined") {
             log.info('Default gadgets deployed');
         }
-        Session["started"] = true;
-
     }
-    lastUpdated = new Date().getTime();
 };
 
 var skipGadgets = function (name) {
@@ -88,15 +92,52 @@ var logstoreUrl = function () {
     log.info("UES store URL : " + store.server.http + caramel.configs().context);
 };
 
+var populateSites = function () {
+    var i, name, length, sites,siteJson, file, path, xml,temp,
+        repo = new File(repoSitePath),
+        base = store.server.http + context + siteRxtPath;
+
+        if (repo.isDirectory()) {
+        sites = repo.listFiles();
+        length = sites.length;
+        for (i = 0; i < length; i++) {
+            name = sites[i].getName();
+            var siteJson = require('/sites/'+ name + '/site.json');
+
+                var path = base + name + '/';
+                deployer.site({
+                    name: siteJson.name,
+                    tags: siteJson.tags.split(','),
+                    rate: siteJson.rate,
+                    provider: siteJson.attributes.overview_provider,
+                    version: siteJson.attributes.overview_version,
+                    description: siteJson.attributes.overview_description,
+                    url: siteJson.attributes.overview_url,
+                    thumbnail: base + siteJson.attributes.images_thumbnail,
+                    banner: base + siteJson.attributes.images_banner,
+                    status: siteJson.attributes.overview_status
+                });
+
+                if (typeof(Session["started"]) == "undefined") {
+                    log.info('Default sites deployed');
+                }
+                Session["started"] = true;
+
+        }
+    }
+    lastUpdated = new Date().getTime();
+};
+
 populate();
+populateSites();
 addSSOConfig();
 /*
-setInterval(function () {
-    //TEMP fix for task not clearing properly during server shutdown
-    try {
-        populate();
-    } catch (e) {
-    }
-}, DEPLOYING_INTERVAL);
-setTimeout(logstoreUrl, 5000);
-*/
+ setInterval(function () {
+ //TEMP fix for task not clearing properly during server shutdown
+ try {
+ populate();
+ } catch (e) {
+ }
+ }, DEPLOYING_INTERVAL);
+ setTimeout(logstoreUrl, 5000);
+ */

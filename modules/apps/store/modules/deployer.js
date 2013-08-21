@@ -1,12 +1,12 @@
 var site = function (options) {
-    var meta, tag, tags,
+    var tag, tags,
         carbon = require('carbon'),
         path = '/_system/governance/sites/' + options.provider + '/' + options.name + '/' + options.version,
         server = require('/modules/server.js'),
-        site = require('/modules/site-browser.js'),
+        //site = require('/modules/site-browser.js'),
         registry = server.systemRegistry(),
-        um = server.userManager(),
-        metapath = site.SITE_METADATA + options.site;
+        um = server.userManager();
+        //metapath = site.SITE_METADATA + options.site;
 
     registry.put(path, {
         mediaType: 'application/vnd.wso2-site+xml',
@@ -14,28 +14,29 @@ var site = function (options) {
     });
     um.authorizeRole(carbon.user.anonRole, path, carbon.registry.actions.GET);
 
-	if(options.roles != undefined){
+	/*if(options.roles != undefined){
 		site.authorizeRoles(options.site, options.roles, options.action);
 	}
 	if (options.users != undefined){
 		site.authorizeUsers(options.site, options.users, options.action);
-	}
-    meta = registry.exists(metapath) ? parse(registry.content(metapath).toString()) : {};
-    meta.aid = path;
-    registry.put(metapath, {
+	}*/
+    //meta = registry.exists(metapath) ? parse(registry.content(metapath).toString()) : {};
+    //meta.aid = path;
+    /*registry.put(metapath, {
         content: stringify(meta)
-    });
+    }); */
     tags = options.tags;
-     for (tag in tags) {
+    for (tag in tags) {
         if (tags.hasOwnProperty(tag)) {
             registry.tag(path, options.tags[tag]);
         }
     }
-	rate = options.rate;
-		if(options.rate != undefined){
-			registry.rate(path, rate);
-		}
-};
+    rate = options.rate;
+    if(options.rate != undefined){
+        registry.rate(path, rate);
+    }
+
+}
 
 var gadget = function (options) {
     var tag, tags,
@@ -55,10 +56,10 @@ var gadget = function (options) {
             registry.tag(path, options.tags[tag]);
         }
     }
-	rate = options.rate;
-		if(options.rate != undefined){
-			registry.rate(path, rate);
-		}
+    rate = options.rate;
+    if(options.rate != undefined){
+        registry.rate(path, rate);
+    }
 };
 
 var buildGadgetRXT = function (options) {
