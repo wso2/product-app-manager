@@ -108,7 +108,7 @@ $(function () {
         var url, searchVal = $('#search').val();
         currentPage = 1;
         if (store.asset) {
-            url = caramel.url('/assets/' + store.asset.type + '/?query=' + searchVal);
+            url = caramel.url('/assets/' + store.asset.type + '/?fields=true&' + searchVal);
             caramel.data({
                 title : null,
                 header : ['sort-assets'],
@@ -268,11 +268,11 @@ $(function () {
             var $this = $(this);
             if ($('#search').val().length > 0 ){
                 if ($this.find('input').val().length>0){
-                    $('#search').val($('#search').val()+','+$this.find('label').text()+':'+$this.find('input').val());
+                    $('#search').val($('#search').val()+'&'+$this.find('input').attr('name') +'='+$this.find('input').val());
                 }
             } else{
                 if ($this.find('input').val().length>0){
-                    $('#search').val($this.find('label').text()+':'+$this.find('input').val());
+                    $('#search').val($this.find('input').attr('name') +'='+$this.find('input').val());
                 }
             }
 

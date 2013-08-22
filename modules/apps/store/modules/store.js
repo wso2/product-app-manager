@@ -27,7 +27,7 @@ var tags, init, assets, asset, assetLinks, tagged, popularAssets, recentAssets, 
 		}
 		manager = assetManagers[type];
 		if(manager) {
-			return manager;
+			//return manager;
 		}
 		reg = registry();
 		return (assetManagers[type] = new azzet.Manager(reg, type));
@@ -150,7 +150,7 @@ var tags, init, assets, asset, assetLinks, tagged, popularAssets, recentAssets, 
 	assets = function(type, paging) {
 			var assetz = assetManager(type).list(paging);
 			for(i =0; i < assetz.length;i++){
-				if(isuserasset(assetz[i].path,type)){
+				if(isuserasset(assetz[i].id,type)){
 					assetz[i].indashboard = true;
 						}else{
 						assetz[i].indashboard = false;
@@ -164,8 +164,8 @@ var tags, init, assets, asset, assetLinks, tagged, popularAssets, recentAssets, 
 			tag : tag
 		}, paging), length = assets.length;
 		for( i = 0; i < length; i++) {
-            assets[i].rating = rating(assets[i].path);
-			if(isuserasset(assets[i].path,type)){
+            assets[i].rating = rating(assets[i].id);
+			if(isuserasset(assets[i].id,type)){
 			assets[i].indashboard = true;
 				}else{
 				assets[i].indashboard = false;
@@ -214,8 +214,8 @@ var tags, init, assets, asset, assetLinks, tagged, popularAssets, recentAssets, 
 		});
 		length = recent.length;
 		for( i = 0; i < length; i++) {
-			recent[i].rating = rating(recent[i].path).average;
-			if(isuserasset(recent[i].path,type)){
+			recent[i].rating = rating(recent[i].id).average;
+			if(isuserasset(recent[i].id,type)){
 				recent[i].indashboard = true;
 					}else{
 						recent[i].indashboard = false;
@@ -279,7 +279,7 @@ var tags, init, assets, asset, assetLinks, tagged, popularAssets, recentAssets, 
 		if(type) {
 			var assetz = assetManager(type).search(options, paging);
 			for(i =0; i < assetz.length;i++){
-				if(isuserasset(assetz[i].path,type)){
+				if(isuserasset(assetz[i].id,type)){
 					assetz[i].indashboard = true;
 						}else{
 						assetz[i].indashboard = false;
@@ -307,8 +307,8 @@ var tags, init, assets, asset, assetLinks, tagged, popularAssets, recentAssets, 
         var userAssets = store.userAssets();
         if(userAssets[type] != undefined){
         for(j = 0; j < userAssets[type].length; j++){
-            if(userAssets[type][j]['path']==aid){
-                userown = userAssets[type][j]['path'];
+            if(userAssets[type][j]['id']==aid){
+                userown = userAssets[type][j]['id'];
             }
         }
             if(userown.length>0){

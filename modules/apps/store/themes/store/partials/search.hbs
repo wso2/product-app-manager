@@ -23,7 +23,7 @@
 						{{#if this.search}}
 						<div>
 							<label>{{field_label}}</label>
-							<input type="text" class="span12" id={{field_name}} placeholder="">
+							<input type="text" class="span12" id="{{field_label}}" name="{{field_label}}" placeholder="">
 						</div>
 						{{/if}}
 						{{/each}}
@@ -32,7 +32,7 @@
 						{{#each searchFields}}
 						<div>
 							<label>{{field_label}}</label>
-							<input type="text" class="span12" id={{field_name}} placeholder="">
+							<input type="text" class="span12" id="{{field_label}}" name="{{field_label}}" placeholder="">
 						</div>
 						{{/each}}
 

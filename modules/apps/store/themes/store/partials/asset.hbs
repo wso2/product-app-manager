@@ -35,20 +35,20 @@
 
                         {{#if ../../inDashboard}}
                             <a id="btn-add-gadget" class="btn disabled" href="#modal-add-gadget" data-toggle="modal"
-                            data-aid="{{../../path}}" data-type="{{../../type}}"> {{t "Bookmarked"}} </a>
+                            data-aid="{{../../id}}" data-type="{{../../type}}"> {{t "Bookmarked"}} </a>
 						{{else}}
 			
 							{{#if ../../../sso}}
 								{{#if ../../../../user.username}}
  									<a id="btn-add-gadget" class="btn btn-primary" href="#modal-add-gadget" data-toggle="modal"
-                             		data-aid="{{../../../../path}}" data-type="{{../../../../type}}"> {{t "Bookmark "}}</a>
+                             		data-aid="{{../../../../id}}" data-type="{{../../../../type}}"> {{t "Bookmark "}}</a>
 								{{else}}			
 			 						<a id="btn-add-gadget" class="btn btn-primary" href="{{url "/login.jag"}}" data-toggle="modal"
-                             		data-aid="{{../../../../path}}" data-type="{{../../../../type}}"> {{t "Bookmark "}}</a>
+                             		data-aid="{{../../../../id}}" data-type="{{../../../../type}}"> {{t "Bookmark "}}</a>
 								{{/if}}
 							{{else}}
 			 					<a id="btn-add-gadget" class="btn btn-primary" href="#modal-add-gadget" data-toggle="modal"
-                            	data-aid="{{../../path}}" data-type="{{../../type}}"> {{t "Bookmark "}}</a>
+                            	data-aid="{{../../id}}" data-type="{{../../type}}"> {{t "Bookmark "}}</a>
 							{{/if}}
 			    
 						{{/if}}
@@ -69,7 +69,7 @@
 
             <div class="assetp-properties">
 
-                <ul class="nav nav-tabs" id="assetp-tabs" data-aid="{{../path}}">
+                <ul class="nav nav-tabs" id="assetp-tabs" data-aid="{{../id}}">
                     <li class="active">
                         <a href="#tab-properties" data-toggle="tab" data-type="basic">{{t "Description"}}</a>
                     </li>

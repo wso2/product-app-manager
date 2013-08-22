@@ -21,7 +21,7 @@
     ],
 
     "link": [
-        "overview.stage:value=*.lifecycleState",
+        "overview.stage:value=*.lifecycleState"
     ],
 
     "fieldProperties": [
