@@ -10,8 +10,8 @@
                 "overview_url": "http://www.ebay.com/",
                 "overview_provider": "admin",
                 "overview_description": "This redirects you to the Ebay site which is of an American multinational internet consumer-to-consumer corporation",
-                "images_thumbnail":"/ebay/thumbnail.jpg",
-                "images_banner": "/ebay/banner.jpg"
+                "images_thumbnail":"/ebay/thumbnail.png",
+                "images_banner": "/ebay/banner.png"
 
 
             }

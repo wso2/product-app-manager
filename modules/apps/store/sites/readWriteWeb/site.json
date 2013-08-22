@@ -9,7 +9,7 @@
         "overview_url": "http://readwrite.com/",
         "overview_provider": "admin",
         "overview_description": "This redirects you to the Read Write Web site which  is a popular weblog that provides Web Technology news, reviews and analysis, covering web apps, web technology trends, social networking and social media",
-        "images_thumbnail": "/readWriteWeb/thumbnail.jpg",
-        "images_banner": "/readWriteWeb/banner.jpg"
+        "images_thumbnail": "/readWriteWeb/thumbnail.png",
+        "images_banner": "/readWriteWeb/banner.png"
     }
 }

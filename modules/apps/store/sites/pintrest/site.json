@@ -9,7 +9,7 @@
         "overview_url": "https://pinterest.com/",
         "overview_provider": "admin",
         "overview_description": "This redirects you to the Pintrest site which is a pinboard-style photo-sharing website that allows users to create and manage theme-based image collections such as events, interests, and hobbies.",
-        "images_thumbnail": "/pintrest/thumbnail.jpg",
+        "images_thumbnail": "/pintrest/thumbnail.png",
         "images_banner": "/pintrest/banner.png"
     }
 }
