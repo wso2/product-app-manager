@@ -55,7 +55,7 @@ var site = function (options) {
 };
 
 var book = function (options) {
-    var tag, tags, rate, asset, assets, category,
+    var tag, tags, rate, asset, assets,
         carbon = require('carbon'),
         store = require('/modules/store.js'),
         path = '/_system/governance/books/' + options.provider + '/' + options.name + '/' + options.version,
@@ -105,8 +105,6 @@ var book = function (options) {
             registry.tag(path, options.tags[tag]);
         }
     }
-
-    category = options.category;
 
     rate = options.rate;
     if (options.rate != undefined) {

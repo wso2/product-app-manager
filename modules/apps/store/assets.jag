@@ -65,7 +65,7 @@ var caramel;
         //advanced search is only allowed for fields under overview section
         for (param in params) {
             if (param !== 'fields' && params.hasOwnProperty(param)) {
-                options.attributes['overview_' + param.trim().toLocaleLowerCase()] = params[param];
+                options.attributes['overview_' + param.trim().toLocaleLowerCase()] = new RegExp(params[param], "i");
                 if(query !== '') {
                     query += '&';
                 }

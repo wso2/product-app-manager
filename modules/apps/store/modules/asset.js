@@ -11,7 +11,7 @@ var log = new Log();
             if (searchAttr.hasOwnProperty(attribute)) {
                 attr = searchAttr[attribute];
                 val = artifactAttr[attribute];
-                return (attr instanceof RegExp) ? attr.match(val) : (attr == val);
+                return (attr instanceof RegExp) ? attr.test(val) : (attr == val);
             }
         }
         return false;
