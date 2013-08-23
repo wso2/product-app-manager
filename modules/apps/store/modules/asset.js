@@ -6,18 +6,22 @@ var log = new Log();
 (function () {
 
     var matchAttr = function (searchAttr, artifactAttr) {
-        var attribute, attr, val;
+        var attribute, attr, val, match;
         for (attribute in searchAttr) {
             if (searchAttr.hasOwnProperty(attribute)) {
                 attr = searchAttr[attribute];
                 val = artifactAttr[attribute];
-                return (attr instanceof RegExp) ? attr.test(val) : (attr == val);
+                match = (attr instanceof RegExp) ? attr.test(val) : (attr == val);
+                if(!match) {
+                    return false;
+                }
             }
         }
-        return false;
+        return true;
     };
 
     var search = function (that, options) {
+        log.info(options);
         if (options.tag) {
             var registry = that.registry,
                 tag = options.tag;
@@ -31,16 +35,20 @@ var log = new Log();
         if (options.query) {
             var query = options.query.toLowerCase();
             return that.manager.find(function (asset) {
-                var name,
+                var name, match,
                     attributes = asset.attributes;
                 for (name in attributes) {
                     if (attributes.hasOwnProperty(name)) {
                         if (attributes[name].toLowerCase().indexOf(query) !== -1) {
-                            return true;
+                            match = true;
+                            break;
                         }
                     }
                 }
-                return false;
+                if(!match) {
+                    return false;
+                }
+                return matchAttr(options.attributes, asset.attributes);
             });
         }
         if (options.attributes) {
@@ -175,7 +183,6 @@ var log = new Log();
 
     Manager.prototype.checkTagAssets = function (options) {
         return search(this, options);
-        return search(this, options);
     };
 
     /*
@@ -218,19 +225,11 @@ var log = new Log();
      * Assets matching the filter
      */
     Manager.prototype.list = function (paging) {
-        var all = this.manager.find(function (asset) {
-            var name,
-                attributes = asset.attributes;
-            if (attributes.hasOwnProperty('overview_status')) {
-
-                if (attributes['overview_status'].toLowerCase().indexOf('published') !== -1) {
-                    return true;
-                }
+        var all = this.search({
+            attributes: {
+                'overview_status': /^(published)$/i
             }
-
-            return false;
-        });
-
+        }, paging);
         return loadRatings(this, this.sorter.paginate(all, paging));
     };
 

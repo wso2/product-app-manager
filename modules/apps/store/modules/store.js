@@ -159,20 +159,22 @@ var tags, init, assets, asset, assetLinks, tagged, popularAssets, recentAssets, 
 
 			return assetz;
 	};
-	tagged = function(type, tag, paging) {
-		var i, assets = assetManager(type).search({
-			tag : tag
-		}, paging), length = assets.length;
-		for( i = 0; i < length; i++) {
+    tagged = function (type, tag, paging) {
+        var i,
+            options = {
+                tag: tag,
+                attributes: {
+                    'overview_status': /^(published)$/i
+                }
+            },
+            assets = assetManager(type).search(options, paging),
+            length = assets.length;
+        for (i = 0; i < length; i++) {
             assets[i].rating = rating(assets[i].id);
-			if(isuserasset(assets[i].id,type)){
-			assets[i].indashboard = true;
-				}else{
-				assets[i].indashboard = false;
-					}
-		}
-		return assets;
-	};
+            assets[i].indashboard = isuserasset(assets[i].id, type);
+        }
+        return assets;
+    };
 	/**
 	 * Returns asset data for the current user
 	 * @param type Asset type
@@ -273,32 +275,28 @@ var tags, init, assets, asset, assetLinks, tagged, popularAssets, recentAssets, 
 		var cache = require('/modules/cache.js'), data = cache.cached(type);
 		delete data[key];
 	};
-	search = function(options, paging) {
-		var i, length, type, types, assets;
-		type = options.type;
-		if(type) {
-			var assetz = assetManager(type).search(options, paging);
-			for(i =0; i < assetz.length;i++){
-				if(isuserasset(assetz[i].id,type)){
-					assetz[i].indashboard = true;
-						}else{
-						assetz[i].indashboard = false;
-					}
-				}
-
-			return assetz;
-
-
-		}
-		types = assetTypes();
-		assets = {};
-		length = types.length;
-		for( i = 0; i < length; i++) {
-			type = types[i];
-			assets[type] = assetManager(types[i]).search(options, paging);
-		}
-		return assets;
-	};
+    search = function (options, paging) {
+        var i, length, types, assets,
+            type = options.type,
+            attributes = options.attributes || (options.attributes = {});
+        //adding status field to get only the published assets
+        attributes['overview_status'] = /^(published)$/i;
+        if (type) {
+            var assetz = assetManager(type).search(options, paging);
+            for (i = 0; i < assetz.length; i++) {
+                assetz[i].indashboard = isuserasset(assetz[i].id, type);
+            }
+            return assetz;
+        }
+        types = assetTypes();
+        assets = {};
+        length = types.length;
+        for (i = 0; i < length; i++) {
+            type = types[i];
+            assets[type] = assetManager(types[i]).search(options, paging);
+        }
+        return assets;
+    };
 	isuserasset = function(aid,type){
         var store = require('/modules/store.js');
         var user = require('/modules/user.js').current();
