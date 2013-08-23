@@ -104,11 +104,16 @@ $(function () {
      }
      };
      */
+
+    var buildParams = function(query) {
+        return (query.indexOf('=') === -1) ? 'query=' + query : 'fields=true&' + query;
+    };
+
     var search = function() {
         var url, searchVal = $('#search').val();
         currentPage = 1;
         if (store.asset) {
-            url = caramel.url('/assets/' + store.asset.type + '/?fields=true&' + searchVal);
+            url = caramel.url('/assets/' + store.asset.type + '/?' + buildParams(searchVal));
             caramel.data({
                 title : null,
                 header : ['sort-assets'],
@@ -132,7 +137,7 @@ $(function () {
             });
             theme.loading($('#assets-container').parent());
         } else if (searchVal.length > 0 && searchVal != undefined) {
-            url = caramel.url('/assets/all/?query=' + searchVal);
+            url = caramel.url('/assets/all/?' + buildParams(searchVal));
             caramel.data({
                 title : null,
                 body : ['top-assets']

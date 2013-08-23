@@ -15,6 +15,7 @@ var caramel;
             site = require('/modules/site.js'),
             tag = request.getParameter('tag'),
             query = request.getParameter('query'),
+            fields = request.getParameter('fields'),
             ssoLogin = require('/modules/sso-login.js'),
             ssoUser = session.get('LOGGED_IN_USER');
 	caramel = require('caramel');
@@ -39,6 +40,22 @@ var caramel;
             query: query,
             type: 'site'
         }, paging);
+    } else if (fields) {
+        var parts, param, params, value;
+        options = {
+            attributes: {}
+        };
+        params = request.getAllParameters();
+        //advanced search is only allowed for fields under overview section
+        for (param in params) {
+            if (param !== 'fields' && params.hasOwnProperty(param)) {
+                options.attributes['overview_' + param.trim().toLocaleLowerCase()] = new RegExp(params[param], "i");
+            }
+        }
+        options.type = 'gadget';
+        gadgets = store.search(options, paging);
+        options.type = 'site';
+        sites = store.search(options, paging);
     } else if (tag) {
         gadgets = store.tagged('gadget', tag, paging);
         sites = store.tagged('site', tag, paging);
@@ -51,7 +68,7 @@ var caramel;
 	recentSites = store.recentAssets('site', 3);
 	recentAssets = recentGadgets.concat(recentSites);
 
-	if(!query){
+	if(!(query || fields)) {
 	popularGadgets = store.popularAssets('gadget');
 	popularSites = store.popularAssets('site');
 	popularAssets = popularGadgets.concat(popularSites);
