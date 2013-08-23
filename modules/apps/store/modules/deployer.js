@@ -1,30 +1,46 @@
 var site = function (options) {
-    var tag, tags,
+    var tag, tags, rate, asset, assets,
         carbon = require('carbon'),
+        store = require('/modules/store.js'),
         path = '/_system/governance/sites/' + options.provider + '/' + options.name + '/' + options.version,
         server = require('/modules/server.js'),
         //site = require('/modules/site-browser.js'),
-        registry = server.systemRegistry(),
         um = server.userManager();
-        //metapath = site.SITE_METADATA + options.site;
+        registry = server.systemRegistry(),
+        am = store.assetManager('site', registry);
 
-    registry.put(path, {
-        mediaType: 'application/vnd.wso2-site+xml',
-        content: buildSiteRXT(options).toXMLString()
-    });
+    asset = {
+        "name": options.name,
+        "lifecycle": null,
+        "lifecycleState": null,
+        "attributes": {
+            "overview_status": options.status,
+            "overview_name": options.name,
+            "overview_version": options.version,
+            "overview_description": options.description,
+            "overview_url": options.url,
+            "overview_provider": options.provider,
+            "images_banner": options.banner,
+            "images_thumbnail": options.thumbnail
+        }
+    };
+
+    assets = am.search({
+        attributes:{
+           overview_name: options.name,
+           overview_provider: options.provider,
+           overview_version: options.version
+        }
+    }, {start: 0, count: 10});
+
+    if(assets.length > 0){
+        asset.id = assets[0].id;
+        am.update(asset);
+    } else {
+        am.add(asset);
+    }
+
     um.authorizeRole(carbon.user.anonRole, path, carbon.registry.actions.GET);
-
-	/*if(options.roles != undefined){
-		site.authorizeRoles(options.site, options.roles, options.action);
-	}
-	if (options.users != undefined){
-		site.authorizeUsers(options.site, options.users, options.action);
-	}*/
-    //meta = registry.exists(metapath) ? parse(registry.content(metapath).toString()) : {};
-    //meta.aid = path;
-    /*registry.put(metapath, {
-        content: stringify(meta)
-    }); */
     tags = options.tags;
     for (tag in tags) {
         if (tags.hasOwnProperty(tag)) {
@@ -32,26 +48,57 @@ var site = function (options) {
         }
     }
     rate = options.rate;
-    if(options.rate != undefined){
+    if (options.rate != undefined) {
         registry.rate(path, rate);
     }
 
 };
 
 var book = function (options) {
-    var tag, tags, category,
+    var tag, tags, rate, asset, assets, category,
         carbon = require('carbon'),
+        store = require('/modules/store.js'),
         path = '/_system/governance/books/' + options.provider + '/' + options.name + '/' + options.version,
         server = require('/modules/server.js'),
-        registry = server.systemRegistry(),
         um = server.userManager();
+        registry = server.systemRegistry(),
+        am = store.assetManager('book', registry);
 
-    registry.put(path, {
-        mediaType: 'application/vnd.wso2-book+xml',
-        content: buildBookRXT(options).toXMLString()
-    });
+    asset = {
+        "name": options.name,
+        "lifecycle": null,
+        "lifecycleState": null,
+        "attributes": {
+            "overview_status": options.status,
+            "overview_name": options.name,
+            "overview_version": options.version,
+            "overview_description": options.description,
+            "overview_url": options.url,
+            "overview_category": options.category,
+            "overview_author": options.author,
+            "overview_isbn": options.isbn,
+            "overview_provider": options.provider,
+            "images_banner": options.banner,
+            "images_thumbnail": options.thumbnail
+        }
+    };
+
+    assets = am.search({
+        attributes: {
+            overview_name: options.name,
+            overview_provider: options.provider,
+            overview_version: options.version
+        }
+    }, { start: 0, count: 10 });
+
+    if (assets.length > 0) {
+        asset.id = assets[0].id;
+        am.update(asset);
+    } else {
+        am.add(asset);
+    }
+
     um.authorizeRole(carbon.user.anonRole, path, carbon.registry.actions.GET);
-
     tags = options.tags;
     for (tag in tags) {
         if (tags.hasOwnProperty(tag)) {
@@ -62,7 +109,7 @@ var book = function (options) {
     category = options.category;
 
     rate = options.rate;
-    if(options.rate != undefined){
+    if (options.rate != undefined) {
         registry.rate(path, rate);
     }
 
@@ -117,7 +164,7 @@ var gadget = function (options) {
         }
     }
     rate = options.rate;
-    if(options.rate != undefined){
+    if (options.rate != undefined) {
         registry.rate(path, rate);
     }
 };
