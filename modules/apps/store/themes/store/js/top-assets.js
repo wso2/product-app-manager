@@ -11,7 +11,7 @@ $(function() {
 
 	$(document).on('click', '.assets-container .asset-add-btn', function(event) {
 		var parent = $(this).parent().parent().parent();
-		asset.process(parent.data('type'), parent.data('path'), location.href);
+		asset.process(parent.data('type'), parent.data('id'), location.href);
 		event.stopPropagation();
 	});
 

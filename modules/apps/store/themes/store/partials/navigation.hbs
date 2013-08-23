@@ -6,8 +6,8 @@
 			<ul class="nav menu store-menu">
 				{{#itr assets}}
 				<li class="dropdown {{#if value.selected}} selected {{/if}}">
-				<a href="{{url "/assets/"}}{{key}}" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-{{key}}"></i> {{value.title}}</a>
-					
+					<a href="{{url "/assets/"}}{{key}}" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-{{key}}"></i> {{value.title}}</a>
+
 				</li>
 
 				{{/itr}}

@@ -9,7 +9,7 @@
         "overview_url": "http://wso2.com/",
         "overview_provider": "admin",
         "overview_description": "This redirects you to the WSO2 site which is of an open source application development software company focused on providing service-oriented architecture (SOA) solutions for professional developers.",
-        "images_thumbnail": "/wso2/thumbnail.jpg",
-        "images_banner": "/wso2/banner.jpg"
+        "images_thumbnail": "/wso2/thumbnail.png",
+        "images_banner": "/wso2/banner.png"
     }
 }

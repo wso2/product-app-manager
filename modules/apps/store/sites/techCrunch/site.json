@@ -9,7 +9,7 @@
         "overview_url": "http://techcrunch.com/",
         "overview_provider": "admin",
         "overview_description": "This redirects you to the Tech Crunch site which is a leading technology media property, dedicated to obsessively profiling startups, reviewing new Internet products, and breaking tech news.",
-        "images_thumbnail": "/techCrunch/thumbnail.jpg",
-        "images_banner": "/techCrunch/banner.jpg"
+        "images_thumbnail": "/techCrunch/thumbnail.png",
+        "images_banner": "/techCrunch/banner.png"
     }
 }

@@ -9,7 +9,7 @@
         "overview_url": "http://www.cnn.com/",
         "overview_provider": "admin",
         "overview_description": "This redirects you to the CNN site which is an American basic cable and satellite television channel",
-        "images_thumbnail": "/cNN/thumbnail.jpg",
-        "images_banner": "/cNN/banner.jpg"
+        "images_thumbnail": "/cNN/thumbnail.png",
+        "images_banner": "/cNN/banner.png"
     }
 }

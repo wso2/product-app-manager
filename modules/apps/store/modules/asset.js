@@ -5,104 +5,47 @@ var log = new Log();
 
 (function () {
 
-    var search = function (that, options) {
-        if (options.query) {
-
-            var queryArray, searchMap = {};
-            var searchQuery = (options.query.toLowerCase()).replace(/\s+/g, " ");
-
-            //if query contains multiple search params as provider:admin,name:bar chart
-            if (searchQuery.indexOf(",") != -1) {
-                queryArray = searchQuery.split(",");
-                if (queryArray.length > 1) {
-                    for (var i = 0; i < queryArray.length; i++) {
-                        searchMap["overview_" + queryArray[i].split(":")[0].trim()] = queryArray[i].split(":")[1].trim();
-                    }
-                }
-                //if it is a context search or contains only one param as name:bar chart
-            } else {
-                //contains only one param as name:bar chart
-                if (searchQuery.indexOf(":") != -1) {
-                    searchMap["overview_" + searchQuery.split(":")[0].trim()] = searchQuery.split(":")[1].trim();
-
-                    //context search
-                } else {
-                    searchMap["default"] = searchQuery;
-                }
+    var matchAttr = function (searchAttr, artifactAttr) {
+        var attribute, attr, val;
+        for (attribute in searchAttr) {
+            if (searchAttr.hasOwnProperty(attribute)) {
+                attr = searchAttr[attribute];
+                val = artifactAttr[attribute];
+                return (attr instanceof RegExp) ? attr.match(val) : (attr == val);
             }
-
-            //search for the searchMap params
-            return that.manager.find(function (asset) {
-                var name,
-                    attributes = asset.attributes;
-                var matchCount = 0, searchMapSize = 0;
-                for (searchKey in searchMap) {
-                    if (searchKey.indexOf("default") != -1) {
-                        if (attributes.hasOwnProperty('overview_status')) {
-                            if (attributes['overview_status'].toLowerCase().indexOf('published') !== -1) {
-                                for (name in attributes) {
-                                    if (attributes.hasOwnProperty(name)) {
-                                        if (attributes[name].toLowerCase().indexOf(searchMap[searchKey]) !== -1) {
-                                            return true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                    } else {
-                        if (attributes.hasOwnProperty('overview_status')) {
-                            if (attributes['overview_status'].toLowerCase().indexOf('published') !== -1) {
-                                if (attributes.hasOwnProperty(searchKey)) {
-                                    if (attributes[searchKey].toLowerCase().indexOf(searchMap[searchKey]) !== -1) {
-                                        matchCount++;
-
-                                    }
-                                } else { // if one key is misspelled or wrong in a query, skip it and search for other params
-                                    matchCount++;
-                                }
-                            }
-                        }
-
-                    }
-                    searchMapSize++;
-                }
-                if (matchCount == searchMapSize) {
-                    return true;
-                }
-                return false;
-            });
         }
+        return false;
+    };
 
+    var search = function (that, options) {
         if (options.tag) {
             var registry = that.registry,
                 tag = options.tag;
             return that.manager.find(function (artifact) {
                 if(registry.tags(artifact.path).indexOf(tag) != -1){
-                    if (artifact.attributes['overview_status'].toLowerCase().indexOf('published') !== -1) {
-                        return true;
+                    return matchAttr(options.attributes, artifact.attributes);
+                }
+                return false;
+            });
+        }
+        if (options.query) {
+            var query = options.query.toLowerCase();
+            return that.manager.find(function (asset) {
+                var name,
+                    attributes = asset.attributes;
+                for (name in attributes) {
+                    if (attributes.hasOwnProperty(name)) {
+                        if (attributes[name].toLowerCase().indexOf(query) !== -1) {
+                            return true;
+                        }
                     }
                 }
                 return false;
             });
         }
         if (options.attributes) {
-            var attribute,
-                attributes = options.attributes;
             return that.manager.find(function (artifact) {
-                for (attribute in attributes) {
-                    if (attributes.hasOwnProperty(attribute)) {
-                        if (artifact.attributes[attribute] != attributes[attribute]) {
-                            return false;
-                        }
-                    }
-                }
-                if (attributes.hasOwnProperty('overview_status')) {
-                    if (attributes['overview_status'].toLowerCase().indexOf('published') !== -1) {
-                        return true;
-                    }
-                }
-                return false;
+                return matchAttr(options.attributes, artifact.attributes);
             });
         }
         return [];
@@ -232,14 +175,14 @@ var log = new Log();
 
     Manager.prototype.checkTagAssets = function (options) {
         return search(this, options);
+        return search(this, options);
     };
 
     /*
      * Assets matching the filter
      */
-    Manager.prototype.get = function (options) {
-        var resource = this.registry.get(options);
-        return this.manager.get(resource.uuid);
+    Manager.prototype.get = function (id) {
+        return this.manager.get(id);
     };
 
     /*

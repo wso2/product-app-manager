@@ -9,7 +9,7 @@
         "overview_url": "http://www.amazon.com/",
         "overview_provider": "admin",
         "overview_description": "This redirects you to the Amazon site which is of an American international multibillion dollar electronic commerce company",
-        "images_thumbnail": "/amazon/thumbnail.jpg",
-        "images_banner": "/amazon/banner.jpg"
+        "images_thumbnail": "/amazon/thumbnail.png",
+        "images_banner": "/amazon/banner.png"
     }
 }

@@ -10,6 +10,7 @@ var caramel;
             site = require('/modules/site.js'),
             tag = request.getParameter('tag'),
             query = request.getParameter('query'),
+            fields = request.getParameter('fields'),
             ssoUser = session.get('LOGGED_IN_USER'),
             ssoLogin = require('/modules/sso-login.js');
 
@@ -40,19 +41,45 @@ var caramel;
             return store.tagged(type, tag, paging);
         };
     } else if (query) {
-        total = store.assetCount(type, {
+        options = {
+            type: type,
             query: query
-        });
-        subPage  = '/ Search: "' + query + '"'; 
+        };
+        total = store.assetCount(type, options);
+        subPage = '/ Search: "' + query + '"';
         if (paging.start > total || paging.start < 0) {
             response.sendError(404, 'Requested page cannot be found');
             return;
         }
         assets = function () {
-            return store.search({
-                query: query,
-                type: type
-            }, paging);
+            return store.search(options, paging);
+        };
+    } else if (fields) {
+        var parts, param, params, value;
+        options = {
+            type: type,
+            attributes: {}
+        };
+        query = '';
+        params = request.getAllParameters();
+        //advanced search is only allowed for fields under overview section
+        for (param in params) {
+            if (param !== 'fields' && params.hasOwnProperty(param)) {
+                options.attributes['overview_' + param.trim().toLocaleLowerCase()] = params[param];
+                if(query !== '') {
+                    query += '&';
+                }
+                query += (param + '=' + params[param]);
+            }
+        }
+        total = store.assetCount(type, options);
+        subPage = '/ Search: "' + query + '"';
+        if (paging.start > total || paging.start < 0) {
+            response.sendError(404, 'Requested page cannot be found');
+            return;
+        }
+        assets = function () {
+            return store.search(options, paging);
         };
     } else {
         total = store.assetCount(type);

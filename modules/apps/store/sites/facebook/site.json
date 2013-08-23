@@ -9,7 +9,7 @@
         "overview_url": "http://www.amazon.com/",
         "overview_provider": "admin",
         "overview_description": "This redirects you to the Facebook site which is social networking website",
-        "images_thumbnail": "/facebook/thumbnail.jpg",
-        "images_banner": "/facebook/banner.jpg"
+        "images_thumbnail": "/facebook/thumbnail.png",
+        "images_banner": "/facebook/banner.png"
     }
 }

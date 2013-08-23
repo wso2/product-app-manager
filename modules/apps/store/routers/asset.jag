@@ -14,8 +14,7 @@ var type;
         };
     };
     if (matcher.match('/{context}' + config.assetUrlPrefix + '/{type}/{theme}/{+file}') ||
-            matcher.match('/{context}' + config.assetUrlPrefix + '/{type}/{+suffix}') ||
-            matcher.match('/{context}' + config.assetUrlPrefix + '/{type}')) {
+            matcher.match('/{context}' + config.assetUrlPrefix + '/{type}/{+suffix}')) {
         elements = matcher.elements();
         type = elements.type;
         theme = elements.theme;

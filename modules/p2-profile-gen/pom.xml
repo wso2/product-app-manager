@@ -113,9 +113,6 @@
                                 <featureArtifactDef>caramel:caramel.feature:${caramel.feature.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.governance.metadata.feature:${patch.version.413}
-                                </featureArtifactDef>
-                                <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.registry.associations.dependencies.feature:${carbon.platform.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
