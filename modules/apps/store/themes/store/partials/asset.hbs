@@ -52,13 +52,13 @@
 							{{/if}}
 			    
 						{{/if}}
-				  		{{#if ../../user}}
-			     			 <a class="btn btn-popover btn-embed {{../../type}}" href="#" data-toggle="popover"  data-content='&lt;iframe src="{{../../../embedURL}}"&gt;&lt;/iframe&gt;' data-placement="bottom" title="{{t "Embed this Gadget"}}"><i
-                             class="icon-angle-left"></i><i class="icon-angle-right"></i></a>
+						{{#if ../../user}}
+				  		     <a class="btn btn-popover btn-embed {{../../type}}" href="#" data-toggle="popover"  data-content='&lt;iframe src="{{../../../embedURL}}"&gt;&lt;/iframe&gt;' data-placement="bottom" title="{{t "Embed this Gadget"}}">
+				  		     <i class="icon-angle-left"></i><i class="icon-angle-right"></i></a>
                            	
-				  	{{/if}}
+				  	    {{/if}}
 				  			<a class="btn btn-href" href="{{overview_url}}" target="_blank" data-placement="bottom" data-toggle="tooltip" title="{{>asset-overview-text}}">
-				  			<i class="icon-link"></i></a>
+				  			<i class="icon-{{../../asset_css}}"></i></a>
                         </div>
 
                     </div>

@@ -112,6 +112,10 @@ a.site{
 display:none;
 }
 
+a.book{
+    display:none;
+}
+
 textarea.site{
 display:none;
 }

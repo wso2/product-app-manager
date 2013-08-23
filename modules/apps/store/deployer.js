@@ -1,8 +1,10 @@
 var gadgetRxtPath = '/gadgets/';
 var siteRxtPath = '/sites/';
+var bookRxtPath = '/books/';
 
 var repoPath = '/gadgets';
 var repoSitePath = '/sites';
+var repoBookPath = '/books';
 
 var lastUpdated = 0;
 
@@ -22,8 +24,8 @@ var deployer = require('/modules/deployer.js'),
 
 var populate = function () {
     var i, name, length, gadgets, file, path, xml,
-    repo = new File(repoPath),
-    base = store.server.http + context + gadgetRxtPath;
+        repo = new File(repoPath),
+        base = store.server.http + context + gadgetRxtPath;
 
     if (repo.isDirectory()) {
         gadgets = repo.listFiles();
@@ -92,43 +94,78 @@ var logstoreUrl = function () {
     log.info("UES store URL : " + store.server.http + caramel.configs().context);
 };
 
+var populateBooks = function () {
+    var i, name, length, books, bookJson, file, path, xml,
+        repo = new File(repoBookPath),
+        base = store.server.http + context + bookRxtPath;
+
+    if (repo.isDirectory()) {
+        books = repo.listFiles();
+        length = books.length;
+        for (i = 0; i < length; i++) {
+            name = books[i].getName();
+            var bookJson = require('/books/' + name + '/book.json');
+            var path = base + name + '/';
+            deployer.book({
+                name: bookJson.name,
+                tags: bookJson.tags.split(','),
+                rate: bookJson.rate,
+                provider: bookJson.attributes.overview_provider,
+                version: bookJson.attributes.overview_version,
+                description: bookJson.attributes.overview_description,
+                url: path + bookJson.attributes.overview_url,
+                isbn: bookJson.attributes.overview_isbn,
+                author: bookJson.attributes.overview_author,
+                thumbnail: base + bookJson.attributes.images_thumbnail,
+                banner: base + bookJson.attributes.images_banner,
+                status: bookJson.attributes.overview_status,
+                category: bookJson.attributes.overview_category
+            });
+        }
+
+        if (typeof(Session["started"]) == "undefined") {
+            log.info('Default books deployed');
+        }
+    }
+};
+
 var populateSites = function () {
-    var i, name, length, sites,siteJson, file, path, xml,temp,
+    var i, name, length, sites, siteJson, file, path, xml,
         repo = new File(repoSitePath),
         base = store.server.http + context + siteRxtPath;
 
-        if (repo.isDirectory()) {
+    if (repo.isDirectory()) {
         sites = repo.listFiles();
         length = sites.length;
         for (i = 0; i < length; i++) {
             name = sites[i].getName();
-            var siteJson = require('/sites/'+ name + '/site.json');
+            var siteJson = require('/sites/' + name + '/site.json');
 
-                var path = base + name + '/';
-                deployer.site({
-                    name: siteJson.name,
-                    tags: siteJson.tags.split(','),
-                    rate: siteJson.rate,
-                    provider: siteJson.attributes.overview_provider,
-                    version: siteJson.attributes.overview_version,
-                    description: siteJson.attributes.overview_description,
-                    url: siteJson.attributes.overview_url,
-                    thumbnail: base + siteJson.attributes.images_thumbnail,
-                    banner: base + siteJson.attributes.images_banner,
-                    status: siteJson.attributes.overview_status
-                });
-
-                if (typeof(Session["started"]) == "undefined") {
-                    log.info('Default sites deployed');
-                }
-                Session["started"] = true;
-
+            var path = base + name + '/';
+            deployer.site({
+                name: siteJson.name,
+                tags: siteJson.tags.split(','),
+                rate: siteJson.rate,
+                provider: siteJson.attributes.overview_provider,
+                version: siteJson.attributes.overview_version,
+                description: siteJson.attributes.overview_description,
+                url: siteJson.attributes.overview_url,
+                thumbnail: base + siteJson.attributes.images_thumbnail,
+                banner: base + siteJson.attributes.images_banner,
+                status: siteJson.attributes.overview_status
+            });
         }
+
+        if (typeof(Session["started"]) == "undefined") {
+            log.info('Default sites deployed');
+        }
+        Session["started"] = true;
     }
     lastUpdated = new Date().getTime();
 };
 
 populate();
+populateBooks();
 populateSites();
 addSSOConfig();
 /*

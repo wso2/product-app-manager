@@ -15,7 +15,7 @@
 	}
 var rxtAttributes = require('modules/util.js').getRXTAttributes(type);
 caramel.render({
-    title: 'Store | Gadget',
+    title: 'Store | ' + type,
     user: user,
 	sso:sso,
     navigation: site.navigation({sso:sso, user:user}),

@@ -361,6 +361,10 @@ h3.asset-title-separator {
     background: url("../img/icon-bar-site.png") no-repeat scroll 2px 1px rgb(235, 243, 243);
 }
 
+.store-left h3.asset-type-book {
+    background: url("../img/icon-bar-site.png") no-repeat scroll 2px 1px rgb(235, 243, 243);
+}
+
 #search {
     font-size: 22px;
     height: 39px;

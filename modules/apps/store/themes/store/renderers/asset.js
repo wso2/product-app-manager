@@ -9,17 +9,17 @@ var render = function(theme, data, meta, require) {
 			partial : 'search',
             context: data.search
 		}],
-		body : [{
-			partial : 'asset',
-			context : {
-				user : data.user,
-				sso : data.sso,
-				asset : data.asset,
-				type : data.type,
-				inDashboard : data.inDashboard,
+        body : [{
+            partial : 'asset',
+            context : require('/helpers/asset.js').format({
+                user : data.user,
+                sso : data.sso,
+                asset : data.asset,
+                type : data.type,
+                inDashboard : data.inDashboard,
                 embedURL : data.embedURL
-			}
-		}],
+            })
+        }],
 		right : [{
 			partial : 'recent-assets',
 			context : data.recentAssets

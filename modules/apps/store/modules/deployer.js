@@ -38,6 +38,36 @@ var site = function (options) {
 
 }
 
+var book = function (options) {
+    var tag, tags, category,
+        carbon = require('carbon'),
+        path = '/_system/governance/books/' + options.provider + '/' + options.name + '/' + options.version,
+        server = require('/modules/server.js'),
+        registry = server.systemRegistry(),
+        um = server.userManager();
+
+    registry.put(path, {
+        mediaType: 'application/vnd.wso2-book+xml',
+        content: buildBookRXT(options).toXMLString()
+    });
+    um.authorizeRole(carbon.user.anonRole, path, carbon.registry.actions.GET);
+
+    tags = options.tags;
+    for (tag in tags) {
+        if (tags.hasOwnProperty(tag)) {
+            registry.tag(path, options.tags[tag]);
+        }
+    }
+
+    category = options.category;
+
+    rate = options.rate;
+    if(options.rate != undefined){
+        registry.rate(path, rate);
+    }
+
+}
+
 var gadget = function (options) {
     var tag, tags,
         carbon = require('carbon'),
@@ -88,6 +118,27 @@ var buildSiteRXT = function (options) {
             <version>{options.version}</version>
             <url>{options.url}</url>
             <status>{options.status}</status>
+            <description>{options.description}</description>
+        </overview>
+        <images>
+            <thumbnail>{options.thumbnail}</thumbnail>
+            <banner>{options.banner}</banner>
+        </images>
+    </metadata>;
+    return rxt;
+};
+
+var buildBookRXT = function (options) {
+    var rxt = <metadata xmlns="http://www.wso2.org/governance/metadata">
+        <overview>
+            <provider>{options.provider}</provider>
+            <name>{options.name}</name>
+            <version>{options.version}</version>
+            <url>{options.url}</url>
+            <status>{options.status}</status>
+            <category>{options.category}</category>
+            <isbn>{options.isbn}</isbn>
+            <author>{options.author}</author>
             <description>{options.description}</description>
         </overview>
         <images>

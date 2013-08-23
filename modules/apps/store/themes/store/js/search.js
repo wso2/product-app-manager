@@ -35,6 +35,16 @@ $(function () {
                     pagination: "#top-asset-slideshow-pag-site"
 
                 });
+
+                $("#top-asset-slideshow-book").carouFredSel({
+                    items: 4,
+                    width: "100%",
+                    infinite: false,
+                    auto: false,
+                    circular: false,
+                    pagination: "#top-asset-slideshow-pag-book"
+
+                });
                 mouseStop();
                 /*el.append(result.paging);
                  caramel.js($('body'), data.body['assets'].resources.js, 'assets', function () {
