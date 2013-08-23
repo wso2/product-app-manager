@@ -14,6 +14,13 @@ It allows the following functionality;
 Changes:
 ----------
 
+23/8/2013	Major Changes:
+		--------------
+		Note: An asset in order to be visible in the store must have its state set to PUBLISHED when it is created
+		Changes to the extension mechanism can be found in /ext2/ folder of modules and config
+		IMPORTANT: Requires the changes to artfiact.js in SAM PULL #2 JAG
+		
+
 13/8/2013	Major Changes:
 		--------------	
 		Replaced the api code with the model approach used by the site controllers
@@ -38,6 +45,14 @@ Changes:
 		
 Additions:
 ----------
+23/8/2013	
+		API: (Refer to API for complete changes)
+		Lifecycle API
+		-------------
+			/publisher/api/lifecycle/checkList/{asset-type}/{asset-id} : Returns the check list for current lifecycle state
+			/publisher/api/lifecycle/{ACTION}/{asset-type}/{asset-id}  : Performs the ACTION -(Promote/Demote)
+
+			
 13/8/2013	/tests/jmeter: 
 			publisher_test_plan.jmx	Simple JMeter test plan for the site and API ( I am still wondering how I can use it to test the site)
 		modules/ext/scripts: 
@@ -57,8 +72,6 @@ x		The created assets can only be viewed by a logged in user
 
 TODO:
 -----
-		Add lifecycle promote
-		Add lifecycle demote (Probably one api call with the state passed in)
 		Add update support for assets
 		Change the rxt extension configuration file to be more user friendly
 		Change the meta variable that needs to be defined for each external adpater
@@ -77,11 +90,16 @@ The following API calls have been implemented
 
 	Noun	Url					Description
 
-	GET  	/publisher/api/asset/{type}		Returns a template JSON object describing the structure of an asset
-	GET  	/publisher/api/asset/{type}/{id}	Returns an asset of the given {type} and matching the {id}
-	POST 	/publisher/api/asset/{type}		Creates a new asset of the given {type}
-	DELETE 	/publisher/api/asset/{type}/{id}	Deletes an asset 
-	POST 	/publisher/api/lifecycle/{type}/{id}	Attaches a lifecycle for the specified asset type with the id
+	GET  	/publisher/api/asset/{type}			Returns a template JSON object describing the structure of an asset
+	GET  	/publisher/api/asset/{type}/{id}		Returns an asset of the given {type} and matching the {id}
+	POST 	/publisher/api/asset/{type}			Creates a new asset of the given {type}
+	DELETE 	/publisher/api/asset/{type}/{id}		Deletes an asset 
+	POST 	/publisher/api/lifecycle/{type}/{id}		Attaches a lifecycle for the specified asset type with the id
+	POST  api/lifecycle/{asset-type}/{artifact-id}  	Attach the provided lifecycle to the artifact
+ 	DELETE api/lifecycle/{asset-type}/{artifact-d}		Detaches the current lifecycle from the artifact
+ 	PUT  api/lifecycle/{state}/{asset-type}/{artifact-id}	Promotes an artifact to the lifecycle state provided
+ 	GET api/lifecycle/{asset-type}/{artifact-id}           	Returns the current lifecycle state of an artifact
+ 	GET api/lifecycle/checklist/{type}/{id}                 Returns the check list for an artifact
 	
 	
 
