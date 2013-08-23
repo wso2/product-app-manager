@@ -47,6 +47,7 @@ publisher.init({
 
 //var server=new carbon.server.Server(url);
 var registry = server.systemRegistry();
+
 /*var registry=new carbon.registry.Registry(server,{
  systen:true,
  username:username,

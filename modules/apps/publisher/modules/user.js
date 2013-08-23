@@ -7,7 +7,7 @@ var USER_OPTIONS = 'server.user.options';
 var USER_SPACE = 'server.user.space';
 
 var USER_ROLE_PREFIX = 'private_';
-
+var log=new Log();
 var init = function (options) {
     var role, roles, user,
         server = require('/modules/server.js'),
@@ -94,6 +94,7 @@ var userRegistry = function () {
     try {
         return session.get(USER_REGISTRY);
     } catch (e) {
+        log.debug('user registry not loaded: '+e);
         return null;
     }
 };

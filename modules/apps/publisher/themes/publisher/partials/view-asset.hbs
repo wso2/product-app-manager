@@ -42,7 +42,7 @@
                                         <i class="icon-retweet"></i>
                                     </div>
                                     <span class="infobox-bottom-text">Lifecycle</span>
-                                    <span class="infobox-sub-text">{{{snoop "fields(name=overview_status).value" this.data}}}</span>
+                                    <span class="infobox-sub-text" id='view-lifecyclestate'>{{data.info.lifecycleState}}</span>
                                 </div>
                                 <div class="infobox block-blue">
                                     <div class="infobox-icon">
@@ -99,20 +99,15 @@
                         	<div class="span12">
                             		<form class="form-horizontal">
                                 		<div class="control-group">
-                                    			<label name="state" for="editStatus" class="control-label">State:</label>
+
                                     			<div class="controls">
-                                        			<select onchange="getSelectedValue('PUBLISHED')" name="status" id="editStatus">
-                                            				<option value="CREATED">CREATED</option>
-                                            				<option selected="selected" value="PUBLISHED">PUBLISHED</option>
-                                            				<option value="DEPRECATED">DEPRECATED</option>
-                                            				<option value="RETIRED">RETIRED</option>
-                                            				<option value="BLOCKED">BLOCKED</option>
-                                        			</select>
+                                                    <legend><div id='state'>{{data.info.lifecycleState}}</div></legend>
+                                                    <div id='checklist'></div>
                                     			</div>
                                 		</div>
                                 		<div class="form-actions">
-                                    			<input type="submit" value="Update" class="btn btn-primary"  id="updateStateButton">
-                                    			<input type="button" value="Reset" class="btn" id="resetState">
+                                    			<input type="button" value="Promote" class="btn btn-primary"  id="btn-asset-promote">
+                                    			<input type="button" value="Demote" class="btn" id="btn-asset-demote">
                                 		</div>
                             		</form>
                             		<h5>Life-Cycle History</h5>

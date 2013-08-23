@@ -2,9 +2,11 @@
 /*
  Description: Provides a means to attach life cycles to artifacts
  Note: type: shortName in the Rxt templates
- POST  api/lifecycle/{asset-type}/{artifact-id}   	: Provides the current life of the artifact
- DELETE api/lifecycle/{asset-type}/{artifact-d}		: Detaches the lifecycle from the artifact
- PUT  api/lifecycle/{state}/{asset-type}/{artifact-id}	: Promotes a life cycle to the next life cycle
+ POST  api/lifecycle/{asset-type}/{artifact-id}   	    : Attach the provided lifecycle to the artifact
+ DELETE api/lifecycle/{asset-type}/{artifact-d}		    : Detaches the current lifecycle from the artifact
+ PUT  api/lifecycle/{state}/{asset-type}/{artifact-id}	: Promotes an artifact to the lifecycle state provided
+ GET api/lifecycle/{asset-type}/{artifact-id}           : Returns the current lifecycle state of an artifact
+ GET api/lifecycle/checklist/{type}/{id}                : Returns the check list for an artifact
  Filename:lifecycle_api_router.js
  Created Date: 6/8/2013
  */
@@ -12,12 +14,14 @@
 var config = require('/config/publisher.json');
 var caramel = require('caramel');
 
+
 var router = require('/modules/router-g.js').router();
+var user = require('/modules/user.js');
 var routeManager = new router.Router();
 var rxtManager = application.get(config.app.RXT_MANAGER);
 
 
-
+var log=new Log();
 
 routeManager.register('POST', 'publisher', '/publisher/api/lifecycle/{type}/{id}', function (context) {
 
@@ -36,10 +40,16 @@ routeManager.register('POST', 'publisher', '/publisher/api/lifecycle/{type}/{id}
     try {
         var artifact = artifactManager.get(id);
 
-        artifactManager.attachLifecycle('SampleLifeCycle', artifact);
+        artifactManager.attachLifecycle(lifecycle, artifact);
+
+        var msg={};
+        msg['status']='ok';
+
+        print(msg);
     }
     catch (e) {
-        response.sendError(404, 'The asset with id ' + id + ' could not be found.' + e);
+        log.info('The asset with id: '+id+' could not be found.The following exception was thrown: '+e);
+        response.sendError(404,'The asset with id: '+id+' could not be found.Please refere to the server log.');
     }
 });
 
@@ -53,11 +63,17 @@ routeManager.register('DELETE', 'publisher', '/publisher/api/lifecycle/{type}/{i
     try {
         var artifact = artifactManager.get(id);
 
-        var msg = artifactManager.detachLifecycle(artifact);
+        artifactManager.detachLifecycle(artifact);
+
+
+        var msg={};
+        msg['status']='ok';
+
         print(msg);
     }
     catch (e) {
-        response.sendError(404, 'The asset with id ' + id + ' could not be found.' + e);
+        log.info('The asset with id: '+id+' could not be found.The following exception was thrown: '+e);
+        response.sendError(404,'The asset with id: '+id+' could not be found.Please refere to the server log.');
     }
 
 });
@@ -72,14 +88,56 @@ routeManager.register('PUT', 'publisher', '/publisher/api/lifecycle/{state}/{typ
 
     try {
         var artifact = artifactManager.get(id);
-        var msg = artifactManager.getLifecycleState(state, artifact);
+        log.debug('Calling promoteLifecycleState');
+        artifactManager.promoteLifecycleState(state,artifact);
+        var msg={};
+        msg['status']='ok';
         print(msg);
-        //artifactManager.promoteLifecycleState(state,artifact);
     }
     catch (e) {
-        response.sendError(404, 'The asset with id ' + id + ' could not be found.' + e);
+        log.info('The asset with id: '+id+' could not be found.The following exception was thrown: '+e);
+        response.sendError(404,'The asset with id: '+id+' could not be found.Please refere to the server log.');
     }
 
+});
+
+routeManager.register('GET','publisher','/publisher/api/lifecycle/{type}/{id}',function(context){
+    var shortName=context.params.type;
+    var id=context.params.id;
+
+    var artifactManager=rxtManager.getArtifactManager(shortName);
+
+    try{
+        var artifact=artifactManager.get(id);
+        var state=artifactManager.getLifecycleState(artifact);
+        var msg={};
+        msg['status']='ok';
+        msg['state']=state;
+        print(state);
+    }
+    catch(e){
+        log.info('The asset with id: '+id+' could not be found.The following exception was thrown: '+e);
+        response.sendError(404,'The asset with id: '+id+' could not be found.Please refere to the server log.');
+    }
+});
+
+routeManager.register('GET','publisher','/publisher/api/lifecycle/checklist/{type}/{id}',function(context){
+   var shortName=context.params.type;
+   var id=context.params.id;
+
+   var artifactManager=rxtManager.getArtifactManager(shortName);
+   try{
+       var artifact=artifactManager.get(id);
+       var checkListItems=artifactManager.getCheckListItemNames(artifact);
+       var msg={};
+       msg['status']='ok';
+       msg['checkListItemNames']=checkListItems;
+       print(msg);
+   }
+   catch(e){
+       log.info('The check list names were not retrieved for aritfact: '+id+' .The following exception was thrown: '+e);
+       response.sendError(404,'The check list item names could not be retrieved for artifact: '+id+' .Please refer to the server log.');
+   }
 });
 
 

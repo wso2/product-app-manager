@@ -58,11 +58,11 @@
 	    "name":"save",
 	    "value":"default"
 	},
-	{
-	   "field":"*.lifeCycle",
-	   "name":"save",
-	   "value":"asset.lifecycle.action.save"
-	},
+        {
+            "field":"*.lifeCycle",
+            "name":"save",
+            "value":"asset.lifecycle.action.save"
+        },
 	{
 	   "field":"*.lifeCycle",
            "name":"fetch",
@@ -75,7 +75,7 @@
 	    "name":"lifeCycle",
 	    "table":"*",
 	    "label":"Life Cycle",
-            "value":"SampleLifeCycle"
+            "value":"SampleLifeCycle2"
 	}
     ]
 }

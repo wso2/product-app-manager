@@ -9,7 +9,7 @@ var carbon=require('carbon');
 */
 
 var rxt_management=function(){
-
+    var log=new Log();
  	var GovernanceUtils=Packages.org.wso2.carbon.governance.api.util.GovernanceUtils;
 
 	var DEFAULT_MEDIA_TYPE='application/vnd.wso2.registry-ext-type+xml';
@@ -102,8 +102,15 @@ var rxt_management=function(){
 	@return: An artifact manager which handles the provided type
 	*/
 	RxtManager.prototype.getArtifactManager=function(type){
-		GovernanceUtils.loadGovernanceArtifacts(this.registry.registry); //TODO: Can we do this only once?
-		return new carbon.registry.ArtifactManager(this.registry,type);
+        log.debug('Getting registry');
+        var user=require('/modules/user.js');
+        //log.debug('session: '+stringify(session));
+        var userRegistry=user.userRegistry();
+
+        GovernanceUtils.loadGovernanceArtifacts(userRegistry.registry); //TODO: Can we do this only once?
+        return new carbon.registry.ArtifactManager(userRegistry,type);
+		//GovernanceUtils.loadGovernanceArtifacts(this.registry.registry); //TODO: Can we do this only once?
+		//return new carbon.registry.ArtifactManager(this.registry,type);
 	} 
 
 	return {

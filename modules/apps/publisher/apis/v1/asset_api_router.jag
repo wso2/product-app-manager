@@ -18,6 +18,7 @@ var caramel = require('caramel');
 
 var router = require('/modules/router-g.js').router();
 var routeManager = new router.Router();
+var user=require('/modules/user.js');
 
 
 //var routeManager=application.get(config.app.ROUTE_MANAGER);

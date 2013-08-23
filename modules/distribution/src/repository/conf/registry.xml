@@ -31,18 +31,129 @@
         <dataSource>jdbc/WSO2CarbonDB</dataSource>
     </dbConfig>
 
-    <aspect name="SampleLifeCycle" class="org.wso2.carbon.governance.registry.extensions.aspects.ChecklistLifeCycle">
+	<!--aspect name="SecondLifeCycle" class="org.wso2.carbon.governance.registry.extensions.aspects.DefaultLifeCycle">
+	    <configuration type="literal">
+		<lifecycle>
+		    <scxml xmlns="http://www.w3.org/2005/07/scxml"
+		           version="1.0"
+		           initialstate="Development">
+		        <state id="Development">
+		            <datamodel>
+		                <data name="checkItems">
+		                    <item name="Code Completed" forEvent="">
+		                    </item>
+		                    <item name="WSDL, Schema Created" forEvent="">
+		                    </item>
+		                    <item name="QoS Created" forEvent="">
+		                    </item>
+		                </data>
+		            </datamodel>
+		            <transition event="Promote" target="Tested"/>
+		        </state>
+		        <state id="Published">
+		            <datamodel>
+		                <data name="checkItems">
+		                    <item name="Effective Inspection Completed" forEvent="">
+		                    </item>
+		                    <item name="Test Cases Passed" forEvent="">
+		                    </item>
+		                    <item name="Smoke Test Passed" forEvent="">
+		                    </item>
+		                </data>
+		            </datamodel>
+		            <transition event="Promote" target="Production"/>
+		            <transition event="Demote" target="Development"/>
+		        </state>
+		        <state id="Deprecated">
+		            <transition event="Demote" target="Tested"/>
+		        </state>
+		    </scxml>
+		</lifecycle>
+	    </configuration>
+	</aspect-->
+<aspect name="SampleLifeCycle2" class="org.wso2.carbon.governance.registry.extensions.aspects.DefaultLifeCycle">
+    <configuration type="literal">
+        <lifecycle>
+            <scxml xmlns="http://www.w3.org/2005/07/scxml"
+                   version="1.0"
+                   initialstate="Development">
+                <state id="Development">
+                    <datamodel>
+                        <data name="checkItems">
+                            <item name="Code Completed" forEvent="">
+                                <!--<permissions>
+                                    <permission roles=""/>
+                                </permissions>
+                                <validations>
+                                    <validation forEvent="" class="">
+                                        <parameter name="" value=""/>
+                                    </validation>
+                                </validations>-->
+                            </item>
+                            <item name="WSDL, Schema Created" forEvent="">
+                            </item>
+                            <item name="QoS Created" forEvent="">
+                            </item>
+                        </data>
+                        <!--<data name="transitionValidation">
+                            <validation forEvent="" class="">
+                                <parameter name="" value=""/>
+                            </validation>
+                        </data>
+                        <data name="transitionPermission">
+                            <permission forEvent="" roles=""/>
+                        </data>
+                        <data name="transitionScripts">
+                            <js forEvent="">
+                                <console function="">
+                                    <script type="text/javascript">
+                                    </script>
+                                </console>
+                                <server function="">
+                                    <script type="text/javascript"></script>
+                                </server>
+                            </js>
+                        </data>
+                        <data name="transitionApproval">
+                            <approval forEvent="Promote" roles="" votes="2"/>
+                        </data>-->
+                    </datamodel>
+                    <transition event="Promote" target="Tested"/>                  
+                </state>
+                <state id="Tested">
+                    <datamodel>
+                        <data name="checkItems">
+                            <item name="Effective Inspection Completed" forEvent="">
+                            </item>
+                            <item name="Test Cases Passed" forEvent="">
+                            </item>
+                            <item name="Smoke Test Passed" forEvent="">
+                            </item>
+                        </data>
+                    </datamodel>
+                    <transition event="Promote" target="Production"/>
+                    <transition event="Demote" target="Development"/>
+                </state>
+                <state id="Production">  
+                    <transition event="Demote" target="Tested"/>
+                </state>                
+            </scxml>
+        </lifecycle>
+    </configuration>
+</aspect>
+
+    <!--<aspect name="SampleLifeCycle" class="org.wso2.carbon.governance.registry.extensions.aspects.ChecklistLifeCycle">
         <configuration type="literal">
             <lifecycle>
-                <state name="Created" location="/environment/created">
+                <state name="Created" id="Created" location="/environment/created">
                     <checkitem>Condition 1</checkitem>
                     <checkitem>Condition 2</checkitem>
                 </state>
-                <state name="Deprecated" location="/environment/deprecated">
+                <state name="Deprecated" id="Deprecated" location="/environment/deprecated">
                 </state>
             </lifecycle>
         </configuration>
-    </aspect>
+    </aspect>-->
 
     <!--<handler class="org.wso2.carbon.registry.extensions.handlers.SynapseRepositoryHandler">
          <filter class="org.wso2.carbon.registry.core.jdbc.handlers.filters.MediaTypeMatcher">
