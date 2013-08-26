@@ -770,19 +770,23 @@ span.title{
     border-bottom: 1px solid #DADADA;
     border-right: 1px solid #DADADA;
 }
-.dl-menuwrapper li a:hover,.dl-menuwrapper li a:focus{
-     color: #74B749;
+.dl-menuwrapper li a:hover,.dl-menuwrapper li a:focus,.no-touch .dl-menuwrapper li a:hover{
+    background: none repeat scroll 0 0 #74B749;
     text-decoration: none;
+    border-right: 1px solid #74B749;
 }
 .dl-menuwrapper li > a:after{
     color:#A6A6A6;
 }
 .dl-menuwrapper li:hover > a:after{
-    color: #74B749;
+    color: #FFFFFF;
 }
 .dl-menuwrapper li.dl-back:after{
     color:#A6A6A6;
 }
-.dl-menuwrapper li.dl-back:hover{
-    color:#74B749!important;
+.dl-menuwrapper li.dl-back:hover > a:after{
+    color:#FFFFFF;
+}
+.dl-menuwrapper li.dl-back:after{
+    color: #FFFFFF;
 }
