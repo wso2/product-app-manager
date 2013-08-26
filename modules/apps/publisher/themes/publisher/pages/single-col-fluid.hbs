@@ -10,9 +10,11 @@
     <link href="{{url "/themes/publisher/css/bootstrap.min.css"}}" rel="stylesheet" media="screen">
     <!-- fontawesome -->
     <link rel="stylesheet" href="{{url "/themes/publisher/css/font-awesome.min.css"}}">
+    <link rel="stylesheet" type="text/css" href="{{url "/themes/publisher/css/component.css"}}" />
     <!-- publisher styles -->
     <link href="{{url "/themes/publisher/css/es-publisher-commons.css"}}" rel="stylesheet" media="screen">
 
+    <script src="{{url "/themes/publisher/js/modernizr.custom.js"}}"></script>
 </head>
 <body>
 <div class="page">
@@ -23,7 +25,7 @@
 <div class="row-fluid content-area">
 
 
-<div class="publisher-left-nav" data-spy="affix" data-offset-top="130">
+<div class="publisher-left-nav">
     {{include leftnav}}
 </div>
 {{include listassets}}
@@ -34,8 +36,16 @@
 </div>
 <script src="{{url "/themes/publisher/js/jquery-1.10.2.min.js"}}"></script>
 <script src="{{url "/themes/publisher/js/bootstrap.min.js"}}"></script>
+<script src="{{url "/themes/publisher/js/jquery.dlmenu.js"}}"></script>
 <script src="{{url "/themes/publisher/js/publisher.commons.js"}}"></script>
 <script src="{{url "/themes/publisher/js/logic/create.asset.js"}}"></script>
+<script>
+    $(function() {
+        $( '#dl-menu' ).dlmenu({
+            animationClasses : { classin : 'dl-animate-in-2', classout : 'dl-animate-out-2' }
+        });
+    });
+</script>
 <script src="{{url "/themes/publisher/js/logic/lifecycle.asset.js"}}"></script>
 </body>
 </html>
