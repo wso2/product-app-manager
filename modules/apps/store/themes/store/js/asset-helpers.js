@@ -118,8 +118,8 @@ var renderAssets, mouseStop, isAssertTrue, addAssert;
 	caramel.get('/apis/asset/'+type,{
             }, function (data) {
 		for(j = 0; j < data.length; j++){
-		    if(data[j]['path']==aid){
-		       array.push(data[j]['path']);
+		    if(data[j]['id']==aid){
+		       array.push(data[j]['id']);
 		    		}
         	}
 		addAssert(aid,type,array);
