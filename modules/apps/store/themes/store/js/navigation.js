@@ -85,6 +85,11 @@ $(function() {
 		var url = $(this).attr('href');
 		window.location = url;
 	});
+
+    $('.store-menu > li > ul > li > a').click(function(){
+        var url = $(this).attr('href');
+        window.location = url;
+    });
 	
 	$(".dropdown-menu").niceScroll();
 	

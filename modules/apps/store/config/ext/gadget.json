@@ -3,9 +3,8 @@
 
 
     "import": [
-        "/modules/rxt/ext/scripts/rxt.importer.js",
-        "/modules/rxt/ext/scripts/form.exporter.js",
-        "/modules/rxt/ext/scripts/form.overview.exporter.js"],
+        "/modules/rxt/ext/scripts/form.overview.exporter.js",
+        "/modules/rxt/ext/scripts/form.exporter.js"],
 
     "fieldPropertyRules": [
         "overview.name:order=1",

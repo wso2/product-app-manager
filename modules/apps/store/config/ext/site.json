@@ -3,7 +3,7 @@
 
 
     "import": [
-        "/modules/rxt/ext/scripts/rxt.importer.js",
+        "/modules/rxt/ext/scripts/form.overview.exporter.js",
         "/modules/rxt/ext/scripts/form.exporter.js"],
 
     "fieldPropertyRules": [
@@ -19,7 +19,7 @@
     ],
 
     "link": [
-        "overview.stage:value=*.lifecycleState",
+        "overview.stage:value=*.lifecycleState"
     ],
 
     "fieldProperties": [

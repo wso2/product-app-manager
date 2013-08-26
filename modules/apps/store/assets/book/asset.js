@@ -29,5 +29,7 @@ var assetLinks = function (user) {
                 url: 'bookmarks',
                 path: 'bookmarks.jag'
             }
-        ]};
+        ],
+        isCategorySupport: true
+    };
 };
