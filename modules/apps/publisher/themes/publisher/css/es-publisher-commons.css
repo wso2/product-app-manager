@@ -438,7 +438,8 @@ label, input, button, select, textarea{
 .list-asset-table img{
 	max-width:30px;
 	max-height:30px;
-	border-radius:4px 4px 4px 4px;
+	border-radius:2px 2px 2px 2px;
+    border: 1px dotted #DDDDDD;
 }
 .list-asset-table tr td:first-child{
 	width:40px;
