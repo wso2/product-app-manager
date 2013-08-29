@@ -100,7 +100,7 @@ caramel.configs({
     negotiation: true,
     themer: function () {
         //TODO: Hardcoded theme
-        return 'publisher';
+        return 'default';
     }
 
 });
