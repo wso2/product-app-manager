@@ -675,6 +675,18 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     text-align: center;
     color: #FFFFFF !important;
 }
+
+.asset-download-btn {
+    bottom: 20px;
+    font-weight: 600;
+    left: 15px;
+    padding: 10px;
+    position: absolute;
+    right: 15px;
+    text-align: center;
+    color: #FFED00 !important;
+}
+
 .asset-btn-cont {
     border-top: 1px solid #CCCCCC;
     margin-top: 10px;
@@ -868,6 +880,15 @@ div.rating-cancel, div.star-rating {
     font-weight: bold;
 }
 
+#btn-download-book {
+    margin-top: 0;
+    display: inline-block;
+    font-size: 18px;
+    padding: 10px;
+    font-weight: bold;
+    color:#FFED00;
+}
+
 .assets-container {
     margin-top: 24px;
 }
@@ -939,6 +960,12 @@ div.rating-cancel, div.star-rating {
     right: 14px;
     top: 14px;
 }
+#asset-slideshow-cont #btn-download-book {
+    position: absolute;
+    right: 14px;
+    top: 14px;
+}
+
 #asset-slideshow .slide {
     position: relative;
     height: 300px;
@@ -1093,6 +1120,8 @@ ol.linenums li {
         top: 167px;
     }
     .asset-add-btn {
+        bottom: 47px;
+    }.asset-download-btn {
         bottom: 47px;
     }
 }

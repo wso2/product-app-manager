@@ -6,6 +6,7 @@ var asset,
         config = require('/store.js').config(),
         site = require('/modules/site.js'),
         user = require('/modules/user.js').current(),
+        utility = require('modules/util.js'),
         sso = configs.ssoConfiguration.enabled,
         inDashboard = false,
         matcher = new URIMatcher(request.getRequestURI());
@@ -19,7 +20,7 @@ if (store.isuserasset(aid, type)) {
     inDashboard = true;
 }
 
-var rxtAttributes = require('modules/util.js').getRXTAttributes(type);
+var rxtAttributes = utility.getRXTAttributes(type);
 
 caramel.render({
     title: 'Store | ' + type,

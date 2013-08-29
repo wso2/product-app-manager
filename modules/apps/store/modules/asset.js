@@ -21,7 +21,6 @@ var log = new Log();
     };
 
     var search = function (that, options) {
-        log.info(options);
         if (options.tag) {
             var registry = that.registry,
                 tag = options.tag;

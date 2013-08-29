@@ -14,5 +14,7 @@ var currentPage = function (assets,sso,user) {
         'sso': sso,
         'user': user
     };
+
+    var log = new Log();
     return out;
 };

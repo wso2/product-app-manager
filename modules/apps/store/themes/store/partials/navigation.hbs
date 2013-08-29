@@ -7,14 +7,13 @@
                 {{#itr assets}}
                     <li class="dropdown {{#if value.selected}} selected {{/if}}">
                         <a href="{{url "/assets/"}}{{key}}" data-toggle="dropdown" class="dropdown-toggle"><i
-                                class="icon-{{key}}"></i> {{value.title}}</a>
+                                class="icon-{{key}}"></i> {{value.title}}</a>    
                         {{#if value.isCategorySupport}}
                             {{#if value.categories}}
-                                <ul class="dropdown-menu">
+                                <ul aria-labelledby="dLabel" role="menu" class="dropdown-menu">
                                     {{#each value.categories}}
-                                        <li class="dropdown {{#if this.selected}} selected {{/if}}">
-                                            <a href="{{url "/assets"}}/{{../../key}}?fields=true&category={{this}}"
-                                               data-toggle="dropdown" class="dropdown-toggle"></i> {{this}}</a>
+                                        <li>
+                                            <a href="{{url "/assets"}}/{{../../key}}?fields=true&category={{this}}">{{this}}</a>
                                         </li>
                                     {{/each}}
                                 </ul>
