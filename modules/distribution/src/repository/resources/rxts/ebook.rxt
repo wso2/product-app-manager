@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<artifactType type="application/vnd.wso2-book+xml" shortName="book" singularLabel="Book" pluralLabel="Books"
+<artifactType type="application/vnd.wso2-ebook+xml" shortName="ebook" singularLabel="EBook" pluralLabel="EBooks"
               hasNamespace="false" iconSet="10">
-    <storagePath>/books/@{overview_provider}/@{overview_name}/@{overview_version}</storagePath>
+    <storagePath>/ebooks/@{overview_provider}/@{overview_name}/@{overview_version}</storagePath>
     <nameAttribute>overview_name</nameAttribute>
     <ui>
         <list>

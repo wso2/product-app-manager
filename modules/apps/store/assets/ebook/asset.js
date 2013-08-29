@@ -1,4 +1,4 @@
-var ASSETS_TYPE = 'book';
+var ASSETS_TYPE = 'ebook';
 
 var Manager;
 
@@ -18,10 +18,10 @@ var Manager;
 
 var assetLinks = function (user) {
     return {
-        title: 'Books',
+        title: 'E-Books',
         links: [
             {
-                title: 'Books',
+                title: 'E-Books',
                 url: ''
             },
             {

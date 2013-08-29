@@ -1,10 +1,10 @@
 var gadgetRxtPath = '/gadgets/';
 var siteRxtPath = '/sites/';
-var bookRxtPath = '/books/';
+var ebookRxtPath = '/ebooks/';
 
 var repoPath = '/gadgets';
 var repoSitePath = '/sites';
-var repoBookPath = '/books';
+var repoEBookPath = '/ebooks';
 
 var lastUpdated = 0;
 
@@ -94,37 +94,37 @@ var logstoreUrl = function () {
     log.info("UES store URL : " + store.server.http + caramel.configs().context);
 };
 
-var populateBooks = function () {
-    var i, name, length, books, bookJson, file, path, xml,
-        repo = new File(repoBookPath),
-        base = store.server.http + context + bookRxtPath;
+var populateEBooks = function () {
+    var i, name, length, ebooks, ebookJson, file, path, xml,
+        repo = new File(repoEBookPath),
+        base = store.server.http + context + ebookRxtPath;
 
     if (repo.isDirectory()) {
-        books = repo.listFiles();
-        length = books.length;
+        ebooks = repo.listFiles();
+        length = ebooks.length;
         for (i = 0; i < length; i++) {
-            name = books[i].getName();
-            var bookJson = require('/books/' + name + '/book.json');
+            name = ebooks[i].getName();
+            var ebookJson = require('/ebooks/' + name + '/ebook.json');
             var path = base + name + '/';
-            deployer.book({
-                name: bookJson.name,
-                tags: bookJson.tags.split(','),
-                rate: bookJson.rate,
-                provider: bookJson.attributes.overview_provider,
-                version: bookJson.attributes.overview_version,
-                description: bookJson.attributes.overview_description,
-                url: path + bookJson.attributes.overview_url,
-                isbn: bookJson.attributes.overview_isbn,
-                author: bookJson.attributes.overview_author,
-                thumbnail: base + bookJson.attributes.images_thumbnail,
-                banner: base + bookJson.attributes.images_banner,
-                status: bookJson.attributes.overview_status,
-                category: bookJson.attributes.overview_category
+            deployer.ebook({
+                name: ebookJson.name,
+                tags: ebookJson.tags.split(','),
+                rate: ebookJson.rate,
+                provider: ebookJson.attributes.overview_provider,
+                version: ebookJson.attributes.overview_version,
+                description: ebookJson.attributes.overview_description,
+                url: path + ebookJson.attributes.overview_url,
+                isbn: ebookJson.attributes.overview_isbn,
+                author: ebookJson.attributes.overview_author,
+                thumbnail: base + ebookJson.attributes.images_thumbnail,
+                banner: base + ebookJson.attributes.images_banner,
+                status: ebookJson.attributes.overview_status,
+                category: ebookJson.attributes.overview_category
             });
         }
 
         if (typeof(Session["started"]) == "undefined") {
-            log.info('Default books deployed');
+            log.info('Default e-books deployed');
         }
     }
 };
@@ -165,7 +165,7 @@ var populateSites = function () {
 };
 
 populate();
-populateBooks();
+populateEBooks();
 populateSites();
 addSSOConfig();
 /*

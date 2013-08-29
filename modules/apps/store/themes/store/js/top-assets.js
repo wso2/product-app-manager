@@ -65,13 +65,13 @@ $(function() {
 
 	});
 
-    $("#top-asset-slideshow-book").carouFredSel({
+    $("#top-asset-slideshow-ebook").carouFredSel({
         items : 4,
         width : "100%",
         infinite : false,
         auto : false,
         circular : false,
-        pagination : "#top-asset-slideshow-pag-book"
+        pagination : "#top-asset-slideshow-pag-ebook"
 
     });
 

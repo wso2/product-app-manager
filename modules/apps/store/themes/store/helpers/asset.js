@@ -15,11 +15,12 @@ var format = function (context) {
     }else if (context.type === 'site'){
         context.asset_css = "globe";
 
-    }else if(context.type === 'book')
-    {
+    }else if(context.type === 'ebook'){
         context.asset_css = "book";
+
     }else{
         context.asset_css = "link";
     }
+
     return context;
 };
