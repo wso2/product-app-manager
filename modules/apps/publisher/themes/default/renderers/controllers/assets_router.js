@@ -20,7 +20,8 @@ var render = function (theme, data, meta, require) {
         ],
         leftnav: [
             {
-                partial: 'left-nav'
+                partial: 'left-nav',
+                context: data
             }
         ],
         listassets: [
