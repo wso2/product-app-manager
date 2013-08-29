@@ -54,15 +54,15 @@ var site = function (options) {
 
 };
 
-var book = function (options) {
+var ebook = function (options) {
     var tag, tags, rate, asset, assets,
         carbon = require('carbon'),
         store = require('/modules/store.js'),
-        path = '/_system/governance/books/' + options.provider + '/' + options.name + '/' + options.version,
+        path = '/_system/governance/ebooks/' + options.provider + '/' + options.name + '/' + options.version,
         server = require('/modules/server.js'),
         um = server.userManager();
         registry = server.systemRegistry(),
-        am = store.assetManager('book', registry);
+        am = store.assetManager('ebook', registry);
 
     asset = {
         "name": options.name,
@@ -185,7 +185,7 @@ var buildSiteRXT = function (options) {
     return rxt;
 };
 
-var buildBookRXT = function (options) {
+var buildEBookRXT = function (options) {
     var rxt = <metadata xmlns="http://www.wso2.org/governance/metadata">
         <overview>
             <provider>{options.provider}</provider>

@@ -21,7 +21,6 @@ var navigation = function (options) {
         length2 = types.length;
     for (i = 0; i < length2; i++) {
         type = types[i];
-
         links = store.assetLinks(type);
         if (links.isCategorySupport) {
             links.categories = utility.getCategories(type);

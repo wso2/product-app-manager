@@ -18,8 +18,8 @@ var caramel;
 	site = require('/modules/site.js');
 	recentGadgets = store.recentAssets("gadget", 3);
 	recentSites = store.recentAssets("site", 3);
-	recentBooks = store.recentAssets("book", 3);
-	var recentAssets = recentGadgets.concat(recentSites,recentBooks);
+	recentEBooks = store.recentAssets("ebook", 3);
+	var recentAssets = recentGadgets.concat(recentSites,recentEBooks);
 	count = Object.keys(store.userAssets()).length;
 	 
 	for(var i = 0; i < types.length; i++) {

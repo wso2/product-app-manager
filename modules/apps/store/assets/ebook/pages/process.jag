@@ -12,10 +12,10 @@
             configs = space.get('userAssets');
 
     configs = configs ? parse(configs) : {};
-    if (!configs.book) {
-        configs.book = {};
+    if (!configs.ebook) {
+        configs.ebook = {};
     }
-    configs.book[aid] = true;
+    configs.ebook[aid] = true;
     space.put('userAssets', stringify(configs));
     response.sendRedirect(request.getParameter('destination'));
 })();

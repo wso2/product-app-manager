@@ -4,7 +4,7 @@
 
 var caramel;
 ( function() {
-	var gadgets, sites,books, paging, count, current, total, loggedUser, popularAssets,
+	var gadgets, sites,ebooks, paging, count, current, total, loggedUser, popularAssets,
             recent = false,
             type = 'gadget',
             options = {},
@@ -41,9 +41,9 @@ var caramel;
             type: 'site'
         }, paging);
 
-        books = store.search({
+        ebooks = store.search({
             query: query,
-            type: 'book'
+            type: 'ebook'
         }, paging);
 
     } else if (fields) {
@@ -62,30 +62,29 @@ var caramel;
         gadgets = store.search(options, paging);
         options.type = 'site';
         sites = store.search(options, paging);
-        options.type = 'book';
-        books = store.search(options, paging);
+        options.type = 'ebook';
+        ebooks = store.search(options, paging);
     } else if (tag) {
         gadgets = store.tagged('gadget', tag, paging);
         sites = store.tagged('site', tag, paging);
-        books = store.tagged('book', tag, paging);
+        ebooks = store.tagged('ebook', tag, paging);
     } else {
         recent = true;
         gadgets = store.assets('gadget', paging);
         sites = store.assets('site', paging);
-        books = store.assets('book', paging);
+        ebooks = store.assets('ebook', paging);
     }
 	recentGadgets = store.recentAssets('gadget', 3);
 	recentSites = store.recentAssets('site', 3);
-	recentBooks = store.recentAssets('book', 3);
-	recentAssets = recentGadgets.concat(recentSites,recentBooks);
+	recentEBooks = store.recentAssets('ebook', 3);
+	recentAssets = recentGadgets.concat(recentSites,recentEBooks);
 
 	if(!(query || fields)) {
 	popularGadgets = store.popularAssets('gadget');
 	popularSites = store.popularAssets('site');
-	popularBooks = store.popularAssets('book');
-	popularAssets = popularGadgets.concat(popularSites,popularBooks);
+	popularEBooks = store.popularAssets('ebook');
+	popularAssets = popularGadgets.concat(popularSites,popularEBooks);
 	}
-
     var rxtAttributes = require('modules/util.js').getRXTAttributes("gadget");
 
     caramel.render({
@@ -109,7 +108,7 @@ var caramel;
 			recentAssets : {
 				gadget : gadgets,
 				site : sites,
-                book : books
+                ebook : ebooks
 			},
 			popularAssets : popularAssets,
             recent : recent
