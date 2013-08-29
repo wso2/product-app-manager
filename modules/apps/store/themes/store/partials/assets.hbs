@@ -1,10 +1,10 @@
 <div>
-	<div id="assets-container" data-pages="{{pages}}">	
-	
+	<div id="assets-container" data-pages="{{pages}}">
+
 		{{#if assets}}
 		{{#slice assets size="4"}}
 		<div class="row-fluid">
-		
+
 			{{#each .}}
 			<div class="span3 asset" data-id="{{id}}" data-type="{{type}}">
 				{{#attributes}}
@@ -34,23 +34,13 @@
 							<li>
 								<h4>{{t "Author"}}</h4>
 								<a class="asset-author" href="#">{{overview_provider}}</a>
-								
+
 							</li>
 
 						</ul>
-
-						{{#if ../indashboard}}
-						<a href="#" class="btn disabled btn-added">{{t "Bookmarked"}}</a>
-						{{else}}
-							{{# if ../../../../sso}}			
-							<a href="{{url "/login.jag"}}" class="btn btn-primary asset-add-btn">{{>process-asset-text}}</a>							
-							{{else}}							
-								<a href="#" class="btn btn-primary asset-add-btn">{{>process-asset-text}}</a>
-							{{/if}}
-							{{# if ../../../../user.username}}		
-							<a href="#" class="btn btn-primary asset-add-btn">{{>process-asset-text}}</a>
-							{{/if}}
-						{{/if}}
+                        {{#mergeContext ssoParam=../../../sso userParam=../../../user thisAsset=../this}}
+                            {{>assets-utilization}}
+                        {{/mergeContext}}
 
 					</div>
 				</div>

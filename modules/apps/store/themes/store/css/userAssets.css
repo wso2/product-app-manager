@@ -30,6 +30,11 @@ body{
 a.site{
 display:none;
 }
+
+
+a.book{
+    display:none;
+}
 .store-my-item{
 	position:relative;
 	width:200px;
