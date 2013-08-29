@@ -63,7 +63,7 @@ var caramel;
         options.type = 'site';
         sites = store.search(options, paging);
         options.type = 'book';
-        sites = store.search(options, paging);
+        books = store.search(options, paging);
     } else if (tag) {
         gadgets = store.tagged('gadget', tag, paging);
         sites = store.tagged('site', tag, paging);
