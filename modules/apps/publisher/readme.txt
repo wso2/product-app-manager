@@ -14,6 +14,14 @@ It allows the following functionality;
 Changes:
 ----------
 
+28/8/2013	Major Changes:
+		-------------
+		IMPORTANT: Requires the changes to Jaggery in SAM JAG PULL # 2 (artifact.js changes)
+		All newly created users are assigned the role of "Publisher"
+		All newly created private_user roles are assigned read/write/authorize rights to the 
+			collections defined in the userSpace.accessible block in the sso.json.
+		
+
 23/8/2013	Major Changes:
 		--------------
 		Note: An asset in order to be visible in the store must have its state set to PUBLISHED when it is created
@@ -41,10 +49,16 @@ Changes:
 		Added log info and debug statements where appropriate
 		Removed unused code
 		Added comments where appropriate , all files now have a description
+		Commented the client side script for handling life-cycle operations
 			
 		
 Additions:
 ----------
+
+28/8/2013	API:(Refer to API for complete changes
+		Added lifecycle check list methods
+			
+
 23/8/2013	
 		API: (Refer to API for complete changes)
 		Lifecycle API
@@ -67,8 +81,8 @@ Bugs:
 x		The created assets can only be viewed by a logged in user
 
 13/8/2013	Asset types other than sites are classed as sites (e.g. Books)		
-		Lifecycle states cannot be promoted or demoted
-		Lifecycles cannot be detached
+
+28/8/2013	Newly created users have access to collections owned by other users
 
 TODO:
 -----
@@ -95,11 +109,15 @@ The following API calls have been implemented
 	POST 	/publisher/api/asset/{type}			Creates a new asset of the given {type}
 	DELETE 	/publisher/api/asset/{type}/{id}		Deletes an asset 
 	POST 	/publisher/api/lifecycle/{type}/{id}		Attaches a lifecycle for the specified asset type with the id
-	POST  api/lifecycle/{asset-type}/{artifact-id}  	Attach the provided lifecycle to the artifact
- 	DELETE api/lifecycle/{asset-type}/{artifact-d}		Detaches the current lifecycle from the artifact
- 	PUT  api/lifecycle/{state}/{asset-type}/{artifact-id}	Promotes an artifact to the lifecycle state provided
- 	GET api/lifecycle/{asset-type}/{artifact-id}           	Returns the current lifecycle state of an artifact
  	GET api/lifecycle/checklist/{type}/{id}                 Returns the check list for an artifact
+ 	GET api/lifecycle/checklistitem/{index}/{type}/{id}     Returns the checked state of the check list item at
+ 		                                                the given index.
+ 	GET api/lifecycle/actions/{type}/{id}                   Gets the actions available to an asset at a given state
+ 	DELETE api/lifecycle/{asset-type}/{artifact-id}		Detaches the current lifecycle from the artifact
+ 	DELETE api/lifecycle/checklistitem/{index}/{type}/{id}  Unticks a check list item at the given index
+ 	POST  api/lifecycle/{asset-type}/{artifact-id}   	Attach the provided lifecycle to the artifact
+ 	POST api/lifecycle/checklistitem/{index}/{type}/{id}    Ticks a check list item at the given index
+ 	PUT api/lifecycle/{action}/{asset-type}/{artifact-id}	Performs the provided the action on the provided asset
 	
 	
 
