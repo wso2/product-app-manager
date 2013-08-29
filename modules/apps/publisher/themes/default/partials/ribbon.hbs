@@ -1,0 +1,43 @@
+<div class="span9 publisher-breadcrumb">
+	<!--<a href='/publisher/asset/{{shortName}}' class="btn btn-addNewAsset" type="button"><i class="icon-plus-sign-alt"></i>{{t "Add New Asset"}}</a>-->
+	<!--<div class="dropdown context_menu right">
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-reorder"></i></a>
+                <ul class="dropdown-menu store-switcher-menu">
+                    <li><a target="_self" href="/publisher/assets/gadget/"><i class="icon-dashboard"></i>{{t "Gadget"}}</a></li>
+                    <li><a target="_self" href="/publisher/assets/site/"><i class="icon-compass"></i>{{t "Site"}}</a></li>
+                    <li><a target="_self" href="/publisher/assets/book/"><i class="icon-book"></i>{{t "Book"}}</a></li>
+                </ul>
+            </div>-->
+    <div class="btn-group context_menu left">
+        <a class="btn btn-large dropdown-toggle assetTypeSwitcher" data-toggle="dropdown" href="#">
+            <i class="icon-{{shortName}}"></i>Type : <span class="publisherTitle">{{shortName}}</span>
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a target="_self" href="/publisher/assets/gadget/"><i class="icon-dashboard"></i>{{t "Gadget"}}</a></li>
+            <li><a target="_self" href="/publisher/assets/site/"><i class="icon-compass"></i>{{t "Site"}}</a></li>
+            <li><a target="_self" href="/publisher/assets/book/"><i class="icon-book"></i>{{t "Book"}}</a></li>
+        </ul>
+    </div>
+    {{#if this.data}}
+         <span class="breadcrumb-separator">/</span>
+         <span class="breadcrumb-text left">{{{snoop "fields(name=overview_name).value" this.data}}}</span>
+         <span class="breadcrumb-separator">/</span>
+         <div class="btn-group context_menu left">
+            <a class="btn btn-large dropdown-toggle assetTypeSwitcher" data-toggle="dropdown" href="#">
+                Version : <span class="publisherTitle">{{{snoop "fields(name=overview_version).value" this.data}}}</span>
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a target="_self" href="#">2.0.0</a></li>
+                <li><a target="_self" href="#">2.0.4</a></li>
+                <li><a target="_self" href="#">3.0.0</a></li>
+            </ul>
+         </div>
+    {{/if}}
+
+</div>
+<div class="span3 pull-right control-search">
+	<input type="text" class="inp-ribbon span12" placeholder="{{t "Search.."}}" id="inp_searchAsset" />
+	<a class="" id="search-button"> <i class="icon-search"></i> </a>
+</div>
