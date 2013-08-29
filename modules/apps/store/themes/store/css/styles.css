@@ -361,7 +361,7 @@ h3.asset-title-separator {
     background: url("../img/icon-bar-site.png") no-repeat scroll 2px 1px rgb(235, 243, 243);
 }
 
-.store-left h3.asset-type-book {
+.store-left h3.asset-type-ebook {
     background: url("../img/icon-bar-site.png") no-repeat scroll 2px 1px rgb(235, 243, 243);
 }
 
@@ -391,7 +391,7 @@ h3.asset-title-separator {
     right: 45px;
     top: 4px;
     color: #34495E;
-    padding-top: 6px;
+    padding-top: 4px;
     opacity: 0.5;
 }
 .search-bar .span8 h2 {
@@ -880,7 +880,7 @@ div.rating-cancel, div.star-rating {
     font-weight: bold;
 }
 
-#btn-download-book {
+#btn-download-ebook {
     margin-top: 0;
     display: inline-block;
     font-size: 18px;
@@ -960,7 +960,7 @@ div.rating-cancel, div.star-rating {
     right: 14px;
     top: 14px;
 }
-#asset-slideshow-cont #btn-download-book {
+#asset-slideshow-cont #btn-download-ebook {
     position: absolute;
     right: 14px;
     top: 14px;

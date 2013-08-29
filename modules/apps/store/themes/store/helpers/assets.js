@@ -14,7 +14,6 @@ var currentPage = function (assetsx,ssox,userx, paging) {
         'user': userx,
         'pages': Math.ceil(paging.total/paging.size)
     };
-    
     return outx;
 };
 
