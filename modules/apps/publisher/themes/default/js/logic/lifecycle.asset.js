@@ -104,6 +104,12 @@ $(function(){
      */
     function buildCheckList(asset,id){
 
+        //Check if the id exists before making a call
+        if((asset=='')||(id=='')){
+            console.log('omitting');
+            return;
+        }
+
         //Clear the checklist rendering area
         $('#checklist').html('');
 

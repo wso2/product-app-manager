@@ -179,6 +179,7 @@ routeManager.register('GET','publisher','/publisher/api/lifecycle/{type}/{id}',f
 });
 
 routeManager.register('GET','publisher','/publisher/api/lifecycle/checklist/{type}/{id}',function(context){
+   //log.info('short name: '+context.params.type);
    var shortName=context.params.type;
    var id=context.params.id;
 

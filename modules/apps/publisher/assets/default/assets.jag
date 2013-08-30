@@ -34,6 +34,10 @@ var DEFAULT_PAGE = 10;
 
 routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function (context) {
 
+    try{
+
+
+
     //TODO: Check for valid asset types
     var artifactManager = rxtManager.getArtifactManager(context.params.type);
 
@@ -44,6 +48,9 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function (c
         shortName: context.params.type,
         artifacts: artifacts
     });
+    }catch(e){
+        response.sendError(400,"Your request is malformed");
+    }
 
     /*for each(var artifact in artifacts){
      print(artifact.id+'<br/><br/>');
