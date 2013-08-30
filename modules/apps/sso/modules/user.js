@@ -169,7 +169,7 @@ var buildPermissionsList=function(username,permissions,server){
 
             //Create a dummy collection, as once permissions are
             //the user will be unable to create assets in the
-            //parent collection
+            //parent collection.
             //Thus we create a user collection.
             sysRegistry=server.systemRegistry();
             sysRegistry.put(id,{
