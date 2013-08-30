@@ -30,7 +30,7 @@
         "accessible":[
             {
                 "context":"/_system/governance",
-                "collections":["gadgets","sites","books"],
+                "collections":["gadgets","sites","ebooks"],
                 "actions":["http://www.wso2.org/projects/registry/actions/get",
                     "http://www.wso2.org/projects/registry/actions/add",
                     "http://www.wso2.org/projects/registry/actions/delete",
