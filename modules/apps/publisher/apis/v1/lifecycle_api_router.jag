@@ -159,12 +159,15 @@ routeManager.register('PUT', 'publisher', '/publisher/api/lifecycle/{action}/{ty
 });
 
 routeManager.register('GET','publisher','/publisher/api/lifecycle/{type}/{id}',function(context){
-    var shortName=context.params.type;
-    var id=context.params.id;
 
-    var artifactManager=rxtManager.getArtifactManager(shortName);
 
     try{
+        log.debug('Entered check lifecycle/type/id ');
+        var shortName=context.params.type;
+        var id=context.params.id;
+
+        var artifactManager=rxtManager.getArtifactManager(shortName);
+
         var artifact=artifactManager.get(id);
         var state=artifactManager.getLifecycleState(artifact);
         var msg={};
@@ -180,11 +183,15 @@ routeManager.register('GET','publisher','/publisher/api/lifecycle/{type}/{id}',f
 
 routeManager.register('GET','publisher','/publisher/api/lifecycle/checklist/{type}/{id}',function(context){
    //log.info('short name: '+context.params.type);
-   var shortName=context.params.type;
-   var id=context.params.id;
 
-   var artifactManager=rxtManager.getArtifactManager(shortName);
    try{
+       log.debug('Entered check list/type/id ');
+
+       var shortName=context.params.type;
+       var id=context.params.id;
+
+       var artifactManager=rxtManager.getArtifactManager(shortName);
+
        var artifact=artifactManager.get(id);
        var checkListItems=artifactManager.getCheckListItemNames(artifact);
        var msg={};
@@ -202,13 +209,14 @@ routeManager.register('GET','publisher','/publisher/api/lifecycle/checklist/{typ
         Gets the checked or unchecked state of a check list item
 */
 routeManager.register('GET','publisher','/publisher/api/lifecycle/checklistitem/{index}/{type}/{id}',function(context){
-     var checkListItemIndex=context.params.index;
-     var shortName=context.params.type;
-     var id=context.params.id;
-
-     var artifactManager=rxtManager.getArtifactManager(shortName);
-
      try{
+         log.debug('Entered checklistitem/index/type/id ');
+         var checkListItemIndex=context.params.index;
+         var shortName=context.params.type;
+         var id=context.params.id;
+
+         var artifactManager=rxtManager.getArtifactManager(shortName);
+
          var artifact=artifactManager.get(id);
          var isChecked=artifactManager.isItemChecked(checkListItemIndex,artifact);
          var msg={};
