@@ -132,7 +132,7 @@ then the permissions will be applicable to
 @username: The username of the account to which the permissions will be attached
 @permissions: An object of permissions which will be assigned to the newly created user role
  */
-var buildPermissionsList=function(username,permissions){
+var buildPermissionsList=function(username,permissions,server){
 
     //Obtain the accessible collections
     var accessible=options().userSpace.accessible;
@@ -143,6 +143,7 @@ var buildPermissionsList=function(username,permissions){
     var context;
     var actions;
     var collection;
+    var sysRegistry;
 
     //Go through all of the accessible directives
     for(var index in accessible){
@@ -161,10 +162,19 @@ var buildPermissionsList=function(username,permissions){
 
             //Create the id used for the permissions
             //id=context+'/'+collection+'/'+username;
-            id=context+'/'+collection;
+            id=context+'/'+collection+'/'+username;
             //log.debug('permission id: '+id);
             //Assign the actions to the id
             permissions[id]=actions;
+
+            //Create a dummy collection, as once permissions are
+            //the user will be unable to create assets in the
+            //parent collection
+            //Thus we create a user collection.
+            sysRegistry=server.systemRegistry();
+            sysRegistry.put(id,{
+                  collection:true
+            });
         }
 
     }
@@ -202,7 +212,7 @@ var register = function (username, password) {
    ];*/
 
     //Create the permissions based on the accessible config block
-    perms=buildPermissionsList(username,perms);
+    perms=buildPermissionsList(username,perms,server);
 
     //TODO: Need to create a collection in the path /_system/governance/gadgets/{username}
     //otherwise the user will not be able to create anything.
