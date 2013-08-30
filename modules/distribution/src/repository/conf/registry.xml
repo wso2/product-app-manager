@@ -95,6 +95,16 @@
                             <item name="QoS Created" forEvent="">
                             </item>
                         </data>
+			<data name="transitionExecution">
+				<!--execution forEvent="Promote" class="org.wso2.jaggery.scxml.generic.GenericExecutor">
+					<parameter name="PERMISSION:get" value="http://www.wso2.org/projects/registry/actions/get" />
+					<parameter name="PERMISSION:add" value="http://www.wso2.org/projects/registry/actions/add" />
+					<parameter name="PERMISSION:delete" value="http://www.wso2.org/projects/registry/actions/delete" />
+					<parameter name="PERMISSION:authorize" value="authorize"/>
+					<parameter name="STATE_RULE1:Tested" value="publisher:-authorize,-get,-add,-delete"/>
+					<parameter name="STATE_RULE2:Tested" value="private_{asset_author}:-get,-add,-delete,-authorize" />				
+				</execution--> 
+			</data>
                         <!--<data name="transitionValidation">
                             <validation forEvent="" class="">
                                 <parameter name="" value=""/>
@@ -130,13 +140,23 @@
                             <item name="Smoke Test Passed" forEvent="">
                             </item>
                         </data>
+			<data name="transitionExecution">
+				<!--execution forEvent="Promote" class="org.wso2.jaggery.scxml.generic.GenericExecutor">
+					<parameter name="PERMISSION:get" value="http://www.wso2.org/projects/registry/actions/get" />
+					<parameter name="PERMISSION:add" value="http://www.wso2.org/projects/registry/actions/add" />
+					<parameter name="PERMISSION:delete" value="http://www.wso2.org/projects/registry/actions/delete" />
+					<parameter name="PERMISSION:authorize" value="authorize"/>
+					<parameter name="STATE_RULE1:Production" value="publisher:+authorize,+get,+add,+delete"/>
+					<parameter name="STATE_RULE2:Production" value="private_{asset_author}:+get,+add,+delete,+authorize" />	
+				</execution--> 
+			</data>			
                     </datamodel>
                     <transition event="Promote" target="Production"/>
                     <transition event="Demote" target="Development"/>
                 </state>
                 <state id="Production">  
                     <transition event="Demote" target="Tested"/>
-                </state>                
+                </state>               
             </scxml>
         </lifecycle>
     </configuration>

@@ -143,16 +143,10 @@ var rxt_utility=function(){
 
                          var item =list[index];
 
-                         /*TODO: This will not process files with the extension fragment e.g. extension json
-                         filename: tjson.js .In such a case the file will be processed as having a
-                         a json extension.
-                         */
-
                          //Extract the extension
                          var fileName=item.getName().split('.');
                          //The extension will always be the last element of a file name when it is split by .
                          var foundExt=fileName[fileName.length-1];
-
 
                          if((item.getName().indexOf('~')==-1)&&(foundExt==extension)){
                              files.push(item);

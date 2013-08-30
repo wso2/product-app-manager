@@ -26,7 +26,17 @@
             "path": "/_system/governance/users",
             "username": "admin",
             "password": "admin"
-        }
+        },
+        "accessibleCollections":[
+            {
+                "context":"/_system/governance",
+                "collections":["gadgets","sites","books"],
+                "actions":["http://www.wso2.org/projects/registry/actions/get",
+                           "http://www.wso2.org/projects/registry/actions/add",
+                           "http://www.wso2.org/projects/registry/actions/delete",
+                           "authorize"]
+            }
+        ]
     },
     "app": {
         "RXT_MANAGER": "rxt_manager",

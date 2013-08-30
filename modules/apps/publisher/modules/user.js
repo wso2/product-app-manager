@@ -135,6 +135,7 @@ var register = function (username, password) {
         'http://www.wso2.org/projects/registry/actions/delete',
         'authorize'
     ];
+
     p = opts.permissions.login;
     for (r in p) {
         if (p.hasOwnProperty(r)) {
