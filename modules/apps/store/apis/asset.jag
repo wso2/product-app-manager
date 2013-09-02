@@ -5,7 +5,10 @@ response.addHeader("Content-Type", "application/json");
 (function () {
 
     var elems,
-            store = require('/modules/store.js'),
+            server = require('/modules/server.js'),
+            tenant = server.tenant(request),
+            tenantId = tenant.tenantId,
+            store = require('/modules/store.js').store(tenantId),
             paging = store.assetsPaging(request),
             matcher = new URIMatcher(request.getRequestURI()),
             query = request.getParameter('query'),

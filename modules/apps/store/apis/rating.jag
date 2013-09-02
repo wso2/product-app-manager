@@ -3,7 +3,10 @@ var matcher = new URIMatcher(request.getRequestURI());
 // http://localhost:9763/caramel/apis/asset/1234/comments
 (function () {
     var aid,
-            store = require('/modules/store.js'),
+            server = require('/modules/server.js'),
+            tenant = server.tenant(request),
+            tenantId = tenant.tenantId,
+            store = require('/modules/store.js').store(tenantId),
             user = require('/modules/user.js').current();
 
     if (!user) {

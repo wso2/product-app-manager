@@ -25,7 +25,38 @@ process.setProperty('https.port', httpsPort.toString());
 var rxt_management=require('/modules/rxt/rxt.manager.js').rxt_management();
 var publisherConfig=require('/config/publisher.json');
 var pubConfig=require('/config/publisher.js').config();
+
+/*
+Finished the parsing stuff
+ */
+caramel.configs({
+    context: '/store',
+    cache: true,
+    negotiation: true,
+    themer: function () {
+        /*var meta = caramel.meta();
+        if(meta.request.getRequestURI().indexOf('gadget') != -1) {
+            return 'modern';
+        }*/
+        return 'store';
+    }/*,
+    languagesDir: '/i18n',
+    language: function() {
+        return 'si';
+    }*/
+});
+
+var configs = require('/store.js').config();
+
 var server = require('/modules/server.js');
+server.init(configs);
+
+var user = require('/modules/user.js');
+user.init(configs);
+
+var store = require('/modules/store.js');
+store.init(configs);
+
 /*
 var url='https://localhost:9443/admin',
     username='admin',
@@ -39,12 +70,9 @@ var registry=new carbon.registry.Registry(server,{
 });
  */
 
-server.init(pubConfig);
-
-var user = require('/modules/user.js');
-user.init(pubConfig);
-
-var registry = server.systemRegistry();
+//TODO : fix this
+var tenantId = -1234;
+var registry = server.systemRegistry(tenantId);
 
 var rxtManager=new rxt_management.RxtManager(registry);
 
@@ -81,35 +109,3 @@ var modelManager=new ext_mng.ModelManager({parser:parser,adapterManager:adapterM
 application.put(publisherConfig.app.MODEL_MANAGER,modelManager);
 
 
-/*
-Finished the parsing stuff
- */
-caramel.configs({
-    context: '/store',
-    cache: true,
-    negotiation: true,
-    themer: function () {
-        /*var meta = caramel.meta();
-        if(meta.request.getRequestURI().indexOf('gadget') != -1) {
-            return 'modern';
-        }*/
-        return 'store';
-    }/*,
-    languagesDir: '/i18n',
-    language: function() {
-        return 'si';
-    }*/
-});
-
-var configs = require('/store.js').config();
-var server = require('/modules/server.js');
-
-server.init(configs);
-
-var user = require('/modules/user.js');
-user.init(configs);
-
-var store = require('/modules/store.js');
-store.init({
-
-});
