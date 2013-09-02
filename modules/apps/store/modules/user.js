@@ -75,18 +75,24 @@ var options = function (tenantId) {
  * @return {boolean}
  */
 var login = function (username, password) {
-    var user, perm, perms, actions, i, length, um, opts, config,
-        log = new Log(),
-        authorized = false,
-        carbon = require('carbon'),
+    var carbon = require('carbon'),
         event = require('/modules/event.js'),
         server = require('/modules/server.js'),
-        serv = server.server(),
-        usr = carbon.server.tenantUser(username);
+        serv = server.server();
     if (!serv.authenticate(username, password)) {
         return false;
     }
+    return permitted(username);
+};
+
+var permitted = function (username) {
     //load the tenant if it hasn't been loaded yet.
+    var opts, um, user, perms, perm, actions, length, i,
+        authorized = false,
+        carbon = require('carbon'),
+        server = require('/modules/server.js'),
+        event = require('/modules/event.js'),
+        usr = carbon.server.tenantUser(username);
     if (!server.configs(usr.tenantId)) {
         event.emit('tenantCreate', usr.tenantId);
     }
@@ -167,6 +173,7 @@ var userRegistry = function () {
  */
 var logout = function () {
     var user = current(),
+        event = require('/modules/event.js'),
         opts = options(user.tenantId);
     if (opts.logout) {
         opts.logout(user, session);
@@ -236,45 +243,5 @@ var current = function () {
 };
 
 var loginWithSAML = function (username) {
-    var user, perm, perms, actions, i, length,
-        authorized = false,
-        carbon = require('carbon'),
-        usr = carbon.server.tenantUser(username),
-        opts = options(usr.tenantId),
-        server = require('/modules/server.js'),
-        event = require('/modules/event.js'),
-        um = server.userManager(usr.tenantId);
-
-    user = um.getUser(usr.username);
-    perms = opts.permissions.login;
-    L1:
-        for (perm in perms) {
-            if (perms.hasOwnProperty(perm)) {
-                actions = perms[perm];
-                length = actions.length;
-                for (i = 0; i < length; i++) {
-                    if (user.isAuthorized(perm, actions[i])) {
-                        authorized = true;
-                        break L1;
-                    }
-                }
-            }
-        }
-    if (!authorized) {
-        return false;
-    }
-    event.emit('login', usr.tenantId, user);
-    if (opts.login) {
-        opts.login(user, "", session);
-    }
-
-    var permission = {};
-    permission[userSpace(username)] = [
-        carbon.registry.actions.GET,
-        carbon.registry.actions.PUT,
-        carbon.registry.actions.DELETE
-    ];
-    um.authorizeRole(privateRole(username), permission);
-
-    return true;
+    return permitted(username);
 };
