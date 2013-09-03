@@ -22,7 +22,7 @@ var deployer = require('/modules/deployer.js'),
 
 //var log = new Log();
 
-var populate = function () {
+var populate = function (tenantId) {
     var i, name, length, gadgets, file, path, xml,
         repo = new File(repoPath),
         base = store.server.http + context + gadgetRxtPath;
@@ -47,7 +47,7 @@ var populate = function () {
                 fileContent = fileContent.replace(/^\s*<\?.*\?>\s*/, "");
                 xml = new XML(fileContent);
                 file.close();
-                deployer.gadget({
+                deployer.gadget(tenantId, {
                     name: xml.*::ModulePrefs.@title,
                     tags: (String(xml.*::ModulePrefs.@tags)).split(','),
                     rate: Math.floor(Math.random() * 5) + 1,
@@ -79,10 +79,10 @@ var skipGadgets = function (name) {
         name === 'greenhouse-gas') return true;
 };
 
-var addSSOConfig = function () {
+var addSSOConfig = function (tenantId) {
     var deployer = require('/modules/deployer.js');
     //Adding SSO Configs
-    deployer.sso({'issuer': 'store',
+    deployer.sso(tenantId, {'issuer': 'store',
         'consumerUrl': store.ssoConfiguration.storeAcs,
         'doSign': 'true',
         'singleLogout': 'true',
@@ -94,7 +94,7 @@ var logstoreUrl = function () {
     log.info("UES store URL : " + store.server.http + caramel.configs().context);
 };
 
-var populateEBooks = function () {
+var populateEBooks = function (tenantId) {
     var i, name, length, ebooks, ebookJson, file, path, xml,
         repo = new File(repoEBookPath),
         base = store.server.http + context + ebookRxtPath;
@@ -106,7 +106,7 @@ var populateEBooks = function () {
             name = ebooks[i].getName();
             var ebookJson = require('/ebooks/' + name + '/ebook.json');
             var path = base + name + '/';
-            deployer.ebook({
+            deployer.ebook(tenantId, {
                 name: ebookJson.name,
                 tags: ebookJson.tags.split(','),
                 rate: ebookJson.rate,
@@ -129,7 +129,7 @@ var populateEBooks = function () {
     }
 };
 
-var populateSites = function () {
+var populateSites = function (tenantId) {
     var i, name, length, sites, siteJson, file, path, xml,
         repo = new File(repoSitePath),
         base = store.server.http + context + siteRxtPath;
@@ -142,7 +142,7 @@ var populateSites = function () {
             var siteJson = require('/sites/' + name + '/site.json');
 
             var path = base + name + '/';
-            deployer.site({
+            deployer.site(tenantId, {
                 name: siteJson.name,
                 tags: siteJson.tags.split(','),
                 rate: siteJson.rate,
@@ -164,10 +164,14 @@ var populateSites = function () {
     lastUpdated = new Date().getTime();
 };
 
-populate();
-populateEBooks();
-populateSites();
-addSSOConfig();
+var tenantId = -1234;
+var server = require('/modules/server.js');
+server.loadTenant(tenantId);
+
+populate(tenantId);
+populateEBooks(tenantId);
+populateSites(tenantId);
+addSSOConfig(tenantId);
 /*
  setInterval(function () {
  //TEMP fix for task not clearing properly during server shutdown

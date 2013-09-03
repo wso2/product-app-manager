@@ -1,4 +1,4 @@
-var getRXTAttributes = function (type) {
+var getRXTAttributes = function (tenantId, type) {
     var config = require('/config/publisher.json');
     var modelManager = application.get(config.app.MODEL_MANAGER);
     var model = modelManager.getModel(type);
@@ -6,7 +6,7 @@ var getRXTAttributes = function (type) {
 };
 
 
-var getCategories = function (type) {
+var getCategories = function (tenantId, type) {
     var config = require('/config/publisher.json');
     var modelManager = application.get(config.app.MODEL_MANAGER);
     var model = modelManager.getModel(type);

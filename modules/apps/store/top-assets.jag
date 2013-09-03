@@ -11,13 +11,16 @@ var caramel;
             log = new Log(),
             user = require('/modules/user.js'),
             configs = require('/store.js').config(),
-            store = require('/modules/store.js'),
             site = require('/modules/site.js'),
             tag = request.getParameter('tag'),
             query = request.getParameter('query'),
             fields = request.getParameter('fields'),
             ssoLogin = require('/modules/sso-login.js'),
-            ssoUser = session.get('LOGGED_IN_USER');
+            server = require('/modules/server.js'),
+            ssoUser = session.get('LOGGED_IN_USER'),
+            tenant = server.tenant(request),
+            tenantId = tenant.tenantId,
+            store = require('/modules/store.js').store(tenantId);
 	caramel = require('caramel');
 	sso = configs.ssoConfiguration.enabled;
 	loggedUser = (sso && ssoUser) ? {
@@ -85,13 +88,13 @@ var caramel;
 	popularEBooks = store.popularAssets('ebook');
 	popularAssets = popularGadgets.concat(popularSites,popularEBooks);
 	}
-    var rxtAttributes = require('modules/util.js').getRXTAttributes("gadget");
+    var rxtAttributes = require('modules/util.js').getRXTAttributes(tenantId, "gadget");
 
     caramel.render({
 		title : 'Store | User Engagement Center',
 		user : loggedUser,
 		sso:sso,
-		navigation : site.navigation({
+		navigation : site.navigation(tenantId, {
 			sso : sso,
 			ssoEncodedRequest : ssoLogin.ssoEncodedRequest,
 			ssoRelayState : ssoLogin.ssoRelayState,
