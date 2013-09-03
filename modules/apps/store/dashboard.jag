@@ -4,7 +4,7 @@ var caramel;
 	var site, count,tag, type = 'gadget',
 	log = new Log(), store = require('/modules/store.js'),
     types = store.assetTypes(),
-	user = require('/modules/user.js').current(), 
+	user = require('/modules/user.js').current(session),
 	tags = [], 
 	sso = configs.ssoConfiguration.enabled;
 	caramel = require('caramel');

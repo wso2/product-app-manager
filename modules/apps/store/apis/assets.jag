@@ -5,9 +5,9 @@ var caramel = require('caramel'),
 // http://localhost:9763/caramel/apis/asset/1234/comments
 (function () {
     var server = require('/modules/server.js'),
-            tenant = server.tenant(request),
+            tenant = server.tenant(request, session),
             tenantId = tenant.tenantId,
-            store = require('/modules/store.js').store(tenantId);
+            store = require('/modules/store.js').store(tenantId, session);
 
     var type, total, assets,
             tag = request.getParameter('tag'),

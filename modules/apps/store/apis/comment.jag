@@ -4,10 +4,10 @@ var caramel = require('caramel'),
 // http://localhost:9763/caramel/apis/asset/1234/comments
 (function () {
     var server = require('/modules/server.js'),
-            tenant = server.tenant(request),
+            tenant = server.tenant(request, session),
             tenantId = tenant.tenantId,
-            store = require('/modules/store.js').store(tenantId),
-            user = require('/modules/user.js').current();
+            store = require('/modules/store.js').store(tenantId, session),
+            user = require('/modules/user.js').current(session);
 
     var paging = store.commentsPaging(request),
             aid = request.getParameter('asset');

@@ -72,9 +72,10 @@ var options = function (tenantId) {
  * Logs in a user to the store. Username might contains the domain part in case of MT mode.
  * @param username ruchira or ruchira@ruchira.com
  * @param password
+ * @param session
  * @return {boolean}
  */
-var login = function (username, password) {
+var login = function (username, password, session) {
     var carbon = require('carbon'),
         event = require('/modules/event.js'),
         server = require('/modules/server.js'),
@@ -82,10 +83,10 @@ var login = function (username, password) {
     if (!serv.authenticate(username, password)) {
         return false;
     }
-    return permitted(username);
+    return permitted(username, session);
 };
 
-var permitted = function (username) {
+var permitted = function (username, session) {
     //load the tenant if it hasn't been loaded yet.
     var opts, um, user, perms, perm, actions, length, i,
         authorized = false,
@@ -160,7 +161,7 @@ var userSpace = function (username) {
  * Get the registry instance belongs to logged in user.
  * @return {*}
  */
-var userRegistry = function () {
+var userRegistry = function (session) {
     try {
         return session.get(USER_REGISTRY);
     } catch (e) {
@@ -172,7 +173,7 @@ var userRegistry = function () {
  * Logs out the currently logged in user.
  */
 var logout = function () {
-    var user = current(),
+    var user = current(session),
         event = require('/modules/event.js'),
         opts = options(user.tenantId);
     if (opts.logout) {
@@ -234,7 +235,7 @@ var register = function (username, password) {
 /**
  * Returns the currently logged in user
  */
-var current = function () {
+var current = function (session) {
     try {
         return session.get(USER);
     } catch (e) {

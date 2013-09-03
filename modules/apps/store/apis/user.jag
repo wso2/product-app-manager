@@ -12,7 +12,7 @@
             case 'login':
                 try {
                     data = request.getContent();
-                    error = !user.login(data.username, data.password);
+                    error = !user.login(data.username, data.password, session);
                     if (error) {
                         message = 'Invalid username or password.';
                     }

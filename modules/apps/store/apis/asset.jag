@@ -6,9 +6,9 @@ response.addHeader("Content-Type", "application/json");
 
     var elems,
             server = require('/modules/server.js'),
-            tenant = server.tenant(request),
+            tenant = server.tenant(request, session),
             tenantId = tenant.tenantId,
-            store = require('/modules/store.js').store(tenantId),
+            store = require('/modules/store.js').store(tenantId, session),
             paging = store.assetsPaging(request),
             matcher = new URIMatcher(request.getRequestURI()),
             query = request.getParameter('query'),
@@ -17,7 +17,7 @@ response.addHeader("Content-Type", "application/json");
     var isMyAsset = false;
     if(matcher.match('/{context}/apis/myAsset')){
         isMyAsset = true;
-        if (!require('/modules/user.js').current()) {
+        if (!require('/modules/user.js').current(session)) {
             response.sendError(401, 'Unauthorized');
             return;
         }

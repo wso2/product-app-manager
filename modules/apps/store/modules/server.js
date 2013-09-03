@@ -76,7 +76,7 @@ var init = function (options) {
  * So, USE WITH CARE.
  * @param request
  */
-var tenant = function (request) {
+var tenant = function (request, session) {
     var obj, domain, user, matcher,
         opts = options(),
         carbon = require('carbon');
@@ -92,7 +92,7 @@ var tenant = function (request) {
      matcher.match('/{context}/' + opts.tenantPrefix + '/{domain}/{+any}')) {
      domain = matcher.elements().domain; */
     domain = request.getParameter('domain');
-    user = require('/modules/user.js').current();
+    user = require('/modules/user.js').current(session);
     if (user) {
         obj = {
             tenantId: user.tenantId,

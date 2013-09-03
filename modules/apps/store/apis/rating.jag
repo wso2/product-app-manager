@@ -4,10 +4,10 @@ var matcher = new URIMatcher(request.getRequestURI());
 (function () {
     var aid,
             server = require('/modules/server.js'),
-            tenant = server.tenant(request),
+            tenant = server.tenant(request, session),
             tenantId = tenant.tenantId,
-            store = require('/modules/store.js').store(tenantId),
-            user = require('/modules/user.js').current();
+            store = require('/modules/store.js').store(tenantId, session),
+            user = require('/modules/user.js').current(session);
 
     if (!user) {
         response.sendError(401, 'Unauthorized');

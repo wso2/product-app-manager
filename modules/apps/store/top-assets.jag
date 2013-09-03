@@ -18,14 +18,14 @@ var caramel;
             ssoLogin = require('/modules/sso-login.js'),
             server = require('/modules/server.js'),
             ssoUser = session.get('LOGGED_IN_USER'),
-            tenant = server.tenant(request),
+            tenant = server.tenant(request, session),
             tenantId = tenant.tenantId,
-            store = require('/modules/store.js').store(tenantId);
+            store = require('/modules/store.js').store(tenantId, session);
 	caramel = require('caramel');
 	sso = configs.ssoConfiguration.enabled;
 	loggedUser = (sso && ssoUser) ? {
 		username : ssoUser
-	} : user.current();
+	} : user.current(session);
 	paging = store.assetsPaging(request);
 	total = store.assetCount(type);
 

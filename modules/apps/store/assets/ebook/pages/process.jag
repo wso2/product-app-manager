@@ -2,7 +2,7 @@
 (function () {
     var user = require('/modules/user.js');
 
-    if (!user.current()) {
+    if (!user.current(session)) {
         response.sendError(401, 'Unauthorized');
         return;
     }

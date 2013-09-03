@@ -77,7 +77,7 @@ var init = function (options) {
     event.on('login', function (tenantId, user, session) {
         var server = require('/modules/server.js'),
             assetManagers = {};
-        store(tenantId).assetTypes().forEach(function (type) {
+        store(tenantId, session).assetTypes().forEach(function (type) {
             var path = ASSETS_EXT_PATH + type + '/asset.js',
                 azzet = new File(path).isExists() ? require(path) : require('/modules/asset.js');
             assetManagers[type] = new azzet.Manager(server.anonRegistry(tenantId), type);
@@ -99,18 +99,18 @@ var currentAsset = function () {
     return null;
 };
 
-var store = function (tenantId) {
-    var store, configs, server;
-    //user = require('/modules/user.js');
-    /*    if(user.current()) {
-     store = session.get(TENANT_STORE);
-     if(store) {
-     return store;
-     }
-     store = new Store(tenantId);
-     session.put(TENANT_STORE, store);
-     return store;
-     }*/
+var store = function (tenantId, session) {
+    var store, configs, server,
+        user = require('/modules/user.js');
+    if (user.current(session)) {
+        store = session.get(TENANT_STORE);
+        if (store) {
+            return store;
+        }
+        store = new Store(tenantId, session);
+        session.put(TENANT_STORE, store);
+        return store;
+    }
     server = require('/modules/server.js');
     configs = server.configs(tenantId);
     store = configs[TENANT_STORE];
@@ -135,34 +135,40 @@ var configs = function (tenantId) {
 };
 
 //TODO: Remove requiring asset.js, server.js and user.js in multiple places
-var Store = function (tenantId) {
+/**
+ * If the session object is passed, then we assume this is an instance of a user. So, we assetManagers are
+ * loaded on the fly.
+ * @param tenantId
+ * @param session
+ * @constructor
+ */
+var Store = function (tenantId, session) {
     this.tenantId = tenantId;
     var assetManagers = {};
-    configs(tenantId).assets.forEach(function (type) {
-        var path = ASSETS_EXT_PATH + type + '/asset.js',
-            azzet = new File(path).isExists() ? require(path) : require('/modules/asset.js');
-        assetManagers[type] = new azzet.Manager(server.anonRegistry(tenantId), type);
-    });
+    if (session) {
+        this.session = session;
+    } else {
+        configs(tenantId).assets.forEach(function (type) {
+            var path = ASSETS_EXT_PATH + type + '/asset.js',
+                azzet = new File(path).isExists() ? require(path) : require('/modules/asset.js');
+            assetManagers[type] = new azzet.Manager(server.anonRegistry(tenantId), type);
+        });
+    }
     this.assetManagers = assetManagers;
     this.usrmod = require('/modules/user.js');
     this.servmod = require('/modules/server.js');
 };
 
 Store.prototype.assetManager = function (type) {
-    var manager, assetManagers,
+    var manager,
         path = ASSETS_EXT_PATH + type + '/asset.js',
         azzet = new File(path).isExists() ? require(path) : require('/modules/asset.js');
-    if (this.usrmod.current()) {
-        assetManagers = session.get(ASSET_MANAGERS);
-        if (!assetManagers) {
-            assetManagers = {};
-            session.put(ASSET_MANAGERS, assetManagers);
-        }
-        manager = assetManagers[type];
+    if (this.session) {
+        manager = this.assetManagers[type];
         if (manager) {
             return manager;
         }
-        return (assetManagers[type] = new azzet.Manager(this.usrmod.userRegistry(), type));
+        return (this.assetManagers[type] = new azzet.Manager(this.usrmod.userRegistry(this.session), type));
     }
     return this.assetManagers[type];
 };
@@ -199,7 +205,7 @@ Store.prototype.commentsPaging = function (request) {
 
 Store.prototype.userAssets = function (user) {
     var items = [],
-        registry = this.usrmod.userRegistry(),
+        registry = this.usrmod.userRegistry(this.session),
         path = this.usrmod.userSpace(user.username) + '/userAssets',
         assets = registry.get(path),
         assetz = {};
@@ -226,7 +232,7 @@ Store.prototype.configs = function () {
  */
 Store.prototype.tags = function (type) {
     var tag, tags, assetType, i, length, count,
-        registry = this.usrmod.userRegistry() || this.servmod.anonRegistry(this.tenantId),
+        registry = this.usrmod.userRegistry(this.session) || this.servmod.anonRegistry(this.tenantId),
         tagz = [],
         tz = {};
     tags = registry.query(TAGS_QUERY_PATH);
@@ -266,26 +272,26 @@ Store.prototype.tags = function (type) {
 };
 
 Store.prototype.comments = function (aid, paging) {
-    var registry = this.usrmod.userRegistry() || this.servmod.anonRegistry(this.tenantId);
+    var registry = this.usrmod.userRegistry(this.session) || this.servmod.anonRegistry(this.tenantId);
     return registry.comments(aid, paging);
 };
 
 Store.prototype.commentCount = function (aid) {
-    var registry = this.usrmod.userRegistry() || this.servmod.anonRegistry(this.tenantId);
+    var registry = this.usrmod.userRegistry(this.session) || this.servmod.anonRegistry(this.tenantId);
     return registry.commentCount(aid);
 };
 
 Store.prototype.comment = function (aid, comment) {
-    var registry = this.usrmod.userRegistry() || this.servmod.anonRegistry(this.tenantId);
+    var registry = this.usrmod.userRegistry(this.session) || this.servmod.anonRegistry(this.tenantId);
     return registry.comment(aid, comment);
 };
 
 Store.prototype.rating = function (aid) {
     var username, registry,
         carbon = require('carbon'),
-        usr = this.usrmod.current();
+        usr = this.usrmod.current(session);
     if (usr) {
-        registry = this.usrmod.userRegistry();
+        registry = this.usrmod.userRegistry(this.session);
         username = usr.username;
     } else {
         registry = this.servmod.anonRegistry(this.tenantId);
@@ -295,7 +301,7 @@ Store.prototype.rating = function (aid) {
 };
 
 Store.prototype.rate = function (aid, rating) {
-    var registry = this.usrmod.userRegistry() || this.servmod.anonRegistry(this.tenantId);
+    var registry = this.usrmod.userRegistry(this.session) || this.servmod.anonRegistry(this.tenantId);
     return registry.rate(aid, rating);
 };
 
@@ -347,7 +353,7 @@ Store.prototype.asset = function (type, aid) {
  */
 Store.prototype.assetLinks = function (type) {
     var mod = require(ASSETS_EXT_PATH + type + '/asset.js');
-    return mod.assetLinks(user.current());
+    return mod.assetLinks(user.current(session));
 };
 
 /**
@@ -435,7 +441,7 @@ Store.prototype.search = function (options, paging) {
 //TODO: check the logic
 Store.prototype.isuserasset = function (aid, type) {
     var j,
-        user = this.usrmod.current(),
+        user = this.usrmod.current(session),
         userown = {};
     if (!user) {
         return false;
