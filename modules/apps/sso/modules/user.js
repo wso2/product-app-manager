@@ -182,6 +182,8 @@ var buildPermissionsList=function(username,permissions,server){
     return permissions;
 };
 
+
+
 var register = function (username, password) {
     var user, role, id, perms, r, p,
         server = require('/modules/server.js'),
@@ -212,7 +214,7 @@ var register = function (username, password) {
    ];*/
 
     //Create the permissions based on the accessible config block
-    perms=buildPermissionsList(username,perms,server);
+    //perms=buildPermissionsList(username,perms,server);
 
     //TODO: Need to create a collection in the path /_system/governance/gadgets/{username}
     //otherwise the user will not be able to create anything.
@@ -225,7 +227,8 @@ var register = function (username, password) {
         }
     }
     um.addRole(role, [], perms);
-    user.addRoles([role,publisherRole]);
+    user.addRoles([role]);
+
     if (opts.register) {
         opts.register(user, password, session);
     }

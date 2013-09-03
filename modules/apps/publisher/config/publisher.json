@@ -6,6 +6,9 @@
     "roles": {
         "publisher": {
             "/permission/admin/login": ["ui.execute"]
+        },
+        "reviewer":{
+            "/permission/admin/login": ["ui.execute"]
         }
     },
     "user": {
@@ -27,10 +30,10 @@
             "username": "admin",
             "password": "admin"
         },
-        "accessibleCollections":[
+        "accessible":[
             {
                 "context":"/_system/governance",
-                "collections":["gadgets","sites","books"],
+                "collections":["gadgets","sites","ebooks"],
                 "actions":["http://www.wso2.org/projects/registry/actions/get",
                            "http://www.wso2.org/projects/registry/actions/add",
                            "http://www.wso2.org/projects/registry/actions/delete",

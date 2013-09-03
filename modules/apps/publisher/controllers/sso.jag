@@ -50,6 +50,8 @@ if (samlResponse != null) {
         var user = require('/modules/user.js');
 
         if (user.loginWithSAML(username)) {
+            log.info('Successfully logged in');
+            user.configureUser(username);
             response.sendRedirect('/publisher');
         }
 
