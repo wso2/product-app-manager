@@ -59,7 +59,6 @@ $(function () {
     });
 
 
-
     /*
      var search = function () {
      var url;
@@ -115,33 +114,33 @@ $(function () {
      };
      */
 
-    var buildParams = function(query) {
+    var buildParams = function (query) {
         return (query.indexOf('=') === -1) ? 'query=' + query : 'fields=true&' + query;
     };
-
-    var search = function() {
+    var search = function () {
         var url, searchVal = $('#search').val();
+        //var url, searchVal = test($('#search').val());
         currentPage = 1;
         if (store.asset) {
             url = caramel.url('/assets/' + store.asset.type + '/?' + buildParams(searchVal));
             caramel.data({
-                title : null,
-                header : ['sort-assets'],
-                body : ['assets', 'pagination']
+                title: null,
+                header: ['sort-assets'],
+                body: ['assets', 'pagination']
             }, {
-                url : url,
-                success : function(data, status, xhr) {
+                url: url,
+                success: function (data, status, xhr) {
                     //TODO: Integrate a new History.js library to fix this
                     if ($.browser.msie == true && $.browser.version < 10) {
                         renderAssets(data);
                     } else {
                         History.pushState({
-                            id : 'sort-assets',
-                            context : data
+                            id: 'sort-assets',
+                            context: data
                         }, document.title, url);
                     }
                 },
-                error : function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     theme.loaded($('#assets-container').parent(), '<p>Error while retrieving data.</p>');
                 }
             });
@@ -149,22 +148,22 @@ $(function () {
         } else if (searchVal.length > 0 && searchVal != undefined) {
             url = caramel.url('/assets/all/?' + buildParams(searchVal));
             caramel.data({
-                title : null,
-                body : ['top-assets']
+                title: null,
+                body: ['top-assets']
             }, {
-                url : url,
-                success : function(data, status, xhr) {
+                url: url,
+                success: function (data, status, xhr) {
                     //TODO: Integrate a new History.js library to fix this
                     if ($.browser.msie == true && $.browser.version < 10) {
                         renderAssets(data);
                     } else {
                         History.pushState({
-                            id : 'top-assets',
-                            context : data
+                            id: 'top-assets',
+                            context: data
                         }, document.title, url);
                     }
                 },
-                error : function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     theme.loaded($('#assets-container').parent(), '<p>Error while retrieving data.</p>');
                 }
             });
@@ -174,14 +173,14 @@ $(function () {
         $('.search-bar h2').find('.page').text(' / Search: "' + searchVal + '"');
     };
 
-    $('#search-dropdown-cont').ontoggle=function($, divobj, state){
+    $('#search-dropdown-cont').ontoggle = function ($, divobj, state) {
         var icon = $('#search-dropdown-arrow').find('i'), cls = icon.attr('class');
         icon.removeClass().addClass(cls == 'icon-sort-down' ? 'icon-sort-up' : 'icon-sort-down');
     }
 
-    $('#search').keypress(function(e) {
+    $('#search').keypress(function (e) {
         if (e.keyCode === 13) {
-            if($('#search-dropdown-cont').is(':visible')){
+            if ($('#search-dropdown-cont').is(':visible')) {
                 $('#search').val('');
                 makeQuery();
             }
@@ -198,9 +197,9 @@ $(function () {
      $('#search-button').fadeIn("fast");
      });*/
 
-    $('#search-button').click(function() {
-    	if($('#search').val() == '') return; 
-        if($('#search-dropdown-cont').is(':visible')){
+    $('#search-button').click(function () {
+        if ($('#search').val() == '') return;
+        if ($('#search-dropdown-cont').is(':visible')) {
             $('#search').val('');
             makeQuery();
         }
@@ -211,24 +210,24 @@ $(function () {
          });*/
     });
 
-    $('#search-dropdown-arrow').click(function(e) {
+    $('#search-dropdown-arrow').click(function (e) {
         e.stopPropagation();
         var icon = $(this).find('i'), cls = icon.attr('class');
         icon.removeClass().addClass(cls == 'icon-sort-down' ? 'icon-sort-up' : 'icon-sort-down');
-        if($('#search').val().length > 0){
-            if($('#search').val().indexOf(',')){
+        if ($('#search').val().length > 0) {
+            if ($('#search').val().indexOf(',')) {
                 var qarray = $('#search').val().split(",");
-                if(qarray.length > 0){
-                    $('#search-dropdown-cont').children('div').each(function() {
+                if (qarray.length > 0) {
+                    $('#search-dropdown-cont').children('div').each(function () {
                         var $this = $(this);
                         $this.find('input').val('')
 
                     });
                     for (var i = 0; i < qarray.length; i++) {
-                        $('#search-dropdown-cont').children('div').each(function() {
+                        $('#search-dropdown-cont').children('div').each(function () {
                             var $this = $(this);
                             var idVal = $this.find('input').attr('id').toLowerCase();
-                            if (idVal==qarray[i].split(':')[0].toLowerCase() ){
+                            if (idVal == qarray[i].split(':')[0].toLowerCase()) {
                                 $this.find('input').val(qarray[i].split(':')[1])
                             }
                         });
@@ -243,15 +242,15 @@ $(function () {
         $('#search-dropdown-cont').toggle();
     });
 
-    $('#search-dropdown-close').click(function(e) {
+    $('#search-dropdown-close').click(function (e) {
         e.stopPropagation();
         $('#search-dropdown-cont').toggle();
         var icon = $('#search-dropdown-arrow').find('i'), cls = icon.attr('class');
         icon.removeClass().addClass(cls == 'icon-sort-down' ? 'icon-sort-up' : 'icon-sort-down');
     });
 
-    $('html').click(function(){
-        if($('#search-dropdown-cont').is(':visible')){
+    $('html').click(function () {
+        if ($('#search-dropdown-cont').is(':visible')) {
             $('#search-dropdown-cont').hide();
 
             var icon = $('#search-dropdown-arrow').find('i'), cls = icon.attr('class');
@@ -260,7 +259,7 @@ $(function () {
 
     });
 
-    $('#search-dropdown-cont').click(function(e){
+    $('#search-dropdown-cont').click(function (e) {
         e.stopPropagation();
     });
 
@@ -275,19 +274,68 @@ $(function () {
      search();
      return false;
      });*/
+    /*
+     var test = function (que) {
+     var map = {};
+     var key = "";
+     var value = "";
+     var isKey = true;
+     for (var i = 0; i < que.length; i++) {
+     if (isKey) {
+     for (; i < que.length; i++) {
+     if (que.charAt(i) == ":") {
+     isKey = false;
+     break;
+     }
+     key += que.charAt(i);
+     }
+     } else if (que.charAt(i) != " ") {
+     if (que.charAt(i) == "\"") {
+     i++;
+     for (; i < que.length; i++) {
+     if (que.charAt(i) == "\"") {
+     break;
+     }
+     value += que.charAt(i);
+     }
+     } else {
+     for (; i < que.length; i++) {
+     if (que.charAt(i) == " ") {
+     break;
+     }
+     value += que.charAt(i);
+     }
+     }
+     isKey = true;
+     } else {
 
+     }
+     if (isKey) {
+     map[key] = value;
+     key = "";
+     value = "";
+     }
+
+     }
+     var query = "";
+     for (var searchKey in map) {
+     query += searchKey + "=" + map[searchKey] + "&";
+     }
+     return query.substring(0, query.length - 1);
+     };
+     */
 
     var makeQuery = function () {
 
-        $('#search-dropdown-cont').children('div').each(function() {
+        $('#search-dropdown-cont').children('div').each(function () {
             var $this = $(this);
-            if ($('#search').val().length > 0 ){
-                if ($this.find('input').val().length>0){
-                    $('#search').val($('#search').val()+'&'+$this.find('input').attr('name') +'='+$this.find('input').val());
+            if ($('#search').val().length > 0) {
+                if ($this.find('input').val().length > 0) {
+                    $('#search').val($('#search').val() + '&' + $this.find('input').attr('name') + '=' + $this.find('input').val());
                 }
-            } else{
-                if ($this.find('input').val().length>0){
-                    $('#search').val($this.find('input').attr('name') +'='+$this.find('input').val());
+            } else {
+                if ($this.find('input').val().length > 0) {
+                    $('#search').val($this.find('input').attr('name') + '=' + $this.find('input').val());
                 }
             }
 
@@ -298,7 +346,7 @@ $(function () {
     $('#search-button2').click(function () {
         $('#search').val('');
         makeQuery();
-        if($('#search').val() == '') return; 
+        if ($('#search').val() == '') return;
         search();
         return false;
     });
