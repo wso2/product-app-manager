@@ -333,6 +333,7 @@ input, button, select, textarea {
     position: relative;
     border-bottom: 1px solid #DADADA;
     color: #828282;
+    text-transform: capitalize;
 }
 .asset-view-table{
 	font-size:13px;
