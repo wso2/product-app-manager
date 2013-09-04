@@ -146,6 +146,13 @@ $(function(){
     }
 
     /*
+    The function obtains the history information about the life-cycle changes
+     */
+    function buildHistory(asset,id){
+
+    }
+
+    /*
     Click handler which detects when a check list item is clicked
      */
     function onCheckListItemClickHandler(checkbox,index){
