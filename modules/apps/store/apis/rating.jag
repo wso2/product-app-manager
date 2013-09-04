@@ -15,7 +15,6 @@ var matcher = new URIMatcher(request.getRequestURI());
     }
 
     if (matcher.match('/{context}/apis/rate')) {
-        store = require('/modules/store.js');
         aid = request.getParameter('asset');
         store.rate(aid, request.getParameter('value'));
         print(store.rating(aid));
