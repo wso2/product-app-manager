@@ -325,7 +325,7 @@ input, button, select, textarea {
 }
 .nav-list > li > a{
     display: block;
-    font-size: 16px;
+    font-size: 16.5px;
     font-weight: 300;
     line-height: 20px;
     outline: medium none;
@@ -447,7 +447,7 @@ label, input, button, select, textarea{
     	padding: 15px 20px;
 	font-weight:normal;
 	border-right:4px solid #167E00;
-    font-size: 16px;
+    font-size: 18.5px;
     border-bottom: 0 none;
 }
 .nav-list > .prominent-link > a:hover{
@@ -686,13 +686,16 @@ td.asset-listing-btn{
 	width:14px;
 }
 .content-div .form-horizontal {
-    background: none repeat scroll 0 0 #FCFCFC;
-    border: 1px solid #DCDCDC;
     border-radius: 6px 6px 6px 6px;
     padding: 30px 10px;
 }
 .form-actions{
-    background-color: #FCFCFC;
+    background-color: #FFFFFF;
+}
+.form-horizontal .btn{
+    font-size: 14.5px;
+    margin-right: 4px;
+    padding:4px 16px;
 }
 .content-div > .row-fluid > .form-horizontal{
 	margin: 20px 30px 30px 20px;
