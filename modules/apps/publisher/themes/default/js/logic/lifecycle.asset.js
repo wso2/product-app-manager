@@ -32,7 +32,7 @@ $(function(){
     console.log(id);
 
     buildCheckList(asset,id);
-
+    buildHistory(asset,id);
 
     /*
     Promotes an asset
@@ -149,7 +149,38 @@ $(function(){
     The function obtains the history information about the life-cycle changes
      */
     function buildHistory(asset,id){
+        var version='1.0.0';
+        //Make a call to the api to obtain the history
+        var path='/publisher/api/lifecycle/information/history/'+asset+'/'+id+'/'+version;
+        $.ajax({
+            url:path,
+            type:'GET',
+            success:function(response){
+                //console.log(response);
+                var obj=JSON.parse(response);
+                var out=createHistoryEntry(obj.item);
+                $('#lc-history').html(out);
+            },
+            error:function(response){
+               // console.log('lc history not retrieved');
+            }
+        });
+    }
 
+    function createHistoryEntry(items){
+        var output='';
+
+        for(var itemIndex in items){
+            console.log(itemIndex);
+            output='<div class="info-div alert alert-success">';
+            output+='<a data-dismiss="alert" class="close">x</a>';
+            output+='<i class="icon-info-sign"></i>';
+            output+='<span class="dateFull"> '+items[itemIndex].timestamp+'</span>';
+            output+='<a href="#">'+items[itemIndex].user+'</a> changed the asset state to '+items[itemIndex].state;
+            output+='</div>';
+        }
+
+        return output;
     }
 
     /*

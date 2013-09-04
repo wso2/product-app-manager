@@ -118,6 +118,7 @@ The following API calls have been implemented
  	POST  api/lifecycle/{asset-type}/{artifact-id}   	Attach the provided lifecycle to the artifact
  	POST api/lifecycle/checklistitem/{index}/{type}/{id}    Ticks a check list item at the given index
  	PUT api/lifecycle/{action}/{asset-type}/{artifact-id}	Performs the provided the action on the provided asset
+	GET api/lifecycle/information/history/{asset-type}/{artifact-id}/{version} Returns the life-cycle history of the provided asset.
 	
 	
 
