@@ -94,7 +94,7 @@ var caramel;
         }
     }
 
-    //var rxtAttributes = require('modules/util.js').getRXTAttributes(type);
+    var rxtAttributes = require('modules/util.js').getRXTAttributes(tenantId, type);
 
     caramel.render({
         title: 'Store | Assets',
@@ -112,7 +112,7 @@ var caramel;
             mainPage: mainPage,
             subPage: subPage,
             isTopAssets: false,
-            searchFields: {} //rxtAttributes
+            searchFields: rxtAttributes
         },
         type: type,
         /*tag: tag,*/

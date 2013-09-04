@@ -78,10 +78,10 @@
     Handlebars.registerHelper('slice', function (context, block) {
         var html = "",
             length = context.length,
-            start = parseInt(block.hash.start) || 0,
-            end = parseInt(block.hash.end) || length,
-            count = parseInt(block.hash.count) || length,
-            size = parseInt(block.hash.size) || length,
+            start = parseInt(block.hash.start, 10) || 0,
+            end = parseInt(block.hash.end, 10) || length,
+            count = parseInt(block.hash.count, 10) || length,
+            size = parseInt(block.hash.size, 10) || length,
             i = start,
             c = 0;
         while (i < end && c++ < count) {
