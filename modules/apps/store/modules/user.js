@@ -151,7 +151,7 @@ var isAuthorized = function (user, permission, action) {
  */
 var userSpace = function (username) {
     try {
-        return session.get(USER_SPACE) || options().userSpace.store + '/' + username;
+        return require('/modules/server.js').options().userSpace.store + '/' + username;
     } catch (e) {
         return null;
     }

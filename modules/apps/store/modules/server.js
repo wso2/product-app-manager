@@ -75,6 +75,7 @@ var init = function (options) {
  * This is just a util method. You need to validate the tenant before you use.
  * So, USE WITH CARE.
  * @param request
+ * @param session
  */
 var tenant = function (request, session) {
     var obj, domain, user, matcher,

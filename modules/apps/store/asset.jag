@@ -2,10 +2,7 @@
 var asset,
         log = new Log(),
         caramel = require('caramel'),
-        server = require('/modules/server.js'),
-        tenant = server.tenant(request, session),
-        tenantId = tenant.tenantId,
-        store = require('/modules/store.js').store(tenantId, session),
+        store = require('/modules/store.js').store(request, session),
         config = require('/store.js').config(),
         site = require('/modules/site.js'),
         user = require('/modules/user.js').current(session),
@@ -23,13 +20,13 @@ if (store.isuserasset(aid, type)) {
     inDashboard = true;
 }
 
-var rxtAttributes = utility.getRXTAttributes(tenantId, type);
+var rxtAttributes = utility.getRXTAttributes(store.tenantId, type);
 
 caramel.render({
     title: 'Store | ' + type,
     user: user,
     sso: sso,
-    navigation: site.navigation(tenantId, {sso: sso, user: user}),
+    navigation: site.navigation(store.tenantId, {sso: sso, user: user}),
     search: {
         search: {title: type},
         isTopAssets: false,

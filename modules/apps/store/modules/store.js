@@ -14,6 +14,8 @@ var ASSETS_PAGE_SIZE = 'assetsPageSize';
 //TODO: read from tenant config
 var COMMENTS_PAGE_SIZE = 'commentsPageSize';
 
+var SUBSCRIPTIONS_PATH = '/subscriptions';
+
 var log = new Log();
 
 var merge = function (def, options) {
@@ -99,19 +101,28 @@ var currentAsset = function () {
     return null;
 };
 
-var store = function (tenantId, session) {
-    var store, configs, server,
-        user = require('/modules/user.js');
+/**
+ * This is a util method to get the store instance.
+ * @param o This can be either the tenantId or the request object.
+ * @param session
+ * @return {*}
+ */
+var store = function (o, session) {
+    var store, configs, tenantId,
+        user = require('/modules/user.js'),
+        server = require('/modules/server.js');
+
+    tenantId = (o instanceof Request) ? server.tenant(o, session).tenantId : o;
+
     if (user.current(session)) {
         store = session.get(TENANT_STORE);
         if (store) {
-            return store;
+            //return store;
         }
         store = new Store(tenantId, session);
         session.put(TENANT_STORE, store);
         return store;
     }
-    server = require('/modules/server.js');
     configs = server.configs(tenantId);
     store = configs[TENANT_STORE];
     if (store) {
@@ -143,10 +154,16 @@ var configs = function (tenantId) {
  * @constructor
  */
 var Store = function (tenantId, session) {
+    var assetManagers = {},
+        user = require('/modules/user.js');
     this.tenantId = tenantId;
-    var assetManagers = {};
+    this.servmod = require('/modules/server.js');
+    this.assetManagers = assetManagers;
     if (session) {
+        this.user = user.current(session);
+        this.registry = user.userRegistry(session);
         this.session = session;
+        this.userSpace = user.userSpace(this.user.username);
     } else {
         configs(tenantId).assets.forEach(function (type) {
             var path = ASSETS_EXT_PATH + type + '/asset.js',
@@ -154,21 +171,18 @@ var Store = function (tenantId, session) {
             assetManagers[type] = new azzet.Manager(server.anonRegistry(tenantId), type);
         });
     }
-    this.assetManagers = assetManagers;
-    this.usrmod = require('/modules/user.js');
-    this.servmod = require('/modules/server.js');
 };
 
 Store.prototype.assetManager = function (type) {
     var manager,
         path = ASSETS_EXT_PATH + type + '/asset.js',
         azzet = new File(path).isExists() ? require(path) : require('/modules/asset.js');
-    if (this.session) {
+    if (this.user) {
         manager = this.assetManagers[type];
         if (manager) {
             return manager;
         }
-        return (this.assetManagers[type] = new azzet.Manager(this.usrmod.userRegistry(this.session), type));
+        return (this.assetManagers[type] = new azzet.Manager(this.registry, type));
     }
     return this.assetManagers[type];
 };
@@ -203,21 +217,57 @@ Store.prototype.commentsPaging = function (request) {
     };
 };
 
-Store.prototype.userAssets = function (user) {
-    var items = [],
-        registry = this.usrmod.userRegistry(this.session),
-        path = this.usrmod.userSpace(user.username) + '/userAssets',
-        assets = registry.get(path),
-        assetz = {};
-    if (!assets || assets.length <= 0) {
-        return assetz;
+Store.prototype.subscriptionSpace = function(type) {
+    return this.userSpace + SUBSCRIPTIONS_PATH + (type ? '/' + type : '');
+};
+
+Store.prototype.subscribe = function(type, id) {
+    var path = this.subscriptionSpace(type) + '/' + id;
+    if(!this.registry.exists(path)) {
+        this.registry.put(path, {
+            name: id,
+            content: ''
+        });
     }
-    assets.forEach(function (type) {
-        var obj = registry.get(path + '/' + type);
-        obj.forEach(function (id) {
-            items.push(asset(type, id))
+};
+
+Store.prototype.unsubscribe = function(type, id) {
+    var path = this.subscriptionSpace(type) + '/' + id;
+    this.registry.remove(path);
+};
+
+Store.prototype.subscriptions = function (type) {
+    var fn, assets,
+        that = this,
+        registry = this.registry,
+        path = this.subscriptionSpace(type),
+        assetz = {};
+    fn = function (path) {
+        var type,
+            items = [],
+            obj = registry.content(path);
+        if (!obj) {
+            return;
+        }
+        type = path.substr(path.lastIndexOf('/') + 1);
+        //obj = obj();
+        obj.forEach(function (path) {
+            items.push(that.asset(type, path.substr(path.lastIndexOf('/') + 1)))
         });
         assetz[type] = items;
+    };
+    if (type) {
+        fn(path);
+        return assetz;
+    }
+    //TODO: get this content thing done
+    assets = registry.content(path);
+    if (!assets) {
+        return assetz;
+    }
+    //TODO: continue
+    assets.forEach(function (path) {
+        fn(path);
     });
     return assetz;
 };
@@ -232,7 +282,7 @@ Store.prototype.configs = function () {
  */
 Store.prototype.tags = function (type) {
     var tag, tags, assetType, i, length, count,
-        registry = this.usrmod.userRegistry(this.session) || this.servmod.anonRegistry(this.tenantId),
+        registry = this.registry || this.servmod.anonRegistry(this.tenantId),
         tagz = [],
         tz = {};
     tags = registry.query(TAGS_QUERY_PATH);
@@ -272,26 +322,26 @@ Store.prototype.tags = function (type) {
 };
 
 Store.prototype.comments = function (aid, paging) {
-    var registry = this.usrmod.userRegistry(this.session) || this.servmod.anonRegistry(this.tenantId);
+    var registry = this.registry || this.servmod.anonRegistry(this.tenantId);
     return registry.comments(aid, paging);
 };
 
 Store.prototype.commentCount = function (aid) {
-    var registry = this.usrmod.userRegistry(this.session) || this.servmod.anonRegistry(this.tenantId);
+    var registry = this.registry || this.servmod.anonRegistry(this.tenantId);
     return registry.commentCount(aid);
 };
 
 Store.prototype.comment = function (aid, comment) {
-    var registry = this.usrmod.userRegistry(this.session) || this.servmod.anonRegistry(this.tenantId);
+    var registry = this.registry || this.servmod.anonRegistry(this.tenantId);
     return registry.comment(aid, comment);
 };
 
 Store.prototype.rating = function (aid) {
     var username, registry,
         carbon = require('carbon'),
-        usr = this.usrmod.current(session);
+        usr = this.user;
     if (usr) {
-        registry = this.usrmod.userRegistry(this.session);
+        registry = this.registry;
         username = usr.username;
     } else {
         registry = this.servmod.anonRegistry(this.tenantId);
@@ -301,7 +351,7 @@ Store.prototype.rating = function (aid) {
 };
 
 Store.prototype.rate = function (aid, rating) {
-    var registry = this.usrmod.userRegistry(this.session) || this.servmod.anonRegistry(this.tenantId);
+    var registry = this.registry || this.servmod.anonRegistry(this.tenantId);
     return registry.rate(aid, rating);
 };
 
@@ -353,7 +403,7 @@ Store.prototype.asset = function (type, aid) {
  */
 Store.prototype.assetLinks = function (type) {
     var mod = require(ASSETS_EXT_PATH + type + '/asset.js');
-    return mod.assetLinks(user.current(session));
+    return mod.assetLinks(this.user);
 };
 
 /**
@@ -441,12 +491,11 @@ Store.prototype.search = function (options, paging) {
 //TODO: check the logic
 Store.prototype.isuserasset = function (aid, type) {
     var j,
-        user = this.usrmod.current(session),
         userown = {};
-    if (!user) {
+    if (!this.user) {
         return false;
     }
-    var userAssets = this.userAssets(user);
+    var userAssets = this.subscriptions();
     if (!userAssets[type]) {
         return false;
     }
