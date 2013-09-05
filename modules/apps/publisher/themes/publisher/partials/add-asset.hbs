@@ -7,7 +7,8 @@
 						</b>
 						<div class="controls">
 							{{#if this.isTextBox}}
-								<input id='{{this.name}}' type='text' value='{{this.value}}'/>
+								<input id='{{this.name}}' type='text' value='{{this.value}}'
+                                        {{#if this.isReadOnly}} readonly{{/if}}/>
 							{{/if}}
 							{{#if this.isOptions}}
 								<select id="{{this.name}}">

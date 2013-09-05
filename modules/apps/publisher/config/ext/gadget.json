@@ -5,10 +5,10 @@
     "import": [
         "/modules/ext/scripts/rxt.importer.js",
         "/modules/ext/scripts/form.exporter.js",
-	"/modules/ext/scripts/asset.exporter.js",
-	"/modules/ext/scripts/asset.action.save.js",
-	"/modules/ext/scripts/asset.lifecycle.action.save.js",
-	"/modules/ext/scripts/form.importer.js"],
+        "/modules/ext/scripts/asset.exporter.js",
+        "/modules/ext/scripts/asset.action.save.js",
+        "/modules/ext/scripts/asset.lifecycle.action.save.js",
+        "/modules/ext/scripts/form.importer.js"],
 
     "fieldPropertyRules": [
         "overview.name:order=1",
@@ -16,20 +16,20 @@
         "overview.description:order=3",
         "overview.version:order=4",
         "overview.status:save=disabled",
-	"overview.version:save=disabled"
+        "overview.version:save=disabled"
     ],
 
     "link": [
         "overview.stage:value=*.lifecycleState"
     ],
 
-    "tables":[
+    "tables": [
 
-	{
-		"name":"*"
-	},
+        {
+            "name": "*"
+        },
 
-    ],   
+    ],
 
     "fieldProperties": [
 
@@ -48,34 +48,39 @@
             "name": "visible",
             "value": "true"
         },
-	{
-	    "field":"overview.*",
-	    "name":"save",
-	    "value":"default"
-	},
-	{
-	    "field":"images.*",
-	    "name":"save",
-	    "value":"default"
-	},
         {
-            "field":"*.lifeCycle",
-            "name":"save",
-            "value":"asset.lifecycle.action.save"
+            "field": "overview.*",
+            "name": "save",
+            "value": "default"
         },
-	{
-	   "field":"*.lifeCycle",
-           "name":"fetch",
-	   "value":"default"
-	}
+        {
+            "field": "images.*",
+            "name": "save",
+            "value": "default"
+        },
+        {
+            "field": "*.lifeCycle",
+            "name": "save",
+            "value": "asset.lifecycle.action.save"
+        },
+        {
+            "field": "*.lifeCycle",
+            "name": "fetch",
+            "value": "default"
+        },
+        {
+            "field":"overview.provider",
+            "name":"readOnly",
+            "value":"true"
+        }
     ],
 
-    "fields":[
-	{
-	    "name":"lifeCycle",
-	    "table":"*",
-	    "label":"Life Cycle",
-            "value":"SampleLifeCycle2"
-	}
+    "fields": [
+        {
+            "name": "lifeCycle",
+            "table": "*",
+            "label": "Life Cycle",
+            "value": "SampleLifeCycle2"
+        }
     ]
 }
