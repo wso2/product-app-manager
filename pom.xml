@@ -66,7 +66,8 @@
 
     <modules>
         <module>modules/components/store-admin</module>
-	    <module>modules/features/</module>
+        <module>modules/components/sso-common</module>
+	    <module>modules/features/org.wso2.store.feature</module>
         <module>modules/p2-profile-gen</module>
         <module>modules/distribution</module>
     </modules>
@@ -117,6 +118,11 @@
         <caramel.feature.version>1.0.0-SNAPSHOT</caramel.feature.version>
 		<wso2.slf4j.version>1.5.10.wso2v1</wso2.slf4j.version>
 		<sso.hostobjects.version>1.0.1</sso.hostobjects.version>
+
+        <rhino.osgi.version>1.7.0.R4.wso2v1-SNAPSHOT</rhino.osgi.version>
+        <commons-codec.osgi.version>1.4.0.wso2v1</commons-codec.osgi.version>
+        <opensaml2.wso2.version>2.4.1.wso2v1</opensaml2.wso2.version>
+        <commons-logging.version>1.1.1</commons-logging.version>
     </properties>
 
 </project>

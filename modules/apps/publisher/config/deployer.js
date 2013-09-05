@@ -1,5 +1,6 @@
 var publisher = require('/config/publisher.js').config();
 
+/*
 var addSSOConfig = (function () {
     var deployer = require('/modules/deployer.js');
     //Adding SSO Configs
@@ -9,4 +10,4 @@ var addSSOConfig = (function () {
         'singleLogout': 'true',
         'useFQUsername': 'true',
         'issuer64': 'cHVibGlzaGVy'});
-})();
+})();*/

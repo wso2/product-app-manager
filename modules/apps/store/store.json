@@ -28,13 +28,13 @@
         "store": "/_system/governance/users/store"
     },
     "ssoConfiguration": {
-        "enabled": false,
+        "enabled": true,
         "issuer": "store",
         "identityProviderURL": "%https.host%/sso/samlsso.jag",
         "keyStorePassword": "wso2carbon",
         "identityAlias": "wso2carbon",
         "responseSigningEnabled": "true",
-        "storeAcs" : "%https.host%/store/sso.jag",
+        "storeAcs" : "%https.host%/store/acs.jag",
         "keyStoreName": "/repository/resources/security/wso2carbon.jks"
     }
 }

@@ -17,6 +17,7 @@ var caramel;
 
     caramel = require('caramel');
 
+    log.info('SESSIONS ################ ::' + stringify(application.get('sso_sessions')));
 
     sso = configs.ssoConfiguration.enabled;
 
