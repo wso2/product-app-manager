@@ -6,7 +6,7 @@
             <li><a href="#"><i class="icon-dashboard"></i>Statistics</a></li>
             <li><a href="#"><i class="icon-gift"></i>Wishlist</a></li>-->
         {{#each leftNavLinks}}
-            <li class="{{this.additionalClasses}}"><a href="#">
+            <li class="{{this.additionalClasses}}"><a href="{{this.url}}">
                 {{#if this.iconClass}}
                     <i class="{{this.iconClass}}"></i>
                 {{/if}}
