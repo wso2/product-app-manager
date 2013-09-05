@@ -335,7 +335,7 @@ input, button, select, textarea {
     color: #828282;
     text-transform: capitalize;
 }
-.asset-view-table{
+.widget-table{
 	font-size:13px;
     border: 0 none;
     border-radius: 0 0 0 0!important;
@@ -482,8 +482,8 @@ label, input, button, select, textarea{
 	font-size:26px;
 	color:#4F4F4F;
 }
-.asset-tab-content .tab-pane{
-	padding:10px 40px 20px 10px;
+.asset-view-container{
+	padding:40px 40px 20px 10px;
 }
 .btn-primary{
 	background: none repeat scroll 0 0 #27AE60;
@@ -836,6 +836,7 @@ span.title{
     font-size: 18px;
     padding: 12px 15px;
     font-weight:700;
+    text-transform: capitalize;
 }
 .widget.wlightblue .widget-head {
     background-color: #52B9E9;
