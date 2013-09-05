@@ -325,7 +325,7 @@ input, button, select, textarea {
 }
 .nav-list > li > a{
     display: block;
-    font-size: 16px;
+    font-size: 16.5px;
     font-weight: 300;
     line-height: 20px;
     outline: medium none;
@@ -333,8 +333,9 @@ input, button, select, textarea {
     position: relative;
     border-bottom: 1px solid #DADADA;
     color: #828282;
+    text-transform: capitalize;
 }
-.asset-view-table{
+.widget-table{
 	font-size:13px;
     border: 0 none;
     border-radius: 0 0 0 0!important;
@@ -447,7 +448,7 @@ label, input, button, select, textarea{
     	padding: 15px 20px;
 	font-weight:normal;
 	border-right:4px solid #167E00;
-    font-size: 16px;
+    font-size: 18.5px;
     border-bottom: 0 none;
 }
 .nav-list > .prominent-link > a:hover{
@@ -481,8 +482,8 @@ label, input, button, select, textarea{
 	font-size:26px;
 	color:#4F4F4F;
 }
-.asset-tab-content .tab-pane{
-	padding:10px 40px 20px 10px;
+.asset-view-container{
+	padding:40px 40px 20px 10px;
 }
 .btn-primary{
 	background: none repeat scroll 0 0 #27AE60;
@@ -686,13 +687,16 @@ td.asset-listing-btn{
 	width:14px;
 }
 .content-div .form-horizontal {
-    background: none repeat scroll 0 0 #FCFCFC;
-    border: 1px solid #DCDCDC;
     border-radius: 6px 6px 6px 6px;
     padding: 30px 10px;
 }
 .form-actions{
-    background-color: #FCFCFC;
+    background-color: #FFFFFF;
+}
+.form-horizontal .btn{
+    font-size: 14.5px;
+    margin-right: 4px;
+    padding:4px 16px;
 }
 .content-div > .row-fluid > .form-horizontal{
 	margin: 20px 30px 30px 20px;
@@ -832,6 +836,7 @@ span.title{
     font-size: 18px;
     padding: 12px 15px;
     font-weight:700;
+    text-transform: capitalize;
 }
 .widget.wlightblue .widget-head {
     background-color: #52B9E9;

@@ -11,8 +11,8 @@
         switch (action) {
             case 'login':
                 try {
-                    data = parse(request.getContent());
-                    error = !user.login(data.username, data.password);
+                    data = request.getContent();
+                    error = !user.login(data.username, data.password, session);
                     if (error) {
                         message = 'Invalid username or password.';
                     }

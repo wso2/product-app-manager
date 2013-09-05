@@ -4,6 +4,7 @@
     "assetUrlPrefix": "/asset",
     "assetsPageSize": 12,
     "commentsPageSize": 10,
+    "tenanted": true,
     "server": {
         "https": "%https.host%/admin",
         "http": "%http.host%"
@@ -24,17 +25,10 @@
         }
     },
     "userSpace": {
-        "space": "store",
-        "options": {
-            "type": "registry",
-            "serverUrl": "%https.host%/admin",
-            "path": "/_system/governance/users",
-            "username": "admin",
-            "password": "admin"
-        }
+        "store": "/_system/governance/users/store"
     },
     "ssoConfiguration": {
-        "enabled": true,
+        "enabled": false,
         "issuer": "store",
         "identityProviderURL": "%https.host%/sso/samlsso.jag",
         "keyStorePassword": "wso2carbon",

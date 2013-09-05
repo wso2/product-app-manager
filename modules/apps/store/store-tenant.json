@@ -1,0 +1,16 @@
+{
+    "assets": ["gadget", "site", "ebook"],
+    "assetsPageSize": 12,
+    "commentsPageSize": 10,
+    "roles": {
+        "store": {
+            "/permission/admin/login": ["ui.execute"]
+        }
+    },
+    "userRoles": ["store"],
+    "permissions": {
+        "login": {
+            "/permission/admin/login": ["ui.execute"]
+        }
+    }
+}

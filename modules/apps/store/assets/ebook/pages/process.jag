@@ -1,22 +1,17 @@
 <%
 (function () {
-    var user = require('/modules/user.js');
+    var user = require('/modules/user.js'),
+            usr = user.current(session);
 
-    if (!user.current()) {
+    if (!usr) {
         response.sendError(401, 'Unauthorized');
         return;
     }
 
     var aid = request.getParameter('asset'),
-            space = user.userSpace(),
-            configs = space.get('userAssets');
+            store = require('/modules/store.js').store(request, session);
 
-    configs = configs ? parse(configs) : {};
-    if (!configs.ebook) {
-        configs.ebook = {};
-    }
-    configs.ebook[aid] = true;
-    space.put('userAssets', stringify(configs));
+    store.subscribe('ebook', aid);
     response.sendRedirect(request.getParameter('destination'));
 })();
 %>

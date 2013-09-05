@@ -1,16 +1,6 @@
 <div class='content-div'>
-
-	<div class="row-fluid">
-	    <ul class="nav nav-tabs tabs" id="asset_view_tabs">
-                        <li class="active"><a id="viewLink" data-toggle="tab" href="#view"><i class=" icon-list-alt"></i> Overview</a></li>
-                        <li class=""><a id="editLink" data-toggle="tab" href="#edit"><i class="icon-edit"></i> Edit</a></li>
-                        <li class=""><a id="lifecyclesLink" data-toggle="tab" href="#lifecycles"><i class="icon-lifecycle"></i> Life Cycle</a></li>
-                        <li class=""><a id="versionsLink" data-toggle="tab" href="#versions"><i class="icon-th-list"></i> Versions</a></li>
-                        <li class=""><a id="docsLink" data-toggle="tab" href="#docs"><i class="icon-file"></i> Docs</a></li>
-        </ul>
-	</div>
 	<div class="tab-content asset-tab-content">
-		<div id="view" class="tab-pane fade in active">
+		<div id="view" class="asset-view-container">
             <div class="row-fluid asset-detail-top-row">
                 <div class="span2">
                             <div class="thumbnail-div">
@@ -50,14 +40,14 @@
 		                    <div class="widget wlightblue">
 		                        <div class="widget-head">
                                     <div class="pull-left">Asset Overview</div>
-                                    <div class="widget-icons pull-right">
+                                    <!--<div class="widget-icons pull-right">
                                         <a class="wminimize" href="#"><i class="icon-chevron-up"></i></a>
 
-                                    </div>
+                                    </div>-->
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="widget-content">
-                                        <table class="table table-bordered asset-view-table">
+                                        <table class="table table-bordered asset-view-table widget-table">
                                             <tbody>
                                             {{#each data.fields}}
                                                 <tr>
@@ -74,7 +64,9 @@
 		                </div>
 		    </div>
         </div>
-		<div id="edit" class="tab-pane fade in">
+<<<<<<< HEAD
+
+		<!--div id="edit" class="tab-pane fade in">
                 	<div class="row-fluid">
                         	<div class="span12">
 					<div class="info-div alert alert-error">
@@ -119,23 +111,10 @@
                             		</form>
                             		<h5>Life-Cycle History</h5>
                                     <div id='lc-history'></div>
-                            		<!--div class="info-div alert alert-success">
-                                			<a data-dismiss="alert" class="close">x</a>
-                                			<i class="icon-info-sign"></i>
-                                			<span class="dateFull">Fri 29 Mar 2013 01:45:08 PM IST</span>
-                                			<i class="icon-user"></i>
-                                			<a href="#">admin</a> created the API.
-                            		</div>
-                            		<div class="info-div alert alert-success">
-                                		<a data-dismiss="alert" class="close">x</a>
-                                		<i class="icon-info-sign"></i>
-                                		<span class="dateFull">Fri 29 Mar 2013 01:45:17 PM IST</span>
-                                		<i class="icon-user"></i>
-                                		<a href="#">admin</a> changed api status from  'CREATED' to 'PUBLISHED'.
-                            		</div-->
                         	</div>
                     	</div>
                 </div>
+
                 <div id="versions" class="tab-pane fade in">
                     	<div class="row-fluid">
                         	<div class="span12">	
@@ -180,6 +159,6 @@
 		                    	</table>
                         	</div>
                 	</div>
-                </div>
+                </div-->
 	</div>
 </div>

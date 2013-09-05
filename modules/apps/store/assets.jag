@@ -1,38 +1,40 @@
 <%
 var caramel;
 (function () {
-    var assets, paging, count, current, total, loggedUser, sso, url,mainPage,subPage,
+    var assets, paging, count, current, total, loggedUser, sso, url, mainPage, subPage,
             options = {},
             log = new Log(),
             user = require('/modules/user.js'),
             configs = require('/store.js').config(),
-            store = require('/modules/store.js'),
+            store = require('/modules/store.js').store(request, session),
             site = require('/modules/site.js'),
             tag = request.getParameter('tag'),
             query = request.getParameter('query'),
             fields = request.getParameter('fields'),
             ssoUser = session.get('LOGGED_IN_USER'),
-            ssoLogin = require('/modules/sso-login.js');
+            ssoLogin = require('/modules/sso-login.js'),
+            event = require('/modules/event.js');
 
     caramel = require('caramel');
 
+
     sso = configs.ssoConfiguration.enabled;
 
-    loggedUser = (sso && ssoUser) ? {username: ssoUser} : user.current();
+    loggedUser = (sso && ssoUser) ? {username: ssoUser} : user.current(session);
 
     url = '/assets/' + type + '/?' + (tag ? 'tag=' + tag + '&' : '') + (query ? 'query=' + query + '&' : '');
 
-   // log.info("LOGGED_IN_USER (store) " + session.get('LOGGED_IN_USER'));
+    // log.info("LOGGED_IN_USER (store) " + session.get('LOGGED_IN_USER'));
 
     paging = store.assetsPaging(request);
-    
+
     mainPage = type;
-    
+
     if (tag) {
         total = store.assetCount(type, {
             tag: tag
         });
-        subPage  = '/ Tag: "' + tag + '"'; 
+        subPage = '/ Tag: "' + tag + '"';
         if (paging.start > total || paging.start < 0) {
             response.sendError(404, 'Requested page cannot be found');
             return;
@@ -66,7 +68,7 @@ var caramel;
         for (param in params) {
             if (param !== 'fields' && params.hasOwnProperty(param)) {
                 options.attributes['overview_' + param.trim().toLocaleLowerCase()] = new RegExp(params[param], "i");
-                if(query !== '') {
+                if (query !== '') {
                     query += '&';
                 }
                 query += (param + '=' + params[param]);
@@ -92,46 +94,47 @@ var caramel;
         }
     }
 
-    var rxtAttributes = require('modules/util.js').getRXTAttributes(type);
+    var rxtAttributes = require('modules/util.js').getRXTAttributes(tenantId, type);
 
     caramel.render({
         title: 'Store | Assets',
         user: loggedUser,
         sso: sso,
-        navigation: site.navigation(
-                {
-                    sso: sso,
-                    ssoEncodedRequest: ssoLogin.ssoEncodedRequest,
-                    ssoRelayState: ssoLogin.ssoRelayState,
-                    ssoSessionId: ssoLogin.ssoSessionId,
-                    ssoIdpURL: ssoLogin.ssoIdpURL,
-                    user: loggedUser
-                }),
+        navigation: site.navigation(tenantId, {
+            sso: sso,
+            ssoEncodedRequest: ssoLogin.ssoEncodedRequest,
+            ssoRelayState: ssoLogin.ssoRelayState,
+            ssoSessionId: ssoLogin.ssoSessionId,
+            ssoIdpURL: ssoLogin.ssoIdpURL,
+            user: loggedUser
+        }),
         search: {
-			mainPage : mainPage,
-			subPage : subPage,
-			isTopAssets : false,
-            searchFields : rxtAttributes
-		},
+            mainPage: mainPage,
+            subPage: subPage,
+            isTopAssets: false,
+            searchFields: rxtAttributes
+        },
         type: type,
         /*tag: tag,*/
         tags: function () {
-            return [{
-                url: '/assets/' + type + '/?tag=',
-                data: store.tags(type)
-            }];
+            return [
+                {
+                    url: '/assets/' + type + '/?tag=',
+                    data: store.tags(type)
+                }
+            ];
         },
         assets: assets(),
         paging: {
-            url:  url + 'sort=' + paging.sort + '&page=',
+            url: url + 'sort=' + paging.sort + '&page=',
             start: paging.start || 0,
-            count: paging.count || store.ASSETS_PAGE_SIZE,
-            size: store.ASSETS_PAGE_SIZE,
+            count: paging.count || store.assetsPageSize(),
+            size: store.assetsPageSize(),
             total: total,
             sort: paging.sort,
             tag: tag
         },
-        sorting :{
+        sorting: {
             url: url + 'sort='
         },
         recentAssets: function () {

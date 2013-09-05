@@ -3,8 +3,11 @@ var caramel = require('caramel'),
         matcher = new URIMatcher(request.getRequestURI());
 // http://localhost:9763/caramel/apis/asset/1234/comments
 (function () {
-    var store = require('/modules/store.js'),
-            user = require('/modules/user.js').current();
+    var server = require('/modules/server.js'),
+            tenant = server.tenant(request, session),
+            tenantId = tenant.tenantId,
+            store = require('/modules/store.js').store(tenantId, session),
+            user = require('/modules/user.js').current(session);
 
     var paging = store.commentsPaging(request),
             aid = request.getParameter('asset');
@@ -17,8 +20,8 @@ var caramel = require('caramel'),
             asset: aid,
             url: '/apis/comments?asset=' + aid + '&page=',
             start: paging.start || 0,
-            count: paging.count || store.COMMENTS_PAGE_SIZE,
-            size: store.COMMENTS_PAGE_SIZE,
+            count: paging.count || store.assetsPageSize(),
+            size: store.assetsPageSize(),
             total: store.commentCount(aid)
         });
         return;

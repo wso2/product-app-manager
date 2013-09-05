@@ -83,6 +83,38 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
 
 });
 
+routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/{type}/{id}', function (context) {
+
+    var shortName = context.params.type;
+    //print(context.params);
+    var id = context.params.id;
+    var operation = context.params.opType;
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+
+    //If the id is not found it will throw a conversion exception
+    //TODO: Return an empty artifact or null
+    try {
+        var artifact = artifactManager.get(id);
+
+        //Get the template
+        var rxtTemplate = rxtManager.findAssetTemplate(function (template) {
+            return (template.shortName == shortName) ? true : false;
+        });
+
+        var model = modelManager.getModel(shortName);
+
+        model.import('asset', artifact);
+
+        var output = model.export('form');
+
+        caramel.render({op: operation, cuser: user.current(), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output});
+    } catch (e) {
+        log.debug('The asset with id '+id+' could not be found due to : '+e);
+        response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check server log.');
+    }
+
+});
+
 routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (context) {
 
     var shortName = context.params.type;
