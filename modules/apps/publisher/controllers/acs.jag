@@ -1,7 +1,7 @@
 <%
 (function () {
     var log = new Log(),
-            configs = require('/store.json'),
+            configs = require('/config/publisher.js').config(),
             samlResponse = request.getParameter('SAMLResponse'),
             sessionId = session.getId(),
             samlRequest = request.getParameter('SAMLRequest'),
@@ -39,8 +39,7 @@
                         var user = require('/modules/user.js');
 
                         if (user.loginWithSAML(sessionObj.loggedInUser)) {
-                            log.info('user is set :::' + sessionObj.loggedInUser);
-                            response.sendRedirect('/store');
+                            response.sendRedirect('/publisher');
                         }
 
                     }
@@ -49,14 +48,14 @@
 
         } else {
             session.invalidate();
-            response.sendRedirect('/store');
+            response.sendRedirect('/publisher');
         }
     }
 
     // if saml request is a log out request, then invalidate session.
     if (samlRequest != null) {
         var index = sso.client.decodeSAMLLogoutRequest(sso.client.getSamlObject(samlRequest));
-        log.info('BACKEND LOGOUT RECIEVED FROM STORE THE INDEX IS ######' + index);
+        log.info('BACKEND LOGOUT RECIEVED FROM PUBLISHER THE INDEX IS ######' + index);
 
         var jSessionId = application.get('sso_sessions')[index].sessionId;
 

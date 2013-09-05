@@ -76,7 +76,7 @@
                             </adviceFile>
                             <bundles>
                                 <bundleDef>slf4j.wso2:slf4j:1.5.10.wso2v1</bundleDef>
-                                <bundleDef>org.wso2.carbon:org.wso2.carbon.hostobjects.sso</bundleDef>
+                                <!--<bundleDef>org.wso2.carbon:org.wso2.carbon.hostobjects.sso</bundleDef>-->
                                 <bundleDef>org.wso2.store:org.wso2.store.sso.common</bundleDef>
                                 <bundleDef>org.wso2.store:org.wso2.store.admin.styles</bundleDef>
                             </bundles>

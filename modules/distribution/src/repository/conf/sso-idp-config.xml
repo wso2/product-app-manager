@@ -20,12 +20,12 @@
     <ServiceProviders>
         <ServiceProvider>
             <Issuer>store</Issuer>
-            <AssertionConsumerService>/store/acs.jag</AssertionConsumerService>
+            <AssertionConsumerService>https://localhost:9443/store/acs</AssertionConsumerService>
             <CustomLoginPage>/store/login</CustomLoginPage>
         </ServiceProvider>
         <ServiceProvider>
             <Issuer>publisher</Issuer>
-            <AssertionConsumerService>/publisher/sso</AssertionConsumerService>
+            <AssertionConsumerService>https://localhost:9443/publisher/acs</AssertionConsumerService>
             <CustomLoginPage>/publisher/login</CustomLoginPage>
         </ServiceProvider>
     </ServiceProviders>
