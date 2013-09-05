@@ -34,7 +34,7 @@
                         session.put("LOGGED_IN_USER", sessionObj.loggedInUser);
                         session.put("Loged", "true");
 
-                        sso_sessions[sessionObj.sessionIndex] = sessionObj;
+                        sso_sessions[sessionObj.sessionIndex] = sessionObj.sessionId;
 
                         var user = require('/modules/user.js');
 
@@ -58,7 +58,7 @@
         var index = sso.client.decodeSAMLLogoutRequest(sso.client.getSamlObject(samlRequest));
         log.info('BACKEND LOGOUT RECIEVED FROM STORE THE INDEX IS ######' + index);
 
-        var jSessionId = application.get('sso_sessions')[index].sessionId;
+        var jSessionId = application.get('sso_sessions')[index];
 
         delete application.get('sso_sessions')[index];
 
