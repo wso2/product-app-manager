@@ -1,4 +1,4 @@
-var getLeftNavLinks = function(data) {
+var generateLeftNavJson = function(data) {
     var leftNavItems = { leftNavLinks :
         [
             {
