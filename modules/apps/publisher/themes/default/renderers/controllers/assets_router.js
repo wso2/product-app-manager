@@ -25,25 +25,6 @@ var breadcrumbData = { breadcrumb :
 
 var render = function (theme, data, meta, require) {
     //var addAssetUrl = "/publisher/asset/" + data.meta.shortName +"";
-    var leftNavItems = { leftNavLinks :
-        [
-            {
-                name : "Browse All",
-                additionalClasses : "prominent-link",
-                url : "/publisher/assets/gadget/"
-            },
-            {
-                name : "Add " + data.shortName + "",
-                iconClass : "icon-plus-sign-alt",
-                url : "/publisher/asset/" + data.shortName + ""
-            },
-            {
-                name : "Statistics",
-                iconClass : "icon-dashboard",
-                url : "#"
-            }
-        ]
-    };
     theme('single-col-fluid', {
         title: data.title,
         header: [
@@ -61,7 +42,7 @@ var render = function (theme, data, meta, require) {
         leftnav: [
             {
                 partial: 'left-nav',
-                context: leftNavItems
+                context: require('/helpers/left-nav.js').getLeftNavLinks(data)
             }
         ],
         listassets: [
