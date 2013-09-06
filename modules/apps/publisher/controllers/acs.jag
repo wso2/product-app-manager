@@ -39,6 +39,8 @@
                         var user = require('/modules/user.js');
 
                         if (user.loginWithSAML(sessionObj.loggedInUser)) {
+                            log.info('Successfully logged in');
+                            user.configureUser(sessionObj.loggedInUser);
                             response.sendRedirect('/publisher');
                         }
 

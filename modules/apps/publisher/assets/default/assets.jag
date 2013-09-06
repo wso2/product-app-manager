@@ -31,6 +31,7 @@ var DEFAULT_PAGE = 10;
  //caramel.render({sample: {name: 'Default asset renderer'}});
 
  });*/
+var log=new Log();
 
 routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function (context) {
 
@@ -42,7 +43,7 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function (c
     var artifactManager = rxtManager.getArtifactManager(context.params.type);
 
     var artifacts = artifactManager.list(DEFAULT_PAGE) || [];
-
+    //log.debug(stringify(artifacts));
     caramel.render({
         cuser: user.current(),
         shortName: context.params.type,

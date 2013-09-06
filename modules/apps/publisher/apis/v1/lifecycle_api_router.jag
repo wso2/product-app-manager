@@ -27,6 +27,8 @@ var caramel = require('caramel');
 
 var router = require('/modules/router-g.js').router();
 var user = require('/modules/user.js');
+var utility=require('/modules/utility.js').rxt_utility();
+var server=require('/modules/server.js');
 var routeManager = new router.Router();
 var rxtManager = application.get(config.app.RXT_MANAGER);
 
@@ -170,10 +172,13 @@ routeManager.register('GET','publisher','/publisher/api/lifecycle/{type}/{id}',f
 
         var artifact=artifactManager.get(id);
         var state=artifactManager.getLifecycleState(artifact);
+        var actions=artifactManager.availableActions(artifact);
         var msg={};
         msg['status']='ok';
         msg['state']=state;
-        print(state);
+        msg['actions']=actions;
+        log.debug(msg);
+        print(msg);
     }
     catch(e){
         log.debug('The asset with id: '+id+' could not be found.The following exception was thrown: '+e);
@@ -229,6 +234,45 @@ routeManager.register('GET','publisher','/publisher/api/lifecycle/checklistitem/
          log.debug('The check list item index state could not be  retrieved for aritfact: '+id+' .The following exception was thrown: '+e);
          response.sendError(404,'The check list item state could not be retrieved for artifact: '+id+' .Please refer to the server log.');
      }
+});
+
+routeManager.register('GET','publisher','/publisher/api/lifecycle/information/history/{type}/{id}/{version}',function(context){
+   try{
+
+       var shortName=context.params.type;
+       var id=context.params.id;
+
+
+       var artifactManager=rxtManager.getArtifactManager(shortName);
+       var artifact=artifactManager.get(id);
+
+       var historyPath=artifactManager.getLifecycleHistoryPath(artifact);
+
+       log.info('history path:'+historyPath);
+       var systemRegistry=server.systemRegistry();
+
+       //var actions=artifactManager.availableActions(artifact);
+
+       //log.debug(actions);
+
+       var resourceInstance=systemRegistry.get(historyPath);
+       var json={};
+
+       if(resourceInstance!=undefined){
+
+           var xml=new XML(resourceInstance.content);
+
+
+           json=utility.xml.convertE4XtoJSON(xml);
+
+       }
+
+       print(json);
+
+   }catch(e){
+       log.debug('The lifecycle history for artifact: '+id+' could not be found.The following exception was thrown: '+e);
+       response.sendError(404,'The lifecycle history details could not be retrieved for artifact: '+id+'.Pleas refer to the server log.');
+   }
 });
 
 

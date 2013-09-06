@@ -71,96 +71,89 @@
 		</lifecycle>
 	    </configuration>
 	</aspect-->
-<aspect name="SampleLifeCycle2" class="org.wso2.carbon.governance.registry.extensions.aspects.DefaultLifeCycle">
+<aspect name="SampleLifeCycle2" class="org.wso2.jaggery.scxml.aspects.JaggeryTravellingPermissionLifeCycle">
     <configuration type="literal">
         <lifecycle>
             <scxml xmlns="http://www.w3.org/2005/07/scxml"
                    version="1.0"
-                   initialstate="Development">
-                <state id="Development">
+                   initialstate="Created">
+                <state id="Created">
                     <datamodel>
-                        <data name="checkItems">
-                            <item name="Code Completed" forEvent="">
-                                <!--<permissions>
-                                    <permission roles=""/>
-                                </permissions>
-                                <validations>
-                                    <validation forEvent="" class="">
-                                        <parameter name="" value=""/>
-                                    </validation>
-                                </validations>-->
-                            </item>
-                            <item name="WSDL, Schema Created" forEvent="">
-                            </item>
-                            <item name="QoS Created" forEvent="">
-                            </item>
-                        </data>
 			<data name="transitionExecution">
-				<!--execution forEvent="Promote" class="org.wso2.jaggery.scxml.generic.GenericExecutor">
+				<execution forEvent="Promote" class="org.wso2.jaggery.scxml.generic.GenericExecutor">
 					<parameter name="PERMISSION:get" value="http://www.wso2.org/projects/registry/actions/get" />
 					<parameter name="PERMISSION:add" value="http://www.wso2.org/projects/registry/actions/add" />
 					<parameter name="PERMISSION:delete" value="http://www.wso2.org/projects/registry/actions/delete" />
 					<parameter name="PERMISSION:authorize" value="authorize"/>
-					<parameter name="STATE_RULE1:Tested" value="publisher:-authorize,-get,-add,-delete"/>
-					<parameter name="STATE_RULE2:Tested" value="private_{asset_author}:-get,-add,-delete,-authorize" />				
-				</execution--> 
+					
+					<parameter name="STATE_RULE1:In-Review" value="private_{asset_author}:+get,-add,-delete,-authorize" />
+					<parameter name="STATE_RULE2:In-Review" value="reviewer:+get,+add,-delete,+authorize"/>
+					<parameter name="STATE_RULE3:In-Review" value="everyone:-get,-add,-delete,-authorize" />	
+				</execution> 
 			</data>
-                        <!--<data name="transitionValidation">
-                            <validation forEvent="" class="">
-                                <parameter name="" value=""/>
-                            </validation>
-                        </data>
-                        <data name="transitionPermission">
-                            <permission forEvent="" roles=""/>
-                        </data>
-                        <data name="transitionScripts">
-                            <js forEvent="">
-                                <console function="">
-                                    <script type="text/javascript">
-                                    </script>
-                                </console>
-                                <server function="">
-                                    <script type="text/javascript"></script>
-                                </server>
-                            </js>
-                        </data>
-                        <data name="transitionApproval">
-                            <approval forEvent="Promote" roles="" votes="2"/>
-                        </data>-->
                     </datamodel>
-                    <transition event="Promote" target="Tested"/>                  
+                    <transition event="Promote" target="In-Review"/>                  
                 </state>
-                <state id="Tested">
+                <state id="In-Review">
                     <datamodel>
-                        <data name="checkItems">
-                            <item name="Effective Inspection Completed" forEvent="">
-                            </item>
-                            <item name="Test Cases Passed" forEvent="">
-                            </item>
-                            <item name="Smoke Test Passed" forEvent="">
-                            </item>
-                        </data>
 			<data name="transitionExecution">
-				<!--execution forEvent="Promote" class="org.wso2.jaggery.scxml.generic.GenericExecutor">
+				<execution forEvent="Promote" class="org.wso2.jaggery.scxml.generic.GenericExecutor">
 					<parameter name="PERMISSION:get" value="http://www.wso2.org/projects/registry/actions/get" />
 					<parameter name="PERMISSION:add" value="http://www.wso2.org/projects/registry/actions/add" />
 					<parameter name="PERMISSION:delete" value="http://www.wso2.org/projects/registry/actions/delete" />
 					<parameter name="PERMISSION:authorize" value="authorize"/>
-					<parameter name="STATE_RULE1:Production" value="publisher:+authorize,+get,+add,+delete"/>
-					<parameter name="STATE_RULE2:Production" value="private_{asset_author}:+get,+add,+delete,+authorize" />	
-				</execution--> 
+					
+					<parameter name="STATE_RULE1:Published" value="private_{asset_author}:+get,+add,-delete,+authorize" />
+					<parameter name="STATE_RULE2:Published" value="reviewer:+get,-add,-delete,-authorize"/>	
+					<parameter name="STATE_RULE3:Published" value="everyone:+get,-add,-delete,-authorize" />	
+				</execution> 
 			</data>			
                     </datamodel>
-                    <transition event="Promote" target="Production"/>
-                    <transition event="Demote" target="Development"/>
+                    <transition event="Promote" target="Published"/>
                 </state>
-                <state id="Production">  
-                    <transition event="Demote" target="Tested"/>
-                </state>               
+                <state id="Published">
+		    <datamodel>
+			<data name="transitionExecution">
+				<execution forEvent="Demote" class="org.wso2.jaggery.scxml.generic.GenericExecutor">
+					<parameter name="PERMISSION:get" value="http://www.wso2.org/projects/registry/actions/get" />
+					<parameter name="PERMISSION:add" value="http://www.wso2.org/projects/registry/actions/add" />
+					<parameter name="PERMISSION:delete" value="http://www.wso2.org/projects/registry/actions/delete" />
+					<parameter name="PERMISSION:authorize" value="authorize"/>
+
+					<parameter name="STATE_RULE1:Unpublished" value="private_{asset_author}:+get,+add,+delete,+authorize" />
+					<parameter name="STATE_RULE2:Unpublished" value="reviewer:-get,-add,-delete,-authorize"/>
+					<parameter name="STATE_RULE3:Unpublished" value="everyone:-get,-add,-delete,-authorize"/>							
+				</execution> 
+			</data>			
+                    </datamodel>  
+                    <transition event="Demote" target="Unpublished"/>
+                </state>  
+		<state id="Unpublished">
+		    <datamodel>
+			<data name="transitionExecution">
+				<execution forEvent="Promote" class="org.wso2.jaggery.scxml.generic.GenericExecutor">
+					<parameter name="PERMISSION:get" value="http://www.wso2.org/projects/registry/actions/get" />
+					<parameter name="PERMISSION:add" value="http://www.wso2.org/projects/registry/actions/add" />
+					<parameter name="PERMISSION:delete" value="http://www.wso2.org/projects/registry/actions/delete" />
+					<parameter name="PERMISSION:authorize" value="authorize"/>
+					
+					<parameter name="STATE_RULE1:In-Review" value="private_{asset_author}:+get,-add,-delete,-authorize" />
+					<parameter name="STATE_RULE2:In-Review" value="reviewer:+get,+add,-delete,+authorize"/>
+					<parameter name="STATE_RULE3:In-Review" value="everyone:-get,-add,-delete,-authorize" />		
+				</execution> 
+			</data>			
+                    </datamodel>
+		    <transition event="Promote" target="In-Review"/>
+		</state>             
             </scxml>
         </lifecycle>
     </configuration>
 </aspect>
+
+<handler class="org.wso2.jaggery.scxml.registry.handlers.JaggeryExecutorHandler" methods="PUT">
+    <filter class="org.wso2.jaggery.scxml.registry.filters.JaggeryExecutorFilter">
+    </filter>
+</handler>
 
     <!--<aspect name="SampleLifeCycle" class="org.wso2.carbon.governance.registry.extensions.aspects.ChecklistLifeCycle">
         <configuration type="literal">

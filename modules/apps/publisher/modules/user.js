@@ -119,6 +119,134 @@ var privateRole = function (username) {
     return USER_ROLE_PREFIX + username;
 };
 
+/*
+ The function is used to fill the permissions object. The permissions are applied
+ to the users space e.g. username= test , and the gadget collection in the /_system/governance
+ then the permissions will be applicable to
+ /_system/governance/gadget/test.
+ @username: The username of the account to which the permissions will be attached
+ @permissions: An object of permissions which will be assigned to the newly created user role
+ */
+var buildPermissionsList=function(username,permissions,server){
+    log.info('Entered buildPermissionsList');
+
+    //Obtain the accessible collections
+    var accessible=options().userSpace.accessible;
+    log.info(stringify(accessible));
+
+    var id;
+    var accessibleContext;
+    var accessibleCollections;
+    var context;
+    var actions;
+    var collection;
+    var sysRegistry=server.systemRegistry();;
+
+    //Go through all of the accessible directives
+    for(var index in accessible){
+
+        accessibleContext=accessible[index];
+
+        accessibleCollections=accessibleContext.collections;
+
+        context=accessibleContext.context;     //e.g. /_system/governance/
+        actions=accessibleContext.actions;     //read,write
+
+        //Go through all of the collections
+        for(var colIndex in accessibleCollections){
+
+            collection=accessibleCollections[colIndex];
+
+            //Create the id used for the permissions
+            id=context+'/'+collection+'/'+username;
+
+
+            //Check if a collection exists
+            var col=sysRegistry.get(id);
+
+            //Only add permissions if the path  does not exist
+            if(col==undefined){
+                log.info('collection: '+id+' does not exist.');
+                //Assign the actions to the id
+                permissions[id]=actions;
+
+                //Create a dummy collection, as once permissions are
+                //the user will be unable to create assets in the
+                //parent collection.
+                //Thus we create a user collection.
+                sysRegistry=server.systemRegistry();
+
+                //Create a new collection if a new one does not exist
+                sysRegistry.put(id,{
+                    collection:true
+                });
+            }
+            else{
+                log.info('collection: '+id+'is present.');
+            }
+        }
+
+    }
+
+    return permissions;
+};
+
+/*
+ The function is used to configure a user that is about to login
+ It performs the following;
+ 1. Add permissions for the accessible collections
+ 2. Assign a set of default roles (private_username and publisher)
+ 3. Check if a collection exists,if not create a new one.
+ */
+
+var configureUser=function(username){
+
+    //Ignore adding permissions for the admin
+    if(username=='admin'){
+        return;
+    }
+
+    var server=require('/modules/server.js');
+    var um=server.userManager();
+    var opts=options();
+    var user=um.getUser(username);
+    var perms={};
+    var role=privateRole(username);
+    var defaultRoles=opts.userRoles;
+
+    log.info('Starting configuringUser.');
+
+    //Create the permissions in the options configuration file
+    perms=buildPermissionsList(username,perms,server);
+
+    //Only add the role if permissions are present
+
+    if(!checkIfEmpty(perms)){
+
+        //log.info('length: '+perms.length);
+
+        //Register the role
+        //We assume that the private_role is already present
+        //TODO: This needs to be replaced.
+        um.authorizeRole(role,perms);
+
+        //log.info('after add role');
+
+        //user.addRoles(role);
+    }
+
+};
+
+var checkIfEmpty=function(object){
+    for(var index in object){
+        if(object.hasOwnProperty(index)){
+            return false;
+        }
+    }
+
+    return true;
+}
+
 var register = function (username, password) {
     var user, role, id, perms, r, p,
         server = require('/modules/server.js'),

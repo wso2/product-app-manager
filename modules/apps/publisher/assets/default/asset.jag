@@ -41,6 +41,10 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}', function (c
         response.sendError(404, 'Asset type not found'); //TODO: Replace
     }
     else {
+        //Obtain the username from the session and populate the provider field
+        var username=session.get('LOGGED_IN_USER');
+        model.set('overview.provider',username);
+
         var output = model.export('form');
         caramel.render({op: operation, cuser: user.current(), shortName: shortName, rxtTemplate: rxtTemplate, data: output});
     }
