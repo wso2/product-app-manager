@@ -32,6 +32,7 @@ $(function(){
     console.log(id);
 
     buildCheckList(asset,id);
+    buildLCGraph();
     buildHistory(asset,id);
 
     /*
@@ -53,6 +54,7 @@ $(function(){
                       $('#state').html(response);
                       $('#view-lifecyclestate').html(response);
                       buildCheckList(asset,id);
+                      buildLCGraph();
                   },
                   error:function(response){
                       $('#state').html('Error obtaining state');
@@ -83,6 +85,7 @@ $(function(){
                         $('#state').html(response);
                         $('#view-lifecyclestate').html(response);
                         buildCheckList(asset,id);
+                        buildLCGraph();
                     },
                     error:function(response){
                         $('#state').html('Error obtaining life-cycle state of asset.');
@@ -97,7 +100,35 @@ $(function(){
 
     });
 
+    /*
+    The function builds the LC graph
+     */
+    function buildLCGraph(){
+        $.ajax({
+            url:'/publisher/api/lifecycle/'+asset+'/'+id,
+            type:'GET',
+            success:function(response){
+                var element=$('#canvas');
+                if(element){
+                    //element.html(response);
 
+                    if(!graph.Renderer.config.canvas.canvasElement){
+
+                        graph.Renderer.config.canvas.canvasElement=element;
+
+                        graph.Renderer.initRaphael();
+                        graph.Renderer.render(graph.NMap);
+                    }
+
+                    graph.Renderer.setSelected(response);
+                }
+                //$('#canvas').html(response);
+            },
+            error:function(response){
+                $('#canvas').html('Error obtaining life-cycle state of asset.');
+            }
+        });
+    }
 
     /*
     The function is used to build the representation of the check list.
