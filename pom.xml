@@ -66,6 +66,7 @@
 
     <modules>
         <module>modules/components/store-admin</module>
+	<module>modules/components/jaggery-scxml-executors</module>
         <module>modules/components/sso-common</module>
 	    <module>modules/features/org.wso2.store.feature</module>
         <module>modules/p2-profile-gen</module>
