@@ -44,7 +44,7 @@ var site = function (tenantId, options) {
     tags = options.tags;
     for (tag in tags) {
         if (tags.hasOwnProperty(tag)) {
-            registry.tag(tenantId, path, options.tags[tag]);
+            registry.tag(path, options.tags[tag]);
         }
     }
     rate = options.rate;
@@ -102,7 +102,7 @@ var ebook = function (tenantId, options) {
     tags = options.tags;
     for (tag in tags) {
         if (tags.hasOwnProperty(tag)) {
-            registry.tag(tenantId, path, options.tags[tag]);
+            registry.tag(path, options.tags[tag]);
         }
     }
 
@@ -158,7 +158,7 @@ var gadget = function (tenantId, options) {
     tags = options.tags;
     for (tag in tags) {
         if (tags.hasOwnProperty(tag)) {
-            registry.tag(tenantId, path, options.tags[tag]);
+            registry.tag(path, options.tags[tag]);
         }
     }
     rate = options.rate;
