@@ -262,6 +262,7 @@ org.wso2.carbon.webapp.mgt,4.1.0,plugins/org.wso2.carbon.webapp.mgt_4.1.0.jar,4,
 org.wso2.carbon.webapp.mgt.stub,4.1.0,plugins/org.wso2.carbon.webapp.mgt.stub_4.1.0.jar,4,true
 org.wso2.securevault,1.0.0.wso2v2,plugins/org.wso2.securevault_1.0.0.wso2v2.jar,4,true
 org.wso2.store.sso.common,1.0.0,plugins/org.wso2.store.sso.common_1.0.0.jar,4,true
+org.wso2.jaggery.scxml.jaggery-scxml-executors,1.0.0,plugins/org.wso2.jaggery.scxml.jaggery-scxml-executors_1.0.0.jar,4,true
 org.wso2.store.admin.styles,1.0.0,plugins/org.wso2.store.admin.styles_1.0.0.jar,4,true
 org.wso2.stratos.identity.saml2.sso.mgt,2.1.0,plugins/org.wso2.stratos.identity.saml2.sso.mgt_2.1.0.jar,4,true
 org.wso2.stratos.identity.saml2.sso.mgt.ui,2.1.0,plugins/org.wso2.stratos.identity.saml2.sso.mgt.ui_2.1.0.jar,4,true
