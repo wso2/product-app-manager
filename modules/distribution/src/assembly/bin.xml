@@ -46,7 +46,7 @@
                 <exclude>**/org.wso2.carbon.identity.relyingparty.ui-3.1.0.SNAPSHOT.jar</exclude>
                 <exclude>**/org.wso2.carbon.identity.user.registration.ui-3.1.0.SNAPSHOT.jar</exclude>
                 <exclude>**/log4j.properties</exclude>
-                <!--exclude>**/bundles.info</exclude-->
+                <exclude>**/bundles.info</exclude>
             </excludes>
         </fileSet>
         <fileSet>
