@@ -15,7 +15,6 @@ var caramel;
             tag = request.getParameter('tag'),
             query = request.getParameter('query'),
             fields = request.getParameter('fields'),
-            ssoLogin = require('/modules/sso-login.js'),
             server = require('/modules/server.js'),
             ssoUser = session.get('LOGGED_IN_USER'),
             tenant = server.tenant(request, session),
@@ -96,10 +95,6 @@ var caramel;
 		sso:sso,
 		navigation : site.navigation(tenantId, {
 			sso : sso,
-			ssoEncodedRequest : ssoLogin.ssoEncodedRequest,
-			ssoRelayState : ssoLogin.ssoRelayState,
-			ssoSessionId : ssoLogin.ssoSessionId,
-			ssoIdpURL : ssoLogin.ssoIdpURL,
 			user : loggedUser
 		}),
         search : {

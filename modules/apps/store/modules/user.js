@@ -244,5 +244,5 @@ var current = function (session) {
 };
 
 var loginWithSAML = function (username) {
-    return permitted(username);
+    return permitted(username, session);
 };

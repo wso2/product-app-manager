@@ -171,7 +171,7 @@ server.loadTenant(tenantId);
 populate(tenantId);
 populateEBooks(tenantId);
 populateSites(tenantId);
-addSSOConfig(tenantId);
+//addSSOConfig(tenantId);
 /*
  setInterval(function () {
  //TEMP fix for task not clearing properly during server shutdown
