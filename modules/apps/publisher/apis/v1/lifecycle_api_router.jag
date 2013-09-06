@@ -172,10 +172,13 @@ routeManager.register('GET','publisher','/publisher/api/lifecycle/{type}/{id}',f
 
         var artifact=artifactManager.get(id);
         var state=artifactManager.getLifecycleState(artifact);
+        var actions=artifactManager.availableActions(artifact);
         var msg={};
         msg['status']='ok';
         msg['state']=state;
-        print(state);
+        msg['actions']=actions;
+        log.debug(msg);
+        print(msg);
     }
     catch(e){
         log.debug('The asset with id: '+id+' could not be found.The following exception was thrown: '+e);
@@ -247,6 +250,10 @@ routeManager.register('GET','publisher','/publisher/api/lifecycle/information/hi
 
        log.info('history path:'+historyPath);
        var systemRegistry=server.systemRegistry();
+
+       //var actions=artifactManager.availableActions(artifact);
+
+       //log.debug(actions);
 
        var resourceInstance=systemRegistry.get(historyPath);
        var json={};

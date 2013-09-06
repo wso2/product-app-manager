@@ -5,6 +5,9 @@
     - Obtaining the check list for a given state
     - Handling the click events associated with the check list items by calling the remote api responsible for
       ticking an asset check list item.
+      Sources:
+        Disabling a button with jQuery using disabled property
+        http://stackoverflow.com/questions/1414365/how-to-disable-enable-an-input-with-jquery
  Filename: lifecycle.asset.js
  Created Date: 23/8/2013
  */
@@ -51,8 +54,10 @@ $(function(){
                   url:'/publisher/api/lifecycle/'+asset+'/'+id,
                   type:'GET',
                   success:function(response){
-                      $('#state').html(response);
-                      $('#view-lifecyclestate').html(response);
+                      var statInfo=JSON.parse(response);
+                      $('#state').html(statInfo.state);
+                      $('#view-lifecyclestate').html(statInfo.state);
+                      //disableActions(statInfo.actions);
                       buildCheckList(asset,id);
                       buildLCGraph();
                   },
@@ -82,8 +87,12 @@ $(function(){
                     url:'/publisher/api/lifecycle/'+asset+'/'+id,
                     type:'GET',
                     success:function(response){
-                        $('#state').html(response);
-                        $('#view-lifecyclestate').html(response);
+                        //Convert the response to a JSON object
+                        var statInfo=JSON.parse(response);
+
+                        $('#state').html(statInfo.state);
+                        $('#view-lifecyclestate').html(statInfo.state);
+                        //disableActions(statInfo.actions);
                         buildCheckList(asset,id);
                         buildLCGraph();
                     },
@@ -99,6 +108,32 @@ $(function(){
 
 
     });
+
+    /*
+    The method only enables and disables the appropriate actions
+     */
+    function disableActions(actions){
+
+        //Eagerly disable all of the buttons
+        var buttons=['btn-asset-promote','btn-asset-demote'];
+
+        for(var buttonIndex in buttons){
+            var button=buttons[buttonIndex];
+            $('#'+button).prop('disabled',true);
+        }
+
+        //Enable only relevant buttons.
+        for(var actionIndex in actions){
+            var action=actions[actionIndex];
+            if(action=='Promote'){
+                $('#btn-asset-promote').prop('disabled',false);
+            }
+            else if(action=='Demote'){
+                $('#btn-asset-demote').prop('disabled',false);
+            }
+        }
+    }
+
 
     /*
     The function builds the LC graph
@@ -119,8 +154,9 @@ $(function(){
                         graph.Renderer.initRaphael();
                         graph.Renderer.render(graph.NMap);
                     }
-
-                    graph.Renderer.setSelected(response);
+                    var statInfo=JSON.parse(response);
+                    graph.Renderer.setSelected(statInfo.state);
+                    disableActions(statInfo.actions);
                 }
                 //$('#canvas').html(response);
             },
