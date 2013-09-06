@@ -5,20 +5,13 @@ var renderAssets, mouseStop, isAssertTrue, addAssert;
         var el = $('.store-left');
         caramel.css($('head'), data.header['sort-assets'].resources.css, 'sort-assets');
         caramel.code($('head'), data.body['assets'].resources.code);
-        async.parallel({
-            assets: function (callback) {
-                caramel.render('assets', data.body.assets.context, callback);
-            },
-            paging: function (callback) {
-                caramel.render('pagination', data.body.pagination.context, callback);
-            },
-            sort: function (callback) {
-                caramel.render('sort-assets', data.header['sort-assets'].context, callback);
-            }
-        }, function (err, result) {
-            theme.loaded(el, result.sort);
-            el.append(result.assets);
-            el.append(result.paging);
+        caramel.partials(data._.partials, function () {
+            var assets = Handlebars.partials['assets'](data.body.assets.context),
+                paging = Handlebars.partials['pagination'](data.body.pagination.context),
+                sort = Handlebars.partials['sort-assets'](data.header['sort-assets'].context);
+            theme.loaded(el, sort);
+            el.append(assets);
+            el.append(paging);
             caramel.js($('body'), data.body['assets'].resources.js, 'assets', function () {
                 mouseStop();
             });
@@ -28,7 +21,7 @@ var renderAssets, mouseStop, isAssertTrue, addAssert;
             $(document).scrollTop(0);
         });
     };
-    
+
     renderAssetsScroll = function(data){
     	var temp = '{{#slice assets size="4"}}<div class="row-fluid">';
         	temp += '{{#each .}}';

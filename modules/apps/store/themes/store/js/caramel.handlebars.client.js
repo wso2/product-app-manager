@@ -258,6 +258,29 @@
         $.ajax(options);
     };
 
+    caramel.partials = function (partials, fn, force) {
+        var partial,
+            fns = [];
+        for (partial in partials) {
+            if (partials.hasOwnProperty(partial)) {
+                if (!force && Handlebars.partials[partial]) {
+                    continue;
+                }
+                fns.push(function (partial) {
+                    return function (callback) {
+                        caramel.get(partials[partial], function (data) {
+                            Handlebars.partials[partial] = Handlebars.compile(data);
+                            callback(null);
+                        }, 'html');
+                    };
+                }(partial));
+            }
+        }
+        async.parallel(fns, function (err, results) {
+            fn(err);
+        });
+    };
+
     caramel.render = function (template, context, callback) {
         var partial, fns, html,
             fn = Handlebars.partials[template],
@@ -300,10 +323,10 @@
         if (css instanceof Array) {
             length = css.length;
             for (i = 0; i < length; i++) {
-                el.append('<link rel="stylesheet" type="text/css" href="' + caramel.url('/themes/' + caramel.themer + '/css/' + css[i]) + '"/>');
+                el.append('<link rel="stylesheet" type="text/css" href="' + caramel.url(css[i]) + '"/>');
             }
         } else {
-            el.append('<link rel="stylesheet" type="text/css" href="' + caramel.url('/themes/' + caramel.themer + '/css/' + css) + '"/>');
+            el.append('<link rel="stylesheet" type="text/css" href="' + caramel.url(css) + '"/>');
         }
     };
 
@@ -319,7 +342,7 @@
             length = js.length;
             counter = length;
             for (i = 0; i < length; i++) {
-                $.getScript(caramel.url('/themes/' + caramel.themer + '/js/' + js[i]), function () {
+                $.getScript(caramel.url(js[i]), function () {
                     if (--counter > 0) {
                         return;
                     }
@@ -327,7 +350,7 @@
                 });
             }
         } else {
-            $.getScript(caramel.url('/themes/' + caramel.themer + '/js/' + js), callback);
+            $.getScript(caramel.url(js), callback);
         }
     };
 
@@ -348,7 +371,7 @@
         }
     };
 
-    caramel.loaded = function(type, name) {
+    caramel.loaded = function (type, name) {
         resources[type][name] = true;
     };
 
