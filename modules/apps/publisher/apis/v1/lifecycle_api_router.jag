@@ -41,6 +41,23 @@ routeManager.register('POST', 'publisher', '/publisher/api/lifecycle/{type}/{id}
     var shortName = context.params.type;
     var id = context.params.id;
     var lifecycle = context.post.lifecycle;
+    //var autoPromote=context.post.promote||false;    //If promote is not specified do not auto promote
+
+    var invokeAction='';
+
+    //Check the config for a lifeCycleBehaviour block
+    utility.isPresent(config,'lifeCycleBehaviour',function(lifeCycleBehaviour){
+
+        utility.isPresent(lifeCycleBehaviour,lifeCycle,function(lifeCycleData){
+
+            utility.isPresent(lifeCycleData,'onAttach',function(onAttach){
+
+                invokeAction=onAttach.action||'';
+
+            });
+        });
+
+    });
 
     if (!lifecycle) {
         response.sendError(400, 'Missing required parameter: lifecycle');
@@ -53,6 +70,11 @@ routeManager.register('POST', 'publisher', '/publisher/api/lifecycle/{type}/{id}
         var artifact = artifactManager.get(id);
 
         artifactManager.attachLifecycle(lifecycle, artifact);
+
+        //Perform the action if the user has specified an action
+        if(invokeAction!=''){
+            artifactManager.promoteLifecycleState(invokeAction,artifact);
+        }
 
         var msg={};
         msg['status']='ok';
