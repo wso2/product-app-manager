@@ -125,8 +125,8 @@ var gadget = function (tenantId, options) {
 
     asset = {
         "name": options.name,
-        "lifecycle": null,
-        "lifecycleState": null,
+        "lifecycle": "SampleLifeCycle2",
+        "lifecycleState":"Published",
         "attributes": {
             "overview_status": options.status,
             "overview_name": options.name,

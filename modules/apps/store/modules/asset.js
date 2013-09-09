@@ -229,6 +229,7 @@ var log = new Log();
                 'overview_status': /^(published)$/i
             }
         }, paging);
+        log.info('listing');
         return loadRatings(this, this.sorter.paginate(all, paging));
     };
 
@@ -240,6 +241,7 @@ var log = new Log();
         this.manager.find(function (asset) {
             var name,
                 attributes = asset.attributes;
+            log.info('>>'+stringify(asset));
             if (attributes.hasOwnProperty('overview_status')) {
 
                 if (attributes['overview_status'].toLowerCase().indexOf('published') !== -1) {
