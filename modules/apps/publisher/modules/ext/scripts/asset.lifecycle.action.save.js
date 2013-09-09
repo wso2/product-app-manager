@@ -70,8 +70,13 @@ var module=function(){
             //Check if an action needs to be invoked.
            if(invokeAction!=''){
 
+               log.debug('Invoke Action: '+invokeAction);
+
+               var asset=artifactManager.get(asset.id);
+
+               artifactManager.promoteLifecycleState(invokeAction,asset);
+
                log.debug('Asset has been '+invokeAction+'ed to the next state.');
-               artifactManager.promoteLifecycleState('Promote',asset);
            }
 
 
