@@ -149,6 +149,9 @@
 								<featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.cassandra.feature:${carbon.platform.patch.version.412}
                                 </featureArtifactDef>
+								<featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.cassandra-jdbc-1.1.1.server.feature:4.0.1
+                                </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.bam.cassandra.data.archive.feature:${carbon.platform.patch.version.412}
                                 </featureArtifactDef>
@@ -313,6 +316,10 @@
 								<feature>
                                     <id>org.wso2.carbon.cassandra.feature.group</id>
                                     <version>${carbon.platform.patch.version.412}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.cassandra-jdbc-1.1.1.server.feature.group</id>
+                                    <version>4.0.1</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.databridge.datapublisher.feature.group</id>
