@@ -12,9 +12,9 @@ var generateLeftNavJson = function(data) {
                 url : "/publisher/asset/" + data.shortName + ""
             },
             {
-                name : "Statistics",
-                iconClass : "icon-dashboard",
-                url : "#"
+                name: "Statistics",
+                iconClass: "icon-dashboard",
+                url: "/publisher/assets/statistics/" + data.shortName + "/"
             }
         ]
     };
