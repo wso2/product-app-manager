@@ -99,18 +99,40 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}', functi
             print({ok: 'true', message: 'Asset created.', id:idField.value});
         }
         else{
-            log.debug('An asset of type: '+shortNa,e+' could not be created.Probably a fault with publisher logic!');
+            log.debug('An asset of type: '+shortName+' could not be created.Probably a fault with publisher logic!');
         }
 
     }
     catch (e) {
         log.debug('An asset of type: '+shortNa,e+' could not be created.The following exception was thrown: '+e);
-        response.sendError(500, 'An asset of type: '+shortNa,e+' could not be created.Please check the server logs.');
+        response.sendError(500, 'An asset of type: '+shortName+' could not be created.Please check the server logs.');
     }
 
 });
 
-routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}/{attr}/{value}', function (context) {
+routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
+    var shortName=context.params.type;
+    var id=context.params.id;
+    var artifactManager=rxtManager.getArtifactManager(shortName);
+
+    try{
+       var model=modelManager.getModel(shortName);
+        log.debug('POST:' +stringify(context.content));
+
+        model.import('form.importer',context.content);
+
+        model.set('*.id',id);
+
+        var artifact=model.export('asset.exporter');
+
+        artifactManager.update(artifact);
+
+        log.debug(artifact);
+
+    }catch(e){
+        log.debug('The asset '+id+' could not be updated.The following exception was thrown: '+e);
+        response.sendError(404,'The asset '+id+' could not be updated.Please check the server logs.');
+    }
     /*var shortName=context.params.type;
      var id=context.params.id;
      var attribute=context.params.attr;
