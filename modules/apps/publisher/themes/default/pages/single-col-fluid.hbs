@@ -2,7 +2,8 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
 <head>
     <title>{{include title}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +20,7 @@
     {{css}}
 </head>
 <body>
-{{ include header}}
+    {{ include header}}
 <div class="container-assets container">
     <div class="row-fluid ribbon">
         {{include ribbon}}
@@ -45,14 +46,16 @@
 <script src="{{url "/themes/default/js/publisher.commons.js"}}"></script>
 <script src="{{url "/themes/default/js/logic/create.asset.js"}}"></script>
 <script>
-    $(function() {
-        $( '#dl-menu' ).dlmenu({
-            animationClasses : { classin : 'dl-animate-in-2', classout : 'dl-animate-out-2' }
+    $(function () {
+        $('#dl-menu').dlmenu({
+            animationClasses: { classin: 'dl-animate-in-2', classout: 'dl-animate-out-2' }
         });
     });
 </script>
+<script src="{{url "/themes/default/js/raphael-min.js"}}"></script>
+<script src="{{url "/themes/default/js/graph.js"}}"></script>
 <script src="{{url "/themes/default/js/logic/lifecycle.asset.js"}}"></script>
-    {{js}}
-    {{code}}
+{{js}}
+{{code}}
 </body>
 </html>

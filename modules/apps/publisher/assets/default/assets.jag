@@ -14,7 +14,6 @@ var router = require('/modules/router-g.js').router();
 var config = require('/config/publisher.json');
 var caramel = require('caramel');
 var user = require('/modules/user.js');
-var stats = require('/modules/statistics.js');
 
 var routeMnger = new router.Router();
 //var routeManager=application.get(config.app.ROUTE_MANAGER);
@@ -33,6 +32,7 @@ var DEFAULT_PAGE = 10;
  //caramel.render({sample: {name: 'Default asset renderer'}});
 
  });*/
+var log = new Log();
 
 routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function (context) {
 
@@ -69,17 +69,23 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{operation}/{type}/',
                 op: operation,
                 cuser: user.current(),
                 shortName: type
-             });
+            });
 
         } catch (e) {
             response.sendError(404, 'Asset type not found'); //TODO: Replace
         }
 
-    }
+                //log.debug(stringify(artifacts));
+        caramel.render({
+            cuser: user.current(),
+            shortName: context.params.type,
+            artifacts: artifacts
+        });
 
-    /*for each(var artifact in artifacts){
-     print(artifact.id+'<br/><br/>');
-     }*/
+        /*for each(var artifact in artifacts){
+         print(artifact.id+'<br/><br/>');
+         }*/
+    }
 });
 
 

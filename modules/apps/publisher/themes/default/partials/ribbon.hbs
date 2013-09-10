@@ -10,7 +10,7 @@
             </div>-->
     <div class="btn-group context_menu left">
         <a class="btn btn-large dropdown-toggle assetTypeSwitcher" data-toggle="dropdown" href="#">
-            <i class="icon-{{shortName}}"></i>Type : <span class="publisherTitle">{{shortName}}</span>
+            <i class="icon-{{currentType}}"></i>Type : <span class="publisherTitle">{{currentType}}</span>
             <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
@@ -23,13 +23,13 @@
             {{/each}}
         </ul>
     </div>
-    {{#if this.data}}
+    {{#if assetName}}
          <span class="breadcrumb-separator">/</span>
-         <span class="breadcrumb-text left">{{{snoop "fields(name=overview_name).value" this.data}}}</span>
+         <span class="breadcrumb-text left">{{assetName}}</span>
          <span class="breadcrumb-separator">/</span>
          <div class="btn-group context_menu left">
             <a class="btn btn-large dropdown-toggle assetTypeSwitcher" data-toggle="dropdown" href="#">
-                Version : <span class="publisherTitle">{{{snoop "fields(name=overview_version).value" this.data}}}</span>
+                Version : <span class="publisherTitle">{{currentVersion}}</span>
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">

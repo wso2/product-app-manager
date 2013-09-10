@@ -79,6 +79,7 @@
                                 <!--<bundleDef>org.wso2.carbon:org.wso2.carbon.hostobjects.sso</bundleDef>-->
                                 <bundleDef>org.wso2.store:org.wso2.store.sso.common</bundleDef>
                                 <bundleDef>org.wso2.store:org.wso2.store.admin.styles</bundleDef>
+				<bundleDef>org.wso2.jaggery.scxml:jaggery-scxml-executors:1.0-SNAPSHOT</bundleDef>
                             </bundles>
                             <importBundles>
                             </importBundles>

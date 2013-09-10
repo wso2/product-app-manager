@@ -5,6 +5,9 @@
     - Obtaining the check list for a given state
     - Handling the click events associated with the check list items by calling the remote api responsible for
       ticking an asset check list item.
+      Sources:
+        Disabling a button with jQuery using disabled property
+        http://stackoverflow.com/questions/1414365/how-to-disable-enable-an-input-with-jquery
  Filename: lifecycle.asset.js
  Created Date: 23/8/2013
  */
@@ -32,7 +35,8 @@ $(function(){
     console.log(id);
 
     buildCheckList(asset,id);
-
+    buildLCGraph();
+    buildHistory(asset,id);
 
     /*
     Promotes an asset
@@ -50,9 +54,12 @@ $(function(){
                   url:'/publisher/api/lifecycle/'+asset+'/'+id,
                   type:'GET',
                   success:function(response){
-                      $('#state').html(response);
-                      $('#view-lifecyclestate').html(response);
+                      var statInfo=JSON.parse(response);
+                      $('#state').html(statInfo.state);
+                      $('#view-lifecyclestate').html(statInfo.state);
+                      //disableActions(statInfo.actions);
                       buildCheckList(asset,id);
+                      buildLCGraph();
                   },
                   error:function(response){
                       $('#state').html('Error obtaining state');
@@ -80,9 +87,14 @@ $(function(){
                     url:'/publisher/api/lifecycle/'+asset+'/'+id,
                     type:'GET',
                     success:function(response){
-                        $('#state').html(response);
-                        $('#view-lifecyclestate').html(response);
+                        //Convert the response to a JSON object
+                        var statInfo=JSON.parse(response);
+
+                        $('#state').html(statInfo.state);
+                        $('#view-lifecyclestate').html(statInfo.state);
+                        //disableActions(statInfo.actions);
                         buildCheckList(asset,id);
+                        buildLCGraph();
                     },
                     error:function(response){
                         $('#state').html('Error obtaining life-cycle state of asset.');
@@ -97,7 +109,62 @@ $(function(){
 
     });
 
+    /*
+    The method only enables and disables the appropriate actions
+     */
+    function disableActions(actions){
 
+        //Eagerly disable all of the buttons
+        var buttons=['btn-asset-promote','btn-asset-demote'];
+
+        for(var buttonIndex in buttons){
+            var button=buttons[buttonIndex];
+            $('#'+button).prop('disabled',true);
+        }
+
+        //Enable only relevant buttons.
+        for(var actionIndex in actions){
+            var action=actions[actionIndex];
+            if(action=='Promote'){
+                $('#btn-asset-promote').prop('disabled',false);
+            }
+            else if(action=='Demote'){
+                $('#btn-asset-demote').prop('disabled',false);
+            }
+        }
+    }
+
+
+    /*
+    The function builds the LC graph
+     */
+    function buildLCGraph(){
+        $.ajax({
+            url:'/publisher/api/lifecycle/'+asset+'/'+id,
+            type:'GET',
+            success:function(response){
+                var element=$('#canvas');
+                if(element){
+                    //element.html(response);
+
+                    if(!graph.Renderer.config.canvas.canvasElement){
+
+                        graph.Renderer.config.canvas.canvasElement=element;
+
+                        graph.Renderer.initRaphael();
+                        graph.Renderer.render(graph.NMap);
+                    }
+                    var statInfo=JSON.parse(response);
+                    graph.Renderer.setSelected(statInfo.state);
+                    disableActions(statInfo.actions);
+                }
+                //$('#canvas').html(response);
+            },
+            error:function(response){
+                $('#canvas').html('Error obtaining life-cycle state of asset.');
+            }
+        });
+    }
 
     /*
     The function is used to build the representation of the check list.
@@ -143,6 +210,44 @@ $(function(){
             }
 
         });
+    }
+
+    /*
+    The function obtains the history information about the life-cycle changes
+     */
+    function buildHistory(asset,id){
+        var version='1.0.0';
+        //Make a call to the api to obtain the history
+        var path='/publisher/api/lifecycle/information/history/'+asset+'/'+id+'/'+version;
+        $.ajax({
+            url:path,
+            type:'GET',
+            success:function(response){
+                //console.log(response);
+                var obj=JSON.parse(response);
+                var out=createHistoryEntry(obj.item);
+                $('#lc-history').html(out);
+            },
+            error:function(response){
+               // console.log('lc history not retrieved');
+            }
+        });
+    }
+
+    function createHistoryEntry(items){
+        var output='';
+
+        for(var itemIndex in items){
+            console.log(itemIndex);
+            output='<div class="info-div alert alert-success">';
+            output+='<a data-dismiss="alert" class="close">x</a>';
+            output+='<i class="icon-info-sign"></i>';
+            output+='<span class="dateFull"> '+items[itemIndex].timestamp+'</span>';
+            output+='<a href="#">'+items[itemIndex].user+'</a> changed the asset state to '+items[itemIndex].state;
+            output+='</div>';
+        }
+
+        return output;
     }
 
     /*

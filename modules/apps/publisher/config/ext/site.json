@@ -14,11 +14,11 @@
         "overview.status:order=5"
     ],
 
-    "tables":[
-	
-	{
-		"name":"*"
-	}
+    "tables": [
+
+        {
+            "name": "*"
+        }
 
     ],
 
@@ -39,26 +39,31 @@
             "name": "visible",
             "value": "true"
         },
-	{
-	    "field":"overview.*",
-	    "name":"save",
-	    "value":"default"
-	},
-	{
-	    "field":"*.lifeCycle",
-	    "name":"save",
-	    "value":"asset.lifecycle.action.save"
-	}
+        {
+            "field": "overview.*",
+            "name": "save",
+            "value": "default"
+        },
+        {
+            "field": "*.lifeCycle",
+            "name": "save",
+            "value": "asset.lifecycle.action.save"
+        },
+        {
+            "field": "overview.provider",
+            "name": "readOnly",
+            "value": "true"
+        }
     ],
 
-    "fields":[
-	{
-	    "name":"lifeCycle",
-	    "table":"*",
-	    "label":"Life Cycle",
-            "value":"SampleLifeCycle2"
+    "fields": [
+        {
+            "name": "lifeCycle",
+            "table": "*",
+            "label": "Life Cycle",
+            "value": "SampleLifeCycle2"
 
-	}
+        }
 
     ]
 }

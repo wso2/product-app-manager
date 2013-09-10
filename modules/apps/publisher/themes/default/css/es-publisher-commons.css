@@ -393,6 +393,9 @@ label, input, button, select, textarea{
 .icon-site:before{
     content:"\f14e";
 }
+.icon-ebook:before{
+    content:"\f02d";
+}
 .publisher-left{
    background: #F5F5F5;
    border-right: 1px solid #DADADA;

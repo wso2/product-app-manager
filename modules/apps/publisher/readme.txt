@@ -14,6 +14,23 @@ It allows the following functionality;
 Changes:
 ----------
 
+6/3/2013	Major Changes:
+		--------------
+		IMPORTANT: The life-cycle changes require the jaggery.scxml.excutor component available as a 
+			plug-in.
+		Changed the registry.xml lifecycle entry:SampleLifeCycle2 to be in line with the 
+			"Travelling Permissions Model". Please refer to the relevant documentation.
+		The life-cycle promote/demote operations will now change the permissions to a given asset
+			Please refer to the life-cycle state document.
+		Added a Life-Cycle diagram with animations to reflect the promote/demote operations
+			using raphael and a custom script (graph.js)
+		
+		
+		Minor Changes:
+		--------------		
+		The provider name is now auto populated and is read-only.
+		
+
 28/8/2013	Major Changes:
 		-------------
 		IMPORTANT: Requires the changes to Jaggery in SAM JAG PULL # 2 (artifact.js changes)
@@ -118,6 +135,7 @@ The following API calls have been implemented
  	POST  api/lifecycle/{asset-type}/{artifact-id}   	Attach the provided lifecycle to the artifact
  	POST api/lifecycle/checklistitem/{index}/{type}/{id}    Ticks a check list item at the given index
  	PUT api/lifecycle/{action}/{asset-type}/{artifact-id}	Performs the provided the action on the provided asset
+	GET api/lifecycle/information/history/{asset-type}/{artifact-id}/{version} Returns the life-cycle history of the provided asset.
 	
 	
 

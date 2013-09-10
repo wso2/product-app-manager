@@ -1,0 +1,102 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.wso2.jaggery.scxml</groupId>
+  <artifactId>jaggery-scxml-executors</artifactId>
+  <packaging>bundle</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>jaggery-scxml-executors</name>
+  <url>http://maven.apache.org</url>
+  <properties>
+	<maven-scr-plugin.version>1.7.2</maven-scr-plugin.version>
+        <maven-bunlde-plugin.version>2.3.5</maven-bunlde-plugin.version>
+  </properties>
+  <repositories>
+        <repository>
+            <id>wso2-maven2-repository</id>
+            <name>WSO2 Maven2 Repository</name>
+            <url>http://dist.wso2.org/maven2/</url>
+        </repository>
+        <repository>
+            <id>wso2-maven2-snapshot-repository</id>
+            <name>WSO2 Maven2 Snapshot Repository</name>
+            <url>http://dist.wso2.org/snapshots/maven2/</url>
+        </repository>
+        <repository>
+            <id>wso2-nexus</id>
+            <name>WSO2 internal Repository</name>
+            <url>http://maven.wso2.org/nexus/content/groups/wso2-public/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+        </repository>
+    </repositories>
+<build>
+<plugins>
+  <plugin>
+  	<groupId>org.apache.felix</groupId>
+	<artifactId>maven-scr-plugin</artifactId>
+	<version>${maven-scr-plugin.version}</version>
+	<executions>
+		<execution>
+ 		    <id>generate-scr-scrdescriptor</id>
+			<goals>
+                                <goal>scr</goal>
+                        </goals>
+		</execution>
+	</executions>
+  </plugin>
+  <plugin>
+      <groupId>org.apache.felix</groupId>
+      <artifactId>maven-bundle-plugin</artifactId>
+      <version>${maven-bunlde-plugin.version}</version>
+      <extensions>true</extensions>
+      <configuration>
+	  <orbRepository>NONE</orbRepository>
+          <instructions>
+              <Bundle-SymbolicName>${pom.groupId}.${pom.artifactId}</Bundle-SymbolicName>
+	      <Service-Component>OSGI-INF/serviceComponents.xml</Service-Component>
+              <Bundle-Name>${pom.artifactId}</Bundle-Name>
+              <Bundle-Version>1.0.0</Bundle-Version>
+              <Private-Package>org.wso2.jaggery.scxml</Private-Package>
+              <Bundle-Activator>org.wso2.jaggery.scxml.Activator</Bundle-Activator>
+              <Import-Package>
+                  org.osgi.framework,
+                  *;resolution:=optional
+              </Import-Package>
+	      <Export-Package>
+		  org.wso2.jaggery.scxml.generic,
+		  org.wso2.jaggery.scxml.tester,
+		  org.wso2.jaggery.scxml.internal,
+		  org.wso2.jaggery.scxml.domain,
+		  org.wso2.jaggery.scxml.management,
+		  org.wso2.jaggery.scxml.parser,
+		  org.wso2.jaggery.scxml.parser.handlers,
+		  org.wso2.jaggery.scxml.aspects,
+		  org.wso2.jaggery.scxml.registry.filters,
+		  org.wso2.jaggery.scxml.registry.handlers,
+		  org.wso2.jaggery.scxml.threading,
+		  org.wso2.jaggery.scxml.threading.contexts
+	      </Export-Package>
+          </instructions>
+      </configuration>
+  </plugin>
+</plugins>
+</build>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.wso2.carbon</groupId>
+      <artifactId>org.wso2.carbon.governance.registry.extensions</artifactId>
+      <version>4.1.3</version>
+    </dependency>
+  </dependencies>
+</project>
