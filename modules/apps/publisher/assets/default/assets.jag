@@ -14,10 +14,12 @@ var router = require('/modules/router-g.js').router();
 var config = require('/config/publisher.json');
 var caramel = require('caramel');
 var user = require('/modules/user.js');
+var stats = require('/modules/statistics.js');
 
 var routeMnger = new router.Router();
 //var routeManager=application.get(config.app.ROUTE_MANAGER);
 var rxtManager = application.get(config.app.RXT_MANAGER);
+var modelManager = application.get(config.app.MODEL_MANAGER);
 var DEFAULT_PAGE = 10;
 
 /*routeMnger.register('GET','publisher','/publisher/assets/list',function(context){
@@ -34,22 +36,45 @@ var DEFAULT_PAGE = 10;
 
 routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function (context) {
 
-    try{
+    try {
 
 
 
-    //TODO: Check for valid asset types
-    var artifactManager = rxtManager.getArtifactManager(context.params.type);
+        //TODO: Check for valid asset types
+        var artifactManager = rxtManager.getArtifactManager(context.params.type);
 
-    var artifacts = artifactManager.list(DEFAULT_PAGE) || [];
+        var artifacts = artifactManager.list(DEFAULT_PAGE) || [];
 
-    caramel.render({
-        cuser: user.current(),
-        shortName: context.params.type,
-        artifacts: artifacts
-    });
-    }catch(e){
-        response.sendError(400,"Your request is malformed");
+        caramel.render({
+            op: 'list',
+            cuser: user.current(),
+            shortName: context.params.type,
+            artifacts: artifacts
+        });
+    } catch (e) {
+        response.sendError(400, "Your request is malformed");
+    }
+
+    /*for each(var artifact in artifacts){
+     print(artifact.id+'<br/><br/>');
+     }*/
+});
+
+routeMnger.register('GET', 'publisher', '/publisher/assets/{operation}/{type}/', function (context) {
+    var operation = (context.params.operation) || '';
+    var type = context.params.type;
+    if (operation == 'statistics') {
+        try {
+            caramel.render({
+                op: operation,
+                cuser: user.current(),
+                shortName: type
+             });
+
+        } catch (e) {
+            response.sendError(404, 'Asset type not found'); //TODO: Replace
+        }
+
     }
 
     /*for each(var artifact in artifacts){

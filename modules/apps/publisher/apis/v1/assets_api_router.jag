@@ -1,0 +1,44 @@
+<%
+
+var config = require('/config/publisher.json');
+var caramel = require('caramel');
+
+var router = require('/modules/router-g.js').router();
+var routeManager = new router.Router();
+var user=require('/modules/user.js');
+var stats = require('/modules/statistics.js');
+
+//var routeManager=application.get(config.app.ROUTE_MANAGER);
+var rxtManager = application.get(config.app.RXT_MANAGER);
+var modelManager = application.get(config.app.MODEL_MANAGER);
+var log=new Log();
+
+
+routeManager.register('GET', 'publisher', '/publisher/api/assets/{operation}/{type}/', function (context) {
+    var type = context.params.type;
+    var dbResults = stats.filterResultsByAssetType(stats.getBookmarkStats(user.current().username), type);
+
+    var artifactManager = rxtManager.getArtifactManager(type);
+    var model = modelManager.getModel(type);
+    var ticks = [],statData = [], name;
+    for (var i = 0; i < dbResults.length; i++) {
+        var artifact = artifactManager.get(dbResults[i].ASSET_ID);
+        model.import('asset', artifact);
+        name = (model.get('overview.name')).value;
+        statData.push([i,parseInt(dbResults[i]['NO_OF_BOOKMARKS'])]);
+        dbResults[i]['ASSET_ID'] = name;
+        ticks.push([i,name]);
+
+    }
+
+    var output = {};
+    output['stats'] = statData;
+    output['ticks'] = ticks;
+
+    print(output);
+});
+
+routeManager.handle(request, response);
+
+
+%>
