@@ -4,20 +4,20 @@
  Created Date: 29/7/2013
  */
 
-var listPartial = 'list-assets';
-//Determine what view to show
-switch (data.op) {
-    case 'list':
-        listPartial = 'list-assets';
-        break;
-    case 'statistics':
-        listPartial = 'statistics';
-        break;
-    default:
-        break;
-}
-
 var render = function (theme, data, meta, require) {
+
+    var listPartial = 'list-assets';
+//Determine what view to show
+    switch (data.op) {
+        case 'list':
+            listPartial = 'list-assets';
+            break;
+        case 'statistics':
+            listPartial = 'statistics';
+            break;
+        default:
+            break;
+    }
     //var addAssetUrl = "/publisher/asset/" + data.meta.shortName +"";
     theme('single-col-fluid', {
         title: data.title,

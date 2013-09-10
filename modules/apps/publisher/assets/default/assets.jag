@@ -75,13 +75,6 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{operation}/{type}/',
             response.sendError(404, 'Asset type not found'); //TODO: Replace
         }
 
-                //log.debug(stringify(artifacts));
-        caramel.render({
-            cuser: user.current(),
-            shortName: context.params.type,
-            artifacts: artifacts
-        });
-
         /*for each(var artifact in artifacts){
          print(artifact.id+'<br/><br/>');
          }*/
