@@ -37,7 +37,7 @@ var module=function(){
            //Invoke an api call with the life cycle state
            var lifeCycle=model.getField('*.lifeCycle').value;
 
-           var rxtManager=application.get(configs.app.RXT_MANAGER);
+           var rxtManager=context.rxtManager;
 
            var artifactManager=rxtManager.getArtifactManager(type);
 

@@ -10,7 +10,7 @@
             encodedSAMLAuthRequest = sso.client.getEncodedSAMLAuthRequest(dataConfi.ssoConfiguration.issuer),
             log = new Log();
 
-    if (!session.get("Loged")) {
+    if (!require('/modules/user.js').current(session)) {
         %>
 
                 <div>

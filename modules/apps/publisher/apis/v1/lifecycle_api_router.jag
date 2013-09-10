@@ -30,7 +30,8 @@ var user = require('/modules/user.js');
 var utility=require('/modules/utility.js').rxt_utility();
 var server=require('/modules/server.js');
 var routeManager = new router.Router();
-var rxtManager = application.get(config.app.RXT_MANAGER);
+var publisher = require('/modules/publisher.js').publisher(request, session);
+var rxtManager = publisher.rxtManager;
 
 
 var log=new Log();

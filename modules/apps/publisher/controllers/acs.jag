@@ -31,8 +31,8 @@
                     var sessionObj = sso.client.decodeSAMLLoginResponse(samlRespObj, samlResponse, sessionId);
 
                     if (sessionObj.sessionIndex != null || sessionObj.sessionIndex != 'undefined') {
-                        session.put("LOGGED_IN_USER", sessionObj.loggedInUser);
-                        session.put("Loged", "true");
+                        //session.put("LOGGED_IN_USER", sessionObj.loggedInUser);
+                        //session.put("Loged", "true");
 
                         sso_sessions[sessionObj.sessionIndex] = sessionObj.sessionId;
 
@@ -40,7 +40,6 @@
 
                         if (user.loginWithSAML(sessionObj.loggedInUser)) {
                             log.info('Successfully logged in');
-                            user.configureUser(sessionObj.loggedInUser);
                             response.sendRedirect('/publisher');
                         }
 

@@ -48,8 +48,7 @@ var module=function(){
 
 
             //Get the artifact using the name
-            var rxtManager=application.get(configs.app.RXT_MANAGER);
-
+            var rxtManager=context.rxtManager;
 
             var artifactManager=rxtManager.getArtifactManager(shortName);
 

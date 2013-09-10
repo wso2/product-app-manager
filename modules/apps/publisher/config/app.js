@@ -41,57 +41,7 @@ var user = require('/modules/user.js');
 user.init(pubConfig);
 
 var publisher = require('/modules/publisher.js');
-publisher.init({
-
-});
-
-//var server=new carbon.server.Server(url);
-var registry = server.systemRegistry();
-
-/*var registry=new carbon.registry.Registry(server,{
- systen:true,
- username:username,
- tenantId:carbon.server.superTenant.tenantId
- });*/
-var rxtManager = new rxt_management.RxtManager(registry);
-var routeManager = new route_management.Router();
-
-
-routeManager.setRenderer(config.router.RENDERER);
-
-//All of the rxt xml files are read and converted to a JSON object called
-//a RxtTemplate(Refer rxt.domain.js)
-rxtManager.loadAssets();
-
-var parser = new ext_parser.Parser();
-
-//Go through each rxt template
-for each(var rxtTemplate in rxtManager.rxtTemplates)
-{
-
-    parser.registerRxt(rxtTemplate);
-}
-
-parser.load(config.paths.RXT_EXTENSION_PATH);
-
-var adapterManager = new ext_core.AdapterManager({parser: parser});
-adapterManager.init();
-
-var fpManager = new ext_core.FieldManager({parser: parser});
-fpManager.init();
-
-var ruleParser = new ext_parser.RuleParser({parser: parser});
-ruleParser.init();
-
-var actionManager=new ext_core.ActionManager({templates:parser.templates});
-actionManager.init();
-
-var modelManager = new ext_mng.ModelManager({parser: parser, adapterManager: adapterManager,actionManager:actionManager});
-
-application.put(config.app.MODEL_MANAGER, modelManager);
-application.put(config.app.RXT_MANAGER, rxtManager);
-application.put(config.app.ROUTE_MANAGER, routeManager);
-
+publisher.init(pubConfig);
 
 //Configure Caramel
 caramel.configs({

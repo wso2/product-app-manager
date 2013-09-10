@@ -1,6 +1,6 @@
 <%
 (function(){
-    var user = session.get("LOGGED_IN_USER");
+    var user = require('/modules/user.js').current(session).username;
     if(user === null) {
         response.sendRedirect('/store');
     } else {

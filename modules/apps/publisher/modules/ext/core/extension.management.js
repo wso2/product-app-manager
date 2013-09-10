@@ -21,6 +21,7 @@ var extension_management=function(){
 		this.adapterManager=null;
 		this.template=null;	//The template of the data stored in the model
         this.actionManager=null;
+        this.rxtManager=null;
 		utility.config(options,this);
 		this.init();
 	}
@@ -123,7 +124,7 @@ var extension_management=function(){
             if(defaultHandler!=null){
                 log.info('Executing default action : '+actionName+' for the operation: '+actionName);
                 log.info('Handler '+stringify(defaultHandler));
-                defaultHandler.execute({template:this.template,model:this.dataModel,actionMap:defaultAction,parent:this});
+                defaultHandler.execute({template:this.template,model:this.dataModel,actionMap:defaultAction,parent:this,rxtManager:this.rxtManager});
             }
 
         }
@@ -139,7 +140,7 @@ var extension_management=function(){
 
                 if(handler!=null){
                     log.info('Executing the action: '+action+' for operation: '+actionName)
-                    handler.execute({template:this.template,model:this.dataModel,actionMap:actionMap[action],parent:this});
+                    handler.execute({template:this.template,model:this.dataModel,actionMap:actionMap[action],parent:this,rxtManager:this.rxtManager});
                 }
             }
         }
@@ -160,6 +161,7 @@ var extension_management=function(){
 		this.parser=null;
 		this.adapterManager=null;
         this.actionManager=null;
+        this.rxtManager=null;
 		utility.config(options,this);
 	}
 
@@ -174,7 +176,7 @@ var extension_management=function(){
 			
 			if(template.applyTo==type){
                 log.info('A model for type: '+type+'has been created.');
-				return new Model({template:template,adapterManager:this.adapterManager,actionManager:this.actionManager});
+				return new Model({template:template,adapterManager:this.adapterManager,actionManager:this.actionManager,rxtManager:this.rxtManager});
 			}
 		}
 		log.debug('The model type: '+type+' could not be found.')

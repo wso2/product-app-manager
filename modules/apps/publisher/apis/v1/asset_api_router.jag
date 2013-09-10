@@ -19,11 +19,12 @@ var caramel = require('caramel');
 var router = require('/modules/router-g.js').router();
 var routeManager = new router.Router();
 var user=require('/modules/user.js');
+var publisher = require('/modules/publisher.js').publisher(request, session);
 
 
 //var routeManager=application.get(config.app.ROUTE_MANAGER);
-var rxtManager = application.get(config.app.RXT_MANAGER);
-var modelManager = application.get(config.app.MODEL_MANAGER);
+var rxtManager = publisher.rxtManager;
+var modelManager = publisher.modelManager;
 var log=new Log();
 
 routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}', function (context) {
@@ -41,7 +42,7 @@ routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}', functio
     else {
         var model=modelManager.getModel(shortName);
         //Obtain the username from the session and populate the provider field
-        var username=session.get('LOGGED_IN_USER');
+        var username=require('/modules/user.js').current(session).username;//.get('LOGGED_IN_USER');
         model.set('overview.provider',username);
         var output=model.export('form');
         print(output);

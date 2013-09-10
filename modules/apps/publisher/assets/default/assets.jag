@@ -14,10 +14,11 @@ var router = require('/modules/router-g.js').router();
 var config = require('/config/publisher.json');
 var caramel = require('caramel');
 var user = require('/modules/user.js');
+var publisher = require('/modules/publisher.js').publisher(request, session);
 
 var routeMnger = new router.Router();
 //var routeManager=application.get(config.app.ROUTE_MANAGER);
-var rxtManager = application.get(config.app.RXT_MANAGER);
+var rxtManager = publisher.rxtManager;
 var DEFAULT_PAGE = 10;
 
 /*routeMnger.register('GET','publisher','/publisher/assets/list',function(context){
@@ -34,7 +35,6 @@ var DEFAULT_PAGE = 10;
 var log=new Log();
 
 routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function (context) {
-
     try{
 
 
@@ -45,11 +45,12 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function (c
     var artifacts = artifactManager.list(DEFAULT_PAGE) || [];
     //log.debug(stringify(artifacts));
     caramel.render({
-        cuser: user.current(),
+        cuser: user.current(session),
         shortName: context.params.type,
         artifacts: artifacts
     });
     }catch(e){
+        log.error(e);
         response.sendError(400,"Your request is malformed");
     }
 

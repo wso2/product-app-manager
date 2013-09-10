@@ -16,14 +16,14 @@ var caramel;
             query = request.getParameter('query'),
             fields = request.getParameter('fields'),
             server = require('/modules/server.js'),
-            ssoUser = session.get('LOGGED_IN_USER'),
+            ssoUser = user.current(session),
             tenant = server.tenant(request, session),
             tenantId = tenant.tenantId,
             store = require('/modules/store.js').store(tenantId, session);
 	caramel = require('caramel');
 	sso = configs.ssoConfiguration.enabled;
 	loggedUser = (sso && ssoUser) ? {
-		username : ssoUser
+		username : ssoUser.username
 	} : user.current(session);
 	paging = store.assetsPaging(request);
 	total = store.assetCount(type);

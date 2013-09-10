@@ -105,7 +105,7 @@ var rxt_management=function(){
         log.debug('Getting registry');
         var user=require('/modules/user.js');
         //log.debug('session: '+stringify(session));
-        var userRegistry=user.userRegistry();
+        var userRegistry=this.registry;
 
         GovernanceUtils.loadGovernanceArtifacts(userRegistry.registry); //TODO: Can we do this only once?
         return new carbon.registry.ArtifactManager(userRegistry,type);

@@ -77,14 +77,14 @@ var init = function (options) {
     });
 
     event.on('login', function (tenantId, user, session) {
-        var server = require('/modules/server.js'),
+        /*var server = require('/modules/server.js'),
             assetManagers = {};
         store(tenantId, session).assetTypes().forEach(function (type) {
             var path = ASSETS_EXT_PATH + type + '/asset.js',
                 azzet = new File(path).isExists() ? require(path) : require('/modules/asset.js');
             assetManagers[type] = new azzet.Manager(server.anonRegistry(tenantId), type);
         });
-        session[ASSET_MANAGERS] = assetManagers;
+        session[ASSET_MANAGERS] = assetManagers;*/
     });
 };
 

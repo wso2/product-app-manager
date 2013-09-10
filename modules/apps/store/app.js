@@ -72,6 +72,9 @@ var registry=new carbon.registry.Registry(server,{
 
 //TODO : fix this
 var tenantId = -1234;
+var event = require('/modules/event.js');
+event.emit('tenantLoad', tenantId);
+
 var registry = server.systemRegistry(tenantId);
 
 var rxtManager=new rxt_management.RxtManager(registry);

@@ -60,7 +60,7 @@ var module=function(){
 
         var username='unknown';
         try{
-            username=session.get('LOGGED_IN_USER');
+            username=require('/modules/user.js').current(session).username;//.get('LOGGED_IN_USER');
         }
         catch(e){
             log.debug('Unable to retrieved logged in user from sessions.The following exception was thrown: '+e);

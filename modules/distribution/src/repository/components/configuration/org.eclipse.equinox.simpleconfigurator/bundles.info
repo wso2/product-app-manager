@@ -167,8 +167,11 @@ org.wso2.carbon.feature.mgt.ui,4.1.0,plugins/org.wso2.carbon.feature.mgt.ui_4.1.
 org.wso2.carbon.framework.exporter,4.1.0,plugins/org.wso2.carbon.framework.exporter_4.1.0.jar,4,true
 org.wso2.carbon.google.analytics.ui,2.1.0,plugins/org.wso2.carbon.google.analytics.ui_2.1.0.jar,4,true
 org.wso2.carbon.governance.api,4.1.3,plugins/org.wso2.carbon.governance.api_4.1.3.jar,4,true
+org.wso2.carbon.governance.custom.lifecycles.checklist,4.1.0,plugins/org.wso2.carbon.governance.custom.lifecycles.checklist_4.1.0.jar,4,true
 org.wso2.carbon.governance.generic,4.1.3,plugins/org.wso2.carbon.governance.generic_4.1.3.jar,4,true
+org.wso2.carbon.governance.lcm,4.1.0,plugins/org.wso2.carbon.governance.lcm_4.1.0.jar,4,true
 org.wso2.carbon.governance.list,4.1.3,plugins/org.wso2.carbon.governance.list_4.1.3.jar,4,true
+org.wso2.carbon.governance.registry.eventing,4.1.3,plugins/org.wso2.carbon.governance.registry.eventing_4.1.3.jar,4,true
 org.wso2.carbon.governance.registry.extensions,4.1.3,plugins/org.wso2.carbon.governance.registry.extensions_4.1.3.jar,4,true
 org.wso2.carbon.governance.wsdltool,4.1.0,plugins/org.wso2.carbon.governance.wsdltool_4.1.0.jar,4,true
 org.wso2.carbon.i18n,4.1.0,plugins/org.wso2.carbon.i18n_4.1.0.jar,4,true
@@ -188,6 +191,8 @@ org.wso2.carbon.jaxws.webapp.mgt,4.1.0,plugins/org.wso2.carbon.jaxws.webapp.mgt_
 org.wso2.carbon.jaxws.webapp.mgt.ui,4.1.0,plugins/org.wso2.carbon.jaxws.webapp.mgt.ui_4.1.0.jar,4,true
 org.wso2.carbon.keystore.mgt,2.1.0,plugins/org.wso2.carbon.keystore.mgt_2.1.0.jar,4,true
 org.wso2.carbon.logging,4.1.0,plugins/org.wso2.carbon.logging_4.1.0.jar,4,true
+org.wso2.carbon.mashup.javascript.hostobjects.registry,4.1.0,plugins/org.wso2.carbon.mashup.javascript.hostobjects.registry_4.1.0.jar,4,true
+org.wso2.carbon.mashup.utils,4.1.0,plugins/org.wso2.carbon.mashup.utils_4.1.0.jar,4,true
 org.wso2.carbon.ndatasource.common,4.1.0,plugins/org.wso2.carbon.ndatasource.common_4.1.0.jar,4,true
 org.wso2.carbon.ndatasource.core,4.1.0,plugins/org.wso2.carbon.ndatasource.core_4.1.0.jar,4,true
 org.wso2.carbon.ndatasource.rdbms,4.1.0,plugins/org.wso2.carbon.ndatasource.rdbms_4.1.0.jar,4,true
@@ -263,7 +268,9 @@ org.wso2.carbon.webapp.mgt.stub,4.1.0,plugins/org.wso2.carbon.webapp.mgt.stub_4.
 org.wso2.securevault,1.0.0.wso2v2,plugins/org.wso2.securevault_1.0.0.wso2v2.jar,4,true
 org.wso2.store.sso.common,1.0.0,plugins/org.wso2.store.sso.common_1.0.0.jar,4,true
 org.wso2.jaggery.scxml.jaggery-scxml-executors,1.0.0,plugins/org.wso2.jaggery.scxml.jaggery-scxml-executors_1.0.0.jar,4,true
+org.wso2.securevault,1.0.0.wso2v2,plugins/org.wso2.securevault_1.0.0.wso2v2.jar,4,true
 org.wso2.store.admin.styles,1.0.0,plugins/org.wso2.store.admin.styles_1.0.0.jar,4,true
+org.wso2.store.sso.common,1.0.0,plugins/org.wso2.store.sso.common_1.0.0.jar,4,true
 org.wso2.stratos.identity.saml2.sso.mgt,2.1.0,plugins/org.wso2.stratos.identity.saml2.sso.mgt_2.1.0.jar,4,true
 org.wso2.stratos.identity.saml2.sso.mgt.ui,2.1.0,plugins/org.wso2.stratos.identity.saml2.sso.mgt.ui_2.1.0.jar,4,true
 poi,3.5.0.wso2v1,plugins/poi_3.5.0.wso2v1.jar,4,true

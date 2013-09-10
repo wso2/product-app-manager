@@ -170,6 +170,9 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.server.feature:${carbon.platform.version}
                                 </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.governance.lifecycle.management.server.feature:${patch.version.413}
+                                </featureArtifactDef>
 
                                 <!-- Stratos features    -->
                                 <featureArtifactDef>
@@ -252,6 +255,10 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.registry.contentsearch.server.feature.group</id>
+                                    <version>${patch.version.413}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.governance.lifecycle.management.server.feature.group</id>
                                     <version>${patch.version.413}</version>
                                 </feature>
                                 <feature>
