@@ -3,6 +3,9 @@ var Manager,
 
 var log = new Log();
 
+var ASSET_LCSTATE_PROP = 'lifecycleState';
+var DEFAULT_ASSET_VIEW_STATE = 'published';
+
 (function () {
 
     var matchAttr = function (searchAttr, artifactAttr) {
@@ -12,7 +15,7 @@ var log = new Log();
                 attr = searchAttr[attribute];
                 val = artifactAttr[attribute];
                 match = (attr instanceof RegExp) ? attr.test(val) : (attr == val);
-                if(!match) {
+                if (!match) {
                     return false;
                 }
             }
@@ -20,12 +23,71 @@ var log = new Log();
         return true;
     };
 
+    /*
+     The function checks whether two artifacts are similar
+     @searchArtifact: The artifact containing the search criteria
+     @artifact: The artifact to which the searchArtifact must be compared
+     @return: If the two artifacts are similar True ,else False.
+     */
+    var matchArtifact = function (searchArtifact, artifact) {
+        var status = true;//We assume that all attributes will match
+        var ignoredProperty = 'attributes';
+        var term = '';
+
+        log.debug('Invoked matchArtifact');
+        log.debug('Ignoring property: ' + ignoredProperty);
+
+        //First go through all of the non attribute properties
+        for (var searchKey in searchArtifact) {
+
+            log.debug('Examining property: ' + searchKey);
+
+            if ((searchKey != ignoredProperty) && (artifact.hasOwnProperty(searchKey))) {
+
+                //Match against spaces and lower case
+                term = artifact[searchKey] || '';
+                term = term.toString().toLowerCase().trim() + '';
+
+                //Determine if the searchKey points to an array
+                if (searchArtifact[searchKey] instanceof Array) {
+
+                    log.debug('Checking against array of values: ' + searchArtifact[searchKey]);
+
+                    //Check if the value of the artifact property is defined in the
+                    //searchArtifact property array.
+                    status = (searchArtifact[searchKey].indexOf(term) != -1) ? true : false;
+                }
+                else {
+
+                    //Update the status
+                    status = (searchArtifact[searchKey] == term);
+                }
+
+            }
+        }
+
+        log.debug('Properties match: ' + status);
+
+        //Only search attributes if the user has provided any
+        if (searchArtifact.attributes) {
+
+            //Check if the attributes match
+            status = matchAttr(searchArtifact.attributes, artifact.attributes);
+
+            log.debug('Attribute match : ' + status);
+
+        }
+
+        return status;
+    }
+
     var search = function (that, options) {
+
         if (options.tag) {
             var registry = that.registry,
                 tag = options.tag;
             return that.manager.find(function (artifact) {
-                if(registry.tags(artifact.path).indexOf(tag) != -1){
+                if (registry.tags(artifact.path).indexOf(tag) != -1) {
                     return matchAttr(options.attributes, artifact.attributes);
                 }
                 return false;
@@ -44,15 +106,17 @@ var log = new Log();
                         }
                     }
                 }
-                if(!match) {
+                if (!match) {
                     return false;
                 }
                 return matchAttr(options.attributes, asset.attributes);
             });
         }
-        if (options.attributes) {
+        if (options) {
+
             return that.manager.find(function (artifact) {
-                return matchAttr(options.attributes, artifact.attributes);
+                // return matchAttr(options.attributes, artifact.attributes);
+                return matchArtifact(options, artifact);
             });
         }
         return [];
@@ -220,35 +284,64 @@ var log = new Log();
         }
     };
 
+
     /*
      * Assets matching the filter
      */
     Manager.prototype.list = function (paging) {
+
+        //Obtain the visible states from the
+        var storeConfig = require('/store.json').lifeCycleBehaviour;
+        var visibleStates = storeConfig.visibleIn || DEFAULT_ASSET_VIEW_STATE;
+
+        log.info('Searching for assets in the ' + visibleStates + ' states.');
+
         var all = this.search({
-            attributes: {
-                'overview_status': /^(published)$/i
-            }
+            lifecycleState: visibleStates
         }, paging);
-        log.info('listing');
+
+        log.debug('Obtained assets: ' + all.length + ' in the ' + visibleStates + ' states');
+
         return loadRatings(this, this.sorter.paginate(all, paging));
     };
 
-    Manager.prototype.count = function (options) {
+
+    Manager.prototype.count = function (options, storeConfig) {
+
         if (options) {
             return search(this, options).length;
         }
+
+        //Obtain the visible states from the confuration file.
+        //var storeConfig = require('/store.json').lifeCycleBehaviour;
+        var property;
         var publishedCount = 0;
+        var visibleStates = storeConfig.visibleIn || DEFAULT_ASSET_VIEW_STATE;
+
+        //If the visible states is not an array,create one
+        if (!(visibleStates instanceof Array)) {
+            visibleStates = [visibleStates];
+        }
+
         this.manager.find(function (asset) {
             var name,
                 attributes = asset.attributes;
-            log.info('>>'+stringify(asset));
-            if (attributes.hasOwnProperty('overview_status')) {
 
-                if (attributes['overview_status'].toLowerCase().indexOf('published') !== -1) {
-                    publishedCount ++;
+            if (asset.hasOwnProperty(ASSET_LCSTATE_PROP)) {
+
+                property = asset[ASSET_LCSTATE_PROP] || '';
+
+                property = property.toLowerCase().trim() + '';
+
+                //Check if the state of the asset is one of the visibleStates
+                if (visibleStates.indexOf(property) != -1) {
+                    publishedCount++;
                 }
+
             }
         });
+
+        log.debug('Published count: ' + publishedCount);
 
         //return this.manager.count();
         return publishedCount;

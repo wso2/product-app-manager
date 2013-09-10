@@ -10,13 +10,7 @@
         "overview.name:order=1",
         "overview.provider:order=2",
         "overview.description:order=3",
-        "overview.version:order=4",
-        "overview.status:order=5",
-        "overview.name:search=true",
-        "overview.provider:search=true",
-        "overview.version:search=true"
-
-
+        "overview.version:order=4"
     ],
 
     "link": [
@@ -39,11 +33,6 @@
             "field": "*",
             "name": "visible",
             "value": "true"
-        },
-        {
-            "field": "overview.*",
-            "name": "search",
-            "value": "false"
         }
     ]
 

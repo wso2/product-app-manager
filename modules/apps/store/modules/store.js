@@ -361,8 +361,11 @@ Store.prototype.rate = function (aid, rating) {
  * @param paging
  */
 Store.prototype.assets = function (type, paging) {
-    var i,
-        assetz = this.assetManager(type).list(paging);
+    //Load the lifecycle behaviour block or create a dummy object
+    var storeConfig = require('/store.json').lifeCycleBehaviour||{};
+    var i;
+    var assetz = this.assetManager(type).list(paging,storeConfig);
+
     for (i = 0; i < assetz.length; i++) {
         assetz[i].indashboard = this.isuserasset(assetz[i].id, type);
     }
@@ -436,7 +439,8 @@ Store.prototype.recentAssets = function (type, count) {
 };
 
 Store.prototype.assetCount = function (type, options) {
-    return this.assetManager(type).count(options);
+    var storeConfig = require('/store.json').lifeCycleBehaviour;
+    return this.assetManager(type).count(options,storeConfig);
 };
 
 /**
