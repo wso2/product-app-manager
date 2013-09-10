@@ -48,6 +48,38 @@ var module=function(){
            artifactManager.attachLifecycle(lifeCycle,asset);
 
            log.info('Finished attaching the lifecycle to the asset'+stringify(asset));
+
+           log.debug('Check if there is an action to be performed when attaching a life-cycle');
+
+            var invokeAction='';
+
+            //Check the config for a lifeCycleBehaviour block
+            utility.isPresent(config,'lifeCycleBehaviour',function(lifeCycleBehaviour){
+
+                utility.isPresent(lifeCycleBehaviour,lifeCycle,function(lifeCycleData){
+
+                    utility.isPresent(lifeCycleData,'onAttach',function(onAttach){
+
+                        invokeAction=onAttach.action||'';
+
+                    });
+                });
+
+            });
+
+            //Check if an action needs to be invoked.
+           if(invokeAction!=''){
+
+               log.debug('Invoke Action: '+invokeAction);
+
+               var asset=artifactManager.get(asset.id);
+
+               artifactManager.promoteLifecycleState(invokeAction,asset);
+
+               log.debug('Asset has been '+invokeAction+'ed to the next state.');
+           }
+
+
 		}
 	};
 };

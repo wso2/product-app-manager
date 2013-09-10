@@ -76,7 +76,24 @@
         <lifecycle>
             <scxml xmlns="http://www.w3.org/2005/07/scxml"
                    version="1.0"
-                   initialstate="Created">
+                   initialstate="Initial">
+		<state id='Initial'>
+	            <datamodel>
+			<data name="transitionExecution">
+				<execution forEvent="Promote" class="org.wso2.jaggery.scxml.generic.GenericExecutor">
+					<parameter name="PERMISSION:get" value="http://www.wso2.org/projects/registry/actions/get" />
+					<parameter name="PERMISSION:add" value="http://www.wso2.org/projects/registry/actions/add" />
+					<parameter name="PERMISSION:delete" value="http://www.wso2.org/projects/registry/actions/delete" />
+					<parameter name="PERMISSION:authorize" value="authorize"/>
+
+					<parameter name="STATE_RULE1:Created" value="private_{asset_author}:+get,+add,+delete,+authorize" />
+					<parameter name="STATE_RULE2:Created" value="reviewer:-get,-add,-delete,-authorize" />
+					<parameter name="STATE_RULE3:Created" value="everyone:-get,-add,-delete,-authorize" />
+				</execution>
+			</data>
+		    </datamodel>
+		    <transition event="Promote" target="Created"/>  
+		</state>
                 <state id="Created">
                     <datamodel>
 			<data name="transitionExecution">
