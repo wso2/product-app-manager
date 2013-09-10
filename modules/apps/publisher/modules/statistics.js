@@ -1,6 +1,7 @@
 var getBookmarkStats = function (loggedInUser) {
 
-    if(loggedInUser='admin')
+    //Temporary fix as defautls assets are deployed as wso2.system.user
+    if(loggedInUser=='admin')
     {
         loggedInUser = 'wso2.system.user' ;
     }
