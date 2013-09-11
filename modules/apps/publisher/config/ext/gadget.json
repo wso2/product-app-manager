@@ -15,7 +15,6 @@
         "overview.provider:order=2",
         "overview.description:order=3",
         "overview.version:order=4",
-        "overview.status:save=disabled",
         "overview.version:save=disabled"
     ],
 
@@ -27,7 +26,7 @@
 
         {
             "name": "*"
-        },
+        }
 
     ],
 

@@ -24,6 +24,9 @@
             "/permission/admin/login": ["ui.execute"]
         }
     },
+    "lifeCycleBehaviour":{
+        "visibleIn":["published"]
+    },
     "userSpace": {
         "store": "/_system/governance/users/store"
     },
