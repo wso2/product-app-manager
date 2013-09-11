@@ -625,7 +625,7 @@ var obtainViewQuery=function(options){
 
     options[LIFECYCLE_STATE_PROPERTY]=visibleStates;
 
-    log.info('options: '+stringify(options));
+    log.debug('options: '+stringify(options));
 
 
     return options;
