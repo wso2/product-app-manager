@@ -1,5 +1,5 @@
 var resources = function (page, meta) {
     return {
-       	js: ['create.asset.js']
+       	js: ['logic/create.asset.js']
     };
 };

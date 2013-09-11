@@ -162,10 +162,11 @@ var buildManagers = function (tenantId, registry) {
  @permissions: An object of permissions which will be assigned to the newly created user role
  */
 var buildPermissionsList = function (tenantId, username, permissions, server) {
+    var log = new Log();
     log.info('Entered buildPermissionsList');
-
+    var server = require('/modules/server.js');
     //Obtain the accessible collections
-    var accessible = options().userSpace.accessible;
+    var accessible = server.options(tenantId).userSpace.accessible;
     log.info(stringify(accessible));
 
     var id;
@@ -241,12 +242,14 @@ var configureUser = function (tenantId, user) {
     }
 
     var server = require('/modules/server.js');
+    var umod = require('/modules/user.js');
     var um = server.userManager(tenantId);
-    var opts = options(tenantId);
+    var config = configs(tenantId);
     var user = um.getUser(user.username);
     var perms = {};
-    var role = privateRole(user.username);
-    var defaultRoles = opts.userRoles;
+    var role = umod.privateRole(user.username);
+    var defaultRoles = config.userRoles;
+    var log = new Log();
 
     log.info('Starting configuringUser.');
 
