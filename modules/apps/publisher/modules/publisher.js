@@ -2,6 +2,7 @@ var PUBLISHER_CONFIG_PATH = '/_system/config/publisher/configs/publisher.json';
 
 var TENANT_PUBLISHER = 'tenant.publisher';
 var log=new Log();
+var utility=require('/modules/utility.js').rxt_utility();
 
 var init = function (options) {
     var event = require('/modules/event.js');
@@ -54,6 +55,7 @@ var configs = function (tenantId) {
     return JSON.parse(registry.content(PUBLISHER_CONFIG_PATH));
 };
 
+
 var addLifecycles = function (registry) {
     var lc,
         files = new File('/config/lifecycles'),
@@ -64,7 +66,27 @@ var addLifecycles = function (registry) {
         file.open('r');
         lc = file.readAll();
         file.close();
-        CommonUtil.addLifecycle(lc, configReg, rootReg);
+
+        //Create an xml from the contents
+        var lcXml=new XML(lc);
+
+        //Create a JSON object
+        //TODO:This could be a problem -we are passing xml to JSON everytime!
+        var lcJSON=utility.xml.convertE4XtoJSON(lcXml);
+
+        //Check if the lifecycle is present
+        var isPresent=CommonUtil.lifeCycleExists(lcJSON.name,configReg);
+
+        log.info('Is life-cycle present: '+isPresent);
+
+        //Only add the lifecycle if it is not present in the registry
+        if(!isPresent){
+
+            log.info('Adding life-cycle since it is not deployed.');
+
+            CommonUtil.addLifecycle(lc, configReg, rootReg);
+        }
+
     });
 };
 

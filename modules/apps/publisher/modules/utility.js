@@ -4,7 +4,7 @@
  Created Date: 28/7/2013
  */
 var rxt_utility = function () {
-
+     var log=new Log();
     /*
      The method is used to create a JSON object using
      an xml object.
