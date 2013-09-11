@@ -34,7 +34,7 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
         var ignoredProperty = 'attributes';
         var term = '';
 
-        log.debug('Invoked matchArtifact');
+        log.debug('Invoked matchArtifact: '+artifact.attributes.overview_name);
         log.debug('Ignoring property: ' + ignoredProperty);
 
         //First go through all of the non attribute properties
@@ -44,6 +44,7 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
 
             if ((searchKey != ignoredProperty) && (artifact.hasOwnProperty(searchKey))) {
 
+
                 //Match against spaces and lower case
                 term = artifact[searchKey] || '';
                 term = term.toString().toLowerCase().trim() + '';
@@ -52,13 +53,14 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
                 if (searchArtifact[searchKey] instanceof Array) {
 
                     log.debug('Checking against array of values: ' + searchArtifact[searchKey]);
-
+                    log.debug('Artifact value '+term);
                     //Check if the value of the artifact property is defined in the
                     //searchArtifact property array.
                     status = (searchArtifact[searchKey].indexOf(term) != -1) ? true : false;
                 }
                 else {
-
+                    log.debug('Artifact value: '+term);
+                    log.debug('Searched value:'+searchArtifact[searchKey]);
                     //Update the status
                     status = (searchArtifact[searchKey] == term);
                 }
@@ -67,6 +69,14 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
         }
 
         log.debug('Properties match: ' + status);
+
+        //If it is not a match at this time then return false, no need to check
+        //if the attributes match.
+        if(status==false){
+
+            log.debug(artifact.attributes.overview_name+' no match.');
+            return status;
+        }
 
         //Only search attributes if the user has provided any
         if (searchArtifact.attributes) {
@@ -88,7 +98,8 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
                 tag = options.tag;
             return that.manager.find(function (artifact) {
                 if (registry.tags(artifact.path).indexOf(tag) != -1) {
-                    return matchAttr(options.attributes, artifact.attributes);
+                    //return matchAttr(options.attributes, artifact.attributes); -To accommodate filtering by lifecycle state
+                    return matchArtifact(options, artifact);
                 }
                 return false;
             });
@@ -109,7 +120,8 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
                 if (!match) {
                     return false;
                 }
-                return matchAttr(options.attributes, asset.attributes);
+                //return matchAttr(options.attributes, asset.attributes);
+                return matchArtifact(options, asset);
             });
         }
         if (options) {
@@ -287,11 +299,12 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
 
     /*
      * Assets matching the filter
+     * METHOD IS DEPRECATED
      */
     Manager.prototype.list = function (paging) {
-
+        log.info('Calling deprecated method list - A method from down under-give him a vegimite sandwich');
         //Obtain the visible states from the
-        var storeConfig = require('/store.json').lifeCycleBehaviour;
+        /*var storeConfig = require('/store.json').lifeCycleBehaviour;
         var visibleStates = storeConfig.visibleIn || DEFAULT_ASSET_VIEW_STATE;
 
         log.info('Searching for assets in the ' + visibleStates + ' states.');
@@ -302,49 +315,39 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
 
         log.debug('Obtained assets: ' + all.length + ' in the ' + visibleStates + ' states');
 
-        return loadRatings(this, this.sorter.paginate(all, paging));
+        return loadRatings(this, this.sorter.paginate(all, paging));*/
+        return null;
     };
 
-
-    Manager.prototype.count = function (options, storeConfig) {
+    /*
+    The method will now count the number of assets matching the query
+    encapsulated in the options object.
+    @options: An object with properties that must be matched
+    @return:An integer count of the number of matches,else false.
+     */
+    Manager.prototype.count = function (options) {
 
         if (options) {
             return search(this, options).length;
         }
 
-        //Obtain the visible states from the confuration file.
-        //var storeConfig = require('/store.json').lifeCycleBehaviour;
-        var property;
-        var publishedCount = 0;
-        var visibleStates = storeConfig.visibleIn || DEFAULT_ASSET_VIEW_STATE;
+        var matchingCount = 0;
 
-        //If the visible states is not an array,create one
-        if (!(visibleStates instanceof Array)) {
-            visibleStates = [visibleStates];
-        }
 
         this.manager.find(function (asset) {
-            var name,
-                attributes = asset.attributes;
 
-            if (asset.hasOwnProperty(ASSET_LCSTATE_PROP)) {
-
-                property = asset[ASSET_LCSTATE_PROP] || '';
-
-                property = property.toLowerCase().trim() + '';
-
-                //Check if the state of the asset is one of the visibleStates
-                if (visibleStates.indexOf(property) != -1) {
-                    publishedCount++;
-                }
-
+            //If the passed in asset matches the current asset we
+            //increase published count.
+            if(matchArtifact(options,asset)){
+                matchingCount++;
             }
+
         });
 
-        log.debug('Published count: ' + publishedCount);
+        log.debug('Number of assets counted : ' + matchingCount);
 
         //return this.manager.count();
-        return publishedCount;
+        return matchingCount;
     };
 
     /*
