@@ -24,9 +24,9 @@ var module=function(){
 	return{
 		execute:function(context){
 
-            log.info('Entered : '+meta.name);
+            log.debug('Entered : '+meta.name);
 
-            log.info(stringify(context.actionMap));
+            log.debug(stringify(context.actionMap));
 
             var model=context.model;
             var template=context.template;
@@ -34,17 +34,17 @@ var module=function(){
             var name=model.getField('overview.name').value;
             var shortName=template.shortName;
 
-            log.info('Artifact name: '+name);
+            log.debug('Artifact name: '+name);
 
-            log.info('Converting model to an artifact for use with an artifact manager');
+            log.debug('Converting model to an artifact for use with an artifact manager');
 
             //Export the model to an asset
             var asset=context.parent.export('asset.exporter');
 
-            log.info('Finished exporting model to an artifact');
+            log.debug('Finished exporting model to an artifact');
 
             //Save the artifact
-            log.info('Saving artifact with name :'+name);
+            log.debug('Saving artifact with name :'+name);
 
 
             //Get the artifact using the name
@@ -56,22 +56,22 @@ var module=function(){
 
             //name='test-gadget-7';
 
-            log.info('Finished saving asset : '+name);
+            log.debug('Finished saving asset : '+name);
 
             var artifact=artifactManager.find(function(adapter){
                return (adapter.attributes.overview_name==name)?true:false;
             },1);
 
-            log.info('Locating saved asset: '+stringify(artifact)+' to get the asset id.');
+            log.debug('Locating saved asset: '+stringify(artifact)+' to get the asset id.');
 
             var id=artifact[0].id||' ';
 
-            log.info('Setting id of model to '+id);
+            log.debug('Setting id of model to '+id);
 
             //Save the id data to the model
             model.setField('*.id',id);
 
-            log.info('Finished saving asset with id: '+id);
+            log.debug('Finished saving asset with id: '+id);
 		}
 	}
 };

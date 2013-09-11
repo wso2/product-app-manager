@@ -20,7 +20,7 @@ var module=function(){
 
             //break up the key
             var field=key.replace('_','.');
-            log.info('Saving field: '+field);
+            log.debug('Saving field: '+field);
 
             model.setField(field,data[key]);
         }
@@ -30,17 +30,17 @@ var module=function(){
     return{
           execute:function(context){
 
-                 log.info('Entered :'+meta.type);
+                 log.debug('Entered :'+meta.type);
                  var data=context.inputData;
                  var model=context.model;
                  var template=context.template;
 
-                 log.info('Attempting import data from'+stringify(data));
+                 log.debug('Attempting import data from'+stringify(data));
 
                  fillFields(model,data);
 
-                 log.info('Finished importing data from form');
-                 log.info('Exited : '+meta.type);
+                 log.debug('Finished importing data from form');
+                 log.debug('Exited : '+meta.type);
           }
     }
 };
