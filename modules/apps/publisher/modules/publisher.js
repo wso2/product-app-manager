@@ -1,6 +1,7 @@
 var PUBLISHER_CONFIG_PATH = '/_system/config/publisher/configs/publisher.json';
 
 var TENANT_PUBLISHER = 'tenant.publisher';
+var log=new Log();
 
 var init = function (options) {
     var event = require('/modules/event.js');
@@ -37,6 +38,8 @@ var init = function (options) {
         //}
 
         config[user.USER_OPTIONS] = configs(tenantId);
+
+        log.info('Tenant loaded.');
 
     });
 
