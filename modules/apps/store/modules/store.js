@@ -74,6 +74,8 @@ var init = function (options) {
         config[user.USER_OPTIONS] = configs(tenantId);
 
         config[TENANT_STORE] = new Store(tenantId);
+
+        log.info('Tenant loaded into the store');
     });
 
     event.on('login', function (tenantId, user, session) {

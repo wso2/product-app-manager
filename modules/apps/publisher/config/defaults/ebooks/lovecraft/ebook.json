@@ -1,0 +1,18 @@
+{
+    "name": "The Complete Works of H.P.Lovecraft",
+    "tags": "ebooks,horror",
+    "rate": 4,
+    "attributes": {
+        "overview_status": "PUBLISHED",
+        "overview_category": "Horror",
+        "overview_name": "The Complete Works of H.P.Lovecraft",
+        "overview_version": "Edition-1",
+        "overview_url": "The_Complete_Works_of_H.P._Lovecraft.pdf",
+        "overview_isbn": "-",
+        "overview_author": "H.P.Lovecraft",
+        "overview_provider": "admin",
+        "overview_description": "The Complete Works of H.P. Lovecraft contains all the original stories which Lovecraft wrote as an adult starting with “The Tomb” in 1917 and with his last original work “The Haunter of the Dark” in 1935",
+        "images_thumbnail": "lovecraft/thumbnail.png",
+        "images_banner": "lovecraft/banner.png"
+    }
+}
