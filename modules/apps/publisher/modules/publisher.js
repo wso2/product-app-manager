@@ -32,9 +32,9 @@ var init = function (options) {
             config = server.configs(tenantId);
 
         //check whether tenantCreate has been called
-        if (!registry.exists(PUBLISHER_CONFIG_PATH)) {
+        //if (!registry.exists(PUBLISHER_CONFIG_PATH)) {
             event.emit('tenantCreate', tenantId);
-        }
+        //}
 
         config[user.USER_OPTIONS] = configs(tenantId);
 
@@ -74,7 +74,7 @@ var publisher = function (o, session) {
 
     publisher = session.get(TENANT_PUBLISHER);
     if (publisher) {
-        return publisher;
+        //return publisher;
     }
     publisher = new Publisher(tenantId, session);
     session.put(TENANT_PUBLISHER, publisher);

@@ -94,12 +94,12 @@ var permitted = function (username, session) {
         server = require('/modules/server.js'),
         event = require('/modules/event.js'),
         usr = carbon.server.tenantUser(username);
-    if (!server.configs(usr.tenantId)) {
+    //if (!server.configs(usr.tenantId)) {
         event.emit('tenantCreate', usr.tenantId);
-    }
-    if (!server.configs(usr.tenantId)[USER_OPTIONS]) {
+    //}
+    //if (!server.configs(usr.tenantId)[USER_OPTIONS]) {
         event.emit('tenantLoad', usr.tenantId);
-    }
+    //}
 
     opts = options(usr.tenantId);
     //log.info(usr.tenantId);
