@@ -83,10 +83,9 @@ $(function () {
 var convertDate = function (date) {
     var month = date.getMonth() + 1;
     var day = date.getDate();
-    var convertedDate = date.getFullYear() + '-' +
+    return date.getFullYear() + '-' +
         (('' + month).length < 2 ? '0' : '') + month + '-' +
         (('' + day).length < 2 ? '0' : '') + day;
-    return convertedDate;
 }
 
 

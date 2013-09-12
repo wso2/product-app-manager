@@ -24,17 +24,16 @@ routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{t
 
     var output = {};
 
-    var dbResults = stats.getStats(username, startDate, endDate);
-
-    var bookmarkStats = stats.filterResultsByAssetType(dbResults.bookmarkStats, type);
-
     var artifactManager = rxtManager.getArtifactManager(type);
     var model = modelManager.getModel(type);
+    var artifact ;
 
     if (!context.post.isOnChoice) {
+
+        var bookmarkStats = stats.filterResultsByAssetType(stats.getBookmarkStats(username), type);
         var bookmarkTicks = [], bookmarkStatData = [], assetName;
         for (var i = 0; i < bookmarkStats.length; i++) {
-            var artifact = artifactManager.get(bookmarkStats[i].ASSET_ID);
+            artifact = artifactManager.get(bookmarkStats[i].ASSET_ID);
             model.import('asset', artifact);
             assetName = (model.get('overview.name')).value;
             bookmarkStatData.push([i, parseInt(bookmarkStats[i]['NO_OF_BOOKMARKS'])]);
@@ -47,15 +46,15 @@ routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{t
         output['bookmarkTicks'] = bookmarkTicks;
     }
 
-    var hotAssetsStats = stats.filterResultsByAssetType(dbResults.hotAssetsStats, type);
+    var hotAssetsStats = stats.filterResultsByAssetType(stats.getHotAssetStats(startDate,endDate), type);
     var hotAssetticks = [], hotstAssetData = [], hotAssetName;
-    for (var i = 0; i < hotAssetsStats.length; i++) {
-        var artifact = artifactManager.get(hotAssetsStats[i].ASSET_ID);
+    for (var j = 0; j < hotAssetsStats.length; j++) {
+        artifact = artifactManager.get(hotAssetsStats[j].ASSET_ID);
         model.import('asset', artifact);
         hotAssetName = (model.get('overview.name')).value;
-        hotstAssetData.push([i, parseInt(hotAssetsStats[i]['NO_OF_BOOKMARKS'])]);
-        hotAssetsStats[i]['ASSET_ID'] = hotAssetName;
-        hotAssetticks.push([i, hotAssetName]);
+        hotstAssetData.push([j, parseInt(hotAssetsStats[j]['NO_OF_BOOKMARKS'])]);
+        hotAssetsStats[j]['ASSET_ID'] = hotAssetName;
+        hotAssetticks.push([j, hotAssetName]);
 
     }
 
