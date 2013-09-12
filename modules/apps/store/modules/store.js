@@ -75,7 +75,7 @@ var init = function (options) {
 
         config[TENANT_STORE] = new Store(tenantId);
 
-        log.info('Tenant loaded into the store');
+
     });
 
     event.on('login', function (tenantId, user, session) {
