@@ -18,6 +18,8 @@ var ext_parser = require('/modules/ext/core/extension.parser.js').extension_pars
 var ext_domain = require('/modules/ext/core/extension.domain.js').extension_domain();
 var ext_core = require('/modules/ext/core/extension.core.js').extension_core();
 var ext_mng = require('/modules/ext/core/extension.management.js').extension_management();
+var deployer=require('/config/deployer.js');
+
 
 
 if (hostName === null || hostName === '') {
@@ -39,6 +41,8 @@ server.init(pubConfig);
 
 var user = require('/modules/user.js');
 user.init(pubConfig);
+
+deployer.init();
 
 var publisher = require('/modules/publisher.js');
 publisher.init(pubConfig);

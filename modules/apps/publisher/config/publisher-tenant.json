@@ -62,21 +62,24 @@
 
     "defaultAssets": {
         "root":"/config/defaults",
-        "ignore":["ebooks"],
-        "visibleTo": ["super.tenant"],
         "assetData": [
             {
                 "type": "gadgets",
-                "ignore":["line-chart","pie-chart","energy-use"],
-                "visibleTo": ["super.tenant"]
+                "ignore":["agricultural-land",
+                    "wso2-carbon-dev",
+                    "intro-gadget-1",
+                    "intro-gadget-2",
+                    "show-assets",
+                    "co2-emission",
+                    "electric-power",
+                    "energy-use",
+                    "greenhouse-gas"]
             },
             {
-                "type": "ebooks",
-                "visibleTo": ["super.tenant"]
+                "type": "ebooks"
             },
             {
-                "type": "sites",
-                "visibleTo": ["super.tenant"]
+                "type": "sites"
             }
         ]
     },

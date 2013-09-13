@@ -42,7 +42,7 @@ var deployment_logic=function(){
     };
 
     Deployer.prototype.invoke=function(assetType,bundle){
-            this.handlers[assetType](bundle,{currentPath:this.config.root+'/'+assetType+'/'+bundle.getName()});
+            this.handlers[assetType](bundle,{currentPath:this.config.root+'/'+assetType+'/'+bundle.getName(),type:assetType});
     };
 
     Deployer.prototype.autoDeploy=function(){
