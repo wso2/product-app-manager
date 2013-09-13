@@ -14,6 +14,12 @@ It allows the following functionality;
 Changes:
 ----------
 
+13/8/2013 Major Changes:
+          -------------
+          The everyone role can no longer see assets in the created state
+          The store will only show assets in the published state
+          Multitenancy support has been added
+
 6/3/2013	Major Changes:
 		--------------
 		IMPORTANT: The life-cycle changes require the jaggery.scxml.excutor component available as a 
