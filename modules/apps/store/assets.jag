@@ -30,7 +30,9 @@ var caramel;
 
     mainPage = type;
 
+
     if (tag) {
+
         total = store.assetCount(type, {
             tag: tag
         });
@@ -43,6 +45,7 @@ var caramel;
             return store.tagged(type, tag, paging);
         };
     } else if (query) {
+
         options = {
             type: type,
             query: query
@@ -57,6 +60,7 @@ var caramel;
             return store.search(options, paging);
         };
     } else if (fields) {
+
         var parts, param, params, value;
         options = {
             type: type,
@@ -84,15 +88,30 @@ var caramel;
             return store.search(options, paging);
         };
     } else {
+
         total = store.assetCount(type);
+
+
         if (paging.start > total || paging.start < 0) {
             response.sendError(404, 'Requested page cannot be found');
             return;
         }
+
+
         assets = function () {
             return store.assets(type, paging);
         }
+
     }
+
+    //Check if there is a type before trying to read attributes
+    /*var type=(type=='null')?null:type;
+    var rxtAttributes={};
+    if(type){
+        log.info('Before obtaining rxt attributes');
+        var rxtAttributes = require('modules/util.js').getRXTAttributes(tenantId, type);
+        log.info('After obtaining rxt attributes');
+    }*/
 
     var rxtAttributes = require('modules/util.js').getRXTAttributes(tenantId, type);
 

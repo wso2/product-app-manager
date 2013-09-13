@@ -60,6 +60,7 @@ var type;
         }
         path = '/assets.jag';
         request.getMappedPath = mapper(path);
+
         include(path);
         return;
     }

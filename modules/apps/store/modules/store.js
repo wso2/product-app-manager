@@ -361,8 +361,24 @@ Store.prototype.rate = function (aid, rating) {
  * @param paging
  */
 Store.prototype.assets = function (type, paging) {
-    var i,
-        assetz = this.assetManager(type).list(paging);
+
+    //var type=(type=='null')?null:type;
+
+    //Check if a type has been provided
+    /*if(!type){
+        log.info('Returning an empty [] for Store.assets.');
+        return [];
+    }*/
+
+    var options={};
+    options=obtainViewQuery(options);
+    var i;
+
+    //var assetz = this.assetManager(type).list(paging);
+
+    var assetz = this.assetManager(type).search(options,paging);
+
+
     for (i = 0; i < assetz.length; i++) {
         assetz[i].indashboard = this.isuserasset(assetz[i].id, type);
     }
@@ -370,15 +386,27 @@ Store.prototype.assets = function (type, paging) {
 };
 
 Store.prototype.tagged = function (type, tag, paging) {
-    var i,
-        options = {
-            tag: tag,
-            attributes: {
-                'overview_status': /^(published)$/i
-            }
-        },
-        assets = this.assetManager(type).search(options, paging),
-        length = assets.length;
+
+   // var type=(type=='null')?null:type;
+
+    //Check if a type has been provided.
+    /*if(!type){
+        log.info('Returning an empty [] for Store.tagged.');
+        return [];
+    } */
+
+    var i;
+    var options={};
+    var assets;
+    var length;
+
+    options['tag']=tag;
+    options=obtainViewQuery(options);
+
+    assets = this.assetManager(type).search(options, paging);
+
+    length = assets.length;
+
     for (i = 0; i < length; i++) {
         assets[i].rating = this.rating(assets[i].id);
         assets[i].indashboard = this.isuserasset(assets[i].id, type);
@@ -392,6 +420,14 @@ Store.prototype.tagged = function (type, tag, paging) {
  * @param aid Asset identifier
  */
 Store.prototype.asset = function (type, aid) {
+    //var type=(type=='null')?null:type;
+
+    //Check if a type has been provided.
+    /*if(!type){
+        log.info('Returning an empty [] for store.asset');
+        return [];
+    }*/
+
     var asset = this.assetManager(type).get(aid);
     asset.rating = this.rating(aid);
     return asset;
@@ -412,21 +448,54 @@ Store.prototype.assetLinks = function (type) {
  * @return {*}
  */
 Store.prototype.popularAssets = function (type, count) {
-    return this.assetManager(type).list({
+
+    //var type=(type=='null')?null:type;
+
+    //Check if a type has been provided.
+    /*if(!type){
+        log.info('Returning an empty [] for  store.popularAssets.');
+        return [];
+    }*/
+
+    var options={};
+    options=obtainViewQuery(options);
+    var paging={
         start: 0,
         count: count || 5,
         sort: 'popular'
-    });
+    };
+
+    var assets=this.assetManager(type).search(options,paging);
+    return assets;
 };
 
 Store.prototype.recentAssets = function (type, count) {
-    var i, length;
 
-    var recent = this.assetManager(type).list({
+    //var type=(type=='null')?null:type;
+
+    //If a type is not given
+    /*if(!type){
+        log.info('Returning an empty [] for Store.recentAssets.');
+        return [];
+    }*/
+
+    var i, length;
+    var paging={
         start: 0,
         count: count || 5,
         sort: 'recent'
-    });
+    };
+    var options={};
+    options=obtainViewQuery(options);
+
+    var recent=this.assetManager(type).search(options,paging);
+
+    //log.info('re')
+   /* var recent = this.assetManager(type).list({
+        start: 0,
+        count: count || 5,
+        sort: 'recent'
+    }); */
     length = recent.length;
     for (i = 0; i < length; i++) {
         recent[i].rating = this.rating(recent[i].id).average;
@@ -436,6 +505,22 @@ Store.prototype.recentAssets = function (type, count) {
 };
 
 Store.prototype.assetCount = function (type, options) {
+
+    //Check if the type is provided
+    //var type=(type=='null')?null:type;
+
+    //Check if the asset type is provided
+    //If there is no asset type then return 0
+    /*if(!type){
+        log.info('Returning 0 for Store.assetCount.');
+        return 0;
+    }*/
+
+    //Create the default query by lifecycle state
+    options=options||{};
+    options=obtainViewQuery(options);
+
+
     return this.assetManager(type).count(options);
 };
 
@@ -466,11 +551,16 @@ Store.prototype.invalidate = function (type, key) {
 };
 
 Store.prototype.search = function (options, paging) {
-    var i, length, types, assets,
-        type = options.type,
-        attributes = options.attributes || (options.attributes = {});
+    var i, length, types, assets;
+    var type = options.type;
+
+    //var attributes = options.attributes || (options.attributes = {});
     //adding status field to get only the published assets
-    attributes['overview_status'] = /^(published)$/i;
+    //attributes['overview_status'] = /^(published)$/i;
+
+    //We should only obtain assets in the Published life-cycle state.
+    options=obtainViewQuery(options);
+
     if (type) {
         var assetz = this.assetManager(type).search(options, paging);
         for (i = 0; i < assetz.length; i++) {
@@ -518,3 +608,25 @@ Store.prototype.updateAsset = function (type, options) {
 Store.prototype.removeAsset = function (type, options) {
     this.assetManager(type).remove(options);
 };
+
+var LIFECYCLE_STATE_PROPERTY='lifecycleState';
+var DEFAULT_ASSET_VIEW_STATE = 'published'; //Unless specified otherwise, assets are always visible when Published
+
+/*
+The function creates a query object to be used in the Manager.search
+based on the visibleIn property of the store.json.
+@options: The object to be used as the query
+@return: A modified options with the state set to the search criteria
+ */
+var obtainViewQuery=function(options){
+
+    var storeConfig = require('/store.json').lifeCycleBehaviour;
+    var visibleStates = storeConfig.visibleIn || DEFAULT_ASSET_VIEW_STATE;
+
+    options[LIFECYCLE_STATE_PROPERTY]=visibleStates;
+
+    log.debug('options: '+stringify(options));
+
+
+    return options;
+}
