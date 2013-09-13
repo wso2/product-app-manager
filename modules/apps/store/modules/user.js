@@ -44,12 +44,35 @@ var init = function (options) {
     });
 
     event.on('login', function (tenantId, user, session) {
+        var space, um, perms,
+            log = new Log(),
+            server = require('/modules/server.js'),
+            carbon = require('carbon'),
+            registry = server.systemRegistry(tenantId);
         session.put(USER, user);
         session.put(USER_REGISTRY, new carbon.registry.Registry(server.server(), {
             username: user.username,
             tenantId: tenantId
         }));
-        session.put(USER_SPACE, userSpace(user.username));
+        space = userSpace(user.username);
+        session.put(USER_SPACE, space);
+        if (!registry.exists(space)) {
+            registry.put(space, {
+                collection: true
+            });
+            if (log.isDebugEnabled()) {
+                log.debug('user space was created for user : ' + user.username + ' at ' + space);
+            }
+        }
+        if (!user.isAuthorized(space, carbon.registry.actions.PUT)) {
+            um = server.userManager(tenantId);
+            perms = {};
+            perms[space] = [carbon.registry.actions.GET, carbon.registry.actions.PUT, carbon.registry.actions.DELETE];
+            um.authorizeRole(privateRole(user.username), perms);
+            if (log.isDebugEnabled()) {
+                log.debug('user role ' + privateRole(user.username) + ' was authorized to access user space ' + space);
+            }
+        }
     });
 
     event.on('logout', function (tenantId, user, session) {
@@ -122,7 +145,7 @@ var permitted = function (username, session) {
     if (!authorized) {
         return false;
     }
-    event.emit('login', usr.tenantId, usr, session);
+    event.emit('login', usr.tenantId, user, session);
     //TODO: ??
     if (opts.login) {
         opts.login(user, password, session);
