@@ -61,33 +61,21 @@
     },
 
     "defaultAssets": {
-
-        "enableDefaultAssets": "true",
+        "root":"/config/defaults",
+        "ignore":["ebooks"],
         "visibleTo": ["super.tenant"],
-        "enableRemoteAssets": "false",
-
         "assetData": [
             {
                 "type": "gadgets",
-                "path": "/defaults/gadgets",
-                "visibleTo": ["super.tenant"],
-                "ignore": ["unixProgramming"],
-                "remote": [
-                    {
-                        "name": "remote-book",
-                        "path": "ftp://"
-                    }
-                ]
+                "ignore":["line-chart","pie-chart","energy-use"],
+                "visibleTo": ["super.tenant"]
             },
             {
                 "type": "ebooks",
-                "path": "/defaults/ebooks",
-                "visibleTo": ["super.tenant"],
-                "ignore": ["all"]
+                "visibleTo": ["super.tenant"]
             },
             {
                 "type": "sites",
-                "path": "/defaults/sites",
                 "visibleTo": ["super.tenant"]
             }
         ]
