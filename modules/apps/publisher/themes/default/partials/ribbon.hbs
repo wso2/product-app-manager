@@ -39,6 +39,10 @@
             </ul>
          </div>
     {{/if}}
+    {{#if breadCrumbStaticText}}
+         <span class="breadcrumb-separator">/</span>
+         <span class="breadcrumb-text left">{{breadCrumbStaticText}}</span>
+    {{/if}}
 
 </div>
 <div class="span3 pull-right control-search">

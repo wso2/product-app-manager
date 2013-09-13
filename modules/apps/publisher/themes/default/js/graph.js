@@ -139,12 +139,11 @@ var graph = (function ($, Raphael) {
         this.selectNode = null;
         this.selectNodeImage = null;
     };
+
     Renderer.prototype.initRaphael=function(){
         //Create a Raphael instance which will handle
         //all of the drawing for us.
-        this.raphaelContext = new Raphael('canvas',
-            '450',
-            '250');
+        this.raphaelContext = new Raphael('canvas');
     }
     Renderer.prototype.init = function (nMap) {
 
@@ -244,7 +243,7 @@ var graph = (function ($, Raphael) {
             var radius = node.style.get('radius');
 
             var image=this.raphaelContext.circle(x, y, radius);
-            image.attr('fill','#E9E9E9');
+            image.attr('fill','#BDDDCA');
             var text=node.style.get('text');
             this.raphaelContext.text(x,y+50,text);
         }
@@ -277,10 +276,9 @@ var graph = (function ($, Raphael) {
 
         if (!this.selectNodeImage) {
             var image=this.selectNodeImage = this.raphaelContext.circle(sx, sy, sradius+3);
-            image.attr('stroke-width',5);
+            image.attr('stroke-width',8);
             //selectedImage.attr('fill','#3299BB');
-            image.attr('stroke','#3299BB');
-            image.attr('fill-opacity','.2');
+            image.attr('stroke','#27AE60');
             this.selectNodeImage=image;
         }
         else{
