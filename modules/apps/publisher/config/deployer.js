@@ -42,7 +42,10 @@ var init = function () {
             var server = require('/modules/server.js');
             var um = server.userManager(tenantId);
 
+            log.info('artifactManager about to be created for '+assetType+' '+registry);
+
             var artifactManager = new carbon.registry.ArtifactManager(registry,assetType);
+            log.info('artifactManager has been created.');
 
             log.info(artifactManager);
 
@@ -172,6 +175,7 @@ var init = function () {
             obj['attributes']['images_thumbnail'] = path + 'thumbnail.jpg';
             obj['attributes']['images_banner'] = path + 'banner.jpg';
 
+            log.info('pushing '+config.type+' name: '+bundle.getName());
             push(obj, tags, rate,'gadget', SUPER_TENANT_ID,registry);
         };
 
@@ -195,6 +199,7 @@ var init = function () {
             var tags = jsonConfig.tags.split(',');
             var rate = jsonConfig.tags.split(',');
 
+            log.info('pushing '+config.type+' name: '+bundle.getName());
             push(jsonConfig, tags, rate,'ebook', SUPER_TENANT_ID,registry);
         };
 
@@ -218,6 +223,7 @@ var init = function () {
             var tags = jsonConfig.tags.split(',');
             var rate = jsonConfig.tags.split(',');
 
+            log.info('pushing '+config.type+' name: '+bundle.getName());
             push(jsonConfig, tags, rate,'site', SUPER_TENANT_ID,registry);
         };
 

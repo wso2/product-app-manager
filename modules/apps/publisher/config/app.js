@@ -44,8 +44,15 @@ user.init(pubConfig);
 
 deployer.init();
 
+
+
 var publisher = require('/modules/publisher.js');
 publisher.init(pubConfig);
+
+
+var SUPER_TENANT_ID=-1234;
+var event = require('/modules/event.js');
+event.emit('tenantLoad', SUPER_TENANT_ID);
 
 //Configure Caramel
 caramel.configs({
