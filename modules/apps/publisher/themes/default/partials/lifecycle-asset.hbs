@@ -7,16 +7,16 @@
                 <div class="clearfix"></div>
             </div>
             <div class="widget-content">
-                <form class="form-horizontal">
-                    <div class="control-group">
-                        <div class="controls">
-                            <legend><div id='state'>{{data.info.lifecycleState}}</div></legend>
+                <form class="form-horizontal lifecycle">
+                        <div>
+                            {{#if data.info.lifecycleState}}
+                                <legend>Current State : <span id='state'>{{data.info.lifecycleState}}</span></legend>
+                            {{/if}}
                             <div id='checklist'></div>
                         </div>
-                        <div id='canvas' class='controls'>
+                        <div id='canvas'>
 
                         </div>
-                    </div>
                     <div class="form-actions">
                         <input type="button" value="Promote" class="btn btn-primary"  id="btn-asset-promote">
                         <input type="button" value="Demote" class="btn" id="btn-asset-demote">

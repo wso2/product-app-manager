@@ -870,4 +870,16 @@ span.title{
 .widget .table{
     margin-bottom: 0;
 }
+.lifecycle legend {
+    font-size: 14px;
+    color: #4F4F4F;
+    line-height: 20px;
+}
+.lifecycle legend > #state{
+    font-size: 16.5px;
+}
+.lifecycle #canvas > svg text{
+    font-family: "lato"!important;
+    font-size:12.5px!important;
+}
 
