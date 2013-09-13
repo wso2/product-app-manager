@@ -493,7 +493,7 @@ label, input, button, select, textarea{
     	color: #FFFFFF;
 	text-shadow:none;
 }
-.btn-primary:hover{
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active{
 	background: none repeat scroll 0 0 #1FAB3A;
 	color: #FFFFFF;
 	text-shadow:0 1px 1px rgba(255, 252, 176, 0.76);
