@@ -5,35 +5,61 @@ var caramel = require('caramel');
 
 var router = require('/modules/router-g.js').router();
 var routeManager = new router.Router();
-var user=require('/modules/user.js');
+var user = require('/modules/user.js');
+var publisher = require('/modules/publisher.js').publisher(request, session);
 var stats = require('/modules/statistics.js');
 
 //var routeManager=application.get(config.app.ROUTE_MANAGER);
-var rxtManager = application.get(config.app.RXT_MANAGER);
-var modelManager = application.get(config.app.MODEL_MANAGER);
-var log=new Log();
+var rxtManager = publisher.rxtManager;
+var modelManager = publisher.modelManager;
+var log = new Log();
 
 
-routeManager.register('GET', 'publisher', '/publisher/api/assets/{operation}/{type}/', function (context) {
+routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{type}/', function (context) {
     var type = context.params.type;
-    var dbResults = stats.filterResultsByAssetType(stats.getBookmarkStats(user.current().username), type);
+
+    var username = require('/modules/user.js').current(session).username;
+    var startDate = context.post.startDate;
+    var endDate = context.post.endDate;
+
+    var output = {};
 
     var artifactManager = rxtManager.getArtifactManager(type);
     var model = modelManager.getModel(type);
-    var ticks = [],statData = [], name;
-    for (var i = 0; i < dbResults.length; i++) {
-        var artifact = artifactManager.get(dbResults[i].ASSET_ID);
+    var artifact ;
+
+    if (!context.post.isOnChoice) {
+
+        var bookmarkStats = stats.filterResultsByAssetType(stats.getBookmarkStats(username), type);
+        var bookmarkTicks = [], bookmarkStatData = [], assetName;
+        for (var i = 0; i < bookmarkStats.length; i++) {
+            artifact = artifactManager.get(bookmarkStats[i].ASSET_ID);
+            model.import('asset', artifact);
+            assetName = (model.get('overview.name')).value;
+            bookmarkStatData.push([i, parseInt(bookmarkStats[i]['NO_OF_BOOKMARKS'])]);
+            bookmarkStats[i]['ASSET_ID'] = assetName;
+            bookmarkTicks.push([i, assetName]);
+
+        }
+
+        output['bookmarkStats'] = bookmarkStatData;
+        output['bookmarkTicks'] = bookmarkTicks;
+    }
+
+    var hotAssetsStats = stats.filterResultsByAssetType(stats.getHotAssetStats(startDate,endDate), type);
+    var hotAssetticks = [], hotstAssetData = [], hotAssetName;
+    for (var j = 0; j < hotAssetsStats.length; j++) {
+        artifact = artifactManager.get(hotAssetsStats[j].ASSET_ID);
         model.import('asset', artifact);
-        name = (model.get('overview.name')).value;
-        statData.push([i,parseInt(dbResults[i]['NO_OF_BOOKMARKS'])]);
-        dbResults[i]['ASSET_ID'] = name;
-        ticks.push([i,name]);
+        hotAssetName = (model.get('overview.name')).value;
+        hotstAssetData.push([j, parseInt(hotAssetsStats[j]['NO_OF_BOOKMARKS'])]);
+        hotAssetsStats[j]['ASSET_ID'] = hotAssetName;
+        hotAssetticks.push([j, hotAssetName]);
 
     }
 
-    var output = {};
-    output['stats'] = statData;
-    output['ticks'] = ticks;
+    output['hotAssetStats'] = hotstAssetData;
+    output['hotAssetTicks'] = hotAssetticks;
 
     print(output);
 });

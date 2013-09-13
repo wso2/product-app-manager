@@ -68,7 +68,7 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{operation}/{type}/',
         try {
             caramel.render({
                 op: operation,
-                cuser: user.current(),
+                cuser: user.current(session),
                 shortName: type
             });
 

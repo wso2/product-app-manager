@@ -117,7 +117,7 @@ var store = function (o, session) {
     if (user.current(session)) {
         store = session.get(TENANT_STORE);
         if (store) {
-            //return store;
+            return store;
         }
         store = new Store(tenantId, session);
         session.put(TENANT_STORE, store);
