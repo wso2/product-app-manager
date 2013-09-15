@@ -49,6 +49,10 @@ var bundle_logic=function(){
         return this.bundle.name;
     };
 
+    BundleContainer.prototype.isDirectory=function(){
+        return this.bundle.isDirectory;
+    };
+
     BundleContainer.prototype.getExtension=function(){
         return this.bundle.extension;
     }
@@ -72,10 +76,10 @@ var bundle_logic=function(){
     BundleContainer.prototype.get=function(predicate){
         var qContainer=new BundleContainer();
 
-        log.info('get called with : '+stringify(predicate));
-        log.info('current bundle: '+this.bundle.name);
+        log.debug('get called with : '+stringify(predicate));
+        log.debug('current bundle: '+this.bundle.name);
         if(!this.bundle){
-            log.info('cannot get when there is no bundle present.');
+            log.debug('cannot get when there is no bundle present.');
             return qContainer;
         }
 
@@ -85,7 +89,7 @@ var bundle_logic=function(){
         qContainer=new BundleContainer({
             queryBundles:bundlesFound
         });
-        log.info('get has found: '+bundlesFound.length);
+        log.debug('get has found: '+bundlesFound.length);
         return qContainer;
     };
 
@@ -111,7 +115,7 @@ var bundle_logic=function(){
         //If the bundle container contains a reference to
         //a single bundle then iterate through the children
         if(this.bundle){
-            log.info('Iterating child bundles');
+            log.debug('Iterating child bundles');
 
             for(var index in this.bundle.children){
                 tempBundle=new BundleContainer({
@@ -136,7 +140,7 @@ var bundle_logic=function(){
     };
 
     BundleContainer.prototype.first=function(iterator){
-        log.info('queried bundles '+this.queryBundles.length);
+        log.debug('queried bundles '+this.queryBundles.length);
         var queryBundleCount=(this.queryBundles)?this.queryBundles.length:0;
 
         //Check if there are any queryBundles
@@ -184,7 +188,7 @@ var bundle_logic=function(){
             return bundleContainer;
         }
 
-        log.info('A matching bundle was not found for query: '+stringify(predicate));
+        log.debug('A matching bundle was not found for query: '+stringify(predicate));
 
         return bundleContainer;
     };
@@ -200,7 +204,7 @@ var bundle_logic=function(){
 
             //Check if the current root is a match
             if(utility.isEqual(predicate,root)){
-                log.info('Found a match as  leaf: '+root.name);
+                log.debug('Found a match as  leaf: '+root.name);
                 return root;
             }
 
@@ -210,7 +214,7 @@ var bundle_logic=function(){
 
             //Check if the directory will be a match
             if(utility.isEqual(predicate,root)){
-                log.info('Found a match as a root: '+root.name);
+                log.debug('Found a match as a root: '+root.name);
                 return root;
             }
 
@@ -226,7 +230,7 @@ var bundle_logic=function(){
 
                 //Check if a resource was found.
                 if(foundResource){
-                    log.info('adding bundle: '+foundResource.name);
+                    log.debug('adding bundle: '+foundResource.name);
                     found.push(foundResource);
                 }
             }
@@ -251,13 +255,13 @@ var bundle_logic=function(){
                 instance:file
             });
 
-            log.info(file.getName()+' not a directory ');
+            log.debug(file.getName()+' not a directory ');
 
             return resource;
         }
         else{
 
-            log.info(file.getName()+' will be a root bundle.');
+            log.debug(file.getName()+' will be a root bundle.');
 
             //Create a resource of root type
             var dir=new Bundle({
@@ -269,13 +273,13 @@ var bundle_logic=function(){
             //Obtain the sub resources within the given directory
             var resources=file.listFiles();
 
-            log.info('resources found: '+resources.length);
+            log.debug('resources found: '+resources.length);
 
             //Go through each file
             for(var index in resources){
 
                 var current=recursiveBuild(resources[index],dir);
-                log.info('adding: '+current.name+' as a child resource of '+dir.name);
+                log.debug('adding: '+current.name+' as a child resource of '+dir.name);
 
                 dir.add(current);
             }

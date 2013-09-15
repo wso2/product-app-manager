@@ -62,6 +62,7 @@
 
     "defaultAssets": {
         "root":"/config/defaults",
+        "ignore":["gadgets","ebooks"],
         "assetData": [
             {
                 "type": "gadgets",
