@@ -160,7 +160,10 @@ var deployment_logic = function () {
 
             //Check if a script is present
             if(script){
-                var scriptObject=new ScriptObject(script);
+
+                //Create an overridden script object from the master script
+
+                var scriptObject=this.masterScriptObject.override(script);
 
                 this.handlers[assetType]=scriptObject;
             }
@@ -293,7 +296,7 @@ var deployment_logic = function () {
     ScriptObject.prototype.invoke=function(methodName,arguments){
         if(this.functionObject.hasOwnProperty(methodName)){
              log.info('invoking method: '+methodName);
-             log.info(this.functionObject);
+             //log.info(this.functionObject);
              this.functionObject[methodName].apply(this.functionObject,arguments);
             return true;
         }

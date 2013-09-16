@@ -73,7 +73,7 @@ var installer=function(){
     }
 
     var onCreate=function(context){
-        log.info('on create called');
+        log.info('on create called from master installer.');
         log.info('name: '+context.bundle.getName());
     };
 
