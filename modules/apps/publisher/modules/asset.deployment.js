@@ -10,7 +10,16 @@ var deployment_logic = function () {
     var log = new Log();
     var INSTALL_SCRIPT_NAME='install.js';
     var INSTALLER_MODULE_NAME='installer';
-
+    var METHOD_ON_ASSET_INITIALIZATION='onAssetInitialization';
+    var METHOD_ON_ASSET_TYPE_INITIALIZATION='onAssetTypeInitialisation';
+    var METHOD_ON_CREATE_ARTIFACT_MANAGER='onCreateArtifactManager';
+    var METHOD_ON_ASSET_PERMISSION='onSetAssetPermissions';
+    var METHOD_ON_CHECK_ASSET='checkAssetInRegistry';
+    var METHOD_ON_ADD_ASSET='onAddAsset';
+    var METHOD_ON_UPDATE_ASSET='onUpdateAsset';
+    var METHOD_ON_SET_TAGS='onSetTags';
+    var METHOD_ON_SET_RATING='onSetRatings';
+    var METHOD_ON_ATTACH_LIFECYCLE='onAttachLifecycle';
 
     /*
      Deploys the assets in a provided path
@@ -50,7 +59,18 @@ var deployment_logic = function () {
      @assetType: The asset type to be invoked
      @bundle: The bundle containing information on the asset
      */
-    Deployer.prototype.invoke = function (assetType, bundle) {
+    Deployer.prototype.invoke = function (assetType, bundle,masterContext) {
+
+        var artifactManager=masterContext.artifactManager||null;
+        var userManager=masterContext.userManager||null;
+        var registry=masterContext.registry||null;
+
+        //Check if any of the vital resources are missing
+        if((!artifactManager)||(!userManager)||(!registry)) {
+
+            log.info('there is no artifact manager ,userManager or registry  for '+assetType+' that can handle deployment.');
+            return;
+        }
 
         //Check if a handler is present
         if(this.handlers.hasOwnProperty((assetType))){
@@ -70,8 +90,41 @@ var deployment_logic = function () {
             }
             var context={};
             context['bundle']=bundle;
-            //Invoke the logic
-            modifiedScriptObject.invoke('onCreate',[context]);
+            context['artifactManager']=artifactManager;
+            context['userManager']=userManager;
+            context['registry']=registry;
+
+            //Initializes the asset by reading the configuration file
+            modifiedScriptObject.invoke(METHOD_ON_ASSET_INITIALIZATION,[context]);
+
+            //Check if the asset exists
+            modifiedScriptObject.invoke(METHOD_ON_CHECK_ASSET,[context]);
+
+            //Check if the asset already exists
+            if(context.isExisting){
+                modifiedScriptObject.invoke(METHOD_ON_UPDATE_ASSET,[context]);
+            }
+            else{
+                modifiedScriptObject.invoke(METHOD_ON_ADD_ASSET,[context]);
+            }
+
+            //Check if there is a current asset to which the operations can be performed
+            if(!context.currentAsset){
+                log.info('there is no current asset.Aborting all other operations.');
+                return;
+            }
+
+            //Set the default permissions to the asset
+            modifiedScriptObject.invoke(METHOD_ON_ASSET_PERMISSION,[context]);
+
+            //Set the tags to the aaset
+            modifiedScriptObject.invoke(METHOD_ON_SET_TAGS,[context]);
+
+            //Set the rating
+            modifiedScriptObject.invoke(METHOD_ON_SET_RATING,[context]);
+
+            //Attach the life-cycle
+            modifiedScriptObject.invoke(METHOD_ON_ATTACH_LIFECYCLE,[context]);
 
             return;
         }
@@ -146,7 +199,7 @@ var deployment_logic = function () {
 
         //Obtain the bundle for the asset type
         var rootBundle = this.bundleManager.get({name: assetType});
-
+        var context={};
         //A root bundle exists for the asset type (e.g. gadgets folder)
         if (rootBundle) {
 
@@ -166,6 +219,14 @@ var deployment_logic = function () {
                 var scriptObject=this.masterScriptObject.override(script);
 
                 this.handlers[assetType]=scriptObject;
+
+                //Call the asset type initialization logic
+                scriptObject.invoke(METHOD_ON_ASSET_TYPE_INITIALIZATION,[context]);
+
+                //Create the artifact manager which will handle all of the asset creation
+                context['assetType']=findAssetType(assetType);
+
+                scriptObject.invoke(METHOD_ON_CREATE_ARTIFACT_MANAGER,[context]);
             }
 
             //Deploy each bundle
@@ -183,7 +244,7 @@ var deployment_logic = function () {
                     log.info('ignoring ' + assetType + " : " + bundle.getName() + '. Please change configuration file to enable.');
                     return;
                 }
-                that.invoke(assetType, bundle);
+                that.invoke(assetType, bundle,context);
 
                 log.info('finished deploying ' + assetType + ' : ' + bundle.getName());
 
@@ -216,6 +277,19 @@ var deployment_logic = function () {
         }
 
         return null;
+    }
+
+    /*
+    The function returns the asset from its plural name
+     */
+    function findAssetType(pluralAssetName){
+        var lastCharacter=pluralAssetName.charAt(pluralAssetName.length-1);
+
+        if(lastCharacter=='s'){
+            return pluralAssetName.substring(0,pluralAssetName.length-1);
+        }
+
+        return pluralAssetName;
     }
 
     /*
@@ -319,7 +393,7 @@ var deployment_logic = function () {
 
         if(scriptInstance.hasOwnProperty(INSTALLER_MODULE_NAME)){
            logicObject=scriptInstance[INSTALLER_MODULE_NAME]();
-           log.info('clone: '+stringify(cloned));
+           //log.info('clone: '+stringify(cloned));
 
             //Go through each property in the logic object
             for(var index in logicObject){

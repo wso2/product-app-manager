@@ -260,6 +260,16 @@ var rxt_utility = function () {
 
             var ignore=ignoredProperties||[];
 
+            var cloned={};
+            //Go through each property
+            for(var index in object){
+                //Do not clone ignored properties
+                if(ignore.indexOf(index)==-1){
+                    cloned[index]=object[index];
+                }
+            }
+
+            return cloned;
 
         },
 
