@@ -11,6 +11,7 @@ var deployment_logic = function () {
     var INSTALL_SCRIPT_NAME='install.js';
     var INSTALLER_MODULE_NAME='installer';
 
+
     /*
      Deploys the assets in a provided path
      */
@@ -19,6 +20,7 @@ var deployment_logic = function () {
         utility.config(options, this);
         this.bundleManager = null;
         this.handlers = {};
+        this.masterScriptObject={};
     }
 
     /*
@@ -45,7 +47,7 @@ var deployment_logic = function () {
 
     /*
      The function is responsible for invoking the logic for a given a asset typ
-     @assetType: The assettype to be invoked
+     @assetType: The asset type to be invoked
      @bundle: The bundle containing information on the asset
      */
     Deployer.prototype.invoke = function (assetType, bundle) {
@@ -81,10 +83,40 @@ var deployment_logic = function () {
         log.info('no handler specified for deploying : ' + assetType);
     };
 
+    /*
+    The function is used to automatically deploy any assets defined in the configuration
+     */
     Deployer.prototype.autoDeploy = function () {
         var that = this;
+
+        log.info('attempting to locate master install script.');
+
+        var pathComponents=this.bundleManager.path.split('/');
+        var path='';
+        for(var index=0;index<pathComponents.length-1;index++){
+            path+='/'+pathComponents[index];
+        }
+        //Load up the master script .
+        var masterInstallScript=getInstallScript(this.bundleManager.getRoot(),path);
+
+        if(!masterInstallScript){
+            log.info('aborting auto deployment as the master install script was not found.This should be present as install.js in the '
+                +this.bundleManager.path);
+            return;
+        }
+        //Create a master script object
+        this.masterScriptObject=new ScriptObject(masterInstallScript);
+
         log.info('starting auto deploying assets in ' + this.config.root);
+
         this.bundleManager.getRoot().each(function (asset) {
+
+            //Check if the bundle is a directory
+            if(!asset.isDirectory()){
+
+                log.info('ignoring '+asset.getName()+' as it is not a deployable bundle.');
+                return;
+            }
             log.info('auto deployment of ' + asset.getName());
             that.deploy(asset.getName());
         })
@@ -129,6 +161,7 @@ var deployment_logic = function () {
             //Check if a script is present
             if(script){
                 var scriptObject=new ScriptObject(script);
+
                 this.handlers[assetType]=scriptObject;
             }
 
@@ -262,9 +295,10 @@ var deployment_logic = function () {
              log.info('invoking method: '+methodName);
              log.info(this.functionObject);
              this.functionObject[methodName].apply(this.functionObject,arguments);
-            return;
+            return true;
         }
         log.info('unable to invoke '+methodName);
+        return false;
     };
 
     /*

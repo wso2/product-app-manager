@@ -1,5 +1,5 @@
 /*
-Description: The following class is used to the sites provided in this directory.
+Description: The following class is used to install all assets in a generic manner.
 Filename: install.js
 Created Date: 16/8/2013
  */
@@ -9,22 +9,13 @@ var installer=function(){
 
     var log=new Log();
 
+
     /*
     The function is used to initialize an individual asset by first reading the
     configuration file
     @context: An object containing a reference to the root of an asset
      */
     function onAssetInitialization(context){
-
-        //obtain the configuration file
-
-        //Read the contents
-
-        //Create the deployment object
-
-        //Set the tags
-
-        //Set the ratings
 
     }
 
@@ -34,7 +25,8 @@ var installer=function(){
     @context: An object containing a reference to the root of an asset
      */
     function onAssetTypeInitialisation(context){
-
+        log.info('Default asset initialization is empty.This function should be overridden at the asset level.Check if ' +
+            'an install.js file is present in the '+context.getName()+' folder.');
     }
 
     /*
@@ -88,6 +80,12 @@ var installer=function(){
     return{
         onAssetInitialization:onAssetInitialization,
         onAssetTypeInitialisation:onAssetTypeInitialisation,
+        onSetAssetPermissions:onSetAssetPermissions,
+        checkAssetInRegistry:checkAssetInRegistry,
+        onAddAsset:onAddAsset,
+        onUpdateAsset:onUpdateAsset,
+        onSetTags:onSetTags,
+        onSetRatings:onSetRatings,
         onCreate:onCreate
     }
 };
