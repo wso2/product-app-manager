@@ -1,6 +1,9 @@
 var PUBLISHER_CONFIG_PATH = '/_system/config/publisher/configs/publisher.json';
 
 var TENANT_PUBLISHER = 'tenant.publisher';
+var log=new Log('modules.publisher');
+var utility=require('/modules/utility.js').rxt_utility();
+var SUPER_TENANT=-1234;
 
 var init = function (options) {
     var event = require('/modules/event.js');
@@ -21,7 +24,7 @@ var init = function (options) {
 
         CommonUtil.addRxtConfigs(system.registry.getChrootedRegistry("/_system/governance"), tenantId);
         um.authorizeRole(carbon.user.anonRole, GovernanceConstants.RXT_CONFIGS_PATH, carbon.registry.actions.GET);
-
+        log.info('TENANT CREATED');
         addLifecycles(system);
     });
 
@@ -29,8 +32,12 @@ var init = function (options) {
         var user = require('/modules/user.js'),
             server = require('/modules/server.js'),
             carbon = require('carbon'),
-            config = server.configs(tenantId),
-            reg = server.systemRegistry(tenantId);
+            config = server.configs(tenantId);
+        var reg = server.systemRegistry(tenantId);
+        var CommonUtil = Packages.org.wso2.carbon.governance.registry.extensions.utils.CommonUtil;
+        var GovernanceConstants = org.wso2.carbon.governance.api.util.GovernanceConstants;
+        var um = server.userManager(tenantId);
+        var publisherConfig=require('/config/publisher-tenant.json')
 
         //check whether tenantCreate has been called
         if (!reg.exists(PUBLISHER_CONFIG_PATH)) {
@@ -39,7 +46,42 @@ var init = function (options) {
 
         config[user.USER_OPTIONS] = configs(tenantId);
 
+        //Check if the tenant is the super tenant
+        if(tenantId==SUPER_TENANT){
+
+            log.info('executing default asset deployment logic since super tenant has been loaded.');
+
+            log.info('attempting to load rxt templates to the registry.');
+
+            //Try to deploy the rxts
+            CommonUtil.addRxtConfigs(reg.registry.getChrootedRegistry("/_system/governance"), reg.tenantId);
+            um.authorizeRole(carbon.user.anonRole, GovernanceConstants.RXT_CONFIGS_PATH, carbon.registry.actions.GET);
+
+            log.info('finished loading rxt templates to the registry.');
+
+            //Attempt to load the default assets
+            var deployer = require('/modules/asset.deployment.js').deployment_logic();
+
+            log.info('starting auto deployment of default assets.');
+
+            //Create a deployment manager instance
+            var deploymentManager = new deployer.Deployer({
+                config: publisherConfig.defaultAssets
+            });
+
+            log.info('initializing deployementManager');
+
+            deploymentManager.init();
+
+            deploymentManager.autoDeploy();
+
+            log.info('finished auto deployment of default assets.');
+        }
+
+
     });
+
+
 
     event.on('login', function (tenantId, user, session) {
         configureUser(tenantId, user);
@@ -52,6 +94,7 @@ var configs = function (tenantId) {
     return JSON.parse(registry.content(PUBLISHER_CONFIG_PATH));
 };
 
+
 var addLifecycles = function (registry) {
     var lc,
         files = new File('/config/lifecycles'),
@@ -62,7 +105,27 @@ var addLifecycles = function (registry) {
         file.open('r');
         lc = file.readAll();
         file.close();
-        CommonUtil.addLifecycle(lc, configReg, rootReg);
+
+        //Create an xml from the contents
+        var lcXml=new XML(lc);
+
+        //Create a JSON object
+        //TODO:This could be a problem -we are passing xml to JSON everytime!
+        var lcJSON=utility.xml.convertE4XtoJSON(lcXml);
+
+        //Check if the lifecycle is present
+        var isPresent=CommonUtil.lifeCycleExists(lcJSON.name,configReg);
+
+        log.info('Is life-cycle present: '+isPresent);
+
+        //Only add the lifecycle if it is not present in the registry
+        if(!isPresent){
+
+            log.info('Adding life-cycle since it is not deployed.');
+
+            CommonUtil.addLifecycle(lc, configReg, rootReg);
+        }
+
     });
 };
 

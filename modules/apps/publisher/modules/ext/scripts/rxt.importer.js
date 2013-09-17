@@ -23,14 +23,14 @@ var module=function(){
 			//Break it up
 			var name=key.split('_');
 
-			log.info('Obtaining data from : '+name);
+			log.debug('Obtaining data from : '+name);
 
 			if((name.length>0)&&(name.length<=2)){
 
 				var table=name[0];
 				var field=name[1];
 
-                log.info('Saving field '+field+'= '+value+' in table: '+table);
+                log.debug('Saving field '+field+'= '+value+' in table: '+table);
 
 				model.setField(table+'.'+field,value);
 			}
@@ -49,7 +49,7 @@ var module=function(){
 	return{
 		execute:function(context){
 
-            log.info('Entered: '+meta.type);
+            log.debug('Entered: '+meta.type);
 
 			var model=context.model;
 			var template=context.template;
@@ -63,9 +63,9 @@ var module=function(){
 			processHeader(model,data);
 			processAttributes(model,data);
 
-            log.info('Data extracted: '+stringify(this.model));
+            log.debug('Data extracted: '+stringify(this.model));
 
-            log.info('Exited: '+meta.type);
+            log.debug('Exited: '+meta.type);
 		}
 	}
 };

@@ -7,7 +7,7 @@
         "publisher": {
             "/permission/admin/login": ["ui.execute"]
         },
-        "reviewer":{
+        "reviewer": {
             "/permission/admin/login": ["ui.execute"]
         }
     },
@@ -30,14 +30,14 @@
             "username": "admin",
             "password": "admin"
         },
-        "accessible":[
+        "accessible": [
             {
-                "context":"/_system/governance",
-                "collections":["gadgets","sites","ebooks"],
-                "actions":["http://www.wso2.org/projects/registry/actions/get",
-                           "http://www.wso2.org/projects/registry/actions/add",
-                           "http://www.wso2.org/projects/registry/actions/delete",
-                           "authorize"]
+                "context": "/_system/governance",
+                "collections": ["gadgets", "sites", "ebooks"],
+                "actions": ["http://www.wso2.org/projects/registry/actions/get",
+                    "http://www.wso2.org/projects/registry/actions/add",
+                    "http://www.wso2.org/projects/registry/actions/delete",
+                    "authorize"]
             }
         ]
     },
@@ -60,6 +60,29 @@
         "ASSETS": "/assets"
     },
 
+    "defaultAssets": {
+        "root":"/config/defaults",
+        "assetData": [
+            {
+                "type": "gadgets",
+                "ignore":["agricultural-land",
+                    "wso2-carbon-dev",
+                    "intro-gadget-1",
+                    "intro-gadget-2",
+                    "show-assets",
+                    "co2-emission",
+                    "electric-power",
+                    "energy-use",
+                    "greenhouse-gas"]
+            },
+            {
+                "type": "ebooks"
+            },
+            {
+                "type": "sites"
+            }
+        ]
+    },
     "router": {
         "RENDERER": "/modules/router.caramel-renderer.js"
     },

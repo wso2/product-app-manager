@@ -66,7 +66,7 @@ var module=function(){
 
    return{
        execute:function(context){
-           log.info('Entered '+meta.type);
+           log.debug('Entered '+meta.type);
 
            var model=context.model;
            var template=context.template;
@@ -75,7 +75,7 @@ var module=function(){
            assetObject['attributes']=getAttributes(model);
 
 
-           log.info('Exited: '+meta.type);
+           log.debug('Exited: '+meta.type);
 
            return assetObject;
        }

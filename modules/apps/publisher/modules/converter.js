@@ -180,7 +180,7 @@ var rxt_converter=function(){
 				objTable.addField(objField);
 			}
 		
-			log.info('table: '+stringify(objTable));
+			log.debug('table: '+stringify(objTable));
 
 			//Add the table to the template
 			context.rxtTemplate.getContent().addTable(objTable);
