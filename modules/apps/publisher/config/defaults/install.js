@@ -169,12 +169,12 @@ var installer = function () {
         log.info('about to add the asset : ' + artifact.name);
         artifactManager.add(artifact);
 
-        var currentAsset=artifactManager.find(function(adapter){
+        var assets=artifactManager.find(function(adapter){
             return (adapter.attributes.overview_name==name)?true:false;
         },1);
 
-        context['currentAsset']=currentAsset||{};
-        log.info('finished adding the asset : ' + currentAsset.name);
+        context['currentAsset']=assets[0]||{};
+        log.info('added asset: '+stringify(context.currentAsset));
     }
 
     /*
@@ -207,6 +207,10 @@ var installer = function () {
 
         //Check if a lifecycle has been attached
         if (!currentLifeCycleName) {
+
+            log.info('before calling current asset '+DEFAULT_LIFECYCLE);
+            log.info(currentAsset);
+
             //Attach the lifecycle
             artifactManager.attachLifecycle(DEFAULT_LIFECYCLE, currentAsset);
 
