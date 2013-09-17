@@ -62,7 +62,6 @@
 
     "defaultAssets": {
         "root":"/config/defaults",
-        "ignore":["gadgets","sites"],
         "assetData": [
             {
                 "type": "gadgets",
