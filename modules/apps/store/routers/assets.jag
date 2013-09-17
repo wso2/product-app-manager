@@ -51,6 +51,14 @@ var type;
             }
         }
 
+        if(suffix == 'subscriptions')
+        {
+            path = '/subscriptions.jag';
+            request.getMappedPath = mapper(path);
+            include(path);
+            return;
+        }
+
         path = pages + 'assets.jag';
 
         if (new File(path).isExists()) {
