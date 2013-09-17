@@ -9,9 +9,18 @@ var deployment_logic = function () {
     var bundler = require('/modules/bundler.js').bundle_logic();
     var pubConfig=require('/config/publisher.js').config();
     var caramel = require('caramel');
-    var log = new Log();
+
+    var log = new Log('asset.deployment');
+
+    /*
+    Name of install script and module
+     */
     var INSTALL_SCRIPT_NAME='install.js';
     var INSTALLER_MODULE_NAME='installer';
+
+    /*
+    Names of methods used in the install script
+     */
     var METHOD_ON_ASSET_INITIALIZATION='onAssetInitialization';
     var METHOD_ON_ASSET_TYPE_INITIALIZATION='onAssetTypeInitialisation';
     var METHOD_ON_CREATE_ARTIFACT_MANAGER='onCreateArtifactManager';
@@ -51,6 +60,8 @@ var deployment_logic = function () {
     /*
      The function allows a third party handler to be registered for
      a given asset type
+     @assetType: The plural name of the asset to be handled
+     @handler: Some handling logic
      */
     Deployer.prototype.register = function (assetType, handler) {
         this.handlers[assetType] = handler;
@@ -60,6 +71,7 @@ var deployment_logic = function () {
      The function is responsible for invoking the logic for a given a asset typ
      @assetType: The asset type to be invoked
      @bundle: The bundle containing information on the asset
+     @masterContext: The context inherited from deploying an asset type
      */
     Deployer.prototype.invoke = function (assetType, bundle,masterContext) {
 
@@ -149,11 +161,18 @@ var deployment_logic = function () {
 
         log.info('attempting to locate master install script.');
 
+        //Break up the path x/y/z into its components x,y,and z
         var pathComponents=this.bundleManager.path.split('/');
         var path='';
+
+        /*Need to omit the last part in the path
+        Given a path such as x/y/z
+        Then path.length-1 = z
+        We are currently in z, so this loop omits the z path */
         for(var index=0;index<pathComponents.length-1;index++){
             path+='/'+pathComponents[index];
         }
+
         //Load up the master script .
         var masterInstallScript=getInstallScript(this.bundleManager.getRoot(),path);
 
@@ -305,6 +324,7 @@ var deployment_logic = function () {
      based on the presence of an ignore array
      @config: An object containing an ignore property
      @target: The string which will be checked
+     @return: True if the target is ignored or if there is no ignore block,else false
      */
     function isIgnored(config, target) {
         var ignored = config.ignore || [];
@@ -351,6 +371,7 @@ var deployment_logic = function () {
 
     /*
     The method creates a functionObject using the script instance
+    @scriptInstance: A string containing contents of a script
      */
     ScriptObject.prototype.init=function(scriptInstance){
         var functionInstance;
@@ -374,6 +395,8 @@ var deployment_logic = function () {
 
     /*
     The function invokes a provided method with the given parameters
+    @methodName: The method name to be invoked
+    @arguments: An array of arguments to be passed into the method
      */
     ScriptObject.prototype.invoke=function(methodName,arguments){
         if(this.functionObject.hasOwnProperty(methodName)){
@@ -425,6 +448,8 @@ var deployment_logic = function () {
 
     /*
     The function creates a clone of the provided object
+    @object: The object to be cloned
+    @return: A duplicate(clone) of the provided object
      */
     function clone(object){
        var cloned={};
