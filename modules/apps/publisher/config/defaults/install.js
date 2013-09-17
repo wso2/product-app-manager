@@ -1,5 +1,7 @@
 /*
- Description: The following class is used to install all assets in a generic manner.
+ Description: The following module contains the logic that can be used to install any asset which uses
+ a json configuration file (e.g. sites or gadgets).The functions given above can be overridden by placing
+ and install.js script with a module exposing the required method to be overridden.
  Filename: install.js
  Created Date: 16/8/2013
  */
@@ -14,10 +16,10 @@ var installer = function () {
     var GovernanceUtils = Packages.org.wso2.carbon.governance.api.util.GovernanceUtils;
     var SUPER_TENANT_ID = -1234;
     var SEARCH_INDEX = 'overview_name';
-    var DESIRED_LIFECYCLE_STATE='Published';
-    var PROMOTE_COUNT=4;    //The number of promote attempts before giving up reaching desired state.
-    var INVOKED_OPERATION='Promote'; //The action invoked to reach the desired state.
-    var DEFAULT_LIFECYCLE='SampleLifeCycle2';
+    var DESIRED_LIFECYCLE_STATE = 'Published';
+    var PROMOTE_COUNT = 4;    //The number of promote attempts before giving up reaching desired state.
+    var INVOKED_OPERATION = 'Promote'; //The action invoked to reach the desired state.
+    var DEFAULT_LIFECYCLE = 'SampleLifeCycle2';
 
     /*
      The function is used to initialize an individual asset by first reading the
@@ -45,15 +47,19 @@ var installer = function () {
         //Clone the object but ignore tags and rate
         var artifact = utility.cloneObject(jsonConfig, ['tags', 'rate']);
 
+        artifact.attributes.images_thumbnail = context.httpContext + artifact.attributes.images_thumbnail;
+        artifact.attributes.images_banner = context.httpContext + artifact.attributes.images_banner;
+
         //Create the deployment object
         context['artifact'] = artifact;
+
 
         //Set the tags
         context['tags'] = jsonConfig.tags.split(',');
 
         //Set the ratings
         context['rate'] = jsonConfig.rate;
-        context['path']='/_system/governance/gadgets/' + artifact.attributes.overview_provider +
+        context['path'] = '/_system/governance/'+context.assetType+'/' + artifact.attributes.overview_provider +
             '/' + artifact.attributes.overview_name + '/' + artifact.attributes.overview_version;
 
         log.info('tags located: ' + context.tags);
@@ -67,7 +73,7 @@ var installer = function () {
      */
     function onAssetTypeInitialisation(context) {
         log.info('master asset type initialization called.This should be overridden by using a installer script at the '
-        +' root level of the asset.');
+            + ' root level of the asset.');
     }
 
     /*
@@ -93,11 +99,11 @@ var installer = function () {
             return;
         }
 
-        var userManager=server.userManager(SUPER_TENANT_ID);
+        var userManager = server.userManager(SUPER_TENANT_ID);
 
         context['artifactManager'] = artifactManager;
         context['registry'] = registry;
-        context['userManager']=userManager;
+        context['userManager'] = userManager;
 
         log.info('created artifact manager for ' + context.assetType);
     }
@@ -107,9 +113,11 @@ var installer = function () {
      @context: An object containing a reference to the current asset bundle been processed
      */
     function onSetAssetPermissions(context) {
-        var userManager=context.userManager;
+        var userManager = context.userManager;
 
-        //userManager.authorizeRole(carbon.user.anonRole,context.path,carbon.registry.actions.GET);
+        //log.info('anon role: '+carbon.user.anonRole);
+        log.info('giving anon role GET rights to ' + context.path);
+        userManager.authorizeRole(carbon.user.anonRole, context.path, carbon.registry.actions.GET);
     }
 
     /*
@@ -143,7 +151,7 @@ var installer = function () {
         if (locatedAssets.length > 0) {
             log.info('asset is present');
             context['isExisting'] = true;
-            context['currentAsset']=locatedAssets[0];
+            context['currentAsset'] = locatedAssets[0];
         }
 
     }
@@ -152,61 +160,69 @@ var installer = function () {
      The function is used to add a new asset instance to the registry
      */
     function onAddAsset(context) {
-        var artifactManager=context.artifactManager;
-        var artifact=context.artifact;
+        var artifactManager = context.artifactManager;
+        var artifact = context.artifact;
 
         //Add the asset
-        //artifactManager.add(artifact);
+        log.info('about to add the asset : ' + artifact.name);
+        artifactManager.add(artifact);
+        log.info('finished adding the asset : ' + artifact.name);
     }
 
     /*
      The function is invoked when updating an already existing asset
      */
     function onUpdateAsset(context) {
-         var artifactManager=context.artifactManager;
-         var currentAsset=context.currentAsset;
-         var artifact=context.artifact;
+        var artifactManager = context.artifactManager;
+        var currentAsset = context.currentAsset;
+        var artifact = context.artifact;
 
-         //Set the id
-         artifact.id=currentAsset.id;
+        //Set the id
+        artifact.id = currentAsset.id;
 
-         //artifactManager.update(artifact);
+        artifactManager.update(artifact);
+        //log.info('finished updating the artifact : '+currentAsset.name);
     }
 
     /*
-    The function attaches a lifecycle to the asset
+     The function attaches a lifecycle to the asset
      */
-    function onAttachLifecycle(context){
-        var artifactManager=context.artifactManager;
-        var currentAsset=context.currentAsset;
-        var currentLifeCycleName=currentAsset.lifecycle||null;
-        var currentLifeCycleState=currentAsset.lifecycleState||null;
-        var attempts=0;
+    function onAttachLifecycle(context) {
+        var artifactManager = context.artifactManager;
+        var currentAsset = context.currentAsset;
+        var currentLifeCycleName = currentAsset.lifecycle || null;
+        var currentLifeCycleState = currentAsset.lifecycleState || null;
+        var attempts = 0;
 
-       //Check if a lifecycle has been attached
-      if(!currentLifeCycleName){
+        log.info('current lifecycle: ' + currentLifeCycleName + ' , current state: ' + currentLifeCycleState);
+
+
+        //Check if a lifecycle has been attached
+        if (!currentLifeCycleName) {
             //Attach the lifecycle
-            //artifactManager.attachLifecycle(DEFAULT_LIFECYCLE,currentAsset);
+            artifactManager.attachLifecycle(DEFAULT_LIFECYCLE, currentAsset);
 
             //Update the current asset
-            currentAsset=artifactManager.get(currentAsset.id);
+            currentAsset = artifactManager.get(currentAsset.id);
         }
-        else{
+        else {
             //We skip moving to the Published state.
             log.info('skipping promotion operations as a lifecycle has been attached');
             return;
         }
 
         //Try to reach the desired life-cycle state before the attempt limit
-        while((currentLifeCycleState!=DESIRED_LIFECYCLE_STATE)&&(attempts<PROMOTE_COUNT)){
+        while ((currentLifeCycleState != DESIRED_LIFECYCLE_STATE) && (attempts < PROMOTE_COUNT)) {
 
-            //artifactManager.promoteLifecycleState(INVOKED_OPERATION,currentAsset);
+            artifactManager.promoteLifecycleState(INVOKED_OPERATION, currentAsset);
 
             //Update the current life-cycle state.
-            //currentLifeCycleState=artifactManager.getLifecycleState(currentAsset);
+            currentLifeCycleState = artifactManager.getLifecycleState(currentAsset);
 
-            //Increased the attempts by one
+            //Increase the attempts by one
             attempts++;
+
+            log.info('current lifecycle state: ' + currentLifeCycleState);
         }
     }
 
@@ -217,13 +233,13 @@ var installer = function () {
 
         var tags = context.tags;
 
-        log.info('adding tags ['+context.tags+'] to path '+context.path);
+        log.info('adding tags [' + context.tags + '] to path ' + context.path);
 
         //Go through all tags
         for (tag in tags) {
             //Check if the tag is present
             if (tags.hasOwnProperty(tag)) {
-                //context.registry.tag(context.path, tags[tag]);
+                context.registry.tag(context.path, tags[tag]);
             }
         }
 
@@ -235,12 +251,12 @@ var installer = function () {
      */
     function onSetRatings(context) {
 
-        var rate=context.rate;
+        var rate = context.rate;
 
-        log.info('adding rating : '+context.rate+' to path '+context.path);
+        log.info('adding rating : ' + context.rate + ' to path ' + context.path);
 
-        if(!rate){
-
+        if (!rate) {
+            context.registry.rate(context.path, rate);
         }
     }
 
@@ -253,7 +269,7 @@ var installer = function () {
         checkAssetInRegistry: checkAssetInRegistry,
         onAddAsset: onAddAsset,
         onUpdateAsset: onUpdateAsset,
-        onAttachLifecycle:onAttachLifecycle,
+        onAttachLifecycle: onAttachLifecycle,
         onSetTags: onSetTags,
         onSetRatings: onSetRatings
     }

@@ -29,7 +29,7 @@ var installer=function(){
         var xmlContent=xmlConfig.getContents();
         var removedContent=xmlContent.replace(/^\s*<\?.*\?>\s*/, "");
         var xml=new XML(removedContent);
-        var path='/'+context.bundle.getName()+'/';
+        var path=context.httpContext+'/'+context.bundle.getName()+'/';
 
         //Create the deployment object
         var artifact={};
@@ -47,10 +47,12 @@ var installer=function(){
         artifact['attributes']['images_banner'] = path + 'banner.jpg';
 
         //Set the tags
-        artifact['tags']= (String(xml.*::ModulePrefs.@tags)).split(',');
+        context['tags']= (String(xml.*::ModulePrefs.@tags)).split(',');
+
+
 
         //Set the ratings
-        artifact['rate'] = Math.floor(Math.random() * 5) + 1;
+        context['rate'] = Math.floor(Math.random() * 5) + 1;
 
         context['artifact']=artifact;
         context['path']='/_system/governance/gadgets/' + artifact.attributes.overview_provider +

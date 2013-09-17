@@ -7,6 +7,8 @@ var deployment_logic = function () {
 
     var utility = require('/modules/utility.js').rxt_utility();
     var bundler = require('/modules/bundler.js').bundle_logic();
+    var pubConfig=require('/config/publisher.js').config();
+    var caramel = require('caramel');
     var log = new Log();
     var INSTALL_SCRIPT_NAME='install.js';
     var INSTALLER_MODULE_NAME='installer';
@@ -64,6 +66,7 @@ var deployment_logic = function () {
         var artifactManager=masterContext.artifactManager||null;
         var userManager=masterContext.userManager||null;
         var registry=masterContext.registry||null;
+        var httpContext=pubConfig.server.http+caramel.configs().context+this.bundleManager.path+'/'+assetType+'/';
 
         //Check if any of the vital resources are missing
         if((!artifactManager)||(!userManager)||(!registry)) {
@@ -90,9 +93,11 @@ var deployment_logic = function () {
             }
             var context={};
             context['bundle']=bundle;
+            context['httpContext']=httpContext;
             context['artifactManager']=artifactManager;
             context['userManager']=userManager;
             context['registry']=registry;
+            context['assetType']=assetType;
 
             //Initializes the asset by reading the configuration file
             modifiedScriptObject.invoke(METHOD_ON_ASSET_INITIALIZATION,[context]);
@@ -211,23 +216,26 @@ var deployment_logic = function () {
             //Check if there is a root level install script specified
             var script=getInstallScript(rootBundle,basePath);
 
-            //Check if a script is present
+            //Assume there will not be a script to override the master script
+            var scriptObject=this.masterScriptObject;
+
+            //Check if a script is present to override master install script
             if(script){
 
                 //Create an overridden script object from the master script
-
-                var scriptObject=this.masterScriptObject.override(script);
-
-                this.handlers[assetType]=scriptObject;
-
-                //Call the asset type initialization logic
-                scriptObject.invoke(METHOD_ON_ASSET_TYPE_INITIALIZATION,[context]);
-
-                //Create the artifact manager which will handle all of the asset creation
-                context['assetType']=findAssetType(assetType);
-
-                scriptObject.invoke(METHOD_ON_CREATE_ARTIFACT_MANAGER,[context]);
+                scriptObject=this.masterScriptObject.override(script);
             }
+
+            this.handlers[assetType]=scriptObject;
+
+            //Call the asset type initialization logic
+            scriptObject.invoke(METHOD_ON_ASSET_TYPE_INITIALIZATION,[context]);
+
+            //Create the artifact manager which will handle all of the asset creation
+            context['assetType']=findAssetType(assetType);
+
+            //Create the registry, artifactManager and userManager instances
+            scriptObject.invoke(METHOD_ON_CREATE_ARTIFACT_MANAGER,[context]);
 
             //Deploy each bundle
             rootBundle.each(function (bundle) {
