@@ -162,11 +162,19 @@ var installer = function () {
     function onAddAsset(context) {
         var artifactManager = context.artifactManager;
         var artifact = context.artifact;
+        var name=artifact.attributes.overview_name;
+
 
         //Add the asset
         log.info('about to add the asset : ' + artifact.name);
         artifactManager.add(artifact);
-        log.info('finished adding the asset : ' + artifact.name);
+
+        var currentAsset=artifactManager.find(function(adapter){
+            return (adapter.attributes.overview_name==name)?true:false;
+        },1);
+
+        context['currentAsset']=currentAsset||{};
+        log.info('finished adding the asset : ' + currentAsset.name);
     }
 
     /*

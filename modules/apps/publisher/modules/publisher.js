@@ -1,8 +1,9 @@
 var PUBLISHER_CONFIG_PATH = '/_system/config/publisher/configs/publisher.json';
 
 var TENANT_PUBLISHER = 'tenant.publisher';
-var log=new Log();
+var log=new Log('modules.publisher');
 var utility=require('/modules/utility.js').rxt_utility();
+var SUPER_TENANT=-1234;
 
 var init = function (options) {
     var event = require('/modules/event.js');
@@ -23,7 +24,7 @@ var init = function (options) {
 
         CommonUtil.addRxtConfigs(system.registry.getChrootedRegistry("/_system/governance"), tenantId);
         um.authorizeRole(carbon.user.anonRole, GovernanceConstants.RXT_CONFIGS_PATH, carbon.registry.actions.GET);
-
+        log.info('TENANT CREATED');
         addLifecycles(system);
     });
 
@@ -32,6 +33,11 @@ var init = function (options) {
             server = require('/modules/server.js'),
             carbon = require('carbon'),
             config = server.configs(tenantId);
+        var reg = server.systemRegistry(tenantId);
+        var CommonUtil = Packages.org.wso2.carbon.governance.registry.extensions.utils.CommonUtil;
+        var GovernanceConstants = org.wso2.carbon.governance.api.util.GovernanceConstants;
+        var um = server.userManager(tenantId);
+        var publisherConfig=require('/config/publisher-tenant.json')
 
         //check whether tenantCreate has been called
         //if (!registry.exists(PUBLISHER_CONFIG_PATH)) {
@@ -40,9 +46,42 @@ var init = function (options) {
 
         config[user.USER_OPTIONS] = configs(tenantId);
 
-        log.info('Tenant loaded.');
+        //Check if the tenant is the super tenant
+        if(tenantId==SUPER_TENANT){
+
+            log.info('executing default asset deployment logic since super tenant has been loaded.');
+
+            log.info('attempting to load rxt templates to the registry.');
+
+            //Try to deploy the rxts
+            CommonUtil.addRxtConfigs(reg.registry.getChrootedRegistry("/_system/governance"), reg.tenantId);
+            um.authorizeRole(carbon.user.anonRole, GovernanceConstants.RXT_CONFIGS_PATH, carbon.registry.actions.GET);
+
+            log.info('finished loading rxt templates to the registry.');
+
+            //Attempt to load the default assets
+            var deployer = require('/modules/asset.deployment.js').deployment_logic();
+
+            log.info('starting auto deployment of default assets.');
+
+            //Create a deployment manager instance
+            var deploymentManager = new deployer.Deployer({
+                config: publisherConfig.defaultAssets
+            });
+
+            log.info('initializing deployementManager');
+
+            deploymentManager.init();
+
+            deploymentManager.autoDeploy();
+
+            log.info('finished auto deployment of default assets.');
+        }
+
 
     });
+
+
 
     event.on('login', function (tenantId, user, session) {
         configureUser(tenantId, user);

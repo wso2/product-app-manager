@@ -18,9 +18,6 @@ var ext_parser = require('/modules/ext/core/extension.parser.js').extension_pars
 var ext_domain = require('/modules/ext/core/extension.domain.js').extension_domain();
 var ext_core = require('/modules/ext/core/extension.core.js').extension_core();
 var ext_mng = require('/modules/ext/core/extension.management.js').extension_management();
-var deployer=require('/config/deployer.js');
-
-
 
 if (hostName === null || hostName === '') {
     hostName = 'localhost';
@@ -42,12 +39,10 @@ server.init(pubConfig);
 var user = require('/modules/user.js');
 user.init(pubConfig);
 
-deployer.init();
-
-
-
 var publisher = require('/modules/publisher.js');
 publisher.init(pubConfig);
+
+
 
 
 //var SUPER_TENANT_ID=-1234;
@@ -66,6 +61,11 @@ caramel.configs({
 
 });
 
+
+//Cause the super tenant to be load
+var SUPER_TENANT = -1234;
+var event = require('/modules/event.js');
+event.emit('tenantLoad', SUPER_TENANT);
 
 
 

@@ -8,7 +8,7 @@ var deployment_logic = function () {
     var utility = require('/modules/utility.js').rxt_utility();
     var bundler = require('/modules/bundler.js').bundle_logic();
     var pubConfig=require('/config/publisher.js').config();
-    var caramel = require('caramel');
+
 
     var log = new Log('asset.deployment');
 
@@ -78,6 +78,7 @@ var deployment_logic = function () {
         var artifactManager=masterContext.artifactManager||null;
         var userManager=masterContext.userManager||null;
         var registry=masterContext.registry||null;
+        var caramel = require('caramel');
         var httpContext=pubConfig.server.http+caramel.configs().context+this.bundleManager.path+'/'+assetType+'/';
 
         //Check if any of the vital resources are missing
