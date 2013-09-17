@@ -129,10 +129,10 @@ var installer = function () {
             var attributes = asset.attributes;
             //Check if the search index is present
             if (attributes.hasOwnProperty(SEARCH_INDEX)) {
-                log.info(attributes[SEARCH_INDEX]+' == '+artifact.attributes[SEARCH_INDEX]);
+
                 //Check if the search index values are the same
                 if (attributes[SEARCH_INDEX] == artifact.attributes[SEARCH_INDEX]) {
-                    log.info('match');
+
                     return true;
                 }
             }

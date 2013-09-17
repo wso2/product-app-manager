@@ -8,26 +8,6 @@ var installer=function(){
 
     var log=new Log();
 
-    /*
-    The function is used to initialize an individual asset by first reading the
-    configuration file
-    @context: An object containing a reference to the root of an asset
-     */
-    function onAssetInitialization(context){
-
-        log.info('loading '+context.bundle.getName()+' configuration data');
-
-        //obtain the configuration file
-
-        //Read the contents
-
-        //Create the deployment object
-
-        //Set the tags
-
-        //Set the ratings
-
-    }
 
     /*
     The function initializes an asset by checking if an assets rxt is present
