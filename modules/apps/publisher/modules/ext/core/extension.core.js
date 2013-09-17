@@ -41,7 +41,7 @@ var extension_core = function () {
             )
                 {
                     var instance = require(item);
-                    log.info('Loaded adapter: '+item);
+                    log.debug('Loaded adapter: '+item);
                     this.adapters.push(new AdapterContainer(instance));
                 }
             }
@@ -150,7 +150,7 @@ var extension_core = function () {
      Examines the template and creates a mapping of the actions based on meta fields
      */
     ActionContainer.prototype.createActionMap=function(action,template){
-        log.info('Processing action map for '+template.name+' operation: '+action);
+        log.debug('Processing action map for '+template.name+' operation: '+action);
         actionMap={};
 
         //Go through each field in the template and identify default save actions
@@ -166,11 +166,11 @@ var extension_core = function () {
                     var actionInstance=field.meta[action];
 
                     if(actionInstance){
-                         log.info('Action: '+actionInstance+' located for operation: '+action+' in field: '+field.name);
+                         log.debug('Action: '+actionInstance+' located for operation: '+action+' in field: '+field.name);
 
                         //Create a property if it is not already present
                         if(!actionMap[actionInstance]){
-                            log.info('Created a new action'+actionInstance+' for the operation '+action);
+                            log.debug('Created a new action'+actionInstance+' for the operation '+action);
                             actionMap[actionInstance]=[];//Create an array to store the field
                         }
 
@@ -180,7 +180,7 @@ var extension_core = function () {
                 }
             }
         }
-        log.info('Finished processing action map for '+template.name+' operation: '+action);
+        log.debug('Finished processing action map for '+template.name+' operation: '+action);
         return actionMap;
     } ;
 
@@ -195,7 +195,7 @@ var extension_core = function () {
         for each(var adapter in this.adapters)
         {
             if (adapter.meta.type == type) {
-                log.info('An adapter container of type: '+type+' was located.');
+                log.debug('An adapter container of type: '+type+' was located.');
                 return adapter;
             }
         }
@@ -209,7 +209,7 @@ var extension_core = function () {
     AdapterManager.prototype.findWith=function(fn){
         for each(var adapter in this.adapters){
             if(fn(adapter)){
-                log.info('The adapter :'+stringify(adapter.meta)+' was located.');
+                log.debug('The adapter :'+stringify(adapter.meta)+' was located.');
                 return adapter;
             }
         }

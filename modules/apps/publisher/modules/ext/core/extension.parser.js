@@ -112,11 +112,11 @@ var extension_parser=function(){
         //Only register a template once
 		if(template==null)
 		{
-            log.info('Registering rxt template: '+rxtTemplate.shortName);
+            log.debug('Registering rxt template: '+rxtTemplate.shortName);
             this.processRxt(rxtTemplate);
 		}
 
-        log.info('Finished processing all rxt templates');
+        log.debug('Finished processing all rxt templates');
 	};
 
     /*
@@ -125,7 +125,7 @@ var extension_parser=function(){
 	Parser.prototype.processRxt=function(rxtTemplate)
 	{
 
-        log.info('Processing template: '+rxtTemplate.shortName);
+        log.debug('Processing template: '+rxtTemplate.shortName);
 		var extTemplate=new ext_domain.ExtTemplate(rxtTemplate.shortName);
 		extTemplate.applyTo=rxtTemplate.shortName;
 		extTemplate.shortName=rxtTemplate.shortName;
@@ -154,7 +154,7 @@ var extension_parser=function(){
 
 			extTemplate.tables.push(extTable);
 		}
-        log.info('Finished processing template: '+rxtTemplate.shortName);
+        log.debug('Finished processing template: '+rxtTemplate.shortName);
 		this.templates.push(extTemplate);
 	};
 	
@@ -187,7 +187,7 @@ var extension_parser=function(){
      */
 	Parser.prototype.processExtension=function(extTemplate){
 
-        log.info('Processing extension : '+extTemplate.applyTo);
+        log.debug('Processing extension : '+extTemplate.applyTo);
         // Assume the extension is applicable to a global scope
         var template=this.globalTemplate;
 
@@ -198,7 +198,7 @@ var extension_parser=function(){
         }
 
         if(!template){
-            log.info('The extension references an rxt which is not available in the registry.');
+            log.debug('The extension references an rxt which is not available in the registry.');
             return;
         }
 
@@ -212,7 +212,7 @@ var extension_parser=function(){
                this.fill(key,extTemplate,template);
 
 		}
-        log.info('Finished processing extension: '+extTemplate.applyTo);
+        log.debug('Finished processing extension: '+extTemplate.applyTo);
 
 	};
 
@@ -284,7 +284,7 @@ var extension_parser=function(){
 	 * The function loads all of the extension files in a given directory
 	 */
 	Parser.prototype.load=function(path){
-        log.info('Looking for extension files in '+path);
+        log.debug('Looking for extension files in '+path);
 		var dir=new File(path);
 
 		if(!dir.isDirectory()){
@@ -300,7 +300,7 @@ var extension_parser=function(){
 			&&(file.getName().indexOf('~')==-1)){
 
 				var config=require(path+file.getName());
-				log.info('Processing extension file: '+file.getName());
+				log.debug('Processing extension file: '+file.getName());
 
                 //Only process the extension if there is a configuration
                 if(config){
@@ -308,7 +308,7 @@ var extension_parser=function(){
                     this.processExtension(config);
                 }
 
-                log.info('Finished extension file: '+file.getName());
+                log.debug('Finished extension file: '+file.getName());
 			}
 			
 		}
@@ -371,7 +371,7 @@ var extension_parser=function(){
     
     RuleParser.prototype.parseAll=function(template){
     	for each(var rule in template.fieldPropertyRules){
-            log.info('Parsing rule: '+rule+' in template: '+template.name);
+            log.debug('Parsing rule: '+rule+' in template: '+template.name);
     		this.process(rule,template);
     	}
     };
@@ -415,12 +415,12 @@ var extension_parser=function(){
     	var value=actionComp[1];
     	
     	if(field.hasOwnProperty(prop)){
-            log.info('Setting property of field: '+filed.name+' '+prop+' = '+value);
+            log.debug('Setting property of field: '+filed.name+' '+prop+' = '+value);
     		field[prop]=value;
     		return;
     	}
 
-        log.info('Setting meta property of field: '+field.name+' '+prop+' = '+value);
+        log.debug('Setting meta property of field: '+field.name+' '+prop+' = '+value);
     	field.meta[prop]=value;
     	
     }

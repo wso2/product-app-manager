@@ -168,9 +168,9 @@ var tenantId = -1234;
 var server = require('/modules/server.js');
 server.loadTenant(tenantId);
 
-populate(tenantId);
-populateEBooks(tenantId);
-populateSites(tenantId);
+//populate(tenantId);
+//populateEBooks(tenantId);
+//populateSites(tenantId);
 //addSSOConfig(tenantId);
 /*
  setInterval(function () {
