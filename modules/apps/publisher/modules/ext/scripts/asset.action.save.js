@@ -66,12 +66,12 @@ var module=function(){
 
             var id=artifact[0].id||' ';
 
-            log.debug('Setting id of model to '+id);
+            log.info('Setting id of model to '+id);
 
             //Save the id data to the model
             model.setField('*.id',id);
 
-            log.debug('Finished saving asset with id: '+id);
+            log.info('Finished saving asset with id: '+id);
 		}
 	}
 };

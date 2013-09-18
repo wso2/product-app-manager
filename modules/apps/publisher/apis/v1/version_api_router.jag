@@ -1,0 +1,80 @@
+<%
+
+/*
+Description:Provides operations to work with the versioned aspects of the assets
+        GET /api/version/{type}/{id}              Retrieves the list of versions of the asset
+        POST /api/version/{type}/{id}/{version}   Duplicates the asset with the given id
+                                                  and changes version
+Filename: version_api_router.jag
+Created Date: 18/8/2013
+*/
+
+var config = require('/config/publisher.json');
+var caramel = require('caramel');
+
+var router = require('/modules/router-g.js').router();
+var routeManager = new router.Router();
+
+var user=require('/modules/user.js');
+var publisher = require('/modules/publisher.js').publisher(request, session);
+
+var rxtManager = publisher.rxtManager;
+var modelManager = publisher.modelManager;
+var log=new Log('version_api_router');
+
+routeManager.register('GET','publisher','/publisher/api/version/{type}/{id}',function(context){
+    var shortName=context.params.type;
+    var id=context.params.id;
+
+    log.info('type: '+shortName+' id: '+id);
+
+});
+
+routeManager.register('POST','publisher','/publisher/api/version/{type}/{id}/{version}',function(context){
+
+    var shortName=context.params.type;
+    var id=context.params.id;
+    var version=context.params.version;
+
+    log.info('type: '+shortName+' id: '+id+' version: '+version);
+
+    try{
+
+        var artifactManager=rxtManager.getArtifactManager(shortName);
+
+        //Get the instance with id
+        var oldArtifact=artifactManager.get(id);
+
+        var model=modelManager.getModel(shortName);
+
+        //Import the artifact data
+        model.import('asset',oldArtifact);
+
+        log.info(oldArtifact);
+
+        //Delete the id
+        model.set('*.id','');
+
+        //Set the new version
+        model.set('overview.version',version);
+
+        //Save the model
+        model.save();
+
+        var newId=model.get('*.id');
+
+        log.info('newly created asset id: '+newId.value);
+
+    }catch(e){
+
+        log.info('Unable to create a new version of the '+type+' '+id+' version: '+version+'Please'
+                +' refer to the server logs for details.The following exception was throw: '+e);
+
+        response.sendError(500,'Unable to create a new version of the '+type+' '+id+' version: '+version+'Please'
+        +' refer to the server logs for details');
+    }
+});
+
+routeManager.handle(request,response);
+
+%>
