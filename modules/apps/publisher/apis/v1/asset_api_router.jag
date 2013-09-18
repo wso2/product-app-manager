@@ -133,6 +133,7 @@ routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', fu
 
         //Checks whether two models are equal
         var reqProps=['overview.name', 'overview.provider', 'overview.version']
+
         var isEqual = modelManager.assertEqual(modelA, modelB,reqProps);
 
         //If they are not equal,abort the operation
@@ -146,6 +147,10 @@ routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', fu
 
         var artifact = modelA.export('asset.exporter');
         artifactManager.update(artifact);
+        var msg={};
+        msg['ok']=true;
+        msg['message']='asset updated';
+        print(msg);
 
     } catch (e) {
         log.debug('The asset ' + id + ' could not be updated.The following exception was thrown: ' + e);

@@ -1,8 +1,14 @@
 /*
  Description: The script is used to edit an asset
+ Filename: edit.asset.js
+ Created Date: 17/8/2013
  */
 $(function () {
-    console.log('edit-asset loaded');
+
+    //The container used to display messages to the user
+    var MSG_CONTAINER='#msg-container-recent-activity';
+    var ERROR_CSS='alert alert-error';
+    var SUCCESS_CSS='alert alert-info';
 
     $('#editAssetButton').on('click', function () {
         var data = {};
@@ -12,6 +18,7 @@ $(function () {
 
         //The type of asset
         var type=$('#meta-asset-type').val();
+
 
         //The id
         //Break the url into components
@@ -28,7 +35,7 @@ $(function () {
         //Create the data object which will be sent to the server
         fields.each(function () {
 
-            if (this.type != 'button') {
+            if ((this.type != 'button')&&(this.type!='reset')&&(this.type!='hidden')) {
                 data[this.id] = this.value;
             }
         });
@@ -39,16 +46,37 @@ $(function () {
         $.ajax({
             url:url,
             type:'PUT',
-            data:data,
-            contentType: "application/json",
+            data:JSON.stringify(data),
+            contentType:'application/json; charset=utf-8',
+            dataType:'json',
             success:function(response){
-                alert('Asset updated successfully.');
+                createMessage(MSG_CONTAINER,SUCCESS_CSS,'Asset updated successfully');
             },
             error:function(response){
-                alert('Unable to update asset.');
+                createMessage(MSG_CONTAINER,ERROR_CSS,'Asset was not updated successfully.');
             }
         })
 
     });
+
+
+    /*
+    The function creates a message and displays it in the provided container element.
+    @containerElement: The html element within which the message will be displayed
+    @cssClass: The type of message to be displayed
+    @msg: The message to be displayed
+     */
+    function createMessage(containerElement,cssClass,msg){
+        var date=new Date();
+        var time=date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear()+' '+date.getHours()+':'+date.getMinutes()
+        +':'+date.getSeconds();
+        var infoMessage='<div class="'+cssClass+'">'
+           +'<a data-dismiss="alert" class="close">x</a>'
+           +time+' '+msg+'</div';
+
+        //Place the message
+        $(containerElement).html(infoMessage);
+    }
+
 
 });
