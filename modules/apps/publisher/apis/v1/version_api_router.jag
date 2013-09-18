@@ -11,6 +11,7 @@ Created Date: 18/8/2013
 
 var config = require('/config/publisher.json');
 var caramel = require('caramel');
+var utility = require('/modules/utility.js').rxt_utility();
 
 var router = require('/modules/router-g.js').router();
 var routeManager = new router.Router();
@@ -28,6 +29,8 @@ routeManager.register('GET','publisher','/publisher/api/version/{type}/{id}',fun
 
     log.info('type: '+shortName+' id: '+id);
 
+
+
 });
 
 routeManager.register('POST','publisher','/publisher/api/version/{type}/{id}/{version}',function(context){
@@ -36,7 +39,7 @@ routeManager.register('POST','publisher','/publisher/api/version/{type}/{id}/{ve
     var id=context.params.id;
     var version=context.params.version;
 
-    log.info('type: '+shortName+' id: '+id+' version: '+version);
+    //log.info('type: '+shortName+' id: '+id+' version: '+version);
 
     try{
 
@@ -45,12 +48,24 @@ routeManager.register('POST','publisher','/publisher/api/version/{type}/{id}/{ve
         //Get the instance with id
         var oldArtifact=artifactManager.get(id);
 
+        //Check if the version is already present
+        var versionList=artifactManager.getAllAssetVersions(oldArtifact.attributes.overview_name);
+
+        var foundAsset=utility.findInArray(versionList,{version:version});
+
+        //Do not create a new version if it already exists
+        if(foundAsset){
+            log.info('a duplicate version exists');
+            response.sendError(406,'The version : '+version+' already exists for asset: '+id);
+            return;
+        }
+
         var model=modelManager.getModel(shortName);
 
         //Import the artifact data
         model.import('asset',oldArtifact);
 
-        log.info(oldArtifact);
+        //log.info(oldArtifact);
 
         //Delete the id
         model.set('*.id','');
@@ -63,7 +78,12 @@ routeManager.register('POST','publisher','/publisher/api/version/{type}/{id}/{ve
 
         var newId=model.get('*.id');
 
-        log.info('newly created asset id: '+newId.value);
+        var msg={};
+        msg['ok']=true;
+        msg['id']=newId.value;
+        msg['url']='/publisher/asset/'+shortName+'/'+msg.id;
+
+        print(msg);
 
     }catch(e){
 

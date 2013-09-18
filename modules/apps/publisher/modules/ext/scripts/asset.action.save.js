@@ -21,8 +21,11 @@ var module=function(){
     var configs=require('/config/publisher.json');
     var log=new Log();
 
+
 	return{
 		execute:function(context){
+
+            var utility=require('/modules/utility.js').rxt_utility();
 
             log.debug('Entered : '+meta.name);
 
@@ -32,6 +35,7 @@ var module=function(){
             var template=context.template;
 
             var name=model.getField('overview.name').value;
+            var version=model.getField('overview.version').value;
             var shortName=template.shortName;
 
             log.debug('Artifact name: '+name);
@@ -58,20 +62,29 @@ var module=function(){
 
             log.debug('Finished saving asset : '+name);
 
+            //The predicate object used to compare the assets
+            var predicate={
+              attributes:{
+                  overview_name:name,
+                  overview_version:version
+              }
+            };
             var artifact=artifactManager.find(function(adapter){
-               return (adapter.attributes.overview_name==name)?true:false;
+                //Check if the name and version are the same
+               //return ((adapter.attributes.overview_name==name)&&(adapter.attributes.overview_version==version))?true:false;
+               return utility.assertEqual(adapter,predicate);
             },1);
 
             log.debug('Locating saved asset: '+stringify(artifact)+' to get the asset id.');
 
             var id=artifact[0].id||' ';
 
-            log.info('Setting id of model to '+id);
+            log.debug('Setting id of model to '+id);
 
             //Save the id data to the model
             model.setField('*.id',id);
 
-            log.info('Finished saving asset with id: '+id);
+            log.debug('Finished saving asset with id: '+id);
 		}
 	}
 };
