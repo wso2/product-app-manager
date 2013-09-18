@@ -4,7 +4,7 @@
                 <div class="info-div alert alert-error">
                             <a data-dismiss="alert" class="close">x</a>
                             <i class="icon-warning-sign text-red icon_block"></i>
-                            This feature will be available on our next milestone..
+                            This feature will be available on our next milestone.w.
                 </div>
                 <div class="widget wlightblue">
                     <div class="widget-head">
@@ -12,7 +12,7 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="widget-content">
-                        <form class="form-horizontal">
+                        <form class="form-horizontal" id='form-asset-edit'>
                             {{#each data.fields}}
                                 <div class="control-group">
                                     <b><label class="control-label">{{this.label}}:</label></b>
@@ -23,8 +23,9 @@
                             {{/each}}
                             <div id="saveButtons" class="form-actions">
                                 <input type="submit" value="Update" class="btn btn-primary"
-                                    name="editAssetButton" disabled="disabled" id="editAssetButton">
-                                <input type="reset" value="Cancel" disabled="disabled" class="btn">
+                                    name="editAssetButton"  id="editAssetButton">
+                                <input type="reset" value="Cancel"  class="btn">
+                                <input type="hidden" value="{{shortName}}" name="{{shortName}}" id="meta-asset-type">
                             </div>
                         </form>
                     </div>

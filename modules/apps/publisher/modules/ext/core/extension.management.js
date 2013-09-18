@@ -229,16 +229,15 @@ var extension_management=function(){
         var fieldA;
         var fieldB;
 
-        log.info('entered diff');
         for(var index in reqProps){
             fieldProp=reqProps[index];
-            log.info('checking: '+fieldProp);
+
             fieldA= a.get(fieldProp);
             fieldB= b.get(fieldProp);
 
-            if(fieldA.getValue()!=fieldB.getValue()){
-                log.info('field: '+fieldProp);
+            log.info('field A '+fieldA.getValue()+' field B: '+fieldB.getValue());
 
+            if(fieldA.getValue()!=fieldB.getValue()){
                 difference.push(fieldProp);
             }
         }

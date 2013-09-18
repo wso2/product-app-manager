@@ -114,7 +114,7 @@ routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', fu
     var shortName = context.params.type;
     var id = context.params.id;
     var artifactManager = rxtManager.getArtifactManager(shortName);
-
+    log.info('CONTEXT: '+stringify(context.content));
     try {
         var modelA = modelManager.getModel(shortName);
         var modelB = modelManager.getModel(shortName);
