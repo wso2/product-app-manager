@@ -70,7 +70,7 @@ var init = function (options) {
             domain = carbon.server.tenantDomain({
                 tenantId: tenantId
             });
-        //loginManager.triggerEvent(configReg, user.username, tenantId, domain);
+        loginManager.triggerEvent(configReg, user.username, tenantId, domain);
     });
 };
 
