@@ -29,7 +29,26 @@ routeManager.register('GET','publisher','/publisher/api/version/{type}/{id}',fun
 
     log.info('type: '+shortName+' id: '+id);
 
+    try{
 
+        var artifactManager=rxtManager.getArtifactManager(shortName);
+
+
+        var artifact=artifactManager.get(id);
+
+        //Only try to get the version list if the artifact is found
+        if(artifact){
+            var versionList=artifactManager.getAllAssetVersions(artifact.attributes.overview_name);
+            print(versionList);
+        }
+        else{
+            response.sendError(404,'The asset '+id+' was not found.');
+        }
+
+    }catch(e){
+        log.info('Unable to obtain the version list of asset : '+id+'.The following exception was thrown: '+e);
+        response.sendError(500,'Unable to obtain the version list of asset : '+id+'.Please check server log');
+    }
 
 });
 
