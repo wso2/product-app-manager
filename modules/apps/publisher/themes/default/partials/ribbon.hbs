@@ -33,9 +33,9 @@
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-                <li><a target="_self" href="#">2.0.0</a></li>
-                <li><a target="_self" href="#">2.0.4</a></li>
-                <li><a target="_self" href="#">3.0.0</a></li>
+                {{#each versions}}
+                <li><a target="_self" href="/publisher/asset/{{../currentType}}/{{this.id}}">{{this.version}}</a></li>
+                {{/each}}
             </ul>
          </div>
     {{/if}}

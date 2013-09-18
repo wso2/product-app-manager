@@ -27,6 +27,7 @@ var generateBreadcrumbJson = function(data) {
             currentType : data.shortName,
             assetName : data.artifact.attributes.overview_name,
             currentVersion : data.artifact.attributes.overview_version,
+            versions:data.versions,
             breadcrumb :
                 [
                     {
