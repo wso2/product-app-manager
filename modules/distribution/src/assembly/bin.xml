@@ -46,16 +46,11 @@
                 <exclude>**/org.wso2.carbon.identity.relyingparty.ui-3.1.0.SNAPSHOT.jar</exclude>
                 <exclude>**/org.wso2.carbon.identity.user.registration.ui-3.1.0.SNAPSHOT.jar</exclude>
                 <exclude>**/log4j.properties</exclude>
-                <exclude>**/bundles.info</exclude>
             </excludes>
         </fileSet>
         <fileSet>
             <directory>target/wso2carbon-core-${carbon.kernal.version}</directory>
             <outputDirectory>wso2store-${pom.version}</outputDirectory>
-            <excludes>
-                <exclude>**/wso2server.bat</exclude>
-                <exclude>**/wso2server.sh</exclude>
-            </excludes>
             <includes>
                 <include>**/*.sh</include>
             </includes>
@@ -128,13 +123,6 @@
                 <include>*/**</include>
             </includes>
         </fileSet>
-        <!--<fileSet>
-            <directory>../webapps/</directory>
-            <outputDirectory>wso2store-${pom.version}/repository/deployment/server/webapps</outputDirectory>
-            <includes>
-                <include>*/**</include>
-            </includes>
-        </fileSet>-->
         <fileSet>
             <directory>src/repository/resources/jaggery/modules/</directory>
             <outputDirectory>wso2store-${pom.version}/modules</outputDirectory>
@@ -206,38 +194,22 @@
             </includes>
         </fileSet>
         <fileSet>
-            <directory>src/repository/components/configuration/org.eclipse.equinox.simpleconfigurator</directory>
-            <outputDirectory>wso2store-${pom.version}/repository/components/configuration/org.eclipse.equinox.simpleconfigurator/</outputDirectory>
+            <directory>../p2-profile-gen/target/wso2carbon-core-${carbon.version}/lib/runtimes</directory>
+            <outputDirectory>wso2store-${pom.version}/lib/runtimes/</outputDirectory>
             <includes>
                 <include>*/**</include>
             </includes>
         </fileSet>
         <fileSet>
-            <directory>src/bin</directory>
-            <outputDirectory>wso2store-${pom.version}/bin/</outputDirectory>
-            <includes>
-                <include>*/**</include>
-            </includes>
-            <fileMode>644</fileMode>
-        </fileSet>
-        <fileSet>
-            <directory>../p2-profile-gen/target/WSO2-CARBON-PATCH-4.1.0-0001</directory>
+            <directory>../p2-profile-gen/target/WSO2-CARBON-PATCH-4.2.0-0001</directory>
             <outputDirectory>wso2store-${pom.version}/repository/components/patches/</outputDirectory>
             <includes>
                 <include>**/patch0001/*.*</include>
             </includes>
         </fileSet>
-        <fileSet>
-            <directory>../p2-profile-gen/target/WSO2-CARBON-PATCH-4.1.0-0002</directory>
-            <outputDirectory>wso2store-${pom.version}/repository/components/patches/</outputDirectory>
-            <includes>
-                <include>**/patch0002/*.*</include>
-            </includes>
-        </fileSet>
     </fileSets>
 
     <dependencySets>
-
         <!--        <dependencySet>
             <outputDirectory>wso2store-${pom.version}/repository/deployment/server/webapps</outputDirectory>
             <outputFileNameMapping>ROOT.war</outputFileNameMapping>
@@ -245,21 +217,12 @@
                 <include>org.apache.shindig:shindig-server:war</include>
             </includes>
         </dependencySet>-->
-
         <dependencySet>
             <outputDirectory>wso2store-${pom.version}/lib/endorsed</outputDirectory>
             <includes>
                 <include>javax.el:el-api:jar</include>
             </includes>
         </dependencySet>
-
-        <dependencySet>
-            <outputDirectory>wso2store-${pom.version}/repository/components/dropins</outputDirectory>
-            <includes>
-                <include>org.wso2.carbon:org.wso2.carbon.registry.common:jar</include>
-            </includes>
-        </dependencySet>
-
         <dependencySet>
             <outputDirectory>wso2store-${pom.version}/repository/deployment/client/modules
             </outputDirectory>
@@ -320,13 +283,6 @@
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
-        <!--file>
-            <source>../p2-profile-gen/target/wso2carbon-core-${carbon.kernal.version}/repository/conf/event-broker.xml
-            </source>
-            <outputDirectory>wso2store-${pom.version}/repository/conf/</outputDirectory>
-            <filtered>true</filtered>
-            <fileMode>644</fileMode>
-        </file-->
         <file>
             <source>src/repository/conf/carbon.xml</source>
             <outputDirectory>wso2store-${pom.version}/repository/conf/</outputDirectory>
