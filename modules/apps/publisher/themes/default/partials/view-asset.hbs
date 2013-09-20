@@ -10,29 +10,6 @@
                 </div>
                 <div class="span10 asset-details-box">
                         <h4>{{{snoop "fields(name=overview_name).value" this.data}}}</h4>
-                            <div class="asset-view-details info-box-container">
-                                <div class="infobox block-orange">
-                                    <div class="infobox-icon">
-                                        <i class="icon-user icon-4x"></i>
-                                    </div>
-                                    <span class="infobox-bottom-text">Provider</span>
-                                    <span class="infobox-sub-text">{{{snoop "fields(name=overview_provider).value" this.data}}}</span>
-                                </div>
-                                <div class="infobox block-green">
-                                    <div class="infobox-icon">
-                                        <i class="icon-retweet"></i>
-                                    </div>
-                                    <span class="infobox-bottom-text">Lifecycle</span>
-                                    <span class="infobox-sub-text" id='view-lifecyclestate'>{{data.info.lifecycleState}}</span>
-                                </div>
-                                <div class="infobox block-blue">
-                                    <div class="infobox-icon">
-                                        <i class="icon-qrcode"></i>
-                                    </div>
-                                    <span class="infobox-bottom-text">Version</span>
-                                    <span class="infobox-sub-text">{{data.info.version}}</span>
-                                </div>
-		                    </div>
                 </div>
             </div>
 		    <div class="row-fluid asset-details-row">

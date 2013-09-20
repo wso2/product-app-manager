@@ -797,10 +797,10 @@ span.title{
 .asset-details-box{
     bottom: 0;
     float: left;
-    left: -20px;
+    left: -10px;
     padding: 10px 20px 20px 10px;
     position: relative;
-    top: 0;
+    top: 66px;
 }
 .asset-details-box > h4{
     color: #848484;
