@@ -11,7 +11,7 @@ $(function() {
 
 	$(document).on('click', '.assets-container .asset-add-btn', function(event) {
 		var parent = $(this).parent().parent().parent();
-		asset.process(parent.data('type'), parent.data('path'), location.href);
+		asset.process(parent.data('type'), parent.data('id'), location.href);
 		event.stopPropagation();
 	});
 
@@ -64,6 +64,16 @@ $(function() {
 		pagination : "#top-asset-slideshow-pag-site"
 
 	});
+
+    $("#top-asset-slideshow-ebook").carouFredSel({
+        items : 4,
+        width : "100%",
+        infinite : false,
+        auto : false,
+        circular : false,
+        pagination : "#top-asset-slideshow-pag-ebook"
+
+    });
 
 });
 

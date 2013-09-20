@@ -29,6 +29,10 @@ var render = function (theme, data, meta, require) {
             {
                 partial: 'navigation',
                 context: data.navigation
+            },
+            {
+                partial: 'search',
+                context: data.search
             }
         ],
        

@@ -1,0 +1,46 @@
+<%
+var caramel;
+( function() {
+    var site, count,
+            log = new Log(),
+            store = require('/modules/store.js').store(request, session),
+            types = store.assetTypes(),
+            user = require('/modules/user.js').current(session),
+            tags = []
+            sso = configs.ssoConfiguration.enabled;
+    caramel = require('caramel');
+
+    var rxtAttributes = require('modules/util.js').getRXTAttributes(store.tenantId, type);
+
+    if(!user) {
+        response.sendRedirect(caramel.configs().context);
+        return;
+    }
+    site = require('/modules/site.js');
+    var recentAssets = store.recentAssets(type, 3);
+    var subscriptions = store.subscriptions(type);
+    count = Object.keys(subscriptions).length;
+
+    tags = [{
+        url : '/assets/' + type + '?page=1&tag=',
+        data : store.tags(type)
+    }];
+
+    caramel.render({
+        'title' : 'Store | My Items',
+        'navigation' : site.navigation(store.tenantId, {
+            sso : sso,
+            user : user
+        }),
+        search: {
+            mainPage : "My items",
+            subPage : "",
+            isTopAssets : false,
+            searchFields : rxtAttributes
+        },
+        'subscriptions' : count > 0 ? subscriptions : null,
+        'recentAssets' : recentAssets,
+        'tags' : tags
+    });
+}());
+%>

@@ -1,4 +1,3 @@
-<h2>{{t "My Bookmarks"}}</h2>
 <div id="myasset-container" class="row">
 	<div class="span9">
 		{{#if userAssets}}
@@ -14,21 +13,21 @@
 			<div class="store-my-item">
 			
 				<div class="store-my-item-thumbnail">
-					<a href="{{url "/asset/"}}{{../../key}}?asset={{../path}}"><img src="{{images_thumbnail}}"></a>
+					<a href="{{url "/asset/"}}{{../../key}}/{{../id}}"><img src="{{images_thumbnail}}"></a>
 				</div>
 				<div class="store-my-item-info">
-					<a class="asset-title" href="{{url "/asset/"}}{{../../key}}?asset={{../path}}"> 
+					<a class="asset-title" href="{{url "/asset/"}}{{../../key}}/{{../id}}">
 						<strong>{{overview_name}}</strong>
 					</a>
 					<small class="bookmark-assert-provider">by {{overview_provider}}</small>
 					<br><div class="btn-group">
-						<a class="btn btn-mini" data-toggle="tooltip" title="{{t "View"}} {{../../key}}" href="{{url "/asset/"}}{{../../key}}?asset={{../path}}">
+						<a class="btn btn-mini" data-toggle="tooltip" title="{{t "View"}} {{../../key}}" href="{{url "/asset/"}}{{../../key}}/{{../id}}">
 							<i class="icon-eye-open"></i>
 						</a>
 						<a class="btn btn-popover btn-mini {{../../key}}" data-content='&lt;iframe src="{{../../../../URL}}/gadgets/ifr?url={{overview_url}}"&gt;&lt;/iframe&gt;' data-toggle="popover" data-placement="top" title="{{t "Embed this"}} {{../../key}}">
 							<i class="icon-angle-left"></i> <i class="icon-angle-right"></i>
 						</a>
-						<a class="btn btn-mini asset-remove-btn" type="{{../../key}}" data-aid="{{../path}}" data-toggle="tooltip" title="{{t "Remove"}} {{../../key}}">
+						<a class="btn btn-mini asset-remove-btn" type="{{../../key}}" data-aid="{{../id}}" data-toggle="tooltip" title="{{t "Remove"}} {{../../key}}">
 							<i class="icon-remove"></i>
 						</a>
 					</div>

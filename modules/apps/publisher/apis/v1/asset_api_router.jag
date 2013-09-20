@@ -1,0 +1,215 @@
+<%
+
+/*
+ Description: Provides CRUD support for assets
+ Note: type: shortName in the Rxt templates
+ GET  api/asset/{type} 	       	  : Provides the Rxt template
+ GET  api/asset/{type}/{id}        : Provides artifact details on the provided type
+ POST api/asset/{type}             : Creates a new asset of the given type
+ PUT  api/asset/{type}/{id}	  : Updates an asset with the given type and id
+ DELETE asset/{type}/{id} 	  : Deletes an asset with the provided type and id
+ Filename:asset.js
+ Created Date: 29/7/2013
+ */
+
+
+var config = require('/config/publisher.json');
+var caramel = require('caramel');
+
+var router = require('/modules/router-g.js').router();
+var routeManager = new router.Router();
+
+var user=require('/modules/user.js');
+var publisher = require('/modules/publisher.js').publisher(request, session);
+
+
+//var routeManager=application.get(config.app.ROUTE_MANAGER);
+var rxtManager = publisher.rxtManager;
+var modelManager = publisher.modelManager;
+var log=new Log();
+
+
+routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}', function (context) {
+
+    var shortName = (context.params.type) || '';
+
+    var rxtTemplate = rxtManager.findAssetTemplate(function (template) {
+        return (template.shortName == shortName) ? true : false;
+    });
+
+    if (!rxtTemplate) {
+        log.debug('The asset type: ' + shortName + ' could not be found');
+        response.sendError(404, 'Asset type not found.'); //TODO: Replace
+    }
+    else {
+        var model = modelManager.getModel(shortName);
+        //Obtain the username from the session and populate the provider field
+
+        var username=require('/modules/user.js').current(session).username;//.get('LOGGED_IN_USER');
+        model.set('overview.provider',username);
+        var output=model.export('form');
+
+        print(output);
+    }
+});
+
+routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
+
+    var shortName = context.params.type;
+
+    var id = context.params.id;
+
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+
+    //If the id is not found it will throw a conversion exception
+    try {
+
+        var artifact = artifactManager.get(id);
+
+        var model = modelManager.getModel(shortName);
+
+        model.import('asset', artifact);
+
+        var result = model.export('form');
+
+        print(result);
+    } catch (e) {
+
+        log.debug('The asset type: ' + shortName + ' with id: ' + id + ' could not be found.The following exception was thrown: ' + e);
+        response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check the server logs.');
+    }
+
+});
+
+routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}', function (context) {
+    var shortName = context.params.type;
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+
+    //Check if the type is valid
+    try {
+
+        var model=modelManager.getModel(shortName);
+
+        //assigning default thumbnail and banner if not provided.
+        if(context.post['images_thumbnail'] == '') {
+            context.post['images_thumbnail'] = '/publisher/config/defaults/img/thumbnail.jpg';
+        }
+        if(context.post['images_banner'] == '') {
+            context.post['images_banner'] = '/publisher/config/defaults/img/banner.jpg';
+        }
+
+        model.import('form.importer',context.post);
+
+        //var assetModel = getModel(context.post);
+
+        model.save();
+
+        //var createdAsset = artifactManager.add(assetModel);
+
+        //Get the model id
+        var idField = model.get('*.id');
+
+        if (idField) {
+            print({ok: 'true', message: 'Asset created.', id: idField.value});
+        }
+        else {
+            log.debug('An asset of type: ' + shortName + ' could not be created.Probably a fault with publisher logic!');
+        }
+
+    }
+    catch (e) {
+        log.debug('An asset of type: ' + shortNa, e + ' could not be created.The following exception was thrown: ' + e);
+        response.sendError(500, 'An asset of type: ' + shortName + ' could not be created.Please check the server logs.');
+    }
+
+});
+
+routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
+    var shortName = context.params.type;
+    var id = context.params.id;
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+    log.info('CONTEXT: '+stringify(context.content));
+    try {
+        var modelA = modelManager.getModel(shortName);
+        var modelB = modelManager.getModel(shortName);
+
+        log.debug('POST:' + stringify(context.content));
+
+        modelA.import('form.importer', context.content);
+
+        modelA.set('*.id', id);
+
+        //Get the original artifact
+        var originalArtifact = artifactManager.get(id);
+
+        log.info('about to import data from originalArtifact');
+        modelB.import('asset', originalArtifact);
+
+        //Checks whether two models are equal
+        var reqProps=['overview.name', 'overview.provider', 'overview.version']
+
+        var isEqual = modelManager.assertEqual(modelA, modelB,reqProps);
+
+        //If they are not equal,abort the operation
+        if (!isEqual) {
+            log.info('trying to get fields which are different');
+            var diff=modelManager.diff(modelA,modelB,reqProps);
+            response.sendError(406, 'The name,provider and version of an asset cannot be changed.The following fields'
+            +' were modified: '+diff);
+            return;
+        }
+
+        var artifact = modelA.export('asset.exporter');
+        artifactManager.update(artifact);
+        var msg={};
+        msg['ok']=true;
+        msg['message']='asset updated';
+        print(msg);
+
+    } catch (e) {
+        log.debug('The asset ' + id + ' could not be updated.The following exception was thrown: ' + e);
+        response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
+    }
+    /*var shortName=context.params.type;
+     var id=context.params.id;
+     var attribute=context.params.attr;
+     var attributeValue=context.params.value;
+     var artifactManager=rxtManager.getArtifactManager(shortName);
+
+     //Obtain the artifact
+     try{
+     var result=artifactManager.update({
+     id:id,
+     attributes: {
+     attribute:attributeValue,
+     overview_type:'default'
+     }
+     });
+     print(result);
+
+     }catch(e){
+     print('unable to update artifact with id'+e);
+     }*/
+});
+
+routeManager.register('DELETE', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
+    var shortName = context.params.type;
+    var id = context.params.id;
+
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+
+    try {
+        artifactManager.remove(id);
+        print({ok: 'true', message: 'Asset deleted'});
+    } catch (e) {
+        log.debug('Asset ' + id + 'could not be removed.An exception was thrown: ' + e);
+        response.sendError(404, 'Asset with id: ' + id + ' could not be removed.');
+    }
+
+
+});
+
+routeManager.handle(request, response);
+
+
+%>

@@ -1,0 +1,201 @@
+<%
+
+/*
+ Description: Provides CRUD support for assets
+ Note: type: shortName in the Rxt templates
+ GET  api/asset/{type} 	       	  : Provides the Rxt template
+ GET  api/asset/{type}/{id}        : Provides artifact details on the provided type
+ POST api/asset/{type}             : Creates a new asset of the given type
+ PUT  api/asset/{type}/{id}	  : Updates an asset with the given type and id
+ DELETE asset/{type}/{id} 	  : Deletes an asset with the provided type and id
+ Filename:asset.js
+ Created Date: 29/7/2013
+ */
+
+
+var config = require('/config/publisher.json');
+var caramel = require('caramel');
+var user = require('/modules/user.js');
+var publisher = require('/modules/publisher.js').publisher(request, session);
+
+var router = require('/modules/router-g.js').router();
+var routeManager = new router.Router();
+
+//var routeManager=application.get(config.app.ROUTE_MANAGER);
+var rxtManager = publisher.rxtManager;
+var modelManager = publisher.modelManager;
+
+var log=new Log();
+
+routeManager.register('GET', 'publisher', '/publisher/asset/{type}', function (context) {
+
+    var shortName = (context.params.type) || '';
+    var operation = 'create';
+    var rxtTemplate = rxtManager.findAssetTemplate(function (template) {
+        return (template.shortName == shortName) ? true : false;
+    });
+
+    var model = modelManager.getModel(shortName);
+
+    if (!rxtTemplate) {
+        log.debug('The requested asset type: '+shortName+' was not found');
+        response.sendError(404, 'Asset type not found'); //TODO: Replace
+    }
+    else {
+        //Obtain the username from the session and populate the provider field
+        var username=require('/modules/user.js').current(session).username;//.get('LOGGED_IN_USER');
+        model.set('overview.provider',username);
+
+        var output = model.export('form');
+
+        caramel.render({op: operation, cuser: user.current(session), shortName: shortName, rxtTemplate: rxtTemplate, data: output});
+    }
+});
+
+routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', function (context) {
+
+    var shortName = context.params.type;
+    //print(context.params);
+    var id = context.params.id;
+    var operation = 'view';
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+
+    //If the id is not found it will throw a conversion exception
+    //TODO: Return an empty artifact or null
+    try {
+
+        var artifact = artifactManager.get(id);
+
+        //Get the template
+        var rxtTemplate = rxtManager.findAssetTemplate(function (template) {
+            return (template.shortName == shortName) ? true : false;
+        });
+
+        var model = modelManager.getModel(shortName);
+
+        model.import('asset', artifact);
+
+        var output = model.export('form');
+
+        var assetName=model.get('overview.name').value;
+
+        //Get the list of versions
+        var versionList=artifactManager.getAllAssetVersions(assetName);
+
+        caramel.render({op: operation, cuser: user.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output
+        ,versions:versionList});
+    } catch (e) {
+        log.debug('The asset with id '+id+' could not be found due to : '+e);
+        response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check server log.');
+    }
+
+});
+
+routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/{type}/{id}', function (context) {
+
+    var shortName = context.params.type;
+    //print(context.params);
+    var id = context.params.id;
+    var operation = context.params.opType;
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+
+    //If the id is not found it will throw a conversion exception
+    //TODO: Return an empty artifact or null
+    try {
+        var artifact = artifactManager.get(id);
+
+        //Get the template
+        var rxtTemplate = rxtManager.findAssetTemplate(function (template) {
+            return (template.shortName == shortName) ? true : false;
+        });
+
+        var model = modelManager.getModel(shortName);
+
+        model.import('asset', artifact);
+
+        var output = model.export('form');
+
+        var assetName=model.get('overview.name').value;
+
+        //Get the list of versions
+        var versionList=artifactManager.getAllAssetVersions(assetName);
+
+        caramel.render({op: operation, cuser: user.current(), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output
+            ,versions:versionList});
+    } catch (e) {
+        log.debug('The asset with id '+id+' could not be found due to : '+e);
+        response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check server log.');
+    }
+
+});
+
+routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (context) {
+
+    var shortName = context.params.type;
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+    var model=modelManager.getModel(shortName);
+
+    //Check if the type is valid
+    try {
+
+        //assigning default thumbnail and banner if not provided.
+        if(context.post['images_thumbnail'] == '') {
+            context.post['images_thumbnail'] = '/publisher/config/defaults/img/thumbnail.jpg';
+        }
+        if(context.post['images_banner'] == '') {
+            context.post['images_banner'] = '/publisher/config/defaults/img/banner.jpg';
+        }
+        model.import('form.importer',context.post);
+        model.save();
+    }
+    catch (e) {
+        log.error(e);
+        log.debug('An instance could not be created for asset with type :'+shortName+'.The following exception was recorded: '+e);
+        response.sendError(500, 'The asset instance could not be created.Please check the server log.');
+    }
+
+});
+
+routeManager.register('PUT', 'publisher', '/publisher/asset/{type}/{id}/{attr}/{value}', function (context) {
+    log.info('Unsupported method PUT for /asset called.');
+    /*var shortName=context.params.type;
+     var id=context.params.id;
+     var attribute=context.params.attr;
+     var attributeValue=context.params.value;
+     var artifactManager=rxtManager.getArtifactManager(shortName);
+
+     //Obtain the artifact
+     try{
+     var result=artifactManager.update({
+     id:id,
+     attributes: {
+     attribute:attributeValue,
+     overview_type:'default'
+     }
+     });
+     print(result);
+
+     }catch(e){
+     print('unable to update artifact with id'+e);
+     }*/
+});
+
+routeManager.register('DELETE', 'publisher', '/publisher/asset/{type}/{id}', function (context) {
+    var shortName = context.params.type;
+    var id = context.params.id;
+
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+
+    try {
+        artifactManager.remove(id);
+
+    } catch (e) {
+        log.debug('Asset id: '+id+'was not removed.Due to exception: '+e);
+        response.sendError(404, 'Asset with id: ' + id + 'was not removed.Please check the server log for more details.');
+    }
+
+
+});
+routeManager.handle(request, response);
+
+%>

@@ -47,6 +47,15 @@ $(".popover-content").live("mouseleave",function(){
 		pagination  : "#own-asset-slideshow-pag-site"
 
 	});
+
+    $("#asset-in-ebook").carouFredSel({
+		items:4,
+		infinite: false,
+		auto : false,
+		circular: false,
+		pagination  : "#own-asset-slideshow-pag-ebook"
+
+	});
 	
 
 });

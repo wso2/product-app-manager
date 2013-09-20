@@ -27,7 +27,6 @@
             <artifactId>el-api</artifactId>
             <version>2.2</version>
         </dependency>
-		
     </dependencies>
 
     <build>
@@ -148,7 +147,7 @@
                                 </unzip>
                                 <copy file="src/repository/conf/shindig.properties"
                                       todir="${jardir}/shindig-common-${shindig.version}"/>
-                                <delete file="target/shindig/WEB-INF/lib/shindig-common-${shindig.version}.jar"></delete>
+                                <delete file="target/shindig/WEB-INF/lib/shindig-common-${shindig.version}.jar"/>
                                 <zip destfile="target/shindig/WEB-INF/lib/shindig-common-${shindig.version}.jar"
                                      basedir="${jardir}/shindig-common-${shindig.version}"/>
                                 <delete>

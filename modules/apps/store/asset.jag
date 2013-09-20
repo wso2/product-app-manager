@@ -1,32 +1,47 @@
 <%
-	var log = new Log(),
+var asset,
+        log = new Log(),
         caramel = require('caramel'),
-        store = require('/modules/store.js'),
-        config =  require('/store.js').config(),
+        store = require('/modules/store.js').store(request, session),
+        config = require('/store.js').config(),
         site = require('/modules/site.js'),
-        user = require('/modules/user.js').current(),
-        aid = request.getParameter('asset'),
+        user = require('/modules/user.js').current(session),
+        utility = require('modules/util.js'),
         sso = configs.ssoConfiguration.enabled,
-        asset = store.asset(type, aid);
-	    inDashboard= false;
+        inDashboard = false,
+        matcher = new URIMatcher(request.getRequestURI());
 
-	if(store.isuserasset(aid,type)){
-		inDashboard=true;
-	}
+matcher.match('/{context}' + config.assetUrlPrefix + '/{type}/{aid}') ||
+matcher.match('/{context}' + config.assetUrlPrefix + '/{type}/{aid}/{+suffix}');
+aid = matcher.elements().aid;
+asset = store.asset(type, aid);
+
+if (store.isuserasset(aid, type)) {
+    inDashboard = true;
+}
+
+var rxtAttributes = utility.getRXTAttributes(store.tenantId, type);
 
 caramel.render({
-    title: 'Store | Gadget',
+    title: 'Store | ' + type,
     user: user,
-	sso:sso,
-    navigation: site.navigation({sso:sso, user:user}),
+    sso: sso,
+    navigation: site.navigation(store.tenantId, {sso: sso, user: user}),
+    search: {
+        search: {title: type},
+        isTopAssets: false,
+        searchFields: rxtAttributes
+    },
     type: type,
     embedURL: config.server.http + '/gadgets/ifr?url=' + asset.attributes.overview_url,
     inDashboard: inDashboard,
-    asset:asset,
-    tags: [{
-        url: '/assets/' + type + '/?page=1&tag=',
-        data: store.tags(type)
-    }],
+    asset: asset,
+    tags: [
+        {
+            url: '/assets/' + type + '/?page=1&tag=',
+            data: store.tags(type)
+        }
+    ],
     recentAssets: store.recentAssets(type)
 });
 %>

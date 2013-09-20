@@ -1,0 +1,14 @@
+{{#if thisAsset.indashboard}}
+    <a href="#" class="btn disabled btn-added">{{t "Bookmarked"}}</a>
+{{else}}
+
+    {{# if ssoParam}}
+        <a href="{{url "/login.jag"}}"
+           class="btn btn-primary asset-add-btn">{{>process-asset-text}}{{thisAsset.type}}</a>
+    {{else}}
+
+        <a href="#" class="btn btn-primary asset-add-btn">{{>process-asset-text}}{{thisAsset.type}}</a>
+    {{/if}}
+    {{# if userParam.username}}
+        <a href="#" class="btn btn-primary asset-add-btn">{{>process-asset-text}}{{thisAsset.type}}</a>
+    {{/if}}{{/if}}

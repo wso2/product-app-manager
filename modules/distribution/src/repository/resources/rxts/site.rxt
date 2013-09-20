@@ -33,16 +33,6 @@
             <field type="text-area">
                 <name>Description</name>
             </field>
-            <field type="options">
-                <name label="Status">Status</name>
-                <values>
-                    <value>CREATED</value>
-                    <value>PUBLISHED</value>
-                    <value>RETIRED</value>
-                    <value>DEPRECATED</value>
-                    <value>BLOCKED</value>
-                </values>
-            </field>
         </table>
         <table name="Images">
             <field type="text" required="true">

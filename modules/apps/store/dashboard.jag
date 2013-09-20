@@ -1,13 +1,17 @@
 <%
 var caramel;
 ( function() {
-	var site, count,tag, type = 'gadget',
-	log = new Log(), store = require('/modules/store.js'),
-    types = store.assetTypes(),
-	user = require('/modules/user.js').current(), 
-	tags = [], 
-	sso = configs.ssoConfiguration.enabled;
+    var site, count, tag,
+            type = 'gadget',
+            log = new Log(),
+            store = require('/modules/store.js').store(request, session),
+            types = store.assetTypes(),
+            user = require('/modules/user.js').current(session),
+            tags = [],
+            sso = configs.ssoConfiguration.enabled;
 	caramel = require('caramel');
+
+ 	var rxtAttributes = require('modules/util.js').getRXTAttributes(store.tenantId, type);
 
 	if(!user) {
 		response.sendRedirect(caramel.configs().context);
@@ -16,9 +20,11 @@ var caramel;
 	site = require('/modules/site.js');
 	recentGadgets = store.recentAssets("gadget", 3);
 	recentSites = store.recentAssets("site", 3);
-	var recentAssets = recentGadgets.concat(recentSites);
-	count = Object.keys(store.userAssets()).length;
-	 
+	recentEBooks = store.recentAssets("ebook", 3);
+	var recentAssets = recentGadgets.concat(recentSites,recentEBooks);
+    var subscriptions = store.subscriptions();
+	count = Object.keys(subscriptions).length;
+
 	for(var i = 0; i < types.length; i++) {
 		tag = {
 			url : '/assets/' + types[i] + '?page=1&tag=',
@@ -29,11 +35,17 @@ var caramel;
 
 	caramel.render({
 		'title' : 'Store | My Bookmarks',
-		'navigation' : site.navigation({
+		'navigation' : site.navigation(store.tenantId, {
 			sso : sso,
 			user : user
 		}),
-		'userAssets' : count > 0 ? store.userAssets() : null,
+		 search: {
+			mainPage : "My bookmarks",
+			subPage : "",
+			isTopAssets : false,
+            searchFields : rxtAttributes
+		},
+		'userAssets' : count > 0 ? subscriptions : null,
 		'recentAssets' : recentAssets,
 		'tags' : tags
 	});

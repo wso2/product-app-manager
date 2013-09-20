@@ -66,31 +66,26 @@
 
     <modules>
         <module>modules/components/store-admin</module>
-	    <module>modules/features/</module>
+	<module>modules/components/jaggery-scxml-executors</module>
+        <module>modules/components/sso-common</module>
+	    <module>modules/features/org.wso2.store.feature</module>
         <module>modules/p2-profile-gen</module>
         <module>modules/distribution</module>
     </modules>
 
     <properties>
         <ues.version>1.0.0</ues.version>
-        <carbon.kernal.version>4.1.0</carbon.kernal.version>
-        <carbon.platform.version>4.1.0</carbon.platform.version>
+        <carbon.kernal.version>4.2.0</carbon.kernal.version>
+        <carbon.platform.version>4.2.0</carbon.platform.version>
 
         <!-- jaggery versions -->
         <jaggery.feature.version>0.9.0-SNAPSHOT</jaggery.feature.version>
 
         <!-- patch versions -->
-        <patch.version.401>4.0.1</patch.version.401>
-        <patch.version.402>4.0.2</patch.version.402>
-		<patch.version.403>4.0.3</patch.version.403>
-        <patch.version.404>4.0.4</patch.version.404>
-        <patch.version.405>4.0.5</patch.version.405>
-		<patch.version.406>4.0.6</patch.version.406>
-		<patch.version.407>4.0.7</patch.version.407>
-		<patch.version.408>4.0.8</patch.version.408>
-        <carbon.p2.plugin.version>1.5.1</carbon.p2.plugin.version>
-		<stratos.version>2.1.0</stratos.version>
-        <stratos.version.212>2.1.2</stratos.version.212>
+        <patch.version.421>4.2.1</patch.version.421>
+        <patch.version.422>4.2.2</patch.version.422>
+        <carbon.p2.plugin.version>1.5.3</carbon.p2.plugin.version>
+		<stratos.version>2.2.0</stratos.version>
 
         <!-- maven plugin versions -->
         <build-helper-maven-plugin.version>1.7</build-helper-maven-plugin.version>
@@ -114,6 +109,11 @@
         <caramel.feature.version>1.0.0-SNAPSHOT</caramel.feature.version>
 		<wso2.slf4j.version>1.5.10.wso2v1</wso2.slf4j.version>
 		<sso.hostobjects.version>1.0.1</sso.hostobjects.version>
+
+        <rhino.osgi.version>1.7.0.R4.wso2v1-SNAPSHOT</rhino.osgi.version>
+        <commons-codec.osgi.version>1.4.0.wso2v1</commons-codec.osgi.version>
+        <opensaml2.wso2.version>2.4.1.wso2v1</opensaml2.wso2.version>
+        <commons-logging.version>1.1.1</commons-logging.version>
     </properties>
 
 </project>

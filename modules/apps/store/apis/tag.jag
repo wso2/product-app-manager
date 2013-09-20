@@ -1,12 +1,17 @@
 <%
 response.addHeader("Access-Control-Allow-Origin", "*");
 (function() {
-	if(!require('/modules/user.js').current()) {
+	if(!require('/modules/user.js').current(session)) {
 		//response.sendError(401, 'Unauthorized');
 		//return;
 	}
 
-	var elems, store = require('/modules/store.js'), matcher = new URIMatcher(request.getRequestURI());
+    var elems,
+            server = require('/modules/server.js'),
+            tenant = server.tenant(request, session),
+            tenantId = tenant.tenantId,
+            store = require('/modules/store.js').store(tenantId, session),
+            matcher = new URIMatcher(request.getRequestURI());
 
 	if(matcher.match('/{context}/apis/tag')) {
 		print(store.tags());

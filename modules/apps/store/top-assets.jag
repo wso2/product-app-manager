@@ -4,24 +4,27 @@
 
 var caramel;
 ( function() {
-	var gadgets, sites, paging, count, current, total, loggedUser, popularAssets,
+	var gadgets, sites,ebooks, paging, count, current, total, loggedUser, popularAssets,
             recent = false,
             type = 'gadget',
             options = {},
             log = new Log(),
             user = require('/modules/user.js'),
             configs = require('/store.js').config(),
-            store = require('/modules/store.js'),
             site = require('/modules/site.js'),
             tag = request.getParameter('tag'),
             query = request.getParameter('query'),
-            ssoLogin = require('/modules/sso-login.js'),
-            ssoUser = session.get('LOGGED_IN_USER');
+            fields = request.getParameter('fields'),
+            server = require('/modules/server.js'),
+            ssoUser = user.current(session),
+            tenant = server.tenant(request, session),
+            tenantId = tenant.tenantId,
+            store = require('/modules/store.js').store(tenantId, session);
 	caramel = require('caramel');
 	sso = configs.ssoConfiguration.enabled;
 	loggedUser = (sso && ssoUser) ? {
-		username : ssoUser
-	} : user.current();
+		username : ssoUser.username
+	} : user.current(session);
 	paging = store.assetsPaging(request);
 	total = store.assetCount(type);
 
@@ -39,40 +42,71 @@ var caramel;
             query: query,
             type: 'site'
         }, paging);
+
+        ebooks = store.search({
+            query: query,
+            type: 'ebook'
+        }, paging);
+
+    } else if (fields) {
+        var parts, param, params, value;
+        options = {
+            attributes: {}
+        };
+        params = request.getAllParameters();
+        //advanced search is only allowed for fields under overview section
+        for (param in params) {
+            if (param !== 'fields' && params.hasOwnProperty(param)) {
+                options.attributes['overview_' + param.trim().toLocaleLowerCase()] = new RegExp(params[param], "i");
+            }
+        }
+        options.type = 'gadget';
+        gadgets = store.search(options, paging);
+        options.type = 'site';
+        sites = store.search(options, paging);
+        options.type = 'ebook';
+        ebooks = store.search(options, paging);
     } else if (tag) {
         gadgets = store.tagged('gadget', tag, paging);
         sites = store.tagged('site', tag, paging);
+        ebooks = store.tagged('ebook', tag, paging);
     } else {
         recent = true;
         gadgets = store.assets('gadget', paging);
         sites = store.assets('site', paging);
+        ebooks = store.assets('ebook', paging);
     }
 	recentGadgets = store.recentAssets('gadget', 3);
 	recentSites = store.recentAssets('site', 3);
-	recentAssets = recentGadgets.concat(recentSites);
+	recentEBooks = store.recentAssets('ebook', 3);
+	recentAssets = recentGadgets.concat(recentSites,recentEBooks);
 
-	if(!query){
+	if(!(query || fields)) {
 	popularGadgets = store.popularAssets('gadget');
 	popularSites = store.popularAssets('site');
-	popularAssets = popularGadgets.concat(popularSites);
+	popularEBooks = store.popularAssets('ebook');
+	popularAssets = popularGadgets.concat(popularSites,popularEBooks);
 	}
+    var rxtAttributes = require('modules/util.js').getRXTAttributes(tenantId, "gadget");
 
-	caramel.render({
+    caramel.render({
 		title : 'Store | User Engagement Center',
 		user : loggedUser,
 		sso:sso,
-		navigation : site.navigation({
+		navigation : site.navigation(tenantId, {
 			sso : sso,
-			ssoEncodedRequest : ssoLogin.ssoEncodedRequest,
-			ssoRelayState : ssoLogin.ssoRelayState,
-			ssoSessionId : ssoLogin.ssoSessionId,
-			ssoIdpURL : ssoLogin.ssoIdpURL,
 			user : loggedUser
 		}),
+        search : {
+        	title : "Top Assets",
+            isTopAssets : true,
+            searchFields : rxtAttributes
+        },
 		topAssets : {
 			recentAssets : {
 				gadget : gadgets,
-				site : sites
+				site : sites,
+                ebook : ebooks
 			},
 			popularAssets : popularAssets,
             recent : recent

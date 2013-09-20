@@ -29,6 +29,23 @@ var engine = caramel.engine('handlebars', (function () {
             //Rather register only not overridden partials
             partials(new File(theme.__proto__.resolve.call(theme, 'partials')));
             partials(new File(theme.resolve('partials')));
+
+            Handlebars.registerHelper('dyn', function (options) {
+                var asset = options.hash.asset,
+                    resolve = function (path) {
+                        var p,
+                            store = require('/modules/store.js');
+                        if (asset) {
+                            p = store.ASSETS_EXT_PATH + asset + '/themes/' + theme.name + '/' + path;
+                            if (new File(p).isExists()) {
+                                return p;
+                            }
+                        }
+                        return theme.__proto__.resolve.call(theme, path);
+                    };
+                partials(new File(resolve('partials')));
+                return options.fn(context);
+            });
         },
         render: function (data, meta) {
         	//print(data);
@@ -37,7 +54,7 @@ var engine = caramel.engine('handlebars', (function () {
         },
         globals: function (data, meta) {
             var store = require('/modules/store.js'),
-                user = require('/modules/user.js').current();
+                user = require('/modules/user.js').current(meta.session);
             return 'var store = ' + stringify({
                 user: user ? user.username : null
             });
