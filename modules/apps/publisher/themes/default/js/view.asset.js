@@ -8,7 +8,7 @@
 
 $(function () {
 
-    //The exisiting versions of the asset
+    //The existing versions of the asset
     var existingVersionList=null;
     var ASSET_VERSION_CONTAINER='#asset-new-version-control-group';
     var ASSET_NEW_VERSION_MSG_CONTAINER='#asset-new-version-msgs';
@@ -115,7 +115,10 @@ $(function () {
         })
     }
 
-
+    /*
+    The function is used to display a message in-line
+    @msg: The message to be displayed
+     */
     function displayVersionMessage(msg){
         var container=ASSET_VERSION_CONTAINER;
         var containerCss=msg.msgCss;
