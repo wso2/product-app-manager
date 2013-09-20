@@ -137,6 +137,8 @@ $(function () {
      */
     function initCssContainer(container,classes){
         for(var index in classes){
+            console.log('container: '+container+' added class: '+classes[index]);
+
             $(container).addClass(classes[index]);
             $(container).toggleClass(classes[index]);
         }
