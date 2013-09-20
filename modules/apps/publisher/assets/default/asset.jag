@@ -125,7 +125,7 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
     //Check if the type is valid
     try {
 
-        //assigning detault thumbnail and banner if not provided.
+        //assigning default thumbnail and banner if not provided.
         if(context.post['images_thumbnail'] = 'null') {
             context.post['images_thumbnail'] = '/publisher/config/defaults/img/thumbnail.jpg';
         }

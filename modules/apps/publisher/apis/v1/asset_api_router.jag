@@ -85,6 +85,15 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}', functi
     try {
 
         var model=modelManager.getModel(shortName);
+
+        //assigning default thumbnail and banner if not provided.
+        if(context.post['images_thumbnail'] = 'null') {
+            context.post['images_thumbnail'] = '/publisher/config/defaults/img/thumbnail.jpg';
+        }
+        if(context.post['images_banner'] = 'null') {
+            context.post['images_banner'] = '/publisher/config/defaults/img/banner.jpg';
+        }
+
         model.import('form.importer',context.post);
 
         //var assetModel = getModel(context.post);
