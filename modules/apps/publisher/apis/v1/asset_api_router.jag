@@ -87,10 +87,10 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}', functi
         var model=modelManager.getModel(shortName);
 
         //assigning default thumbnail and banner if not provided.
-        if(context.post['images_thumbnail'] = 'null') {
+        if(context.post['images_thumbnail'] == '') {
             context.post['images_thumbnail'] = '/publisher/config/defaults/img/thumbnail.jpg';
         }
-        if(context.post['images_banner'] = 'null') {
+        if(context.post['images_banner'] == '') {
             context.post['images_banner'] = '/publisher/config/defaults/img/banner.jpg';
         }
 
