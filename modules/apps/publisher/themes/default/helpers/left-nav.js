@@ -40,11 +40,6 @@ var generateLeftNavJson = function(data) {
                     name : "Life Cycle",
                     iconClass : "icon-retweet",
                     url : "/publisher/asset/operations/lifecycle/" + data.shortName + "/" + data.artifact.id + ""
-                },
-                {
-                    name : "Versions",
-                    iconClass : "icon-qrcode",
-                    url : "/publisher/asset/operations/versions/" + data.shortName + "/" + data.artifact.id + ""
                 }
             ]
         };

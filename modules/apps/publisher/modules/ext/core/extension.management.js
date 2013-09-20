@@ -182,6 +182,70 @@ var extension_management=function(){
 		log.debug('The model type: '+type+' could not be found.')
 		return null;
 	}
+
+    /*
+    The function checks whether two models a and b are equal by inspecting for the presence of the provided required
+    properties
+    @a: The object to be inspected
+    @b: The function will take the values of a and then compare them to the values of b
+    @return: True if the two models are identical,else false.
+     */
+    ModelManager.prototype.assertEqual=function(a,b,reqProps){
+        var reqProps=reqProps||[];
+
+        var fieldProp;
+        var fieldA;
+        var fieldB;
+        var isEqual=true;
+
+        //Go through each required property while the two objects are equal
+        for(var index=0;((index<reqProps.length)&&(isEqual));index++){
+
+            //Get the property name
+            fieldProp=reqProps[index];
+
+            //Obtain the field instances
+            fieldA= a.get(fieldProp);
+            fieldB= b.get(fieldProp);
+
+            //Check if the two fields are equal
+            if(fieldA.getValue()!=fieldB.getValue()){
+                isEqual=false;
+            }
+        }
+
+        return isEqual;
+    };
+
+    /*
+    The function determines the differences between two objects a and b based on the required properties
+    @a: The object to be inspected
+    @b: The function will take the values of a and then compare them to the values of b
+    @reqProps: The properties that should be equal between the two models
+    @return: The fields in the reqProps that are different
+     */
+    ModelManager.prototype.diff=function(a,b,reqProps){
+        var reqProps=reqProps||[];
+        var difference=[];
+        var fieldProp;
+        var fieldA;
+        var fieldB;
+
+        for(var index in reqProps){
+            fieldProp=reqProps[index];
+
+            fieldA= a.get(fieldProp);
+            fieldB= b.get(fieldProp);
+
+            log.info('field A '+fieldA.getValue()+' field B: '+fieldB.getValue());
+
+            if(fieldA.getValue()!=fieldB.getValue()){
+                difference.push(fieldProp);
+            }
+        }
+
+        return difference;
+    };
 	
 	return{
 		ModelManager:ModelManager

@@ -168,16 +168,23 @@ var router=function(){
 			uriMatcher.match(route.pattern);
 			var params=uriMatcher.elements();
 			var postParams={};
+            var putContent={};
 	
 			if(method=='POST')
 			{
 				postParams=request.getAllParameters('UTF-8');
 			}
+
+            //Support for PUT
+            if(method=='PUT'){
+                putContent=request.getContent();
+            }
 		
 			route.func({request:request, 
 				 response:response,
 				 params:params,
 				 post:postParams,
+                 content:putContent,
 				 renderer:this.renderer});
 		}
 		else{

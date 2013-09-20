@@ -47,6 +47,7 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}', function (c
         model.set('overview.provider',username);
 
         var output = model.export('form');
+
         caramel.render({op: operation, cuser: user.current(session), shortName: shortName, rxtTemplate: rxtTemplate, data: output});
     }
 });
@@ -76,7 +77,13 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
 
         var output = model.export('form');
 
-        caramel.render({op: operation, cuser: user.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output});
+        var assetName=model.get('overview.name').value;
+
+        //Get the list of versions
+        var versionList=artifactManager.getAllAssetVersions(assetName);
+
+        caramel.render({op: operation, cuser: user.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output
+        ,versions:versionList});
     } catch (e) {
         log.debug('The asset with id '+id+' could not be found due to : '+e);
         response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check server log.');
@@ -108,7 +115,13 @@ routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/
 
         var output = model.export('form');
 
-        caramel.render({op: operation, cuser: user.current(), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output});
+        var assetName=model.get('overview.name').value;
+
+        //Get the list of versions
+        var versionList=artifactManager.getAllAssetVersions(assetName);
+
+        caramel.render({op: operation, cuser: user.current(), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output
+            ,versions:versionList});
     } catch (e) {
         log.debug('The asset with id '+id+' could not be found due to : '+e);
         response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check server log.');

@@ -63,7 +63,23 @@
                             </div>
 		                </div>
 		    </div>
+            <div>
+                <form>
+                    <fieldset>
+                        <legend>Versions</legend>
+                        <span class='help-inline'>Create a new version of this asset.</span>
+                        <div class='control-group' id='asset-new-version-control-group'>
+                            <input type='text' placeholder="Type a new version number" id='asset-new-version'>
+                            <span class='help-inline' id='asset-new-version-msgs'></span>
+                        </div>
+
+                        <input type='button' class='btn btn-primary' value='Increase Version' id='btn-increase-version-asset'>
+                        <input type="hidden" value="{{shortName}}" name="{{shortName}}" id="meta-asset-type">
+                    </fieldset>
+                </form>
+            </div>
         </div>
+
 
 
 		<!--div id="edit" class="tab-pane fade in">
@@ -82,10 +98,10 @@
 								<div class="controls">
 									<input id='{{this.name}}' type='text' value='{{this.value}}' disabled="disabled"/>
 								</div>
-							</div>	
+							</div>
 		     				{{/each}}
                                 		<div id="saveButtons" class="form-actions">
-                                    			<input type="submit" value="Update" class="btn btn-primary" 
+                                    			<input type="submit" value="Update" class="btn btn-primary"
 								name="editAssetButton" disabled="disabled" id="editAssetButton">
                                     			<input type="reset" value="Cancel" disabled="disabled" class="btn">
                                 		</div>
@@ -117,7 +133,7 @@
 
                 <div id="versions" class="tab-pane fade in">
                     	<div class="row-fluid">
-                        	<div class="span12">	
+                        	<div class="span12">
 					<div class="info-div alert alert-error">
                                 			<a data-dismiss="alert" class="close">x</a>
                                 			<i class="icon-warning-sign text-red icon_block"></i>
