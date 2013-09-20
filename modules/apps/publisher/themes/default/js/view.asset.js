@@ -15,7 +15,7 @@ $(function () {
     var CSS_ERR='control-group error';
     var CSS_SUCCESS='control-group success';
 
-    initCssContainer(ASSET_VERSION_CONTAINER,[CSS_ERR,CSS_SUCCESS]);
+    //initCssContainer(ASSET_VERSION_CONTAINER,[CSS_ERR,CSS_SUCCESS]);
 
     $('#btn-increase-version-asset').on('click', function () {
         var MSG_ERR_NO_VERSION='Please enter a version number.';
@@ -125,7 +125,8 @@ $(function () {
         var msgContainer=ASSET_NEW_VERSION_MSG_CONTAINER;
         var message=msg.message;
 
-        $(container).toggleClass(containerCss);
+        $(container).attr('class',containerCss);
+        //$(container).toggleClass(containerCss);
         $(msgContainer).html(message);
     }
 
@@ -136,12 +137,12 @@ $(function () {
     @classes: The CSS classes to be added to the container.
      */
     function initCssContainer(container,classes){
-        for(var index in classes){
+       /* for(var index in classes){
             console.log('container: '+container+' added class: '+classes[index]);
 
             $(container).addClass(classes[index]);
             $(container).toggleClass(classes[index]);
-        }
+        }  */
 
     }
 
