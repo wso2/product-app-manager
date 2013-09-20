@@ -1,10 +1,7 @@
 <div class='content-div'>
     <div class="row-fluid">
-            <div class="span12 asset-view-container">
-                <div class="info-div alert alert-error">
-                            <a data-dismiss="alert" class="close">x</a>
-                            <i class="icon-warning-sign text-red icon_block"></i>
-                            This feature will be available on our next milestone..
+            <div class="span12 asset-view-container" >
+                <div id='msg-container-recent-activity'>
                 </div>
                 <div class="widget wlightblue">
                     <div class="widget-head">
@@ -12,19 +9,20 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="widget-content">
-                        <form class="form-horizontal">
+                        <form class="form-horizontal" id='form-asset-edit'>
                             {{#each data.fields}}
                                 <div class="control-group">
                                     <b><label class="control-label">{{this.label}}:</label></b>
                                     <div class="controls">
-                                        <input id='{{this.name}}' type='text' value='{{this.value}}' disabled="disabled"/>
+                                        <input id='{{this.name}}' type='text' value='{{this.value}}' />
                                     </div>
                                 </div>
                             {{/each}}
                             <div id="saveButtons" class="form-actions">
-                                <input type="submit" value="Update" class="btn btn-primary"
-                                    name="editAssetButton" disabled="disabled" id="editAssetButton">
-                                <input type="reset" value="Cancel" disabled="disabled" class="btn">
+                                <input type="button" value="Update" class="btn btn-primary"
+                                    name="editAssetButton"  id="editAssetButton">
+                                <input type="reset" value="Cancel"  class="btn">
+                                <input type="hidden" value="{{shortName}}" name="{{shortName}}" id="meta-asset-type">
                             </div>
                         </form>
                     </div>

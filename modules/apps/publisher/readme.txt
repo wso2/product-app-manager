@@ -14,6 +14,16 @@ It allows the following functionality;
 Changes:
 ----------
 
+20/8/2013 Major Changes:
+          --------------
+          All default assets are now attached a life-cycle
+          Default assets can now be added by placing content in the config/defaults/ folder (e.g.gadgets,sites and ebooks)
+          Assets can be now updated from the UI
+          Implemented versions of assets
+          IMPORTANT: This version requires the latest changes to artifact.js (Pushed separately)
+          Updated the API to support updating assets
+          Added API calls to create a new version of an asset and return all versions of an asset
+
 13/8/2013 Major Changes:
           -------------
           The everyone role can no longer see assets in the created state
@@ -78,6 +88,8 @@ Changes:
 Additions:
 ----------
 
+20/9/2013 Added API calls to handle versions and updating of assets
+
 28/8/2013	API:(Refer to API for complete changes
 		Added lifecycle check list methods
 			
@@ -130,11 +142,13 @@ The following API calls have been implemented
 	GET  	/publisher/api/asset/{type}			Returns a template JSON object describing the structure of an asset
 	GET  	/publisher/api/asset/{type}/{id}		Returns an asset of the given {type} and matching the {id}
 	POST 	/publisher/api/asset/{type}			Creates a new asset of the given {type}
-	DELETE 	/publisher/api/asset/{type}/{id}		Deletes an asset 
+	DELETE 	/publisher/api/asset/{type}/{id}		Deletes an asset
+	PUT     /publisher/api/asset/{type}/{id}	    Updates an asset with the given type and id
 	POST 	/publisher/api/lifecycle/{type}/{id}		Attaches a lifecycle for the specified asset type with the id
  	GET api/lifecycle/checklist/{type}/{id}                 Returns the check list for an artifact
  	GET api/lifecycle/checklistitem/{index}/{type}/{id}     Returns the checked state of the check list item at
  		                                                the given index.
+
  	GET api/lifecycle/actions/{type}/{id}                   Gets the actions available to an asset at a given state
  	DELETE api/lifecycle/{asset-type}/{artifact-id}		Detaches the current lifecycle from the artifact
  	DELETE api/lifecycle/checklistitem/{index}/{type}/{id}  Unticks a check list item at the given index
@@ -142,6 +156,9 @@ The following API calls have been implemented
  	POST api/lifecycle/checklistitem/{index}/{type}/{id}    Ticks a check list item at the given index
  	PUT api/lifecycle/{action}/{asset-type}/{artifact-id}	Performs the provided the action on the provided asset
 	GET api/lifecycle/information/history/{asset-type}/{artifact-id}/{version} Returns the life-cycle history of the provided asset.
+	GET /api/version/{type}/{id}              Retrieves the list of versions of the asset
+    POST /api/version/{type}/{id}/{version}   Duplicates the asset with the given id
+                                                      and changes version
 	
 	
 
