@@ -8,7 +8,8 @@ var render = function (theme, data, meta, require) {
             },
             {
                 partial: 'search',
-                context: data.search
+                /*context: data.search*/
+               context: require('/helpers/navigation.js').currentPage(data.navigation, data.type, data.search)
             }
         ],
         header: [

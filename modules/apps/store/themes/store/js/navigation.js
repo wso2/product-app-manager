@@ -109,5 +109,9 @@ $(function() {
 	}).mouseleave(function() {
 		$('div[id^="ascrail"]').css('visibility', 'hidden');
 	});
+	
+	$('.dropdown a').click(function(){
+		window.location = $(this).attr('href');
+	});
 
 });
