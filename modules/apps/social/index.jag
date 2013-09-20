@@ -5,19 +5,27 @@ var caramel;
 
     var carbon = require('carbon');
     var social = carbon.server.osgiService('org.wso2.carbon.social.service.SocialActivityService');
-    var comments = social.listActivities(request.getParameter('target'));
-
     var commentsJSON = [];
-    for (var i = 0; i < comments.length; i++) {
-        commentsJSON.push(JSON.parse(String(comments[i])));
+    var target = request.getParameter('target');
+    if(target){
+        try {
+            var comments = social.listActivities();
+            for (var i = 0; i < comments.length; i++) {
+                commentsJSON.push(JSON.parse(String(comments[i])));
+            }
+        } catch (e) {
+
+        }
+
+
+        caramel.render({
+            'title': 'Comments',
+            'body': 'Test',
+            'stream': {comments: commentsJSON}
+        });
+    }else{
+        print('please use the target URL parameter as the asset id, eg: http://localhost:9763/social/?target=33530252-rer-w345325');
     }
-
-
-    caramel.render({
-        'title': 'Comments',
-        'body': 'Test',
-        'stream': {comments: commentsJSON}
-    });
 })();
 %>
 
