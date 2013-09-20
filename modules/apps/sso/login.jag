@@ -47,40 +47,41 @@ var e = session.get('error') || {};
 							<div class="span12">
 								<div class="row-fluid">
 									<div class="span6">
-										<form id="loginForm" action="samlsso.jag" method="POST" >
+										<form id="loginForm" action="/admin/commonauth" method="POST" >
 									        <h2 class="form-signin-heading">Sign in</h2>
 									        <% if(e.error && e.type == 'loginError'){ %>
 									            <div class="alert alert-error"><%= e.msg %></div>
 									        <%
-                                                e = {};
-                                                session.put('error', {});
-                                            }%>
+    e = {};
+    session.put('error', {});
+}%>
 									        <div class="control"><label>Username</label><input id="username" name="username" type="text" class="input-block-level"></div>
 									        <div class="control"><label>Password</label><input id="password" name="password" type="password" class="input-block-level"></div>
 									        <label class="checkbox lblRemember">
 									          <input type="checkbox" value="remember-me"> Remember me
 									        </label>
+									        <input type="hidden" name="sessionDataKey"  value="<%=request.getParameter("sessionDataKey")%>">
 									        <button class="btn btn-large pull-right" type="submit">Sign in</button>
 								    	</form>
 									</div>
-								
+
 									<div class="span6">
 										<form id="registerForm" action="samlsso.jag" method="POST" >
 									        <h2 class="form-signin-heading">Register</h2>
 									        <% if(e.error && e.type == 'regError'){ %>
 									            <div class="alert alert-error"><%= e.msg.split(':')[1] %></div>
 									        <%
-                                                e = {};
-                                                session.put('error', {});
-                                            }%>
+    e = {};
+    session.put('error', {});
+}%>
 									        <div class="control"><label>Username</label><input id="reg-username" name="username" type="text" class="input-block-level required usrName"></div>
 									        <div class="control">
 									        	<label>Password</label>
 									        	<input id="reg-password" name="password" type="password" class="input-block-level required">
 									        </div>
-									        <div class="control">			
+									        <div class="control">
 							        			<label>Confirm password</label>
-									        	<input id="reg-password2" name="password2" type="password" class="input-block-level required" equalTo="#reg-password">	
+									        	<input id="reg-password2" name="password2" type="password" class="input-block-level required" equalTo="#reg-password">
 									        </div>
 									        <div>
 									        	<input id="reg-action" name="action" type="hidden" value="register">
@@ -89,19 +90,19 @@ var e = session.get('error') || {};
 								    	</form>
 									</div>
 								</div>
-								
+
 							</div>
-							
+
 						</div>
 			      	</div>
 				</div>
-				
-				
-		
-		
+
+
+
+
     		</div>
     		<div class="row row-footer span8 offset2 sso-footer">
-					
+
 						<div class="footer row-fluid">
 							<div class="span12">
 								<div class="row-fluid">
@@ -127,14 +128,14 @@ var e = session.get('error') || {};
 								</div>
 							</div>
 						</div>
-					
-					
+
+
 				</div>
     	</div>
-    	
-    	
-			
-		
+
+
+
+
     </div> <!-- /container -->
 
     <!-- Le javascript
@@ -147,12 +148,12 @@ var e = session.get('error') || {};
 		$(function(){
 			$("#registrationSubmit").click(function(e){
 				if (!$('#registerForm').valid())
-					return;	 			
+					return;
 			});
 			jQuery.validator.addMethod("usrName", function(value, element) {
 				return this.optional(element) || /^[a-zA-Z0-9\-]*$/.test(value);
 			}, "Only alphanumeric characters and '-' allowed");
-		});	
+		});
 	</script>
   </body>
 </html>

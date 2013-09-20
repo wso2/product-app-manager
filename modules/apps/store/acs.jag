@@ -31,10 +31,11 @@
                     var sessionObj = sso.client.decodeSAMLLoginResponse(samlRespObj, samlResponse, sessionId);
 
                     if (sessionObj.sessionIndex != null || sessionObj.sessionIndex != 'undefined') {
-                        //session.put("LOGGED_IN_USER", sessionObj.loggedInUser);
+                        session.put("LOGGED_IN_USER", sessionObj.loggedInUser);
                         session.put("Loged", "true");
 
-                        sso_sessions[sessionObj.sessionIndex] = sessionObj.sessionId;
+                        sso_sessions[sso_sessions[sessionObj.sessionIndex] = sessionObj.sessionId] = sessionObj.sessionIndex;
+
 
                         var user = require('/modules/user.js');
 
@@ -63,7 +64,7 @@
         delete application.get('sso_sessions')[index];
 
 
-        log.info('Publisher Session Id :::' + jSessionId);
+        log.info('store Session Id :::' + jSessionId);
 
         session.invalidate();
     }

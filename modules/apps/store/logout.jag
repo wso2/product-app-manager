@@ -1,21 +1,28 @@
 <%
 (function(){
-    var user = require('/modules/user.js').current(session).username;
+    var user = session.get("LOGGED_IN_USER");
     if(user === null) {
         response.sendRedirect('/store');
     } else {
         var config = require('/store.js').config(),
-        sso = require('sso'),
-        sessionId = session.getId(),
-        encodedSAMLLogoutRequest = sso.client.getEncodedSAMLLogoutRequest(user, config.ssoConfiguration.issuer),
-        relayState = '/store';
+                sso = require('sso'),
+                sso_sessions = application.get('sso_sessions'),
+                sessionId = session.getId(),
+                encodedSAMLLogoutRequest = sso.client.getEncodedSAMLLogoutRequest(user, sso_sessions[session.getId()], config.ssoConfiguration.issuer),
+                relayState = '/store',
+                postUrl = "https://" + process.getProperty('carbon.local.ip') + ":" + process.getProperty('https.port');
+
+        var log = new Log();
+
+        log.info("store session index : " + sso_sessions[session.getId()]);
+
 
         %>
         <div>
            <p>You are now redirected to Stratos Identity. If the
            redirection fails, please click the post button.</p>
 
-            <form id="logoutForm" method="post" action="<%=config.ssoConfiguration.identityProviderURL%>">
+            <form id="logoutForm" method="post" action="<%=postUrl%>/admin/samlsso">
             <p>
                 <input type="hidden" name="SAMLRequest"
                       value="<%= encodedSAMLLogoutRequest %>"/>

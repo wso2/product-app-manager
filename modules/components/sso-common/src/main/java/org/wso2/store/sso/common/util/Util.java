@@ -171,11 +171,26 @@ public class Util {
     }
 
     /**
+     * Encoding the response
+     *
+     * @param xmlString
+     *            String to be encoded
+     * @return encoded String
+     */
+    public static String encode(String xmlString) {
+        // Encoding the message
+        String encodedRequestMessage =
+                Base64.encodeBytes(xmlString.getBytes(),
+                        Base64.DONT_BREAK_LINES);
+        return encodedRequestMessage.trim();
+    }
+
+/*    *//**
      * Compressing and Encoding the response
      *
      * @param xmlString String to be encoded
      * @return compressed and encoded String
-     */
+     *//*
     public static String encode(String xmlString) throws Exception {
         Deflater deflater = new Deflater(Deflater.DEFLATED, true);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -189,7 +204,7 @@ public class Util {
         String encodedRequestMessage = Base64.encodeBytes(byteArrayOutputStream
                 .toByteArray(), Base64.DONT_BREAK_LINES);
         return encodedRequestMessage.trim();
-    }
+    }*/
 
     /**
      * Decoding and deflating the encoded AuthReq
@@ -198,10 +213,10 @@ public class Util {
      * @return decoded AuthReq
      */
 
-/*    public static String decode(String encodedStr) throws Exception {
-       return new String(Base64.decode(encodedStr));
-    }*/
-    @Deprecated
+    public static String decode(String encodedStr) throws Exception {
+        return new String(Base64.decode(encodedStr));
+    }
+    /*@Deprecated
     public static String decode(String encodedStr) throws Exception {
         try {
             org.apache.commons.codec.binary.Base64 base64Decoder = new org.apache.commons.codec.binary.Base64();
@@ -241,7 +256,7 @@ public class Util {
             throw new Exception("Error when decoding the SAML Request.", e);
         }
 
-    }
+    }*/
 
 
     /**
@@ -261,9 +276,9 @@ public class Util {
                 // get an instance of the corresponding Key Store Manager instance
                 KeyStoreManager keyStoreManager = KeyStoreManager.getInstance(tenantId);
                 keyStore = keyStoreManager.getKeyStore(generateKSNameFromDomainName(tenantDomain));
-               // log.info(keyStore.getCertificate(tenantDomain));
+                // log.info(keyStore.getCertificate(tenantDomain));
                 cert = (java.security.cert.X509Certificate) keyStore.getCertificate(tenantDomain);
-               // log.info(cert.getSubjectDN().getName());
+                // log.info(cert.getSubjectDN().getName());
             } else {
                 keyStore = KeyStore.getInstance("JKS");
                 keyStore.load(new FileInputStream(new File(keyStoreName)), keyStorePassword.toCharArray());

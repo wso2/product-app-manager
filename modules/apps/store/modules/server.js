@@ -66,8 +66,11 @@ var init = function (options) {
         var carbon = require('carbon'),
             server = require('/modules/server.js'),
             loginManager = carbon.server.osgiService('org.wso2.carbon.core.services.callback.LoginSubscriptionManagerService'),
-            configReg = server.systemRegistry(tenantId).registry.getChrootedRegistry("/_system/config");
-        loginManager.triggerEvent(configReg, user.username, tenantId);
+            configReg = server.systemRegistry(tenantId).registry.getChrootedRegistry("/_system/config"),
+            domain = carbon.server.tenantDomain({
+                tenantId: tenantId
+            });
+        loginManager.triggerEvent(configReg, user.username, tenantId, domain);
     });
 };
 
