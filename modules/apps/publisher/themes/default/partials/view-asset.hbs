@@ -63,7 +63,19 @@
                             </div>
 		                </div>
 		    </div>
+            <div>
+                <form>
+                    <fieldset>
+                        <legend>Versioning</legend>
+                        <input type='text' placeholder="Type a new version number" id='asset-new-version'>
+                   <span class='help-block'>Clicking the increase version button will create a brand new instance
+                   of this {{shortName}} and attach a new version number.</span>
+                        <input type='button' class='btn btn-primary' value='Increase Version' id='btn-increase-version-asset'>
+                    </fieldset>
+                </form>
+            </div>
         </div>
+
 
 
 		<!--div id="edit" class="tab-pane fade in">
