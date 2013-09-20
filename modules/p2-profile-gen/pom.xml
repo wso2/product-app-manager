@@ -184,7 +184,18 @@
                                     org.wso2.carbon:org.wso2.carbon.stratos.common.feature:${stratos.version}
                                 </featureArtifactDef>
 
-
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.event.feature:${carbon.platform.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.event.input.adaptor.feature:${cep.component.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.event.builder.feature:${cep.component.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.event.statistics.feature:${cep.component.version}
+                                </featureArtifactDef>
 
                             </featureArtifacts>
 
@@ -331,8 +342,29 @@
                                     <id>org.wso2.carbon.databridge.cassandra.feature.group</id>
                                     <version>${carbon.platform.patch.version.412}</version>
                                 </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.streamdefn.cassandra.feature.group</id>
+                                    <version>${carbon.platform.patch.version.412}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.event.feature.group</id>
+                                    <version>${carbon.platform.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.event.input.adaptor.feature.group</id>
+                                    <version>${cep.component.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.event.builder.feature.group</id>
+                                    <version>${cep.component.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.event.statistics.feature.group</id>
+                                    <version>${cep.component.version}</version>
+                                </feature>
 
                             </features>
+
 
                         </configuration>
                     </execution>
@@ -376,6 +408,7 @@
     </build>
     <properties>
         <carbon.platform.patch.version.412>4.2.0</carbon.platform.patch.version.412>
+        <cep.component.version>1.0.0</cep.component.version>
     </properties>
 
 </project>
