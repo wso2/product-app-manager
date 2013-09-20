@@ -70,14 +70,11 @@
         </fileSet>
         <!--Multitenancy related file -->
         <fileSet>
-            <directory>../p2-profile-gen/target/wso2carbon-core-${carbon.kernal.version}/repository/conf/multitenancy/</directory>
+            <directory>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernal.version}/repository/conf/multitenancy
+            </directory>
             <outputDirectory>wso2store-${pom.version}/repository/conf/multitenancy</outputDirectory>
-            <includes>
-                <include>*/**</include>
-            </includes>
-            <excludes>
-                <exclude>**/cloud-services-desc.xml</exclude>
-            </excludes>
+            <fileMode>755</fileMode>
         </fileSet>
 
         <fileSet>
@@ -170,6 +167,13 @@
             <outputDirectory>wso2store-${pom.version}/repository/conf</outputDirectory>
             <includes>
                 <include>**/api-manager.xml</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>src/repository/conf</directory>
+            <outputDirectory>wso2store-${pom.version}/repository/conf/security/</outputDirectory>
+            <includes>
+                <include>**/application-authenticators.xml</include>
             </includes>
         </fileSet>
 		<fileSet>

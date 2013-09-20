@@ -20,14 +20,15 @@
     <ServiceProviders>
         <ServiceProvider>
             <Issuer>store</Issuer>
-            <AssertionConsumerService>https://localhost:9443/store/acs</AssertionConsumerService>
-            <CustomLoginPage>/store/login</CustomLoginPage>
+            <AssertionConsumerService>https://localhost:9443/store/acs.jag</AssertionConsumerService>
+            <SignResponse>true</SignResponse>
+            <CustomLoginPage>/store/login.jag</CustomLoginPage>
         </ServiceProvider>
         <ServiceProvider>
             <Issuer>publisher</Issuer>
             <AssertionConsumerService>https://localhost:9443/publisher/acs</AssertionConsumerService>
-            <CustomLoginPage>/publisher/login</CustomLoginPage>
+            <SignResponse>true</SignResponse>
+            <CustomLoginPage>/publisher/controllers/login.jag</CustomLoginPage>
         </ServiceProvider>
     </ServiceProviders>
 </SSOIdentityProviderConfig>
-

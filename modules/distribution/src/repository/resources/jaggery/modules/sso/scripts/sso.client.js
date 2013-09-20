@@ -61,10 +61,10 @@ var client = {};
     /**
      * get url encoded saml logout request
      */
-    client.getEncodedSAMLLogoutRequest = function (user, issuerId) {
+    client.getEncodedSAMLLogoutRequest = function (user, sessionIndex, issuerId) {
         return Util.encode(
             Util.marshall(
-                new Packages.org.wso2.store.sso.common.builders.LogoutRequestBuilder().buildLogoutRequest(user,
+                new Packages.org.wso2.store.sso.common.builders.LogoutRequestBuilder().buildLogoutRequest(user, sessionIndex,
                     Packages.org.wso2.store.sso.common.constants.SSOConstants.LOGOUT_USER,
                     issuerId)));
     };
@@ -128,4 +128,3 @@ var client = {};
     };
 
 }(client));
-

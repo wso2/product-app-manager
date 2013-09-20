@@ -31,7 +31,7 @@
         "store": "/_system/governance/users/store"
     },
     "ssoConfiguration": {
-        "enabled": false,
+        "enabled": true,
         "issuer": "store",
         "identityProviderURL": "%https.host%/sso/samlsso.jag",
         "keyStorePassword": "wso2carbon",

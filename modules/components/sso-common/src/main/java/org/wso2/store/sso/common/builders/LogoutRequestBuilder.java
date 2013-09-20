@@ -40,7 +40,8 @@ public class LogoutRequestBuilder {
      * @param reason reason for generating logout request.
      * @return LogoutRequest object
      */
-    public LogoutRequest buildLogoutRequest(String subject, String reason, String issuerId) {
+    public LogoutRequest buildLogoutRequest(String subject,String sessionIndexId, String reason,
+                                            String issuerId) {
         Util.doBootstrap();
         LogoutRequest logoutReq = new org.opensaml.saml2.core.impl.LogoutRequestBuilder().buildObject();
         logoutReq.setID(Util.createID());
@@ -60,7 +61,7 @@ public class LogoutRequestBuilder {
         logoutReq.setNameID(nameId);
 
         SessionIndex sessionIndex = new SessionIndexBuilder().buildObject();
-        sessionIndex.setSessionIndex(Util.createID());
+        sessionIndex.setSessionIndex(sessionIndexId);
         logoutReq.getSessionIndexes().add(sessionIndex);
 
         logoutReq.setReason(reason);
