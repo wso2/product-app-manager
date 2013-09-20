@@ -9,12 +9,12 @@ var caramel;
     var target = request.getParameter('target');
     if(target){
         try {
-            var comments = social.listActivities();
+            var comments = social.listActivities(target);
             for (var i = 0; i < comments.length; i++) {
                 commentsJSON.push(JSON.parse(String(comments[i])));
             }
         } catch (e) {
-
+            new Log('social.activityBrowser').error(e);
         }
 
 
