@@ -11,7 +11,7 @@ var resources = function(page, meta) {
 	};
 };
 
-var currentPage = function(navigation, type) {
+var currentPage = function(navigation, type, search) {
 	var asset;
 
 	for (asset in navigation.assets) {
@@ -20,5 +20,6 @@ var currentPage = function(navigation, type) {
 			break;
 		}
 	}
+	navigation.search = search;
 	return navigation;
 }

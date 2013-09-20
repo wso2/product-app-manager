@@ -369,18 +369,18 @@ h3.asset-title-separator {
     font-size: 22px;
     height: 39px;
     /*width: 79%;*/
-    transition:width .5s;
-     transition:background-color .3s;
-      transition:border-color .3s;
+    transition: width .5s;
+    transition: background-color .3s;
+    transition: border-color .3s;
     /*background: #F7F9F9;*/
     background: transparent;
 }
-#search:hover{
-    border-color:rgba(44, 50, 57, 0.52);
+#search:hover {
+    border-color: rgba(44, 50, 57, 0.52);
 }
-#search:focus{
+#search:focus {
 
-    background-color:#ffffff;
+    background-color: #ffffff;
 }
 #search-dropdown-arrow {
     position: absolute;
@@ -394,6 +394,23 @@ h3.asset-title-separator {
     padding-top: 4px;
     opacity: 0.5;
 }
+.search-bar {
+    height: 66px;
+}
+.search-bar .dropdown {
+    display: inline-block;
+    list-style: none;
+    text-align: center;
+    padding: 8px 35px;
+}
+.search-bar .dropdown i {
+    font-size: 28px;
+    display: block;
+}
+.search-bar .span3{
+    margin-top:12px;
+}
+
 .search-bar .span8 h2 {
     font-weight: normal;
     font-size: 26px;
@@ -403,12 +420,16 @@ h3.asset-title-separator {
 .search-bar .span8 h2 .selType {
     color: #A4B6C4;
 }
-.search-bar > .row-fluid > .span4 {
+.search-bar > .row-fluid{
+margin-left: -29px;
+}
+
+.search-bar > .row-fluid > .span3 {
     text-align: right;
     position: relative;
 }
-#search-dropdown-cont div{
-    text-align:left;
+#search-dropdown-cont div {
+    text-align: left;
 }
 
 #search-dropdown-cont > a {
@@ -438,8 +459,8 @@ h3.asset-title-separator {
 #search-button:hover {
     opacity: 0.2;
 }
-#search-button2{
-    margin-left:0;
+#search-button2 {
+    margin-left: 0;
 }
 #search-dropdown-cont {
     background: none repeat scroll 0 0 #FFFFFF;
@@ -456,23 +477,25 @@ h3.asset-title-separator {
     vertical-align: top;
 }
 #search-dropdown-arrow i.icon-sort-up {
-vertical-align: middle;
+    vertical-align: middle;
 }
 #container-search {
     margin-top: 17px;
 }
 #container-search .row {
-    background: none;
-    border: none;
+    background: #fff;
+    border-width: 1px 1px 0 1px;
+    border-style: solid;
+    border-color: #ccc;
 }
 /*
-#container-search label {
-    display: inline;
-    font-size: 18px;
-    margin-right: 11px;
-    vertical-align: middle;
-}
-*/
+ #container-search label {
+ display: inline;
+ font-size: 18px;
+ margin-right: 11px;
+ vertical-align: middle;
+ }
+ */
 select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
     border-radius: 0;
 }
@@ -886,7 +909,7 @@ div.rating-cancel, div.star-rating {
     font-size: 18px;
     padding: 10px;
     font-weight: bold;
-    color:#FFED00;
+    color: #FFED00;
 }
 
 .assets-container {
@@ -1121,7 +1144,8 @@ ol.linenums li {
     }
     .asset-add-btn {
         bottom: 47px;
-    }.asset-download-btn {
+    }
+    .asset-download-btn {
         bottom: 47px;
     }
 }
