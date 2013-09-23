@@ -18,7 +18,7 @@ var type;
             matcher.match('/{context}' + config.assetsUrlPrefix + '/{type}')) {
         elements = matcher.elements();
         type = elements.type;
-        if (configs.assets.indexOf(type) === -1) {
+        if (type != 'all' && configs.assets.indexOf(type) === -1) {
             response.sendError(404, 'Request Resource cannot be found');
             return;
         }
