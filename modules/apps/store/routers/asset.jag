@@ -17,6 +17,10 @@ var type;
             matcher.match('/{context}' + config.assetUrlPrefix + '/{type}/{+suffix}')) {
         elements = matcher.elements();
         type = elements.type;
+        if (configs.assets.indexOf(type) === -1) {
+            response.sendError(404, 'Request Resource cannot be found');
+            return;
+        }
         theme = elements.theme;
         prefix = store.ASSETS_EXT_PATH + type;
         if (theme) {

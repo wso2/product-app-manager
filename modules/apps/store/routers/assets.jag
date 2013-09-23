@@ -18,6 +18,10 @@ var type;
             matcher.match('/{context}' + config.assetsUrlPrefix + '/{type}')) {
         elements = matcher.elements();
         type = elements.type;
+        if (type != 'all' && configs.assets.indexOf(type) === -1) {
+            response.sendError(404, 'Request Resource cannot be found');
+            return;
+        }
         theme = elements.theme;
         prefix = mod.ASSETS_EXT_PATH + type;
         if (theme) {
@@ -51,8 +55,7 @@ var type;
             }
         }
 
-        if(suffix == 'subscriptions')
-        {
+        if (suffix == 'subscriptions') {
             path = '/subscriptions.jag';
             request.getMappedPath = mapper(path);
             include(path);
