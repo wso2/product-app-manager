@@ -1,4 +1,4 @@
-var format = function (context, paging) {
+var format = function (context, paging, navigation, type) {
     var start = paging.start + 1,
         end = paging.start + paging.count;
     end = end > paging.total ? paging.total : end;
@@ -6,7 +6,8 @@ var format = function (context, paging) {
         url: context.url,
         total: paging.total,
         start: start,
-        end: end
+        end: end,
+        categories : navigation.assets[type].categories
     };
 };
 

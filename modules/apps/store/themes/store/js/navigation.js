@@ -110,7 +110,7 @@ $(function() {
 		$('div[id^="ascrail"]').css('visibility', 'hidden');
 	});
 	
-	$('.dropdown a').click(function(){
+	$('.dropdown-toggle').click(function(){
 		window.location = $(this).attr('href');
 	});
 
