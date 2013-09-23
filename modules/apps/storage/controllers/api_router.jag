@@ -1,0 +1,3 @@
+<%
+  print('this is the default api router');
+%>
