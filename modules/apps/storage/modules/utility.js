@@ -277,6 +277,14 @@ var utility = function () {
         },
 
         /*
+        The function formats a message based on the provided arguments
+        @msg: A message of the form 'a test {1}'
+         */
+        format:function(msg){
+
+        },
+
+        /*
         The function checks whether two objects are equal
         @objectA: The target to be matched
         @equalizer:[OPTIONAL] Performs some value conversion on the object B value before comparison

@@ -1,3 +1,62 @@
 <%
-  print("this is the request router");
+print("this is the request router");
+var log = new Log('request.router');
+
+var bundler = require('/modules/bundler.js').bundle_logic();
+var modelManagement = require('/modules/data/model.manager.js').modelManager();
+var driverManagement=require('/modules/data/driver.manager.js').driverManager();
+
+var driverManager=new driverManagement.DriverManager();
+
+var driver=driverManager.get('default');
+
+driver.connect({
+    username:'admin',
+    password:'admin',
+    connectionString:'jdbc:h2:tmp/demo'
+});
+
+//var mm = new modelManagement.ModelManager();
+
+/*var bundleManager = new bundler.BundleManager({
+    path: '/schemas/'
+});
+
+var root = bundleManager.getRoot();
+
+root.each(function (instance) {
+    log.info(instance.getName());
+
+    //Load the schema
+    var schema = require('/schemas/' + instance.getName()).schema();
+
+    mm.register(schema);
+});
+
+var permission = mm.get('Permission');
+
+log.info(stringify(permission.uuid)); */
+
+
+/*function template(string) {
+
+    //Check the number of arguments passed in
+    if (arguments.length < 2) {
+        return;
+    }
+    var temp=string;
+
+    for (var index = 1; (index < arguments.length); index++) {
+        temp = temp.replace('{' + index + '}', arguments[index]);
+    }
+
+    return temp;
+}
+
+var result = template('name={1},height={2}', 'apple', 'bee');
+
+log.info(result);*/
+
+ //permission.find({uuid:'13456788',bucket:'app1'});
+
 %>

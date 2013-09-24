@@ -1,6 +1,7 @@
 var schema=function(){
   return{
-     name:'permission',
+     name:'Permission',
+     table:'permission',
      fields:[
          {
              name:'uuid'
@@ -18,6 +19,11 @@ var schema=function(){
              name:'delete'
          }
 
-     ]
+     ],
+    helpers:{
+        find:function(context,predicate){
+            context.executeQuery
+        }
+    }
   };
 };

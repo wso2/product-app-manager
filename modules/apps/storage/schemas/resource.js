@@ -1,6 +1,7 @@
 var schema=function(){
     return{
-        name:'resource',
+        name:'Resource',
+        table:'resource',
         fields:[
             {
                 name:'uuid',
