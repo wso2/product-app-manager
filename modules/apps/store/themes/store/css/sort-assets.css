@@ -11,9 +11,12 @@
     margin-top: -5px;
     padding-top: 20px;
 }
+.row-sort-assets .span4 {
+    text-align: right;
+}
 
 .row-border-bottom {
-    border-bottom: 1px solid #F3F3F3;
+    /*  border-bottom: 1px solid #F3F3F3;*/
     margin-bottom: 16px;
     padding-bottom: 23px;
 }
@@ -27,7 +30,6 @@
 #ul-sort-assets li {
     display: inline-block;
     margin-right: 20px;
-
 }
 
 #ul-sort-assets li a {
@@ -44,7 +46,7 @@
     background: url("../img/icon-sort-alphabetical.png") no-repeat scroll left top transparent;
     height: 14px;
     width: 16px;
-    display:inline-block!important;
+    display: inline-block !important;
 }
 
 #ul-sort-assets  li a.selected-type {
@@ -52,12 +54,66 @@
     position: relative;
 }
 
-.row-sort-assets ul li a.selected-type:before {
-    content: "";
-    width: 11px;
-    height: 8px;
-    background: url(../img/store-sort-arrow.png) no-repeat top left;
+/*
+ .row-sort-assets ul li a.selected-type:before {
+ content: "";
+ width: 11px;
+ height: 8px;
+ background: url(../img/store-sort-arrow.png) no-repeat top left;
+ position: absolute;
+ bottom: -12px;
+ left: 3px;
+ }*/
+
+#breadcrumb {
+    background: #fff;
+    border: 1px solid #ccc;
+    height: 36px;
+    line-height: 36px;
+    padding: 0;
+    display: inline-block;
+    cursor: pointer;
+    color: #717f8e;
+    font-weight: 600;
+    font-size: 14px;
+}
+#breadcrumb a {
+    color: #717f8e;
+    font-weight: 600;
+}
+.breadcrumb-l1, .breadcrumb-l2 {
+    display: inline-block;
+    vertical-align: top;
+}
+.breadcrumb-l2 {
+    background: url(../img/breadcrumb-separator.png) no-repeat top left;
+    margin-left: -5px;
+}
+.breadcrumb-head {
+    padding: 0 15px;
+    position: relative;
+}
+.breadcrumb-head span {
+    margin-right: 20px;
+}
+.breadcrumb-head i {
     position: absolute;
-    bottom: -12px;
-    left: 3px;
+    right: 7px;
+    top: 12px;
+}
+.breadcrumb-body {
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 2px 15px;
+    margin: 0;
+    display: none;
+    position: relative;
+    z-index: 10;
+}
+.breadcrumb-body li {
+    list-style: none;
+    line-height: 35px;
+}
+.breadcrumb-sel .breadcrumb-head span, .breadcrumb-sel .breadcrumb-body li a {
+    color: #34495e !important;
 }

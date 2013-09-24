@@ -94,7 +94,7 @@ hr.emboss {
 .navbar .nav > li > a {
     text-shadow: none;
     font-weight: bold;
-    color: #cccccc;
+    color: #34495E;
 }
 .navbar .nav > li > a.btn {
     padding: 5px 10px;
@@ -131,8 +131,7 @@ hr.emboss {
 }
 
 .navbar-inner {
-    background: #2C3238;
-    background-image: none;
+    background: url(../img/header-bg.gif) repeat-x left -10px;
     box-shadow: none !important;
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;
