@@ -147,10 +147,11 @@ var modelManager = function () {
         //Save the model details to the underlying database
         model.prototype.save=function(){
             log.info('save called');
+
             var query = modelManager.driver.queryProvider.insert(this.schema,this);
             log.info('query: '+query);
-            //var results=this.driver.query(query,this.schema);
-            //return results;
+            var results=modelManager.driver.query(query,this.schema);
+            return results;
         };
     }
 

@@ -20,10 +20,16 @@ var mm = new modelManagement.ModelManager({driver:driver});
 
 var resource=mm.get('Resource');
 
+var testFile=new File('/tests/banner.png');
+testFile.open('r');
+var content=testFile.getStream();
+
+
 resource.uuid=9008;
-resource.content='22222222434355665';
+resource.content=content;
 resource.tenantId=-1234;
 
+//print(content);
 resource.save();
 
 driver.disconnect();

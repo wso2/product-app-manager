@@ -5,7 +5,7 @@ var queryProvider = function () {
     var queryMap = {};
     queryMap['resource'] = {};
     queryMap['resource']['create'] = 'CREATE TABLE resource ( uuid VARCHAR(250), tenantId VARCHAR(250), content BLOB );';
-    queryMap['resource']['insert'] = 'INSERT INTO resource (uuid,tenantId,content) VALUES ({1},{2},{3});';
+    queryMap['resource']['insert'] = 'INSERT INTO resource ({1}) VALUES ({2});';
 
     //The function checks the schema and returns a query for creating a table in the desired database
     function create(schema) {
@@ -19,6 +19,26 @@ var queryProvider = function () {
      */
     function insert(schema, model) {
         var query = queryMap[schema.table]['insert'];
+
+        var values=[];
+        var fields=[];
+        var field;
+
+        log.info(schema);
+
+        //Get the list of properties
+        for(var index in schema.fields){
+            field=schema.fields[index];
+            log.info('field: '+field.name);
+            values.push(model[field.name]);
+            fields.push(field.name);
+        }
+
+        var valuesString=values.join(',');
+        var fieldsString=fields.join(',');
+
+        query=query.replace('{1}',fieldsString);
+        query=query.replace('{2}',valuesString);
 
         return query;
     }
