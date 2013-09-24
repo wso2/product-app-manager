@@ -18,13 +18,13 @@ var driver=function(){
     };
 
     DBDriver.prototype.connect=function(config){
-       var connectionString='';
+       var connectionString=''||config.connectionString;
        var username=config.username;
        var password=config.password;
        var dbConfig=config.dbConfig||{};
 
         try{
-            log.info
+            log.info('connecting to '+connectionString);
             this.instance=new Database(connectionString,username,password,dbConfig);
         }
         catch(e){
@@ -34,6 +34,7 @@ var driver=function(){
 
     DBDriver.prototype.disconnect=function(){
         this.instance.close();
+        log.info('disconnected from db');
     };
 
     /*
@@ -44,6 +45,7 @@ var driver=function(){
     @return: The results of the query after translation
      */
     DBDriver.prototype.query=function(query,schema,modelManager,options,cb){
+        //var result=[];
         var result=this.instance.query(query)||[];
         var options=options||'';
         var processed;

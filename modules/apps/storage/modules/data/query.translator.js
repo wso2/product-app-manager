@@ -5,7 +5,7 @@ var queryTranslator=function(){
     model objects
      */
     function translate(schema,modelManager,results){
-       //Empty
+        return results;
     }
 
    return {

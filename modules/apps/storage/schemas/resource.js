@@ -4,18 +4,15 @@ var schema=function(){
         table:'resource',
         fields:[
             {
-                name:'uuid',
-                type:'varchar',
-                length:180
+                name:'uuid'
             },
             {
-                name:'content',
-                type:'blob'
+                name:'content'
             },
             {
-                name:'name',
-                type:'varchar'
+                name:'tenantId'
             }
         ]
     }
 };
+

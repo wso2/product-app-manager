@@ -65,7 +65,7 @@ var driverManager=function(){
             throw 'unable to create default query translator';
         }
 
-        this.defaultQT=defaultRootBundle.get({name:FILE_QT}).result();
+        this.defaultQT=require(defaultPath+FILE_QT).queryTranslator();
 
         this.driverMap[DEFAULT_DRIVER]=driverInstance;
     };
@@ -78,9 +78,6 @@ var driverManager=function(){
         var bundleManager=new bundler.BundleManager({
             path:driverPath
         });
-
-
-
     };
 
     /*

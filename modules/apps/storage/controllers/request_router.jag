@@ -11,12 +11,24 @@ var driverManager=new driverManagement.DriverManager();
 var driver=driverManager.get('default');
 
 driver.connect({
-    username:'admin',
-    password:'admin',
-    connectionString:'jdbc:h2:tmp/demo'
+    username:'sa',
+    password:'',
+    connectionString:'jdbc:h2:~/test'
 });
 
-//var mm = new modelManagement.ModelManager();
+var mm = new modelManagement.ModelManager({driver:driver});
+
+var resource=mm.get('Resource');
+
+resource.uuid=9008;
+resource.content='22222222434355665';
+resource.tenantId=-1234;
+
+resource.save();
+
+driver.disconnect();
+
+
 
 /*var bundleManager = new bundler.BundleManager({
     path: '/schemas/'
