@@ -382,7 +382,7 @@ h3.asset-title-separator {
         transition: border-color .3s;*/
     
     /*background: #F7F9F9;*/
-    background: transparent;
+    background: #fff;
     position:absolute;
     right:0;
 }

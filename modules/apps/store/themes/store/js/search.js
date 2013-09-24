@@ -192,7 +192,7 @@ $(function () {
 
     })
     .click(function(e){
-            $(this).animate({width:'500px'});
+            $(this).animate({width:'500px'}, 100);
             e.stopPropagation();
         })
     /*
@@ -253,7 +253,7 @@ $(function () {
                 }
             }
         }
-        $('#search-dropdown-cont').delay(500).slideToggle("fast");
+        $('#search-dropdown-cont').delay(300).slideToggle("fast");
         $('#search').trigger('click');
     });
 

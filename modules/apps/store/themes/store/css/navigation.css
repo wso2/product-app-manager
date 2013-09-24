@@ -103,12 +103,13 @@ hr.emboss {
 }
 .navbar .nav > li > a.btn:hover {
     background: #27ae60;
+    color:#fff;
 }
 .navbar .nav > li > a.selected {
     color: #ffffff;
 }
 .navbar .nav > li > a:hover, .navbar .nav > li > a:focus {
-    color: #FFFFFF;
+    color: #647E9A;
 }
 /*
  .navbar .nav > li > a.dropdown-toggle{
