@@ -16,8 +16,7 @@ var caramel;
             inDashboard = false,
             matcher = new URIMatcher(request.getRequestURI());
 
-    matcher.match('/{context}' + config.assetUrlPrefix + '/{type}/{aid}') ||
-    matcher.match('/{context}' + config.assetUrlPrefix + '/{type}/{aid}/{+suffix}');
+    matcher.match('/{context}' + config.assetsUrlPrefix + '/{type}/{aid}');
     aid = matcher.elements().aid;
 
     try {

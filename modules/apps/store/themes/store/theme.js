@@ -48,9 +48,9 @@ var engine = caramel.engine('handlebars', (function () {
             });
         },
         render: function (data, meta) {
-        	//print(data);
+            //print(data);
             this.__proto__.render.call(this, data, meta);
-            
+
         },
         globals: function (data, meta) {
             var store = require('/modules/store.js'),

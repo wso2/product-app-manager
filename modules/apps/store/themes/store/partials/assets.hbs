@@ -8,7 +8,7 @@
 			{{#each .}}
 			<div class="span3 asset" data-id="{{id}}" data-type="{{type}}">
 				{{#attributes}}
-				<a href="{{url "/asset"}}/{{../type}}/{{../id}}">
+				<a href="{{url "/assets"}}/{{../type}}/{{../id}}">
 				<div class="asset-icon">
 					{{#if ../indashboard}}
 						<i class="icon-bookmark store-bookmark-icon"></i>
@@ -18,7 +18,7 @@
 
 				<div class="asset-details">
 					<div class="asset-name">
-						<a href="{{url "/asset"}}/{{../type}}/{{../id}}"> <h4>{{overview_name}}</h4> </a>
+						<a href="{{url "/assets"}}/{{../type}}/{{../id}}"> <h4>{{overview_name}}</h4> </a>
 					</div>
 					<div class="asset-rating">
 						<div class="asset-rating-{{../rating/average}}star">
