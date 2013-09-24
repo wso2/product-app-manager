@@ -1,8 +1,22 @@
-<div class="row-border-bottom row-sort-assets">
+<div class="row-sort-assets">
 	<div class="row-fluid">
+		<div class="span4">
+			<ul id="ul-sort-assets" data-type="gadget">
+				<li>
+					<a href="{{url this.url}}popular" data-toggle="tooltip" data-sort="popular" title="{{t "Sort by Popularity"}}"><i class="icon-star"></i></a>
+				</li>
+				<li>
+					<a href="{{url this.url}}az" data-toggle="tooltip" data-sort="az" title="{{t "Sort by Alphabetical Order"}}"><i class="icon-sort-alphabetical"></i></a>
+				</li>
+				<li>
+					<a href="{{url this.url}}recent" data-toggle="tooltip" data-sort="recent" title="{{t "Sort by Created Date"}}"><i class="icon-calendar"></i></a>
+				</li>
+			</ul>
+		</div>
+		
 		<div class="span8">
 			{{#if categories}}
-			<div id="breadcrumb">
+			<div id="breadcrumb" class="pull-right">
 				<div class="breadcrumb-l1">
 					<div class="breadcrumb-head">
 						<span>All Categories</span><i class="icon-caret-down"></i>
@@ -41,19 +55,7 @@
 			{{/if}}
 		</div>
 
-		<div class="span4">
-			<ul id="ul-sort-assets" data-type="gadget">
-				<li>
-					<a href="{{url this.url}}popular" data-toggle="tooltip" data-sort="popular" title="{{t "Sort by Popularity"}}"><i class="icon-star"></i></a>
-				</li>
-				<li>
-					<a href="{{url this.url}}az" data-toggle="tooltip" data-sort="az" title="{{t "Sort by Alphabetical Order"}}"><i class="icon-sort-alphabetical"></i></a>
-				</li>
-				<li>
-					<a href="{{url this.url}}recent" data-toggle="tooltip" data-sort="recent" title="{{t "Sort by Created Date"}}"><i class="icon-calendar"></i></a>
-				</li>
-			</ul>
-		</div>
+		
 		<!--
 		<div class="span4 pull-right txt-right">
 		{{t "Showing assets"}} <strong>{{start}}-{{end}}</strong> of {{total}}

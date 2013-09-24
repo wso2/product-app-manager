@@ -35,6 +35,7 @@ var navigation = function (tenantId, options) {
          }*/
         assetLinks[type] = links;
     }
+
     return {
         assets: assetLinks,
         login: loginLinks(tenantId),

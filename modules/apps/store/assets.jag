@@ -1,7 +1,7 @@
 <%
 var caramel;
 (function () {
-    var assets, paging, count, current, total, loggedUser, sso, url, mainPage, subPage,
+    var assets, paging, count, current, total, loggedUser, sso, url, mainPage, subPage,title
             options = {},
             log = new Log(),
             user = require('/modules/user.js'),
@@ -28,8 +28,9 @@ var caramel;
     paging = store.assetsPaging(request);
 
     mainPage = type;
-
-
+    
+    title = store.assetLinks(type).title;
+    
     if (tag) {
 
         total = store.assetCount(type, {
@@ -151,6 +152,7 @@ var caramel;
         sorting: {
             url: url + 'sort='
         },
+        myAssets : { title: title },
         recentAssets: function () {
             return store.recentAssets(type);
         }
