@@ -11,6 +11,12 @@ var schema=function(){
             },
             {
                 name:'tenantId'
+            },
+            {
+                name:'contentType'
+            },
+            {
+                name:'contentLength'
             }
         ]
     }

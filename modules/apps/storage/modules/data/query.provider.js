@@ -3,9 +3,10 @@
  */
 var queryProvider = function () {
     var queryMap = {};
+    var log=new Log();
     queryMap['resource'] = {};
-    queryMap['resource']['create'] = 'CREATE TABLE resource ( uuid VARCHAR(250), tenantId VARCHAR(250), content BLOB );';
-    queryMap['resource']['insert'] = 'INSERT INTO resource ({1}) VALUES ({2});';
+    queryMap['resource']['create'] = 'CREATE TABLE resource ( uuid VARCHAR(250), tenantId VARCHAR(250),contentLength INT,contentType INT, content BLOB );';
+    queryMap['resource']['insert'] = 'INSERT INTO resource ({1}) VALUES (?,?,?,?,?);';
 
     //The function checks the schema and returns a query for creating a table in the desired database
     function create(schema) {
@@ -38,8 +39,9 @@ var queryProvider = function () {
         var fieldsString=fields.join(',');
 
         query=query.replace('{1}',fieldsString);
-        query=query.replace('{2}',valuesString);
+        //query=query.replace('{2}',valuesString);
 
+        query='SELECT * FROM resource;';
         return query;
     }
 

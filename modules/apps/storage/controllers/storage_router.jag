@@ -1,0 +1,69 @@
+<%
+/*
+ The controller is used to serve requests
+ */
+
+
+/*var driverManagement = require('/modules/data/driver.manager.js').driverManager();
+
+var driverManager = new driverManagement.DriverManager();
+
+var driver = driverManager.get('default');
+
+driver.connect({
+    username: 'sa',
+    password: '',
+    connectionString: 'jdbc:h2:~/test'
+});
+
+
+driver.instance.query('SELECT * FROM resource;');
+
+driver.disconnect();
+
+driver.connect({
+    username: 'sa',
+    password: '',
+    connectionString: 'jdbc:h2:~/test'
+});
+
+driver.instance.query('INSERT INTO resource (uuid,tenantId,content,contentType,contentLength) VALUES (?,?,?,?,?);',
+'a','b',(new File('/tests/banner.png')).getStream(),1,456772);
+
+driver.disconnect();  */
+
+
+
+ var storageModule=require('/modules/data/storage.js').storageModule();
+
+ var storageManager=new storageModule.StorageManager({
+ context:'storage',
+ connectionInfo:{
+ username:'sa',password:'',connectionString:'jdbc:h2:~/test'
+ }
+ });
+ var key={};
+ var value={};
+
+ key['tenantId']='super';
+ key['bucket']='publisher';
+ value['file']=new File('/tests/banner.png');
+ value['contentType']='image/png';
+ storageManager.put(key,value);
+//storageManager.put({tenantId:'super',bucket:'publisher'},{contentType:'image/png',file:new File()});
+
+//storageManager.get({tenantId:'super',uuid:'134667777'});
+
+//Get the url
+
+//Obtain the uuid
+
+//Obtain the tenant
+
+//Search the storage with the url key tenant/uuid
+
+//Create the headers
+
+//Send the file stream
+
+%>

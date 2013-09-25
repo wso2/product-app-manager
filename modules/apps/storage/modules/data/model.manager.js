@@ -6,42 +6,47 @@
 
 var modelManager = function () {
 
-    var log=new Log('model.manager');
+    var log = new Log('model.manager');
     var utility = require('/modules/utility.js').utility();
-    var bundler=require('/modules/bundler.js').bundle_logic();
+    var bundler = require('/modules/bundler.js').bundle_logic();
 
 
     var PROP_NAME = 'name';
     var PROP_SCHEMA = 'schema';
 
-    var schemaPath='/schemas/';
+    var schemaPath = '/schemas/';
 
     function ModelManager(options) {
         this.driver = null;
+        this.connectionInfo = {};
         utility.config(options, this);
         this.managedModels = {};
 
+        //this.connect();
+
         this.loadSchemas();
+
+        //this.disconnect();
     }
 
     /*
-    The function loads the schemas
+     The function loads the schemas
      */
-    ModelManager.prototype.loadSchemas=function(){
-        var bundleManager=new bundler.BundleManager({
-            path:schemaPath
+    ModelManager.prototype.loadSchemas = function () {
+        var bundleManager = new bundler.BundleManager({
+            path: schemaPath
         });
 
         //Obtain the root bundle
-        var root=bundleManager.getRoot();
+        var root = bundleManager.getRoot();
 
-        var that=this;
+        var that = this;
 
-        root.each(function(bundle){
-            var schema=require(schemaPath+bundle.getName()).schema();
-            log.info('registering schema : ['+schema.name+']');
+        root.each(function (bundle) {
+            var schema = require(schemaPath + bundle.getName()).schema();
+            log.info('registering schema : [' + schema.name + ']');
             that.register(schema);
-            log.info('finished registering schema: ['+schema.name+']');
+            log.info('finished registering schema: [' + schema.name + ']');
         });
     };
 
@@ -70,13 +75,13 @@ var modelManager = function () {
         };
 
         //Attach the functions
-        attachDefaultOperations(model,this);
+        attachDefaultOperations(model, this);
 
-        var temp=new model();
+        var temp = new model();
 
         //Check if the table exists before creating
-        if(!temp.checkIfTableExists()){
-            log.info('table: '+temp.schema.table+' does not exist.');
+        if (!temp.checkIfTableExists()) {
+            log.info('table: ' + temp.schema.table + ' does not exist.');
             //Create the table
             temp.createTable();
         }
@@ -101,6 +106,14 @@ var modelManager = function () {
         return null;
     };
 
+    ModelManager.prototype.connect = function () {
+        this.driver.connect(this.connectionInfo);
+    };
+
+    ModelManager.prototype.disconnect = function () {
+        this.driver.disconnect();
+    }
+
 
     function attachDefaultOperations(model, modelManager) {
 
@@ -122,35 +135,39 @@ var modelManager = function () {
         };
 
         //Creates a table in the database
-        model.prototype.createTable=function(){
-            log.info('creating table: ['+this.schema.table+']');
+        model.prototype.createTable = function () {
+            log.info('creating table: [' + this.schema.table + ']');
             var query = modelManager.driver.queryProvider.create(this.schema);
-            log.info('query: '+query);
-            var results=modelManager.driver.query(query,this.schema);
+            log.info('query: ' + query);
+            var results = modelManager.driver.query(query, this.schema);
             return results;
         };
 
         //Checks whether the table already exists
-        model.prototype.checkIfTableExists=function(){
-            log.info('checking if table: ['+this.schema.table+'] exists.');
-            var query=modelManager.driver.queryProvider.checkIfTableExists(this.schema);
+        model.prototype.checkIfTableExists = function () {
+            log.info('checking if table: [' + this.schema.table + '] exists.');
+            modelManager.connect();
+            var query = modelManager.driver.queryProvider.checkIfTableExists(this.schema);
 
-            var results=modelManager.driver.query(query,this.schema);
+            var results = modelManager.driver.query(query, this.schema, modelManager, model);
 
+            modelManager.disconnect();
             //if the number of results is more than 0 then a table exists
-            if(results.length>0){
+            if (results.length > 0) {
                 return true;
             }
             return false;
         };
 
         //Save the model details to the underlying database
-        model.prototype.save=function(){
+        model.prototype.save = function () {
             log.info('save called');
-
-            var query = modelManager.driver.queryProvider.insert(this.schema,this);
-            log.info('query: '+query);
-            var results=modelManager.driver.query(query,this.schema);
+            modelManager.connect();
+            var query = modelManager.driver.queryProvider.insert(this.schema, this);
+            log.info('query: ' + query);
+            var results = modelManager.driver.query(query, this.schema, modelManager, this);
+            log.info('after save');
+            modelManager.disconnect();
             return results;
         };
     }
