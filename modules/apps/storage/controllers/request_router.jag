@@ -2,7 +2,7 @@
 print("this is the request router");
 var log = new Log('request.router');
 
-var bundler = require('/modules/bundler.js').bundle_logic();
+/*var bundler = require('/modules/bundler.js').bundle_logic();
 var modelManagement = require('/modules/data/model.manager.js').modelManager();
 var driverManagement=require('/modules/data/driver.manager.js').driverManager();
 
@@ -32,7 +32,12 @@ resource.tenantId=-1234;
 //print(content);
 resource.save();
 
-driver.disconnect();
+driver.disconnect();   */
+
+var PreparedStatement=java.sql.PreparedStatement;
+
+var ps=new PreparedStatement();
+//var ps=new javasSql.PreparedStatement();
 
 
 

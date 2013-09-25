@@ -1,3 +1,24 @@
 <%
   print('this is the default api router');
+
+  var log=new Log('api.router');
+
+  log.info('content type: '+request.getContentType());
+  log.info('content length: '+request.getContentLength());
+  log.info('content: '+request.getContent());
+
+ /* var UUID=java.util.UUID;
+
+  var result=UUID.randomUUID();
+
+  print('result:'+result);        */
+
+  /*var contents=request.getAllParameters('UTF-8');
+
+  log.info('content is'+contents[0]);*/
+
+ var db=new Database('jdbc:h2:~/test','sa','');
+
+ //db.connect();
+ var prep=db.prepareStatement('INSERT INTO resource (uuid,tenantId) VALUES (?,?)');
 %>
