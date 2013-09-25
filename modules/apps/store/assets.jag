@@ -152,7 +152,7 @@ var caramel;
         sorting: {
             url: url + 'sort='
         },
-        myAssets : { title: title },
+        myAssets : { type: type, title: title },
         recentAssets: function () {
             return store.recentAssets(type);
         }

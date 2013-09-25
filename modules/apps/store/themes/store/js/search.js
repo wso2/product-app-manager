@@ -365,4 +365,8 @@ $(function () {
         search();
         return false;
     });
+    
+    $('#container-search').affix({
+       offset: { top: $('.navbar').offset().top + 25 }
+   });
 });
