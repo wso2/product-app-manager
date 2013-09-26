@@ -8,11 +8,14 @@ import org.apache.commons.logging.LogFactory;
 import java.sql.*;
 import java.util.*;
 
-public class ActivityBrowser {
-    private static final Log LOG = LogFactory.getLog(ActivityBrowser.class);
-    private static final String STREAM_NAME = ActivityPublisher.STREAM_NAME.replaceAll("\\.", "_");
-    private JsonParser parser = new JsonParser();
+import static org.wso2.carbon.social.Constants.*;
 
+public class ActivityBrowser {
+
+    private static final Log LOG = LogFactory.getLog(ActivityBrowser.class);
+    public static final String SELECT_CQL = "SELECT * FROM " + STREAM_NAME_IN_CASSANDRA + " WHERE '" + TARGET_ID_COLUMN + "'=?";
+
+    private JsonParser parser = new JsonParser();
     private Connection conn;
 
     public List<String> listActivities(String targetId) {
@@ -22,13 +25,13 @@ public class ActivityBrowser {
             PreparedStatement statement = null;
             ResultSet resultSet = null;
             try {
-                statement = connection.prepareStatement("SELECT * FROM " + STREAM_NAME + " WHERE 'payload_target.id'=?");// WHERE target.id=?
+                statement = connection.prepareStatement(SELECT_CQL);
                 statement.setString(1, targetId);
                 resultSet = statement.executeQuery();
                 activities = new ArrayList<Activity>();
                 while (resultSet.next()) {
-                    JsonElement body = parser.parse(resultSet.getString("payload_body"));
-                    Activity activity = new Activity(body.getAsJsonObject(), resultSet.getInt("Timestamp"));
+                    JsonElement body = parser.parse(resultSet.getString(BODY_COLUMN));
+                    Activity activity = new Activity(body.getAsJsonObject(), resultSet.getInt(TIMESTAMP_COLUMN));
                     activities.add(activity);
                 }
             } catch (SQLException e) {
@@ -46,9 +49,12 @@ public class ActivityBrowser {
                 }
             }
         }
-        sortChronologically(activities);
-
-        return serializeEach(activities);
+        if (activities != null) {
+            sortChronologically(activities);
+            return serializeEach(activities);
+        } else {
+            return null;
+        }
     }
 
     private List<String> serializeEach(List<Activity> activities) {
@@ -60,33 +66,27 @@ public class ActivityBrowser {
     }
 
     public void sortChronologically(List<Activity> activities) {
-        if (activities != null) {
-            Collections.sort(activities, new Comparator<Activity>() {
-                @Override
-                public int compare(Activity o1, Activity o2) {
-                    return o1.getTimestamp() - o2.getTimestamp();
-                }
-            });
-        }
+        Collections.sort(activities, new Comparator<Activity>() {
+            @Override
+            public int compare(Activity a1, Activity a2) {
+                return a2.getTimestamp() - a1.getTimestamp();
+            }
+        });
     }
 
     public void makeIndexes(String column) {
         Connection connection = getConnection();
         if (connection != null) {
             Statement statement = null;
-            ResultSet resultSet = null;
             try {
                 statement = connection.createStatement();
-                statement.executeUpdate("CREATE INDEX ON " + STREAM_NAME + " ('payload_" + column + "')");
+                statement.executeUpdate("CREATE INDEX ON " + STREAM_NAME_IN_CASSANDRA + " ('payload_" + column + "')");
             } catch (SQLException e) {
                 LOG.error("Can't create indexes.", e);
             } finally {
                 try {
                     if (statement != null) {
                         statement.close();
-                    }
-                    if (resultSet != null) {
-                        resultSet.close();
                     }
                 } catch (SQLException e) {
                     //ignore
