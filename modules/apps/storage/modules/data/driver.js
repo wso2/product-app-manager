@@ -13,7 +13,6 @@ var driver = function () {
     }
 
     DBDriver.prototype.init = function (options) {
-        log.info('init method called');
         utility.config(options, this);
     };
 
@@ -24,7 +23,6 @@ var driver = function () {
         var dbConfig = config.dbConfig || {};
 
         try {
-            log.info('connecting to ' + connectionString);
             this.instance = new Database(connectionString, username, password, dbConfig);
         }
         catch (e) {
@@ -34,7 +32,6 @@ var driver = function () {
 
     DBDriver.prototype.disconnect = function () {
         this.instance.close();
-        log.info('disconnected from db');
     };
 
     /*
@@ -45,24 +42,16 @@ var driver = function () {
      @return: The results of the query after translation
      */
     DBDriver.prototype.query = function (query, schema, modelManager, model, options) {
-        //var result=[];
+
         var options=options||{};
         var isParam=options.PARAMETERIZED||false;
         var result;
 
         if (isParam) {
-            log.info('parametrized query');
             var args = getValueArray(model, schema, query);
-            //var str=args[2];
             result = this.instance.query.apply(this.instance, args) || [];
-            //result=this.instance.query(query,model.uuid,model.content,model.tenantId,model.contentType,model.contentLength);
-            //query='SELECT * FROM resource WHERE uuid=?'
-            //result=this.instance.query('INSERT INTO resource (uuid,content,tenantId,contentType,contentLength) VALUES (?,?,?,?,?);',
-            //    'a',str,'b1','image/png',456772);
-
         }
         else {
-            log.info('not parametrized');
             result = this.instance.query(query) || [];
         }
 
@@ -94,8 +83,6 @@ var driver = function () {
             }
 
         }
-
-        log.info(values);
         return values;
     }
 

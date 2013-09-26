@@ -21,12 +21,7 @@ var modelManager = function () {
         this.connectionInfo = {};
         utility.config(options, this);
         this.managedModels = {};
-
-        //this.connect();
-
         this.loadSchemas();
-
-        //this.disconnect();
     }
 
     /*
@@ -44,9 +39,7 @@ var modelManager = function () {
 
         root.each(function (bundle) {
             var schema = require(schemaPath + bundle.getName()).schema();
-            log.info('registering schema : [' + schema.name + ']');
             that.register(schema);
-            log.info('finished registering schema: [' + schema.name + ']');
         });
     };
 
@@ -81,7 +74,6 @@ var modelManager = function () {
 
         //Check if the table exists before creating
         if (!temp.checkIfTableExists()) {
-            log.info('table: ' + temp.schema.table + ' does not exist.');
             //Create the table
             temp.createTable();
         }
@@ -123,7 +115,6 @@ var modelManager = function () {
             modelManager.connect();
             var query = modelManager.driver.queryProvider.select(this.schema, predicate);
 
-            log.info('query: '+query);
             var results=modelManager.driver.query(query,this.schema,modelManager,this);
             modelManager.disconnect();
 
@@ -139,10 +130,10 @@ var modelManager = function () {
 
         //Creates a table in the database
         model.prototype.createTable = function () {
-            log.info('creating table: [' + this.schema.table + ']');
+
             modelManager.connect();
             var query = modelManager.driver.queryProvider.create(this.schema);
-            log.info('query: ' + query);
+
             var results = modelManager.driver.query(query, this.schema);
             modelManager.disconnect();
             return results;
@@ -150,7 +141,7 @@ var modelManager = function () {
 
         //Checks whether the table already exists
         model.prototype.checkIfTableExists = function () {
-            log.info('checking if table: [' + this.schema.table + '] exists.');
+
             modelManager.connect();
             var query = modelManager.driver.queryProvider.checkIfTableExists(this.schema);
 
@@ -166,12 +157,12 @@ var modelManager = function () {
 
         //Save the model details to the underlying database
         model.prototype.save = function () {
-            log.info('save called');
+
             modelManager.connect();
             var query = modelManager.driver.queryProvider.insert(this.schema, this);
-            log.info('query: ' + query);
+
             var results = modelManager.driver.query(query, this.schema, modelManager, this,{PARAMETERIZED:true});
-            log.info('after save');
+
             modelManager.disconnect();
             return results;
         };

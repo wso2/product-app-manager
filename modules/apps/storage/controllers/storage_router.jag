@@ -1,70 +1,109 @@
 <%
 /*
- The controller is used to serve requests
+ Description: The controller is used to serve files that are stored in the StorageManager
+ Filename: storage_router.jag
+ Created Date: 26/9/2013
  */
 
 
 /*var driverManagement = require('/modules/data/driver.manager.js').driverManager();
 
-var driverManager = new driverManagement.DriverManager();
+ var driverManager = new driverManagement.DriverManager();
 
-var driver = driverManager.get('default');
+ var driver = driverManager.get('default');
 
-driver.connect({
-    username: 'sa',
-    password: '',
-    connectionString: 'jdbc:h2:~/test'
-});
-
-
-driver.instance.query('SELECT * FROM resource;');
-
-driver.disconnect();
-
-driver.connect({
-    username: 'sa',
-    password: '',
-    connectionString: 'jdbc:h2:~/test'
-});
-
-driver.instance.query('INSERT INTO resource (uuid,tenantId,content,contentType,contentLength) VALUES (?,?,?,?,?);',
-'a','b',(new File('/tests/banner.png')).getStream(),1,456772);
-
-driver.disconnect();  */
-
- var HEADER_CONTENT_TYPE='Content-Type';
- var HEADER_CONTENT_LENGTH='Content-Length';
-
-
- var storageModule=require('/modules/data/storage.js').storageModule();
-
- var storageManager=new storageModule.StorageManager({
- context:'storage',
- connectionInfo:{
- username:'sa',password:'',connectionString:'jdbc:h2:~/test'
- }
+ driver.connect({
+ username: 'sa',
+ password: '',
+ connectionString: 'jdbc:h2:~/test'
  });
- var key={};
- var value={};
 
- key['tenantId']='super1';
- key['bucket']='publisher';
- value['file']=new File('/tests/out2.png');
- value['contentType']='image/png';
- //storageManager.put(key,value);
 
- key['tenantId']='super1';
- key['uuid']='';
- var storedValue=storageManager.get(key);
+ driver.instance.query('SELECT * FROM resource;');
 
-var contentType=storedValue.contentType;
-var contentLength=storedValue.contentLength;
+ driver.disconnect();
 
-//Create the headers
-response.addHeader(HEADER_CONTENT_TYPE,contentType);
-response.addHeader(HEADER_CONTENT_LENGTH,contentLength+'');
+ driver.connect({
+ username: 'sa',
+ password: '',
+ connectionString: 'jdbc:h2:~/test'
+ });
 
-//Send the file stream
-print(storedValue.content);
+ driver.instance.query('INSERT INTO resource (uuid,tenantId,content,contentType,contentLength) VALUES (?,?,?,?,?);',
+ 'a','b',(new File('/tests/banner.png')).getStream(),1,456772);
+
+ driver.disconnect();  */
+
+/*
+ Constant variables used to designate Header parameters
+ */
+var HEADER_CONTENT_TYPE = 'Content-Type';
+var HEADER_CONTENT_LENGTH = 'Content-Length';
+
+var ERROR_NOT_FOUND='The requested resource was not found.';
+
+var log=new Log('storage.router');
+
+var storageModule = require('/modules/data/storage.js').storageModule();
+
+var storageManager = new storageModule.StorageManager({
+    context: 'storage',
+    isCached:false,
+    connectionInfo: {
+        username: 'sa', password: '', connectionString: 'jdbc:h2:~/test'
+    }
+});
+
+var key = {};
+var value = {};
+
+key['tenantId'] = 'super1';
+key['bucket'] = 'publisher';
+value['file'] = new File('/tests/out2.png');
+value['contentType'] = 'image/png';
+//storageManager.put(key,value);
+
+//Obtain the tenantId and the uuid from the url
+var uriMatcher=new URIMatcher(request.getRequestURI());
+
+var isMatch=uriMatcher.match('/{context}/storage/{tenantId}/{uuid}');
+
+
+log.info('checking for match');
+if(isMatch){
+    var matchedElements=uriMatcher.elements();
+
+    log.info(matchedElements['context']);
+    log.info(matchedElements['tenantId']);
+    log.info(matchedElements['uuid']);
+}
+
+//Obtain the file from storage based on the provided tenantId and the UUID
+key['tenantId'] = 'super1';
+key['uuid'] = '';
+
+//Check if the currently logged in user can access the file
+
+var storedValue = storageManager.get(key);
+
+//Check if a value was returned from storage
+if(!storedValue){
+    response.sendError(404,ERROR_NOT_FOUND);
+}
+else{
+
+    //Get the image details
+    var contentType = storedValue.contentType;
+    var contentLength = storedValue.contentLength;
+
+    //Create the headers
+    response.addHeader(HEADER_CONTENT_TYPE, contentType);
+    response.addHeader(HEADER_CONTENT_LENGTH, contentLength + '');
+
+    //Send the file stream
+    print(storedValue.content);
+}
+
+
 
 %>

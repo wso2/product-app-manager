@@ -11,7 +11,6 @@ var queryProvider = function () {
 
     //The function checks the schema and returns a query for creating a table in the desired database
     function create(schema) {
-        log.info('table name: '+schema.table);
         var query = queryMap[schema.table]['create'];
         return query;
     }
