@@ -10,6 +10,9 @@ var schema=function(){
                 name:'content'
             },
             {
+                name:'fileName'
+            },
+            {
                 name:'tenantId'
             },
             {

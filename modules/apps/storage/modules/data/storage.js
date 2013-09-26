@@ -4,6 +4,7 @@
 var storageModule = function () {
 
     var log = new Log('storage');
+    var uuid=require('uuid');
 
     var utility = require('/modules/utility.js').utility();
     var modelManagement = require('/modules/data/model.manager.js').modelManager();
@@ -87,23 +88,28 @@ var storageModule = function () {
      @key: The key to use in the storage
      @value: An object containing the contentType and a file
      */
-    StorageManager.prototype.put = function (key, value) {
+    StorageManager.prototype.put = function (value) {
 
         //Obtain a resource model
         var resource = this.modelManager.get('Resource');
 
-        //value should contain the file path and
+        //value should contain the file path and content type
+        var file=new File(value.path);
+
+        log.info('filename :'+file.getName());
 
         //Generate a uuid for the resource
-        resource.uuid = '';
+        resource.uuid = uuid.generate();
         resource.contentType = value.contentType;
-        resource.contentLength = value.file.getLength();
-        resource.content = value.file;
-        resource.tenantId = key.tenantId;
+        resource.contentLength = file.getLength();
+        resource.content = file;
+        resource.fileName = value.fileName;
+        resource.tenantId = value.tenantId;
 
         //Save the resource
         resource.save();
 
+        return resource.uuid+'/'+value.fileName;
     };
 
     /*
@@ -113,19 +119,46 @@ var storageModule = function () {
      */
     StorageManager.prototype.get = function (key) {
 
+        //The key should be the uuid and tenant id
+
         //Obtain a resource model
         var resource = this.modelManager.get('Resource');
 
-        var tenantId = key.tenantId;
-        var uuid = key.uuid;
+        //Split the key
+        var splitList=key.split('/');
 
-        var results = resource.find({tenantId: tenantId}) || [];
+        var id;
+        //The key did not have a file component
+        if(splitList.length<2){
+            //log.info('just uuid');
+            id=key;
+        }
+        else{
+            //log.info('uuid/file');
+            id=splitList[0];
+        }
 
+        //log.info('uuid is '+id);
+
+        var results = resource.find({uuid:id}) || [];
+
+        //log.info(results[0].fileName);
         return results[0] || null;
+    };
+
+    /*
+    The function constructs a url from the uuid and context
+    @context: The context of the request
+    @uuid: The uuid of the resource
+     */
+    function constructStorageUrl(context,uuid){
+      var url=context+'/storage/'+uuid;
+      return url;
     };
 
 
     return{
-        StorageManager: StorageManager
+        StorageManager: StorageManager,
+        constructStorageUrl:constructStorageUrl
     }
 };

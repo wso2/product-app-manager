@@ -5,8 +5,8 @@ var queryProvider = function () {
     var queryMap = {};
     var log=new Log();
     queryMap['resource'] = {};
-    queryMap['resource']['create'] = 'CREATE TABLE resource ( uuid VARCHAR(250), tenantId VARCHAR(250),contentLength INT,contentType VARCHAR(150), content BLOB );';
-    queryMap['resource']['insert'] = 'INSERT INTO resource ({1}) VALUES (?,?,?,?,?);';
+    queryMap['resource']['create'] = 'CREATE TABLE resource ( uuid VARCHAR(250), tenantId VARCHAR(250),fileName VARCHAR(250), contentLength INT,contentType VARCHAR(150), content BLOB );';
+    queryMap['resource']['insert'] = 'INSERT INTO resource ({1}) VALUES (?,?,?,?,?,?);';
     queryMap['resource']['select'] = 'SELECT * FROM resource WHERE {1};';
 
     //The function checks the schema and returns a query for creating a table in the desired database
