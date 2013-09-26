@@ -88,7 +88,6 @@ input, button, select, textarea {
 .ribbon{
 	padding-top:20px;
 	padding-bottom:4px;
-	border-bottom:1px solid #C2C2C2;
 	padding-left:0;
 }
 .btn-group > .btn:first-child{
@@ -256,13 +255,14 @@ input, button, select, textarea {
     position:relative;
 	background:none repeat scroll 0 0 #E3E3E3;
 	border-top:1px solid #C2C2C2;
-	border-bottom:4px solid #323232;
+	border-bottom:2px solid #C2C2C2;
 	bottom:0;
 	left:0;
 	right:0;
 	height:50px;
-    border-right:1px solid #CCCCCC;
-    border-left:1px solid #CCCCCC ;
+    border-right:1px solid rgba(0, 0, 0, 0.06);
+    border-left:1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 .publisher-footer > .span12{
     padding:10px 6px;
@@ -406,10 +406,11 @@ label, input, button, select, textarea{
     -moz-border-right-colors: none;
     -moz-border-top-colors: none;
     background: none repeat scroll 0 0 #FFFFFF;
-    border-color: #CCCCCC #CCCCCC -moz-use-text-color;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) #B3B3B3;
     border-image: none;
     border-style: solid solid none;
-    border-width: 0 1px;
+    border-width: 1px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 .publisher-right{
     min-height:500px!important;
