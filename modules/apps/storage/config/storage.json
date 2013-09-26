@@ -1,4 +1,5 @@
 {
     "driverPath":"/drivers/",
-    "driverUsed":"default"
+    "driverUsed":"default",
+    "dataSource":"JAGH2"
 }

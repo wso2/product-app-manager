@@ -50,7 +50,7 @@ var storageManager = new storageModule.StorageManager({
     context: 'storage',
     isCached:false,
     connectionInfo: {
-        username: 'sa', password: '', connectionString: 'jdbc:h2:~/test'
+        dataSource:'JAGH2'
     }
 });
 

@@ -18,7 +18,14 @@
 
   log.info('content is'+contents[0]);*/
 
- var db=new Database('jdbc:h2:~/test','sa','');
+var db=new Database('JAGH2');
+
+var selectQuery='SELECT content FROM resource;';
+
+var result=db.query(selectQuery);
+log.info(result.length);
+
+/* var db=new Database('jdbc:h2:~/test','sa','');
 
 var file=new File('/tests/banner.png');
 
@@ -46,18 +53,8 @@ log.info(temp[index]);
 response.addHeader('Content-Type','image/png');
 log.info('length of original file: '+file.getLength());
 response.addHeader('Content-Length',file.getLength()+'');
-//response.addHeader('Connection','close');
-//response.content=file.getStream();
-//print(file.getStream());
-var str=temp[index].getStream();
-print(temp[index]);
 
-//temp[index].close();
-//file.close();
+print(temp[index]);*/
 
- //var createTableQuery='CREATE TABLE resource ( uuid VARCHAR(250), tenantId VARCHAR(250), content BLOB );';
 
- //db.query(createTableQuery);
- //db.connect();
- //var prep=db.prepareStatement('INSERT INTO resource (uuid,tenantId) VALUES (?,?)');
 %>

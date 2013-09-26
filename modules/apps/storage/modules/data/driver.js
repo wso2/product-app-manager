@@ -21,9 +21,15 @@ var driver = function () {
         var username = config.username;
         var password = config.password;
         var dbConfig = config.dbConfig || {};
-
+        var dataSource=config.dataSource||null;
         try {
-            this.instance = new Database(connectionString, username, password, dbConfig);
+            if(dataSource){
+                this.instance=new Database(dataSource);
+            }
+            else{
+                this.instance = new Database(connectionString, username, password, dbConfig);
+            }
+
         }
         catch (e) {
             throw e;
