@@ -5,8 +5,9 @@ var queryProvider = function () {
     var queryMap = {};
     var log=new Log();
     queryMap['resource'] = {};
-    queryMap['resource']['create'] = 'CREATE TABLE resource ( uuid VARCHAR(250), tenantId VARCHAR(250),contentLength INT,contentType INT, content BLOB );';
+    queryMap['resource']['create'] = 'CREATE TABLE resource ( uuid VARCHAR(250), tenantId VARCHAR(250),contentLength INT,contentType VARCHAR(150), content BLOB );';
     queryMap['resource']['insert'] = 'INSERT INTO resource ({1}) VALUES (?,?,?,?,?);';
+    queryMap['resource']['select'] = 'SELECT * FROM resource WHERE {1};';
 
     //The function checks the schema and returns a query for creating a table in the desired database
     function create(schema) {
@@ -20,35 +21,46 @@ var queryProvider = function () {
      */
     function insert(schema, model) {
         var query = queryMap[schema.table]['insert'];
-
-        var values=[];
         var fields=[];
         var field;
-
-        log.info(schema);
 
         //Get the list of properties
         for(var index in schema.fields){
             field=schema.fields[index];
-            log.info('field: '+field.name);
-            values.push(model[field.name]);
             fields.push(field.name);
         }
 
-        var valuesString=values.join(',');
         var fieldsString=fields.join(',');
 
         query=query.replace('{1}',fieldsString);
-        //query=query.replace('{2}',valuesString);
-
-        query='SELECT * FROM resource;';
         return query;
     }
 
+    /*
+     The function creates a select statement based on the schema and predicate
+     */
     function select(schema, predicate) {
-        var query = 'SELECT {1} FROM {2} {3};';
+        var query = queryMap[schema.table]['select'];
+
+        //We need to take the predicate and create the query
+        var whereClause=buildWhereClause(predicate);
+
+        query=query.replace('{1}',whereClause);
 
         return query;
+    }
+
+    /*
+    The function is used to create a where clause from the provided predicate
+     */
+    function buildWhereClause(predicate){
+        var clause='';
+        var clauseArray=[];
+        for(var key in predicate){
+            clause=" "+key+"='"+predicate[key]+"' ";
+            clauseArray.push(clause);
+        }
+        return clauseArray.join('AND');
     }
 
     function selectAll(schema, predicate) {
@@ -59,7 +71,6 @@ var queryProvider = function () {
 
     function checkIfTableExists(schema) {
         var tableName = schema.table.toUpperCase();
-        //var tableName='TBLTESTRESOURCE';
         var query = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME='" + tableName + "' AND TABLE_SCHEMA='PUBLIC'; ";
 
         return query;

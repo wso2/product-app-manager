@@ -51,13 +51,18 @@ var driver = function () {
         var result;
 
         if (isParam) {
-            log.info('parameterized query');
+            log.info('parametrized query');
             var args = getValueArray(model, schema, query);
-            //result = this.instance.query.apply(this.instance, args) || [];
-            result=this.instance.query(query,model.uuid,model.content,model.contentType,model.tenantId,model.contentLength);
+            //var str=args[2];
+            result = this.instance.query.apply(this.instance, args) || [];
+            //result=this.instance.query(query,model.uuid,model.content,model.tenantId,model.contentType,model.contentLength);
+            //query='SELECT * FROM resource WHERE uuid=?'
+            //result=this.instance.query('INSERT INTO resource (uuid,content,tenantId,contentType,contentLength) VALUES (?,?,?,?,?);',
+            //    'a',str,'b1','image/png',456772);
+
         }
         else {
-            log.info('not parameterized');
+            log.info('not parametrized');
             result = this.instance.query(query) || [];
         }
 
@@ -69,7 +74,11 @@ var driver = function () {
     };
 
     /*
-     The function
+     The function creates an argument array that will be used to execute the database query
+     @model: The model containing the data
+     @schema: The schema of the model
+     @query: The query to be executed
+     @return: An argument array containing the query and values to be used in order.
      */
     function getValueArray(model, schema, query) {
         var values = [];
@@ -77,7 +86,13 @@ var driver = function () {
         var field;
         for (var index in schema.fields) {
             field = schema.fields[index];
-            values.push(model[field.name]);
+            if(model[field.name] instanceof File){
+                values.push(model[field.name].getStream());
+            }
+            else{
+                values.push(model[field.name]);
+            }
+
         }
 
         log.info(values);

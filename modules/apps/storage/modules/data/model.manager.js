@@ -120,11 +120,14 @@ var modelManager = function () {
         //Find models matching the predicate
         model.prototype.find = function (predicate) {
 
-            log.info('find called.');
+            modelManager.connect();
+            var query = modelManager.driver.queryProvider.select(this.schema, predicate);
 
-            //var query = this.driver.queryProvider.select(this.schema, predicate);
-            //var results = this.driver.query(query, this.schema, modelManager);
-            //return results;
+            log.info('query: '+query);
+            var results=modelManager.driver.query(query,this.schema,modelManager,this);
+            modelManager.disconnect();
+
+            return results;
         };
 
         //Obtain all of the models
@@ -137,9 +140,11 @@ var modelManager = function () {
         //Creates a table in the database
         model.prototype.createTable = function () {
             log.info('creating table: [' + this.schema.table + ']');
+            modelManager.connect();
             var query = modelManager.driver.queryProvider.create(this.schema);
             log.info('query: ' + query);
             var results = modelManager.driver.query(query, this.schema);
+            modelManager.disconnect();
             return results;
         };
 
@@ -165,7 +170,7 @@ var modelManager = function () {
             modelManager.connect();
             var query = modelManager.driver.queryProvider.insert(this.schema, this);
             log.info('query: ' + query);
-            var results = modelManager.driver.query(query, this.schema, modelManager, this);
+            var results = modelManager.driver.query(query, this.schema, modelManager, this,{PARAMETERIZED:true});
             log.info('after save');
             modelManager.disconnect();
             return results;

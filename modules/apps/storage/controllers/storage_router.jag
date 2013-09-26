@@ -32,6 +32,8 @@ driver.instance.query('INSERT INTO resource (uuid,tenantId,content,contentType,c
 
 driver.disconnect();  */
 
+ var HEADER_CONTENT_TYPE='Content-Type';
+ var HEADER_CONTENT_LENGTH='Content-Length';
 
 
  var storageModule=require('/modules/data/storage.js').storageModule();
@@ -45,25 +47,24 @@ driver.disconnect();  */
  var key={};
  var value={};
 
- key['tenantId']='super';
+ key['tenantId']='super1';
  key['bucket']='publisher';
- value['file']=new File('/tests/banner.png');
+ value['file']=new File('/tests/out2.png');
  value['contentType']='image/png';
- storageManager.put(key,value);
-//storageManager.put({tenantId:'super',bucket:'publisher'},{contentType:'image/png',file:new File()});
+ //storageManager.put(key,value);
 
-//storageManager.get({tenantId:'super',uuid:'134667777'});
+ key['tenantId']='super1';
+ key['uuid']='';
+ var storedValue=storageManager.get(key);
 
-//Get the url
-
-//Obtain the uuid
-
-//Obtain the tenant
-
-//Search the storage with the url key tenant/uuid
+var contentType=storedValue.contentType;
+var contentLength=storedValue.contentLength;
 
 //Create the headers
+response.addHeader(HEADER_CONTENT_TYPE,contentType);
+response.addHeader(HEADER_CONTENT_LENGTH,contentLength+'');
 
 //Send the file stream
+print(storedValue.content);
 
 %>

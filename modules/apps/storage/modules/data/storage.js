@@ -46,7 +46,7 @@ var storageModule=function(){
         resource.uuid='';
         resource.contentType=value.contentType;
         resource.contentLength=value.file.getLength();
-        resource.content=value.file.getStream();
+        resource.content=value.file;
         resource.tenantId=key.tenantId;
 
         //Save the resource
@@ -69,9 +69,21 @@ var storageModule=function(){
         var tenantId=key.tenantId;
         var uuid=key.uuid;
 
-        var results=resource.find({uuid:uuid,tenantId:tenantId});
+        var results=resource.find({tenantId:tenantId});
 
-        return results[0].content||null;
+        log.info('results: '+results.length);
+
+        for(var index in results){
+            var result=results[index];
+
+            log.info(result);
+        }
+
+        log.info(results[0].contentLength);
+        log.info(results[0].contentType);
+        log.info(results[0].tenantId);
+
+        return results[0];
     };
 
 
