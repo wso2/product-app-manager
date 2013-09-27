@@ -6,7 +6,7 @@ var format = function(context, data, page, area, meta) {
 
 var resources = function(page, meta) {
 	return {
-		js : ['asset-helpers.js', 'navigation.js', 'jquery.validate.js', 'jquery.nicescroll.min.js'],
+		js : ['asset-helpers.js', 'navigation.js', 'jquery.validate.js', 'jquery.nicescroll.min.js', 'search.js'],
 		css : ['navigation.css']
 	};
 };

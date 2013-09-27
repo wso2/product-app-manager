@@ -130,7 +130,7 @@ hr.emboss {
     color: #FFFFFF;
 }
 .navbar .nav-separator {
-    border-right: 1px solid #555555;
+    border-right: 1px solid #ccc;
 }
 .navbar-inverse .navbar-inner {
     background: #2C3238;
@@ -153,11 +153,13 @@ hr.emboss {
 
 .dropdown-menu, .dropdown-submenu > .dropdown-menu {
     border-radius: 0;
-    background: #2C3238;
-    color: #FFFFFF;
+    background: #ffffff;
+    color: #34495E;
     box-shadow: none;
     padding: 0;
-    border: none;
+       border-bottom: 1px solid #CCCCCC;
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
 }
 
 .dropdown-menu li {
@@ -169,7 +171,7 @@ hr.emboss {
     padding: 8px 5px;
 }
 .dropdown-menu li > a {
-    color: #FFFFFF;
+    color: #34495E;
     line-height: 30px;
 }
 .dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a {

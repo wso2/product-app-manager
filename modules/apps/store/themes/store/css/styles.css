@@ -368,12 +368,29 @@ h3.asset-title-separator {
 .store-left h3.asset-type-ebook {
     background: url("../img/icon-bar-site.png") no-repeat scroll 2px 1px rgb(235, 243, 243);
 }
+#container-header .nav.menu li:last-child{
+     border-right:1px solid transparent;
+}
+#container-header .nav.menu li.open{
+    background:#ffffff;
+    border-right:1px solid #ccc;
+}
+
+#container-header .open:after {
+    background: none repeat scroll 0 0 #FFFFFF;
+    content: "";
+    display: block;
+    height: 1px;
+    position: absolute;
+    width: 100%;
+    z-index: 1001;
+}
 #container-search.affix {
     left: 50%;
     margin: 0 0 0 -585px;
     padding: 0;
     top: 0;
-    z-index: 100;
+    z-index: 1002;
 }
 #container-search.affix > .row {
     box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2);

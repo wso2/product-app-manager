@@ -1,31 +1,4 @@
-<div id="container-search" class="container">
-	<div class="row">
-		<div class="span12 search-bar">
-			<div class="row-fluid">
-				<div class="span9">
-				  {{#itr assets}}
-                       <a href="{{url "/assets/"}}{{key}}" data-toggle="dropdown" class="dropdown-toggle">
-                       	<li class="dropdown {{#if value.selected}} selected {{/if}}">
-                         <i class="icon-{{key}}"></i> {{value.title}}   
-                          <!--
-                          {{#if value.isCategorySupport}}
-                                                        {{#if value.categories}}
-                                                            <ul aria-labelledby="dLabel" role="menu" class="dropdown-menu">
-                                                                {{#each value.categories}}
-                                                                    <li>
-                                                                        <a href="{{url "/assets"}}/{{../../key}}?fields=true&category={{this}}">{{this}}</a>
-                                                                    </li>
-                                                                {{/each}}
-                                                            </ul>
-                                                        {{/if}}
-                                                    {{/if}}-->
-                          
-                      	</li>
-                      </a> 
-  
-                  {{/itr}}
-				</div>
-				<div class="span3">
+
 					<a href="#" id="search-dropdown-arrow"><i class="icon-sort-down"></i></a>
 					<input type="text" class="span12" id="search" placeholder="Search">
 					<a id="search-button" class=""> <i class="icon-search"></i> </a>
@@ -63,25 +36,4 @@
 						</button>
 
 					</div>
-				</div>
-				<!--<div class="span9">
-				<div class="row-fluid">
-
-				<div class="span10">
-				<input type="text" class="span12" id="search" placeholder="">
-				</div>
-				</div>
-
-				</div>
-				<div class="span3">
-				<a id="search-button" class="">
-				<i class="icon-search"></i>
-				</a>
-				</div>-->
-			</div>
-
-		</div>
-
-	</div>
-</div>
-
+				

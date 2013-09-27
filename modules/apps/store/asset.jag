@@ -36,12 +36,19 @@ var caramel;
         title: 'Store | ' + type,
         user: user,
         sso: sso,
-        navigation: site.navigation(store.tenantId, {sso: sso, user: user}),
+       
+         header : site.header(tenantId, {
+                   sso: sso,
+                   user: user
+               }),
+       
+        navigation: site.navigation(tenantId),
         search: {
             search: {title: type},
             isTopAssets: false,
             searchFields: rxtAttributes
         },
+        
         type: type,
         embedURL: config.server.http + '/gadgets/ifr?url=' + asset.attributes.overview_url,
         inDashboard: inDashboard,

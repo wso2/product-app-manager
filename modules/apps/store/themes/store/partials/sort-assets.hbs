@@ -1,7 +1,47 @@
 <div class="row-sort-assets">
 	<div class="row-fluid">
+		<div class="span8">
+			{{#if categories}}
+			<div id="breadcrumb">
+				<div class="breadcrumb-l1">
+					<div class="breadcrumb-head">
+						<span>All Categories</span><i class="icon-caret-down"></i>
+					</div>
+					<ul class="breadcrumb-body">
+						
+						{{#each categories}}
+						<li>
+							<a href="{{url "/assets"}}/{{../../type}}?fields=true&category={{this}}">{{this}}</a>
+						</li>
+						{{/each}}
+					</ul>
+				</div>
+				<!--
+				<div class="breadcrumb-l2">
+				<div class="breadcrumb-head">
+				<span>Sub Category Name</span><i class="icon-caret-down"></i>
+				</div>
+				<ul class="breadcrumb-body">
+				<li>
+				<a href="#">Category 1</a>
+				</li>
+				<li>
+				<a href="#">Category 1</a>
+				</li>
+				<li>
+				<a href="#">Category 1</a>
+				</li>
+				<li>
+				<a href="#">Category 1</a>
+				</li>
+				</ul>
+				</div>-->
+
+			</div>
+			{{/if}}
+		</div>
 		<div class="span4">
-			<ul id="ul-sort-assets" data-type="gadget">
+			<ul id="ul-sort-assets" data-type="gadget" class="pull-right">
 				<li>
 					<a href="{{url this.url}}popular" data-toggle="tooltip" data-sort="popular" title="{{t "Sort by Popularity"}}"><i class="icon-star"></i></a>
 				</li>
@@ -13,49 +53,7 @@
 				</li>
 			</ul>
 		</div>
-		
-		<div class="span8">
-			{{#if categories}}
-			<div id="breadcrumb" class="pull-right">
-				<div class="breadcrumb-l1">
-					<div class="breadcrumb-head">
-						<span>All Categories</span><i class="icon-caret-down"></i>
-					</div>
-					<ul class="breadcrumb-body">
-						  {{#itr categories}}
-						  		<li>
-						  			<a href="#">{{this.value}}</a>
-						  		</li>
-						  {{/itr}}
-					</ul>
-				</div>
-			<!--
-				<div class="breadcrumb-l2">
-								<div class="breadcrumb-head">
-									<span>Sub Category Name</span><i class="icon-caret-down"></i>
-								</div>
-								<ul class="breadcrumb-body">
-									<li>
-										<a href="#">Category 1</a>
-									</li>
-									<li>
-										<a href="#">Category 1</a>
-									</li>
-									<li>
-										<a href="#">Category 1</a>
-									</li>
-									<li>
-										<a href="#">Category 1</a>
-									</li>
-								</ul>
-							</div>-->
-			
 
-			</div>
-			{{/if}}
-		</div>
-
-		
 		<!--
 		<div class="span4 pull-right txt-right">
 		{{t "Showing assets"}} <strong>{{start}}-{{end}}</strong> of {{total}}

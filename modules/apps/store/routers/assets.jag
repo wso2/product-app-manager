@@ -12,13 +12,22 @@ var type;
             return path;
         };
     };
+  
+    
     if (matcher.match('/{context}' + config.assetsUrlPrefix + '/{type}/')) {
+    	
         elements = matcher.elements();
         type = elements.type;
-        if (configs.assets.indexOf(type) === -1) {
+        
+        if (type == "all") {
+            path = '/top-assets.jag';
+            request.getMappedPath = mapper(path);
+            include(path);
+            return;
+        } else if (configs.assets.indexOf(type) === -1) {
             response.sendError(404, 'Request Resource cannot be found');
             return;
-        }
+        } 
         path = mod.ASSETS_EXT_PATH + type + '/pages/' + 'assets.jag';
         if (!new File(path).isExists()) {
             path = '/assets.jag';

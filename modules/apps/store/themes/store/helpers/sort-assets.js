@@ -7,7 +7,8 @@ var format = function (context, paging, navigation, type) {
         total: paging.total,
         start: start,
         end: end,
-        categories : navigation.assets[type].categories
+        categories : navigation.assets[type].categories,
+        type: type
     };
 };
 
