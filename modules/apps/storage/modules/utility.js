@@ -191,6 +191,16 @@ var utility = function () {
         return recursiveInspect(target,predicateObj,true);
     }
 
+    /*
+    The function recursively checks for the presence of a key and then triggers some logic
+    @root: The root of the object to be inspected
+    @key: The name of the property
+    @logic: The logic to be invoked
+     */
+    function recursivePropertyInsepector(root,key,logic){
+
+    }
+
     return{
         /*The function takes a set of options
          and configures a target object
@@ -273,6 +283,19 @@ var utility = function () {
             for (var index in propArray) {
                 var prop = propArray[index];
                 objectB[prop] = objectA[prop];
+            }
+        },
+        /*
+        The function merges the properties in objectB to objectA
+        @objectA: The object to merged against
+        @objectB: The object whose values will be merged with A
+        @return: An object containing the properties of both A and B
+         */
+        mergeProperties:function(objectA,objectB){
+            //Go through the properties in B
+            for(var key in objectB){
+
+                objectA[key]=objectB[key];
             }
         },
 

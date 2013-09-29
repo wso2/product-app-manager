@@ -1,60 +1,76 @@
 <%
- // print('this is the default api router');
+// print('this is the default api router');
 
-  var log=new Log('api.router');
+var log = new Log('api.router');
 
-  //log.info('content type: '+request.getContentType());
-  //log.info('content length: '+request.getContentLength());
-  //log.info('content: '+request.getContent());
-  //log.info(request.getParameter('file'));
+var dataInjectorModule=require('/modules/data/data.injector.js').dataInjectorModule();
 
- /* var UUID=java.util.UUID;
+var dataInjector=new dataInjectorModule.DataInjector();
 
-  var result=UUID.randomUUID();
+var artifact={
 
-  print('result:'+result);        */
+    attributes:{
+        'images_banner':'a',
+        'images_thumbnail':'b'
+    }
+};
 
-  /*var contents=request.getAllParameters('UTF-8');
+var list=[{a:1},{b:2}];
 
-  log.info('content is'+contents[0]);*/
+dataInjector.inject(list,dataInjectorModule.Modes.STORAGE);
 
-var db=new Database('JAGH2');
+//log.info('content type: '+request.getContentType());
+//log.info('content length: '+request.getContentLength());
+//log.info('content: '+request.getContent());
+//log.info(request.getParameter('file'));
 
-var selectQuery='SELECT content FROM resource;';
+/* var UUID=java.util.UUID;
 
-var result=db.query(selectQuery);
-log.info(result.length);
+ var result=UUID.randomUUID();
+
+ print('result:'+result);        */
+
+/*var contents=request.getAllParameters('UTF-8');
+
+ log.info('content is'+contents[0]);*/
+
+//var db=new Database('JAGH2');
+
+//var selectQuery='SELECT content FROM resource;';
+
+//var result=db.query(selectQuery);
+//log.info(result.length);
 
 /* var db=new Database('jdbc:h2:~/test','sa','');
 
-var file=new File('/tests/banner.png');
+ var file=new File('/tests/banner.png');
 
-file.open('r');
+ file.open('r');
 
-//var insertQuery='INSERT INTO resource (uuid,tenantId,content) VALUES (?,?,?)';
+ //var insertQuery='INSERT INTO resource (uuid,tenantId,content) VALUES (?,?,?)';
 
-//db.query(insertQuery,'a','b',file.getStream());
+ //db.query(insertQuery,'a','b',file.getStream());
 
-var selectQuery='SELECT content FROM resource;';
+ var selectQuery='SELECT content FROM resource;';
 
-var result=db.query(selectQuery);
+ var result=db.query(selectQuery);
 
-log.info(result.length);
-var temp;
+ log.info(result.length);
+ var temp;
 
-for(var row in result){
+ for(var row in result){
 
-    for(var index in result[row]){
-        temp=result[row];
-    }
-}
+ for(var index in result[row]){
+ temp=result[row];
+ }
+ }
 
-log.info(temp[index]);
-response.addHeader('Content-Type','image/png');
-log.info('length of original file: '+file.getLength());
-response.addHeader('Content-Length',file.getLength()+'');
+ log.info(temp[index]);
+ response.addHeader('Content-Type','image/png');
+ log.info('length of original file: '+file.getLength());
+ response.addHeader('Content-Length',file.getLength()+'');
 
-print(temp[index]);*/
+ print(temp[index]);*/
 
 
 %>
