@@ -91,7 +91,7 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
         return status;
     }
 
-    var search = function (that, options) {
+    var search = function (that, options,paging ) {
 
         if (options.tag) {
             var registry = that.registry,
@@ -102,7 +102,7 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
                     return matchArtifact(options, artifact);
                 }
                 return false;
-            });
+            },paging);
         }
         if (options.query) {
             var query = options.query.toLowerCase();
@@ -122,14 +122,14 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
                 }
                 //return matchAttr(options.attributes, asset.attributes);
                 return matchArtifact(options, asset);
-            });
+            },paging);
         }
         if (options) {
 
             return that.manager.find(function (artifact) {
                 // return matchAttr(options.attributes, artifact.attributes);
                 return matchArtifact(options, artifact);
-            });
+            },paging);
         }
         return [];
     };
@@ -253,11 +253,11 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
      };*/
 
     Manager.prototype.search = function (options, paging) {
-        return loadRatings(this, this.sorter.paginate(search(this, options), paging));
+        return loadRatings(this, search(this, options,paging), paging);
     };
 
     Manager.prototype.checkTagAssets = function (options) {
-        return search(this, options);
+        return search(this, options,null);
     };
 
     /*
@@ -326,7 +326,6 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
     @return:An integer count of the number of matches,else false.
      */
     Manager.prototype.count = function (options) {
-
         if (options) {
             return search(this, options).length;
         }
@@ -342,7 +341,7 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
                 matchingCount++;
             }
 
-        });
+        },null);
 
         log.debug('Number of assets counted : ' + matchingCount);
 
