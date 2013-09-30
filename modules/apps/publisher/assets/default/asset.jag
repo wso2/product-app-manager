@@ -186,6 +186,8 @@ function inspectFiles(req, params) {
     var uuid = '';
     var extension;
 
+    log.info(storageConfig.dataSource);
+
     var storageManager = new storageModule.StorageManager({
         context: 'storage',
         isCached: false,
@@ -209,8 +211,10 @@ function inspectFiles(req, params) {
 
         uuid=storageManager.put(resource);
 
+        log.info('uuid added: '+uuid);
+
         //Add a new  entry into the POST parameters containing the uuid
-        params[index] = uuid + '/' + files[index].getName();
+        params[index] = uuid;
     }
 }
 
