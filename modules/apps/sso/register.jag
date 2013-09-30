@@ -1,0 +1,25 @@
+<%
+var action = request.getParameter('action'),
+        username = request.getParameter('reg-username'),
+        password = request.getParameter('reg-password'),
+        log = new Log();
+
+(function () {
+    var registerUser = function (username, password) {
+        var userMod = require('/modules/user.js');
+        try {
+            userMod.register(username, password);
+            response.sendRedirect('/store');
+        } catch (e) {
+            log.info(e);
+        }
+    };
+
+    if (action == 'register') {
+        registerUser(username, password);
+    }
+
+}());
+
+
+%>
