@@ -227,8 +227,19 @@ var register = function (username, password) {
         carbon = require('carbon'),
         event = require('/modules/event.js'),
         usr = carbon.server.tenantUser(username),
-        um = server.userManager(usr.tenantId),
-        opts = options(usr.tenantId);
+        um = server.userManager(usr.tenantId);
+
+
+
+    if (!server.configs(usr.tenantId)) {
+        event.emit('tenantCreate', usr.tenantId);
+    }
+    if (!server.configs(usr.tenantId)[USER_OPTIONS]) {
+        event.emit('tenantLoad', usr.tenantId);
+    }
+
+    var opts = options(usr.tenantId);
+
     um.addUser(usr.username, password, opts.userRoles);
     user = um.getUser(usr.username);
     role = privateRole(usr.username);
@@ -252,7 +263,7 @@ var register = function (username, password) {
         opts.register(user, password, session);
     }
     event.emit('userRegister', usr.tenantId, user);
-    login(username, password);
+    //login(username, password);
 };
 
 /**
