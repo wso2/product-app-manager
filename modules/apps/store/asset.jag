@@ -36,6 +36,7 @@ caramel.render({
     embedURL: config.server.http + '/gadgets/ifr?url=' + asset.attributes.overview_url,
     inDashboard: inDashboard,
     asset: asset,
+    isSocial: config.socialCommentsEnable,
     tags: [
         {
             url: '/assets/' + type + '/?page=1&tag=',

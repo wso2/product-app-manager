@@ -17,7 +17,8 @@ var render = function(theme, data, meta, require) {
                 asset : data.asset,
                 type : data.type,
                 inDashboard : data.inDashboard,
-                embedURL : data.embedURL
+                embedURL : data.embedURL,
+                isSocial : data.isSocial
             })
         }],
 		right : [{

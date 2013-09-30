@@ -1,4 +1,5 @@
 $(function () {
+    if(!isSocial){
     var comments = {
             interval: 5 * 1000,
             commentsUrl: caramel.context + '/apis/comments?asset=' + $('#assetp-tabs').data('aid') + '&page=',
@@ -184,8 +185,6 @@ $(function () {
      $('.asset-description-header').removeClass('asset-description-header-scroll');
      }
      })*/
-	 
-	 
-
+    }
 
 });
