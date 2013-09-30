@@ -1,27 +1,33 @@
 var render = function (theme, data, meta, require) {
     theme('2-column-right', {
         title: data.title,
+        header: [
+            {
+                partial: 'header',
+                context: data.header
+            }
+        ],
         navigation: [
             {
                 partial: 'navigation',
-                context: data.navigation
-            },
-            {
-                partial: 'search',
-                context: data.search
+                context: require('/helpers/navigation.js').currentPage(data.navigation, data.type, data.search)
             }
         ],
-
         body: [
             {
                 partial: 'subscriptions',
                 context: {
                     'subscriptions': data.subscriptions,
-                    'URL': data.URL
+                    'URL': data.URL,
+                    'myAssets' : data.myAssets
                 }
             }
         ],
         right: [
+        	{
+                partial: 'my-assets-link',
+                context: data.myAssets
+            },
             {
                 partial: 'recent-assets',
                 context: data.recentAssets

@@ -34,17 +34,32 @@ var caramel;
 	}
 
 	caramel.render({
-		'title' : 'Store | My Bookmarks',
+		'title' : 'Store | My Items',
+		  user: user,
+        sso: sso,
+         header : site.header(tenantId, {
+                   sso: sso,
+                   user: user
+               }),
+       
+        navigation: site.navigation(tenantId),
+        search: {
+            search: {title: type},
+            isTopAssets: false,
+            searchFields: rxtAttributes
+        },
+		/*
 		'navigation' : site.navigation(store.tenantId, {
-			sso : sso,
-			user : user
-		}),
-		 search: {
-			mainPage : "My bookmarks",
-			subPage : "",
-			isTopAssets : false,
-            searchFields : rxtAttributes
-		},
+					sso : sso,
+					user : user
+				}),
+				 search: {
+					mainPage : "My bookmarks",
+					subPage : "",
+					isTopAssets : false,
+					searchFields : rxtAttributes
+				},*/
+		
 		'userAssets' : count > 0 ? subscriptions : null,
 		'recentAssets' : recentAssets,
 		'tags' : tags
