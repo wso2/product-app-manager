@@ -66,7 +66,7 @@ var e = session.get('error') || {};
 									</div>
 
 									<div class="span6">
-										<form id="registerForm" action="samlsso.jag" method="POST" >
+										<form id="registerForm" action="register.jag" method="POST" >
 									        <h2 class="form-signin-heading">Register</h2>
 									        <% if(e.error && e.type == 'regError'){ %>
 									            <div class="alert alert-error"><%= e.msg.split(':')[1] %></div>
@@ -74,10 +74,10 @@ var e = session.get('error') || {};
     e = {};
     session.put('error', {});
 }%>
-									        <div class="control"><label>Username</label><input id="reg-username" name="username" type="text" class="input-block-level required usrName"></div>
+									        <div class="control"><label>Username</label><input id="reg-username" name="reg-username" type="text" class="input-block-level required usrName"></div>
 									        <div class="control">
 									        	<label>Password</label>
-									        	<input id="reg-password" name="password" type="password" class="input-block-level required">
+									        	<input id="reg-password" name="reg-password" type="password" class="input-block-level required">
 									        </div>
 									        <div class="control">
 							        			<label>Confirm password</label>
