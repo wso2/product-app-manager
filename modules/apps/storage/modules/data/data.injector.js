@@ -48,7 +48,6 @@ var dataInjectorModule = function () {
 
         //Check if the object is a single object or an array
         if (object instanceof Array) {
-            log.info('the object is an array');
 
             //Go through each element in the array
             for (var index in object) {
@@ -56,7 +55,7 @@ var dataInjectorModule = function () {
             }
         }
         else {
-            log.info('single object');
+
             this.handle(object);
         }
     };

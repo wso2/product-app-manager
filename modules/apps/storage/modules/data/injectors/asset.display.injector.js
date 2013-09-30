@@ -13,7 +13,7 @@ var injector = function () {
     var utility=require('/modules/utility.js').utility();
     var dataInjectModule = require('/modules/data/data.injector.js').dataInjectorModule();
     var modes = dataInjectModule.Modes;
-
+    var config=require('/config/storage.json');
 
     /*
      The modes in which the handler should be executed
@@ -23,8 +23,8 @@ var injector = function () {
         return modes.DISPLAY;
     }
 
-    function init(){
-        log.info('Does not perform any initialization');
+    function init(context){
+        context.config=config;
     }
 
     /*
@@ -40,7 +40,7 @@ var injector = function () {
             return true;
         }
 
-        log.info('object is not handled');
+        log.debug('object'+stringify(object)+' is not handled');
 
         return false;
     }
@@ -54,19 +54,19 @@ var injector = function () {
     function handle(context) {
 
         var object=context.object||{};
-        var fields=['images_banner','images_thumbnail'];
+        var config=context.config;
+        var fields=config.storeFields;
         var url;
         var uuid;
         var field;
-        //Go through all of the targetted fields
 
+        //Go through all of the targeted fields
         for(var index in fields){
 
-            log.info('checking for '+fields[index]);
-
             utility.isPresent(object.attributes,fields[index],function(){
+
+                //Current field been examined
                 field=fields[index];
-                log.info('found '+field);
 
                 //Obtain the uuid
                 url=object.attributes[field];
@@ -75,8 +75,8 @@ var injector = function () {
 
                 //Check if it is a valid uuid and create a new url
                 if((uuid)&&(utility.isValidUuid(uuid))){
-
-                    object.attributes[field]=getUrl(url);
+                    log.debug('creating a new url for '+url);
+                    object.attributes[field]=getUrl(url,config,object);
                 }
 
             });
@@ -111,9 +111,24 @@ var injector = function () {
 
     }
 
-    function getUrl(uuid){
-        var context='publisher/storage';
-        return context+'/'+uuid;
+    /*
+    The function builds a url based on the provided pattern
+    @uuid: The uuid of the resource to which the url should point
+    @config: The config object used to store the context
+    @object: The object containing an id
+    @return: A url for the provided uuid for the current context
+     */
+    function getUrl(uuid,config,object){
+
+        var context=config.context;
+        var storageUrlPattern=config.storageUrlPattern;
+
+        storageUrlPattern=storageUrlPattern.replace('{context}',context);
+        storageUrlPattern=storageUrlPattern.replace('{uuid}',uuid);
+        storageUrlPattern=storageUrlPattern.replace('{id}',object.id);
+
+        log.debug('new url: '+storageUrlPattern);
+        return storageUrlPattern;
     }
 
 

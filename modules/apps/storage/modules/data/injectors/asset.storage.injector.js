@@ -11,6 +11,7 @@ var injector=function(){
     var utility=require('/modules/utility.js').utility();
     var dataInjectModule=require('/modules/data/data.injector.js').dataInjectorModule();
     var modes=dataInjectModule.Modes;
+    var config=require('/config/storage.json');
 
     /*
     The function performs any initialization logic.It is invoked only once when the handler is assembled
@@ -18,6 +19,7 @@ var injector=function(){
      */
     function init(context){
           context['storageManager']=null;
+          context['config']=config;
     }
 
     /*
@@ -38,11 +40,10 @@ var injector=function(){
 
         //We check for the exsistence of an attributes property
         if(object.hasOwnProperty('attributes')){
-            log.info('object is handled.');
             return true;
         }
 
-        log.info('object is not handled');
+        log.debug('the object: '+stringify(object)+' is not handled.');
     }
 
     /*
@@ -53,27 +54,34 @@ var injector=function(){
      */
     function handle(context){
         var object=context.object||{};
-        var fields=['images_thumbnail','images_banner'];
+        var config=context.config;
+        var fields=config.storeFields;
         var field;
         var uuid;
         var path;
 
         for(var index in fields){
+
+            //Current field been examined
             field=fields[index];
 
             utility.isPresent(object.attributes,field,function(){
-                log.info('checking field '+field);
+
+                //Get the value of the current field
                 path=object.attributes[field];
 
+                //Attempt to store
                 uuid=addToStorage(path);
 
+                //Update value
                 if(uuid){
-                    log.info('added file to storage.');
                     object.attributes[field]=uuid;
                 }
             });
         }
+
         log.info(object);
+
         return true;
     }
     /*
@@ -88,9 +96,8 @@ var injector=function(){
 
         //Only add it storage if it is a valid path and get the uuid
         if(file.isExists()){
-
-            uuid='added file';
-
+            log.info('loaded resource '+path+' into storage.');
+            uuid=path;
         }
 
         return uuid
