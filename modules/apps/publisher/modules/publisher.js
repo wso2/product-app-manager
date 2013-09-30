@@ -153,6 +153,8 @@ var Publisher = function (tenantId, session) {
     this.modelManager = managers.modelManager;
     this.rxtManager = managers.rxtManager;
     this.routeManager = managers.routeManager;
+    this.dataInjector=managers.dataInjector;
+    this.DataInjectorModes=managers.DataInjectorModes;
 };
 /*
 
@@ -168,6 +170,7 @@ var buildManagers = function (tenantId, registry) {
     var rxt_management = require('/modules/rxt.manager.js').rxt_management();
     var route_management = require('/modules/router-g.js').router();
     var dataInjectorModule=require('/modules/data/data.injector.js').dataInjectorModule();
+
 
     var dataInjector=new dataInjectorModule.DataInjector();
     var injectorModes=dataInjectorModule.Modes;

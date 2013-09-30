@@ -82,7 +82,7 @@ var injector = function () {
             });
         }
 
-        log.info(object);
+        //log.info(object);
 
         return true;
     }

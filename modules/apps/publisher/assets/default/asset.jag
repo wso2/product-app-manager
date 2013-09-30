@@ -24,6 +24,8 @@ var routeManager = new router.Router();
 //var routeManager=application.get(config.app.ROUTE_MANAGER);
 var rxtManager = publisher.rxtManager;
 var modelManager = publisher.modelManager;
+var dataInjector=publisher.dataInjector;
+var DataInjectorModes=publisher.DataInjectorModes;
 
 var log=new Log();
 
@@ -73,6 +75,9 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
 
         var model = modelManager.getModel(shortName);
 
+        //Customize the asset for the app
+        dataInjector.inject(artifact,DataInjectorModes.DISPLAY);
+
         model.import('asset', artifact);
 
         var output = model.export('form');
@@ -110,6 +115,9 @@ routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/
         });
 
         var model = modelManager.getModel(shortName);
+
+        //Customize the asset for the app
+        dataInjector.inject(artifact,DataInjectorModes.DISPLAY);
 
         model.import('asset', artifact);
 
