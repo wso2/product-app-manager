@@ -281,7 +281,7 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
     Manager.prototype.get = function (id) {
         var asset=this.manager.get(id);
 
-        dataInjector.cached().inject(assets,DataInjectorModes.DISPLAY);
+        dataInjector.cached().inject(asset,DataInjectorModes.DISPLAY);
 
         return asset;
     };

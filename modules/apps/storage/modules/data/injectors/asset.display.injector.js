@@ -10,10 +10,11 @@
 var injector = function () {
 
     var log = new Log('asset.display.injector');
-    var utility=require('/modules/utility.js').utility();
+    var utility=require('/modules/utility.js').rxt_utility();
     var dataInjectModule = require('/modules/data/data.injector.js').dataInjectorModule();
     var modes = dataInjectModule.Modes;
     var config=require('/config/storage.json');
+    var process=require('process');
 
     /*
      The modes in which the handler should be executed
@@ -82,7 +83,7 @@ var injector = function () {
             });
         }
 
-        log.info(object);
+        //log.info(object);
 
         return true;
     }
@@ -122,6 +123,13 @@ var injector = function () {
 
         var context=config.context;
         var storageUrlPattern=config.storageUrlPattern;
+        var ip=process.getProperty('server.host');
+        var https=process.getProperty('https.port');
+        var http=process.getProperty('http.port');
+
+        storageUrlPattern=storageUrlPattern.replace('{ip}',ip);
+
+        storageUrlPattern=storageUrlPattern.replace('{http}',http);
 
         storageUrlPattern=storageUrlPattern.replace('{context}',context);
         storageUrlPattern=storageUrlPattern.replace('{uuid}',uuid);
