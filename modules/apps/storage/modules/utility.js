@@ -349,6 +349,24 @@ var utility = function () {
             return match;
         },
         /*
+        The function checks whether the provided url is a valid uuid
+        @value: The value to be checked
+        return: True if the value is a UUID else false
+         */
+        isValidUuid:function(value){
+
+            var rg=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+            var isMatch=value.match(rg);
+
+            //Check if a match is returned
+            if(isMatch){
+                return true;
+            }
+
+            return false;
+        },
+        /*
         The function checks for the presence of an object matching the predicate
         @array: An array of objects
         @predicate: A predicate condition

@@ -10,6 +10,7 @@
 var injector = function () {
 
     var log = new Log('asset.display.injector');
+    var utility=require('/modules/utility.js').utility();
     var dataInjectModule = require('/modules/data/data.injector.js').dataInjectorModule();
     var modes = dataInjectModule.Modes;
 
@@ -42,33 +43,59 @@ var injector = function () {
      */
     function handle(context) {
 
+        var object=context.object||{};
+        var fields=[];
+        var url;
+        var uuid;
+
+        for(var index in fields){
+            utility.isPresent(object.attribute,fields[index],function(){
+
+                //Obtain the uuid
+                url=object.attribute[index];
+
+                uuid=getUUID(url);
+
+                //Set the new url
+                if(uuid){
+                    object.attribute[index]=getUrl(uuid[0]);
+                }
+
+            });
+        }
 
 
         return false;
     }
 
+
+    /*
+    The function obtains the UUID from a value
+    @value: A string containing a UUID
+    @return: A UUID if one is present else null
+     */
     function getUUID(value){
         var value=object[field];
 
         //Check if the uuid is present as uuid/file
         var components=value.split('/');
+        var uuid=null;
 
         //A single value,could be a uuid
         if(components.length==1){
-            //Check if it is a uuid
+            uuid=components[0];
         }
         //Not a uuid/file value
         else if(components.length<2){
-           //Check if it is a uuid
+            uuid=components[1];
         }
+
+        return uuid;
 
     }
 
-    /*
-    The function checks whether a provided value is a uuid
-     */
-    function isUuid(value){
-        return true;
+    function getUrl(uuid){
+        return '';
     }
 
 

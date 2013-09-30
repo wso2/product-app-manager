@@ -1,6 +1,11 @@
 <%
+var rg=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+var isMatch='5f5db9a3-b3fe-49a8-9c5b-c3df9c2f1c53'.match(rg);
+
+print(isMatch);
 //print("this is the request router");
-var log = new Log('request.router');
+/*var log = new Log('request.router');
 
 log.info(request.getContentLength());
 log.info(request.getContentType());
@@ -14,7 +19,7 @@ for(var index in params){
 
 var file=request.getFile('file');
 log.info(file.getName());
-file.saveAs('/tests/ico.png');
+file.saveAs('/tests/ico.png'); */
 //log.info(request.getContent().getStream());
 
 //Read a file
