@@ -95,7 +95,7 @@ var caramel;
 		sso:sso,
 		header : site.header(tenantId, {
             sso: sso,
-            user: user
+            user: loggedUser
         }),
         navigation: site.navigation(tenantId),
 

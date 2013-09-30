@@ -173,6 +173,9 @@
                                     org.wso2.carbon:org.wso2.carbon.module.mgt.server.feature:${carbon.platform.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.user.mgt.feature:${carbon.platform.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.databridge.streamdefn.cassandra.feature:${carbon.platform.patch.version.412}
                                 </featureArtifactDef>
 
@@ -223,6 +226,10 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.webapp.mgt.server.feature.group</id>
+                                    <version>${carbon.platform.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.user.mgt.feature.group</id>
                                     <version>${carbon.platform.version}</version>
                                 </feature>
                                 <feature>
