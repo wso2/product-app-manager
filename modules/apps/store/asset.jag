@@ -48,6 +48,7 @@ var caramel;
             isTopAssets: false,
             searchFields: rxtAttributes
         },
+        isSocial:config.socialCommentsEnable,
         
         type: type,
         embedURL: config.server.http + '/gadgets/ifr?url=' + asset.attributes.overview_url,
