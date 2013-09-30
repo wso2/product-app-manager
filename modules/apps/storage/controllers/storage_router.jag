@@ -76,9 +76,9 @@ var isMatch=uriMatcher.match('/{context}/storage/{uuid}/{fileName}');
 if(isMatch){
     var matchedElements=uriMatcher.elements();
 
-    log.info(matchedElements['context']);
-    log.info(matchedElements['fileName']);
-    log.info(matchedElements['uuid']);
+    //log.info(matchedElements['context']);
+    //log.info(matchedElements['fileName']);
+    //log.info(matchedElements['uuid']);
 
     handleResourceRequest(matchedElements);
 }

@@ -173,12 +173,19 @@ the POST parameter object
 function inspectFiles(req,params){
    var files=req.getAllFiles();
    var fileName;
+   var file;
    var uuid=require('uuid');
 
    for(var index in files){
+
+       file=files[index];
+
        log.info('file: '+index);
 
        //Put the file in storage and get a uuid as a reference
+       var resource={};
+       resource['file']=file;
+       resource['contentType']='';
 
        //Add a new  entry into the POST parameters containing the uuid
        params[index]=uuid.generate()+'/'+files[index].getName();

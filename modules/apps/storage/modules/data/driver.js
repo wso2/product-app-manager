@@ -55,6 +55,7 @@ var driver = function () {
 
         if (isParam) {
             var args = getValueArray(model, schema, query);
+
             result = this.instance.query.apply(this.instance, args) || [];
         }
         else {

@@ -506,6 +506,22 @@ var utility = function () {
                return components[components.length-1];
             },
             /*
+            The function returns the content type given the extension
+             */
+            getContentType:function(file){
+              var contentType='';
+              switch(file){
+                  case 'jpg':
+                      contentType='image/jpg';
+                      break;
+                  case 'png':
+                      contentType='image/png';
+                      break;
+              }
+
+                return contentType;
+            },
+            /*
             The function returns all of the directories in a given path
             @path: The base path which must be inspected.
             @return: An array containing all directories in the provided path

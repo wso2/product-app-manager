@@ -28,7 +28,13 @@ var dataInjectorModule = function () {
         this.injectors[INJECTOR_MODES.STORAGE] = [];
         this.injectors[INJECTOR_MODES.DISPLAY] = [];
         this.injectors[INJECTOR_MODES.DEFAULT]=[];
+        this.globals={};
+
         this.buildInjector();
+    }
+
+    DataInjector.prototype.addToContext=function(key,obj){
+        this.globals[key]=obj;
     }
 
     /*
@@ -82,7 +88,7 @@ var dataInjectorModule = function () {
             var fullName = bundle.getName().replace(bundle.getExtension(), '');
 
             //Load the script
-            log.info('loading script: '+INJECTOR_LOCATION + '/' + bundle.getName());
+            log.debug('loading script: '+INJECTOR_LOCATION + '/' + bundle.getName());
 
             var file = require(INJECTOR_LOCATION + '/' + bundle.getName())[INJECTOR_MODULE_NAME]();
             //file.injector();
@@ -121,6 +127,7 @@ var dataInjectorModule = function () {
 
                 //Add the options to the context
                 utility.mergeProperties(context,options);
+                utility.mergeProperties(context,this.globals);
 
                 //Perform the handling logic
                 result = injectorArray[index].handler.handle(context);

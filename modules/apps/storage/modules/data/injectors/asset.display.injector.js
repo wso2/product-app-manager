@@ -24,7 +24,7 @@ var injector = function () {
     }
 
     function init(context){
-        context.config=config;
+        context['config']=config;
     }
 
     /*

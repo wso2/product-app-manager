@@ -94,7 +94,16 @@ var storageModule = function () {
         var resource = this.modelManager.get('Resource');
 
         //value should contain the file path and content type
-        var file=new File(value.path);
+        var file;
+
+        //If a path is given then use the path to create a file,otherwise
+        //use the provided file.
+        if(value.path){
+            file=new File(value.path);
+        }
+        else{
+            file=value.file;
+        }
 
         log.info('filename :'+file.getName());
 
@@ -103,13 +112,13 @@ var storageModule = function () {
         resource.contentType = value.contentType;
         resource.contentLength = file.getLength();
         resource.content = file;
-        resource.fileName = value.fileName;
-        resource.tenantId = value.tenantId;
+        resource.fileName =file.getName();
+        resource.tenantId = value.tenantId||'super';
 
         //Save the resource
         resource.save();
 
-        return resource.uuid+'/'+value.fileName;
+        return resource.uuid+'/'+file.getName();
     };
 
     /*

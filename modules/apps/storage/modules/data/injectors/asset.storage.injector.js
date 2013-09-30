@@ -18,7 +18,6 @@ var injector=function(){
     @context: The context which will be used in handling requests
      */
     function init(context){
-          context['storageManager']=null;
           context['config']=config;
     }
 
@@ -71,7 +70,7 @@ var injector=function(){
                 path=object.attributes[field];
 
                 //Attempt to store
-                uuid=addToStorage(path);
+                uuid=addToStorage(path,context);
 
                 //Update value
                 if(uuid){
@@ -90,17 +89,41 @@ var injector=function(){
     @path: A path to a resource
     @return: If the file is added to storage then a uuid is returned,else null
      */
-    function addToStorage(path){
+    function addToStorage(path,context){
         var file=new File(path);
         var uuid=null;
 
         //Only add it storage if it is a valid path and get the uuid
         if(file.isExists()){
             log.info('loaded resource '+path+' into storage.');
-            uuid=path;
+            uuid=useStorageManager(path,file,context);
         }
 
         return uuid
+    }
+
+    function useStorageManager(path,file,context){
+
+        var path=path;
+
+        //Only store it if the storage manager exists
+        if(context.storageManager){
+
+            var resource={};
+            resource['file']=file;
+            resource['contentType']=determineContentType(file);
+
+            //Get the uuid/filename
+            path=context.storageManager.put(resource);
+
+        }
+
+        return path;
+    }
+
+    function determineContentType(file){
+        var extension=utility.fileio.getExtension(file);
+        return utility.fileio.getContentType(extension);
     }
 
 
