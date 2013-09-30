@@ -13,6 +13,8 @@ var dataInjectorModule = function () {
     var INJECTOR_MODULE_NAME = 'injector';
     var INJECTOR_LOCATION = '/modules/data/injectors';
 
+    var DATA_INJECTOR_CACHED='dataInjector';
+
     var INJECTOR_MODES = {
         'DEFAULT': 1,
         'INIT': 2,
@@ -33,9 +35,11 @@ var dataInjectorModule = function () {
         this.buildInjector();
     }
 
+
+
     DataInjector.prototype.addToContext=function(key,obj){
         this.globals[key]=obj;
-    }
+    };
 
     /*
      The function is used to inject some values into an object
@@ -142,8 +146,27 @@ var dataInjectorModule = function () {
         }
     };
 
+    /*
+    The function returns a cached copy of the DataInjector
+    @return: A cached copy of the data injector
+     */
+    function getCached(){
+        var instance=application.get(DATA_INJECTOR_CACHED);
+
+        //Check if the data injector is cached
+        if(!instance){
+
+            instance=new DataInjector();
+            application.put(DATA_INJECTOR_CACHED,instance);
+
+        }
+
+        return instance;
+    }
+
     return{
         DataInjector: DataInjector,
-        Modes:INJECTOR_MODES
+        Modes:INJECTOR_MODES,
+        cached:getCached
     };
 };
