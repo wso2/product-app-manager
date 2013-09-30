@@ -1,3 +1,4 @@
+<!--
 <div id="publisher_top_nav" class="container-fluid top-nav-container">
     <div class="row-fluid">
         <div id="publisher_logo_main" class="left span3">
@@ -24,4 +25,45 @@
             </div>
         </div>
     </div>
+</div>
+
+
+-->
+
+
+<div class="container" id="container-header">
+	<div class="row">
+		<div class="span12">
+			<div class="navbar">
+				<div class="navbar-inner">
+					<div class="container">
+
+						<a href="/publisher/" class="brand"></a>
+						<!--
+						<ul class="nav menu store-menu">
+						
+						</ul>-->
+
+						<ul class="nav menu pull-right">
+
+							 <div class="dropdown user right">
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+						<span class="icon-stack">
+							<i class="icon-check-empty icon-stack-base"></i>
+							<i class="icon-user"></i>
+						</span>
+                    {{cuser.username}}
+                    <span class="icon-chevron-down"></span>
+                </a>
+                <ul class="dropdown-menu user-menu">
+                    <li><a onclick="window.location.href='{{url "/logout"}}'" href="#"><i class="icon-signout"></i>{{t "Sign Out"}}</a></li>
+                </ul>
+            </div>
+
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

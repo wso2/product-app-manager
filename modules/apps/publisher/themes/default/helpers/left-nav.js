@@ -1,4 +1,8 @@
-var generateLeftNavJson = function(data) {
+var generateLeftNavJson = function(data, listPartial) {
+	
+	new Log().info(listPartial);
+	
+	
     var leftNavItems = { leftNavLinks :
         [
            /*
