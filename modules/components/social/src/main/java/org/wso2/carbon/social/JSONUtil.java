@@ -7,7 +7,7 @@ import org.mozilla.javascript.NativeJavaObject;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptableObject;
 
-public class Util {
+public class JSONUtil {
     public static String SimpleNativeObjectToJson(NativeObject obj) throws JSONException {
         JSONStringer json = new JSONStringer();
         simpleNativeObjectToJson(obj, json);
