@@ -62,6 +62,16 @@
             "label": "Life Cycle",
             "value": "SampleLifeCycle2"
 
+        },
+        {
+            "name":"banner",
+            "table":"images",
+            "type":"file"
+        },
+        {
+            "name":"thumbnail",
+            "table":"images",
+            "type":"file"
         }
 
     ]
