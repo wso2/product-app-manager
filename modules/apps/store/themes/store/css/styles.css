@@ -451,6 +451,7 @@ h3.asset-title-separator {
     padding: 8px 35px;
     color: #34495e;
     opacity: .7;
+    margin-right:-3px;
     font-size: 14px;
     border-right: 1px solid #DADADA;
 }

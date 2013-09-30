@@ -4,7 +4,7 @@ var caramel;
 
 (function () {
 
-    var asset, aid,
+    var asset, aid,title,
             log = new Log(),
             caramel = require('caramel'),
             store = require('/modules/store.js').store(request, session),
@@ -18,7 +18,7 @@ var caramel;
 
     matcher.match('/{context}' + config.assetsUrlPrefix + '/{type}/{aid}');
     aid = matcher.elements().aid;
-
+	title = store.assetLinks(type).title;
     try {
         asset = store.asset(type, aid);
     } catch (e) {
@@ -60,6 +60,7 @@ var caramel;
                 data: store.tags(type)
             }
         ],
+        myAssets : { user:user, type: type, title: title },
         recentAssets: store.recentAssets(type)
     });
 }());

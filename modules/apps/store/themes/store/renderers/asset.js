@@ -28,12 +28,18 @@ var render = function(theme, data, meta, require) {
                 isSocial : data.isSocial
             })
         }],
-		right : [{
-			partial : 'recent-assets',
-			context : data.recentAssets
-		}, {
-			partial : 'tags',
-			context : data.tags
-		}]
+		right : [
+			{
+                partial: 'my-assets-link',
+                context: data.myAssets
+            },
+			{
+				partial : 'recent-assets',
+				context : data.recentAssets
+			}, {
+				partial : 'tags',
+				context : data.tags
+			}
+		]
 	});
 };

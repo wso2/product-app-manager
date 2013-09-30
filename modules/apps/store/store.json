@@ -2,6 +2,7 @@
     "assets": ["gadget", "site", "ebook"],
     "assetsUrlPrefix": "/assets",
     "assetUrlPrefix": "/asset",
+    "subscriptionsUrlPrefix": "/subscriptions",
     "assetsPageSize": 12,
     "commentsPageSize": 10,
     "socialCommentsEnable": true,
