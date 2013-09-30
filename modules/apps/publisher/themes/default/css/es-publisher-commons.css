@@ -470,9 +470,9 @@ label, input, button, select, textarea{
 	line-height:26px;
 }
 .nav-list > li > a:hover, .nav-list > li > a:focus{
-	color:#FFFFFF;
+	color:#828282;
 	text-shadow:none;
-    background: none repeat scroll 0 0 #74B749;
+    background: none repeat scroll 0 0 #e7e7e7;
     text-decoration: none;
     border-right: 1px solid #74B749;
 }
