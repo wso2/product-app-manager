@@ -16,7 +16,10 @@
 var config = require('/config/publisher.json');
 var caramel = require('caramel');
 var user = require('/modules/user.js');
+var utility = require('/modules/utility.js').rxt_utility();
 var publisher = require('/modules/publisher.js').publisher(request, session);
+var storageModule = require('/modules/data/storage.js').storageModule();
+var storageConfig = require('/config/storage.json');
 
 var router = require('/modules/router-g.js').router();
 var routeManager = new router.Router();
@@ -24,8 +27,10 @@ var routeManager = new router.Router();
 //var routeManager=application.get(config.app.ROUTE_MANAGER);
 var rxtManager = publisher.rxtManager;
 var modelManager = publisher.modelManager;
+var dataInjector = publisher.dataInjector;
+var DataInjectorModes = publisher.DataInjectorModes;
 
-var log=new Log();
+var log = new Log();
 
 routeManager.register('GET', 'publisher', '/publisher/asset/{type}', function (context) {
 
@@ -38,13 +43,13 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}', function (c
     var model = modelManager.getModel(shortName);
 
     if (!rxtTemplate) {
-        log.debug('The requested asset type: '+shortName+' was not found');
+        log.debug('The requested asset type: ' + shortName + ' was not found');
         response.sendError(404, 'Asset type not found'); //TODO: Replace
     }
     else {
         //Obtain the username from the session and populate the provider field
-        var username=require('/modules/user.js').current(session).username;//.get('LOGGED_IN_USER');
-        model.set('overview.provider',username);
+        var username = require('/modules/user.js').current(session).username;//.get('LOGGED_IN_USER');
+        model.set('overview.provider', username);
 
         var output = model.export('form');
 
@@ -73,19 +78,21 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
 
         var model = modelManager.getModel(shortName);
 
+        //Customize the asset for the app
+        dataInjector.inject(artifact, DataInjectorModes.DISPLAY);
+
         model.import('asset', artifact);
 
         var output = model.export('form');
 
-        var assetName=model.get('overview.name').value;
+        var assetName = model.get('overview.name').value;
 
         //Get the list of versions
-        var versionList=artifactManager.getAllAssetVersions(assetName);
+        var versionList = artifactManager.getAllAssetVersions(assetName);
 
-        caramel.render({op: operation, cuser: user.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output
-        ,versions:versionList});
+        caramel.render({op: operation, cuser: user.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList});
     } catch (e) {
-        log.debug('The asset with id '+id+' could not be found due to : '+e);
+        log.debug('The asset with id ' + id + ' could not be found due to : ' + e);
         response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check server log.');
     }
 
@@ -111,19 +118,21 @@ routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/
 
         var model = modelManager.getModel(shortName);
 
+        //Customize the asset for the app
+        dataInjector.inject(artifact, DataInjectorModes.DISPLAY);
+
         model.import('asset', artifact);
 
         var output = model.export('form');
 
-        var assetName=model.get('overview.name').value;
+        var assetName = model.get('overview.name').value;
 
         //Get the list of versions
-        var versionList=artifactManager.getAllAssetVersions(assetName);
+        var versionList = artifactManager.getAllAssetVersions(assetName);
 
-        caramel.render({op: operation, cuser: user.current(), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output
-            ,versions:versionList});
+        caramel.render({op: operation, cuser: user.current(), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList});
     } catch (e) {
-        log.debug('The asset with id '+id+' could not be found due to : '+e);
+        log.debug('The asset with id ' + id + ' could not be found due to : ' + e);
         response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check server log.');
     }
 
@@ -133,28 +142,81 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
 
     var shortName = context.params.type;
     var artifactManager = rxtManager.getArtifactManager(shortName);
-    var model=modelManager.getModel(shortName);
+    var model = modelManager.getModel(shortName);
 
     //Check if the type is valid
     try {
 
         //assigning default thumbnail and banner if not provided.
-        if(context.post['images_thumbnail'] == '') {
+        if (context.post['images_thumbnail'] == '') {
             context.post['images_thumbnail'] = '/publisher/config/defaults/img/thumbnail.jpg';
         }
-        if(context.post['images_banner'] == '') {
+        if (context.post['images_banner'] == '') {
             context.post['images_banner'] = '/publisher/config/defaults/img/banner.jpg';
         }
-        model.import('form.importer',context.post);
+
+        //Process and add any files in the request
+        inspectFiles(request, context.post);
+
+        model.import('form.importer', context.post);
+
+        log.info('not saving because of file upload changes.');
+
         model.save();
     }
     catch (e) {
         log.error(e);
-        log.debug('An instance could not be created for asset with type :'+shortName+'.The following exception was recorded: '+e);
+        log.debug('An instance could not be created for asset with type :' + shortName + '.The following exception was recorded: ' + e);
         response.sendError(500, 'The asset instance could not be created.Please check the server log.');
     }
 
 });
+
+/*
+ The function inspects the files sent with a request.If files are found
+ they are added to Storage and then the generated uuids are added to
+ the POST parameter object
+ @req: A request object
+ @params: The POST parameters
+ */
+function inspectFiles(req, params) {
+    var files = req.getAllFiles();
+    var fileName;
+    var file;
+    var uuid = '';
+    var extension;
+
+    log.info(storageConfig.dataSource);
+
+    var storageManager = new storageModule.StorageManager({
+        context: 'storage',
+        isCached: false,
+        connectionInfo: {
+            dataSource: storageConfig.dataSource
+        }
+    });
+
+
+    for (var index in files) {
+
+        file = files[index];
+
+        log.info('file: ' + index);
+
+        //Put the file in storage and get a uuid as a reference
+        var resource = {};
+        resource['file'] = file;
+        extension = utility.fileio.getExtension(file);
+        resource['contentType'] = utility.fileio.getContentType(extension);
+
+        uuid=storageManager.put(resource);
+
+        log.info('uuid added: '+uuid);
+
+        //Add a new  entry into the POST parameters containing the uuid
+        params[index] = uuid;
+    }
+}
 
 routeManager.register('PUT', 'publisher', '/publisher/asset/{type}/{id}/{attr}/{value}', function (context) {
     log.info('Unsupported method PUT for /asset called.');
@@ -190,7 +252,7 @@ routeManager.register('DELETE', 'publisher', '/publisher/asset/{type}/{id}', fun
         artifactManager.remove(id);
 
     } catch (e) {
-        log.debug('Asset id: '+id+'was not removed.Due to exception: '+e);
+        log.debug('Asset id: ' + id + 'was not removed.Due to exception: ' + e);
         response.sendError(404, 'Asset with id: ' + id + 'was not removed.Please check the server log for more details.');
     }
 

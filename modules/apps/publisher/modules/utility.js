@@ -291,6 +291,20 @@ var rxt_utility = function () {
         },
 
         /*
+         The function merges the properties in objectB to objectA
+         @objectA: The object to merged against
+         @objectB: The object whose values will be merged with A
+         @return: An object containing the properties of both A and B
+         */
+        mergeProperties:function(objectA,objectB){
+            //Go through the properties in B
+            for(var key in objectB){
+
+                objectA[key]=objectB[key];
+            }
+        },
+
+        /*
         The function checks whether two objects are equal
         @objectA: The target to be matched
         @equalizer:[OPTIONAL] Performs some value conversion on the object B value before comparison
@@ -331,6 +345,26 @@ var rxt_utility = function () {
 
             return match;
         },
+
+        /*
+         The function checks whether the provided url is a valid uuid
+         @value: The value to be checked
+         return: True if the value is a UUID else false
+         */
+        isValidUuid:function(value){
+
+            var rg=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+            var isMatch=value.match(rg);
+
+            //Check if a match is returned
+            if(isMatch){
+                return true;
+            }
+
+            return false;
+        },
+
         /*
         The function checks for the presence of an object matching the predicate
         @array: An array of objects
@@ -469,6 +503,22 @@ var rxt_utility = function () {
                }
 
                return components[components.length-1];
+            },
+            /*
+             The function returns the content type given the extension
+             */
+            getContentType:function(file){
+                var contentType='';
+                switch(file){
+                    case 'jpg':
+                        contentType='image/jpg';
+                        break;
+                    case 'png':
+                        contentType='image/png';
+                        break;
+                }
+
+                return contentType;
             },
             /*
             The function returns all of the directories in a given path

@@ -8,6 +8,9 @@ var deployment_logic = function () {
     var utility = require('/modules/utility.js').rxt_utility();
     var bundler = require('/modules/bundler.js').bundle_logic();
     var pubConfig = require('/config/publisher.js').config();
+    var storageConfig=require('/config/storage.json');
+    var storageModule = require('/modules/data/storage.js').storageModule();
+    var dataInjectorModule=require('/modules/data/data.injector.js').dataInjectorModule();
 
 
     var log = new Log('asset.deployment');
@@ -41,6 +44,19 @@ var deployment_logic = function () {
         this.bundleManager = null;
         this.handlers = {};
         this.masterScriptObject = {};
+        this.dataInjector=new dataInjectorModule.DataInjector();
+        this.injectorModes=dataInjectorModule.Modes;
+
+        this.storageManager = new storageModule.StorageManager({
+            context: 'storage',
+            isCached: false,
+            connectionInfo: {
+                dataSource: storageConfig.dataSource
+            }
+        });
+
+        //Add a reference to storageManager which will be used to store files
+        this.dataInjector.addToContext('storageManager',this.storageManager);
     }
 
     /*
@@ -80,6 +96,7 @@ var deployment_logic = function () {
         var registry = masterContext.registry || null;
 
         var httpContext = pubConfig.server.http + caramel.configs().context + this.bundleManager.path + '/' + assetType + '/';
+        var assetPath=this.bundleManager.path+'/'+assetType+'/';
 
         //Check if any of the vital resources are missing
         if ((!artifactManager) || (!userManager) || (!registry)) {
@@ -111,6 +128,9 @@ var deployment_logic = function () {
             context['userManager'] = userManager;
             context['registry'] = registry;
             context['assetType'] = assetType;
+            context['dataInjector']=this.dataInjector;
+            context['dataInjectorModes']=this.injectorModes;
+            context['assetPath']=assetPath;
 
             //Initializes the asset by reading the configuration file
             modifiedScriptObject.invoke(METHOD_ON_ASSET_INITIALIZATION, [context]);
@@ -401,7 +421,7 @@ var deployment_logic = function () {
      */
     ScriptObject.prototype.invoke = function (methodName, arguments) {
         if (this.functionObject.hasOwnProperty(methodName)) {
-            log.info('invoking method: ' + methodName);
+            log.debug('invoking method: ' + methodName);
             //log.info(this.functionObject);
             this.functionObject[methodName].apply(this.functionObject, arguments);
             return true;
@@ -429,7 +449,7 @@ var deployment_logic = function () {
 
             //Go through each property in the logic object
             for (var index in logicObject) {
-                log.info('overriding ' + index);
+                log.debug('overriding ' + index);
 
                 //Check if the clone has the property before attempting
                 //to replace

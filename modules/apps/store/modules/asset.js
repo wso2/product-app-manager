@@ -8,6 +8,9 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
 
 (function () {
 
+    var dataInjector=require('/modules/data/data.injector.js').dataInjectorModule();
+    var DataInjectorModes=dataInjector.Modes;
+
     var matchAttr = function (searchAttr, artifactAttr) {
         var attribute, attr, val, match;
         for (attribute in searchAttr) {
@@ -91,22 +94,28 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
         return status;
     }
 
+
     var search = function (that, options,paging ) {
+    var assets;
 
         if (options.tag) {
             var registry = that.registry,
                 tag = options.tag;
-            return that.manager.find(function (artifact) {
+            assets=that.manager.find(function (artifact) {
                 if (registry.tags(artifact.path).indexOf(tag) != -1) {
                     //return matchAttr(options.attributes, artifact.attributes); -To accommodate filtering by lifecycle state
                     return matchArtifact(options, artifact);
                 }
                 return false;
             },paging);
+
+            dataInjector.cached().inject(assets,DataInjectorModes.DISPLAY);
+
+            return assets;
         }
         if (options.query) {
             var query = options.query.toLowerCase();
-            return that.manager.find(function (asset) {
+            assets= that.manager.find(function (asset) {
                 var name, match,
                     attributes = asset.attributes;
                 for (name in attributes) {
@@ -122,14 +131,24 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
                 }
                 //return matchAttr(options.attributes, asset.attributes);
                 return matchArtifact(options, asset);
+
             },paging);
+
+            dataInjector.cached().inject(assets,DataInjectorModes.DISPLAY);
+
+            return assets;
         }
         if (options) {
 
-            return that.manager.find(function (artifact) {
+            assets= that.manager.find(function (artifact) {
                 // return matchAttr(options.attributes, artifact.attributes);
                 return matchArtifact(options, artifact);
+
             },paging);
+
+            dataInjector.cached().inject(assets,DataInjectorModes.DISPLAY);
+
+            return assets;
         }
         return [];
     };
@@ -264,7 +283,11 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
      * Assets matching the filter
      */
     Manager.prototype.get = function (id) {
-        return this.manager.get(id);
+        var asset=this.manager.get(id);
+
+        dataInjector.cached().inject(asset,DataInjectorModes.DISPLAY);
+
+        return asset;
     };
 
     /*
