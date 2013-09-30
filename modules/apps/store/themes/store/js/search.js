@@ -373,6 +373,6 @@ $(function () {
     });
     
     $('#container-search').affix({
-       offset: { top: $('.navbar').offset().top + 25 }
+       offset: { top: $('.navbar').offset().top + 80}
    });
 });
