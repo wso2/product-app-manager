@@ -69,7 +69,7 @@
             </definition>
         </datasource>
 
-        <datasource>
+	<datasource>
             <name>JAGH2</name>
             <description>The datasource used for by the Jaggery Storage Manager</description>
             <jndiConfig>
