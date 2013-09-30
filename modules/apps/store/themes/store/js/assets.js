@@ -34,8 +34,8 @@ $(function() {
 	var loadAssets = function(url) {
 		caramel.data({
 			title : null,
-			header : ['sort-assets'],
-			body : ['assets', 'pagination']
+			header : ['header'],
+			body : ['assets', 'pagination', 'sort-assets']
 		}, {
 			url : url,
 			success : function(data, status, xhr) {
@@ -60,8 +60,8 @@ $(function() {
 	var loadAssetsScroll = function(url) {
 		caramel.data({
 			title : null,
-			header : ['sort-assets'],
-			body : ['assets', 'pagination']
+			header : ['header'],
+			body : ['assets', 'pagination', 'sort-assets']
 		}, {
 			url : url,
 			success : function(data, status, xhr) {

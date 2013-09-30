@@ -12,63 +12,42 @@ var type;
             return path;
         };
     };
-
-    if (matcher.match('/{context}' + config.assetsUrlPrefix + '/{type}/{theme}/{+file}') ||
-            matcher.match('/{context}' + config.assetsUrlPrefix + '/{type}/{+suffix}') ||
-            matcher.match('/{context}' + config.assetsUrlPrefix + '/{type}')) {
+  
+    
+    if (matcher.match('/{context}' + config.assetsUrlPrefix + '/{type}/')) {
+    	
         elements = matcher.elements();
         type = elements.type;
-        theme = elements.theme;
-        prefix = mod.ASSETS_EXT_PATH + type;
-        if (theme) {
-            file.send(prefix + '/themes/' + elements.file);
-            return;
-        }
+        
         if (type == "all") {
             path = '/top-assets.jag';
             request.getMappedPath = mapper(path);
             include(path);
             return;
-        }
-        suffix = elements.suffix;
-        pages = prefix + '/pages/';
-        if (suffix) {
-            links = mod.store(request, session).assetLinks(type);
-            length = links.length;
-            for (i = 0; i < length; i++) {
-                link = links[i];
-                if (link.url === suffix) {
-                    path = link.path || link.url;
-                    break;
-                }
-            }
-            path = (suffix === 'process') ? 'process.jag' : path;
-            if (path) {
-                path = pages + path;
-                request.getMappedPath = mapper(path);
-                include(path);
-                return;
-            }
-        }
-
-        if(suffix == 'subscriptions')
-        {
-            path = '/subscriptions.jag';
-            request.getMappedPath = mapper(path);
-            include(path);
+        } else if (configs.assets.indexOf(type) === -1) {
+            response.sendError(404, 'Request Resource cannot be found');
             return;
+        } 
+        path = mod.ASSETS_EXT_PATH + type + '/pages/' + 'assets.jag';
+        if (!new File(path).isExists()) {
+            path = '/assets.jag';
         }
-
-        path = pages + 'assets.jag';
-
-        if (new File(path).isExists()) {
-            request.getMappedPath = mapper(path);
-            include(path);
-            return;
-        }
-        path = '/assets.jag';
         request.getMappedPath = mapper(path);
-
+        include(path);
+        return;
+    }
+    if (matcher.match('/{context}' + config.assetsUrlPrefix + '/{type}/{id}')) {
+        elements = matcher.elements();
+        type = elements.type;
+        if (configs.assets.indexOf(type) === -1) {
+            response.sendError(404, 'Request Resource cannot be found');
+            return;
+        }
+        path = store.ASSETS_EXT_PATH + type + '/pages/asset.jag';
+        if (!new File(path).isExists()) {
+            path = '/asset.jag';
+        }
+        request.getMappedPath = mapper(path);
         include(path);
         return;
     }

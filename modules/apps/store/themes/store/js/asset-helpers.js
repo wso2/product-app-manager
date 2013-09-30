@@ -3,19 +3,19 @@ var renderAssets, mouseStop, isAssertTrue, addAssert;
 (function () {
     renderAssets = function (data) {
         var el = $('.store-left');
-        caramel.css($('head'), data.header['sort-assets'].resources.css, 'sort-assets');
+        caramel.css($('head'), data.body['sort-assets'].resources.css, 'sort-assets');
         caramel.code($('head'), data.body['assets'].resources.code);
         caramel.partials(data._.partials, function () {
             var assets = Handlebars.partials['assets'](data.body.assets.context),
                 paging = Handlebars.partials['pagination'](data.body.pagination.context),
-                sort = Handlebars.partials['sort-assets'](data.header['sort-assets'].context);
+                sort = Handlebars.partials['sort-assets'](data.body['sort-assets'].context);
             theme.loaded(el, sort);
             el.append(assets);
             el.append(paging);
             caramel.js($('body'), data.body['assets'].resources.js, 'assets', function () {
                 mouseStop();
             });
-            caramel.js($('body'), data.header['sort-assets'].resources.js, 'sort-assets', function () {
+            caramel.js($('body'), data.body['sort-assets'].resources.js, 'sort-assets', function () {
                 updateSortUI();
             });
             $(document).scrollTop(0);

@@ -1,6 +1,7 @@
 <div id="myasset-container" class="row">
     <div class="span9">
         {{#if subscriptions}}
+        	<h3 class="asset-title-separator asset-type-{{myAssets.type}}">My {{myAssets.title}}</h3>
             {{#itr subscriptions}}
                 <div class="top-asset-slideshow-cont">
                     <div id="asset-in-{{key}}">
@@ -9,7 +10,7 @@
                                 <div class="store-my-item">
 
                                     <div class="store-my-item-thumbnail">
-                                        <a href="{{url "/asset/"}}{{../../key}}/{{../id}}"><img
+                                        <a href="{{url "/assets/"}}{{../../key}}/{{../id}}"><img
                                                 src="{{images_thumbnail}}"></a>
                                     </div>
                                     <div class="store-my-item-info">

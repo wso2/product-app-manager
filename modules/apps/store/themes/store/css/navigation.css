@@ -1,3 +1,9 @@
+#container-header > .row{
+    background-color: rgba(0,0,0,0);
+    border:none;
+    height: 50px;
+   /* overflow: hidden;*/
+}
 #btn-login {
     width: 80%;
 }
@@ -94,7 +100,7 @@ hr.emboss {
 .navbar .nav > li > a {
     text-shadow: none;
     font-weight: bold;
-    color: #cccccc;
+    color: #34495E;
 }
 .navbar .nav > li > a.btn {
     padding: 5px 10px;
@@ -103,12 +109,13 @@ hr.emboss {
 }
 .navbar .nav > li > a.btn:hover {
     background: #27ae60;
+    color: #fff;
 }
 .navbar .nav > li > a.selected {
     color: #ffffff;
 }
 .navbar .nav > li > a:hover, .navbar .nav > li > a:focus {
-    color: #FFFFFF;
+    color: #647E9A;
 }
 /*
  .navbar .nav > li > a.dropdown-toggle{
@@ -123,7 +130,7 @@ hr.emboss {
     color: #FFFFFF;
 }
 .navbar .nav-separator {
-    border-right: 1px solid #555555;
+    border-right: 1px solid #ccc;
 }
 .navbar-inverse .navbar-inner {
     background: #2C3238;
@@ -131,13 +138,12 @@ hr.emboss {
 }
 
 .navbar-inner {
-    background: #2C3238;
     background-image: none;
+    background-color: rgba(0, 0, 0, 0);
     box-shadow: none !important;
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;
-    padding-top: 0px;
-    padding-bottom: 0px;
+    padding:0;
     border-width: 0 !important;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#002C3238,endColorstr=#002C3238) !important;
 }
@@ -147,11 +153,13 @@ hr.emboss {
 
 .dropdown-menu, .dropdown-submenu > .dropdown-menu {
     border-radius: 0;
-    background: #2C3238;
-    color: #FFFFFF;
+    background: #ffffff;
+    color: #34495E;
     box-shadow: none;
     padding: 0;
-    border: none;
+       border-bottom: 1px solid #CCCCCC;
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
 }
 
 .dropdown-menu li {
@@ -163,7 +171,7 @@ hr.emboss {
     padding: 8px 5px;
 }
 .dropdown-menu li > a {
-    color: #FFFFFF;
+    color: #34495E;
     line-height: 30px;
 }
 .dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a {
@@ -191,16 +199,16 @@ hr.emboss {
     /* border-bottom:4px solid #434B54;*/
 }
 /*
-.nav.store-menu li.selected:after {
-    background: none repeat scroll 0 0 #229A55;
-    bottom: -1px;
-    content: "";
-    display: inline-block;
-    height: 4px;
-    position: absolute;
-    width: 100%;
-}
-*/
+ .nav.store-menu li.selected:after {
+ background: none repeat scroll 0 0 #229A55;
+ bottom: -1px;
+ content: "";
+ display: inline-block;
+ height: 4px;
+ position: absolute;
+ width: 100%;
+ }
+ */
 .nav.store-menu  li.selected {
     position: relative;
 }
@@ -217,13 +225,12 @@ hr.emboss {
     overflow-x: hidden;
     overflow-y: scroll;
     width: 200px;
-    
 }
-.store-menu .dropdown-menu li a{
-    color:#bdc3c7;
+.store-menu .dropdown-menu li a {
+    color: #bdc3c7;
 }
-.store-menu .dropdown-menu li a:hover{
-    color:#FFFFFF;
+.store-menu .dropdown-menu li a:hover {
+    color: #FFFFFF;
 }
 .dropdown-menu .sub-menu {
     left: 100%;

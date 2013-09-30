@@ -5,27 +5,23 @@ var logo = function (tenantId) {
 var footer = function (tenantId) {
 
 };
+var navigation = function (tenantId) {
 
-var navigation = function (tenantId, options) {
 
-
-    var i, j, type, link, links, length1,
+    var i, type, links,
         assetLinks = {},
-        sso = options.sso,
-        user = require('/modules/user.js'),
+
         store = require('/modules/store.js').store(tenantId, session),
         utility = require('/modules/util.js'),
-        config = store.configs(),
-        prefix = config.assetsUrlPrefix,
         types = store.assetTypes(),
-        length2 = types.length;
-    for (i = 0; i < length2; i++) {
+        length = types.length;
+        
+    for (i = 0; i < length; i++) {
         type = types[i];
         links = store.assetLinks(type);
         if (links.isCategorySupport) {
             links.categories = utility.getCategories(tenantId, type);
         }
-
         /*
          length1 = links.length;
 
@@ -35,10 +31,21 @@ var navigation = function (tenantId, options) {
          }*/
         assetLinks[type] = links;
     }
+
     return {
-        assets: assetLinks,
+        assets: assetLinks
+    };
+};
+
+var header = function (tenantId, options) {
+
+
+    var user = require('/modules/user.js');
+
+   
+    return {
         login: loginLinks(tenantId),
-        sso: sso,
+        sso: options.sso,
         user: options.user
     };
 };

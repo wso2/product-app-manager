@@ -93,10 +93,12 @@ var caramel;
 		title : 'Store | User Engagement Center',
 		user : loggedUser,
 		sso:sso,
-		navigation : site.navigation(tenantId, {
-			sso : sso,
-			user : loggedUser
-		}),
+		header : site.header(tenantId, {
+            sso: sso,
+            user: loggedUser
+        }),
+        navigation: site.navigation(tenantId),
+
         search : {
         	title : "Top Assets",
             isTopAssets : true,

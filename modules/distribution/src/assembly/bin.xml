@@ -28,7 +28,6 @@
             <outputDirectory>wso2store-${pom.version}</outputDirectory>
             <excludes>
                 <exclude>**/*.sh</exclude>
-                <exclude>**/wso2server.bat</exclude>
                 <exclude>**/README*</exclude>
                 <exclude>**/LICENSE*</exclude>
                 <exclude>**/INSTALL*</exclude>

@@ -26,21 +26,39 @@ var caramel;
         data : store.tags(type)
     }];
 
+	title = store.assetLinks(type).title;
+
     caramel.render({
         'title' : 'Store | My Items',
-        'navigation' : site.navigation(store.tenantId, {
-            sso : sso,
-            user : user
-        }),
+         user: user,
+         sso: sso,
+         header : site.header(tenantId, {
+                   sso: sso,
+                   user: user
+               }),
+       
+        navigation: site.navigation(tenantId),
         search: {
-            mainPage : "My items",
-            subPage : "",
-            isTopAssets : false,
-            searchFields : rxtAttributes
+            search: {title: type},
+            isTopAssets: false,
+            searchFields: rxtAttributes
         },
-        'subscriptions' : count > 0 ? subscriptions : null,
-        'recentAssets' : recentAssets,
-        'tags' : tags
+        /*
+        'navigation' : site.navigation(store.tenantId, {
+                    sso : sso,
+                    user : user
+                }),
+                search: {
+                    mainPage : "My items",
+                    subPage : "",
+                    isTopAssets : false,
+                    searchFields : rxtAttributes
+                },*/
+        
+        subscriptions : count > 0 ? subscriptions : null,
+        recentAssets : recentAssets,
+        myAssets : { user:user, type: type, title: title },
+        tags : tags
     });
 }());
 %>

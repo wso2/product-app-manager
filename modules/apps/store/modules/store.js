@@ -1,4 +1,4 @@
-var ASSETS_EXT_PATH = '/assets/';
+var ASSETS_EXT_PATH = '/extensions/assets/';
 
 var ASSET_MANAGERS = 'asset.managers';
 
