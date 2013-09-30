@@ -1,10 +1,10 @@
 <%
 var caramel;
 (function () {
-    var assets, paging, count, current, total, loggedUser, sso, url, mainPage, subPage,
+    var assets, paging, count, current, total, sso, url, mainPage, subPage,title
             options = {},
             log = new Log(),
-            user = require('/modules/user.js'),
+            user = require('/modules/user.js').current(session),
             configs = require('/store.js').config(),
             store = require('/modules/store.js').store(request, session),
             site = require('/modules/site.js'),
@@ -19,8 +19,6 @@ var caramel;
 
     sso = configs.ssoConfiguration.enabled;
 
-    loggedUser = user.current(session);
-
     url = '/assets/' + type + '/?' + (tag ? 'tag=' + tag + '&' : '') + (query ? 'query=' + query + '&' : '');
 
     // log.info("LOGGED_IN_USER (store) " + session.get('LOGGED_IN_USER'));
@@ -28,8 +26,10 @@ var caramel;
     paging = store.assetsPaging(request);
 
     mainPage = type;
-
-
+    
+    title = store.assetLinks(type).title;
+    
+     
     if (tag) {
 
         total = store.assetCount(type, {
@@ -116,18 +116,20 @@ var caramel;
 
     caramel.render({
         title: 'Store | Assets',
-        user: loggedUser,
+        user: user,
         sso: sso,
-        navigation: site.navigation(tenantId, {
+        header : site.header(tenantId, {
             sso: sso,
-            user: loggedUser
+            user: user
         }),
+        navigation: site.navigation(tenantId),
+       
         search: {
-            mainPage: mainPage,
-            subPage: subPage,
-            isTopAssets: false,
-            searchFields: rxtAttributes
-        },
+                   mainPage: mainPage,
+                   subPage: subPage,
+                   isTopAssets: false,
+                   searchFields: rxtAttributes
+               },
         type: type,
         /*tag: tag,*/
         tags: function () {
@@ -151,6 +153,7 @@ var caramel;
         sorting: {
             url: url + 'sort='
         },
+        myAssets : { type: type, title: title },
         recentAssets: function () {
             return store.recentAssets(type);
         }
