@@ -145,7 +145,14 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
         if(context.post['images_banner'] == '') {
             context.post['images_banner'] = '/publisher/config/defaults/img/banner.jpg';
         }
+
+        //Process and add any files in the request
+        inspectFiles(request,context.post);
+
         model.import('form.importer',context.post);
+
+        log.info('not saving because of file upload changes.');
+
         model.save();
     }
     catch (e) {
@@ -155,6 +162,30 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
     }
 
 });
+
+/*
+The function inspects the files sent with a request.If files are found
+they are added to Storage and then the generated uuids are added to
+the POST parameter object
+@req: A request object
+@params: The POST parameters
+*/
+function inspectFiles(req,params){
+   var files=req.getAllFiles();
+   var fileName;
+   var uuid=require('uuid');
+
+   for(var index in files){
+       log.info('file: '+index);
+
+       //Put the file in storage and get a uuid as a reference
+
+       //Add a new  entry into the POST parameters containing the uuid
+       params[index]=uuid.generate()+'/'+files[index].getName();
+   }
+
+   log.info(params);
+}
 
 routeManager.register('PUT', 'publisher', '/publisher/asset/{type}/{id}/{attr}/{value}', function (context) {
     log.info('Unsupported method PUT for /asset called.');
