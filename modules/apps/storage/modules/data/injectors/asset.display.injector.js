@@ -14,12 +14,17 @@ var injector = function () {
     var dataInjectModule = require('/modules/data/data.injector.js').dataInjectorModule();
     var modes = dataInjectModule.Modes;
 
+
     /*
      The modes in which the handler should be executed
      @return: The operation mode in which the handler should be executed
      */
     function operationModes() {
         return modes.DISPLAY;
+    }
+
+    function init(){
+        log.info('Does not perform any initialization');
     }
 
     /*
@@ -30,9 +35,14 @@ var injector = function () {
      */
     function isHandled(object) {
 
-        //Check if the object has the attributes property
-        log.info('checking if the object is handled');
-        return true;
+        //We check for the exsistence of an attributes property
+        if(object.hasOwnProperty('attributes')){
+            return true;
+        }
+
+        log.info('object is not handled');
+
+        return false;
     }
 
     /*
@@ -44,30 +54,38 @@ var injector = function () {
     function handle(context) {
 
         var object=context.object||{};
-        var fields=[];
+        var fields=['images_banner','images_thumbnail'];
         var url;
         var uuid;
+        var field;
+        //Go through all of the targetted fields
 
         for(var index in fields){
-            utility.isPresent(object.attribute,fields[index],function(){
+
+            log.info('checking for '+fields[index]);
+
+            utility.isPresent(object.attributes,fields[index],function(){
+                field=fields[index];
+                log.info('found '+field);
 
                 //Obtain the uuid
-                url=object.attribute[index];
+                url=object.attributes[field];
 
                 uuid=getUUID(url);
 
-                //Set the new url
-                if(uuid){
-                    object.attribute[index]=getUrl(uuid[0]);
+                //Check if it is a valid uuid and create a new url
+                if((uuid)&&(utility.isValidUuid(uuid))){
+
+                    object.attributes[field]=getUrl(url);
                 }
 
             });
         }
 
+        log.info(object);
 
-        return false;
+        return true;
     }
-
 
     /*
     The function obtains the UUID from a value
@@ -75,7 +93,6 @@ var injector = function () {
     @return: A UUID if one is present else null
      */
     function getUUID(value){
-        var value=object[field];
 
         //Check if the uuid is present as uuid/file
         var components=value.split('/');
@@ -86,8 +103,8 @@ var injector = function () {
             uuid=components[0];
         }
         //Not a uuid/file value
-        else if(components.length<2){
-            uuid=components[1];
+        else if(components.length>1){
+            uuid=components[0];
         }
 
         return uuid;
@@ -95,11 +112,13 @@ var injector = function () {
     }
 
     function getUrl(uuid){
-        return '';
+        var context='publisher/storage';
+        return context+'/'+uuid;
     }
 
 
     return{
+        init:init,
         operationModes: operationModes,
         isHandled: isHandled,
         handle: handle

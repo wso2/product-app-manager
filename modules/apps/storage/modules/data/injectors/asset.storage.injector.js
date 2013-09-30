@@ -8,6 +8,7 @@ Created Date: 27/9/2013
 var injector=function(){
 
     var log=new Log('asset.storage.injector');
+    var utility=require('/modules/utility.js').utility();
     var dataInjectModule=require('/modules/data/data.injector.js').dataInjectorModule();
     var modes=dataInjectModule.Modes;
 
@@ -35,9 +36,13 @@ var injector=function(){
      */
     function isHandled(object){
 
-        //Check if the object has the attributes property
-        log.info('checking if the object is handled');
-        return true;
+        //We check for the exsistence of an attributes property
+        if(object.hasOwnProperty('attributes')){
+            log.info('object is handled.');
+            return true;
+        }
+
+        log.info('object is not handled');
     }
 
     /*
@@ -47,15 +52,48 @@ var injector=function(){
     @return: True, if handled successfully,else false
      */
     function handle(context){
+        var object=context.object||{};
+        var fields=['images_thumbnail','images_banner'];
+        var field;
+        var uuid;
+        var path;
 
+        for(var index in fields){
+            field=fields[index];
 
+            utility.isPresent(object.attributes,field,function(){
+                log.info('checking field '+field);
+                path=object.attributes[field];
 
-        return false;
+                uuid=addToStorage(path);
+
+                if(uuid){
+                    log.info('added file to storage.');
+                    object.attributes[field]=uuid;
+                }
+            });
+        }
+        log.info(object);
+        return true;
     }
+    /*
+    The function attempts to add the provided path to the storage if it is present
+    and returns a uuid
+    @path: A path to a resource
+    @return: If the file is added to storage then a uuid is returned,else null
+     */
+    function addToStorage(path){
+        var file=new File(path);
+        var uuid=null;
 
-    function handleField(){
-        //Check if the value is a uuid ,if it is then do nothing
+        //Only add it storage if it is a valid path and get the uuid
+        if(file.isExists()){
 
+            uuid='added file';
+
+        }
+
+        return uuid
     }
 
 

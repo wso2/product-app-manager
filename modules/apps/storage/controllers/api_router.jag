@@ -15,9 +15,14 @@ var artifact={
     }
 };
 
-var list=[{a:1},{b:2}];
+var list=[{a:1,attributes:{
+    images_banner:'6f839c20-299c-11e3-8224-0800200c9a66/apple.png'
+}},{b:2, attributes:{
+    images_thumbnail:'6f839c20-299c-11e3-8224-0800200c9a66/6f839c20-299c-11e3-8224-0800200c9a66/mango.png',
+    images_banner:'/tests/out.png'
+}}];
 
-dataInjector.inject(list,dataInjectorModule.Modes.STORAGE);
+dataInjector.inject(list,dataInjectorModule.Modes.DISPLAY);
 
 //log.info('content type: '+request.getContentType());
 //log.info('content length: '+request.getContentLength());
