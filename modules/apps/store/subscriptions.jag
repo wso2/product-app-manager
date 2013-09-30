@@ -1,14 +1,15 @@
 <%
 var caramel;
 ( function() {
-    var site, count,
+    var site, count,loggedUser,
             log = new Log(),
             store = require('/modules/store.js').store(request, session),
             types = store.assetTypes(),
             user = require('/modules/user.js').current(session),
             tags = []
-            sso = configs.ssoConfiguration.enabled;
-    caramel = require('caramel');
+            sso = configs.ssoConfiguration.enabled,
+            ssoUser = user.current(session),
+    		caramel = require('caramel');
 
     var rxtAttributes = require('modules/util.js').getRXTAttributes(store.tenantId, type);
 
@@ -16,6 +17,11 @@ var caramel;
         response.sendRedirect(caramel.configs().context);
         return;
     }
+    
+    loggedUser = (sso && ssoUser) ? {
+		username : ssoUser.username
+	} : user.current(session);
+	
     site = require('/modules/site.js');
     var recentAssets = store.recentAssets(type, 3);
     var subscriptions = store.subscriptions(type);
@@ -26,21 +32,69 @@ var caramel;
         data : store.tags(type)
     }];
 
+   /*
     caramel.render({
-        'title' : 'Store | My Items',
-        'navigation' : site.navigation(store.tenantId, {
-            sso : sso,
-            user : user
+           'title' : 'Store | My Subscriptions',
+           'navigation' : site.navigation(store.tenantId, {
+               sso : sso,
+               user : user
+           }),
+           search: {
+               mainPage : "My items",
+               subPage : "",
+               isTopAssets : false,
+               searchFields : rxtAttributes
+           },
+           'subscriptions' : count > 0 ? subscriptions : null,
+           'recentAssets' : recentAssets,
+           'tags' : tags
+       });*/
+   
+    
+   caramel.render({
+        title: 'Store | Assets',
+        user: loggedUser,
+        sso: sso,
+        header : site.header(tenantId, {
+            sso: sso,
+            user: loggedUser
         }),
-        search: {
-            mainPage : "My items",
-            subPage : "",
-            isTopAssets : false,
-            searchFields : rxtAttributes
+        navigation: site.navigation(tenantId),
+       
+         search: {
+            search: {title: type},
+            isTopAssets: false,
+            searchFields: rxtAttributes
         },
-        'subscriptions' : count > 0 ? subscriptions : null,
-        'recentAssets' : recentAssets,
-        'tags' : tags
+        type: type,
+        /*tag: tag,*/
+        tags: function () {
+            return [
+                {
+                    url: '/assets/' + type + '/?tag=',
+                    data: store.tags(type)
+                }
+            ];
+        },
+        assets: assets(),
+        paging: {
+            url: url + 'sort=' + paging.sort + '&page=',
+            start: paging.start || 0,
+            count: paging.count || store.assetsPageSize(),
+            size: store.assetsPageSize(),
+            total: total,
+            sort: paging.sort,
+            tag: tag
+        },
+       subscriptions : count > 0 ? subscriptions : null,
+        sorting: {
+            url: url + 'sort='
+        },
+        myAssets : { type: type, title: title },
+        recentAssets: function () {
+            return store.recentAssets(type);
+        }
     });
+    
 }());
 %>

@@ -1,11 +1,13 @@
 var generateLeftNavJson = function(data) {
     var leftNavItems = { leftNavLinks :
         [
+           /*
             {
-                name : "Browse All",
-                additionalClasses : "prominent-link",
-                url : "/publisher/assets/" + data.shortName + "/"
-            },
+                           name : "Browse All",
+                           additionalClasses : "prominent-link",
+                           url : "/publisher/assets/" + data.shortName + "/"
+                       },*/
+           
             {
                 name : "Add " + data.shortName + "",
                 iconClass : "icon-plus-sign-alt",
@@ -21,11 +23,13 @@ var generateLeftNavJson = function(data) {
     if(data.artifact){
         leftNavItems = { leftNavLinks :
             [
+               /*
                 {
-                    name : "Browse All",
-                    additionalClasses : "prominent-link",
-                    url : "/publisher/assets/" + data.shortName + "/"
-                },
+                                   name : "Browse All",
+                                   additionalClasses : "prominent-link",
+                                   url : "/publisher/assets/" + data.shortName + "/"
+                               },*/
+               
                 {
                     name : "Overview",
                     iconClass : "icon-list-alt",

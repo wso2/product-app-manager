@@ -50,7 +50,8 @@ $(function () {
     });
 
     var loadReviews = function (url, page) {
-        var el = $('#tab-reviews').find('.content');
+        var iframe, iframeHeight, 
+        	el = $('#tab-reviews').find('.content');
         comments.updated = new Date().getTime();
         async.parallel({
             comments: function (callback) {
@@ -90,6 +91,10 @@ $(function () {
                 }, function (err, result) {
                     theme.loaded(el, result.comments);
                     el.append(result.paging);
+                    
+                    iframe = $('#tab-reviews').find('iframe');
+        			iframeHeight =  iframe.contents().height();
+        			iframe.height(iframeHeight); 
                 });
             }
             $('#assetp-tabs').tab();
