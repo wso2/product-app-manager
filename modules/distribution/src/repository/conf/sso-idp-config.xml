@@ -25,6 +25,12 @@
             <CustomLoginPage>/store/login.jag</CustomLoginPage>
         </ServiceProvider>
         <ServiceProvider>
+            <Issuer>social</Issuer>
+            <AssertionConsumerService>https://localhost:9443/social/acs.jag</AssertionConsumerService>
+            <SignResponse>true</SignResponse>
+            <CustomLoginPage>/social/login.jag</CustomLoginPage>
+        </ServiceProvider>
+        <ServiceProvider>
             <Issuer>publisher</Issuer>
             <AssertionConsumerService>https://localhost:9443/publisher/acs</AssertionConsumerService>
             <SignResponse>true</SignResponse>
