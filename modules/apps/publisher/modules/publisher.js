@@ -167,6 +167,10 @@ var buildManagers = function (tenantId, registry) {
     var ext_mng = require('/modules/ext/core/extension.management.js').extension_management();
     var rxt_management = require('/modules/rxt.manager.js').rxt_management();
     var route_management = require('/modules/router-g.js').router();
+    var dataInjectorModule=require('/modules/data/data.injector.js').dataInjectorModule();
+
+    var dataInjector=new dataInjectorModule.DataInjector();
+    var injectorModes=dataInjectorModule.Modes;
 
     //var server=new carbon.server.Server(url);
     /*var registry=new carbon.registry.Registry(server,{
@@ -213,7 +217,9 @@ var buildManagers = function (tenantId, registry) {
     return {
         modelManager: modelManager,
         rxtManager: rxtManager,
-        routeManager: routeManager
+        routeManager: routeManager,
+        dataInjector:dataInjector,
+        DataInjectorModes:injectorModes
     };
 };
 
