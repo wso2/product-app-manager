@@ -1,31 +1,38 @@
 package org.wso2.carbon.social;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
+
+import static org.wso2.carbon.social.Constants.*;
 
 public class ActivityBrowser {
+
     private static final Log LOG = LogFactory.getLog(ActivityBrowser.class);
-    private static final String STREAM_NAME = ActivityPublisher.STREAM_NAME.replaceAll("\\.", "_");
+    public static final String SELECT_CQL = "SELECT * FROM " + STREAM_NAME_IN_CASSANDRA + " WHERE '" + TARGET_ID_COLUMN + "'=?";
+
+    private JsonParser parser = new JsonParser();
     private Connection conn;
 
     public List<String> listActivities(String targetId) {
-        List<String> result = null;
+        List<Activity> activities = null;
         Connection connection = getConnection();
         if (connection != null) {
             PreparedStatement statement = null;
             ResultSet resultSet = null;
             try {
-                statement = connection.prepareStatement("SELECT * FROM " + STREAM_NAME + " WHERE 'payload_target.id'=?");// WHERE target.id=?
+                statement = connection.prepareStatement(SELECT_CQL);
                 statement.setString(1, targetId);
                 resultSet = statement.executeQuery();
-                result = new ArrayList<String>();
+                activities = new ArrayList<Activity>();
                 while (resultSet.next()) {
-                    result.add(resultSet.getString("payload_body"));
+                    JsonElement body = parser.parse(resultSet.getString(BODY_COLUMN));
+                    Activity activity = new Activity(body.getAsJsonObject(), resultSet.getInt(TIMESTAMP_COLUMN));
+                    activities.add(activity);
                 }
             } catch (SQLException e) {
                 LOG.error("Can't retrieve activities form cassandra.", e);
@@ -42,27 +49,44 @@ public class ActivityBrowser {
                 }
             }
         }
+        if (activities != null) {
+            sortChronologically(activities);
+            return serializeEach(activities);
+        } else {
+            return null;
+        }
+    }
 
-        return result;
+    private List<String> serializeEach(List<Activity> activities) {
+        List<String> stringList = new ArrayList<String>(activities.size());
+        for (Activity activity : activities) {
+            stringList.add(activity.getBody().toString());
+        }
+        return stringList;
+    }
+
+    public void sortChronologically(List<Activity> activities) {
+        Collections.sort(activities, new Comparator<Activity>() {
+            @Override
+            public int compare(Activity a1, Activity a2) {
+                return a2.getTimestamp() - a1.getTimestamp();
+            }
+        });
     }
 
     public void makeIndexes(String column) {
         Connection connection = getConnection();
         if (connection != null) {
             Statement statement = null;
-            ResultSet resultSet = null;
             try {
                 statement = connection.createStatement();
-                statement.executeUpdate("CREATE INDEX ON " + STREAM_NAME + " ('payload_" + column + "')");
+                statement.executeUpdate("CREATE INDEX ON " + STREAM_NAME_IN_CASSANDRA + " ('payload_" + column + "')");
             } catch (SQLException e) {
                 LOG.error("Can't create indexes.", e);
             } finally {
                 try {
                     if (statement != null) {
                         statement.close();
-                    }
-                    if (resultSet != null) {
-                        resultSet.close();
                     }
                 } catch (SQLException e) {
                     //ignore
