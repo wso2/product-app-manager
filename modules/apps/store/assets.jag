@@ -1,7 +1,7 @@
 <%
 var caramel;
 (function () {
-    var assets, paging, count, current, total, sso, url, mainPage, subPage,title
+    var assets, paging, count, current, total, sso, url, mainPage, subPage,title,
             options = {},
             log = new Log(),
             user = require('/modules/user.js').current(session),

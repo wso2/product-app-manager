@@ -6,7 +6,6 @@ var caramel;
 
     var asset, aid,
             log = new Log(),
-            caramel = require('caramel'),
             store = require('/modules/store.js').store(request, session),
             config = require('/store.js').config(),
             site = require('/modules/site.js'),
@@ -15,7 +14,7 @@ var caramel;
             sso = configs.ssoConfiguration.enabled,
             inDashboard = false,
             matcher = new URIMatcher(request.getRequestURI());
-
+    caramel = require('caramel');
     matcher.match('/{context}' + config.assetsUrlPrefix + '/{type}/{aid}');
     aid = matcher.elements().aid;
 

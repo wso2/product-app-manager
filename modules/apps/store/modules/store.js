@@ -92,7 +92,8 @@ var init = function (options) {
 
 //TODO:
 var currentAsset = function () {
-    var prefix = require('/store.js').config().assetsUrlPrefix, matcher = new URIMatcher(request.getRequestURI());
+    var prefix = require('/store.js').config().assetsUrlPrefix,
+        matcher = new URIMatcher(request.getRequestURI());
     if (matcher.match('/{context}' + prefix + '/{type}/{+any}') || matcher.match('/{context}' + prefix + '/{type}')) {
         return matcher.elements().type;
     }
@@ -440,7 +441,13 @@ Store.prototype.asset = function (type, aid) {
  * @param type Asset type
  */
 Store.prototype.assetLinks = function (type) {
-    var mod = require(ASSETS_EXT_PATH + type + '/asset.js');
+    var mod,
+        path = ASSETS_EXT_PATH + type + '/asset.js',
+        file = new File(path);
+    if (!file.isExists()) {
+        return [];
+    }
+    mod = require(path);
     return mod.assetLinks(this.user);
 };
 
