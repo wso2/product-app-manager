@@ -3,6 +3,8 @@ var caramel;
 (function () {
     var assets, paging, count, current, total, sso, url, mainPage, subPage,title
             options = {},
+			subscriptions ={},
+	    	subscription = false;
             log = new Log(),
             user = require('/modules/user.js').current(session),
             configs = require('/store.js').config(),
@@ -30,7 +32,15 @@ var caramel;
     
     title = store.assetLinks(type).title;
     
-    var subscriptions = store.subscriptions(type);
+    if(user){
+	subscriptions = store.subscriptions(type);
+	var count = Object.keys(subscriptions[type]).length;
+	    if(count == 0){
+			subscriptions[type]={};
+		}else{
+			subscription =true;
+		}
+	}	
      
     if (tag) {
 
@@ -159,7 +169,7 @@ var caramel;
         sorting: {
             url: url + 'sort='
         },
-        myAssets : { user:user, type: type, title: title, subscriptions: subscriptions[type]},
+        myAssets : { user:user, type: type, title: title, subscriptions: subscriptions[type], subscription : subscription},
         recentAssets: function () {
             return store.recentAssets(type);
         }
