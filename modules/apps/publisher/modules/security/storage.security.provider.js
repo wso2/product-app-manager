@@ -72,7 +72,7 @@ var securityModule = function () {
     SecurityProvider.prototype.execute=function(assetType,assetId,uuid){
 
         //Load the governance artifacts
-        GovernanceUtils.loadGovernanceArtifacts(registry.registry);
+        GovernanceUtils.loadGovernanceArtifacts(this.registry.registry);
 
         //Obtain the artifact manager
         var artifactManager=new carbon.registry.ArtifactManager(this.registry,assetType);
@@ -90,7 +90,7 @@ var securityModule = function () {
         }
 
         //Obtain the roles
-        var userInstance=userManager.getUser(user);
+        var userInstance=this.um.getUser(user);
         var roles=userInstance.getRoles();
 
         //Obtain the field name
