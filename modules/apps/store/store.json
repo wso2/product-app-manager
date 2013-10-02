@@ -3,7 +3,7 @@
     "assetsUrlPrefix": "/assets",
     "assetUrlPrefix": "/asset",
     "subscriptionsUrlPrefix": "/subscriptions",
-    "assetsPageSize": 12,
+    "assetsPageSize": 4,
     "commentsPageSize": 10,
     "socialCommentsEnable": true,
     "tenanted": true,

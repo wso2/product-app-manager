@@ -37,7 +37,13 @@ var init = function (options) {
         var CommonUtil = Packages.org.wso2.carbon.governance.registry.extensions.utils.CommonUtil;
         var GovernanceConstants = org.wso2.carbon.governance.api.util.GovernanceConstants;
         var um = server.userManager(tenantId);
-        var publisherConfig=require('/config/publisher-tenant.json')
+        var publisherConfig=require('/config/publisher-tenant.json');
+        var securityProviderModule=require('/modules/security/storage.security.provider.js').securityModule();
+
+        var securityProvider=securityProviderModule.cached();
+
+        //The security provider requires the registry and user manager to work
+        securityProvider.provideContext(reg,um);
 
         //check whether tenantCreate has been called
         if (!reg.exists(PUBLISHER_CONFIG_PATH)) {

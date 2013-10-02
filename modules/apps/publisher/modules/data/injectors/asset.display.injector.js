@@ -134,6 +134,7 @@ var injector = function () {
         storageUrlPattern=storageUrlPattern.replace('{context}',context);
         storageUrlPattern=storageUrlPattern.replace('{uuid}',uuid);
         storageUrlPattern=storageUrlPattern.replace('{id}',object.id);
+        storageUrlPattern=storageUrlPattern.replace('{type}',object.type);
 
         log.debug('new url: '+storageUrlPattern);
         return storageUrlPattern;
