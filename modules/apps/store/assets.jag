@@ -34,7 +34,7 @@ var caramel;
     
     if(user){
 	subscriptions = store.subscriptions(type);
-	var count = Object.keys(subscriptions[type]).length;
+	var count = Object.keys(subscriptions).length;
 	    if(count == 0){
 			subscriptions[type]={};
 		}else{
