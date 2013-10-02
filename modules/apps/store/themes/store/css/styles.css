@@ -442,7 +442,7 @@ h3.asset-title-separator {
     margin: 0 auto;
 }
 .search-bar .dropdown-toggle:first-child{
-    margin-left:-13px;
+    margin-left:-14px;
 }
 .search-bar .dropdown {
     display: inline-block;
@@ -454,6 +454,7 @@ h3.asset-title-separator {
     margin-right:-3px;
     font-size: 14px;
     border-right: 1px solid #DADADA;
+    font-weight: bold;
 }
 .search-bar .dropdown.selected, .search-bar .dropdown.selected:hover {
     background: #E84C3D;
@@ -589,8 +590,19 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     color: #34495E;
 }
 
+.store-right a.link-view-all {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-right: 13px;
+    text-align: right;
+}
 .store-right h4 i {
     margin-right: 8px;
+}
+.store-right h4 i.pull-right{
+    margin-right: 13px;
 }
 .store-right hr {
     border-color: #EEEEEE;
@@ -862,6 +874,8 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     padding: 15px 0;
     color: #7f8c8d;
     background: #FFFFFF;
+    font-size: 14px;
+    line-height: 27px;
 }
 .row-footer ul {
     margin-right: 8px;
@@ -1204,6 +1218,7 @@ ol.linenums li {
     right: 6px;
     width: 100%;
 }
+
 @media all and (max-width: 980px) {
     .asset {
         height: 217px !important;

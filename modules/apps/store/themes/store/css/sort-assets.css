@@ -78,6 +78,12 @@
 #breadcrumb a {
     color: #717f8e;
     font-weight: 600;
+    display: block;
+    padding: 2px 13px;
+    
+}
+#breadcrumb a:hover{
+    background:#F7F9F9;
 }
 .breadcrumb-l1, .breadcrumb-l2 {
     display: inline-block;
@@ -102,7 +108,6 @@
 .breadcrumb-body {
     background: #fff;
     border: 1px solid #ccc;
-    padding: 2px 15px;
     margin: 0;
     display: none;
     position: relative;

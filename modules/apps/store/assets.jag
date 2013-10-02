@@ -11,6 +11,7 @@ var caramel;
             tag = request.getParameter('tag'),
             query = request.getParameter('query'),
             fields = request.getParameter('fields'),
+            selectedCategory = request.getParameter('category'),
             event = require('/modules/event.js');
 
     caramel = require('caramel');
@@ -29,6 +30,7 @@ var caramel;
     
     title = store.assetLinks(type).title;
     
+    var subscriptions = store.subscriptions(type);
      
     if (tag) {
 
@@ -111,6 +113,9 @@ var caramel;
         var rxtAttributes = require('modules/util.js').getRXTAttributes(tenantId, type);
         log.info('After obtaining rxt attributes');
     }*/
+   
+   log.info(selectedCategory);
+   
 
     var rxtAttributes = require('modules/util.js').getRXTAttributes(tenantId, type);
 
@@ -131,6 +136,7 @@ var caramel;
                    searchFields: rxtAttributes
                },
         type: type,
+        selectedCategory: selectedCategory,
         /*tag: tag,*/
         tags: function () {
             return [
@@ -153,7 +159,7 @@ var caramel;
         sorting: {
             url: url + 'sort='
         },
-        myAssets : { user:user, type: type, title: title },
+        myAssets : { user:user, type: type, title: title, subscriptions: subscriptions[type]},
         recentAssets: function () {
             return store.recentAssets(type);
         }
