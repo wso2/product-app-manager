@@ -456,10 +456,8 @@ var rxt_utility = function () {
 
                 for(var indexB in b){
 
-                    log.info(compare(a[indexA],b[indexB]));
                       //If a occurs in b add a
                       if(compare(a[indexA],b[indexB])==true){
-                          log.info('adding '+a[indexA]);
                           intersected.push(a[indexA]);
                       }
                 }

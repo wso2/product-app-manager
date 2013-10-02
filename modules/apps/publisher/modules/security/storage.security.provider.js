@@ -10,17 +10,24 @@ var securityModule = function () {
     var log = new Log('storage.security.provider');
     var utility = require('/modules/utility.js').rxt_utility();
     var bundler = require('/modules/bundler.js').bundle_logic();
+    var carbon=require('carbon');
+    var GovernanceUtils = Packages.org.wso2.carbon.governance.api.util.GovernanceUtils;
 
+    var LOGGED_IN_USER='LOGGED_IN_USER';
+    var CACHE_STORAGE_SECURITY_PROVIDER='storage.security.provider';
     var STORAGE_BLOCK = 'storage';
     var LIFECYCLE_BLOCK = 'lifecycle';
     var CONFIG_FORMAT = 'json';
     var ROLE_ADMIN='admin';
+
 
     function SecurityProvider(context) {
         this.storageBlocks = {};
         this.context = context;
         log.info(this.context);
         this.bundleManager = new bundler.BundleManager({path: context.path});
+        this.registry=null;
+        this.um=null;
     }
 
     /*
@@ -52,6 +59,51 @@ var securityModule = function () {
         });
 
         log.info(this.storageBlocks);
+    };
+
+    SecurityProvider.prototype.provideContext=function(registry,userManager){
+        this.registry=registry;
+        this.um=userManager;
+    };
+
+    /*
+    The function hand
+     */
+    SecurityProvider.prototype.execute=function(assetType,assetId,uuid){
+
+        //Load the governance artifacts
+        GovernanceUtils.loadGovernanceArtifacts(registry.registry);
+
+        //Obtain the artifact manager
+        var artifactManager=new carbon.registry.ArtifactManager(this.registry,assetType);
+
+        //Obtain the asset
+        var asset=artifactManager.get(assetId);
+
+        //Obtain the signed in user
+        var user=session.get(LOGGED_IN_USER);
+
+        //The user must be logged into view the resource
+        if(!user){
+            log.info('a user is not logged in.');
+            return false;
+        }
+
+        //Obtain the roles
+        var userInstance=userManager.getUser(user);
+        var roles=userInstance.getRoles();
+
+        //Obtain the field name
+        var field=findField(uuid,asset);
+
+        if(field==''){
+            log.info('field for '+uuid+' could not be found.');
+            return false;
+        }
+
+        var isAllowed=this.isAllowed(asset,user,roles,asset.lifecycleState,field);
+
+        return isAllowed;
     };
 
     /*
@@ -102,8 +154,6 @@ var securityModule = function () {
             stateData.push(ROLE_ADMIN);
         }
 
-
-
         //Fill in dynamic values
         stateData=dataInjectToRoles(stateData,asset);
 
@@ -122,9 +172,7 @@ var securityModule = function () {
         return isUserAllowed;
     };
 
-    SecurityProvider.prototype.execute=function(){
 
-    };
 
     /*
      The function injects data to the provided roles using content in the
@@ -189,10 +237,26 @@ var securityModule = function () {
         return null;
     }
 
+    /*
+    The function creates a cached copy of the Security Provider if one is not
+    already present
+     */
+    function getCached(){
+          var instance=application.get(CACHE_STORAGE_SECURITY_PROVIDER);
+
+        if(!instance){
+            instance=new SecurityProvider({path:'/config/ext'});
+            instance.init();
+            application.put(CACHE_STORAGE_SECURITY_PROVIDER,instance);
+        }
+
+        return instance;
+    }
 
     return{
         SecurityProvider: SecurityProvider,
-        findField:findField
+        findField:findField,
+        cached:getCached
     }
 
 };
