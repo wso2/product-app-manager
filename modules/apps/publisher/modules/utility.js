@@ -442,8 +442,31 @@ var rxt_utility = function () {
 
             return csv;
         },
+        /*
+        The function returns the values which occur in both a and b
+        @a: An array of values
+        @b: An array of values
+        @return: An array containing objects which occcur both in a and b
+         */
+        intersect:function(a,b,compare){
 
+            var intersected=[];
 
+            for(var indexA in a){
+
+                for(var indexB in b){
+
+                    log.info(compare(a[indexA],b[indexB]));
+                      //If a occurs in b add a
+                      if(compare(a[indexA],b[indexB])==true){
+                          log.info('adding '+a[indexA]);
+                          intersected.push(a[indexA]);
+                      }
+                }
+            }
+
+            return intersected;
+        },
         /*
          File related utility functions
          */

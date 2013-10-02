@@ -91,5 +91,25 @@
             "table":"images",
             "type":"file"
         }
-    ]
+    ],
+
+    "storage":{
+
+        "images_banner":{
+
+            "lifecycle":{
+                "published":["Internal/everyone","private_{overview_provider}"],
+                "in-review":["reviewer"]
+            }
+        },
+
+        "images_thumbnail":{
+
+             "lifecycle":{
+
+                 "in-review":["reviewer"]
+             }
+        }
+
+    }
 }
