@@ -27,7 +27,7 @@ var caramel;
     }];
 
 	title = store.assetLinks(type).title;
-
+	  
     caramel.render({
         'title' : 'Store | My Items',
          user: user,
@@ -57,7 +57,7 @@ var caramel;
         
         subscriptions : count > 0 ? subscriptions : null,
         recentAssets : recentAssets,
-        myAssets : { user:user, type: type, title: title },
+        myAssets : { user:user, type: type, title: title},
         tags : tags
     });
 }());

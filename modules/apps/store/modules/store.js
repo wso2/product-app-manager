@@ -315,7 +315,17 @@ Store.prototype.tags = function (type) {
             }
         }
     }
+    //api setter
     for (tag in tz) {
+           if (tz.hasOwnProperty(tag)) {
+                   tagz.push({
+                       name: String(tag),
+                       count: tz[tag]
+                   });             
+           }
+       }
+    /* 
+     for (tag in tz) {
         if (tz.hasOwnProperty(tag)) {
             var result = this.assetManager(type).checkTagAssets({tag: tag });
             if (result.length > 0) {
@@ -326,6 +336,7 @@ Store.prototype.tags = function (type) {
             }
         }
     }
+    */
     return tagz;
 };
 
