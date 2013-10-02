@@ -19,6 +19,7 @@ var securityModule = function () {
     var LIFECYCLE_BLOCK = 'lifecycle';
     var CONFIG_FORMAT = 'json';
     var ROLE_ADMIN='admin';
+    var ROLE_ANON='anon';
 
 
     function SecurityProvider(context) {
@@ -83,15 +84,18 @@ var securityModule = function () {
         //Obtain the signed in user
         var user=session.get(LOGGED_IN_USER);
 
-        //The user must be logged into view the resource
+        var roles=[];
+
+        //If a user is not logged in they will recieve anon rights
         if(!user){
             log.info('a user is not logged in.');
-            return false;
+            roles.push(ROLE_ANON);
         }
-
-        //Obtain the roles
-        var userInstance=this.um.getUser(user);
-        var roles=userInstance.getRoles();
+        else{
+            //Obtain the roles
+            var userInstance=this.um.getUser(user);
+            roles=userInstance.getRoles();
+        }
 
         //Obtain the field name
         var field=findField(uuid,asset);
