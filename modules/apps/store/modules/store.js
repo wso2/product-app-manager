@@ -63,6 +63,12 @@ var init = function (options) {
             GovernanceConstants = org.wso2.carbon.governance.api.util.GovernanceConstants,
             reg = server.systemRegistry(tenantId),
             um = server.userManager(tenantId);
+        var securityProviderModule=require('/modules/security/storage.security.provider.js').securityModule();
+
+        var securityProvider=securityProviderModule.cached();
+
+        //The security provider requires the registry and user manager to work
+        securityProvider.provideContext(reg,um);
 
         //check whether tenantCreate has been called
         if (!reg.exists(STORE_CONFIG_PATH)) {

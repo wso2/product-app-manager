@@ -17,6 +17,9 @@ var ERROR_NOT_FOUND='The requested resource was not found.';
 var log=new Log('storage.router');
 
 var storageModule = require('/modules/data/storage.js').storageModule();
+var securityProviderModule=require('/modules/security/storage.security.provider.js').securityModule();
+
+var storageSecurityProvider=securityProviderModule.cached();
 
 var storageManager = new storageModule.StorageManager({
     context: 'storage',
@@ -31,7 +34,7 @@ var value = {};
 //Obtain the tenantId and the uuid from the url
 var uriMatcher=new URIMatcher(request.getRequestURI());
 
-var isMatch=uriMatcher.match('/{context}/storage/{uuid}/{fileName}');
+var isMatch=uriMatcher.match('/{context}/storage/{type}/{id}/{uuid}/{fileName}');
 
 //Handle the request only if the url matches
 if(isMatch){
@@ -50,6 +53,18 @@ The function services the requests for a resource by using the matched elements
  */
 function handleResourceRequest(matchedElements){
     var key=matchedElements['uuid'];
+    var compoundKey=key+matchedElements['filename'];
+    var type=matchedElements['type'];
+    var id=matchedElements['id'];
+
+    var isAllowed=storageSecurityProvider.execute(type,id,compoundKey);
+
+    log.info(isAllowed);
+
+    if(!isAllowed){
+
+        //return;
+    }
 
     var storedValue = storageManager.get(key);
 
