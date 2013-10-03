@@ -15,7 +15,7 @@
 
 					<parameter name="STATE_RULE1:Created" value="private_{asset_author}:+get,+add,+delete,+authorize" />
 					<parameter name="STATE_RULE2:Created" value="reviewer:-get,-add,-delete,-authorize" />
-					<parameter name="STATE_RULE3:Created" value="everyone:-get,-add,-delete,-authorize" />
+					<parameter name="STATE_RULE3:Created" value="Internal/everyone:-get,-add,-delete,-authorize" />
 				</execution>
 			</data>
 		    </datamodel>
@@ -32,7 +32,7 @@
 
 					<parameter name="STATE_RULE1:In-Review" value="private_{asset_author}:+get,-add,-delete,-authorize" />
 					<parameter name="STATE_RULE2:In-Review" value="reviewer:+get,+add,-delete,+authorize"/>
-					<parameter name="STATE_RULE3:In-Review" value="everyone:-get,-add,-delete,-authorize" />
+					<parameter name="STATE_RULE3:In-Review" value="Internal/everyone:-get,-add,-delete,-authorize" />
 				</execution>
 			</data>
                     </datamodel>
@@ -49,7 +49,7 @@
 
 					<parameter name="STATE_RULE1:Published" value="private_{asset_author}:+get,+add,-delete,+authorize" />
 					<parameter name="STATE_RULE2:Published" value="reviewer:+get,-add,-delete,-authorize"/>
-					<parameter name="STATE_RULE3:Published" value="everyone:+get,-add,-delete,-authorize" />
+					<parameter name="STATE_RULE3:Published" value="Internal/everyone:+get,-add,-delete,-authorize" />
 				</execution>
 			</data>
                     </datamodel>
@@ -66,7 +66,7 @@
 
 					<parameter name="STATE_RULE1:Unpublished" value="private_{asset_author}:+get,+add,+delete,+authorize" />
 					<parameter name="STATE_RULE2:Unpublished" value="reviewer:-get,-add,-delete,-authorize"/>
-					<parameter name="STATE_RULE3:Unpublished" value="everyone:-get,-add,-delete,-authorize"/>
+					<parameter name="STATE_RULE3:Unpublished" value="Internal/everyone:-get,-add,-delete,-authorize"/>
 				</execution>
 			</data>
                     </datamodel>
@@ -83,7 +83,7 @@
 
 					<parameter name="STATE_RULE1:In-Review" value="private_{asset_author}:+get,-add,-delete,-authorize" />
 					<parameter name="STATE_RULE2:In-Review" value="reviewer:+get,+add,-delete,+authorize"/>
-					<parameter name="STATE_RULE3:In-Review" value="everyone:-get,-add,-delete,-authorize" />
+					<parameter name="STATE_RULE3:In-Review" value="Internal/everyone:-get,-add,-delete,-authorize" />
 				</execution>
 			</data>
                     </datamodel>
