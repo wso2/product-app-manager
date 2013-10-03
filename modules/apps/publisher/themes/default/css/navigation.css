@@ -251,6 +251,7 @@ hr.emboss {
 
 .nav-tabs .dropdown-menu, .nav-pills .dropdown-menu, .navbar .dropdown-menu {
     margin-top: 0;
+    overflow:hidden !important;
 }
 
 .navbar .sub-menu:before {
