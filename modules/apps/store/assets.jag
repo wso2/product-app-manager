@@ -112,7 +112,7 @@ var caramel;
         log.info('After obtaining rxt attributes');
     }*/
 
-    var rxtAttributes = require('modules/util.js').getRXTAttributes(tenantId, type);
+    var rxtAttributes = require('/modules/util.js').getRXTAttributes(tenantId, type);
 
     caramel.render({
         title: 'Store | Assets',

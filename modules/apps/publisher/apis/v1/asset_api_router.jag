@@ -118,7 +118,7 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}', functi
 
     }
     catch (e) {
-        log.debug('An asset of type: ' + shortNa, e + ' could not be created.The following exception was thrown: ' + e);
+        log.debug('An asset of type: ' + shortName + ' could not be created.The following exception was thrown: ' + e);
         response.sendError(500, 'An asset of type: ' + shortName + ' could not be created.Please check the server logs.');
     }
 

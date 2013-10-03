@@ -137,8 +137,9 @@ var store = function (o, session) {
 };
 
 var assetManager = function (type, reg) {
-    var path = ASSETS_EXT_PATH + type + '/asset.js',
-        azzet = new File(path).isExists() ? require(path) : require('/modules/asset.js');
+    var azzet,
+        path = ASSETS_EXT_PATH + type + '/asset.js';
+    azzet = (new File(path).isExists() && (azzet = require(path)).Manager) ? azzet : require('/modules/asset.js');
     return new azzet.Manager(reg, type);
 };
 
@@ -169,23 +170,19 @@ var Store = function (tenantId, session) {
         this.userSpace = user.userSpace(this.user.username);
     } else {
         configs(tenantId).assets.forEach(function (type) {
-            var path = ASSETS_EXT_PATH + type + '/asset.js',
-                azzet = new File(path).isExists() ? require(path) : require('/modules/asset.js');
-            assetManagers[type] = new azzet.Manager(server.anonRegistry(tenantId), type);
+            assetManagers[type] = assetManager(type, server.anonRegistry(tenantId));
         });
     }
 };
 
 Store.prototype.assetManager = function (type) {
-    var manager,
-        path = ASSETS_EXT_PATH + type + '/asset.js',
-        azzet = new File(path).isExists() ? require(path) : require('/modules/asset.js');
+    var manager;
     if (this.user) {
         manager = this.assetManagers[type];
         if (manager) {
             return manager;
         }
-        return (this.assetManagers[type] = new azzet.Manager(this.registry, type));
+        return (this.assetManagers[type] = assetManager(type, this.registry));
     }
     return this.assetManagers[type];
 };
