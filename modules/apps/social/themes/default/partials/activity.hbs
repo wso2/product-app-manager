@@ -1,0 +1,33 @@
+<div class="row com-stream-comment">
+    <div class="com-left">
+        <img class="img-avatar" src="{{url "/themes/default/img/avatar.png"}}">
+    </div>
+    <div class="com-right">
+        <div class="clear">
+            <strong class="com-author">{{payload_user}}</strong>
+            <div class="com-rating">
+                <div class="com-rating-{{payload_rating}}star"></div>
+            </div>
+            <p>
+                {{object.content}}
+            </p>
+        </div>
+        <div class="row">
+
+            <div class="com-thumbs">
+                <ul>
+                    <li>
+                        <a href="#"><i class="icon icon-thumbs-up"></i><span>{{yea}}</span></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="icon icon-thumbs-down"></i><span>{{nay}}</span></a>
+                    </li>
+                    <li class="com-thumbs-flag">
+                        <a href="#">Flag</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
