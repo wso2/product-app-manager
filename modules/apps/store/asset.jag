@@ -4,7 +4,7 @@ var caramel;
 
 (function () {
 
-    var asset, aid,
+    var asset, aid,title,
             log = new Log(),
             store = require('/modules/store.js').store(request, session),
             config = require('/store.js').config(),
@@ -17,7 +17,7 @@ var caramel;
     caramel = require('caramel');
     matcher.match('/{context}' + config.assetsUrlPrefix + '/{type}/{aid}');
     aid = matcher.elements().aid;
-
+	title = store.assetLinks(type).title;
     try {
         asset = store.asset(type, aid);
     } catch (e) {
@@ -47,6 +47,7 @@ var caramel;
             isTopAssets: false,
             searchFields: rxtAttributes
         },
+        isSocial:config.socialCommentsEnable,
         
         type: type,
         embedURL: config.server.http + '/gadgets/ifr?url=' + asset.attributes.overview_url,
@@ -58,6 +59,7 @@ var caramel;
                 data: store.tags(type)
             }
         ],
+        myAssets : { user:user, type: type, title: title },
         recentAssets: store.recentAssets(type)
     });
 }());

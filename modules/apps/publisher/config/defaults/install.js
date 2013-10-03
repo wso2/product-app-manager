@@ -47,8 +47,13 @@ var installer = function () {
         //Clone the object but ignore tags and rate
         var artifact = utility.cloneObject(jsonConfig, ['tags', 'rate']);
 
-        artifact.attributes.images_thumbnail = context.httpContext + artifact.attributes.images_thumbnail;
-        artifact.attributes.images_banner = context.httpContext + artifact.attributes.images_banner;
+
+
+        artifact.attributes.images_thumbnail = context.assetPath + artifact.attributes.images_thumbnail;
+        artifact.attributes.images_banner = context.assetPath + artifact.attributes.images_banner;
+        //artifact.attributes.images_thumbnail = context.httpContext + artifact.attributes.images_thumbnail;
+        //artifact.attributes.images_banner = context.httpContext + artifact.attributes.images_banner;
+
 
         //Create the deployment object
         context['artifact'] = artifact;
@@ -167,6 +172,10 @@ var installer = function () {
 
         //Add the asset
         log.info('about to add the asset : ' + artifact.name);
+
+        //Store any resources in the Storage Manager
+        context.dataInjector.inject(artifact,context.dataInjectorModes.STORAGE);
+
         artifactManager.add(artifact);
 
         var assets=artifactManager.find(function(adapter){
@@ -187,6 +196,9 @@ var installer = function () {
 
         //Set the id
         artifact.id = currentAsset.id;
+
+        //Store any resources in the Storage Manager
+        context.dataInjector.inject(artifact,context.dataInjectorModes.STORAGE);
 
         artifactManager.update(artifact);
         //log.info('finished updating the artifact : '+currentAsset.name);

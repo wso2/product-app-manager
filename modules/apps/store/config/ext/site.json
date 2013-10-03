@@ -43,7 +43,31 @@
             "name": "search",
             "value": "false"
         }
-    ]
+    ],
+
+    "storage": {
+
+        "images_banner": {
+
+            "lifecycle": {
+                "created": ["private_{overview_provider}"],
+                "in-review": ["reviewer", "private_{overview_provider}"],
+                "published": ["Internal/everyone", "private_{overview_provider}", "reviewer","anon"],
+                "unpublished": ["private_{overview_provider}"]
+            }
+        },
+
+        "images_thumbnail": {
+
+            "lifecycle": {
+                "created": ["private_{overview_provider}"],
+                "in-review": ["reviewer", "private_{overview_provider}"],
+                "published": ["Internal/everyone", "private_{overview_provider}", "reviewer","anon"],
+                "unpublished": ["private_{overview_provider}"]
+            }
+        }
+
+    }
 
 
 }

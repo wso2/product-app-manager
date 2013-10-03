@@ -33,7 +33,7 @@ var module=function(){
 				return;
 			}
 			var data={};
-			
+
 			data['name']=table.name.toLowerCase()+'_'+field.name.toLowerCase();
 			data['label']=(fieldTemplate.label)?fieldTemplate.label:field.name;
 			data['isRequired']=(fieldTemplate.required)?true:false;
@@ -42,6 +42,7 @@ var module=function(){
 			data['isOptions']=(fieldTemplate.type=='options')?true:false;
 
             data['isReadOnly']=(fieldTemplate.meta.readOnly)?fieldTemplate.meta.readOnly:false;
+            data['isFile']=(fieldTemplate.type=='file')?true:false;
 
 			data['value']=field.value;
 			

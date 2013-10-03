@@ -25,16 +25,30 @@ var render = function (theme, data, meta, require) {
 var render = function (theme, data, meta, require) {
     theme('2-column-right', {
         title: data.title,
+         header: [
+            {
+                partial: 'header',
+                context: data.header
+            }
+        ],
         navigation: [
             {
                 partial: 'navigation',
-                context: data.navigation
-            },
-            {
-                partial: 'search',
-                context: data.search
+                context: require('/helpers/navigation.js').currentPage(data.navigation, data.type, data.search)
             }
         ],
+       /*
+        navigation: [
+                   {
+                       partial: 'navigation',
+                       context: data.navigation
+                   },
+                   {
+                       partial: 'search',
+                       context: data.search
+                   }
+               ],
+              */
        
         body: [
             {
@@ -42,7 +56,7 @@ var render = function (theme, data, meta, require) {
                 context: {
         		'userAssets': data.userAssets,
         		'URL': data.URL
-		}
+				}
             }
         ],
         right: [

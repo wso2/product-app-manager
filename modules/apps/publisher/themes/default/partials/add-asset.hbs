@@ -57,6 +57,9 @@
                                 {{#if this.isTextArea}}
                                     <textarea id='{{this.name}}' value='{{this.value}}' ></textarea>
                                 {{/if}}
+                                {{#if this.isFile}}
+                                   <input id='{{this.name}}' type='file' />
+                                {{/if}}
                             </div>
                         </div>
                         {{/each}}

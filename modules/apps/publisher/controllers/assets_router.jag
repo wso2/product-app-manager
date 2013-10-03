@@ -59,7 +59,6 @@
 
         //Check if an extension asset router exists
         var fileTester = new File(path);
-        log.info(path);
         if (fileTester.isExists()) {
             include(path);
             return;
@@ -68,7 +67,6 @@
         //Set the default path
         path = DEFAULT_PATH + DEFAULT_ROUTER_NAME;
 
-        log.info(path);
         //Default
         include(path);
         return;

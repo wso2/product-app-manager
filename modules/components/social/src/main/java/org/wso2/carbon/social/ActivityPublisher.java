@@ -7,27 +7,11 @@ import org.wso2.carbon.databridge.agent.thrift.DataPublisher;
 
 import java.util.Arrays;
 
+import static org.wso2.carbon.social.Constants.*;
+
 public class ActivityPublisher {
-    public static final String STREAM_VERSION = "1.0.0";
-    public static final String STREAM_NAME = "org.wso2.social.activity";
 
     private static final Log LOG = LogFactory.getLog(ActivityPublisher.class);
-    private static final String STREAM_DEF = "{ 'name':'" + STREAM_NAME + "'," +
-            " 'version':'" + STREAM_VERSION + "'," +
-            " 'nickName': 'Activity stream for WSO2 Social'," +
-            " 'description': 'store json object and mete-data describing each activity'," +
-            " 'tags':['social', 'activity']," +
-            " 'metaData':[" +
-            " ]," +
-            " 'correlationData':[" +
-            " ]," +
-            " 'payloadData':[" +
-            "       {'name':'verb','type':'STRING'}," +
-            "       {'name':'object.type','type':'STRING'}," +
-            "       {'name':'target.id','type':'STRING'}," +
-            "       {'name':'body','type':'STRING'}" +
-            " ]" +
-            "}";
 
     private DataPublisher publisher;
     private String streamId;
@@ -37,10 +21,10 @@ public class ActivityPublisher {
         DataPublisher publisher = getPublisher();
         try {
             String id = getStreamId(publisher);
-            String json = Util.SimpleNativeObjectToJson(activity);
-            String verb = getProperty(activity, "verb");
-            String objectType = getProperty(activity, "object", "type");
-            String targetId = getProperty(activity, "target", "id");
+            String json = JSONUtil.SimpleNativeObjectToJson(activity);
+            String verb = getProperty(activity, VERB_JSON_PROP);
+            String objectType = getProperty(activity, OBJECT_JSON_PROP, TYPE_JSON_PROP);
+            String targetId = getProperty(activity, TARGET_JSON_PROP, ID_JSON_PROP);
 
             publisher.publish(id, null, null, new Object[]{verb, objectType, targetId, json});
         } catch (Exception e) {

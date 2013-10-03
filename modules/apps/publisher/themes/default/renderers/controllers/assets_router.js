@@ -36,7 +36,7 @@ var render = function (theme, data, meta, require) {
         leftnav: [
             {
                 partial: 'left-nav',
-                context: require('/helpers/left-nav.js').generateLeftNavJson(data)
+                context: require('/helpers/left-nav.js').generateLeftNavJson(data, listPartial)
             }
         ],
         listassets: [
