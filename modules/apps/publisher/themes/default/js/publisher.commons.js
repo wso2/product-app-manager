@@ -7,4 +7,9 @@ $(document).ready(function(){
     setTimeout(function(){
         ($('.publisher-left').height() < $('.publisher-right').height()) && $('.publisher-left').height($('.publisher-right').height() + 15);
     }, 200);
+    
+    $('.list-asset-table').on('click', 'tr', function(){
+    	var link = $(this).find('.asset-listing-name a').attr('href');
+    	window.location = link;
+    });
 });
