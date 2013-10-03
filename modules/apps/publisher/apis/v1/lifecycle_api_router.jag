@@ -279,12 +279,14 @@ routeManager.register('GET','publisher','/publisher/api/lifecycle/information/hi
        //log.debug(actions);
 
        var resourceInstance=systemRegistry.get(historyPath);
+       log.info(historyPath);
        var json={};
 
        if(resourceInstance!=undefined){
 
            var xml=new XML(resourceInstance.content);
 
+           log.info(xml);
 
            json=utility.xml.convertE4XtoJSON(xml);
 
