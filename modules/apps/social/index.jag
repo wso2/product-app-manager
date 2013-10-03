@@ -1,10 +1,11 @@
 <%
+var caramel;
 (function () {
 
     //auto rediecting the user to SSO
     var user = request.getParameter('user');
     var userModule = require('/modules/user.js');
-    var caramel = require('caramel');
+    caramel = require('caramel');
     var logged = userModule.current(session);
     if (user && !logged) {
         include('login.jag');
