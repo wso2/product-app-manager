@@ -41,7 +41,7 @@
 
                         if (user.loginWithSAML(sessionObj.loggedInUser)) {
                             log.info('user is set :::' + sessionObj.loggedInUser);
-                            response.sendRedirect('/store');
+                            response.sendRedirect(relayState);
                         }
 
                     }

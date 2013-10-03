@@ -2,18 +2,22 @@
 var type;
 (function () {
     var prefix, pages, path, suffix, theme, links, link, i, length, elements, mapper,
+            store = require('/modules/store.js'),
             config = require('/store.js').config(),
             mod = require('/modules/store.js'),
             file = require('/modules/file.js'),
+            server = require('/modules/server.js'),
             log = new Log(),
-            matcher = new URIMatcher(request.getRequestURI());
+            matcher = new URIMatcher(request.getRequestURI()),
+            tenant = server.tenant(request, session),
+            configs = store.configs(tenant.tenantId);
     mapper = function (path) {
         return function () {
             return path;
         };
     };
-  
-    
+
+
     if (matcher.match('/{context}' + config.assetsUrlPrefix + '/{type}/')) {
     	
         elements = matcher.elements();
@@ -24,7 +28,8 @@ var type;
             request.getMappedPath = mapper(path);
             include(path);
             return;
-        } else if (configs.assets.indexOf(type) === -1) {
+        }
+        if (configs.assets.indexOf(type) === -1) {
             response.sendError(404, 'Request Resource cannot be found');
             return;
         } 

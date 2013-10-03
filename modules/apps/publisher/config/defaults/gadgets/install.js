@@ -43,8 +43,13 @@ var installer = function () {
         artifact['attributes']['overview_version'] = '1.0.0';
         artifact['attributes']['overview_description'] = xml.*::ModulePrefs.@description;
         artifact['attributes']['overview_url'] = path + context.bundle.getName() + '.xml';
-        artifact['attributes']['images_thumbnail'] = path + 'thumbnail.jpg';
-        artifact['attributes']['images_banner'] = path + 'banner.jpg';
+        //artifact['attributes']['images_thumbnail'] = path + 'thumbnail.jpg';
+        //artifact['attributes']['images_banner'] = path + 'banner.jpg';
+
+        artifact['attributes']['images_thumbnail'] = context.assetPath +context.bundle.getName()+ '/thumbnail.jpg';
+        artifact['attributes']['images_banner'] = context.assetPath + context.bundle.getName()+'/banner.jpg';
+
+
 
         //Set the tags
         context['tags'] = (String(xml.*::ModulePrefs.@tags)).split(',');

@@ -63,6 +63,12 @@ var init = function (options) {
             GovernanceConstants = org.wso2.carbon.governance.api.util.GovernanceConstants,
             reg = server.systemRegistry(tenantId),
             um = server.userManager(tenantId);
+        var securityProviderModule=require('/modules/security/storage.security.provider.js').securityModule();
+
+        var securityProvider=securityProviderModule.cached();
+
+        //The security provider requires the registry and user manager to work
+        securityProvider.provideContext(reg,um);
 
         //check whether tenantCreate has been called
         if (!reg.exists(STORE_CONFIG_PATH)) {
@@ -92,7 +98,8 @@ var init = function (options) {
 
 //TODO:
 var currentAsset = function () {
-    var prefix = require('/store.js').config().assetsUrlPrefix, matcher = new URIMatcher(request.getRequestURI());
+    var prefix = require('/store.js').config().assetsUrlPrefix,
+        matcher = new URIMatcher(request.getRequestURI());
     if (matcher.match('/{context}' + prefix + '/{type}/{+any}') || matcher.match('/{context}' + prefix + '/{type}')) {
         return matcher.elements().type;
     }
@@ -136,8 +143,9 @@ var store = function (o, session) {
 };
 
 var assetManager = function (type, reg) {
-    var path = ASSETS_EXT_PATH + type + '/asset.js',
-        azzet = new File(path).isExists() ? require(path) : require('/modules/asset.js');
+    var azzet,
+        path = ASSETS_EXT_PATH + type + '/asset.js';
+    azzet = (new File(path).isExists() && (azzet = require(path)).Manager) ? azzet : require('/modules/asset.js');
     return new azzet.Manager(reg, type);
 };
 
@@ -168,23 +176,19 @@ var Store = function (tenantId, session) {
         this.userSpace = user.userSpace(this.user.username);
     } else {
         configs(tenantId).assets.forEach(function (type) {
-            var path = ASSETS_EXT_PATH + type + '/asset.js',
-                azzet = new File(path).isExists() ? require(path) : require('/modules/asset.js');
-            assetManagers[type] = new azzet.Manager(server.anonRegistry(tenantId), type);
+            assetManagers[type] = assetManager(type, server.anonRegistry(tenantId));
         });
     }
 };
 
 Store.prototype.assetManager = function (type) {
-    var manager,
-        path = ASSETS_EXT_PATH + type + '/asset.js',
-        azzet = new File(path).isExists() ? require(path) : require('/modules/asset.js');
+    var manager;
     if (this.user) {
         manager = this.assetManagers[type];
         if (manager) {
             return manager;
         }
-        return (this.assetManagers[type] = new azzet.Manager(this.registry, type));
+        return (this.assetManagers[type] = assetManager(type, this.registry));
     }
     return this.assetManagers[type];
 };
@@ -309,7 +313,17 @@ Store.prototype.tags = function (type) {
             }
         }
     }
+    //api setter
     for (tag in tz) {
+           if (tz.hasOwnProperty(tag)) {
+                   tagz.push({
+                       name: String(tag),
+                       count: tz[tag]
+                   });             
+           }
+       }
+    /* 
+     for (tag in tz) {
         if (tz.hasOwnProperty(tag)) {
             var result = this.assetManager(type).checkTagAssets({tag: tag });
             if (result.length > 0) {
@@ -320,6 +334,7 @@ Store.prototype.tags = function (type) {
             }
         }
     }
+    */
     return tagz;
 };
 
@@ -440,7 +455,13 @@ Store.prototype.asset = function (type, aid) {
  * @param type Asset type
  */
 Store.prototype.assetLinks = function (type) {
-    var mod = require(ASSETS_EXT_PATH + type + '/asset.js');
+    var mod,
+        path = ASSETS_EXT_PATH + type + '/asset.js',
+        file = new File(path);
+    if (!file.isExists()) {
+        return [];
+    }
+    mod = require(path);
     return mod.assetLinks(this.user);
 };
 

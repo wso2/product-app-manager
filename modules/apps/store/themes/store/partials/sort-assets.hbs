@@ -5,10 +5,17 @@
 			<div id="breadcrumb">
 				<div class="breadcrumb-l1">
 					<div class="breadcrumb-head">
-						<span>All Categories</span><i class="icon-caret-down"></i>
+						{{#if selectedCategory}}
+						<span>{{selectedCategory}}</span>
+						{{else}}
+						<span>All Categories</span>
+						{{/if}}
+						<i class="icon-caret-down"></i>
 					</div>
 					<ul class="breadcrumb-body">
-						
+						<li>
+							<a href="{{url "/assets"}}/{{type}}">All Categories</a>
+						</li>
 						{{#each categories}}
 						<li>
 							<a href="{{url "/assets"}}/{{../../type}}?fields=true&category={{this}}">{{this}}</a>

@@ -80,6 +80,40 @@
             "table": "*",
             "label": "Life Cycle",
             "value": "SampleLifeCycle2"
+        } ,
+        {
+            "name":"banner",
+            "table":"images",
+            "type":"file"
+        },
+        {
+            "name":"thumbnail",
+            "table":"images",
+            "type":"file"
         }
-    ]
+    ],
+
+    "storage":{
+
+        "images_banner":{
+
+            "lifecycle":{
+                "created":["private_{overview_provider}"],
+                "in-review":["reviewer","private_{overview_provider}"],
+                "published":["Internal/everyone","private_{overview_provider}","reviewer","anon"],
+                "unpublished":["private_{overview_provider}"]
+            }
+        },
+
+        "images_thumbnail":{
+
+             "lifecycle":{
+                 "created":["private_{overview_provider}"],
+                 "in-review":["reviewer","private_{overview_provider}"],
+                 "published":["Internal/everyone","private_{overview_provider}","reviewer","anon"],
+                 "unpublished":["private_{overview_provider}"]
+             }
+        }
+
+    }
 }

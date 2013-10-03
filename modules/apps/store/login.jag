@@ -6,7 +6,8 @@
             sessionId = session.getId(),
             requestURI,
             requestedPage = request.getParameter("requestedPage"),
-            relayState = '/store',
+            referer = request.getHeader("referer"),
+            relayState = (referer ? referer : '/store'),
             encodedSAMLAuthRequest = sso.client.getEncodedSAMLAuthRequest(dataConfi.ssoConfiguration.issuer),
             log = new Log(),
             postUrl = "https://" + process.getProperty('carbon.local.ip') + ":" + process.getProperty('https.port');

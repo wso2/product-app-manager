@@ -14,6 +14,11 @@ It allows the following functionality;
 Changes:
 ----------
 
+1/10/2013 Major Changes:
+          --------------
+          All resources are now stored in a Storage Manager ( Default H2)
+
+
 20/8/2013 Major Changes:
           --------------
           All default assets are now attached a life-cycle

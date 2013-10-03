@@ -37,7 +37,13 @@ var init = function (options) {
         var CommonUtil = Packages.org.wso2.carbon.governance.registry.extensions.utils.CommonUtil;
         var GovernanceConstants = org.wso2.carbon.governance.api.util.GovernanceConstants;
         var um = server.userManager(tenantId);
-        var publisherConfig=require('/config/publisher-tenant.json')
+        var publisherConfig=require('/config/publisher-tenant.json');
+        var securityProviderModule=require('/modules/security/storage.security.provider.js').securityModule();
+
+        var securityProvider=securityProviderModule.cached();
+
+        //The security provider requires the registry and user manager to work
+        securityProvider.provideContext(reg,um);
 
         //check whether tenantCreate has been called
         if (!reg.exists(PUBLISHER_CONFIG_PATH)) {
@@ -153,6 +159,8 @@ var Publisher = function (tenantId, session) {
     this.modelManager = managers.modelManager;
     this.rxtManager = managers.rxtManager;
     this.routeManager = managers.routeManager;
+    this.dataInjector=managers.dataInjector;
+    this.DataInjectorModes=managers.DataInjectorModes;
 };
 /*
 
@@ -167,6 +175,11 @@ var buildManagers = function (tenantId, registry) {
     var ext_mng = require('/modules/ext/core/extension.management.js').extension_management();
     var rxt_management = require('/modules/rxt.manager.js').rxt_management();
     var route_management = require('/modules/router-g.js').router();
+    var dataInjectorModule=require('/modules/data/data.injector.js').dataInjectorModule();
+
+
+    var dataInjector=new dataInjectorModule.DataInjector();
+    var injectorModes=dataInjectorModule.Modes;
 
     //var server=new carbon.server.Server(url);
     /*var registry=new carbon.registry.Registry(server,{
@@ -213,7 +226,9 @@ var buildManagers = function (tenantId, registry) {
     return {
         modelManager: modelManager,
         rxtManager: rxtManager,
-        routeManager: routeManager
+        routeManager: routeManager,
+        dataInjector:dataInjector,
+        DataInjectorModes:injectorModes
     };
 };
 

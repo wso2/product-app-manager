@@ -161,7 +161,7 @@
                                     org.wso2.carbon:org.wso2.carbon.cassandra-jdbc-1.1.1.server.feature:4.0.1
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.databridge.datapublisher.feature:${carbon.platform.patch.version.412}
+                                    org.wso2.carbon:org.wso2.carbon.databridge.datapublisher.feature:4.2.1
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.databridge.datareceiver.feature:${carbon.platform.patch.version.412}
@@ -332,7 +332,7 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.databridge.datapublisher.feature.group</id>
-                                    <version>${carbon.platform.patch.version.412}</version>
+                                    <version>4.2.1</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.databridge.datareceiver.feature.group</id>
