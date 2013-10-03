@@ -60,6 +60,7 @@ $(function(){
                       //disableActions(statInfo.actions);
                       buildCheckList(asset,id);
                       buildLCGraph();
+                      buildHistory(asset,id);
                   },
                   error:function(response){
                       $('#state').html('Error obtaining state');
@@ -95,6 +96,7 @@ $(function(){
                         //disableActions(statInfo.actions);
                         buildCheckList(asset,id);
                         buildLCGraph();
+                        buildHistory(asset,id);
                     },
                     error:function(response){
                         $('#state').html('Error obtaining life-cycle state of asset.');
@@ -239,11 +241,12 @@ $(function(){
 
         for(var itemIndex in items){
             console.log(itemIndex);
-            output='<div class="info-div alert alert-success">';
+            output+='<div class="info-div alert alert-success">';
             output+='<a data-dismiss="alert" class="close">x</a>';
             output+='<i class="icon-info-sign"></i>';
             output+='<span class="dateFull"> '+items[itemIndex].timestamp+'</span>';
-            output+='<a href="#">'+items[itemIndex].user+'</a> changed the asset state to '+items[itemIndex].state;
+            output+='<a href="#">'+items[itemIndex].user+'</a> changed the asset from '+items[itemIndex].state
+            +' to '+items[itemIndex].targetState;
             output+='</div>';
         }
 
