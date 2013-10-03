@@ -129,7 +129,7 @@ $(function() {
 		}else{
 			$(this).find('.pull-right').removeClass('icon-angle-up').addClass('icon-angle-down');
 		}
-		$('#my-assets').slideToggle();
+		$('#my-assets').slideToggle("fast");
 	});
 
 	caramel.loaded('js', 'assets');

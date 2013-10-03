@@ -1,9 +1,10 @@
 <%
 var caramel;
 ( function() {
-    var site, count, tag,
+    var site, tag,
             type = 'gadget',
             log = new Log(),
+            count = 0,
             store = require('/modules/store.js').store(request, session),
             types = store.assetTypes(),
             user = require('/modules/user.js').current(session),
@@ -23,7 +24,7 @@ var caramel;
 	recentEBooks = store.recentAssets("ebook", 3);
 	var recentAssets = recentGadgets.concat(recentSites,recentEBooks);
     var subscriptions = store.subscriptions();
-	count = Object.keys(subscriptions).length;
+	//count = Object.keys(subscriptions).length;
 
 	for(var i = 0; i < types.length; i++) {
 		tag = {
@@ -31,6 +32,14 @@ var caramel;
 			data : store.tags(types[i])
 		};
 		tags[i] = tag;
+		var type = types[i];
+		if(subscriptions[type]){
+				if(subscriptions[type].length == 0){
+					delete subscriptions[type];
+				}else{
+					count += subscriptions[type].length;
+				}
+		}
 	}
 
 	caramel.render({
