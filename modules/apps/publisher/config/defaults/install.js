@@ -51,7 +51,7 @@ var installer = function () {
 
         artifact.attributes.images_thumbnail = context.assetPath + artifact.attributes.images_thumbnail;
         artifact.attributes.images_banner = context.assetPath + artifact.attributes.images_banner;
-        artifact.attributes.overview_url=context.httpContext+artifact.attributes.overview_url;
+        //artifact.attributes.overview_url=context.assetPath+artifact.attributes.overview_url;
         //artifact.attributes.images_thumbnail = context.httpContext + artifact.attributes.images_thumbnail;
         //artifact.attributes.images_banner = context.httpContext + artifact.attributes.images_banner;
 

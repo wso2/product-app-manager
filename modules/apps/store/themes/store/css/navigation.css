@@ -88,13 +88,14 @@ hr.emboss {
     padding-top: 10px;
     padding-bottom: 10px;
 }
+
 .navbar .brand {
-    background: url("../img/logo.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    background: url("../img/logo.png") no-repeat top left;
     color: #FFFFFF;
-    height: 32px;
-    margin: 7px 0 0;
+    height: 27px;
+    margin: 9px 0 0;
     padding: 0;
-    width: 212px;
+    width: 171px;
 }
 
 .navbar .nav > li > a {

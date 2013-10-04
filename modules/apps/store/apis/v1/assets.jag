@@ -8,10 +8,7 @@ var log = new Log(),
             server = require('/modules/server.js'),
             start = request.getParameter('start') || 0,
             count = request.getParameter('count') || 10,
-            user = (function () {
-                var username = request.getUser();
-                return username.substring(0, username.indexOf('@carbon.super'));
-            }()),
+            user = carbon.server.tenantUser(request.getUser()),
             store = require('/modules/store.js'),
             reg = (function () {
                 var reg;
@@ -19,14 +16,14 @@ var log = new Log(),
                     return server.anonRegistry();
                 }
                 return new carbon.registry.Registry(server.server(), {
-                    username: user,
-                    tenantId: carbon.server.superTenant.tenantId
+                    username: user.username,
+                    tenantId: user.tenantId
                 });
             }()),
             manager = function (type) {
                 return store.assetManager(type, reg);
             },
-            um = server.userManager(),
+            um = server.userManager(user.tenantId),
             authorize = function (man, options) {
                 if (!options.authorize) {
                     return;
@@ -41,7 +38,6 @@ var log = new Log(),
                 return assets.length > 0 ? assets[0] : null;
             };
     response.contentType = 'application/json';
-
     if (matcher.match('/{context}/apis/{version}/assets/{type}/') ||
             matcher.match('/{context}/apis/{version}/assets/{type}')) {
         type = matcher.elements().type;
@@ -69,7 +65,7 @@ var log = new Log(),
         }
 
         if(method === 'GET') {
-            assets = man.list({ start: start, count: count });
+            assets = man.search({}, { start: start, count: count });
             print(assets);
             return;
         }

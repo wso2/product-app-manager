@@ -544,9 +544,11 @@ h3.asset-title-separator {
 #search-dropdown-arrow i.icon-sort-up {
     vertical-align: middle;
 }
+/*
 #container-search {
     margin-top: 17px;
-}
+}*/
+
 #container-search .row {
     background: #fff;
     border-width: 1px 1px 0 1px;

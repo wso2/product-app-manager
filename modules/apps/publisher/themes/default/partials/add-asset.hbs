@@ -45,7 +45,7 @@
                             </b>
                             <div class="controls">
                                 {{#if this.isTextBox}}
-                                    <input id='{{this.name}}' type='text' value='{{this.value}}'/>
+                                    <input id='{{this.name}}' type='text' value='{{this.value}}' {{#if isReadOnly}} disabled="true" {{/if}}/>
                                 {{/if}}
                                 {{#if this.isOptions}}
                                     <select id="{{this.name}}">
@@ -66,7 +66,7 @@
                         <div id="saveButtons" class="form-actions">
                             <input type="button" value="Create" class="btn btn-primary" name="addNewAssetButton" id="btn-create-asset">
 			                <input type="hidden" value="{{shortName}}" name="{{shortName}}" id="meta-asset-type">
-                            <input type="reset" value="Cancel" class="btn">
+                            <input type="reset" value="Reset" class="btn">
                         </div>
                     </form>
                 </div>

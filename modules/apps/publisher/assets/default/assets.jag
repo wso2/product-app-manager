@@ -41,6 +41,8 @@ var log = new Log();
 
 routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function (context) {
 
+log.info(context);
+
     try {
 
 

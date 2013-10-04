@@ -35,7 +35,12 @@ public class ActivityBrowser {
                     activities.add(activity);
                 }
             } catch (SQLException e) {
-                LOG.error("Can't retrieve activities form cassandra.", e);
+                String message = e.getMessage();
+                // we'll ignore the "Keyspace EVENT_KS does not exist" error,
+                // this happens when there are 0 activities in bam
+                if (!(message.startsWith("Keyspace ") && message.endsWith(" does not exist"))) {
+                    LOG.error("Can't retrieve activities form cassandra.", e);
+                }
             } finally {
                 try {
                     if (statement != null) {
@@ -53,7 +58,7 @@ public class ActivityBrowser {
             sortChronologically(activities);
             return serializeEach(activities);
         } else {
-            return null;
+            return Collections.emptyList();
         }
     }
 

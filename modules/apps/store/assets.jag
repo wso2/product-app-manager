@@ -34,11 +34,13 @@ var caramel;
     
     if(user){
 	subscriptions = store.subscriptions(type);
-	var count = Object.keys(subscriptions).length;
-	    if(count == 0){
-			subscriptions[type]={};
-		}else{
-			subscription =true;
+		if(subscriptions[type]){
+			var count = Object.keys(subscriptions[type]).length;
+		    if(count == 0){
+				subscriptions[type]={};
+			}else{
+				subscription =true;
+			}
 		}
 	}	
      
@@ -124,7 +126,7 @@ var caramel;
         log.info('After obtaining rxt attributes');
     }*/
    
-   log.info(selectedCategory);
+   //log.info(selectedCategory);
    
 
     var rxtAttributes = require('/modules/util.js').getRXTAttributes(tenantId, type);

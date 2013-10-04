@@ -98,23 +98,24 @@ $(function() {
 
 	var infiniteScroll = function() {
 		totalPages = $('#assets-container').data('pages');
-		if (currentPage < totalPages) {
-			if ($(window).scrollTop() + $(window).height() >= $(document).height() * .8) {
-				var selType = $('.selected-type').data('sort'),
-					pathName = window.location.pathname,
-					search = window.location.search;
+
+		if(currentPage < totalPages) {
+			if($(window).scrollTop() + $(window).height() >= $(document).height() * .8) {
+				var selType = $('.selected-type').data('sort'), pathName = window.location.pathname, search = window.location.search;
 				search += (search != "") ? '&' : '?';
-					 
-				var	url = pathName + search + 'page=' + (++currentPage); 
-				
-				loadAssetsScroll(url); 
+
+				var url = pathName + search + 'page=' + (++currentPage);
+
+				loadAssetsScroll(url);
 				$(window).unbind('scroll', infiniteScroll);
 				setTimeout(function() {
 					$(window).bind('scroll', infiniteScroll);
 				}, 500);
 			}
-		}
+		} else {
 
+			$('.loading-inf-scroll').hide();
+		}
 	}
 
 	$(window).bind('scroll', infiniteScroll);
@@ -129,7 +130,7 @@ $(function() {
 		}else{
 			$(this).find('.pull-right').removeClass('icon-angle-up').addClass('icon-angle-down');
 		}
-		$('#my-assets').slideToggle();
+		$('#my-assets').slideToggle("fast");
 	});
 
 	caramel.loaded('js', 'assets');

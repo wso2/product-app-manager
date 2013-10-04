@@ -103,11 +103,12 @@ $(function () {
             url:path,
             type:'POST',
             success:function(response){
-                alert('Version incremented.Redirecting to new asset version.');
-
-                var newVersionDetails=JSON.parse(response);
-
-                window.location=newVersionDetails.url;
+				$('#modal-redirect').modal('show');
+				setTimeout(function(){
+					 var newVersionDetails=JSON.parse(response);
+                	 window.location=newVersionDetails.url;
+				},2000);
+               
             },
             error:function(){
                 displayVersionMessage({msgCss:CSS_ERR,message:'A new version of this '+assetType+' was not created.'})

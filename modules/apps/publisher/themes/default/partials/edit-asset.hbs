@@ -14,14 +14,14 @@
                                 <div class="control-group">
                                     <b><label class="control-label">{{this.label}}:</label></b>
                                     <div class="controls">
-                                        <input id='{{this.name}}' type='text' value='{{this.value}}' />
+                                        <input id='{{this.name}}' type='text' value='{{this.value}}' {{#if isReadOnly}} disabled="true" {{/if}}/>
                                     </div>
                                 </div>
                             {{/each}}
                             <div id="saveButtons" class="form-actions">
                                 <input type="button" value="Update" class="btn btn-primary"
                                     name="editAssetButton"  id="editAssetButton">
-                                <input type="reset" value="Cancel"  class="btn">
+                                <input type="reset" value="Reset"  class="btn">
                                 <input type="hidden" value="{{shortName}}" name="{{shortName}}" id="meta-asset-type">
                             </div>
                         </form>

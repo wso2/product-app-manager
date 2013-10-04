@@ -537,6 +537,9 @@ var rxt_utility = function () {
                     case 'png':
                         contentType='image/png';
                         break;
+                    case 'pdf':
+                        contentType='application/pdf';
+                        break;
                 }
 
                 return contentType;
