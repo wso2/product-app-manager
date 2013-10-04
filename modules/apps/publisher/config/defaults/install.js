@@ -151,7 +151,7 @@ var installer = function () {
                 }
             }
             return false;
-        }, {start: 0, count: 10});
+        }, {start: 0, count: 10, paginationLimit: Number.MAX_VALUE});
 
         //Check if any assets were located
         if (locatedAssets.length > 0) {
@@ -183,7 +183,7 @@ var installer = function () {
             return (adapter.attributes.overview_name==name)?true:false;
         },1);
 
-        context['currentAsset']=assets[0]||{};
+        context['currentAsset']=assets[0]||null;
         log.debug('added asset: '+stringify(context.currentAsset));
     }
 
