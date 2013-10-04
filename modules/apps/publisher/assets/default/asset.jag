@@ -162,7 +162,7 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
 
         log.info('not saving because of file upload changes.');
 
-        log.info(context.post);
+        //log.info(context.post);
 
         model.save();
 
