@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>{{include title}}</title>
 		<link href="{{url "/themes/default/css/reset.css"}}" type="text/css" rel="stylesheet"/>
 		<link href="{{url "/themes/default/css/jquery.rating.css"}}" type="text/css" rel="stylesheet"/>
 		<link href="{{url "/themes/default/css/styles.css"}}" type="text/css" rel="stylesheet"/>
-
+        {{css .}}
 	</head>
 	<body>
 		<div class="com-container">
 			{{include body}}
 			{{include stream}}
 		</div>
-		<script src="{{url "/themes/default/js/jquery-1.8.3.min.js"}}"></script>
-		<script src="{{url "/themes/default/js/jquery.rating.pack.js"}}"></script>
-		<script src="{{url "/themes/default/js/scripts.js"}}"></script>
+        {{js .}}
 	</body>
 </html>
