@@ -10,7 +10,7 @@ var caramel;
         include('login.jag');
     }
 
-    logged = true;//userModule.current(session);
+    logged = userModule.current(session);
     if (logged) {
         var carbon = require('carbon');
         var social = carbon.server.osgiService('org.wso2.carbon.social.service.SocialActivityService');
@@ -30,7 +30,6 @@ var caramel;
 
             caramel.render({
                 'title': 'Comments',
-                'body': 'Test',
                 'stream': {comments: commentsJSON}
             });
         } else {
