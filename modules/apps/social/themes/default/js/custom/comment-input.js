@@ -48,14 +48,16 @@ $btn.click(function (e) {
             activity: JSON.stringify(activity)
         }, function () {
             $btn.removeAttr('disabled');
-            $radio.rating('select',null) ;
+            $radio.rating('select', null);
             $textArea.val('');
-//            location.reload();
         });
 
+        caramel.partials({activity: 'themes/' + caramel.themer + '/partials/activity.hbs'}, function () {
+            var newComment = Handlebars.partials['activity'](activity);
+            $('#stream').prepend(newComment);
+
+        });
     }
-
-
 });
 
 
