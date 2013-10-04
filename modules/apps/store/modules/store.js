@@ -103,7 +103,7 @@ var currentAsset = function () {
     if (matcher.match('/{context}' + prefix + '/{type}/{+any}') || matcher.match('/{context}' + prefix + '/{type}')) {
         return matcher.elements().type;
     }
-    prefix = require('/store.js').config().assetUrlPrefix;
+    prefix = require('/store.js').config().extensionsUrlPrefix + prefix;
     if (matcher.match('/{context}' + prefix + '/{type}/{+any}') || matcher.match('/{context}' + prefix + '/{type}')) {
         return matcher.elements().type;
     }
