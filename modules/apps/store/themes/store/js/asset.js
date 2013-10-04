@@ -1,5 +1,10 @@
 $(function () {
-    if (!isSocial) {
+    if (isSocial) {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = 'https://localhost:9443/social/export-js/social.js';
+        document.body.appendChild(script);
+    } else {
         var comments = {
                 interval: 5 * 1000,
                 commentsUrl: caramel.context + '/apis/comments?asset=' + $('#assetp-tabs').data('aid') + '&page=',

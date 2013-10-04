@@ -55,6 +55,9 @@ $btn.click(function (e) {
         caramel.partials({activity: 'themes/' + caramel.themer + '/partials/activity.hbs'}, function () {
             var newComment = Handlebars.partials['activity'](activity);
             $('#stream').prepend(newComment);
+            if (adjustHeight) {
+                adjustHeight();
+            }
 
         });
     }
