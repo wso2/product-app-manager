@@ -4,7 +4,7 @@ var caramel;
     var assets, paging, count, current, total, sso, url, mainPage, subPage,title,
             options = {},
 			subscriptions ={},
-	    	subscription = false;
+	    	subscription = false,
             log = new Log(),
             user = require('/modules/user.js').current(session),
             configs = require('/store.js').config(),
