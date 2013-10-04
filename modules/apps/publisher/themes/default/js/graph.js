@@ -280,8 +280,7 @@ var graph = (function ($, Raphael) {
             //selectedImage.attr('fill','#3299BB');
             image.attr('stroke','#27AE60');
             this.selectNodeImage=image;
-        }
-        else{
+        }else{
             var animationTimePeriod=1000;
 
             this.selectNodeImage.animate({

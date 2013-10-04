@@ -90,7 +90,7 @@ hr.emboss {
 }
 
 .navbar .brand {
-    background: url("../img/logo.png") no-repeat scroll 0 0 / cover rgba(0, 0, 0, 0);
+    background: url("../img/logo.png") no-repeat top left;
     color: #FFFFFF;
     height: 27px;
     margin: 9px 0 0;

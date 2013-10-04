@@ -64,6 +64,9 @@ input, button, select, textarea {
 .right {
     float: right;
 }
+.table tr:first-child td{
+border-top:none;    
+}
 .context_menu .icon-reorder {
     border-left: 1px solid #3A4244;
     display: block;
@@ -374,10 +377,10 @@ label, input, button, select, textarea {
     margin: 0;
     border-radius: 0;
     left: auto;
-    background: none repeat scroll 0 0 #F5F5F5;
+    background: none repeat scroll 0 0 #fff;
     padding: 0;
     width: 99%;
-    overflow:hidden;
+    overflow: hidden;
 }
 .breadcrumb-separator {
     float: left;
@@ -443,9 +446,6 @@ label, input, button, select, textarea {
     min-width: 480px;
 }
 
-
-
-
 .dropdown-submenu > .publisher-left-submenu {
     background: none repeat scroll 0 0 #F9F9F9;
     border-radius: 0;
@@ -502,7 +502,7 @@ label, input, button, select, textarea {
     color: #FFFFFF;
     text-shadow: none;
 }
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active {
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary[disabled] {
     background: none repeat scroll 0 0 #1FAB3A;
     color: #FFFFFF;
     text-shadow: 0 1px 1px rgba(255, 252, 176, 0.76);
@@ -517,8 +517,8 @@ label, input, button, select, textarea {
     border-radius: 2px 2px 2px 2px;
     border: 1px dotted #DDDDDD;
 }
-.list-asset-table small{
-    color:#888;
+.list-asset-table small {
+    color: #888;
 }
 .list-asset-table tr {
     cursor: pointer;
@@ -537,12 +537,10 @@ td.asset-listing-btn {
 }
 .list-asset-table th {
     font-weight: normal;
-    padding:0;
-    
+    padding: 0;
 }
 
-
-.list-asset-table thead th{
+.list-asset-table thead th {
     line-height: 0;
 }
 .list-asset-table thead th a {
@@ -556,13 +554,13 @@ td.asset-listing-btn {
     padding: 5px 2px;
     text-transform: uppercase;
     width: 100%;
-    height:100%;
-    line-height:24px;
+    height: 100%;
+    line-height: 24px;
 }
-.list-asset-table thead th a:hover{
+.list-asset-table thead th a:hover {
     text-decoration: none;
-    background:#F9F9F9;
-    color:#4F4F4F;
+    background: #F9F9F9;
+    color: #4F4F4F;
 }
 .infobox > .infobox-icon > [class*="icon-"]:before {
     background-color: rgba(255, 255, 255, 0.2);
@@ -711,6 +709,12 @@ td.asset-listing-btn {
 
 }
 
+.publisher-breadcrumb .btn {
+    line-height: 21px;
+}
+.publisher-breadcrumb a.btn{
+    height:21px;
+}
 .sidebar-nav i, .publisher-left-submenu > li > a > i {
     display: inline-block;
     width: 20px;
@@ -734,7 +738,7 @@ td.asset-listing-btn {
 }
 .content-div .form-horizontal {
     border-radius: 6px 6px 6px 6px;
-    padding: 30px 10px;
+    padding: 30px 10px 0;
 }
 .form-actions {
     background-color: #FFFFFF;
@@ -889,10 +893,21 @@ span.title {
     border: 1px solid #74B749;
     color: #FFFFFF;
 }
+
 .widget .widget-content {
     border-bottom: 1px solid #DDDDDD;
     border-left: 1px solid #DDDDDD;
     border-right: 1px solid #DDDDDD;
+   
+    position: relative;
+}
+
+.widget .widget-content .alert {
+    position: absolute;
+    right: 11px;
+    left: 13px;
+    top: 10px;
+    display: none;
 }
 .widget .padd {
     padding: 15px;
@@ -913,14 +928,31 @@ span.title {
     color: #4F4F4F;
     line-height: 20px;
 }
-.lifecycle legend > #state {
-    font-size: 16.5px;
-}
+
 .lifecycle #canvas > svg text {
     font-family: "lato" !important;
     font-size: 12.5px !important;
 }
-
+.lifecycle #canvas {
+    height: 215px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+    position: relative;
+    top: -0.550003px;
+    width: 410px;
+}
+#state {
+    /* background: none repeat scroll 0 0 #FFFFFF;*/
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: 11px;
+    padding: 0 3px;
+    text-transform: uppercase;
+    margin-top: 6px;
+}
 #container-header > .row {
     background-color: rgba(0, 0, 0, 0);
     border: medium none;
@@ -958,4 +990,17 @@ span.title {
     box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2);
 }
 
-
+.modal{
+    border-radius:0;
+}
+#modal-redirect .modal-loading {
+    background: url("../img/preloader-40x40.gif") no-repeat scroll center top rgba(0, 0, 0, 0);
+    display: block;
+    height: 54px;
+    width: 100%;
+    opacity:.3;
+}
+#modal-redirect p{
+    text-align: center;
+    font-size:16px;
+}

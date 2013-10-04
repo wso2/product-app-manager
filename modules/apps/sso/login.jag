@@ -112,7 +112,7 @@ var e = session.get('error') || {};
 									<div class="span6 pull-right">
 										<ul>
 											<li>
-												<a href="/portal"><i class="icon-globe"></i> Portal</a>
+												<a href="/publisher"><i class="icon-check-sign"></i> Publisher</a>
 											</li>
 											<li>
 												<a href="/store"><i class="icon-th-large"></i> Store</a>
