@@ -30,7 +30,7 @@ $(function () {
     });
 
 
-    $('#btn-create-asset').on('click', function () {
+    $('#btn-create-asset').on('click', function (e) {
 
         e.preventDefault();
 
