@@ -80,7 +80,6 @@ $(function () {
      @item: The tag object which has been added to the asset
      */
     function onAdd(item) {
-        alert(item.name);
 
         var data = {};
 
@@ -107,7 +106,7 @@ $(function () {
      @item: The tag object which has been removed from the asset
      */
     function onRemove(item) {
-        alert(item.name);
+
         var data = {};
 
         var tags = [item.name];

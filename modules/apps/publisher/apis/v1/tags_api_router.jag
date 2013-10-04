@@ -31,9 +31,6 @@ routeManager.register('GET','publisher','/publisher/api/tag/{type}',function(con
 
     var type=context.params.type;
 
-
-    log.info('tags of type: '+type);
-
     var tags=rxtManager.registry.query(TAG_QUERY);
 
     var tagManager=new tagModule.TagManager();
@@ -41,8 +38,6 @@ routeManager.register('GET','publisher','/publisher/api/tag/{type}',function(con
     tagManager.process(tags);
 
     tags=tagManager.get(type);
-
-    //We need to process the tag array to extract just
 
     print(tags);
 });
@@ -53,8 +48,6 @@ routeManager.register('GET','publisher','/publisher/api/tag/{type}/{id}',functio
 
     var type=context.params.type;
     var id=context.params.id;
-
-    log.info('tags of asset: '+id);
 
     var artifactManager=rxtManager.getArtifactManager(type);
 
@@ -99,17 +92,10 @@ routeManager.register('PUT','publisher','/publisher/api/tag/{type}/{id}',functio
     //If tags are not specified then do nothing
     if(tags.length==0){
 
-        log.info('no tags sent');
         print(msg);
         return;
 
     }
-
-    //Obtain the tags
-    var appliedTags=rxtManager.registry.tags(artifact.path);
-
-    //Check if the tags provided are not already applied to the asset
-
 
     //Apply the tags
     rxtManager.registry.tag(artifact.path,tags);
@@ -131,11 +117,6 @@ routeManager.register('DELETE','publisher','/publisher/api/tag/{type}/{id}/{tag}
     msg['status']=200;
     msg['ok']=true;
 
-    log.info('removing tag: '+tag);
-
-
-    //Untag
-    log.info('untagging : '+tag+' from '+id);
 
     rxtManager.registry.untag(artifact.path,tag);
 
