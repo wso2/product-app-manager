@@ -39,37 +39,47 @@ var DEFAULT_PAGE = 10;
  });*/
 var log = new Log();
 
-routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function (context) {
+routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(context) {
 
-log.info(context);
+	var query = request.getParameter("query");
 
-    try {
+	try {
 
+		//TODO: Check for valid asset types
+		var artifactManager = rxtManager.getArtifactManager(context.params.type);
 
+		var artifacts = artifactManager.list(DEFAULT_PAGE) || [];
 
-        //TODO: Check for valid asset types
-        var artifactManager = rxtManager.getArtifactManager(context.params.type);
+		if(query != null) {
+			var count = artifactManager.count();
+			var artifactz = [];
+			for(var i = 0; i < count; i++) {
 
-        var artifacts = artifactManager.list(DEFAULT_PAGE) || [];
+				if(artifacts[i].attributes.hasOwnProperty('overview_name')) {
+					if(artifacts[i].attributes.overview_name.toLowerCase().indexOf(query) !== -1) {
+						artifactz.push(artifacts[i]);
+					}
+				}
 
+			}
+			artifacts = artifactz;
+			//
+		}
+		dataInjector.inject(artifacts, DataInjectorModes.DISPLAY);
+		caramel.render({
+			op : 'list',
+			cuser : user.current(session),
+			shortName : context.params.type,
+			artifacts : artifacts
+		});
+	} catch (e) {
+		response.sendError(400, "Your request is malformed");
+		log.info(e);
+	}
 
-        //Customize the viewing for the current app
-        dataInjector.inject(artifacts,DataInjectorModes.DISPLAY);
-
-        caramel.render({
-            op: 'list',
-            cuser: user.current(session),
-            shortName: context.params.type,
-            artifacts: artifacts
-        });
-    } catch (e) {
-        response.sendError(400, "Your request is malformed");
-        log.info(e);
-    }
-
-    /*for each(var artifact in artifacts){
-     print(artifact.id+'<br/><br/>');
-     }*/
+	/*for each(var artifact in artifacts){
+	 print(artifact.id+'<br/><br/>');
+	 }*/
 });
 
 routeMnger.register('GET', 'publisher', '/publisher/assets/{operation}/{type}/', function (context) {

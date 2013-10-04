@@ -1,7 +1,7 @@
 <%
 (function () {
     var log = new Log(),
-            configs = require('/social.js').config(),
+            configs = require('/configs/social.js').config(),
             process = require('process'),
             samlResponse = request.getParameter('SAMLResponse'),
             sessionId = session.getId(),

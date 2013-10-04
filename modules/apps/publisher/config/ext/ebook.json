@@ -73,6 +73,11 @@
             "name": "thumbnail",
             "table": "images",
             "type": "file"
+        },
+        {
+	    "name":"url",
+	    "table":"overview",
+	    "type":"file"
         }
 
     ],

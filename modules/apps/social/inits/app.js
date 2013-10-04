@@ -12,7 +12,7 @@ caramel.configs({
 
 var carbon = require('carbon');
 
-var configs = require('social.js').config();
+var configs = require('/configs/social.js').config();
 var STORE_CONFIG_PATH = '/_system/config/social/configs/social.json';
 
 var server = require('/modules/server.js');

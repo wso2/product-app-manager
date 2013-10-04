@@ -3,9 +3,9 @@ var db = new Database('WSO2_CARBON_DB');
 var getBookmarkStats = function (loggedInUser) {
 
     //Temporary fix as defautls assets are deployed as wso2.system.user
-    if (loggedInUser == 'admin') {
+    /*if (loggedInUser == 'admin') {
         loggedInUser = 'wso2.system.user';
-    }
+    }*/
     var query = "SELECT RR.REG_NAME AS asset_id, RS.REG_MEDIA_TYPE AS asset_type,COUNT(RR.REG_NAME) AS no_of_bookmarks " +
         "FROM REG_RESOURCE RS " +
         "JOIN REG_RESOURCE RR ON RS.REG_UUID=RR.REG_NAME " +
