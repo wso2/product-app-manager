@@ -4,11 +4,11 @@
 
     {{# if ssoParam}}
         <a href="{{url "/login.jag"}}"
-           class="btn btn-primary asset-add-btn">{{>process-asset-text}}{{thisAsset.type}}</a>
+           class="btn btn-primary asset-add-btn">{{>process-asset-text}}</a>
     {{else}}
 
-        <a href="#" class="btn btn-primary asset-add-btn">{{>process-asset-text}}{{thisAsset.type}}</a>
+        <a href="#" class="btn btn-primary asset-add-btn">{{>process-asset-text}}</a>
     {{/if}}
     {{# if userParam.username}}
-        <a href="#" class="btn btn-primary asset-add-btn">{{>process-asset-text}}{{thisAsset.type}}</a>
+        <a href="#" class="btn btn-primary asset-add-btn">{{>process-asset-text}}</a>
     {{/if}}{{/if}}
