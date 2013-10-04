@@ -28,5 +28,12 @@ $(document).ready(function(){
     	window.location = link;
     });
     
+     $('#search-button').on('click', function(){
+    	var searchAssetString = $('#inp_searchAsset').val().toLowerCase();
+    	if(searchAssetString !=""){    	
+    	var link = '?query='+searchAssetString;
+    	window.location = link;
+    	}
+    });
      
 });
