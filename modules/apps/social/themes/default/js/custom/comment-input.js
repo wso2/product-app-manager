@@ -21,33 +21,40 @@ var QueryString = function () {
     return query_string;
 }();
 
-$('.auto-submit-star').rating({
+var $radio = $('.auto-submit-star');
+$radio.rating({
     callback: function (value) {
     }
 });
 
-$('#btn-post').click(function (e) {
+var $btn = $('#btn-post');
+$btn.click(function (e) {
     e.preventDefault();
-    var textArea = '#com-body';
+    var $textArea = $('#com-body');
     var rating = Number($('input.star-rating-applied:checked').val());
 
     if (!rating) {
 
     } else {
         var activity = {"verb": "post",
-            "object": {"type": "rating", "content": $(textArea).val(), rating: rating},
+            "object": {"type": "rating", "content": $textArea.val(), rating: rating},
             "target": {"id": QueryString.target}
         };
 
-        var body = $(textArea).val();
+        var body = $textArea.val();
 
+        $btn.attr('disabled', 'disabled');
         $.get('apis/comments.jag', {
             activity: JSON.stringify(activity)
         }, function () {
-            location.reload();
+            $btn.removeAttr('disabled');
+            $radio.rating('select',null) ;
+            $textArea.val('');
+//            location.reload();
         });
 
     }
+
 
 });
 
