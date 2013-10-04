@@ -166,6 +166,9 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.databridge.datareceiver.feature:${carbon.platform.patch.version.412}
                                 </featureArtifactDef>
+ <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.databridge.commons.server.feature:4.2.1
+                                </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.databridge.cassandra.feature:${carbon.platform.patch.version.412}
                                 </featureArtifactDef>
@@ -337,6 +340,10 @@
                                 <feature>
                                     <id>org.wso2.carbon.databridge.datareceiver.feature.group</id>
                                     <version>${carbon.platform.patch.version.412}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.commons.server.feature.group</id>
+                                    <version>4.2.1</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.databridge.cassandra.feature.group</id>
