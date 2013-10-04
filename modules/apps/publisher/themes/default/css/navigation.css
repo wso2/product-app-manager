@@ -1,8 +1,8 @@
-#container-header > .row{
+#container-header > .row {
     background-color: rgba(0,0,0,0);
-    border:none;
+    border: none;
     height: 50px;
-   /* overflow: hidden;*/
+    /* overflow: hidden;*/
 }
 #btn-login {
     width: 80%;
@@ -90,10 +90,20 @@ hr.emboss {
 }
 
 .navbar .brand {
-    background: url("../img/logo.png") no-repeat scroll 0 0 / cover rgba(0, 0, 0, 0);
+    background: url("../img/logo.png") no-repeat top left;
     color: #FFFFFF;
     height: 27px;
     margin: 9px 0 0;
+    padding: 0;
+    width: 171px;
+}
+
+
+.back-office-label {
+    background: url("../img/back-office-label.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+    float: left;
+    height: 27px;
+    margin: 18px 0 0 5px;
     padding: 0;
     width: 171px;
 }
@@ -144,7 +154,7 @@ hr.emboss {
     box-shadow: none !important;
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;
-    padding:0;
+    padding: 0;
     border-width: 0 !important;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#002C3238,endColorstr=#002C3238) !important;
 }
@@ -158,7 +168,7 @@ hr.emboss {
     color: #34495E;
     box-shadow: none;
     padding: 0;
-       border-bottom: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
     border-left: 1px solid #CCCCCC;
     border-right: 1px solid #CCCCCC;
 }
@@ -251,7 +261,7 @@ hr.emboss {
 
 .nav-tabs .dropdown-menu, .nav-pills .dropdown-menu, .navbar .dropdown-menu {
     margin-top: 0;
-    overflow:hidden !important;
+    overflow: hidden !important;
 }
 
 .navbar .sub-menu:before {

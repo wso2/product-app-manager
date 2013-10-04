@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
-	<ModulePrefs title="Intro Gadget 1"  description="gadget sample" height="350">
+	<ModulePrefs title="Intro Gadget 2"  description="gadget sample" height="350">
 		<Require feature="pubsub-2">
 			<Param name="topics">
 				<![CDATA[

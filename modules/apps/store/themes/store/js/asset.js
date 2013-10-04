@@ -11,25 +11,6 @@ $(function () {
             partial: '/themes/store/partials/pagination.hbs'
         };
 
-    var el = $('.user-rating'),
-        rating = el.data('rating');
-    $($('input', el)[rating - 1]).attr('checked', 'checked');
-
-    $('.auto-submit-star').rating({
-        callback: function (value, link) {		
-		if(value==undefined){
-			value=0;
-		}
-        	$('.rate-num-assert').html('('+value+')');
-            caramel.post('/apis/rate', {
-                asset: $('#assetp-tabs').data('aid'),
-                value: value || 0
-            }, function (data) {
-
-            });
-        }
-    });
-
     $('#tab-reviews').on('click', '.pagination a', function (e) {
         e.preventDefault();
         var page,
@@ -125,25 +106,6 @@ $(function () {
             loadReviews(comments.commentsUrl + paging.current, paging.current);
         }, 'json');
     });
-
-    $('#btn-add-gadget').click(function () {
-	var elem = $(this);
-	if(store.user){
-	    isAssertTrue(elem.data('aid'),elem.data('type'));
-		}else{
-		   asset.process(elem.data('type'), elem.data('aid'), location.href);
-			}
-    });
-
-    $("a[data-toggle='tooltip']").tooltip();
-
-    $('.embed-snippet').hide();
-
-    $('.btn-embed').click(function() {
-    	$('.embed-snippet').toggle(400);
-    	return false;
-    });
-	
 	
 	$('.text-review-box').live('keyup focus', function(e){	
 	if($('#comment-content').hasClass('user-review')) {
@@ -191,5 +153,41 @@ $(function () {
      }
      })*/
     }
+    $('#btn-add-gadget').click(function () {
+	var elem = $(this);
+	if(store.user){
+	    isAssertTrue(elem.data('aid'),elem.data('type'));
+		}else{
+		   asset.process(elem.data('type'), elem.data('aid'), location.href);
+			}
+    });
+
+    $("a[data-toggle='tooltip']").tooltip();
+
+    $('.embed-snippet').hide();
+
+    $('.btn-embed').click(function() {
+    	$('.embed-snippet').toggle(400);
+    	return false;
+    });
+
+    var el = $('.user-rating'),
+        rating = el.data('rating');
+    $($('input', el)[rating - 1]).attr('checked', 'checked');
+
+    $('.auto-submit-star').rating({
+        callback: function (value, link) {		
+		if(value==undefined){
+			value=0;
+		}
+        	$('.rate-num-assert').html('('+value+')');
+            caramel.post('/apis/rate', {
+                asset: $('#assetp-tabs').data('aid'),
+                value: value || 0
+            }, function (data) {
+
+            });
+        }
+    });
 
 });
