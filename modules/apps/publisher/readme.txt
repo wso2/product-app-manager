@@ -14,6 +14,10 @@ It allows the following functionality;
 Changes:
 ----------
 
+5/10/2013 Minor Changes:
+          --------------
+          Several bug fixes (please refer to JIRAs)
+
 1/10/2013 Major Changes:
           --------------
           All resources are now stored in a Storage Manager ( Default H2)
@@ -92,6 +96,7 @@ Changes:
 		
 Additions:
 ----------
+5/10/2013 Added API calls to handle tagging
 
 20/9/2013 Added API calls to handle versions and updating of assets
 
@@ -164,6 +169,11 @@ The following API calls have been implemented
 	GET /api/version/{type}/{id}              Retrieves the list of versions of the asset
     POST /api/version/{type}/{id}/{version}   Duplicates the asset with the given id
                                                       and changes version
+
+    GET /api/tag/{type}/        Get all of the tags for a type
+    GET /api/tag/{type}/{id}    Get all tags associated with an asset
+    PUT /api/tag/{type}/{id}    Add a tag to a given asset (or tags)
+    DELETE /api/tag/{type}/{id} Remove a tag from a given asset (or multiple tags)
 	
 	
 
