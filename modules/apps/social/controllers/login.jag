@@ -1,6 +1,6 @@
 <%
 (function(){
-    var dataConfi = require('/social.json'),
+    var dataConfi = require('/configs/social.json'),
             sso = require("sso"),
             process = require("process"),
             sessionId = session.getId(),

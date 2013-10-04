@@ -1,21 +1,22 @@
 <%
 var caramel;
 (function () {
-
-    //auto rediecting the user to SSO
+    caramel = require('caramel');
     var user = request.getParameter('user');
     var userModule = require('/modules/user.js');
-    caramel = require('caramel');
     var logged = userModule.current(session);
+
     if (user && !logged) {
         include('login.jag');
     }
-    logged = userModule.current(session);
-    if(logged){
+
+    logged = true;//userModule.current(session);
+    if (logged) {
         var carbon = require('carbon');
         var social = carbon.server.osgiService('org.wso2.carbon.social.service.SocialActivityService');
         var commentsJSON = [];
         var target = request.getParameter('target');
+
         if (target) {
             try {
                 var comments = social.listActivities(target);
@@ -35,7 +36,7 @@ var caramel;
         } else {
             print('please use the target URL parameter as the asset id, eg: http://localhost:9763/social/?target=33530252-rer-w345325');
         }
-    }else{
+    } else {
         print('please login to add comments');
     }
 })();
