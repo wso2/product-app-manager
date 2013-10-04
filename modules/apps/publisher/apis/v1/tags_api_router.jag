@@ -1,0 +1,122 @@
+<%
+/*
+ Description: The controller is used to handle the tagging operations
+        GET /api/tag/{type}/        Get all of the tags for a type
+        GET /api/tag/{type}/{id}    Get all tags associated with an asset
+        PUT /api/tag/{type}/{id}    Add a tag to a given asset (or tags)
+        DELETE /api/tag/{type}/{id} Remove a tag from a given asset (or multiple tags)
+ Filename: tags_api_router.jag
+ Created Date: 3/10/2013
+ */
+
+var config = require('/config/publisher.json');
+var caramel = require('caramel');
+var utility = require('/modules/utility.js').rxt_utility();
+
+var router = require('/modules/router-g.js').router();
+var routeManager = new router.Router();
+
+var user=require('/modules/user.js');
+var publisher = require('/modules/publisher.js').publisher(request, session);
+
+var rxtManager = publisher.rxtManager;
+var modelManager = publisher.modelManager;
+var log=new Log('tags.api.router');
+
+var TAG_QUERY='/_system/config/repository/components/org.wso2.carbon.registry/queries/allTags';
+
+
+routeManager.register('GET','publisher','/publisher/api/tag/{type}',function(context){
+
+    var type=context.params.type;
+
+    log.info('tags of type '+type);
+
+    var tags=rxtManager.registry.query(TAG_QUERY);
+
+    print(tags);
+});
+
+routeManager.register('GET','publisher','/publisher/api/tag/{type}/{id}',function(context){
+
+    var type=context.params.type;
+    var id=context.params.id;
+
+    var artifactManager=rxtManager.getArtifactManager(type);
+
+    var artifact=artifactManager.get(id);
+
+    //Obtain the path of the asset
+    var path=artifact.path;
+
+    //Obtain the tags
+    var tags=rxtManager.registry.tags(path);
+
+    print(tags);
+});
+
+routeManager.register('PUT','publisher','/publisher/api/tag/{type}/{id}',function(context){
+
+    var type=context.params.type;
+    var id=context.params.id;
+
+    log.info(context.content);
+
+    //Get the tag array
+    var tags=context.content.tags||[];
+
+    var msg={};
+    msg['status']=200;
+    msg['ok']=true;
+
+    var artifactManager=rxtManager.getArtifactManager(type);
+
+    var artifact=artifactManager.get(id);
+
+    //If tags are not specified then do nothing
+    if(tags.length==0){
+
+        log.info('no tags sent');
+        print(msg);
+        return;
+
+    }
+
+    rxtManager.registry.tag(artifact.path,tags);
+
+    print(msg);
+});
+
+routeManager.register('DELETE','publisher','/publisher/api/tag/{type}/{id}',function(context){
+
+    var type=context.params.type;
+    var id=context.params.id;
+
+    log.info(context.content);
+
+    var tags=context.content.tags||[];
+
+    var artifactManager=rxtManager.getArtifactManager(type);
+
+    var artifact=artifactManager.get(id);
+
+    var msg={};
+    msg['status']=200;
+    msg['ok']=true;
+
+    //If tags are not specified then do nothing
+    if(tags.length==0){
+        print(msg);
+        return;
+    }
+
+    print(tags);
+
+    //Untag
+    //rxtManager.registry.untag(artifact.path,tags);
+});
+
+
+routeManager.handle(request,response);
+
+%>
