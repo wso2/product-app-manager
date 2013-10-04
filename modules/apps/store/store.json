@@ -1,7 +1,7 @@
 {
     "assets": ["gadget", "site", "ebook"],
     "assetsUrlPrefix": "/assets",
-    "assetUrlPrefix": "/asset",
+    "extensionsUrlPrefix": "/extensions",
     "subscriptionsUrlPrefix": "/subscriptions",
     "assetsPageSize": 4,
     "commentsPageSize": 10,
