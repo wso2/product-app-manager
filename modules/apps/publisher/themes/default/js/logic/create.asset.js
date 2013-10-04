@@ -55,7 +55,7 @@ $(function(){
                 processData:false,
 				success:function(response){
 					alert('asset added.');
-					//window.location='/publisher/assets/'+type+'/';
+					window.location='/publisher/assets/'+type+'/';
 				},
 				error:function(response){
 					alert('Failed to add asset.');
