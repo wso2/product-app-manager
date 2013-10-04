@@ -9,7 +9,8 @@ $(function(){
 	
 		
 		
-		$('#btn-create-asset').on('click',function(){
+		$('#btn-create-asset').on('click',function(e){
+			e.preventDefault();
 			var fields=$('#form-asset-create :input');
 			var data={};
             var formData=new FormData();
@@ -34,7 +35,7 @@ $(function(){
 					window.location='/publisher/assets/'+type+'/';
 				},
 				error:function(response){
-					alert('Failed to add asset.');
+					showAlert('Failed to add asset.', 'error');
 				}
 			});
 			

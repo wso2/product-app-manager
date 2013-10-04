@@ -27,13 +27,13 @@ generateBreadcrumbJson = function(data) {
         currentUrl : currentTypeObj.url,
         breadCrumbStaticText : 'All',
         breadcrumb : breadcrumbItems
-        
     };
     
     if(data.artifact){
     	breadcrumbJson.assetName = data.artifact.attributes.overview_name;
         breadcrumbJson.currentVersion = data.artifact.attributes.overview_version;
         breadcrumbJson.versions = data.versions;
+        breadcrumbJson.currentVersionUrl = data.artifact.id;
     }  else if(data.op === "create"){
     	 breadcrumbJson.breadCrumbStaticText = 'Add Asset';
     }  else if(data.op === "statistics"){
