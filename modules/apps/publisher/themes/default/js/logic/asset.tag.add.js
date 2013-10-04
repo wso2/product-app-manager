@@ -10,7 +10,7 @@ $(function(){
 
     var url=TAG_API_URL+type;
     var THEME='facebook';
-    var TAG_CONTAINER='#tag-test';
+    var TAG_CONTAINER='#tag-container';
 
     //Obtain all of the tags for the given asset type
     $.ajax({
