@@ -64,7 +64,16 @@ routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{t
     print(output);
 });
 
-routeManager.handle(request, response);
+var securityModule=require('/modules/security/security.manager.js').securityManagementModule();
 
+var sm=securityModule.cached();
+
+//This will short circuit the handling of the requests
+var passed=sm.check();
+
+//Stop servicing the request if the check failed
+if(passed){
+    routeManager.handle(request, response);
+}
 
 %>

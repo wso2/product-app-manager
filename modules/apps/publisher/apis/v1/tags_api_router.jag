@@ -123,7 +123,16 @@ routeManager.register('DELETE','publisher','/publisher/api/tag/{type}/{id}/{tag}
     print(msg);
 });
 
+var securityModule=require('/modules/security/security.manager.js').securityManagementModule();
 
-routeManager.handle(request,response);
+var sm=securityModule.cached();
+
+//This will short circuit the handling of the requests
+var passed=sm.check();
+
+//Stop servicing the request if the check failed
+if(passed){
+    routeManager.handle(request,response);
+}
 
 %>

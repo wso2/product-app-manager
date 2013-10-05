@@ -214,7 +214,17 @@ routeManager.register('DELETE', 'publisher', '/publisher/api/asset/{type}/{id}',
 
 });
 
-routeManager.handle(request, response);
 
+var securityModule=require('/modules/security/security.manager.js').securityManagementModule();
+
+var sm=securityModule.cached();
+
+//This will short circuit the handling of the requests
+var passed=sm.check();
+
+//Stop servicing the request if the check failed
+if(passed){
+    routeManager.handle(request, response);
+}
 
 %>
