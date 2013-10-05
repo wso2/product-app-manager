@@ -162,7 +162,17 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
 
         log.info('not saving because of file upload changes.');
 
+        //log.info(context.post);
+
         model.save();
+
+        //Obtain the asset id in order to retrieve the asset again
+        var assetId=model.get('*.id').value;
+
+        var reg=rxtManager.registry;
+
+        //Add the tags
+        addTags(context.post,assetId,artifactManager,reg);
     }
     catch (e) {
         log.error(e);
@@ -171,6 +181,34 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
     }
 
 });
+
+/*
+The function is used to add tags to the provided asset id
+@params: A post parameter object
+@assetId: The id of the asset to which the tags will be applied
+@artifactManager: An artifact manager instance
+@reg: A registry instance
+ */
+function addTags(params,assetId,artifactManager,reg){
+
+    //Obtain the tags parameter
+    var tags=params['tags']||[];
+
+    //Only proceed if there are any tags
+    if(tags.length==0){
+        log.debug('no tags to add to '+assetId);
+        return;
+    }
+
+    //Obtain the artifact
+    var asset=artifactManager.get(assetId);
+
+    var path=asset.path;
+
+    //Attach the tags
+    reg.tag(path,tags);
+
+}
 
 /*
  The function inspects the files sent with a request.If files are found
