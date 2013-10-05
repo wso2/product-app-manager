@@ -16,6 +16,18 @@
 
     var MSG_404 = 'Assets not found';	//Eror 404 message
 
+    var securityModule=require('/modules/security/security.manager.js').securityManagementModule();
+
+    var sm=securityModule.cached();
+
+    //This will short circuit the handling of the requests
+    var passed=sm.check();
+
+    //Stop servicing the request if the check failed
+    if(!passed){
+        return;
+    }
+
     /*
      Checks the pattern array with the request uri
      @pattern:     An array of patterns e.g./{context}/[ASSET_PATH]/{type}
