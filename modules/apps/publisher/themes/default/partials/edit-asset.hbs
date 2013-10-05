@@ -1,71 +1,50 @@
 <div class='content-div'>
-    <div class="row-fluid">
-            <div class="span12 asset-view-container" >
-                <div id='msg-container-recent-activity'>
-                </div>
-                <div class="widget wlightblue">
-                    <div class="widget-head">
-                        <div class="pull-left">Edit Asset - {{{snoop "fields(name=overview_name).value" this.data}}}</div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="widget-content">
-                        <form class="form-horizontal" id='form-asset-edit'>
-                            {{#each data.fields}}
-                                <div class="control-group">
-                                    <b><label class="control-label">{{this.label}}:</label></b>
-                                    <div class="controls">
-                                        <input id='{{this.name}}' type='text' value='{{this.value}}' {{#if isReadOnly}} disabled="true" {{/if}}/>
-                                    </div>
-                                </div>
-                            {{/each}}
-                            <div id="saveButtons" class="form-actions">
-                                <input type="button" value="Update" class="btn btn-primary"
-                                    name="editAssetButton"  id="editAssetButton">
-                                <input type="reset" value="Reset"  class="btn">
-                                <input type="hidden" value="{{shortName}}" name="{{shortName}}" id="meta-asset-type">
-                            </div>
-                        </form>
-                    </div>
-                </div>
+	<div class="row-fluid">
+		<div class="span12 asset-view-container" >
+			<div id='msg-container-recent-activity'></div>
+			<div class="widget wlightblue">
+				<div class="widget-head">
+					<div class="pull-left">
+						Edit Asset - {{{snoop "fields(name=overview_name).value" this.data}}}
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="widget-content">
+					<form class="form-horizontal" id='form-asset-edit'>
+						
+						{{#each data.fields}}
+						<div class="control-group">
+							<b><label class="control-label">{{this.label}}:</label></b>
+							<div class="controls">
+								<input id='{{this.name}}'  class="input-xlarge" type='text' value='{{this.value}}' {{#if isReadOnly}} disabled="true" {{/if}}/>
+							</div>
+						</div>
+						{{/each}}
 
-                <div>
-                    <legend>Tags</legend>
-                    <input type='text' id='tag-test'>
-                </div>
+						<legend></legend>
+						<div class="control-group">
+							<b><label class="control-label">Tags: </label></b>
+							<div class="controls">
+								<input type='text' id='tag-test'>
+							</div>
+						</div>
 
-                
-                 <div>
-                 	
-                 	
-                <form class="form-inline">
-                    
-                        <legend>Versions</legend>
-                        <span class='help-inline'>Create a new version of this asset.</span>
-                        <div class='control-group' id='asset-new-version-control-group'>
-                            <input type='text' placeholder="Type a new version number" id='asset-new-version'>
-                            <button class='btn' id='btn-increase-version-asset'>Increase Version</button>
-                            <span class='help-inline' id='asset-new-version-msgs'></span>
-                        </div>
+						
 
-                        
-                        <input type="hidden" value="{{shortName}}" name="{{shortName}}" id="meta-asset-type">
-                   
-                </form>
-            </div>
-            
-            
+					
 
-            </div>
-    </div>
+						<div id="saveButtons" class="form-actions">
+							<input type="button" value="Update" class="btn btn-primary"
+							name="editAssetButton"  id="editAssetButton">
+							<input type="reset" value="Reset"  class="btn">
+							<input type="hidden" value="{{shortName}}" name="{{shortName}}" id="meta-asset-type">
+						</div>
+					</form>
+				</div>
+			</div>
+			
+		</div>
+	</div>
 </div>
 
-<div id="modal-redirect" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-
-  <div class="modal-body">
-  	<div class="modal-loading"></div>
-    <p>Version incremented. Redirecting to new asset version...</p>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-primary">Redirect now</button>
-  </div>
-</div>
+	

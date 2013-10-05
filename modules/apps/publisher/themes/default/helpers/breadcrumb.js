@@ -26,7 +26,8 @@ generateBreadcrumbJson = function(data) {
         currentTitle : currentTypeObj.assetTitle,
         currentUrl : currentTypeObj.url,
         breadCrumbStaticText : 'All',
-        breadcrumb : breadcrumbItems
+        breadcrumb : breadcrumbItems,
+        shortName : data.shortName
     };
     
     if(data.artifact){

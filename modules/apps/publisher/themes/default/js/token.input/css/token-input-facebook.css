@@ -4,7 +4,7 @@ ul.token-input-list-facebook {
     height: auto !important; 
     height: 1%;
     width: 400px;
-    border: 1px solid #8496ba;
+    border: 1px solid #ccc;
     cursor: text;
     font-size: 12px;
     font-family: Verdana;
@@ -14,7 +14,7 @@ ul.token-input-list-facebook {
     padding: 0;
     background-color: #fff;
     list-style-type: none;
-    clear: left;
+   /* clear: left;*/
 }
 
 ul.token-input-list-facebook li input {

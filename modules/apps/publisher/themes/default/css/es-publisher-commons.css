@@ -30,6 +30,9 @@ body {
 input, button, select, textarea {
     font: 13px/1.531 'Lato', sans-serif;
 }
+textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="color"]:focus, .uneditable-input:focus {
+    box-shadow: none;
+}
 .btn {
     background: none;
 }
@@ -64,8 +67,8 @@ input, button, select, textarea {
 .right {
     float: right;
 }
-.table tr:first-child td{
-border-top:none;    
+.table tr:first-child td {
+    border-top: none;
 }
 .context_menu .icon-reorder {
     border-left: 1px solid #3A4244;
@@ -186,7 +189,6 @@ border-top:none;
 }
 .content-area {
     background: none repeat scroll 0 0 #FFFFFF;
-   
     position: relative;
 }
 .asset_thumb {
@@ -712,8 +714,8 @@ td.asset-listing-btn {
 .publisher-breadcrumb .btn {
     line-height: 21px;
 }
-.publisher-breadcrumb a.btn{
-    height:21px;
+.publisher-breadcrumb a.btn {
+    height: 21px;
 }
 .sidebar-nav i, .publisher-left-submenu > li > a > i {
     display: inline-block;
@@ -898,10 +900,8 @@ span.title {
     border-bottom: 1px solid #DDDDDD;
     border-left: 1px solid #DDDDDD;
     border-right: 1px solid #DDDDDD;
-   
     position: relative;
 }
-
 
 .widget-lifecycle .widget-content .alert {
     position: absolute;
@@ -991,21 +991,37 @@ span.title {
     box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2);
 }
 
-.modal{
-    border-radius:0;
+.modal {
+    border-radius: 0;
 }
 #modal-redirect .modal-loading {
     background: url("../img/preloader-40x40.gif") no-repeat scroll center top rgba(0, 0, 0, 0);
     display: block;
     height: 54px;
     width: 100%;
-    opacity:.3;
+    opacity: .3;
 }
-#modal-redirect p{
+#modal-redirect p {
     text-align: center;
-    font-size:16px;
+    font-size: 16px;
 }
-#asset-new-version-msgs{
-    display:block;
-    clear:both;
+#asset-new-version-msgs {
+    display: block;
+    clear: both;
+}
+#asset-new-version-control-group {
+    line-height: 20px;
+    height: 38px;
+    vertical-align: middle;
+    padding-left: 5px;
+    padding-top: 6px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
+#asset-new-version{
+    margin:0;
+    min-width:81px;
+}
+#btn-increase-version-asset{
+    padding: 3px;
 }
