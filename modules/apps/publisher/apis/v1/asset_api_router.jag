@@ -19,17 +19,6 @@ var caramel = require('caramel');
 var router = require('/modules/router-g.js').router();
 var routeManager = new router.Router();
 
-var user=require('/modules/user.js');
-var publisher = require('/modules/publisher.js').publisher(request, session);
-
-
-//var routeManager=application.get(config.app.ROUTE_MANAGER);
-var rxtManager = publisher.rxtManager;
-var modelManager = publisher.modelManager;
-var dataInjector=publisher.dataInjector;
-var DataInjectorModes=publisher.DataInjectorModes;
-var log=new Log();
-
 
 routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}', function (context) {
 
@@ -214,7 +203,34 @@ routeManager.register('DELETE', 'publisher', '/publisher/api/asset/{type}/{id}',
 
 });
 
-routeManager.handle(request, response);
 
+var securityModule=require('/modules/security/security.manager.js').securityManagementModule();
+
+var sm=securityModule.cached();
+
+//This will short circuit the handling of the requests
+var passed=sm.check(function(){
+    response.sendError(401);
+
+});
+
+//Stop servicing the request if the check failed
+if(passed){
+
+    var user=require('/modules/user.js');
+    var publisher = require('/modules/publisher.js').publisher(request, session);
+
+
+//var routeManager=application.get(config.app.ROUTE_MANAGER);
+    var rxtManager = publisher.rxtManager;
+    var modelManager = publisher.modelManager;
+    var dataInjector=publisher.dataInjector;
+    var DataInjectorModes=publisher.DataInjectorModes;
+    var log=new Log();
+
+
+
+    routeManager.handle(request, response);
+}
 
 %>

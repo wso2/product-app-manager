@@ -16,15 +16,11 @@ var utility = require('/modules/utility.js').rxt_utility();
 var router = require('/modules/router-g.js').router();
 var routeManager = new router.Router();
 
-var user=require('/modules/user.js');
-var publisher = require('/modules/publisher.js').publisher(request, session);
 
-var rxtManager = publisher.rxtManager;
-var modelManager = publisher.modelManager;
 var log=new Log('tags.api.router');
 
 var TAG_QUERY='/_system/config/repository/components/org.wso2.carbon.registry/queries/allTags';
-var tagModule=require('/modules/tag.management.js').tagModule();
+
 
 
 routeManager.register('GET','publisher','/publisher/api/tag/{type}',function(context){
@@ -123,7 +119,25 @@ routeManager.register('DELETE','publisher','/publisher/api/tag/{type}/{id}/{tag}
     print(msg);
 });
 
+var securityModule=require('/modules/security/security.manager.js').securityManagementModule();
 
-routeManager.handle(request,response);
+var sm=securityModule.cached();
+
+//This will short circuit the handling of the requests
+var passed=sm.check(function(){
+    response.sendError(401);
+});
+
+//Stop servicing the request if the check failed
+if(passed){
+
+    var user=require('/modules/user.js');
+    var publisher = require('/modules/publisher.js').publisher(request, session);
+
+    var rxtManager = publisher.rxtManager;
+    var modelManager = publisher.modelManager;
+    var tagModule=require('/modules/tag.management.js').tagModule();
+    routeManager.handle(request,response);
+}
 
 %>
