@@ -17,9 +17,10 @@ securityManagementModule=function(){
     /*
     The function is used to perform security checks
      */
-    SecurityManager.prototype.check=function(){
+    SecurityManager.prototype.check=function(cb){
 
         var passed=false;
+
         //Checks whether the request can be handled
         if(this.provider.isPermitted()){
             log.info('passed the security check.');
@@ -30,7 +31,15 @@ securityManagementModule=function(){
         }
         else{
             log.info('failed the security check.');
-            this.provider.onSecurityCheckFail();
+
+            //Check if a user has provided a call back
+            if(cb){
+                cb();
+            }
+            else{
+                this.provider.onSecurityCheckFail();
+            }
+
         }
 
         return passed;
