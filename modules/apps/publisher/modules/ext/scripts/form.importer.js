@@ -13,7 +13,11 @@ var module=function(){
 
     var log=new Log();
 
-    function fillFields(model,data){
+    function fillFields(model,data,template){
+
+        var fieldData;
+        var tableKey;
+        var fieldKey;
 
         //Go through each key
         for(var key in data){
@@ -22,7 +26,25 @@ var module=function(){
             var field=key.replace('_','.');
             log.debug('Saving field: '+field);
 
-            model.setField(field,data[key]);
+            //Get the table name and field name if they exist
+            var nameComponents=field.split('.');
+            tableKey=nameComponents[0]||null;
+            fieldKey=nameComponents[1]||null;
+
+            //Obtain the field data to set default values
+            if((tableKey)&&(fieldKey)){
+                //Get the field data
+                fieldData=template.getField(tableKey,fieldKey);
+            }
+
+            var fieldValue=data[key];
+            if((!data[key])&&(fieldData)){
+                log.debug('* '+fieldData.value);
+               fieldValue=fieldData.value||' ';
+
+            }
+
+            model.setField(field,fieldValue);
         }
     }
 
@@ -35,9 +57,11 @@ var module=function(){
                  var model=context.model;
                  var template=context.template;
 
+                log.info(context.template);
+
                  log.debug('Attempting import data from'+stringify(data));
 
-                 fillFields(model,data);
+                 fillFields(model,data,template);
 
                  log.debug('Finished importing data from form');
                  log.debug('Exited : '+meta.type);

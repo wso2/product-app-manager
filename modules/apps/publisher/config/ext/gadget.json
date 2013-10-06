@@ -71,6 +71,11 @@
             "field":"overview.provider",
             "name":"readOnly",
             "value":"true"
+        },
+        {
+            "field":"overview.description",
+            "name":"value",
+            "value":"provider has not given a description"
         }
     ],
 
@@ -90,6 +95,11 @@
             "name":"thumbnail",
             "table":"images",
             "type":"file"
+        },
+        {
+            "name":"description",
+            "table":"overview",
+            "value":"The provider has not given a description."
         }
     ],
 

@@ -72,6 +72,11 @@
             "name": "thumbnail",
             "table": "images",
             "type": "file"
+        },
+        {
+            "name":"description",
+            "table":"overview",
+            "value":"The provider has not given a description."
         }
 
     ],
