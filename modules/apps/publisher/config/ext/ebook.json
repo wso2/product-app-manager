@@ -75,9 +75,14 @@
             "type": "file"
         },
         {
-	    "name":"url",
-	    "table":"overview",
-	    "type":"file"
+            "name": "url",
+            "table": "overview",
+            "type": "file"
+        },
+        {
+            "name": "description",
+            "table": "overview",
+            "value": "The provider has not given a description."
         }
 
     ],
