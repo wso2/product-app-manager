@@ -27,6 +27,9 @@
             <field type="text" required="true">
                 <name>Version</name>
             </field>
+ 	    <field type="text" url="true">
+                <name>URL</name>
+            </field>
             <field type="text-area">
                 <name>Description</name>
             </field>
