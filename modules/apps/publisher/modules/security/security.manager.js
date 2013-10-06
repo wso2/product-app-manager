@@ -15,7 +15,9 @@ securityManagementModule=function(){
 
 
     /*
-    The function is used to perform security checks
+    The function is used to perform a security check on a request
+    @cb: An optional callback function which will be invoked if a check fails
+    @return: True if the check passes,else false
      */
     SecurityManager.prototype.check=function(cb){
 
@@ -23,14 +25,14 @@ securityManagementModule=function(){
 
         //Checks whether the request can be handled
         if(this.provider.isPermitted()){
-            log.info('passed the security check.');
+            log.debug('passed the security check.');
 
             this.provider.onSecurityCheckPass();
 
             passed=true;
         }
         else{
-            log.info('failed the security check.');
+            log.debug('failed the security check.');
 
             //Check if a user has provided a call back
             if(cb){
@@ -48,6 +50,8 @@ securityManagementModule=function(){
     /*
     The function is used to obtain a cached copy of the
     SecurityManager
+    @return: A cached copy of the Security Manager from the
+            application context
      */
     function cached(){
        //var instance=application.get(APP_SECURITY_MANAGER);

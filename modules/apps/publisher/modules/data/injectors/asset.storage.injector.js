@@ -98,7 +98,7 @@ var injector=function(){
         //log.info('examining path: '+path);
         //Only add it storage if it is a valid path and get the uuid
         if(file.isExists()){
-            log.info('loaded resource '+path+' into storage.');
+            log.debug('loaded resource '+path+' into storage.');
             uuid=useStorageManager(path,file,context);
         }
 

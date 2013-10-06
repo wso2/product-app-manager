@@ -3,7 +3,7 @@ var installer = function () {
     var log = new Log();
 
 	function onAssetInitialization(context) {
-		    log.info('reading configuration data from ' + context.bundle.getName() + ' [json].');
+		    log.debug('reading configuration data from ' + context.bundle.getName() + ' [json].');
 
 		    //obtain the configuration file
 		    var configFile = context.bundle.get({extension: 'json'}).result();
@@ -11,7 +11,7 @@ var installer = function () {
 		    //If the configuration file does not exist then stop.
 		    if (!configFile) {
 
-		        log.info('unable to load configuration file for ' + context.bundle.getName());
+		        log.debug('unable to load configuration file for ' + context.bundle.getName());
 		        context['stopProcessing'] = true;
 		        return;
 		    }

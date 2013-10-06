@@ -1,6 +1,8 @@
 var getTypeObj, breadcrumbItems, generateBreadcrumbJson;
+var deploymentManagement=require('/modules/deployment/deployment.manager.js').deploymentManagementModule();
+var deploymentManager=deploymentManagement.cached();
 
-breadcrumbItems = [{
+/*breadcrumbItems = [{
 		assetType : 'gadget',
 		assetTitle : "Gadgets",
 		url : "/publisher/assets/gadget/",
@@ -15,7 +17,11 @@ breadcrumbItems = [{
 		assetTitle : "Sites",
 		url : "/publisher/assets/site/",
 		assetIcon : "icon-compass" //font-awesome icon class
-	}]; 
+	}]; */
+
+//Populate the breadcrumb data
+breadcrumbItems=deploymentManager.getAssetData();
+
 
 generateBreadcrumbJson = function(data) {
 

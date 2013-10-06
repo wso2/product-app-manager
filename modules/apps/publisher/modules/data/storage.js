@@ -105,7 +105,7 @@ var storageModule = function () {
             file=value.file;
         }
 
-        log.info('filename :'+file.getName());
+        //log.debug('filename :'+file.getName());
 
         //Generate a uuid for the resource
         resource.uuid = uuid.generate();

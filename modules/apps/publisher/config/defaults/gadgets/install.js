@@ -15,13 +15,13 @@ var installer = function () {
      */
     function onAssetInitialization(context) {
 
-        log.info('loading ' + context.bundle.getName() + ' configuration data');
+        log.debug('loading ' + context.bundle.getName() + ' configuration data');
 
         //obtain the configuration file
         var xmlConfig = context.bundle.get({extension: 'xml'}).result();
 
         if (!xmlConfig) {
-            log.info('configuration file for ' + context.bundle.getName() + 'could not be found.');
+            log.debug('configuration file for ' + context.bundle.getName() + 'could not be found.');
             return;
         }
 

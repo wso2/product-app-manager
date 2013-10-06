@@ -63,13 +63,13 @@ var deployment_logic = function () {
      Loads the bundle manager
      */
     Deployer.prototype.init = function () {
-        log.info('initializing bundle manager for ' + this.config.root);
+        log.debug('initializing bundle manager for ' + this.config.root);
 
         this.bundleManager = new bundler.BundleManager({
             path: this.config.root
         });
 
-        log.info('finished initializing bundle manager');
+        log.debug('finished initializing bundle manager');
 
     };
 
@@ -180,7 +180,7 @@ var deployment_logic = function () {
     Deployer.prototype.autoDeploy = function () {
         var that = this;
 
-        log.info('attempting to locate master install script.');
+        log.debug('attempting to locate master install script.');
 
         //Break up the path x/y/z into its components x,y,and z
         var pathComponents = this.bundleManager.path.split('/');
@@ -215,7 +215,7 @@ var deployment_logic = function () {
                 log.info('ignoring ' + asset.getName() + ' as it is not a deployable bundle.');
                 return;
             }
-            log.info('auto deployment of ' + asset.getName());
+            log.debug('auto deployment of ' + asset.getName());
             that.deploy(asset.getName());
         })
     }
@@ -280,7 +280,7 @@ var deployment_logic = function () {
             //Deploy each bundle
             rootBundle.each(function (bundle) {
 
-                log.info('deploying ' + assetType + ' : ' + bundle.getName());
+                log.debug('deploying ' + assetType + ' : ' + bundle.getName());
 
                 //Check if the bundle is a directory
                 if (!bundle.isDirectory()) {
@@ -370,7 +370,7 @@ var deployment_logic = function () {
 
         if (script) {
             scriptPath = rootLocation + '/' + bundleLocation + '/' + script.getName();
-            log.info('script found : ' + scriptPath);
+            log.debug('script found : ' + scriptPath);
             scriptInstance = require(scriptPath);
         }
 
@@ -400,7 +400,7 @@ var deployment_logic = function () {
         //Check if the module we need is present
         if (scriptInstance.hasOwnProperty(INSTALLER_MODULE_NAME)) {
 
-            log.info('installer module found.');
+            log.debug('installer module found.');
 
             logicObject = scriptInstance[INSTALLER_MODULE_NAME]();
 
@@ -421,12 +421,12 @@ var deployment_logic = function () {
      */
     ScriptObject.prototype.invoke = function (methodName, arguments) {
         if (this.functionObject.hasOwnProperty(methodName)) {
-            log.debug('invoking method: ' + methodName);
+            //log.debug('invoking method: ' + methodName);
             //log.info(this.functionObject);
             this.functionObject[methodName].apply(this.functionObject, arguments);
             return true;
         }
-        log.info('unable to invoke ' + methodName);
+        log.debug('unable to invoke ' + methodName);
         return false;
     };
 
