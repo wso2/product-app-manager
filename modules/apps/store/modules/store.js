@@ -425,7 +425,7 @@ Store.prototype.tagged = function (type, tag, paging) {
     length = assets.length;
 
     for (i = 0; i < length; i++) {
-        assets[i].rating = this.rating(assets[i].id);
+        assets[i].rating = this.rating(assets[i].path);
         assets[i].indashboard = this.isuserasset(assets[i].id, type);
     }
     return assets;
@@ -446,7 +446,7 @@ Store.prototype.asset = function (type, aid) {
     }*/
 
     var asset = this.assetManager(type).get(aid);
-    asset.rating = this.rating(aid);
+    asset.rating = this.rating(asset.path);
     return asset;
 };
 
@@ -521,7 +521,7 @@ Store.prototype.recentAssets = function (type, count) {
     }); */
     length = recent.length;
     for (i = 0; i < length; i++) {
-        recent[i].rating = this.rating(recent[i].id).average;
+        recent[i].rating = this.rating(recent[i].path).average;
         recent[i].indashboard = this.isuserasset(recent[i].id, type);
     }
     return recent;

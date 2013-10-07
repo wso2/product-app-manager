@@ -40,7 +40,6 @@ var DEFAULT_PAGE = 10;
 var log = new Log();
 
 routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(context) {
-
 	var query = request.getParameter("query");
 
 	try {
@@ -50,20 +49,33 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 
 		var artifacts = artifactManager.list(DEFAULT_PAGE) || [];
 
-		if(query != null) {
-			var count = artifactManager.count();
-			var artifactz = [];
-			for(var i = 0; i < count; i++) {
-
-				if(artifacts[i].attributes.hasOwnProperty('overview_name')) {
-					if(artifacts[i].attributes.overview_name.toLowerCase().indexOf(query) !== -1) {
-						artifactz.push(artifacts[i]);
+		// for queries
+		if(query) {
+			var query = query.toLowerCase();
+			assets = artifactManager.find(function(asset) {
+				var name, match, attributes = asset.attributes;
+				//this seach is can be improved in attribute level search and it is written for this level of search also 
+				name = 'overview_name';
+				for(name in attributes) {
+					if(attributes.hasOwnProperty(name)) {
+						if(attributes[name].toLowerCase().indexOf(query) !== -1) {
+							match = true;
+							break;
+						}
 					}
 				}
+				if(!match) {
+					return false;
+				}
+				return asset;
 
-			}
-			artifacts = artifactz;
-			//
+			}, null);
+			artifacts = assets;
+
+		} else {
+			//normal list for asserts
+			var artifacts = artifactManager.list(DEFAULT_PAGE) || [];
+
 		}
 		dataInjector.inject(artifacts, DataInjectorModes.DISPLAY);
 		caramel.render({
@@ -80,7 +92,9 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 	/*for each(var artifact in artifacts){
 	 print(artifact.id+'<br/><br/>');
 	 }*/
+
 });
+
 
 routeMnger.register('GET', 'publisher', '/publisher/assets/{operation}/{type}/', function (context) {
     var operation = (context.params.operation) || '';
