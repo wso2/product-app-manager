@@ -29,6 +29,7 @@ var e = session.get('error') || {};
       <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
                     <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
                                    <link rel="shortcut icon" href="../assets/ico/favicon.png">
+
   </head>
 
   <body>
@@ -66,14 +67,11 @@ var e = session.get('error') || {};
 									</div>
 
 									<div class="span6">
-										<form id="registerForm" action="register.jag" method="POST" >
+										<form id="registerForm">
 									        <h2 class="form-signin-heading">Register</h2>
-									        <% if(e.error && e.type == 'regError'){ %>
-									            <div class="alert alert-error"><%= e.msg.split(':')[1] %></div>
-									        <%
-    e = {};
-    session.put('error', {});
-}%>
+									         <div id="regFormError" class="alert alert-error" style="display:none"></div>
+                                             <div id="regFormSuc" class="alert alert-success" style="display:none"></div>
+
 									        <div class="control"><label>Username</label><input id="reg-username" name="reg-username" type="text" class="input-block-level required usrName"></div>
 									        <div class="control">
 									        	<label>Password</label>
@@ -86,7 +84,7 @@ var e = session.get('error') || {};
 									        <div>
 									        	<input id="reg-action" name="action" type="hidden" value="register">
 									        </div>
-									        <button id="registrationSubmit" class="btn btn-large btn-primary pull-right" type="submit">Register</button>
+									        <button id="registrationSubmit" class="btn btn-large btn-primary pull-right" type="button">Register</button>
 								    	</form>
 									</div>
 								</div>
@@ -147,13 +145,29 @@ var e = session.get('error') || {};
   	<script type="text/javascript">
 		$(function(){
 			$("#registrationSubmit").click(function(e){
-				if (!$('#registerForm').valid())
+				if (!$('#registerForm').valid()) {
 					return;
+				}
+
+            $.post('register.jag', $( "#registerForm" ).serialize(), function(data){
+                if(JSON.parse(data).error == 'false'){
+                        $('#regFormError').hide();
+                        $('#regFormSuc').show();
+                        $('#regFormSuc').text(JSON.parse(data).msg);
+
+                }else{
+                        $('#regFormSuc').hide();
+                        $('#regFormError').show();
+                        $('#regFormError').text(JSON.parse(data).msg);
+                    }
+                });
 			});
+
 			jQuery.validator.addMethod("usrName", function(value, element) {
 				return this.optional(element) || /^[a-zA-Z0-9\-]*$/.test(value);
 			}, "Only alphanumeric characters and '-' allowed");
 		});
+
 	</script>
   </body>
 </html>
