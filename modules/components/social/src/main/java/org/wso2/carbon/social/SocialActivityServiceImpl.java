@@ -3,6 +3,7 @@ package org.wso2.carbon.social;
 import org.mozilla.javascript.NativeObject;
 import org.wso2.carbon.social.service.SocialActivityService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SocialActivityServiceImpl implements SocialActivityService {
@@ -18,7 +19,11 @@ public class SocialActivityServiceImpl implements SocialActivityService {
 
     @Override
     public String[] listActivities(String contextId) {
-        List<String> activities = activityBrowser.listActivities(contextId);
-        return activities.toArray(new String[activities.size()]);
+        List<Activity> activities = activityBrowser.listActivitiesChronologically(contextId);
+        String[] serializedActivities = new String[activities.size()];
+        for (int i = 0; i < activities.size(); i++) {
+            serializedActivities[i] = activities.get(i).toString();
+        }
+        return serializedActivities;
     }
 }

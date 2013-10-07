@@ -19,7 +19,7 @@ public class ActivityBrowser {
     private JsonParser parser = new JsonParser();
     private Connection conn;
 
-    public List<String> listActivities(String contextId) {
+    public List<Activity> listActivities(String contextId) {
         List<Activity> activities = null;
         Connection connection = getConnection();
         if (connection != null) {
@@ -57,29 +57,23 @@ public class ActivityBrowser {
             }
         }
         if (activities != null) {
-            sortChronologically(activities);
-            return serializeEach(activities);
+            return activities;
         } else {
             return Collections.emptyList();
         }
     }
 
-    private List<String> serializeEach(List<Activity> activities) {
-        List<String> stringList = new ArrayList<String>(activities.size());
-        for (Activity activity : activities) {
-            stringList.add(activity.toString());
-        }
-        return stringList;
-    }
-
-    public void sortChronologically(List<Activity> activities) {
+    public List<Activity> listActivitiesChronologically(String contextId) {
+        List<Activity> activities = listActivities(contextId);
         Collections.sort(activities, new Comparator<Activity>() {
             @Override
             public int compare(Activity a1, Activity a2) {
                 return a2.getTimestamp() - a1.getTimestamp();
             }
         });
+        return activities;
     }
+
 
     public void makeIndexes(String column) {
         Connection connection = getConnection();
