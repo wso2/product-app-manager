@@ -41,28 +41,42 @@
                     <form class="form-horizontal" id='form-asset-create'>
                         {{#each data.fields}}
                         <div class="control-group">
-                            <b><label class="control-label">{{this.label}}:</label>
+                            <b><label class="control-label">{{this.label}} 
+                            	
+                                :</label>
                             </b>
                             <div class="controls">
                                 {{#if this.isTextBox}}
-                                    <input id='{{this.name}}' type='text' value='{{this.value}}' {{#if isReadOnly}} disabled="true" {{/if}}/>
+                                    <input id='{{this.name}}' name='{{this.name}}' type='text' value='{{this.value}}'  class="input-xlarge" {{#if isReadOnly}} disabled="true" {{/if}} {{#if this.isRequired}} required{{/if}}/>
                                 {{/if}}
                                 {{#if this.isOptions}}
-                                    <select id="{{this.name}}">
+                                    <select id="{{this.name}}"  class="input-xlarge">
                                     {{#each this.valueList}}
                                         <option>{{this}}</option>
                                     {{/each}}
                                     </select>
                                 {{/if}}
                                 {{#if this.isTextArea}}
-                                    <textarea id='{{this.name}}' value='{{this.value}}' ></textarea>
+                                    <textarea id='{{this.name}}' value='{{this.value}}' class="input-xlarge"></textarea>
                                 {{/if}}
                                 {{#if this.isFile}}
                                    <input id='{{this.name}}' type='file' />
                                 {{/if}}
+                               	{{#if this.isRequired}}
+                                <span class="label-required">*</span>
+                                {{/if}}
                             </div>
                         </div>
                         {{/each}}
+
+						<div class="control-group">
+							<b><label class="control-label">Tags: </label></b>
+							<div class="controls">
+								<input type='text' id='tag-container'>
+							</div>
+						</div>
+						
+						
                         <div id="saveButtons" class="form-actions">
                         	<button id="btn-create-asset" class="btn btn-primary" name="addNewAssetButton">Create</button>
                       		<button class="btn" type="reset">Reset</button>
@@ -70,10 +84,7 @@
                         </div>
                     </form>
                 </div>
-                <div>
-                    <legend>Tags</legend>
-                    <input type='text' id='tag-container'>
-                </div>
+             
             </div>
 	    </div>
     </div>

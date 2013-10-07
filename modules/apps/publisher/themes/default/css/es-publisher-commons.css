@@ -1025,3 +1025,7 @@ span.title {
 #btn-increase-version-asset{
     padding: 3px;
 }
+
+.label-required{
+    color:#b94a48;
+}

@@ -58,7 +58,7 @@ $(document).ready(function(){
     $('#btn-increase-version-asset').on('click', function (e) {
     	e.preventDefault();
     	
-        var MSG_ERR_NO_VERSION='Please enter a version number.';
+        var MSG_ERR_NO_VERSION='Version number is empty.';
 
         var url=window.location.pathname;
 

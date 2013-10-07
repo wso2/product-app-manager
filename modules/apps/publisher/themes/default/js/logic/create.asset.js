@@ -1,5 +1,6 @@
 $(function () {
 
+  
     /*
      Creates a new asset
      */
@@ -31,9 +32,8 @@ $(function () {
 
 
     $('#btn-create-asset').on('click', function (e) {
-
         e.preventDefault();
-
+   
         var fields = $('#form-asset-create :input');
         var data = {};
         var formData = new FormData();
