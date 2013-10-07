@@ -52,10 +52,20 @@
             "name": "save",
             "value": "default"
         },
+         {
+            "field": "overview.*",
+            "name": "editable",
+            "value": true
+        },
         {
             "field": "images.*",
             "name": "save",
             "value": "default"
+        },
+         {
+            "field": "images.*",
+            "name": "editable",
+            "value": true
         },
         {
             "field": "*.lifeCycle",
@@ -71,6 +81,21 @@
             "field":"overview.provider",
             "name":"readOnly",
             "value":"true"
+        },
+         {
+            "field":"overview.provider",
+            "name":"editable",
+            "value":false
+        },
+         {
+            "field":"overview.name",
+            "name":"editable",
+            "value":false
+        },
+        {
+            "field":"overview.version",
+            "name":"editable",
+            "value":false
         },
         {
             "field":"overview.description",

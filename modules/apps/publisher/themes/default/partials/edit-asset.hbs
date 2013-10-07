@@ -11,27 +11,36 @@
 				</div>
 				<div class="widget-content">
 					<form class="form-horizontal" id='form-asset-edit'>
-						
+
 						{{#each data.fields}}
 						<div class="control-group">
 							<b><label class="control-label">{{this.label}}:</label></b>
 							<div class="controls">
-								<input id='{{this.name}}'  class="input-xlarge" type='text' value='{{this.value}}' {{#if isReadOnly}} disabled="true" {{/if}}/>
+
+								{{#if this.isOptions}}
+                                    <select id="{{this.name}}" class="input-xlarge">
+                                    {{#each this.valueList}}
+                                        <option>{{this}}</option>
+                                    {{/each}}
+                                    </select>
+                                {{else}}
+                                	<input id='{{this.name}}' name='{{this.name}}' type='text'  class="input-xlarge" value='{{this.value}}' {{#unless isEditable}} disabled="true" {{/unless}} {{#if this.isRequired}} required{{/if}}/>
+                                {{/if}}
+                                
+                               
+                                {{#if this.isRequired}}
+								<span class="label-required">*</span>
+								{{/if}}
 							</div>
 						</div>
 						{{/each}}
 
-						<legend></legend>
 						<div class="control-group">
 							<b><label class="control-label">Tags: </label></b>
 							<div class="controls">
 								<input type='text' id='tag-test'>
 							</div>
 						</div>
-
-						
-
-					
 
 						<div id="saveButtons" class="form-actions">
 							<input type="button" value="Update" class="btn btn-primary"
@@ -42,9 +51,8 @@
 					</form>
 				</div>
 			</div>
-			
+
 		</div>
 	</div>
 </div>
 
-	

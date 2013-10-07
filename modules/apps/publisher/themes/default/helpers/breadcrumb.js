@@ -25,13 +25,13 @@ breadcrumbItems=deploymentManager.getAssetData();
 
 generateBreadcrumbJson = function(data) {
 
+
 	var currentTypeObj = getTypeObj(data.shortName);
 		
     var breadcrumbJson = {
         currentType : currentTypeObj.assetType,
         currentTitle : currentTypeObj.assetTitle,
         currentUrl : currentTypeObj.url,
-        breadCrumbStaticText : 'All',
         breadcrumb : breadcrumbItems,
         shortName : data.shortName
     };
@@ -41,6 +41,15 @@ generateBreadcrumbJson = function(data) {
         breadcrumbJson.currentVersion = data.artifact.attributes.overview_version;
         breadcrumbJson.versions = data.versions;
         breadcrumbJson.currentVersionUrl = data.artifact.id;
+        
+        if(data.op === "edit"){
+        	breadcrumbJson.breadCrumbStaticText = "Edit";
+        } else if(data.op === "view"){
+        	breadcrumbJson.breadCrumbStaticText = "Overview";
+        } else if(data.op === "lifecycle"){
+        	breadcrumbJson.breadCrumbStaticText = "Life cycle";
+        }
+        
     }  else if(data.op === "create"){
     	 breadcrumbJson.breadCrumbStaticText = 'Add Asset';
     }  else if(data.op === "statistics"){
