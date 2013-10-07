@@ -148,7 +148,7 @@ var deployment_logic = function () {
 
             //Check if there is a current asset to which the operations can be performed
             if (!context.currentAsset) {
-                log.info('there is no current asset.Aborting all other operations.');
+                log.debug('there is no current asset.Aborting all other operations.');
                 return;
             }
 
@@ -171,7 +171,7 @@ var deployment_logic = function () {
          this.handlers[assetType](bundle, {currentPath: this.config.root + '/' + assetType + '/' + bundle.getName(), type: assetType});
          }*/
 
-        log.info('no handler specified for deploying : ' + assetType);
+        log.debug('no handler specified for deploying : ' + assetType);
     };
 
     /*
@@ -198,21 +198,21 @@ var deployment_logic = function () {
         var masterInstallScript = getInstallScript(this.bundleManager.getRoot(), path);
 
         if (!masterInstallScript) {
-            log.info('aborting auto deployment as the master install script was not found.This should be present as install.js in the '
+            log.debug('aborting auto deployment as the master install script was not found.This should be present as install.js in the '
                 + this.bundleManager.path);
             return;
         }
         //Create a master script object
         this.masterScriptObject = new ScriptObject(masterInstallScript);
 
-        log.info('starting auto deploying assets in ' + this.config.root);
+        log.debug('starting auto deploying assets in ' + this.config.root);
 
         this.bundleManager.getRoot().each(function (asset) {
 
             //Check if the bundle is a directory
             if (!asset.isDirectory()) {
 
-                log.info('ignoring ' + asset.getName() + ' as it is not a deployable bundle.');
+                log.debug('ignoring ' + asset.getName() + ' as it is not a deployable bundle.');
                 return;
             }
             log.debug('auto deployment of ' + asset.getName());
@@ -232,13 +232,13 @@ var deployment_logic = function () {
         //Check if a configuration block exists for the
         //provided asset type
         if (!assetConfiguration) {
-            log.info('could not deploy ' + assetType + ' as configuration information was not found.');
+            log.debug('could not deploy ' + assetType + ' as configuration information was not found.');
             return;
         }
 
         //Check if the asset type has been ignored
         if (isIgnored(this.config, assetType)) {
-            log.info('asset type : ' + assetType + ' is ignored.');
+            log.debug('asset type : ' + assetType + ' is ignored.');
             return;
         }
 
@@ -250,7 +250,7 @@ var deployment_logic = function () {
 
             var that = this;
 
-            log.info('[' + assetType.toUpperCase() + '] been deployed.');
+            log.debug('[' + assetType.toUpperCase() + '] been deployed.');
             var basePath = this.bundleManager.path;
 
             //Check if there is a root level install script specified
@@ -284,24 +284,24 @@ var deployment_logic = function () {
 
                 //Check if the bundle is a directory
                 if (!bundle.isDirectory()) {
-                    log.info('ignoring bundle: ' + bundle.getName() + ' not a deployable target');
+                    log.debug('ignoring bundle: ' + bundle.getName() + ' not a deployable target');
                     return;
                 }
 
                 if (isIgnored(assetConfiguration, bundle.getName())) {
-                    log.info('ignoring ' + assetType + " : " + bundle.getName() + '. Please change configuration file to enable.');
+                    //log.info('ignoring ' + assetType + " : " + bundle.getName() + '. Please change configuration file to enable.');
                     return;
                 }
                 that.invoke(assetType, bundle, context);
 
-                log.info('finished deploying ' + assetType + ' : ' + bundle.getName());
+                //log.info('finished deploying ' + assetType + ' : ' + bundle.getName());
 
             });
 
-            log.info('[' + assetType.toUpperCase() + '] ending deployment');
+            log.debug('[' + assetType.toUpperCase() + '] ending deployment');
         }
         else {
-            log.info('could not deploy asset ' + assetType + ' since a bundle was not found.');
+            log.debug('could not deploy asset ' + assetType + ' since a bundle was not found.');
         }
 
     };
