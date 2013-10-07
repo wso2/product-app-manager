@@ -2,6 +2,21 @@ var $radio = $('.auto-submit-star');
 var $btn = $('#btn-post');
 var $textArea = $('#com-body');
 var $stream = $('#stream');
+var windowProxy;
+
+var onMessage = function (messageEvent) {
+    console.log(messageEvent);
+};
+
+var adjustHeight = function () {
+    windowProxy.post({'expanded': $(document).height()});
+};
+
+$(function () {
+    windowProxy = new Porthole.WindowProxy();
+    windowProxy.addEventListener(onMessage);
+    adjustHeight();
+});
 
 $radio.rating({
     callback: function (value) {
