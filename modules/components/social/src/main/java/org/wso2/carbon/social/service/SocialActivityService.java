@@ -8,5 +8,5 @@ import java.util.List;
 public interface SocialActivityService {
     void publish(NativeObject activity);
 
-    String[] listActivities(String targetId);
+    String[] listActivities(String contextId);
 }

@@ -1,7 +1,6 @@
 package org.wso2.carbon.social;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,12 +14,12 @@ public class ActivityBrowser {
 
     private static final Log LOG = LogFactory.getLog(ActivityBrowser.class);
     public static final String SELECT_CQL = "SELECT * FROM " + STREAM_NAME_IN_CASSANDRA + " WHERE '" +
-            TARGET_ID_COLUMN + "'=?";
+            CONTEXT_ID_COLUMN + "'=?";
 
     private JsonParser parser = new JsonParser();
     private Connection conn;
 
-    public List<String> listActivities(String targetId) {
+    public List<String> listActivities(String contextId) {
         List<Activity> activities = null;
         Connection connection = getConnection();
         if (connection != null) {
@@ -28,7 +27,7 @@ public class ActivityBrowser {
             ResultSet resultSet = null;
             try {
                 statement = connection.prepareStatement(SELECT_CQL);
-                statement.setString(1, targetId);
+                statement.setString(1, contextId);
                 resultSet = statement.executeQuery();
                 activities = new ArrayList<Activity>();
                 while (resultSet.next()) {

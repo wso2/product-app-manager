@@ -17,8 +17,8 @@ public class SocialActivityServiceImpl implements SocialActivityService {
     }
 
     @Override
-    public String[] listActivities(String targetId) {
-        List<String> activities = activityBrowser.listActivities(targetId);
+    public String[] listActivities(String contextId) {
+        List<String> activities = activityBrowser.listActivities(contextId);
         return activities.toArray(new String[activities.size()]);
     }
 }

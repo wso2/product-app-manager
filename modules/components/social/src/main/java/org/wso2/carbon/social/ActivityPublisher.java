@@ -24,15 +24,18 @@ public class ActivityPublisher {
             String json = JSONUtil.SimpleNativeObjectToJson(activity);
             String verb = getProperty(activity, VERB_JSON_PROP);
             String objectType = getProperty(activity, OBJECT_JSON_PROP, TYPE_JSON_PROP);
-            String targetId = getProperty(activity, TARGET_JSON_PROP, ID_JSON_PROP);
+            String contextId = getNullableProperty(activity, CONTEXT_JSON_PROP, ID_JSON_PROP);
+            if (contextId == null) {
+                contextId = getProperty(activity, TARGET_JSON_PROP, ID_JSON_PROP);
+            }
 
-            publisher.publish(id, null, null, new Object[]{verb, objectType, targetId, json});
+            publisher.publish(id, null, null, new Object[]{verb, objectType, contextId, json});
         } catch (Exception e) {
             LOG.error("failed to publish social event.", e);
         }
     }
 
-    private String getProperty(NativeObject obj, String... keys) {
+    private String getNullableProperty(NativeObject obj, String... keys) {
         NativeObject result = obj;
         for (int i = 0; i < keys.length - 1; i++) {
             String key = keys[i];
@@ -40,10 +43,19 @@ public class ActivityPublisher {
             if (value instanceof NativeObject) {
                 result = (NativeObject) value;
             } else {
-                throw new RuntimeException("property missing in activity object : " + Arrays.toString(keys));
+                return null;
             }
         }
         return result.get(keys[keys.length - 1], result).toString();
+    }
+
+    private String getProperty(NativeObject obj, String... keys) {
+        String property = getNullableProperty(obj, keys);
+        if (property == null) {
+            throw new RuntimeException("property missing in activity object : " + Arrays.toString(keys));
+        } else {
+            return property;
+        }
     }
 
     /**
@@ -82,7 +94,7 @@ public class ActivityPublisher {
                 if (streamId == null) {
                     try {
                         streamId = publisher.defineStream(STREAM_DEF);
-                        new ActivityBrowser().makeIndexes("target.id");
+                        new ActivityBrowser().makeIndexes("context.id");
                     } catch (Exception e) {
                         LOG.error("Can't create " + STREAM_NAME + ":" +
                                 STREAM_VERSION + " for storing social Activities", e);
