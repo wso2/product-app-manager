@@ -24,7 +24,7 @@ var init = function (options) {
 
         CommonUtil.addRxtConfigs(system.registry.getChrootedRegistry("/_system/governance"), tenantId);
         um.authorizeRole(carbon.user.anonRole, GovernanceConstants.RXT_CONFIGS_PATH, carbon.registry.actions.GET);
-        log.info('TENANT CREATED');
+        log.debug('TENANT CREATED');
         addLifecycles(system);
     });
 
@@ -55,15 +55,15 @@ var init = function (options) {
         //Check if the tenant is the super tenant
         if(tenantId==SUPER_TENANT){
 
-            log.info('executing default asset deployment logic since super tenant has been loaded.');
+            log.debug('executing default asset deployment logic since super tenant has been loaded.');
 
-            log.info('attempting to load rxt templates to the registry.');
+            log.debug('attempting to load rxt templates to the registry.');
 
             //Try to deploy the rxts
             CommonUtil.addRxtConfigs(reg.registry.getChrootedRegistry("/_system/governance"), reg.tenantId);
             um.authorizeRole(carbon.user.anonRole, GovernanceConstants.RXT_CONFIGS_PATH, carbon.registry.actions.GET);
 
-            log.info('finished loading rxt templates to the registry.');
+            log.debug('finished loading rxt templates to the registry.');
 
             //Attempt to load the default assets
             var deployer = require('/modules/asset.deployment.js').deployment_logic();
@@ -75,7 +75,7 @@ var init = function (options) {
                 config: publisherConfig.defaultAssets
             });
 
-            log.info('initializing deployementManager');
+            log.debug('initializing deployementManager');
 
             deploymentManager.init();
 
@@ -122,12 +122,12 @@ var addLifecycles = function (registry) {
         //Check if the lifecycle is present
         var isPresent=CommonUtil.lifeCycleExists(lcJSON.name,configReg);
 
-        log.info('Is life-cycle present: '+isPresent);
+        log.debug('Is life-cycle present: '+isPresent);
 
         //Only add the lifecycle if it is not present in the registry
         if(!isPresent){
 
-            log.info('Adding life-cycle since it is not deployed.');
+            log.debug('Adding life-cycle since it is not deployed.');
 
             CommonUtil.addLifecycle(lc, configReg, rootReg);
         }

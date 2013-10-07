@@ -12,7 +12,7 @@
         "http": "%http.host%"
     },
     "roles": {
-        "store": {
+        "internal/store": {
             "/permission/admin/login": ["ui.execute"]
         }
     },
@@ -20,7 +20,7 @@
         "username": "admin",
         "password": "admin"
     },
-    "userRoles": ["store"],
+    "userRoles": ["internal/store"],
     "permissions": {
         "login": {
             "/permission/admin/login": ["ui.execute"]

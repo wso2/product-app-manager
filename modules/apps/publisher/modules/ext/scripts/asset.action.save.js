@@ -73,7 +73,7 @@ var module=function(){
                 //Check if the name and version are the same
                //return ((adapter.attributes.overview_name==name)&&(adapter.attributes.overview_version==version))?true:false;
                return utility.assertEqual(adapter,predicate);
-            }, { start: 0, count: 1, paginationLimit: Number.MAX_VALUE});
+            },null);
 
             log.debug('Locating saved asset: '+stringify(artifact)+' to get the asset id.');
 
