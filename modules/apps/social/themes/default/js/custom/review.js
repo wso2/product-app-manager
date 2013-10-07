@@ -31,11 +31,9 @@ $btn.click(function (e) {
 
     } else {
         var activity = {"verb": "post",
-            "object": {"type": "rating", "content": $textArea.val(), rating: rating},
+            "object": {"type": "review", "content": $textArea.val(), rating: rating},
             "target": {"id": target}
         };
-
-        var body = $textArea.val();
 
         $btn.attr('disabled', 'disabled');
         $.get('apis/comments.jag', {
@@ -55,6 +53,26 @@ $btn.click(function (e) {
 
         });
     }
+});
+
+$stream.live('click', '.icon-thumbs-up', function (e) {
+    var $likeBtn = $(e.target);
+    var id = $likeBtn.parents('.com-review').attr('data-target-id');
+
+    var activity = {"verb": "like",
+        "object": {"type": "like"},
+        "target": {"id": id},
+        "context": {"id": target}
+    };
+
+    $.get('apis/comments.jag', {
+        activity: JSON.stringify(activity)
+    }, function () {
+        $btn.removeAttr('disabled');
+        $radio.rating('select', null);
+        $textArea.val('');
+    });
+
 });
 
 
