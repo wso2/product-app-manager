@@ -1,6 +1,7 @@
 package org.wso2.carbon.social;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,7 +14,8 @@ import static org.wso2.carbon.social.Constants.*;
 public class ActivityBrowser {
 
     private static final Log LOG = LogFactory.getLog(ActivityBrowser.class);
-    public static final String SELECT_CQL = "SELECT * FROM " + STREAM_NAME_IN_CASSANDRA + " WHERE '" + TARGET_ID_COLUMN + "'=?";
+    public static final String SELECT_CQL = "SELECT * FROM " + STREAM_NAME_IN_CASSANDRA + " WHERE '" +
+            TARGET_ID_COLUMN + "'=?";
 
     private JsonParser parser = new JsonParser();
     private Connection conn;
@@ -31,13 +33,14 @@ public class ActivityBrowser {
                 activities = new ArrayList<Activity>();
                 while (resultSet.next()) {
                     JsonElement body = parser.parse(resultSet.getString(BODY_COLUMN));
-                    Activity activity = new Activity(body.getAsJsonObject(), resultSet.getInt(TIMESTAMP_COLUMN));
+                    Activity activity = new Activity(resultSet.getString(1),
+                            body.getAsJsonObject(), resultSet.getInt(TIMESTAMP_COLUMN));
                     activities.add(activity);
                 }
             } catch (SQLException e) {
                 String message = e.getMessage();
                 // we'll ignore the "Keyspace EVENT_KS does not exist" error,
-                // this happens when there are 0 activities in bam
+                // this happens when there are 0 activities in Cassandra.
                 if (!(message.startsWith("Keyspace ") && message.endsWith(" does not exist"))) {
                     LOG.error("Can't retrieve activities form cassandra.", e);
                 }
@@ -65,7 +68,7 @@ public class ActivityBrowser {
     private List<String> serializeEach(List<Activity> activities) {
         List<String> stringList = new ArrayList<String>(activities.size());
         for (Activity activity : activities) {
-            stringList.add(activity.getBody().toString());
+            stringList.add(activity.toString());
         }
         return stringList;
     }
