@@ -27,10 +27,9 @@ var caramel;
                 new Log('social.activityBrowser').error(e);
             }
 
-
             caramel.render({
-                'title': 'Comments',
-                'stream': {comments: commentsJSON}
+                target: {id: target},
+                stream: {comments: commentsJSON}
             });
         } else {
             print('please use the target URL parameter as the asset id, eg: http://localhost:9763/social/?target=33530252-rer-w345325');

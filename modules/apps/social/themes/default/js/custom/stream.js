@@ -1,8 +1,9 @@
-function onMessage(messageEvent) {
-    console.log(messageEvent);
-}
-
 var windowProxy;
+
+var onMessage = function (messageEvent) {
+    console.log(messageEvent);
+};
+
 var adjustHeight = function () {
     windowProxy.post({'expanded': $(document).height()});
 };
@@ -10,9 +11,7 @@ var adjustHeight = function () {
 window.onload = function () {
     windowProxy = new Porthole.WindowProxy();
     windowProxy.addEventListener(onMessage);
-//    setTimeout(adjustHeight,1000);
     adjustHeight();
 };
-
 
 
