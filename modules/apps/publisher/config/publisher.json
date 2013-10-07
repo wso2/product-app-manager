@@ -4,10 +4,10 @@
         "http": "%http.host%"
     },
     "roles": {
-        "publisher": {
+        "internal/publisher": {
             "/permission/admin/login": ["ui.execute"]
         },
-        "reviewer": {
+        "internal/reviewer": {
             "/permission/admin/login": ["ui.execute"]
         }
     },
@@ -15,7 +15,7 @@
         "username": "admin",
         "password": "admin"
     },
-    "userRoles": ["publisher"],
+    "userRoles": ["internal/publisher"],
     "permissions": {
         "login": {
             "/permission/admin/login": ["ui.execute"]
