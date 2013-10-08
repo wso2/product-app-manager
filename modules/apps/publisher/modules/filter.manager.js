@@ -119,7 +119,7 @@ var filterManagementModule = function () {
             //Check if the filter can be applied
             if (filter.isApplicable(context)) {
 
-                log.info('executing filter ' + filterName);
+                log.debug('executing filter ' + filterName);
 
                 //A filter can stop processing if false is returned
                 isContinued = filter.execute(context);
@@ -127,7 +127,7 @@ var filterManagementModule = function () {
                 //Stop processing if the filter signals it to stop
                 if (!isContinued) {
 
-                    log.info('stopping execution of filters as a kill signal was provided by ' + filterName);
+                    log.debug('stopping execution of filters as a kill signal was provided by ' + filterName);
 
                     return prepareOutput(isObject, context['data']);
                 }
@@ -135,7 +135,7 @@ var filterManagementModule = function () {
 
         }
 
-        log.info('finished applying filters for asset type: '+assetType);
+        log.debug('finished applying filters for asset type: '+assetType);
 
         return prepareOutput(isObject, context['data']);
     };
