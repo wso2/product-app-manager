@@ -39,18 +39,22 @@ $btn.click(function (e) {
         $btn.attr('disabled', 'disabled');
         $.get('apis/comments.jag', {
             activity: JSON.stringify(activity)
-        }, function () {
+        }, function (published) {
             $btn.removeAttr('disabled');
-            $radio.rating('select', null);
-            $textArea.val('');
 
-            caramel.partials({activity: 'themes/' + caramel.themer + '/partials/activity.hbs'}, function () {
-                var newComment = Handlebars.partials['activity'](activity);
-                $stream.prepend(newComment);
-                if (adjustHeight) {
-                    adjustHeight();
-                }
-            });
+            if (published.success) {
+                $radio.rating('select', null);
+                $textArea.val('');
+
+                activity.id = published.id;
+                caramel.partials({activity: 'themes/' + caramel.themer + '/partials/activity.hbs'}, function () {
+                    var newComment = Handlebars.partials['activity'](activity);
+                    $stream.prepend(newComment);
+                    if (adjustHeight) {
+                        adjustHeight();
+                    }
+                });
+            }
         });
 
     }
