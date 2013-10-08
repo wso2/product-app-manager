@@ -2,6 +2,7 @@
 <Module>
     <ModulePrefs title="Line Plus Bar Chart"
                  author="WSO2 Gadget Server"
+                 category="Templates"
                  height="230"
                  scrolling="true"
                  description="A generic Line + Bar Chart gadget, that takes a json data source as an input. It can be be configured to fetch data

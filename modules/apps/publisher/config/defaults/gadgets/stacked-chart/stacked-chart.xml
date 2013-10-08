@@ -2,6 +2,7 @@
     <Module>
     <ModulePrefs title="Stacked Chart"
                  author="WSO2 Gadget Server"
+                 category="Templates"
                  height="230"
                  scrolling="true"
                  tags="charts,stacked,visualization"
