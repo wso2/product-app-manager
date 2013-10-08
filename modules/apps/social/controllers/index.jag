@@ -14,11 +14,11 @@ var caramel;
     var carbon = require('carbon');
     var social = carbon.server.osgiService('org.wso2.carbon.social.service.SocialActivityService');
     var target = request.getParameter('target');
-    var obj, commentsJSON;
+    var obj, reviewsJSON;
     if (target) {
         try {
             obj = JSON.parse(String(social.getSocialObjectJson(target)));
-            commentsJSON = obj.attachments;
+            reviewsJSON = obj.attachments;
         } catch (e) {
             new Log('social.activityBrowser').error(e);
         }
@@ -30,7 +30,7 @@ var caramel;
                 id: target,
                 user: username
             },
-            stream: {comments: commentsJSON}
+            stream: {reviews: reviewsJSON}
         });
     } else {
         print('please use the target URL parameter as the asset id, eg: http://localhost:9763/social/?target=33530252-rer-w345325');
