@@ -211,11 +211,22 @@ var filterManagementModule = function () {
         return list;
     }
 
-    function cached() {
-        //var instance=application.get
+    /*
+    The function returns a cached copy of the filter manager
+     */
+    function getCached() {
+        var instance=application.get(APP_FM);
+
+        if(!instance){
+            instance=new FilterManager();
+            application.put(APP_FM,instance);
+        }
+
+        return instance;
     }
 
     return{
-        FilterManager: FilterManager
+        FilterManager: FilterManager,
+        cached:getCached
     }
 }
