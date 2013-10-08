@@ -13,8 +13,8 @@
 					<parameter name="PERMISSION:delete" value="http://www.wso2.org/projects/registry/actions/delete" />
 					<parameter name="PERMISSION:authorize" value="authorize"/>
 
-					<parameter name="STATE_RULE1:Created" value="private_{asset_author}:+get,+add,+delete,+authorize" />
-					<parameter name="STATE_RULE2:Created" value="reviewer:-get,-add,-delete,-authorize" />
+					<parameter name="STATE_RULE1:Created" value="Internal/private_{asset_author}:+get,+add,+delete,+authorize" />
+					<parameter name="STATE_RULE2:Created" value="Internal/reviewer:-get,-add,-delete,-authorize" />
 					<parameter name="STATE_RULE3:Created" value="Internal/everyone:-get,-add,-delete,-authorize" />
 				</execution>
 			</data>
@@ -30,8 +30,8 @@
 					<parameter name="PERMISSION:delete" value="http://www.wso2.org/projects/registry/actions/delete" />
 					<parameter name="PERMISSION:authorize" value="authorize"/>
 
-					<parameter name="STATE_RULE1:In-Review" value="private_{asset_author}:+get,-add,-delete,-authorize" />
-					<parameter name="STATE_RULE2:In-Review" value="reviewer:+get,+add,-delete,+authorize"/>
+					<parameter name="STATE_RULE1:In-Review" value="Internal/private_{asset_author}:+get,-add,-delete,-authorize" />
+					<parameter name="STATE_RULE2:In-Review" value="Internal/reviewer:+get,+add,-delete,+authorize"/>
 					<parameter name="STATE_RULE3:In-Review" value="Internal/everyone:-get,-add,-delete,-authorize" />
 				</execution>
 			</data>
@@ -47,8 +47,8 @@
 					<parameter name="PERMISSION:delete" value="http://www.wso2.org/projects/registry/actions/delete" />
 					<parameter name="PERMISSION:authorize" value="authorize"/>
 
-					<parameter name="STATE_RULE1:Published" value="private_{asset_author}:+get,+add,-delete,+authorize" />
-					<parameter name="STATE_RULE2:Published" value="reviewer:+get,-add,-delete,-authorize"/>
+					<parameter name="STATE_RULE1:Published" value="Internal/private_{asset_author}:+get,+add,-delete,+authorize" />
+					<parameter name="STATE_RULE2:Published" value="Internal/reviewer:+get,-add,-delete,-authorize"/>
 					<parameter name="STATE_RULE3:Published" value="Internal/everyone:+get,-add,-delete,-authorize" />
 				</execution>
 			</data>
@@ -64,8 +64,8 @@
 					<parameter name="PERMISSION:delete" value="http://www.wso2.org/projects/registry/actions/delete" />
 					<parameter name="PERMISSION:authorize" value="authorize"/>
 
-					<parameter name="STATE_RULE1:Unpublished" value="private_{asset_author}:+get,+add,+delete,+authorize" />
-					<parameter name="STATE_RULE2:Unpublished" value="reviewer:-get,-add,-delete,-authorize"/>
+					<parameter name="STATE_RULE1:Unpublished" value="Internal/private_{asset_author}:+get,+add,+delete,+authorize" />
+					<parameter name="STATE_RULE2:Unpublished" value="Internal/reviewer:-get,-add,-delete,-authorize"/>
 					<parameter name="STATE_RULE3:Unpublished" value="Internal/everyone:-get,-add,-delete,-authorize"/>
 				</execution>
 			</data>
@@ -81,8 +81,8 @@
 					<parameter name="PERMISSION:delete" value="http://www.wso2.org/projects/registry/actions/delete" />
 					<parameter name="PERMISSION:authorize" value="authorize"/>
 
-					<parameter name="STATE_RULE1:In-Review" value="private_{asset_author}:+get,-add,-delete,-authorize" />
-					<parameter name="STATE_RULE2:In-Review" value="reviewer:+get,+add,-delete,+authorize"/>
+					<parameter name="STATE_RULE1:In-Review" value="Internal/private_{asset_author}:+get,-add,-delete,-authorize" />
+					<parameter name="STATE_RULE2:In-Review" value="Internal/reviewer:+get,+add,-delete,+authorize"/>
 					<parameter name="STATE_RULE3:In-Review" value="Internal/everyone:-get,-add,-delete,-authorize" />
 				</execution>
 			</data>

@@ -92,20 +92,20 @@
         "images_banner": {
 
             "lifecycle": {
-                "created": ["private_{overview_provider}"],
-                "in-review": ["reviewer", "private_{overview_provider}"],
-                "published": ["Internal/everyone", "private_{overview_provider}", "reviewer"],
-                "unpublished": ["private_{overview_provider}"]
+                "created": ["Internal/private_{overview_provider}"],
+                "in-review": ["Internal/reviewer", "Internal/private_{overview_provider}"],
+                "published": ["Internal/everyone", "Internal/private_{overview_provider}", "Internal/reviewer"],
+                "unpublished": ["Internal/private_{overview_provider}"]
             }
         },
 
         "images_thumbnail": {
 
             "lifecycle": {
-                "created": ["private_{overview_provider}"],
-                "in-review": ["reviewer", "private_{overview_provider}"],
-                "published": ["Internal/everyone", "private_{overview_provider}", "reviewer"],
-                "unpublished": ["private_{overview_provider}"]
+                "created": ["Internal/private_{overview_provider}"],
+                "in-review": ["Internal/reviewer", "Internal/private_{overview_provider}"],
+                "published": ["Internal/everyone", "Internal/private_{overview_provider}", "Internal/reviewer"],
+                "unpublished": ["Internal/private_{overview_provider}"]
             }
         }
 
