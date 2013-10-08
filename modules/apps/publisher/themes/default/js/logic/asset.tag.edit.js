@@ -68,6 +68,7 @@ $(function () {
                 //Initialize the tag container
                 $(TAG_CONTAINER).tokenInput(masterTags, {theme: TAG_THEME, prePopulate: tags, preventDuplicates: false,
                     onAdd: onAdd,
+                    allowFreeTagging: true,
                     onDelete: onRemove});
 
             }
