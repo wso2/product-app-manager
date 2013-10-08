@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
-	<ModulePrefs title="WSO2 Dev List Discussion"
+	<ModulePrefs title="WSO2 Dev List Discussion" category="WSO2"
                  height="350" tags="charts,wso2,visualization"
                  description="This is a sample gadget that is shipped with the store. This gadget visualizes the frequency of mails and popular mail senders in WSO2 Developer mailing list.">
 		<Require feature="pubsub-2">

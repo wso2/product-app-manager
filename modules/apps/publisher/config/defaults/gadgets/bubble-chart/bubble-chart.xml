@@ -2,6 +2,7 @@
 <Module>
     <ModulePrefs title="Bubble Chart"
                  author="WSO2 Gadget Server"
+                 category="Templates"
                  height="230"
                  scrolling="true"
                  tags="charts,bubble,visualization,data,analytics"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
-  <ModulePrefs title="Directions by Google Maps" title_url="http://maps.google.com/help/maps/gadgets/directions/" description="Official Google Gadget.  Easily provide customers with personalized Google Maps driving and walking directions to all of your business locations." author="E J Kalafarski" author_email="directionsgadget-support@google.com" author_affiliation="Google" author_location="Providence, RI, USA" height="55" screenshot="http://hosting.gmodules.com/ig/gadgets/file/114281111391296844949/driving-directions-screenshot.png" thumbnail="http://hosting.gmodules.com/ig/gadgets/file/114281111391296844949/driving-directions-thumbnail.png" scaling="false"> 
+  <ModulePrefs title="Directions by Google Maps" title_url="http://maps.google.com/help/maps/gadgets/directions/" description="Official Google Gadget.  Easily provide customers with personalized Google Maps driving and walking directions to all of your business locations." category="Google" author="E J Kalafarski" author_email="directionsgadget-support@google.com" author_affiliation="Google" author_location="Providence, RI, USA" height="55" screenshot="http://hosting.gmodules.com/ig/gadgets/file/114281111391296844949/driving-directions-screenshot.png" thumbnail="http://hosting.gmodules.com/ig/gadgets/file/114281111391296844949/driving-directions-thumbnail.png" scaling="false"> 
     <Require feature="setprefs"/>
     <Require feature="dynamic-height"/>
     <Require feature="com.google.gadgets.analytics"/>

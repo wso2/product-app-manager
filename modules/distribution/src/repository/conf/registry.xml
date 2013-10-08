@@ -165,11 +165,12 @@
             <indexer class="org.wso2.carbon.registry.indexing.indexer.XMLIndexer" mediaTypeRegEx="application/(.)+\+xml"/>
             <indexer class="org.wso2.carbon.registry.indexing.indexer.PlainTextIndexer" mediaTypeRegEx="text/(.)+"/>
             <indexer class="org.wso2.carbon.registry.indexing.indexer.PlainTextIndexer" mediaTypeRegEx="application/x-javascript"/>
-            <indexer class="org.wso2.carbon.registry.indexing.indexer.PlainTextIndexer" mediaTypeRegEx="application/json"/-->
-			<indexer class="org.wso2.carbon.governance.registry.extensions.indexers.RXTIndexer" mediaTypeRegEx="application/vnd.wso2-ebook+xml" profiles ="default"/>
-			<indexer class="org.wso2.carbon.governance.registry.extensions.indexers.RXTIndexer" mediaTypeRegEx="application/vnd.wso2-gadget+xml" profiles ="default"/>
-			<indexer class="org.wso2.carbon.governance.registry.extensions.indexers.RXTIndexer" mediaTypeRegEx="application/vnd.wso2-site+xml" profiles ="default"/>
-          
+            <indexer class="org.wso2.carbon.registry.indexing.indexer.PlainTextIndexer" mediaTypeRegEx="application/json"/>
+			<indexer class="org.wso2.carbon.governance.registry.extensions.indexers.RXTIndexer" mediaTypeRegEx="application/vnd.wso2-ebook\+xml" profiles ="default"/>
+			<indexer class="org.wso2.carbon.governance.registry.extensions.indexers.RXTIndexer" mediaTypeRegEx="application/vnd.wso2-gadget\+xml" profiles ="default"/>
+			<indexer class="org.wso2.carbon.governance.registry.extensions.indexers.RXTIndexer" mediaTypeRegEx="application/vnd.wso2-site\+xml" profiles ="default"/-->
+            <indexer class="org.wso2.carbon.governance.registry.extensions.indexers.RXTIndexer" mediaTypeRegEx="application/vnd.(.)+\+xml" profiles ="default"/>
+        
         </indexers>
         <exclusions>
             <exclusion pathRegEx="/_system/config/repository/dashboards/gadgets/swfobject1-5/.*[.]html"/>

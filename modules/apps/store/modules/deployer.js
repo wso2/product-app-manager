@@ -132,6 +132,7 @@ var gadget = function (tenantId, options) {
             "overview_name": options.name,
             "overview_version": options.version,
             "overview_description": options.description,
+            "overview_category": options.category,
             "overview_url": options.url,
             "overview_provider": options.provider,
             "images_banner": options.banner,

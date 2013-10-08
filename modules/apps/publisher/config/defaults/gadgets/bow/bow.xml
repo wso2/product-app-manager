@@ -3,11 +3,12 @@
 <ModulePrefs title="Bow Man" 
 directory_title="Bow Man" 
 description="Bow Man - A flash game where you can test your aim. Shoot at each other with a bow and arrow. You can play vs. the Computer or vs. a friend. Keywords: bowman, arrows, shooting, archery, target, practice, bows, bullseye, game, flash, arcade, fun, games"
+category="Google"
 title_url="http://www.atlaslabs.net" 
 author="AtlasLabs" author_email="gadgets@atlaslabs.net" 
 screenshot="http://www.atlaslabs.net/gadgets/widget/bow/1.jpg" 
 thumbnail="http://www.atlaslabs.net/gadgets/widget/bow/2.gif" 
-height="363" width="468" render_inline="never" scaling="false" scrolling="false" category="funandgames" category2="lifestyle">
+height="363" width="468" render_inline="never" scaling="false" scrolling="false">
 <Require feature="analytics" /> 
 </ModulePrefs>
 <Content type="html">
