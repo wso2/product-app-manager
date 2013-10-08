@@ -20,7 +20,11 @@
 
 body {
     color: #4C4C4C;
-    font: 13px/16px "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+    font: 14px/16px "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+}
+a, a:visited, a:active {
+    color: #229A55;
+    text-decoration: none;
 }
 .row {
     clear: both;
@@ -229,4 +233,13 @@ button:hover {
 
 .user-rating {
     display: inline-block;
+}
+
+.com-guest {
+    background: none repeat scroll 0 0 #F7F9F9;
+    border: 1px solid #EEEEEE;
+    padding: 20px;
+}
+.com-first-review{
+    font-style: italic;
 }
