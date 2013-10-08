@@ -1,7 +1,23 @@
 <%
 var caramel;
 (function () {
+    var didILike = function (review) {
+        var likes = review.likes && review.likes.items;
+        if (likes) {
+            for (var j = 0; j < likes.length; j++) {
+                var like = likes[j];
+
+                if (like.id == "somewirdname") {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+
+
     caramel = require('caramel');
+    var log = new Log('social.activityBrowser');
     var user = request.getParameter('user');
     var userModule = require('/modules/user.js');
     var logged = userModule.current(session);
@@ -20,9 +36,17 @@ var caramel;
             obj = JSON.parse(String(social.getSocialObjectJson(target)));
             reviewsJSON = obj.attachments;
         } catch (e) {
-            new Log('social.activityBrowser').error(e);
+            log.error(e);
         }
         var username = logged ? String(logged.username) + '@' + logged.tenantDomain : "anonymous";
+
+
+        if (reviewsJSON) {
+            for (var i = 0; i < reviewsJSON.length; i++) {
+                var review = reviewsJSON[i];
+                review.ILike = didILike(review);
+            }
+        }
 
         caramel.render({
             isLogged: Boolean(logged),
