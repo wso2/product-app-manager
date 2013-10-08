@@ -14,15 +14,11 @@ var caramel;
     if (logged) {
         var carbon = require('carbon');
         var social = carbon.server.osgiService('org.wso2.carbon.social.service.SocialActivityService');
-        var commentsJSON = [];
         var target = request.getParameter('target');
-
         if (target) {
             try {
-                var comments = social.listActivities(target);
-                for (var i = 0; i < comments.length; i++) {
-                    commentsJSON.push(JSON.parse(String(comments[i])));
-                }
+                var obj = JSON.parse(String(social.getSocialObjectJson(target)));
+                var commentsJSON = obj.attachments;
             } catch (e) {
                 new Log('social.activityBrowser').error(e);
             }

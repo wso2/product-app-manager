@@ -5,9 +5,9 @@ import org.apache.commons.logging.LogFactory;
 import org.mozilla.javascript.NativeObject;
 import org.wso2.carbon.databridge.agent.thrift.DataPublisher;
 
-import java.util.Arrays;
-
 import static org.wso2.carbon.social.Constants.*;
+import static org.wso2.carbon.social.JSONUtil.getNullableProperty;
+import static org.wso2.carbon.social.JSONUtil.getProperty;
 
 public class ActivityPublisher {
 
@@ -32,29 +32,6 @@ public class ActivityPublisher {
             publisher.publish(id, null, null, new Object[]{verb, objectType, contextId, json});
         } catch (Exception e) {
             LOG.error("failed to publish social event.", e);
-        }
-    }
-
-    private String getNullableProperty(NativeObject obj, String... keys) {
-        NativeObject result = obj;
-        for (int i = 0; i < keys.length - 1; i++) {
-            String key = keys[i];
-            Object value = result.get(key, result);
-            if (value instanceof NativeObject) {
-                result = (NativeObject) value;
-            } else {
-                return null;
-            }
-        }
-        return result.get(keys[keys.length - 1], result).toString();
-    }
-
-    private String getProperty(NativeObject obj, String... keys) {
-        String property = getNullableProperty(obj, keys);
-        if (property == null) {
-            throw new RuntimeException("property missing in activity object : " + Arrays.toString(keys));
-        } else {
-            return property;
         }
     }
 

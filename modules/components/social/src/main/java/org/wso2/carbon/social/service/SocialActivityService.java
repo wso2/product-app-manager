@@ -9,4 +9,6 @@ public interface SocialActivityService {
     void publish(NativeObject activity);
 
     String[] listActivities(String contextId);
+
+    String getSocialObjectJson(String targetId);
 }

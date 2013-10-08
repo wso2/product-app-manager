@@ -31,7 +31,7 @@ $btn.click(function (e) {
 
     } else {
         var activity = {"verb": "post",
-            "object": {"type": "review", "content": $textArea.val(), rating: rating},
+            "object": {"objectType": "review", "content": $textArea.val(), rating: rating},
             "target": {"id": target}
         };
 
@@ -60,7 +60,7 @@ $stream.live('click', '.icon-thumbs-up', function (e) {
     var id = $likeBtn.parents('.com-review').attr('data-target-id');
 
     var activity = {"verb": "like",
-        "object": {"type": "like"},
+        "object": {"objectType": "like"},
         "target": {"id": id},
         "context": {"id": target}
     };

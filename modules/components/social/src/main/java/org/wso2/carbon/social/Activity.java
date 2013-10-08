@@ -16,6 +16,14 @@ public class Activity {
         body.addProperty("id", id);
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public JsonObject getBody() {
+        return body;
+    }
+
     public int getTimestamp() {
         return timestamp;
     }

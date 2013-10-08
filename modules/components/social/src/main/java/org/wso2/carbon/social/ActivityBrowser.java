@@ -1,7 +1,6 @@
 package org.wso2.carbon.social;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -18,6 +17,15 @@ public class ActivityBrowser {
 
     private JsonParser parser = new JsonParser();
     private Connection conn;
+
+    public JsonObject getSocialObject(String targetId) {
+        List<Activity> activities = listActivitiesChronologically(targetId);
+        ActivitySummarizer summarizer = new ActivitySummarizer(targetId);
+        for (Activity activity : activities) {
+            summarizer.add(activity);
+        }
+        return summarizer.get();
+    }
 
     public List<Activity> listActivities(String contextId) {
         List<Activity> activities = null;
