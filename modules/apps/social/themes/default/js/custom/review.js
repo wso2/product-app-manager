@@ -2,6 +2,7 @@ var $radio = $('.auto-submit-star');
 var $btn = $('#btn-post');
 var $textArea = $('#com-body');
 var $stream = $('#stream');
+var $firstReview = $('.com-first-review');
 var windowProxy;
 
 var onMessage = function (messageEvent) {
@@ -40,6 +41,7 @@ $btn.click(function (e) {
         $.get('apis/comments.jag', {
             activity: JSON.stringify(activity)
         }, function (published) {
+            if($firstReview.length) $firstReview.hide();
             $btn.removeAttr('disabled');
 
             if (published.success) {
