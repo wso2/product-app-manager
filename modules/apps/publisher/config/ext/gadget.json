@@ -52,7 +52,7 @@
             "name": "save",
             "value": "default"
         },
-         {
+        {
             "field": "overview.*",
             "name": "editable",
             "value": true
@@ -62,7 +62,7 @@
             "name": "save",
             "value": "default"
         },
-         {
+        {
             "field": "images.*",
             "name": "editable",
             "value": true
@@ -78,29 +78,29 @@
             "value": "default"
         },
         {
-            "field":"overview.provider",
-            "name":"readOnly",
-            "value":"true"
-        },
-         {
-            "field":"overview.provider",
-            "name":"editable",
-            "value":false
-        },
-         {
-            "field":"overview.name",
-            "name":"editable",
-            "value":false
+            "field": "overview.provider",
+            "name": "readOnly",
+            "value": "true"
         },
         {
-            "field":"overview.version",
-            "name":"editable",
-            "value":false
+            "field": "overview.provider",
+            "name": "editable",
+            "value": false
         },
         {
-            "field":"overview.description",
-            "name":"value",
-            "value":"provider has not given a description"
+            "field": "overview.name",
+            "name": "editable",
+            "value": false
+        },
+        {
+            "field": "overview.version",
+            "name": "editable",
+            "value": false
+        },
+        {
+            "field": "overview.description",
+            "name": "value",
+            "value": "provider has not given a description"
         }
     ],
 
@@ -112,42 +112,52 @@
             "value": "SampleLifeCycle2"
         } ,
         {
-            "name":"banner",
-            "table":"images",
-            "type":"file"
+            "name": "banner",
+            "table": "images",
+            "type": "file"
         },
         {
-            "name":"thumbnail",
-            "table":"images",
-            "type":"file"
+            "name": "thumbnail",
+            "table": "images",
+            "type": "file"
         },
         {
-            "name":"description",
-            "table":"overview",
-            "value":"The provider has not given a description."
+            "name": "description",
+            "table": "overview",
+            "value": "The provider has not given a description."
         }
     ],
 
-    "storage":{
+    "permissions": {
+        "created": ["Internal/private_{overview_provider}"],
+        "in-review": ["Internal/reviewer", "Internal/private_{overview_provider}"],
+        "published": ["Internal/everyone", "Internal/private_{overview_provider}", "Internal/reviewer", "anon"],
+        "unpublished": ["Internal/private_{overview_provider}"]
+    },
 
-        "images_banner":{
+    "storage": {
 
-            "lifecycle":{
-                "created":["Internal/private_{overview_provider}"],
-                "in-review":["Internal/reviewer","Internal/private_{overview_provider}"],
-                "published":["Internal/everyone","Internal/private_{overview_provider}","Internal/reviewer","anon"],
-                "unpublished":["Internal/private_{overview_provider}"]
+        "images_banner": {
+
+
+            "lifecycle": {
+                "created": ["Internal/private_{overview_provider}"],
+                "in-review": ["Internal/reviewer", "Internal/private_{overview_provider}"],
+                "published": ["Internal/everyone", "Internal/private_{overview_provider}", "Internal/reviewer", "anon"],
+                "unpublished": ["Internal/private_{overview_provider}"]
+
             }
         },
 
-        "images_thumbnail":{
+        "images_thumbnail": {
 
-             "lifecycle":{
-                 "created":["Internal/private_{overview_provider}"],
-                 "in-review":["Internal/reviewer","Internal/private_{overview_provider}"],
-                 "published":["Internal/everyone","Internal/private_{overview_provider}","Internal/reviewer","anon"],
-                 "unpublished":["Internal/private_{overview_provider}"]
-             }
+            "lifecycle": {
+                "created": ["Internal/private_{overview_provider}"],
+                "in-review": ["Internal/reviewer", "Internal/private_{overview_provider}"],
+                "published": ["Internal/everyone", "Internal/private_{overview_provider}", "Internal/reviewer", "anon"],
+                "unpublished": ["Internal/private_{overview_provider}"]
+            }
+
         }
 
     }

@@ -16,6 +16,13 @@ routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{t
     var startDate = context.post.startDate;
     var endDate = context.post.endDate;
 
+    //manipulate endDate to overcome date-picker issue
+    var date = new Date(Date.parse(endDate.replace(/-/g,"/")));
+    date.setDate(date.getDate() + 1);
+    // The getMonth() method returns the month (from 0 to 11) for the specified date
+    date.setMonth(date.getMonth() + 1);
+    endDate = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate();
+
     var output = {};
 
     var artifactManager = rxtManager.getArtifactManager(type);
