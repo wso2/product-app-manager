@@ -39,6 +39,12 @@ var init = function (options) {
         var um = server.userManager(tenantId);
         var publisherConfig=require('/config/publisher-tenant.json');
         var securityProviderModule=require('/modules/security/storage.security.provider.js').securityModule();
+        var filterManagementModule=require('/modules/filter.manager.js').filterManagementModule();
+
+        var filterManager=filterManagementModule.cached();
+
+        //The security provider requires the user manager to work
+        filterManager.setContext(um);
 
         var securityProvider=securityProviderModule.cached();
 
