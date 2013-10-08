@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
-	<ModulePrefs title="WSO2 Jira" height="350" tags="charts,wso2,visualization"
+	<ModulePrefs title="WSO2 Jira" category="WSO2" height="350" tags="charts,wso2,visualization"
                  description="This is a sample gadget that is shipped with the store. This gadget visualizes the frequency of issues created and popular engineers working on issues in WSO2 Carbon Platform">
 		<Require feature="pubsub-2">
 			<Param name="topics">

@@ -27,6 +27,14 @@
             <field type="text" required="true">
                 <name>Version</name>
             </field>
+            <field type="options">
+                <name label="Category">Category</name>
+                <values>
+                    <value>Google</value>
+                    <value>WSO2</value>
+                    <value>Templates</value>
+                </values>
+            </field>
  	    <field type="text" url="true">
                 <name>URL</name>
             </field>

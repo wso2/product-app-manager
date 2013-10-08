@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
-	<ModulePrefs title="WSO2 Carbon Div List Discussion" height="350" tags="charts,wso2,visualization" description="WSO2 Carbon Div mial list ">
+	<ModulePrefs title="WSO2 Carbon Div List Discussion" category="WSO2" height="350" tags="charts,wso2,visualization" description="WSO2 Carbon Div mial list ">
 		<Require feature="pubsub-2">
 			<Param name="topics">
 				<![CDATA[

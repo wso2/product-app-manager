@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
-	<ModulePrefs title="WSO2 Carbon Commits List Discussion"
+	<ModulePrefs title="WSO2 Carbon Commits List Discussion" category="WSO2"
                  height="350" tags="charts,wso2,visualization"
                  description="This is a sample gadget that is shipped with the store. This gadget visualizes the frequency of commit mails and popular commiters in WSO2 Carbon Platform">
 		<Require feature="pubsub-2">

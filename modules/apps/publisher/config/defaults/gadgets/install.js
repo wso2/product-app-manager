@@ -42,6 +42,7 @@ var installer = function () {
         artifact['attributes']['overview_provider'] = 'admin';
         artifact['attributes']['overview_version'] = '1.0.0';
         artifact['attributes']['overview_description'] = xml.*::ModulePrefs.@description;
+        artifact['attributes']['overview_category'] = xml.*::ModulePrefs.@category;
         artifact['attributes']['overview_url'] = path + context.bundle.getName() + '.xml';
         //artifact['attributes']['images_thumbnail'] = path + 'thumbnail.jpg';
         //artifact['attributes']['images_banner'] = path + 'banner.jpg';

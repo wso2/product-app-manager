@@ -24,5 +24,7 @@ var assetLinks = function (user) {
                 title: 'Gadgets',
                 url: ''
             }
-        ]};
+        ],
+        isCategorySupport: true
+   };
 };

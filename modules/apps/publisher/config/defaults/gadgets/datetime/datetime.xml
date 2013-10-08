@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
 <ModulePrefs title="Date Time"
+  category="Google"
   author="Google"
   author_email="googlemodules+datetime+201206201@google.com"
   author_affiliation="Google Inc."
   author_location="Mountain View, CA"
   screenshot="//www.gstatic.com/ig/modules/datetime_v2/content/__MSG_locale__.cache.png"
   thumbnail="//www.gstatic.com/ig/modules/datetime_v2/content/__MSG_locale__-thm.cache.png"
-  category="tools"
   description="__MSG_description__"
   height="160" scaling="false">
   <Locale messages="http://www.gstatic.com/ig/modules/datetime_v2/content/ALL_ALL.xml"/>
