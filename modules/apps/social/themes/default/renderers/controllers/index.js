@@ -1,9 +1,16 @@
 var render = function (theme, data, meta, require) {
-    theme('simple', {
-        title: data.title,
-        body: [
-            { partial: 'comment-input', context: data.review_param},
-            { partial: 'stream', context: data.stream}
-        ]
-    });
+    if (data.input_param.isLogged) {
+        theme('simple', {
+            body: [
+                { partial: 'comment-input', context: data.input_param},
+                { partial: 'stream', context: data.stream}
+            ]
+        });
+    } else {
+        theme('simple', {
+            body: [
+                { partial: 'stream', context: data.stream}
+            ]
+        });
+    }
 };

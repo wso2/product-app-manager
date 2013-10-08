@@ -11,31 +11,29 @@ var caramel;
     }
 
     logged = userModule.current(session);
-    if (logged) {
-        var carbon = require('carbon');
-        var social = carbon.server.osgiService('org.wso2.carbon.social.service.SocialActivityService');
-        var target = request.getParameter('target');
-        var obj, commentsJSON;
-        if (target) {
-            try {
-                obj = JSON.parse(String(social.getSocialObjectJson(target)));
-                commentsJSON = obj.attachments;
-            } catch (e) {
-                new Log('social.activityBrowser').error(e);
-            }
-
-            caramel.render({
-                review_param: {
-                    id: target,
-                    user: String(logged.username) + '@' + logged.tenantDomain
-                },
-                stream: {comments: commentsJSON}
-            });
-        } else {
-            print('please use the target URL parameter as the asset id, eg: http://localhost:9763/social/?target=33530252-rer-w345325');
+    var carbon = require('carbon');
+    var social = carbon.server.osgiService('org.wso2.carbon.social.service.SocialActivityService');
+    var target = request.getParameter('target');
+    var obj, commentsJSON;
+    if (target) {
+        try {
+            obj = JSON.parse(String(social.getSocialObjectJson(target)));
+            commentsJSON = obj.attachments;
+        } catch (e) {
+            new Log('social.activityBrowser').error(e);
         }
+        var username = logged ? String(logged.username) + '@' + logged.tenantDomain : "anonymous";
+
+        caramel.render({
+            input_param: {
+                id: target,
+                isLogged: Boolean(logged),
+                user: username
+            },
+            stream: {comments: commentsJSON}
+        });
     } else {
-        print('please login to add comments');
+        print('please use the target URL parameter as the asset id, eg: http://localhost:9763/social/?target=33530252-rer-w345325');
     }
 })();
 %>
