@@ -24,7 +24,11 @@
                                     {{/each}}
                                     </select>
                                 {{else}}
-                                	<input id='{{this.name}}' name='{{this.name}}' type='text'  class="input-xlarge" value='{{this.value}}' {{#unless isEditable}} disabled="true" {{/unless}} {{#if this.isRequired}} required{{/if}}/>
+                                	 {{#if this.isTextArea}}
+                                    	<textarea id='{{this.name}}' class="input-xlarge">{{this.value}}</textarea>
+                               		 {{else}}
+                                		<input id='{{this.name}}' name='{{this.name}}' type='text'  class="input-xlarge" value='{{this.value}}' {{#unless isEditable}} disabled="true" {{/unless}} {{#if this.isRequired}} required{{/if}}/>
+                                	{{/if}}
                                 {{/if}}
                                 
                                

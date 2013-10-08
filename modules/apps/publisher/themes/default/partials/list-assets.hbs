@@ -8,13 +8,11 @@
                 <th><a href="?sortby=owner">Owner <i class="icon-caret-down"></i></a></th>
                 <th><a href="?sortby=status">Status <i class="icon-caret-down"></i></a></th>
                 <th><a href="?sortby=createdDate">Created</i></a></th>
-                <th><a href="?sortby=modifiedDate">Modified</i></a></th>
                 <th></th>
                 </thead>
                 <tbody>
                  {{#each artifacts}}
                     <tr>
-
                         <td>
                         <img src="{{this.attributes.images_thumbnail}}" class="" />
                         </td>
@@ -34,9 +32,6 @@
                         </td>
                         <td>
                         <small>Fri 29 Mar 2013 01:45:08 PM IST</small>
-                        </td>
-                        <td>
-                        <small> 30 Mar 2013 01:45:08 PM IST</small>
                         </td>
                     </tr>
                 {{/each}}

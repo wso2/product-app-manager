@@ -18,10 +18,10 @@ var Manager;
 
 var assetLinks = function (user) {
     return {
-        title: 'Sites',
+        title: 'Websites',
         links: [
             {
-                title: 'Sites',
+                title: 'Websites',
                 url: ''
             },
             {
