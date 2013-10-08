@@ -28,7 +28,7 @@ var filterModule = function () {
             return true;
         }
 
-        log.debug('not applying filter as a permission block has not been specified for the asset type.');
+        log.info('not applying filter as a permission block has not been specified for the asset type.');
 
         return false;
     }
@@ -52,17 +52,26 @@ var filterModule = function () {
             permissableRoles = obtainPermissibleRoles(context, item.lifecycleState);
 
             //Fill in dynamic values
-            permissableRoles = fillDynamicPermissibleRoles(context, permissableRoles);
+            permissableRoles = fillDynamicPermissibleRoles(item, permissableRoles);
+
+            log.info("user's roles: "+stringify(userRoles));
+            log.info("permissible roles "+permissableRoles);
 
             //Check if the user has any of the roles specified for the state
             var commonRoles = utility.intersect(userRoles, permissableRoles, function (a, b) {
                 return (a == b);
             });
 
+            log.info('common roles: '+commonRoles);
+
             //Check if we have common roles
             if (commonRoles.length > 0) {
+                log.info(item.attributes.overview_name+' added.');
                 items.push(item);
+            }else{
+                log.info(item.attributes.overview_name+' removed');
             }
+
 
         }
 
@@ -77,10 +86,10 @@ var filterModule = function () {
      @context: The context of the request (username)
      @permissions: A list of permissions
      */
-    function fillDynamicPermissibleRoles(context, permissions) {
+    function fillDynamicPermissibleRoles(item, permissions) {
         var list = [];
         for (var index in permissions) {
-            list.push(permissions[index].replace('{overview_provider}', context.username));
+            list.push(permissions[index].replace('{overview_provider}', item.attributes.overview_provider));
         }
 
         return list;

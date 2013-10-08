@@ -119,7 +119,7 @@ var filterManagementModule = function () {
             //Check if the filter can be applied
             if (filter.isApplicable(context)) {
 
-                log.debug('executing filter ' + filterName);
+                log.info('executing filter ' + filterName);
 
                 //A filter can stop processing if false is returned
                 isContinued = filter.execute(context);
@@ -135,7 +135,7 @@ var filterManagementModule = function () {
 
         }
 
-        log.debug('finished applying filters for asset type: '+assetType);
+        log.info('finished applying filters for asset type: '+assetType);
 
         return prepareOutput(isObject, context['data']);
     };
