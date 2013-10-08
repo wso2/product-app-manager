@@ -13,14 +13,16 @@ public class ActivityPublisher {
 
     private static final Log LOG = LogFactory.getLog(ActivityPublisher.class);
 
+    //this variable is init lazily. use getPublisher method to access.
     private DataPublisher publisher;
+    //this variable is init lazily. use getStreamId method to access.
     private String streamId;
 
 
     public void publish(NativeObject activity) {
         DataPublisher publisher = getPublisher();
         try {
-            String id = getStreamId(publisher);
+            String streamId = getStreamId(publisher);
             String json = JSONUtil.SimpleNativeObjectToJson(activity);
             String verb = getProperty(activity, VERB_JSON_PROP);
             String objectType = getProperty(activity, OBJECT_JSON_PROP, TYPE_JSON_PROP);
@@ -29,7 +31,7 @@ public class ActivityPublisher {
                 contextId = getProperty(activity, TARGET_JSON_PROP, ID_JSON_PROP);
             }
 
-            publisher.publish(id, null, null, new Object[]{verb, objectType, contextId, json});
+            publisher.publish(streamId, null, null, new Object[]{verb, objectType, contextId, json});
         } catch (Exception e) {
             LOG.error("failed to publish social event.", e);
         }
