@@ -39,12 +39,6 @@ var init = function (options) {
         var um = server.userManager(tenantId);
         var publisherConfig=require('/config/publisher-tenant.json');
         var securityProviderModule=require('/modules/security/storage.security.provider.js').securityModule();
-        var filterManagementModule=require('/modules/filter.manager.js').filterManagementModule();
-
-        var filterManager=filterManagementModule.cached();
-
-        //The security provider requires the user manager to work
-        filterManager.setContext(um);
 
         var securityProvider=securityProviderModule.cached();
 
@@ -167,6 +161,8 @@ var Publisher = function (tenantId, session) {
     this.routeManager = managers.routeManager;
     this.dataInjector=managers.dataInjector;
     this.DataInjectorModes=managers.DataInjectorModes;
+    this.filterManager=managers.filterManager;
+
 };
 /*
 
@@ -182,7 +178,12 @@ var buildManagers = function (tenantId, registry) {
     var rxt_management = require('/modules/rxt.manager.js').rxt_management();
     var route_management = require('/modules/router-g.js').router();
     var dataInjectorModule=require('/modules/data/data.injector.js').dataInjectorModule();
+    var filterManagementModule=require('/modules/filter.manager.js').filterManagementModule();
 
+    var filterManager=new filterManagementModule.FilterManager();
+    var server=require('/modules/server.js');
+    var userManager=server.userManager(tenantId);
+    filterManager.setContext(userManager);
 
     var dataInjector=new dataInjectorModule.DataInjector();
     var injectorModes=dataInjectorModule.Modes;
@@ -234,7 +235,8 @@ var buildManagers = function (tenantId, registry) {
         rxtManager: rxtManager,
         routeManager: routeManager,
         dataInjector:dataInjector,
-        DataInjectorModes:injectorModes
+        DataInjectorModes:injectorModes,
+        filterManager:filterManager
     };
 };
 

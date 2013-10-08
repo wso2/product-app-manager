@@ -104,7 +104,7 @@
     ],
 
     "permissions": {
-
+        "created": ["private_{overview_provider}"],
         "in-review": ["reviewer", "private_{overview_provider}"],
         "published": ["Internal/everyone", "private_{overview_provider}", "reviewer", "anon"],
         "unpublished": ["private_{overview_provider}"]
