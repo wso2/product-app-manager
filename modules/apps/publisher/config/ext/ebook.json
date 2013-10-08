@@ -87,6 +87,14 @@
 
     ],
 
+    "permissions": {
+        "created": ["Internal/private_{overview_provider}"],
+        "in-review": ["Internal/reviewer", "Internal/private_{overview_provider}"],
+        "published": ["Internal/everyone", "Internal/private_{overview_provider}", "Internal/reviewer", "anon"],
+        "unpublished": ["Internal/private_{overview_provider}"]
+    },
+
+
     "storage": {
 
         "images_banner": {

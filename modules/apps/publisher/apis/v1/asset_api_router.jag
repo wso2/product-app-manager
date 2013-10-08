@@ -57,12 +57,21 @@ routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}/{id}', fu
 
         var artifact = artifactManager.get(id);
 
+        //Perform some filerting logic
+        artifact=filterManager.filter(artifact);
+
+        if(!artifact){
+            response.sendError(401,'You do not have viewing rights for this asset');
+            return;
+        }
+
         var model = modelManager.getModel(shortName);
 
         //Customize the resource for the current app
         dataInjector.inject(artifact,DataInjectorModes.DISPLAY);
 
         model.import('asset', artifact);
+
 
         var result = model.export('form');
 
@@ -226,6 +235,7 @@ if(passed){
     var modelManager = publisher.modelManager;
     var dataInjector=publisher.dataInjector;
     var DataInjectorModes=publisher.DataInjectorModes;
+    var filterManager=publisher.filterManager;
     var log=new Log();
 
 

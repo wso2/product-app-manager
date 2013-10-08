@@ -29,6 +29,7 @@ var rxtManager = publisher.rxtManager;
 var modelManager = publisher.modelManager;
 var dataInjector = publisher.dataInjector;
 var DataInjectorModes = publisher.DataInjectorModes;
+var filterManager=publisher.filterManager;
 
 var log = new Log();
 
@@ -69,7 +70,11 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
     //TODO: Return an empty artifact or null
     try {
 
+        log.info('look for '+id);
+
         var artifact = artifactManager.get(id);
+
+        log.info('left');
 
         //Get the template
         var rxtTemplate = rxtManager.findAssetTemplate(function (template) {
@@ -80,6 +85,16 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
 
         //Customize the asset for the app
         dataInjector.inject(artifact, DataInjectorModes.DISPLAY);
+
+
+        //Perform filtering logic on the artifact
+        artifact=filterManager.filter(artifact);
+
+        //If there is no data after the filtering step we need to send an error
+        if(!artifact){
+            response.sendError(401,'You do not have viewing permissions to the requested asset');
+            return;
+        }
 
         model.import('asset', artifact);
 
@@ -92,7 +107,7 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
 
         caramel.render({op: operation, cuser: user.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList});
     } catch (e) {
-        log.debug('The asset with id ' + id + ' could not be found due to : ' + e);
+        log.info('The asset with id ' + id + ' could not be found due to : ' + e);
         response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check server log.');
     }
 
