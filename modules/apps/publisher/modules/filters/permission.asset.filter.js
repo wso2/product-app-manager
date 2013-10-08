@@ -6,17 +6,42 @@
 
 var filterModule = function () {
 
-    var log=new Log('permission.asset.filter');
-    var utility=require('/modules/utility.js').rxt_utility();
+    var log = new Log('permission.asset.filter');
+    var utility = require('/modules/utility.js').rxt_utility();
+
+    var ADMIN_ROLE = 'admin';
+    var ANON_ROLE = 'anon';
+
+
+    /*
+     The function checks whether the filter can be applied to the current request
+     @context: The context of the request
+     @return: True if the filter can be applied ,else false
+     */
+    function isApplicable(context) {
+
+        var permissions = context.config.permissions || null;
+
+        //Check if a permission block is present for the given asset type
+        if (permissions) {
+
+            return true;
+        }
+
+        log.debug('not applying filter as a permission block has not been specified for the asset type.');
+
+        return false;
+    }
 
     /*
      The function filters the provided assets list based on the permissions defined in the extension file
+     @context: The context provides the required resources for the filter
      */
     function execute(context) {
         var data = context['data'];
         var userRoles = context['roles'];
         var item;
-        var items=[];
+        var items = [];
 
         //Go through each data item
         for (var index in data) {
@@ -24,50 +49,86 @@ var filterModule = function () {
             item = data[index];
 
             //Obtain the permissions for the current lifecycle state
-            permissableRoles=obtainPermissableRoles(context,item.lifecycleState);
+            permissableRoles = obtainPermissibleRoles(context, item.lifecycleState);
 
             //Fill in dynamic values
-            permissableRoles=fillDynamicPermissableRoles(permissableRoles);
+            permissableRoles = fillDynamicPermissibleRoles(context, permissableRoles);
 
             //Check if the user has any of the roles specified for the state
-            var commonRoles=utility.intersect(userRoles,permissableRoles,function(a,b){
-                return (a==b);
+            var commonRoles = utility.intersect(userRoles, permissableRoles, function (a, b) {
+                return (a == b);
             });
 
-            if(commonRoleslength>0){
-               items.push(item);
+            //Check if we have common roles
+            if (commonRoles.length > 0) {
+                items.push(item);
             }
+
         }
 
-        context['data']=items;
+        context['data'] = items;
 
         return true;
 
     }
 
     /*
-    The function is used to obtain permissible roles based on the provided state
-    @context: A context containing the permissions configuration block
-    @state: The state of the current asset
-    @return: An array of permissible roles
+     The function is used to fill in dynamic roles (e.g. private_{overview_provider} )
+     @context: The context of the request (username)
+     @permissions: A list of permissions
      */
-    function obtainPermissibleRoles(context,state){
-
-    }
-
-    /*
-    The function is used to fill in dynamic values of permissions
-     */
-    function fillDynamicPermissibleRoles(context,permissions){
-        var list=[];
-        for(var index in permissions){
-            list.push(permissions.replace('{overview_provider}',context.username));
+    function fillDynamicPermissibleRoles(context, permissions) {
+        var list = [];
+        for (var index in permissions) {
+            list.push(permissions[index].replace('{overview_provider}', context.username));
         }
 
         return list;
     }
 
+    /*
+     The function is used to obtain permissible roles based on the provided state
+     @context: A context containing the permissions configuration block
+     @state: The state of the current asset
+     @return: An array of permissible roles
+     */
+    function obtainPermissibleRoles(context, state) {
+        var config = context.config.permissions;
+        var roles = [];
+        var state = state.toLowerCase();
+
+        //Check if any roles are specified for the state
+        if (config.hasOwnProperty(state)) {
+            roles = config[state];
+        }
+
+        //All resources can be accessed by the admin role
+        roles = addAdminRole(roles);
+
+        return roles;
+    }
+
+    /*
+     The function checks whether the admin role is present in the permissions array.If it is not present,then
+     the it is added (All assets can be viewed by the admin role)
+     @roles: An array of roles having access to a resource
+     @return: If the admin role is not present in the permissions it is added
+     */
+    function addAdminRole(roles) {
+
+        //If the admin role has not been given,then add it
+        if (roles.indexOf(ADMIN_ROLE) == -1) {
+
+            roles.push(ADMIN_ROLE);
+
+        }
+
+        return roles;
+    }
+
+
     return{
+        isApplicable: isApplicable,
         execute: execute
     }
 }

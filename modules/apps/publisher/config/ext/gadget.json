@@ -68,14 +68,14 @@
             "value": "default"
         },
         {
-            "field":"overview.provider",
-            "name":"readOnly",
-            "value":"true"
+            "field": "overview.provider",
+            "name": "readOnly",
+            "value": "true"
         },
         {
-            "field":"overview.description",
-            "name":"value",
-            "value":"provider has not given a description"
+            "field": "overview.description",
+            "name": "value",
+            "value": "provider has not given a description"
         }
     ],
 
@@ -87,42 +87,49 @@
             "value": "SampleLifeCycle2"
         } ,
         {
-            "name":"banner",
-            "table":"images",
-            "type":"file"
+            "name": "banner",
+            "table": "images",
+            "type": "file"
         },
         {
-            "name":"thumbnail",
-            "table":"images",
-            "type":"file"
+            "name": "thumbnail",
+            "table": "images",
+            "type": "file"
         },
         {
-            "name":"description",
-            "table":"overview",
-            "value":"The provider has not given a description."
+            "name": "description",
+            "table": "overview",
+            "value": "The provider has not given a description."
         }
     ],
 
-    "storage":{
+    "permissions": {
 
-        "images_banner":{
+        "in-review": ["reviewer", "private_{overview_provider}"],
+        "published": ["Internal/everyone", "private_{overview_provider}", "reviewer", "anon"],
+        "unpublished": ["private_{overview_provider}"]
+    },
 
-            "lifecycle":{
-                "created":["private_{overview_provider}"],
-                "in-review":["reviewer","private_{overview_provider}"],
-                "published":["Internal/everyone","private_{overview_provider}","reviewer","anon"],
-                "unpublished":["private_{overview_provider}"]
+    "storage": {
+
+        "images_banner": {
+
+            "lifecycle": {
+                "created": ["private_{overview_provider}"],
+                "in-review": ["reviewer", "private_{overview_provider}"],
+                "published": ["Internal/everyone", "private_{overview_provider}", "reviewer", "anon"],
+                "unpublished": ["private_{overview_provider}"]
             }
         },
 
-        "images_thumbnail":{
+        "images_thumbnail": {
 
-             "lifecycle":{
-                 "created":["private_{overview_provider}"],
-                 "in-review":["reviewer","private_{overview_provider}"],
-                 "published":["Internal/everyone","private_{overview_provider}","reviewer","anon"],
-                 "unpublished":["private_{overview_provider}"]
-             }
+            "lifecycle": {
+                "created": ["private_{overview_provider}"],
+                "in-review": ["reviewer", "private_{overview_provider}"],
+                "published": ["Internal/everyone", "private_{overview_provider}", "reviewer", "anon"],
+                "unpublished": ["private_{overview_provider}"]
+            }
         }
 
     }
