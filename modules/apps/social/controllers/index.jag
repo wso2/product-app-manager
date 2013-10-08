@@ -1,26 +1,24 @@
 <%
 var caramel;
 (function () {
-    var didILike = function (review) {
+    caramel = require('caramel');
+    var log = new Log('social.activityBrowser');
+    var user = request.getParameter('user');
+    var userModule = require('/modules/user.js');
+    var logged = userModule.current(session);
+
+    var didILike = function (review,username) {
         var likes = review.likes && review.likes.items;
         if (likes) {
             for (var j = 0; j < likes.length; j++) {
                 var like = likes[j];
-
-                if (like.id == "somewirdname") {
+                if (like.id == username) {
                     return true;
                 }
             }
         }
         return false;
     };
-
-
-    caramel = require('caramel');
-    var log = new Log('social.activityBrowser');
-    var user = request.getParameter('user');
-    var userModule = require('/modules/user.js');
-    var logged = userModule.current(session);
 
     if (user && !logged) {
         include('login.jag');
@@ -44,7 +42,7 @@ var caramel;
         if (reviewsJSON) {
             for (var i = 0; i < reviewsJSON.length; i++) {
                 var review = reviewsJSON[i];
-                review.ILike = didILike(review);
+                review.ILike = didILike(review,username);
             }
         }
 

@@ -8,6 +8,17 @@ var windowProxy;
 var onMessage = function (messageEvent) {
     console.log(messageEvent);
 };
+var publish = function (activity, onSuccess) {
+    if(activity.target){
+        activity.context = {"id": target};
+    }else{
+        activity.target = {"id": target};
+    }
+    activity.actor = {"id": user, "objectType": "person" };
+    $.get('apis/comments.jag', {
+        activity: JSON.stringify(activity)
+    }, onSuccess)
+};
 
 var adjustHeight = function () {
     windowProxy.post({'expanded': $(document).height()});
@@ -32,16 +43,12 @@ $btn.click(function (e) {
 
     } else {
         var activity = {"verb": "post",
-            "object": {"objectType": "review", "content": $textArea.val(), rating: rating},
-            "target": {"id": target},
-            "author": {"id": user}
+            "object": {"objectType": "review", "content": $textArea.val(), rating: rating}
         };
 
         $btn.attr('disabled', 'disabled');
-        $.get('apis/comments.jag', {
-            activity: JSON.stringify(activity)
-        }, function (published) {
-            if($firstReview.length) $firstReview.hide();
+        publish(activity, function (published) {
+            if ($firstReview.length) $firstReview.hide();
             $btn.removeAttr('disabled');
 
             if (published.success) {
@@ -70,13 +77,10 @@ $stream.live('click', '.icon-thumbs-up', function (e) {
 
     var activity = {"verb": "like",
         "object": {"objectType": "like"},
-        "target": {"id": id},
-        "context": {"id": target}
+        "target": {"id": id}
     };
 
-    $.get('apis/comments.jag', {
-        activity: JSON.stringify(activity)
-    }, function () {
+    publish(activity, function () {
         $likeCount.text(Number($likeCount.text()) + 1);
     });
 

@@ -30,4 +30,8 @@ public class Activity {
     public String toString() {
         return body.toString();
     }
+
+    public String getActorId() {
+        return body.getAsJsonObject("actor").get("id").getAsString();
+    }
 }

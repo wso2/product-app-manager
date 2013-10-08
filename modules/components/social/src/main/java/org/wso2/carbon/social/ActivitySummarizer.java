@@ -41,7 +41,7 @@ public class ActivitySummarizer {
             JsonArray items = addArrIfNot(likes, "items");
 
             JsonObject person = new JsonObject();
-            person.add("id",new JsonPrimitive("somewirdname"));
+            person.add("id",new JsonPrimitive(activity.getActorId()));
             items.add(person);
         } else {
             JsonArray attachments = addArrIfNot(parent, "attachments");
