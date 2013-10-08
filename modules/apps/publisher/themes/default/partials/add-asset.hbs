@@ -47,20 +47,20 @@
                             </b>
                             <div class="controls">
                                 {{#if this.isTextBox}}
-                                    <input id='{{this.name}}' name='{{this.name}}' type='text' value='{{this.value}}'  class="input-xlarge" {{#if isReadOnly}} disabled="true" {{/if}} {{#if this.isRequired}} required{{/if}}/>
+                                    <input id='{{this.name}}' name='{{this.name}}' type='text' value='{{this.value}}'  class="span8" {{#if isReadOnly}} disabled="true" {{/if}} {{#if this.isRequired}} required{{/if}}/>
                                 {{/if}}
                                 {{#if this.isOptions}}
-                                    <select id="{{this.name}}"  class="input-xlarge">
+                                    <select id="{{this.name}}"  class="span8 selectpicker">
                                     {{#each this.valueList}}
                                         <option>{{this}}</option>
                                     {{/each}}
                                     </select>
                                 {{/if}}
                                 {{#if this.isTextArea}}
-                                    <textarea id='{{this.name}}' value='{{this.value}}' class="input-xlarge"></textarea>
+                                    <textarea id='{{this.name}}' value='{{this.value}}' class="span8"></textarea>
                                 {{/if}}
                                 {{#if this.isFile}}
-                                   <input id='{{this.name}}' type='file' />
+                                   <input id='{{this.name}}' type='file' class="span8" />
                                 {{/if}}
                                	{{#if this.isRequired}}
                                 <span class="label-required">*</span>

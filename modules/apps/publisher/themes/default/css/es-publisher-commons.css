@@ -1037,3 +1037,7 @@ span.title {
 .label-required{
     color:#b94a48;
 }
+.bootstrap-select button{
+    border: 1px solid #CCCCCC;
+    box-shadow: none;
+}

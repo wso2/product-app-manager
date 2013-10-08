@@ -18,16 +18,16 @@
 							<div class="controls">
 
 								{{#if this.isOptions}}
-                                    <select id="{{this.name}}" class="input-xlarge">
+                                    <select id="{{this.name}}" class="span8 selectpicker">
                                     {{#each this.valueList}}
                                         <option>{{this}}</option>
                                     {{/each}}
                                     </select>
                                 {{else}}
                                 	 {{#if this.isTextArea}}
-                                    	<textarea id='{{this.name}}' class="input-xlarge">{{this.value}}</textarea>
+                                    	<textarea id='{{this.name}}' class="span8">{{this.value}}</textarea>
                                		 {{else}}
-                                		<input id='{{this.name}}' name='{{this.name}}' type='text'  class="input-xlarge" value='{{this.value}}' {{#unless isEditable}} disabled="true" {{/unless}} {{#if this.isRequired}} required{{/if}}/>
+                                		<input id='{{this.name}}' name='{{this.name}}' type='text'  class="span8" value='{{this.value}}' {{#unless isEditable}} disabled="true" {{/unless}} {{#if this.isRequired}} required{{/if}}/>
                                 	{{/if}}
                                 {{/if}}
                                 
