@@ -32,7 +32,8 @@ $btn.click(function (e) {
     } else {
         var activity = {"verb": "post",
             "object": {"objectType": "review", "content": $textArea.val(), rating: rating},
-            "target": {"id": target}
+            "target": {"id": target},
+            "author": {"id": user}
         };
 
         $btn.attr('disabled', 'disabled');
@@ -42,22 +43,24 @@ $btn.click(function (e) {
             $btn.removeAttr('disabled');
             $radio.rating('select', null);
             $textArea.val('');
+
+            caramel.partials({activity: 'themes/' + caramel.themer + '/partials/activity.hbs'}, function () {
+                var newComment = Handlebars.partials['activity'](activity);
+                $stream.prepend(newComment);
+                if (adjustHeight) {
+                    adjustHeight();
+                }
+            });
         });
 
-        caramel.partials({activity: 'themes/' + caramel.themer + '/partials/activity.hbs'}, function () {
-            var newComment = Handlebars.partials['activity'](activity);
-            $stream.prepend(newComment);
-            if (adjustHeight) {
-                adjustHeight();
-            }
-
-        });
     }
 });
 
 $stream.live('click', '.icon-thumbs-up', function (e) {
     var $likeBtn = $(e.target);
-    var id = $likeBtn.parents('.com-review').attr('data-target-id');
+    var $review = $likeBtn.parents('.com-review');
+    var id = $review.attr('data-target-id');
+    var $likeCount = $review.find(".com-like-count");
 
     var activity = {"verb": "like",
         "object": {"objectType": "like"},
@@ -68,9 +71,7 @@ $stream.live('click', '.icon-thumbs-up', function (e) {
     $.get('apis/comments.jag', {
         activity: JSON.stringify(activity)
     }, function () {
-        $btn.removeAttr('disabled');
-        $radio.rating('select', null);
-        $textArea.val('');
+        $likeCount.text(Number($likeCount.text()) + 1);
     });
 
 });

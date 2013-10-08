@@ -15,16 +15,20 @@ var caramel;
         var carbon = require('carbon');
         var social = carbon.server.osgiService('org.wso2.carbon.social.service.SocialActivityService');
         var target = request.getParameter('target');
+        var obj, commentsJSON;
         if (target) {
             try {
-                var obj = JSON.parse(String(social.getSocialObjectJson(target)));
-                var commentsJSON = obj.attachments;
+                obj = JSON.parse(String(social.getSocialObjectJson(target)));
+                commentsJSON = obj.attachments;
             } catch (e) {
                 new Log('social.activityBrowser').error(e);
             }
 
             caramel.render({
-                target: {id: target},
+                review_param: {
+                    id: target,
+                    user: String(logged.username) + '@' + logged.tenantDomain
+                },
                 stream: {comments: commentsJSON}
             });
         } else {

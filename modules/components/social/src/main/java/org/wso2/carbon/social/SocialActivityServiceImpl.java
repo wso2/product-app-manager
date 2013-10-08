@@ -1,12 +1,9 @@
 package org.wso2.carbon.social;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import org.mozilla.javascript.NativeObject;
-import org.wso2.carbon.social.object.SocialObject;
 import org.wso2.carbon.social.service.SocialActivityService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SocialActivityServiceImpl implements SocialActivityService {
@@ -32,6 +29,11 @@ public class SocialActivityServiceImpl implements SocialActivityService {
 
     @Override
     public String getSocialObjectJson(String targetId) {
-        return  activityBrowser.getSocialObject(targetId).toString();
+        JsonObject socialObject = activityBrowser.getSocialObject(targetId);
+        if (socialObject != null) {
+            return socialObject.toString();
+        } else {
+            return "{}";
+        }
     }
 }
