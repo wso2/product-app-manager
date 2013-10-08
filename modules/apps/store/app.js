@@ -75,40 +75,6 @@ var tenantId = -1234;
 var event = require('/modules/event.js');
 event.emit('tenantLoad', tenantId);
 
-var registry = server.systemRegistry(tenantId);
 
-var rxtManager=new rxt_management.RxtManager(registry);
-
-//All of the rxt xml files are read and converted to a JSON object called
-//a RxtTemplate(Refer rxt.domain.js)
-rxtManager.loadAssets();
-
-var ext_parser=require('/modules/rxt/ext/core/extension.parser.js').extension_parser();
-var ext_core=require('/modules/rxt/ext/core/extension.core.js').extension_core();
-var ext_mng=require('/modules/rxt/ext/core/extension.management.js').extension_management();
-
-var  parser=new ext_parser.Parser();
-
-var log=new Log();
-
-//Go through each rxt template
-for each(var rxtTemplate in rxtManager.rxtTemplates){
-    parser.registerRxt(rxtTemplate);
-}
-
-parser.load(publisherConfig.paths.RXT_EXTENSION_PATH);
-
-var adapterManager=new ext_core.AdapterManager({parser:parser});
-adapterManager.init();
-
-var fpManager=new ext_core.FieldManager({parser:parser});
-fpManager.init();
-
-var ruleParser=new ext_parser.RuleParser({parser:parser});
-ruleParser.init();
-
-var modelManager=new ext_mng.ModelManager({parser:parser,adapterManager:adapterManager});
-
-application.put(publisherConfig.app.MODEL_MANAGER,modelManager);
 
 

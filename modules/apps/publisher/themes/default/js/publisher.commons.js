@@ -39,7 +39,7 @@ $(document).ready(function(){
     });
     
      $('#search-button').on('click', function(){
-    	var searchAssetString = $('#inp_searchAsset').val().toLowerCase();
+    	var searchAssetString = $('#inp_searchAsset').val();
     	if(searchAssetString !=""){    	
     	var link = '?query='+searchAssetString;
     	window.location = link;

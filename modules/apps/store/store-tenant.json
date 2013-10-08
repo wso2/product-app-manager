@@ -12,5 +12,8 @@
         "login": {
             "/permission/admin/login": ["ui.execute"]
         }
+    },
+    "paths":{
+        "RXT_EXTENSION_PATH":"/config/ext/"
     }
 }

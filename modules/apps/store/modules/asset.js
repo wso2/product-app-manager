@@ -114,29 +114,13 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
             return assets;
         }
         if (options.query) {
-            var query = options.query.toLowerCase();
-            assets= that.manager.find(function (asset) {
-                var name, match,
-                    attributes = asset.attributes;
-                for (name in attributes) {
-                    if (attributes.hasOwnProperty(name)) {
-                        if (attributes[name].toLowerCase().indexOf(query) !== -1) {
-                            match = true;
-                            break;
-                        }
-                    }
-                }
-                if (!match) {
-                    return false;
-                }
-                //return matchAttr(options.attributes, asset.attributes);
-                return matchArtifact(options, asset);
-
-            },paging);
+            var query = options.query;
+            assets= that.manager.search(query,paging);
 
             dataInjector.cached().inject(assets,DataInjectorModes.DISPLAY);
 
             return assets;
+        
         }
         if (options) {
 

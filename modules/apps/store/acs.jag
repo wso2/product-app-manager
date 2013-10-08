@@ -34,13 +34,12 @@
                         session.put("LOGGED_IN_USER", sessionObj.loggedInUser);
                         session.put("Loged", "true");
 
-                        sso_sessions[sso_sessions[sessionObj.sessionIndex] = sessionObj.sessionId] = sessionObj.sessionIndex;
-
+                        sso_sessions[sessionObj.sessionId] = sessionObj.sessionIndex;
 
                         var user = require('/modules/user.js');
 
                         if (user.loginWithSAML(sessionObj.loggedInUser)) {
-                            log.info('user is set :::' + sessionObj.loggedInUser);
+                            log.debug('user is set :::' + sessionObj.loggedInUser);
                             response.sendRedirect(relayState);
                         }
 
@@ -57,14 +56,14 @@
     // if saml request is a log out request, then invalidate session.
     if (samlRequest != null) {
         var index = sso.client.decodeSAMLLogoutRequest(sso.client.getSamlObject(samlRequest));
-        log.info('BACKEND LOGOUT RECIEVED FROM STORE THE INDEX IS ######' + index);
+        log.debug('BACKEND LOGOUT RECIEVED FROM STORE THE INDEX IS ######' + index);
 
         var jSessionId = application.get('sso_sessions')[index];
 
         delete application.get('sso_sessions')[index];
 
 
-        log.info('store Session Id :::' + jSessionId);
+        log.debug('store Session Id :::' + jSessionId);
 
         session.invalidate();
     }

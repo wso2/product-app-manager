@@ -4,15 +4,12 @@
         "http": "%http.host%"
     },
     "roles": {
-        "portal": {
-            "/permission/admin/login": ["ui.execute"]
-        }
     },
     "user": {
         "username": "admin",
         "password": "admin"
     },
-    "userRoles": ["portal"],
+    "userRoles": [],
     "permissions": {
         "login": {
             "/permission/admin/login": ["ui.execute"]
