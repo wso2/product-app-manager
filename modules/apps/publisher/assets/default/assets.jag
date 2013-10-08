@@ -53,25 +53,7 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 
 		// for queries
 		if(query) {
-			var query = query.toLowerCase();
-			assets = artifactManager.find(function(asset) {
-				var name, match, attributes = asset.attributes;
-				//this seach is can be improved in attribute level search and it is written for this level of search also 
-				name = 'overview_name';
-				for(name in attributes) {
-					if(attributes.hasOwnProperty(name)) {
-						if(attributes[name].toLowerCase().indexOf(query) !== -1) {
-							match = true;
-							break;
-						}
-					}
-				}
-				if(!match) {
-					return false;
-				}
-				return asset;
-
-			}, null);
+			assets = artifactManager.search(query, null);
 			artifacts = assets;
 
 		} else {
