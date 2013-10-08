@@ -2,13 +2,14 @@ package org.wso2.carbon.social;
 
 public class Constants {
     public static final String BODY_COLUMN = "payload_body";
-    public static final String TARGET_ID_COLUMN = "payload_target.id";
+    public static final String CONTEXT_ID_COLUMN = "payload_context.id";
     public static final String TIMESTAMP_COLUMN = "Timestamp";
 
     public static final String VERB_JSON_PROP = "verb";
-    public static final String TYPE_JSON_PROP = "type";
+    public static final String TYPE_JSON_PROP = "objectType";
     public static final String OBJECT_JSON_PROP = "object";
     public static final String TARGET_JSON_PROP = "target";
+    public static final String CONTEXT_JSON_PROP = "context";
     public static final String ID_JSON_PROP = "id";
 
     public static final String STREAM_VERSION = "1.0.0";
@@ -25,8 +26,8 @@ public class Constants {
             " ]," +
             " 'payloadData':[" +
             "       {'name':'verb','type':'STRING'}," +
-            "       {'name':'object.type','type':'STRING'}," +
-            "       {'name':'target.id','type':'STRING'}," +
+            "       {'name':'object.objectType','type':'STRING'}," +
+            "       {'name':'context.id','type':'STRING'}," +
             "       {'name':'body','type':'STRING'}" +
             " ]" +
             "}";

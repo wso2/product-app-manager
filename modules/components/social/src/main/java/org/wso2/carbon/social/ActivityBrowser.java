@@ -1,7 +1,6 @@
 package org.wso2.carbon.social;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -13,12 +12,22 @@ import static org.wso2.carbon.social.Constants.*;
 public class ActivityBrowser {
 
     private static final Log LOG = LogFactory.getLog(ActivityBrowser.class);
-    public static final String SELECT_CQL = "SELECT * FROM " + STREAM_NAME_IN_CASSANDRA + " WHERE '" + TARGET_ID_COLUMN + "'=?";
+    public static final String SELECT_CQL = "SELECT * FROM " + STREAM_NAME_IN_CASSANDRA + " WHERE '" +
+            CONTEXT_ID_COLUMN + "'=?";
 
     private JsonParser parser = new JsonParser();
     private Connection conn;
 
-    public List<String> listActivities(String targetId) {
+    public JsonObject getSocialObject(String targetId) {
+        List<Activity> activities = listActivitiesChronologically(targetId);
+        ActivitySummarizer summarizer = new ActivitySummarizer(targetId);
+        for (Activity activity : activities) {
+            summarizer.add(activity);
+        }
+        return summarizer.get();
+    }
+
+    public List<Activity> listActivities(String contextId) {
         List<Activity> activities = null;
         Connection connection = getConnection();
         if (connection != null) {
@@ -26,18 +35,19 @@ public class ActivityBrowser {
             ResultSet resultSet = null;
             try {
                 statement = connection.prepareStatement(SELECT_CQL);
-                statement.setString(1, targetId);
+                statement.setString(1, contextId);
                 resultSet = statement.executeQuery();
                 activities = new ArrayList<Activity>();
                 while (resultSet.next()) {
                     JsonElement body = parser.parse(resultSet.getString(BODY_COLUMN));
-                    Activity activity = new Activity(body.getAsJsonObject(), resultSet.getInt(TIMESTAMP_COLUMN));
+                    Activity activity = new Activity(resultSet.getString(1),
+                            body.getAsJsonObject(), resultSet.getInt(TIMESTAMP_COLUMN));
                     activities.add(activity);
                 }
             } catch (SQLException e) {
                 String message = e.getMessage();
                 // we'll ignore the "Keyspace EVENT_KS does not exist" error,
-                // this happens when there are 0 activities in bam
+                // this happens when there are 0 activities in Cassandra.
                 if (!(message.startsWith("Keyspace ") && message.endsWith(" does not exist"))) {
                     LOG.error("Can't retrieve activities form cassandra.", e);
                 }
@@ -55,29 +65,23 @@ public class ActivityBrowser {
             }
         }
         if (activities != null) {
-            sortChronologically(activities);
-            return serializeEach(activities);
+            return activities;
         } else {
             return Collections.emptyList();
         }
     }
 
-    private List<String> serializeEach(List<Activity> activities) {
-        List<String> stringList = new ArrayList<String>(activities.size());
-        for (Activity activity : activities) {
-            stringList.add(activity.getBody().toString());
-        }
-        return stringList;
-    }
-
-    public void sortChronologically(List<Activity> activities) {
+    public List<Activity> listActivitiesChronologically(String contextId) {
+        List<Activity> activities = listActivities(contextId);
         Collections.sort(activities, new Comparator<Activity>() {
             @Override
             public int compare(Activity a1, Activity a2) {
                 return a2.getTimestamp() - a1.getTimestamp();
             }
         });
+        return activities;
     }
+
 
     public void makeIndexes(String column) {
         Connection connection = getConnection();

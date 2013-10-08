@@ -7,6 +7,8 @@ import org.mozilla.javascript.NativeJavaObject;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptableObject;
 
+import java.util.Arrays;
+
 public class JSONUtil {
     public static String SimpleNativeObjectToJson(NativeObject obj) throws JSONException {
         JSONStringer json = new JSONStringer();
@@ -76,5 +78,28 @@ public class JSONUtil {
             }
         }
         return result;
+    }
+
+    static String getNullableProperty(NativeObject obj, String... keys) {
+        NativeObject result = obj;
+        for (int i = 0; i < keys.length - 1; i++) {
+            String key = keys[i];
+            Object value = result.get(key, result);
+            if (value instanceof NativeObject) {
+                result = (NativeObject) value;
+            } else {
+                return null;
+            }
+        }
+        return result.get(keys[keys.length - 1], result).toString();
+    }
+
+    static String getProperty(NativeObject obj, String... keys) {
+        String property = getNullableProperty(obj, keys);
+        if (property == null) {
+            throw new RuntimeException("property missing in activity object : " + Arrays.toString(keys));
+        } else {
+            return property;
+        }
     }
 }

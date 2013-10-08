@@ -4,13 +4,20 @@ import com.google.gson.JsonObject;
 
 public class Activity {
 
+    private String id;
     private final JsonObject body;
     private final int timestamp;
 
-    public Activity(JsonObject body, int timestamp) {
-
+    public Activity(String id, JsonObject body, int timestamp) {
+        this.id = id;
         this.body = body;
         this.timestamp = timestamp;
+
+        body.addProperty("id", id);
+    }
+
+    public String getId() {
+        return id;
     }
 
     public JsonObject getBody() {
@@ -19,5 +26,10 @@ public class Activity {
 
     public int getTimestamp() {
         return timestamp;
+    }
+
+    @Override
+    public String toString() {
+        return body.toString();
     }
 }
