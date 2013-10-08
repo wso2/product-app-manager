@@ -13,8 +13,8 @@ public class SocialActivityServiceImpl implements SocialActivityService {
     private ActivityBrowser activityBrowser = new ActivityBrowser();
 
     @Override
-    public void publish(NativeObject activity) {
-        activityPublisher.publish(activity);
+    public String publish(NativeObject activity) {
+        return activityPublisher.publish(activity);
     }
 
     @Override

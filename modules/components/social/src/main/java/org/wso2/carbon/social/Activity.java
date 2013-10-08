@@ -12,12 +12,10 @@ public class Activity {
         this.id = id;
         this.body = body;
         this.timestamp = timestamp;
-
-        body.addProperty("id", id);
     }
 
     public String getId() {
-        return id;
+        return body.get("id").getAsString();
     }
 
     public JsonObject getBody() {
