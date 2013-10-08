@@ -1,21 +1,25 @@
-<div class="row com-stream">
-    <div class="row com-sort">
-        <ul>
-            <li>
-                <a href="#" class="selected">Newest</a>
-            </li>
-            <li>
-                <a href="#">Oldest</a>
-            </li>
-            <li>
-                <a href="#">Popular</a>
-            </li>
-        </ul>
-    </div>
+{{#if isLogged}}
+    <div class="row com-stream">
+        <div class="row com-sort">
+            <ul>
+                <li>
+                    <a href="#" class="selected">Newest</a>
+                </li>
+                <li>
+                    <a href="#">Oldest</a>
+                </li>
+                <li>
+                    <a href="#">Popular</a>
+                </li>
+            </ul>
+        </div>
 
-    <div id="stream">
-        {{#each comments}}
-            {{> activity}}
-        {{/each}}
+        <div id="stream">
+            {{#each comments}}
+                {{> activity}}
+            {{/each}}
+        </div>
     </div>
-</div>
+{{else}}
+    please log in.
+{{/if}}

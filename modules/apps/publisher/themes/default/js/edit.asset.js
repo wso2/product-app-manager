@@ -81,6 +81,6 @@ $(function () {
     }
     
     
-
+	$('.selectpicker').selectpicker();
 
 });

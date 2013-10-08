@@ -24,8 +24,7 @@ $(function() {
 
 	$("#asset-slideshow").carouFredSel({
 		items : {
-			visible : 3,
-			start : 2
+			visible : 3
 		},
 		height : 300,
 		scroll : 1,

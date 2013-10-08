@@ -119,10 +119,10 @@ button:hover {
     vertical-align: top;
 }
 
-.com-stream-comment {
+.com-review {
     margin-bottom: 20px;
 }
-.com-stream-comment:hover .com-thumbs-flag {
+.com-review:hover .com-thumbs-flag {
     opacity: 1;
 }
 

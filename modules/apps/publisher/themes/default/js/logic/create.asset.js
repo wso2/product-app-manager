@@ -106,4 +106,6 @@ $(function () {
 
         return tagArray;
     }
+    
+    $('.selectpicker').selectpicker();
 });
