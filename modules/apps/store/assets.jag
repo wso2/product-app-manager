@@ -18,13 +18,9 @@ var caramel;
 
     caramel = require('caramel');
 
-    log.info('SESSIONS ################ ::' + stringify(application.get('sso_sessions')));
-
     sso = configs.ssoConfiguration.enabled;
 
     url = '/assets/' + type + '/?' + (tag ? 'tag=' + tag + '&' : '') + (query ? 'query=' + query + '&' : '');
-
-    // log.info("LOGGED_IN_USER (store) " + session.get('LOGGED_IN_USER'));
 
     paging = store.assetsPaging(request);
 
