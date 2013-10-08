@@ -1,5 +1,6 @@
 var render = function (theme, data, meta, require) {
-    if (data.input_param.isLogged) {
+    data.stream.isLogged = data.isLogged;
+    if (data.isLogged) {
         theme('simple', {
             body: [
                 { partial: 'comment-input', context: data.input_param},

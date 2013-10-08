@@ -25,9 +25,9 @@ var caramel;
         var username = logged ? String(logged.username) + '@' + logged.tenantDomain : "anonymous";
 
         caramel.render({
+            isLogged: Boolean(logged),
             input_param: {
                 id: target,
-                isLogged: Boolean(logged),
                 user: username
             },
             stream: {comments: commentsJSON}
