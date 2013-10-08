@@ -54,25 +54,16 @@ var filterModule = function () {
             //Fill in dynamic values
             permissableRoles = fillDynamicPermissibleRoles(item, permissableRoles);
 
-            log.info("user's roles: "+stringify(userRoles));
-            log.info("permissible roles "+permissableRoles);
-
             //Check if the user has any of the roles specified for the state
             var commonRoles = utility.intersect(userRoles, permissableRoles, function (a, b) {
                 return (a == b);
             });
 
-            log.info('common roles: '+commonRoles);
-
             //Check if we have common roles
             if (commonRoles.length > 0) {
-                log.info(item.attributes.overview_name+' added.');
+
                 items.push(item);
-            }else{
-                log.info(item.attributes.overview_name+' removed');
             }
-
-
         }
 
         context['data'] = items;
