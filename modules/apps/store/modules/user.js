@@ -128,6 +128,7 @@ var permitted = function (username, session) {
     //log.info(usr.tenantId);
     um = server.userManager(usr.tenantId);
     user = um.getUser(usr.username);
+    user.tenantDomain = carbon.server.tenantDomain({tenantId: usr.tenantId});
     perms = opts.permissions.login;
     L1:
         for (perm in perms) {
