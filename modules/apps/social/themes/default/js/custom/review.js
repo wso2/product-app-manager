@@ -69,7 +69,7 @@ $btn.click(function (e) {
     }
 });
 
-$stream.live('click', '.icon-thumbs-up', function (e) {
+$stream.on('click', '.icon-thumbs-up', function (e) {
     var $likeBtn = $(e.target);
     var $review = $likeBtn.parents('.com-review');
     var id = $review.attr('data-target-id');
