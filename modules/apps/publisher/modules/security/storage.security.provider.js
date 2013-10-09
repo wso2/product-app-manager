@@ -82,7 +82,7 @@ var securityModule = function () {
         var asset=artifactManager.get(assetId);
 
         //Obtain the signed in user
-        var user=session.get(LOGGED_IN_USER);
+        var userInstance=require('/modules/user.js').current(session);
 
         var roles=[];
 
@@ -93,7 +93,6 @@ var securityModule = function () {
         }
         else{
             //Obtain the roles
-            var userInstance=this.um.getUser(user);
             roles=userInstance.getRoles();
         }
 

@@ -97,8 +97,14 @@ $(function () {
      @returns: An array containing the tags selected by the user
      */
     function obtainTags() {
-        var tags = $(TAG_CONTAINER).tokenInput('get');
+
         var tagArray = [];
+
+        if($(TAG_CONTAINER)){
+            return tagArray;
+        }
+
+        var tags = $(TAG_CONTAINER).tokenInput('get');
 
         for (var index in tags) {
             tagArray.push(tags[index].name);

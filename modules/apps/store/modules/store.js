@@ -63,12 +63,6 @@ var init = function (options) {
             GovernanceConstants = org.wso2.carbon.governance.api.util.GovernanceConstants,
             reg = server.systemRegistry(tenantId),
             um = server.userManager(tenantId);
-        var securityProviderModule = require('/modules/security/storage.security.provider.js').securityModule();
-
-        var securityProvider = securityProviderModule.cached();
-
-        //The security provider requires the registry and user manager to work
-        securityProvider.provideContext(reg, um);
 
         //check whether tenantCreate has been called
         if (!reg.exists(STORE_CONFIG_PATH)) {
@@ -709,6 +703,7 @@ The function handles the initialization of managers when a user is not logged in
 function handleAnonUser() {
     var anonMasterManager = application.get(APP_MANAGERS);
 
+
     //Check if it is cached
     if (anonMasterManager) {
 
@@ -730,10 +725,11 @@ function StoreMasterManager(tenantId, session) {
     var user = require('/modules/user.js');
     var registry = user.userRegistry(session);
 
-    var managers = buildManagers(registry);
+    var managers = buildManagers(registry,tenantId);
 
     this.modelManager = managers.modelManager;
     this.rxtManager = managers.rxtManager;
+    this.storageSecurityProvider=managers.storageSecurityProvider;
     this.tenantId = tenantId;
 }
 
@@ -744,10 +740,11 @@ function StoreMasterManager(tenantId, session) {
 function AnonStoreMasterManager() {
     var registry = server.systemRegistry(SUPER_TENANT);
 
-    var managers = buildManagers(registry);
+    var managers = buildManagers(registry,SUPER_TENANT);
 
     this.modelManager = managers.modelManager;
     this.rxtManager = managers.rxtManager;
+    this.storageSecurityProvider=managers.storageSecurityProvider;
     this.tenantId = SUPER_TENANT;
 }
 
@@ -757,14 +754,24 @@ function AnonStoreMasterManager() {
  @registry: The registry of the current user who is logged in
  @return: The managers used by the store
  */
-var buildManagers = function (registry) {
+var buildManagers = function (registry,tenantId) {
 
     var rxt_management = require('/modules/rxt/rxt.manager.js').rxt_management();
     var ext_parser = require('/modules/rxt/ext/core/extension.parser.js').extension_parser();
     var ext_core = require('/modules/rxt/ext/core/extension.core.js').extension_core();
     var ext_mng = require('/modules/rxt/ext/core/extension.management.js').extension_management();
     var config = require('/store-tenant.json');
+    var server=require('/modules/server.js');
+    var um=server.userManager(tenantId);
     var rxtManager = new rxt_management.RxtManager(registry);
+    var securityProviderModule = require('/modules/security/storage.security.provider.js').securityModule();
+
+
+    var securityProvider = new securityProviderModule.SecurityProvider();
+
+    //The security provider requires the registry and user manager to work
+    securityProvider.provideContext(registry, um);
+
 
     //All of the rxt xml files are read and converted to a JSON object called
     //a RxtTemplate(Refer rxt.domain.js)
@@ -793,6 +800,7 @@ var buildManagers = function (registry) {
 
     return{
         modelManager: modelManager,
-        rxtManager: rxtManager
+        rxtManager: rxtManager,
+        storageSecurityProvider:securityProvider
     }
 }

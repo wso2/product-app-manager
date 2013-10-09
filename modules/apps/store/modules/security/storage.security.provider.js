@@ -21,8 +21,12 @@ var securityModule = function () {
     var ROLE_ADMIN='admin';
     var ROLE_ANON='anon';
 
+    var CONFIG_PATH='/config/ext';
 
-    function SecurityProvider(context) {
+
+    function SecurityProvider() {
+        var context={};
+        context['path']=CONFIG_PATH;
         this.storageBlocks = {};
         this.context = context;
 
