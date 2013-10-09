@@ -18,8 +18,9 @@ var log=new Log('storage.router');
 
 var storageModule = require('/modules/data/storage.js').storageModule();
 var securityProviderModule=require('/modules/security/storage.security.provider.js').securityModule();
+var publisher = require('/modules/publisher.js').publisher(request, session);
 
-var storageSecurityProvider=securityProviderModule.cached();
+var storageSecurityProvider=publisher.storageSecurityProvider;
 
 var storageManager = new storageModule.StorageManager({
     context: 'storage',
