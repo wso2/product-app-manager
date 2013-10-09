@@ -72,7 +72,9 @@ body .store-left {
 #reviews-loader {
     display: none;
 }
-
+#socialIfr{
+    overflow:hidden;
+}
 .asset-banner {
     left: -15px;
 }
