@@ -24,7 +24,7 @@ public class ActivityBrowser {
         for (Activity activity : activities) {
             summarizer.add(activity);
         }
-        return summarizer.get();
+        return summarizer.summarize();
     }
 
     public List<Activity> listActivities(String contextId) {
@@ -76,7 +76,7 @@ public class ActivityBrowser {
         Collections.sort(activities, new Comparator<Activity>() {
             @Override
             public int compare(Activity a1, Activity a2) {
-                return a2.getTimestamp() - a1.getTimestamp();
+                return a1.getTimestamp() - a2.getTimestamp();
             }
         });
         return activities;
