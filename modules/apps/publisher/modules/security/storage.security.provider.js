@@ -20,13 +20,13 @@ var securityModule = function () {
     var CONFIG_FORMAT = 'json';
     var ROLE_ADMIN='admin';
     var ROLE_ANON='anon';
+    var CONFIG_PATH='/config/ext';
 
-
-    function SecurityProvider(context) {
+    function SecurityProvider() {
         this.storageBlocks = {};
-        this.context = context;
+        this.context = {path:CONFIG_PATH};
 
-        this.bundleManager = new bundler.BundleManager({path: context.path});
+        this.bundleManager = new bundler.BundleManager({path: CONFIG_PATH});
         this.registry=null;
         this.um=null;
     }
@@ -249,7 +249,7 @@ var securityModule = function () {
           var instance=application.get(CACHE_STORAGE_SECURITY_PROVIDER);
 
         if(!instance){
-            instance=new SecurityProvider({path:'/config/ext'});
+            instance=new SecurityProvider();
             instance.init();
             application.put(CACHE_STORAGE_SECURITY_PROVIDER,instance);
         }
