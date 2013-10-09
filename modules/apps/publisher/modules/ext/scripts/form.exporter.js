@@ -32,6 +32,8 @@ var module=function(){
                 log.debug('Ignoring field: '+stringify(fieldTemplate));
 				return;
 			}
+			//Ignore the field which is set as hidden
+			if(fieldTemplate.meta.hidden == "false"){
 			var data={};
 
 			data['name']=table.name.toLowerCase()+'_'+field.name.toLowerCase();
@@ -50,6 +52,8 @@ var module=function(){
 			data['valueList']=csvToArray(fieldTemplate.value||'');
 			
 			fieldArray.push(data);
+			}
+
 		}
 
 		return fieldArray;
