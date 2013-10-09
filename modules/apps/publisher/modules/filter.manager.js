@@ -90,12 +90,10 @@ var filterManagementModule = function () {
             isObject = false;
         }
 
-        var username = session.get(LOGGED_IN_USER);
-        var user = this.um.getUser(username);
-
+        var user = require('/modules/user.js').current(session);
         context['data'] = getData(data);
         context['roles'] = user.getRoles();
-        context['username'] = username;
+        context['username'] = user.username;
 
         //Obtain the configuration
         assetType = getConfigType(context['data']);

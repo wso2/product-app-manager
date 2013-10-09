@@ -1,4 +1,5 @@
 {
+    "tenanted": true,
     "server": {
         "https": "%https.host%/admin",
         "http": "%http.host%"
