@@ -4,6 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +14,7 @@ import java.util.Set;
 public class ActivitySummarizer {
 
     Map<String, JsonObject> objects = new HashMap<String, JsonObject>();
+    private static final Log LOG = LogFactory.getLog(ActivityPublisher.class);
     private String rootId;
 
     public ActivitySummarizer(String rootId) {
@@ -19,33 +22,37 @@ public class ActivitySummarizer {
     }
 
     public void add(Activity activity) {
-        String parentId = activity.getBody().getAsJsonObject("target").get("id").getAsString();
-        JsonObject parent = getSubObject(parentId);
-        JsonObject child = getSubObject(activity.getId());
-        merge(activity.getBody(), child);
+        String parentId = activity.getTargetId();
+        if (parentId != null) {
+            JsonObject parent = getSubObject(parentId);
+            JsonObject child = getSubObject(activity.getId());
+            merge(activity.getBody(), child);
 
-        if (child.get("verb").getAsString().equals("like")) {
+            if (child.get("verb").getAsString().equals("like")) {
 
-            JsonObject likes = parent.getAsJsonObject("likes");
-            if (likes == null) {
-                likes = new JsonObject();
-                parent.add("likes", likes);
-            }
-            JsonElement totalItems = likes.get("totalItems");
-            if (totalItems == null) {
-                likes.add("totalItems", new JsonPrimitive(1));
+                JsonObject likes = parent.getAsJsonObject("likes");
+                if (likes == null) {
+                    likes = new JsonObject();
+                    parent.add("likes", likes);
+                }
+                JsonElement totalItems = likes.get("totalItems");
+                if (totalItems == null) {
+                    likes.add("totalItems", new JsonPrimitive(1));
+                } else {
+                    likes.add("totalItems", new JsonPrimitive(totalItems.getAsInt() + 1));
+                }
+
+                JsonArray items = addArrIfNot(likes, "items");
+
+                JsonObject person = new JsonObject();
+                person.add("id", new JsonPrimitive(activity.getActorId()));
+                items.add(person);
             } else {
-                likes.add("totalItems", new JsonPrimitive(totalItems.getAsInt() + 1));
+                JsonArray attachments = addArrIfNot(parent, "attachments");
+                attachments.add(child);
             }
-
-            JsonArray items = addArrIfNot(likes, "items");
-
-            JsonObject person = new JsonObject();
-            person.add("id",new JsonPrimitive(activity.getActorId()));
-            items.add(person);
         } else {
-            JsonArray attachments = addArrIfNot(parent, "attachments");
-            attachments.add(child);
+            LOG.error("failed to summarize activity (has no target id) : " + activity);
         }
     }
 

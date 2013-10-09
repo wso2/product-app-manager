@@ -1,5 +1,6 @@
 package org.wso2.carbon.social;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public class Activity {
@@ -33,5 +34,16 @@ public class Activity {
 
     public String getActorId() {
         return body.getAsJsonObject("actor").get("id").getAsString();
+    }
+
+    public String getTargetId() {
+        JsonObject target = body.getAsJsonObject("target");
+        if(target!=null){
+            JsonElement targetId = target.get("id");
+            if(targetId!=null){
+                return targetId.getAsString();
+            }
+        }
+        return null;
     }
 }
