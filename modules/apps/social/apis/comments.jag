@@ -2,10 +2,15 @@
 response.addHeader("Content-Type", "application/json");
 
 (function () {
-    var id = request.getParameter('target');
-
     var carbon = require('carbon');
     var social = carbon.server.osgiService('org.wso2.carbon.social.service.SocialActivityService');
-    social.publish(JSON.parse(request.getParameter('activity')));
+    var id = social.publish(JSON.parse(request.getParameter('activity')));
+
+    var result = {
+        success: Boolean(id),
+        id: id
+    };
+
+    print(result);
 })();
 %>

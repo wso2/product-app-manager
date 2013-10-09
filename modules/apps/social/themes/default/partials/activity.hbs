@@ -1,7 +1,9 @@
-<div class="row com-stream-comment">
+<div class="row com-review" data-target-id="{{id}}">
+   <!--
     <div class="com-left">
-        <img class="img-avatar" src="{{url "/themes/default/img/avatar.png"}}">
-    </div>
+           <img class="img-avatar" src="{{url "/themes/default/img/avatar.png"}}">
+       </div>-->
+   
     <div class="com-right">
         <div class="clear">
             <strong class="com-author">{{payload_user}}</strong>
@@ -17,10 +19,10 @@
             <div class="com-thumbs">
                 <ul>
                     <li>
-                        <a href="#"><i class="icon icon-thumbs-up"></i><span>{{yea}}</span></a>
+                        <a href="#"><i class="icon icon-thumbs-up {{#if iLike}}selected{{/if}}"></i><span class="com-like-count">{{likes.totalItems}}</span></a>
                     </li>
                     <li>
-                        <a href="#"><i class="icon icon-thumbs-down"></i><span>{{nay}}</span></a>
+                        <a href="#"><i class="icon icon-thumbs-down"></i></a>
                     </li>
                     <li class="com-thumbs-flag">
                         <a href="#">Flag</a>

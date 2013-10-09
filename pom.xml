@@ -88,6 +88,7 @@
         <patch.version.422>4.2.2</patch.version.422>
         <carbon.p2.plugin.version>1.5.3</carbon.p2.plugin.version>
 		<stratos.version>2.2.0</stratos.version>
+		<stratos.patch.version.221>2.2.1</stratos.patch.version.221>
 
         <!-- maven plugin versions -->
         <build-helper-maven-plugin.version>1.7</build-helper-maven-plugin.version>
@@ -116,6 +117,7 @@
         <commons-codec.osgi.version>1.4.0.wso2v1</commons-codec.osgi.version>
         <opensaml2.wso2.version>2.4.1.wso2v1</opensaml2.wso2.version>
         <commons-logging.version>1.1.1</commons-logging.version>
+        <cep.component.version>1.0.0</cep.component.version>
     </properties>
 
 </project>

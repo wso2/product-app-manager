@@ -322,6 +322,9 @@ textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[ty
 }
 .thumbnail-div {
     margin: 10px;
+    height:105px;
+    display: block;
+    overflow:hidden;
 }
 .thumbnail-div img {
     max-width: 300px;
@@ -1036,4 +1039,8 @@ span.title {
 
 .label-required{
     color:#b94a48;
+}
+.bootstrap-select button{
+    border: 1px solid #CCCCCC;
+    box-shadow: none;
 }

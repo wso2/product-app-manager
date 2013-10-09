@@ -80,19 +80,19 @@ var securityModule = function () {
         var asset=artifactManager.get(assetId);
 
         //Obtain the signed in user
-        var user=session.get(LOGGED_IN_USER);
+        var userInstance=require('/modules/user.js').current(session);
 
         var roles=[];
-
+        var username = null;
         //If a user is not logged in they will recieve anon rights
-        if(!user){
+        if(!userInstance){
             log.debug('a user is not logged in.');
             roles.push(ROLE_ANON);
         }
         else{
             //Obtain the roles
-            var userInstance=this.um.getUser(user);
             roles=userInstance.getRoles();
+            username = userInstance.username;
         }
 
         //Obtain the field name
@@ -102,8 +102,7 @@ var securityModule = function () {
             log.debug('field for '+uuid+' could not be found.');
             return false;
         }
-
-        var isAllowed=this.isAllowed(asset,user,roles,asset.lifecycleState,field);
+        var isAllowed=this.isAllowed(asset,username,roles,asset.lifecycleState,field);
 
         return isAllowed;
     };

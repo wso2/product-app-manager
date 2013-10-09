@@ -34,6 +34,8 @@ var installer = function () {
         //Create the deployment object
         var artifact = {};
 
+        var now = new Date();
+
         artifact['attributes'] = {};
 
         //Fill the attributes
@@ -49,6 +51,7 @@ var installer = function () {
 
         artifact['attributes']['images_thumbnail'] = context.assetPath +context.bundle.getName()+ '/thumbnail.jpg';
         artifact['attributes']['images_banner'] = context.assetPath + context.bundle.getName()+'/banner.jpg';
+        artifact['attributes']['overview_createdtime'] = now;
 
 
 

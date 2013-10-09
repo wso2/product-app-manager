@@ -1,21 +1,34 @@
-<div class="row com-stream">
-    <div class="row com-sort">
-        <ul>
-            <li>
-                <a href="#" class="selected">Newest</a>
-            </li>
-            <li>
-                <a href="#">Oldest</a>
-            </li>
-            <li>
-                <a href="#">Popular</a>
-            </li>
-        </ul>
-    </div>
-
-    <div id="stream">
-        {{#each comments}}
-            {{> activity}}
-        {{/each}}
-    </div>
+{{#unless isLogged}}
+<div class="com-guest">
+	Please Sign in to add a Review
 </div>
+{{/unless}}
+
+<div class="row com-stream">
+	<div class="row com-sort">
+		<ul>
+			<li>
+				<a href="#" class="selected">Newest</a>
+			</li>
+			<li>
+				<a href="#">Oldest</a>
+			</li>
+			<li>
+				<a href="#">Popular</a>
+			</li>
+		</ul>
+	</div>
+
+	<div id="stream">
+		{{#if reviews}}
+			{{#each reviews}}
+				{{> activity}}
+			{{/each}}
+		{{else}}
+			<p class="com-first-review">
+				Be the first one to review!
+			</p>
+		{{/if}}
+	</div>
+</div>
+

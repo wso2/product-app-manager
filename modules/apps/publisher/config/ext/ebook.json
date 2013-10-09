@@ -44,6 +44,16 @@
             "value": "default"
         },
         {
+            "field": "overview.*",
+            "name": "editable",
+            "value": true
+        },
+         {
+            "field": "images.*",
+            "name": "editable",
+            "value": true
+        },
+        {
             "field": "*.lifeCycle",
             "name": "save",
             "value": "asset.lifecycle.action.save"
@@ -52,7 +62,27 @@
             "field": "overview.provider",
             "name": "readOnly",
             "value": "true"
-        }
+        },
+         {
+            "field":"overview.provider",
+            "name":"editable",
+            "value":false
+        },
+         {
+            "field":"overview.name",
+            "name":"editable",
+            "value":false
+        },
+        {
+            "field": "overview.createdtime",
+            "name": "hidden",
+            "value": "true"
+        },
+        {
+            "field":"overview.version",
+            "name":"editable",
+            "value":false
+        },
 
     ],
 

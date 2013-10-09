@@ -27,6 +27,9 @@
             <field type="text" required="true">
                 <name>Version</name>
             </field>
+            <field type="text">
+                <name>Createdtime</name>
+            </field>
             <field type="options">
                 <name label="Category">Category</name>
                 <values>

@@ -2,41 +2,60 @@
 var caramel;
 (function () {
     caramel = require('caramel');
+    var log = new Log('social.activityBrowser');
     var user = request.getParameter('user');
     var userModule = require('/modules/user.js');
     var logged = userModule.current(session);
+
+    var didILike = function (review,username) {
+        var likes = review.likes && review.likes.items;
+        if (likes) {
+            for (var j = 0; j < likes.length; j++) {
+                var like = likes[j];
+                if (like.id == username) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
 
     if (user && !logged) {
         include('login.jag');
     }
 
     logged = userModule.current(session);
-    if (logged) {
-        var carbon = require('carbon');
-        var social = carbon.server.osgiService('org.wso2.carbon.social.service.SocialActivityService');
-        var commentsJSON = [];
-        var target = request.getParameter('target');
-
-        if (target) {
-            try {
-                var comments = social.listActivities(target);
-                for (var i = 0; i < comments.length; i++) {
-                    commentsJSON.push(JSON.parse(String(comments[i])));
-                }
-            } catch (e) {
-                new Log('social.activityBrowser').error(e);
-            }
-
-
-            caramel.render({
-                'title': 'Comments',
-                'stream': {comments: commentsJSON}
-            });
-        } else {
-            print('please use the target URL parameter as the asset id, eg: http://localhost:9763/social/?target=33530252-rer-w345325');
+    var carbon = require('carbon');
+    var social = carbon.server.osgiService('org.wso2.carbon.social.service.SocialActivityService');
+    var target = request.getParameter('target');
+    var obj, reviewsJSON;
+    if (target) {
+        try {
+            obj = JSON.parse(String(social.getSocialObjectJson(target)));
+            reviewsJSON = obj.attachments;
+        } catch (e) {
+            log.error(e);
         }
+        var username = logged ? String(logged.username) + '@' + logged.tenantDomain : "anonymous";
+
+
+        if (reviewsJSON) {
+            for (var i = 0; i < reviewsJSON.length; i++) {
+                var review = reviewsJSON[i];
+                review.iLike = didILike(review,username);
+            }
+        }
+
+        caramel.render({
+            isLogged: Boolean(logged),
+            input_param: {
+                id: target,
+                user: username
+            },
+            stream: {reviews: reviewsJSON}
+        });
     } else {
-        print('please login to add comments');
+        print('please use the target URL parameter as the asset id, eg: http://localhost:9763/social/?target=33530252-rer-w345325');
     }
 })();
 %>

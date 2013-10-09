@@ -14,7 +14,7 @@
                             <img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}">
 
                             <h3>{{overview_name}}</h3>
-                            <small> {{t "Version"}} 1.0.0</small>
+                            <small> {{t "Version"}} {{overview_version}}</small>
                             <small> {{t "by"}} {{overview_provider}} </small>
 					<span class="asset-rating">
                         {{#if ../../user}}
@@ -64,7 +64,7 @@
                     <div class="tab-pane" id="tab-reviews">
                         <iframe name="socialIfr" id="socialIfr"
                                 src="https://localhost:9443/social/?target={{../id}}&user={{../../user.username}}"
-                                width="100%" height="100%" style="height: 500px;"></iframe>
+                                width="100%" height="100%" style="height: 300px;"></iframe>
                        	{{#if ../../inDashboard}}
                        		 <div id="comment-content" class="content"></div>
 						{{else}}

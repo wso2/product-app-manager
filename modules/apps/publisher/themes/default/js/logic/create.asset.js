@@ -22,7 +22,7 @@ $(function () {
         type: 'GET',
         success: function (response) {
             var tags = JSON.parse(response);
-            $(TAG_CONTAINER).tokenInput(tags, {theme: THEME});
+            $(TAG_CONTAINER).tokenInput(tags, {theme: THEME, allowFreeTagging: true});
 
         },
         error: function () {
@@ -106,4 +106,6 @@ $(function () {
 
         return tagArray;
     }
+    
+    $('.selectpicker').selectpicker();
 });

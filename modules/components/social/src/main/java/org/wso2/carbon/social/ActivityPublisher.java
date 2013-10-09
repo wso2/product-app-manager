@@ -5,45 +5,41 @@ import org.apache.commons.logging.LogFactory;
 import org.mozilla.javascript.NativeObject;
 import org.wso2.carbon.databridge.agent.thrift.DataPublisher;
 
-import java.util.Arrays;
+import java.util.UUID;
 
 import static org.wso2.carbon.social.Constants.*;
+import static org.wso2.carbon.social.JSONUtil.getNullableProperty;
+import static org.wso2.carbon.social.JSONUtil.getProperty;
 
 public class ActivityPublisher {
 
     private static final Log LOG = LogFactory.getLog(ActivityPublisher.class);
 
+    //this variable is init lazily. use getPublisher method to access.
     private DataPublisher publisher;
+    //this variable is init lazily. use getStreamId method to access.
     private String streamId;
 
 
-    public void publish(NativeObject activity) {
+    public String publish(NativeObject activity) {
         DataPublisher publisher = getPublisher();
         try {
-            String id = getStreamId(publisher);
+            String streamId = getStreamId(publisher);
+            String id = UUID.randomUUID().toString();
+            activity.put("id", activity, id);
             String json = JSONUtil.SimpleNativeObjectToJson(activity);
-            String verb = getProperty(activity, VERB_JSON_PROP);
-            String objectType = getProperty(activity, OBJECT_JSON_PROP, TYPE_JSON_PROP);
-            String targetId = getProperty(activity, TARGET_JSON_PROP, ID_JSON_PROP);
+            String contextId = getNullableProperty(activity, CONTEXT_JSON_PROP, ID_JSON_PROP);
+            if (contextId == null) {
+                contextId = getProperty(activity, TARGET_JSON_PROP, ID_JSON_PROP);
+            }
 
-            publisher.publish(id, null, null, new Object[]{verb, objectType, targetId, json});
+
+            publisher.publish(streamId, null, null, new Object[]{id, contextId, json});
+            return id;
         } catch (Exception e) {
             LOG.error("failed to publish social event.", e);
         }
-    }
-
-    private String getProperty(NativeObject obj, String... keys) {
-        NativeObject result = obj;
-        for (int i = 0; i < keys.length - 1; i++) {
-            String key = keys[i];
-            Object value = result.get(key, result);
-            if (value instanceof NativeObject) {
-                result = (NativeObject) value;
-            } else {
-                throw new RuntimeException("property missing in activity object : " + Arrays.toString(keys));
-            }
-        }
-        return result.get(keys[keys.length - 1], result).toString();
+        return null;
     }
 
     /**
@@ -82,7 +78,7 @@ public class ActivityPublisher {
                 if (streamId == null) {
                     try {
                         streamId = publisher.defineStream(STREAM_DEF);
-                        new ActivityBrowser().makeIndexes("target.id");
+                        new ActivityBrowser().makeIndexes("context.id");
                     } catch (Exception e) {
                         LOG.error("Can't create " + STREAM_NAME + ":" +
                                 STREAM_VERSION + " for storing social Activities", e);

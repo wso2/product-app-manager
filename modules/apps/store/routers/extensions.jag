@@ -40,13 +40,15 @@ var type;
                     break;
                 }
             }
-            path = path || ((suffix === 'process') ? 'process.jag' : path);
             if (path) {
                 path = pages + path;
-                request.getMappedPath = mapper(path);
-                include(path);
-                return;
+            } else if (suffix === 'process') {
+                path = pages + 'process.jag';
+                path = new File(path).isExists() ? path : '/process.jag';
             }
+            request.getMappedPath = mapper(path);
+            include(path);
+            return;
         }
     }
     response.sendError(404, 'Requested Resource cannot be found');
