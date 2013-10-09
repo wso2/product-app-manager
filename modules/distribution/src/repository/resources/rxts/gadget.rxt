@@ -27,7 +27,7 @@
             <field type="text" required="true">
                 <name>Version</name>
             </field>
-            <field type="hidden">
+            <field type="text">
                 <name>Createdtime</name>
             </field>
             <field type="options">
