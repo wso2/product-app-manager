@@ -74,6 +74,11 @@
             "value":false
         },
         {
+            "field": "overview.createdtime",
+            "name": "hidden",
+            "value": "true"
+        },
+        {
             "field":"overview.version",
             "name":"editable",
             "value":false
