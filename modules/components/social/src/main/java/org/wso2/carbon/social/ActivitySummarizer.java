@@ -29,6 +29,7 @@ public class ActivitySummarizer {
             merge(activity.getBody(), child);
 
             if (child.get("verb").getAsString().equals("like")) {
+                String actorId = activity.getActorId();
 
                 JsonObject likes = parent.getAsJsonObject("likes");
                 if (likes == null) {
@@ -36,17 +37,22 @@ public class ActivitySummarizer {
                     parent.add("likes", likes);
                 }
                 JsonElement totalItems = likes.get("totalItems");
-                if (totalItems == null) {
-                    likes.add("totalItems", new JsonPrimitive(1));
-                } else {
-                    likes.add("totalItems", new JsonPrimitive(totalItems.getAsInt() + 1));
+                int totalItemsCount = 0;
+                if (totalItems != null) {
+                    totalItemsCount = totalItems.getAsInt();
                 }
 
                 JsonArray items = addArrIfNot(likes, "items");
+                if (!likedByMe(items, actorId)) {
+                    LOG.debug("ignored activity (duplicate like) : " + activity);
 
-                JsonObject person = new JsonObject();
-                person.add("id", new JsonPrimitive(activity.getActorId()));
-                items.add(person);
+                    JsonObject person = new JsonObject();
+                    person.add("id", new JsonPrimitive(actorId));
+                    items.add(person);
+
+                    likes.add("totalItems", new JsonPrimitive(totalItemsCount + 1));
+                }
+
             } else {
                 JsonArray attachments = addArrIfNot(parent, "attachments");
                 attachments.add(child);
@@ -55,6 +61,17 @@ public class ActivitySummarizer {
             LOG.error("failed to summarize activity (has no target id) : " + activity);
         }
     }
+
+    private boolean likedByMe(JsonArray items, String actorId) {
+        for (int i = 0; i < items.size(); i++) {
+            JsonElement item = items.get(i);
+            if (item.getAsJsonObject().get("id").getAsString().equals(actorId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     private JsonArray addArrIfNot(JsonObject root, String arrName) {
         JsonArray attachments = root.getAsJsonArray(arrName);

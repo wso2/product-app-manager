@@ -42,7 +42,7 @@ var caramel;
         if (reviewsJSON) {
             for (var i = 0; i < reviewsJSON.length; i++) {
                 var review = reviewsJSON[i];
-                review.ILike = didILike(review,username);
+                review.iLike = didILike(review,username);
             }
         }
 

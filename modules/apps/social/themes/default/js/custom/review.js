@@ -9,9 +9,9 @@ var onMessage = function (messageEvent) {
     console.log(messageEvent);
 };
 var publish = function (activity, onSuccess) {
-    if(activity.target){
+    if (activity.target) {
         activity.context = {"id": target};
-    }else{
+    } else {
         activity.target = {"id": target};
     }
     activity.actor = {"id": user, "objectType": "person" };
@@ -73,16 +73,23 @@ $stream.on('click', '.icon-thumbs-up', function (e) {
     var $likeBtn = $(e.target);
     var $review = $likeBtn.parents('.com-review');
     var id = $review.attr('data-target-id');
-    var $likeCount = $review.find(".com-like-count");
+    var $likeCount = $review.find('.com-like-count');
 
-    var activity = {"verb": "like",
-        "object": {"objectType": "like"},
-        "target": {"id": id}
-    };
+    var activity = { target: {id: id} };
 
-    publish(activity, function () {
-        $likeCount.text(Number($likeCount.text()) + 1);
-    });
+    if ($likeBtn.hasClass('selected')) {
+        activity.verb = 'unlike';
+        publish(activity, function () {
+            $likeCount.text((Number($likeCount.text()) - 1) || '');
+        });
+        $likeBtn.removeClass('selected');
+    } else {
+        activity.verb = 'like';
+        publish(activity, function () {
+            $likeCount.text(Number($likeCount.text()) + 1);
+        });
+        $likeBtn.addClass('selected');
+    }
 
 });
 
