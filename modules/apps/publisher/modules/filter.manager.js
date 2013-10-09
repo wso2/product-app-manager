@@ -91,6 +91,7 @@ var filterManagementModule = function () {
         }
 
         var user = require('/modules/user.js').current(session);
+
         context['data'] = getData(data);
         context['roles'] = user.getRoles();
         context['username'] = user.username;

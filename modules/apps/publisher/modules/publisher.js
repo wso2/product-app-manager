@@ -187,6 +187,8 @@ var buildManagers = function (tenantId, registry) {
     //The security provider requires the registry and user manager to work
     storageSecurityProvider.provideContext(registry,userManager);
 
+    log.info(userManager);
+
     filterManager.setContext(userManager);
 
     var dataInjector=new dataInjectorModule.DataInjector();
