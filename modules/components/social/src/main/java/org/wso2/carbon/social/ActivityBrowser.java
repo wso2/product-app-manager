@@ -18,6 +18,27 @@ public class ActivityBrowser {
     private JsonParser parser = new JsonParser();
     private Connection conn;
 
+    public double getRating(String targetId) {
+        int totalRatings = 0;
+        int numRatings = 0;
+
+        JsonObject socialObject = getSocialObject(targetId);
+        JsonArray attachments = socialObject.get("attachments").getAsJsonArray();
+
+        for (JsonElement r : attachments) {
+            JsonElement ratingElm = r.getAsJsonObject().getAsJsonObject("object").get("rating");
+            if (ratingElm != null) {
+                numRatings++;
+                totalRatings += ratingElm.getAsInt();
+            }
+        }
+        if (numRatings == 0) {
+            return 0;
+        } else {
+            return ((double) totalRatings) / numRatings;
+        }
+    }
+
     public JsonObject getSocialObject(String targetId) {
         List<Activity> activities = listActivitiesChronologically(targetId);
         ActivitySummarizer summarizer = new ActivitySummarizer(targetId);

@@ -28,6 +28,11 @@ public class SocialActivityServiceImpl implements SocialActivityService {
     }
 
     @Override
+    public double getRating(String targetId) {
+        return activityBrowser.getRating(targetId);
+    }
+
+    @Override
     public String getSocialObjectJson(String targetId) {
         JsonObject socialObject = activityBrowser.getSocialObject(targetId);
         if (socialObject != null) {
