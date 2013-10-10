@@ -1,0 +1,14 @@
+<%
+for(var i = 0; i < 1000; i++) {
+	var filePath = 'Book' + i;
+	var filex = new File(filePath);
+	filex.mkdir();
+	var file = new File(filePath + "/ebook.json");
+	file.open("w");
+	var fileContain = '{    "name": "SimpleBook'+i+'",    "tags": "ebooks,horror",    "rate": 4,    "attributes": {	"overview_status": "PUBLISHED",	"overview_category": "Horror",	"overview_name": "SimpleBook'+i+'",	"overview_version": "Edition-1",	"overview_url": "The_Complete_Works_of_H.P._Lovecraft.pdf",	"overview_isbn": "-",	"overview_author": "H.P.Lovecraft",	"overview_provider": "admin",	"overview_description": "simple book details",	"images_thumbnail": "lovecraft/thumbnail.png",	"images_banner": "lovecraft/banner.png"	}	}';
+	
+	file.write(fileContain);
+	file.close();
+
+}
+%>
