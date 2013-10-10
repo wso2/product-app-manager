@@ -196,6 +196,8 @@ var installer = function () {
 
         //Set the id
         artifact.id = currentAsset.id;
+        //Disable createdtime update of a default asset
+        artifact.attributes.overview_createdtime = currentAsset.attributes.overview_createdtime;
 
         //Store any resources in the Storage Manager
         context.dataInjector.inject(artifact, context.dataInjectorModes.STORAGE);

@@ -1,145 +1,141 @@
-$(function () {
-    var url = window.location.pathname;
+$(function() {
+	var url = window.location.pathname;
 
-    var comps = url.split('/');
-    var type = comps[comps.length - 2];
-    var operation = comps[comps.length - 3];
+	var comps = url.split('/');
+	var type = comps[comps.length - 2];
+	var operation = comps[comps.length - 3];
 
-    var dateRange = $('#date-range-field span').text();
-    var from = dateRange.split('to')[0];
-    var to = dateRange.split('to')[1];
+	var dateRange = $('#date-range-field span').text();
+	var from = dateRange.split('to')[0];
+	var to = dateRange.split('to')[1];
 
-    $.ajax({
-        url: '/publisher/api/assets/' + operation + '/' + type + '/',
-        type: 'POST',
-        data: {
-            'startDate': from,
-            'endDate': to // <-- the $ sign in the parameter name seems unusual, I would avoid it
-        },
-        success: function (response) {
-            var parsedResponse = JSON.parse(response);
-            $.plot("#placeholder1", [parsedResponse.bookmarkStats], {
-                series: {
-                    lines: { show: true },
-                    points: { show: true }
-                },
-                xaxis: {
-                    show: true,
-                    ticks: parsedResponse.bookmarkTicks
+	$.ajax({
+		url : '/publisher/api/assets/' + operation + '/' + type + '/',
+		type : 'POST',
+		data : {
+			'startDate' : from,
+			'endDate' : to // <-- the $ sign in the parameter name seems unusual, I would avoid it
+		},
+		success : function(response) {
 
-                },
-                yaxis: {
-                    show: true,
-                    tickDecimals: 0
+			var parsedResponse = JSON.parse(response);
 
-                },
-                grid: {
-                    backgroundColor: { colors: [ "#fff", "#eee" ] },
-                    borderWidth: {
-                        top: 1,
-                        right: 1,
-                        bottom: 2,
-                        left: 2
-                    }
-                }
-            });
+			/* Bookmark stats graph */
+			var data = [{
+				data : parsedResponse.bookmarkStats,
+				color : '#409628',
+				label : 'Assets',
+				lines : {
+					show : true
+				},
+				points : {
+					show : true
+				}
+			}];
 
-            $.plot("#placeholder2", [parsedResponse.hotAssetStats], {
-                series: {
-                    bars: {
-                        show: true,
-                        barWidth: 0.6,
-                        align: "center"
-                    }
+			var options = {
+				yaxis : {
+					show : true,
+					tickDecimals : 0
 
-                },
-                xaxis: {
-                    show: true,
-                    ticks: parsedResponse.hotAssetTicks
-                },
-                yaxis: {
-                    show: true,
-                    tickDecimals: 0
+				},
+				xaxis : {
+					labelAngle : 90,
+					ticks : parsedResponse.bookmarkTicks
+				}
+			};
+			$.plot($("#placeholder1"), data, options);
 
-                },
-                grid: {
-                    backgroundColor: { colors: [ "#fff", "#eee" ] },
-                    borderWidth: {
-                        top: 1,
-                        right: 1,
-                        bottom: 2,
-                        left: 2
-                    }
-                }
-            });
-        },
-        error: function (response) {
-            alert('Error occured at statistics graph rendering');
-        }
-    });
+			
+			/* Hot assets stats graph */
+			var data2 = [{
+				data : parsedResponse.hotAssetStats,
+				color : '#FFC826',
+				label : 'Assets',
+				bars : {
+						show : true,
+						barWidth : 0.6,
+						align : "center"
+					}
+			}];
+
+			var options2 = {
+				yaxis : {
+					show : true,
+					tickDecimals : 0
+
+				},
+				xaxis : {
+					labelAngle : 90,
+					ticks : parsedResponse.hotAssetTicks
+				}
+				
+			};
+
+			$.plot($("#placeholder2"), data2, options2);
+
+			
+		},
+		error : function(response) {
+			alert('Error occured at statistics graph rendering');
+		}
+	});
 });
 
-
-var convertDate = function (date) {
-    var month = date.getMonth() + 1;
-    var day = date.getDate();
-    return date.getFullYear() + '-' +
-        (('' + month).length < 2 ? '0' : '') + month + '-' +
-        (('' + day).length < 2 ? '0' : '') + day;
+var convertDate = function(date) {
+	var month = date.getMonth() + 1;
+	var day = date.getDate();
+	return date.getFullYear() + '-' + (('' + month).length < 2 ? '0' : '') + month + '-' + (('' + day).length < 2 ? '0' : '') + day;
 }
+var onDateSelected = function(from, to) {
+	var url = window.location.pathname;
+	var comps = url.split('/');
 
+	var type = comps[comps.length - 2];
+	var operation = comps[comps.length - 3];
+	$.ajax({
+		url : '/publisher/api/assets/' + operation + '/' + type + '/',
+		type : 'POST',
+		data : {
+			'startDate' : from,
+			'endDate' : to,
+			'isOnChoice' : true
+		},
+		success : function(response) {
+			var parsedResponse = JSON.parse(response);
+			
+			
+			/* Hot assets stats graph */
+			var data2 = [{
+				data : parsedResponse.hotAssetStats,
+				color : '#FFC826',
+				label : 'Assets',
+				bars : {
+						show : true,
+						barWidth : 0.6,
+						align : "center"
+					}
+			}];
 
-var onDateSelected = function (from, to) {
-    var url = window.location.pathname;
-    var comps = url.split('/');
+			var options2 = {
+				yaxis : {
+					show : true,
+					tickDecimals : 0
 
-    var type = comps[comps.length - 2];
-    var operation = comps[comps.length - 3];
-    $.ajax({
-        url: '/publisher/api/assets/' + operation + '/' + type + '/',
-        type: 'POST',
-        data: {
-            'startDate': from,
-            'endDate': to,
-            'isOnChoice': true
-        },
-        success: function (response) {
-            var parsedResponse = JSON.parse(response);
-            $.plot("#placeholder2", [parsedResponse.hotAssetStats], {
-                series: {
-                    bars: {
-                        show: true,
-                        barWidth: 0.6,
-                        align: "center"
-                    }
-                },
-                xaxis: {
-                    show: true,
-                    ticks: parsedResponse.hotAssetTicks
+				},
+				xaxis : {
+					labelAngle : 90,
+					ticks : parsedResponse.hotAssetTicks
+				}
+				
+			};
 
-                },
-                yaxis: {
-                    show: true,
-                    tickDecimals: 0
+			$.plot($("#placeholder2"), data2, options2);
 
-                },
-                grid: {
-                    backgroundColor: { colors: [ "#fff", "#eee" ] },
-                    borderWidth: {
-                        top: 1,
-                        right: 1,
-                        bottom: 2,
-                        left: 2
-                    }
-                }
-            });
-
-
-        },
-        error: function (response) {
-            alert('Error occured at statistics graph rendering');
-        }
-    });
+		},
+		error : function(response) {
+			alert('Error occured at statistics graph rendering');
+		}
+	});
 }
-
 
