@@ -103,6 +103,15 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}', functi
 
         model.import('form.importer',context.post);
 
+        //Perform validations on the asset
+        var report=model.validate();
+
+        //If the report indicates the model has failed validations send an error
+        if((report)&&(report.failed)){
+            print({ok:false,message:'Validation failure',report:report});
+            return;
+        }
+
         //var assetModel = getModel(context.post);
 
         model.save();
