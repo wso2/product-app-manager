@@ -121,6 +121,15 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
 
             return assets;
         
+        } if (options.attributes) {
+        	
+        	var searchArtifact = options.attributes;
+        	 
+            assets= that.manager.search(searchArtifact,paging);
+
+            dataInjector.cached().inject(assets,DataInjectorModes.DISPLAY);
+
+            return assets;
         }
         if (options) {
 
