@@ -40,8 +40,7 @@ public class ActivityBrowser {
                 activities = new ArrayList<Activity>();
                 while (resultSet.next()) {
                     JsonElement body = parser.parse(resultSet.getString(BODY_COLUMN));
-                    Activity activity = new Activity(resultSet.getString(1),
-                            body.getAsJsonObject(), resultSet.getInt(TIMESTAMP_COLUMN));
+                    Activity activity = new Activity(body.getAsJsonObject(), resultSet.getInt(TIMESTAMP_COLUMN));
                     activities.add(activity);
                 }
             } catch (SQLException e) {

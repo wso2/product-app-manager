@@ -5,12 +5,10 @@ import com.google.gson.JsonObject;
 
 public class Activity {
 
-    private String id;
     private final JsonObject body;
     private final int timestamp;
 
-    public Activity(String id, JsonObject body, int timestamp) {
-        this.id = id;
+    public Activity(JsonObject body, int timestamp) {
         this.body = body;
         this.timestamp = timestamp;
     }
