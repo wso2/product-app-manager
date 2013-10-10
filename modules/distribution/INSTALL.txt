@@ -7,10 +7,10 @@ Running the server
 
 2. All the shell scripts and .bat files are available in CARBON_HOME/bin folder.
 
-3. To start WSO2 UES one can use either wso2server.sh or daemon.sh in all *nix
+3. To start WSO2 ES one can use either wso2server.sh or daemon.sh in all *nix
    system & wso2server.bat file on Windows operating systems.
 
-4. Either of the following commands can be used to start WSO2 UES
+4. Either of the following commands can be used to start WSO2 ES
       i)  ./wso2server.sh {console|start|stop|restart|status|dump|version}
      ii)  ./daemon.sh {console|start|stop|restart|status|dump}
     iii)  wso2server.bat {start|stop|version}
