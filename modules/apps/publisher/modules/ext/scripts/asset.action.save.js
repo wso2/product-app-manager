@@ -34,7 +34,7 @@ var module=function(){
             var model=context.model;
             var template=context.template;
 
-            var now =new Date();
+            var now =new Date().getTime();
             model.setField('overview.createdtime',now);
 
             var name=model.getField('overview.name').value;

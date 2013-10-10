@@ -38,12 +38,7 @@ var init = function (options) {
         var GovernanceConstants = org.wso2.carbon.governance.api.util.GovernanceConstants;
         var um = server.userManager(tenantId);
         var publisherConfig=require('/config/publisher-tenant.json');
-        var securityProviderModule=require('/modules/security/storage.security.provider.js').securityModule();
 
-        var securityProvider=securityProviderModule.cached();
-
-        //The security provider requires the registry and user manager to work
-        securityProvider.provideContext(reg,um);
 
         //check whether tenantCreate has been called
         if (!reg.exists(PUBLISHER_CONFIG_PATH)) {
@@ -162,6 +157,7 @@ var Publisher = function (tenantId, session) {
     this.dataInjector=managers.dataInjector;
     this.DataInjectorModes=managers.DataInjectorModes;
     this.filterManager=managers.filterManager;
+    this.storageSecurityProvider=managers.storageSecurityProvider;
 
 };
 /*
@@ -179,10 +175,20 @@ var buildManagers = function (tenantId, registry) {
     var route_management = require('/modules/router-g.js').router();
     var dataInjectorModule=require('/modules/data/data.injector.js').dataInjectorModule();
     var filterManagementModule=require('/modules/filter.manager.js').filterManagementModule();
-
-    var filterManager=new filterManagementModule.FilterManager();
+    var securityProviderModule=require('/modules/security/storage.security.provider.js').securityModule();
     var server=require('/modules/server.js');
     var userManager=server.userManager(tenantId);
+    var storageSecurityProvider=new securityProviderModule.SecurityProvider();
+    var filterManager=new filterManagementModule.FilterManager();
+
+
+    log.info('tenant: '+tenantId);
+
+    //The security provider requires the registry and user manager to work
+    storageSecurityProvider.provideContext(registry,userManager);
+
+    log.info(userManager);
+
     filterManager.setContext(userManager);
 
     var dataInjector=new dataInjectorModule.DataInjector();
@@ -236,7 +242,8 @@ var buildManagers = function (tenantId, registry) {
         routeManager: routeManager,
         dataInjector:dataInjector,
         DataInjectorModes:injectorModes,
-        filterManager:filterManager
+        filterManager:filterManager,
+        storageSecurityProvider:storageSecurityProvider
     };
 };
 

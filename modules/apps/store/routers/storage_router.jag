@@ -18,9 +18,10 @@ var ERROR_AUTH_REQ="You must be logged in to access this resource";
 var log=new Log('storage.router');
 
 var storageModule = require('/modules/data/storage.js').storageModule();
-var securityProviderModule=require('/modules/security/storage.security.provider.js').securityModule();
 
-var storageSecurityProvider=securityProviderModule.cached();
+var store=require('/modules/store.js').storeManagers(request,session);
+
+var storageSecurityProvider=store.storageSecurityProvider;
 
 var storageManager = new storageModule.StorageManager({
     context: 'storage',
