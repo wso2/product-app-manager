@@ -505,10 +505,12 @@ Store.prototype.recentAssets = function (type, count) {
     var paging = {
         start: 0,
         count: count || 5,
-        sort: 'recent'
+        sortBy: 'overview_createdtime',
+        sortOrder: 'older'
     };
     var options = {};
     options = obtainViewQuery(options);
+    options['attributes'] = {};
 
     var recent = this.assetManager(type).search(options, paging);
 
