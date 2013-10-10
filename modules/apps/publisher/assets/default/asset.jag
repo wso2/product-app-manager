@@ -175,12 +175,13 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
 
         model.import('form.importer', context.post);
 
+
         //Perform validation on the model
         var report=model.validate();
 
         if((report)&&(report.failed)){
 
-            print(ok:false,message:'Validation failure',report:report});
+            print({ok:false,message:'Validation failure',report:report});
             return;
         }
 
@@ -195,6 +196,8 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
 
         //Add the tags
         addTags(context.post,assetId,artifactManager,reg);
+
+        print({ok:true,message:'asset added'});
     }
     catch (e) {
         log.error(e);

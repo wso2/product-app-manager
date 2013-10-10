@@ -52,9 +52,12 @@ var validatorModule = function () {
     function handleTable(table,model,report) {
         var field;
         for (var fieldIndex in table.fields) {
+
+
             field = table.fields[fieldIndex];
 
             handleField(field,table.name,model,report);
+
         }
     }
 
@@ -79,7 +82,12 @@ var validatorModule = function () {
                 return;
             }
 
-            if (fieldInstance.value == '') {
+            var value=fieldInstance.value;
+            value=value.trim();
+            value=value.replace("undefined","");
+
+            if (value == '') {
+
                 report.record(field.name,'Mandatory field '+field.name+' has  not been filled in.');
             }
         }
