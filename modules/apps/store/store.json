@@ -7,6 +7,7 @@
     "commentsPageSize": 10,
     "socialCommentsEnable": true,
     "tenanted": true,
+    "cached": false,
     "server": {
         "https": "%https.host%/admin",
         "http": "%http.host%"

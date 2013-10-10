@@ -1,20 +1,10 @@
-var ASSETS_TYPE = 'gadget';
-
-var Manager;
-
-(function () {
-    var asset = require('/modules/asset.js');
-
-    Manager = asset.Manager;
-
-    /*var list = Manager.prototype.list;
-
-    Manager.prototype.list = function (paging) {
-        var items = list.call(this, paging);
-        //return items.slice(0, 12);
-        return items;
-    };*/
-}());
+/*var assetManager = function(manager) {
+    var get = manager.get;
+    manager.get = function(id) {
+        return get.call(manager, id);
+    };
+    return manager;
+};*/
 
 var assetLinks = function (user) {
     return {
