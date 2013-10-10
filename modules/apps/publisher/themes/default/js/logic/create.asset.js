@@ -56,8 +56,19 @@ $(function () {
             contentType: false,
             processData: false,
             success: function (response) {
-                alert('asset added.');
-                window.location = '/publisher/assets/' + type + '/';
+
+                var result=JSON.parse(response);
+
+                //Check if the asset was added
+                if(result.ok){
+                    alert('asset added.');
+                    window.location = '/publisher/assets/' + type + '/';
+                }
+                else{
+                    var msg=processErrorReport(result.report);
+                    showAlert(msg,'error');
+                }
+
             },
             error: function (response) {
                 showAlert('Failed to add asset.', 'error');
@@ -70,6 +81,22 @@ $(function () {
     });
     //}
 
+    /*
+    The function is used to build a report message indicating the errors in the form
+    @report: The report to be processed
+    @return: An html string containing the validation issues
+     */
+    function processErrorReport(report){
+        var msg='';
+        for(var index in report){
+
+            for(var item in report[index]){
+                msg+=report[index][item];
+            }
+        }
+
+        return msg;
+    }
 
     /*
      The function is used to add a given field to a FormData element

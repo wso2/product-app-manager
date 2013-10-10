@@ -52,7 +52,17 @@ $(function () {
             contentType:'application/json; charset=utf-8',
             dataType:'json',
             success:function(response){
-                createMessage(MSG_CONTAINER,SUCCESS_CSS,'Asset updated successfully');
+
+                var result=response;//JSON.parse(response);
+
+                if(result.ok){
+                    createMessage(MSG_CONTAINER,SUCCESS_CSS,'Asset updated successfully');
+                }
+                else{
+                    var report=processErrorReport(result.report);
+                    createMessage(MSG_CONTAINER,ERROR_CSS,report);
+                }
+
             },
             error:function(response){
                 createMessage(MSG_CONTAINER,ERROR_CSS,'Asset was not updated successfully.');
@@ -61,6 +71,22 @@ $(function () {
 
     });
 
+    /*
+     The function is used to build a report message indicating the errors in the form
+     @report: The report to be processed
+     @return: An html string containing the validation issues
+     */
+    function processErrorReport(report){
+        var msg='';
+        for(var index in report){
+
+            for(var item in report[index]){
+                msg+=report[index][item];
+            }
+        }
+
+        return msg;
+    }
 
     /*
     The function creates a message and displays it in the provided container element.

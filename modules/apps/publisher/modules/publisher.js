@@ -171,6 +171,7 @@ var buildManagers = function (tenantId, registry) {
     var ext_domain = require('/modules/ext/core/extension.domain.js').extension_domain();
     var ext_core = require('/modules/ext/core/extension.core.js').extension_core();
     var ext_mng = require('/modules/ext/core/extension.management.js').extension_management();
+    var validationManagement=require('/modules/validations/validation.manager.js').validationManagement();
     var rxt_management = require('/modules/rxt.manager.js').rxt_management();
     var route_management = require('/modules/router-g.js').router();
     var dataInjectorModule=require('/modules/data/data.injector.js').dataInjectorModule();
@@ -234,7 +235,10 @@ var buildManagers = function (tenantId, registry) {
     var actionManager = new ext_core.ActionManager({templates: parser.templates});
     actionManager.init();
 
-    var modelManager = new ext_mng.ModelManager({parser: parser, adapterManager: adapterManager, actionManager: actionManager, rxtManager: rxtManager});
+    var validationManager=new validationManagement.ValidationManager();
+
+    var modelManager = new ext_mng.ModelManager({parser: parser, adapterManager: adapterManager,
+        actionManager: actionManager, rxtManager: rxtManager ,validationManager:validationManager});
 
     return {
         modelManager: modelManager,

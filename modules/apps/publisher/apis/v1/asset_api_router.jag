@@ -103,6 +103,15 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}', functi
 
         model.import('form.importer',context.post);
 
+        //Perform validations on the asset
+        var report=model.validate();
+
+        //If the report indicates the model has failed validations send an error
+        if((report)&&(report.failed)){
+            print({ok:false,message:'Validation failure',report:report});
+            return;
+        }
+
         //var assetModel = getModel(context.post);
 
         model.save();
@@ -130,8 +139,9 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}', functi
 routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
     var shortName = context.params.type;
     var id = context.params.id;
+    var msg={};
     var artifactManager = rxtManager.getArtifactManager(shortName);
-    log.info('CONTEXT: '+stringify(context.content));
+
     try {
         var modelA = modelManager.getModel(shortName);
         var modelB = modelManager.getModel(shortName);
@@ -140,12 +150,23 @@ routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', fu
 
         modelA.import('form.importer', context.content);
 
+        var report=modelA.validate();
+
+        //Check if the validation check has failed
+        if((report)&&(report.failed)){
+
+            msg['ok']=false;
+            msg['report']=report;
+            print(msg);
+            return;
+        }
+
         modelA.set('*.id', id);
 
         //Get the original artifact
         var originalArtifact = artifactManager.get(id);
 
-        log.info('about to import data from originalArtifact');
+
         modelB.import('asset', originalArtifact);
 
         //Checks whether two models are equal
@@ -155,7 +176,7 @@ routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', fu
 
         //If they are not equal,abort the operation
         if (!isEqual) {
-            log.info('trying to get fields which are different');
+            log.debug('trying to get fields which are different');
             var diff=modelManager.diff(modelA,modelB,reqProps);
             response.sendError(406, 'The name,provider and version of an asset cannot be changed.The following fields'
             +' were modified: '+diff);
@@ -164,7 +185,7 @@ routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', fu
 
         var artifact = modelA.export('asset.exporter');
         artifactManager.update(artifact);
-        var msg={};
+
         msg['ok']=true;
         msg['message']='asset updated';
         print(msg);
