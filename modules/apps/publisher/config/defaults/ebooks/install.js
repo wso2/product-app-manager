@@ -22,7 +22,7 @@ var installer = function () {
 
 		    //Clone the object but ignore tags and rate
 		    var artifact = utility.cloneObject(jsonConfig, ['tags', 'rate']);
-            var now = new Date();
+            var now = new Date().getTime();
 
 
 		    artifact.attributes.images_thumbnail = context.assetPath + artifact.attributes.images_thumbnail;
