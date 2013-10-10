@@ -57,8 +57,9 @@ var caramel;
 
         options = {
             type: type,
-            query: query
+            attributes: require('/modules/search.js').build(query)
         };
+
         total = store.assetCount(type, options);
         subPage = '/ Search: "' + query + '"';
         if (paging.start > total || paging.start < 0) {
