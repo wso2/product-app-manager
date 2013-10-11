@@ -60,7 +60,7 @@ var usingTemplate = function (callback) {
 $(function () {
     windowProxy = new Porthole.WindowProxy();
     windowProxy.addEventListener(onMessage);
-    adjustHeight();
+    setTimeout(adjustHeight,1000);
 });
 
 $radio.rating({
@@ -87,10 +87,16 @@ $btn.click(function (e) {
         $btn.attr('disabled', 'disabled');
         showLoading(true);
 
+        var pos = target.indexOf(':');
+        var aid = target.substring(pos + 1);
+        var type = target.substring(0, pos);
+
+
         var callback = function () {
             $('#newest').addClass('selected');
             $.get("/store/apis/rate", {
-                asset: target,
+                id: aid,
+                type: type,
                 value: rating
             }, function (r) {
                 publish(activity, function (published) {
