@@ -23,14 +23,15 @@ public class Cache {
             init();
         }
 
-        String insertTableSQL = "MERGE INTO " + TABLE_NAME + "(id, body , rating) VALUES(?,?,?)";
+        String insertTableSQL = "MERGE INTO " + TABLE_NAME + "(id,type , body , rating) VALUES(?,?,?,?)";
         PreparedStatement statement = null;
         try {
             statement = connection.prepareStatement(insertTableSQL);
             statement.setString(1, id);
-            statement.setString(2, obj.toString());
+            statement.setString(2, id.substring(0, id.indexOf(':')));
+            statement.setString(3, obj.toString());
             Number rating = obj.get("rating").getAsNumber();
-            statement.setDouble(3, rating.doubleValue());
+            statement.setDouble(4, rating.doubleValue());
             statement.executeUpdate();
         } catch (SQLException e) {
             LOG.error("could not cache WSO2 Social object", e);
@@ -74,7 +75,7 @@ public class Cache {
             DataSource dataSource = (DataSource) carbonDataSource.getDSObject();
             connection = dataSource.getConnection();
             if (!tableExists()) {
-                executeUpdate("CREATE TABLE " + TABLE_NAME + " (id VARCHAR(255) NOT NULL,  body VARCHAR(5000),  rating DOUBLE,  PRIMARY KEY ( id ))");
+                executeUpdate("CREATE TABLE " + TABLE_NAME + " (id VARCHAR(255) NOT NULL,type VARCHAR(255), body VARCHAR(5000), rating DOUBLE,  PRIMARY KEY ( id ))");
                 LOG.info("table '" + TABLE_NAME + "' created for storing WSO2 Social object cache");
             }
         } catch (DataSourceException e) {
