@@ -110,7 +110,11 @@ function handleResourceRequest(matchedElements){
         response.addHeader(HEADER_CONTENT_LENGTH, contentLength + '');
 
         //Send the file stream
-        print(storedValue.content);
+        try{
+            print(storedValue.content);
+        } catch(e){
+
+        }
     }
 }
 
