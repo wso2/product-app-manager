@@ -13,7 +13,7 @@
 var router = require('/modules/router-g.js').router();
 var config = require('/config/publisher.json');
 var caramel = require('caramel');
-var user = require('/modules/user.js');
+var server = require('store').server;
 var publisher = require('/modules/publisher.js').publisher(request, session);
 
 var routeMnger = new router.Router();
@@ -76,7 +76,7 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 
 		caramel.render({
 			op : 'list',
-			cuser : user.current(session),
+			cuser : server.current(session),
 			shortName : context.params.type,
 			artifacts : artifacts,
 			query : query
@@ -100,7 +100,7 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{operation}/{type}/',
         try {
             caramel.render({
                 op: operation,
-                cuser: user.current(session),
+                cuser: server.current(session),
                 shortName: type
             });
 

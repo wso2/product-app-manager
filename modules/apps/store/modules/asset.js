@@ -98,6 +98,7 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
   
 	var search = function(that, options, paging) {
 		var assets;
+        var configs = require('/store.js').config();
 
 		if(options.tag) {
 			var registry = that.registry, tag = options.tag;
@@ -123,7 +124,13 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
 
 		} else if(options.attributes) {
 
-			var searchArtifact = options.attributes;
+			//TODO need proper way to distinguish search and parameter search
+			if(options.attributes.length != null){
+				options.attributes = {"overview_name":options.attributes,"lcState":configs.lifeCycleBehaviour.visibleIn};
+			}else{
+				options.attributes["lcState"] = configs.lifeCycleBehaviour.visibleIn;
+			}
+            var searchArtifact = options.attributes;
 			assets = that.manager.search(searchArtifact, paging);
 
 			dataInjector.cached().inject(assets, DataInjectorModes.DISPLAY);
