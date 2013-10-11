@@ -164,13 +164,16 @@ $(function(){
                     sugyama.init(statInfo.lifecycle,paper);
                     var START_X=10;
                     var START_Y=50;
-                    var VERTEX_RADIUS=25;
+                    var VERTEX_RADIUS=20;
                     var LAYER_SEP=85;
                     var LAYER_SPACE=200;
                     sugyama.draw(START_X,START_Y,VERTEX_RADIUS,LAYER_SPACE,LAYER_SEP);
 
                     //graph.Renderer.setSelected(statInfo.state);
+                    highlightTransition(statInfo.state);
                     disableActions(statInfo.actions);
+                    
+                    
                 }
                 //$('#canvas').html(response);
             },
@@ -312,6 +315,12 @@ $(function(){
     	var alert = $('.widget-content .alert');
     	alert.removeClass().addClass('info-div alert alert-' + type).find('span').text(msg);
     	alert.delay(1000).fadeIn("fast").delay(2000).fadeOut("fast");
+    }
+    
+    function highlightTransition(state){
+    	var elem = $('.'+state);
+    	elem.attr('fill', '#52B9E9');
+    	//$('#canvas').attr('data-current', state);
     }
 
    /*
