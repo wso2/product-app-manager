@@ -2,12 +2,13 @@
     "assets": ["gadget", "site", "ebook"],
     "assetsPageSize": 12,
     "commentsPageSize": 10,
+    "userSpace": "/_system/governance/users",
     "roles": {
         "store": {
             "/permission/admin/login": ["ui.execute"]
         }
     },
-    "userRoles": ["store"],
+    "userRoles": ["Internal/store"],
     "permissions": {
         "login": {
             "/permission/admin/login": ["ui.execute"]

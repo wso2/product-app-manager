@@ -5,7 +5,7 @@ var type;
             store = require('/modules/store.js'),
             config = require('/store.js').config(),
             file = require('/modules/file.js'),
-            server = require('/modules/server.js'),
+            server = require('store').server,
             log = new Log(),
             matcher = new URIMatcher(request.getRequestURI()),
             tenant = server.tenant(request, session),

@@ -1,7 +1,7 @@
 <%
 //auto rediecting the user to SSO
 var user = request.getParameter('user'),
-        loged = require('/modules/user.js').current(session);
+        loged = require('store').server.current(session);
 if (user && !loged) {
     include('login.jag');
 } else {

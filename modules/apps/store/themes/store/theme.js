@@ -57,7 +57,7 @@ var engine = caramel.engine('handlebars', (function () {
         },
         globals: function (data, meta) {
             var store = require('/modules/store.js'),
-                user = require('/modules/user.js').current(meta.session);
+                user = require('store').server.current(meta.session);
             return 'var store = ' + stringify({
                 user: user ? user.username : null
             });
