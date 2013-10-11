@@ -1053,7 +1053,7 @@ span.title {
 
 .tbl-upload {
     display: table;
-    width:100%;
+    width: 100%;
 }
 .tbl-upload-row {
     display: table-row;
@@ -1061,18 +1061,27 @@ span.title {
 .tbl-upload-cell {
     display: table-cell;
 }
-.tbl-upload-row .tbl-upload-cell:last-child{
-    width:88px;
+.tbl-upload-row .tbl-upload-cell:last-child {
+    width: 88px;
     text-align: right;
 }
-.tbl-upload-cell input.txt-filepath{
- width: 100%;
+.tbl-upload-cell input.txt-filepath {
+    width: 100%;
     margin: 0px;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
-       -moz-box-sizing: border-box;
-  
-  display: inline-block;
+    -moz-box-sizing: border-box;
+    display: inline-block;
     height: 30px;
+}
+
+.info-div i {
+    display: inline-block;
+}
+
+.info-div > span {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 8px;
 }

@@ -9,7 +9,7 @@ window.showAlert = function(msg, type) {
 		container.prepend(html);
 	}
 	var alert = container.find('.alert');
-	alert.removeClass().addClass('info-div alert alert-' + type).find('span').text(msg);
+	alert.removeClass().addClass('info-div alert alert-' + type).find('span').html(msg);
 	alert.fadeIn("fast");
 }
 
