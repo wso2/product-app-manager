@@ -82,6 +82,9 @@
         "responseSigningEnabled": "true",
         "publisherAcs": "%https.host%/publisher/sso",
         "keyStoreName": "/repository/resources/security/wso2carbon.jks"
+    },
+    "constants" :{
+    "assetCreatedDateLength" : 20
     }
 
 }
