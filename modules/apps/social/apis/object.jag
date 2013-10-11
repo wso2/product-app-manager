@@ -1,0 +1,13 @@
+<%
+response.addHeader("Content-Type", "application/json");
+
+(function () {
+    var carbon = require('carbon');
+    var social = carbon.server.osgiService('org.wso2.carbon.social.service.SocialActivityService');
+    var target = request.getParameter('target');
+    var sortBy = request.getParameter('sortBy') || "NEWEST";
+    var obj = social.getSocialObjectJson(target, sortBy.toUpperCase());
+
+    print(obj);
+})();
+%>

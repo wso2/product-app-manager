@@ -6,13 +6,13 @@ import java.util.Comparator;
 import java.util.List;
 
 public enum SortOrder {
-    NEWEST(new Comparator<Activity>() {
+    NEWEST(null),
+    OLDEST(new Comparator<Activity>() {
         @Override
         public int compare(Activity o2, Activity o1) {
-            return o2.getTimestamp() - o1.getTimestamp();
+            return o1.getTimestamp() - o2.getTimestamp();
         }
     }),
-    OLDEST(null),
     POPULAR(new Comparator<Activity>() {
         @Override
         public int compare(Activity o1, Activity o2) {

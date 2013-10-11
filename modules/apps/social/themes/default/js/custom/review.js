@@ -25,15 +25,15 @@ var adjustHeight = function () {
     windowProxy.post({'expanded': $(document).height()});
 };
 
-var showAlert = function(msg){
-	$alert.html(msg).fadeIn("fast").css('display','inline-block');
+var showAlert = function (msg) {
+    $alert.html(msg).fadeIn("fast").css('display', 'inline-block');
 }
-var showLoading = function(status){
-	if(status){
-		$alert.html('').css('display','inline-block').addClass('com-alert-wait');
-	} else {
-		$alert.hide().removeClass('com-alert-wait');
-	}
+var showLoading = function (status) {
+    if (status) {
+        $alert.html('').css('display', 'inline-block').addClass('com-alert-wait');
+    } else {
+        $alert.hide().removeClass('com-alert-wait');
+    }
 }
 $(function () {
     windowProxy = new Porthole.WindowProxy();
@@ -49,14 +49,14 @@ $radio.rating({
 $btn.click(function (e) {
     e.preventDefault();
     var rating = Number($('input.star-rating-applied:checked').val());
-	var review = $textArea.val();
-	
+    var review = $textArea.val();
+
     if (!review && !rating) {
-		showAlert("Please add your Review and Rating");
-	} else if(!review){
-		showAlert("Please add your Review");
-	} else if(!rating){
-		showAlert("Please add your Rating");
+        showAlert("Please add your Review and Rating");
+    } else if (!review) {
+        showAlert("Please add your Review");
+    } else if (!rating) {
+        showAlert("Please add your Rating");
     } else {
         var activity = {"verb": "post",
             "object": {"objectType": "review", "content": review, rating: rating}
@@ -64,7 +64,7 @@ $btn.click(function (e) {
 
         $btn.attr('disabled', 'disabled');
         showLoading(true);
-        
+
         publish(activity, function (published) {
             if ($firstReview.length) $firstReview.hide();
             $btn.removeAttr('disabled');
@@ -73,10 +73,10 @@ $btn.click(function (e) {
                 showLoading(false);
                 $radio.rating('select', null);
                 $textArea.val('');
-				
+
                 activity.id = published.id;
-                caramel.partials({activity: 'themes/' + caramel.themer + '/partials/activity.hbs'}, function () {
-                    var newComment = Handlebars.partials['activity'](activity);
+                usingTemplate(function (template) {
+                    var newComment = template(activity);
                     $stream.prepend(newComment);
                     if (adjustHeight) {
                         adjustHeight();
@@ -88,8 +88,14 @@ $btn.click(function (e) {
     }
 });
 
+var usingTemplate = function (callback) {
+    caramel.partials({activity: 'themes/' + caramel.themer + '/partials/activity.hbs'}, function () {
+        callback(Handlebars.partials['activity']);
+    });
+};
+
 $stream.on('click', '.icon-thumbs-up', function (e) {
-	e.preventDefault();
+    e.preventDefault();
     var $likeBtn = $(e.target);
     var $review = $likeBtn.parents('.com-review');
     var id = $review.attr('data-target-id');
@@ -113,4 +119,24 @@ $stream.on('click', '.icon-thumbs-up', function (e) {
 
 });
 
-
+$(document).on('click', '.com-sort', function (e) {
+    var $target = $(e.target);
+    if (!$target.hasClass('selected')) {
+        $('.com-sort .selected').removeClass('selected');
+        $target.addClass('selected');
+        $.get('apis/object.jag', {
+            target: target,
+            sortBy: $target.text().toUpperCase()
+        }, function (obj) {
+            var reviews = obj.attachments;
+            usingTemplate(function (template) {
+                var str = "";
+                for (var i = 0; i < reviews.length; i++) {
+                    var review = reviews[i];
+                    str += template(review);
+                }
+                $stream.html(str);
+            });
+        })
+    }
+});
