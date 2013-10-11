@@ -389,10 +389,10 @@ Store.prototype.assets = function (type, paging) {
     var options = {};
     options = obtainViewQuery(options);
     var i;
-
+    var newPaging = PaginationFormBuilder(paging);
     //var assetz = this.assetManager(type).list(paging);
 
-    var assetz = this.assetManager(type).search(options, paging);
+    var assetz = this.assetManager(type).search(options, newPaging);
 
 
     for (i = 0; i < assetz.length; i++) {
@@ -484,7 +484,8 @@ Store.prototype.popularAssets = function (type, count) {
     var paging = {
         start: 0,
         count: count || 5,
-        sort: 'popular'
+        sortBy: 'overview_name',
+        sortOrder: 'ASC'
     };
 
     var assets = this.assetManager(type).search(options, paging);
@@ -744,6 +745,59 @@ function StoreMasterManager(tenantId, session) {
     this.rxtManager = managers.rxtManager;
     this.storageSecurityProvider=managers.storageSecurityProvider;
     this.tenantId = tenantId;
+}
+
+function PaginationFormBuilder(pagin) {
+	log.info(pagin);
+	var DEFAULT_PAGIN = {"start" : 0.0, "count" : 5};
+	// switch sortOrder from ES to pagination Context
+
+		switch (pagin.sort) {
+			
+			case 'recent':
+				DEFAULT_PAGIN.sortOrder = 'DES';
+				DEFAULT_PAGIN.sortBy  = 'overview_createdtime';
+				log.info("AAxxxx")
+				break;
+			case 'older':
+				DEFAULT_PAGIN.sortOrder = 'ASC'
+				DEFAULT_PAGIN.sortBy  = 'overview_createdtime';
+				log.info("DDxxxx")
+				break;
+			case 'popular':
+				// no regsiter pagination support, socail feature need to check
+				break;
+			case 'unpopular':
+				// no regsiter pagination support, socail feature need to check
+				break;
+			case 'az':
+				DEFAULT_PAGIN.sortOrder = 'ASC'
+				DEFAULT_PAGIN.sortBy  = 'overview_name';
+				break;
+			case 'za':
+				DEFAULT_PAGIN.sortOrder = 'DES';
+				DEFAULT_PAGIN.sortBy  = 'overview_name';
+				break;
+			default:
+				DEFAULT_PAGIN.sortOrder = 'ASC';
+		}
+
+		//sortBy only have overview_name name still for assert type attributes
+		if(pagin.count != null) {
+			DEFAULT_PAGIN.count = pagin.count;
+		}
+		if(pagin.start != null) {
+			DEFAULT_PAGIN.start = pagin.start;
+		}
+		if(pagin.paginationLimit != null) {
+			DEFAULT_PAGIN.paginationLimit = 120000;
+		}
+		
+		log.info("DEFAULT_PAGIN");
+		log.info(DEFAULT_PAGIN);
+		return DEFAULT_PAGIN;
+
+		
 }
 
 /*
