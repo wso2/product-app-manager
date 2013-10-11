@@ -9,6 +9,20 @@ var windowProxy;
 var onMessage = function (messageEvent) {
     console.log(messageEvent);
 };
+
+var didILike = function (review, username) {
+    var likes = review.likes && review.likes.items;
+    if (likes) {
+        for (var j = 0; j < likes.length; j++) {
+            var like = likes[j];
+            if (like.id == username) {
+                return true;
+            }
+        }
+    }
+    return false;
+};
+
 var publish = function (activity, onSuccess) {
     if (activity.target) {
         activity.context = {"id": target};
@@ -27,14 +41,22 @@ var adjustHeight = function () {
 
 var showAlert = function (msg) {
     $alert.html(msg).fadeIn("fast").css('display', 'inline-block');
-}
+};
+
 var showLoading = function (status) {
     if (status) {
         $alert.html('').css('display', 'inline-block').addClass('com-alert-wait');
     } else {
         $alert.hide().removeClass('com-alert-wait');
     }
-}
+};
+
+var usingTemplate = function (callback) {
+    caramel.partials({activity: 'themes/' + caramel.themer + '/partials/activity.hbs'}, function () {
+        callback(Handlebars.partials['activity']);
+    });
+};
+
 $(function () {
     windowProxy = new Porthole.WindowProxy();
     windowProxy.addEventListener(onMessage);
@@ -88,12 +110,6 @@ $btn.click(function (e) {
     }
 });
 
-var usingTemplate = function (callback) {
-    caramel.partials({activity: 'themes/' + caramel.themer + '/partials/activity.hbs'}, function () {
-        callback(Handlebars.partials['activity']);
-    });
-};
-
 $stream.on('click', '.icon-thumbs-up', function (e) {
     e.preventDefault();
     var $likeBtn = $(e.target);
@@ -119,6 +135,7 @@ $stream.on('click', '.icon-thumbs-up', function (e) {
 
 });
 
+
 $(document).on('click', '.com-sort', function (e) {
     var $target = $(e.target);
     if (!$target.hasClass('selected')) {
@@ -133,6 +150,9 @@ $(document).on('click', '.com-sort', function (e) {
                 var str = "";
                 for (var i = 0; i < reviews.length; i++) {
                     var review = reviews[i];
+                    var iLike = didILike(review, user);
+                    review.iLike = iLike;
+                    console.log(iLike);
                     str += template(review);
                 }
                 $stream.html(str);
@@ -140,3 +160,4 @@ $(document).on('click', '.com-sort', function (e) {
         })
     }
 });
+
