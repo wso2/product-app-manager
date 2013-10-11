@@ -5,16 +5,16 @@ var e = session.get('error') || {};
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Sign in or Register | User Engagement Server</title>
+    <title>Sign in or Register | WSO2 Enterprise Store</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
 
     <!-- Le styles -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link href="views/css/bootstrap.min.css" rel="stylesheet">
+    <link href="views/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="views/css/styles.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="views/css/font-awesome.min.css">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -39,7 +39,7 @@ var e = session.get('error') || {};
     		<div class="span8 offset2">
     			<div class="row">
 					<div class="span8 form-header">
-						<img src="img/logo-banner.png">
+						<img src="views/img/logo-banner.png">
 					</div>
 				</div>
 				<div id="form-cont" class="row">
@@ -139,9 +139,9 @@ var e = session.get('error') || {};
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="js/jquery-1.8.3.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.validate.js"></script>
+    <script src="views/js/jquery-1.8.3.min.js"></script>
+    <script src="views/js/bootstrap.min.js"></script>
+    <script src="views/js/jquery.validate.js"></script>
   	<script type="text/javascript">
 		$(function(){
 			$("#registrationSubmit").click(function(e){
@@ -149,11 +149,16 @@ var e = session.get('error') || {};
 					return;
 				}
 
-            $.post('register.jag', $( "#registerForm" ).serialize(), function(data){
+            $.post('/sso/register', $( "#registerForm" ).serialize(), function(data){
                 if(JSON.parse(data).error == 'false'){
                         $('#regFormError').hide();
                         $('#regFormSuc').show();
                         $('#regFormSuc').text(JSON.parse(data).msg);
+
+                        //submitting the login form
+                        $('#username').val($('#reg-username').val());
+                        $('#password').val($('#reg-password').val());
+                        $('#loginForm').submit();
 
                 }else{
                         $('#regFormSuc').hide();

@@ -113,13 +113,14 @@ var currentAsset = function () {
 var store = function (o, session) {
     var store, configs, tenantId,
         user = require('/modules/user.js'),
-        server = require('/modules/server.js');
+        server = require('/modules/server.js'),
+        cached = server.options().cached;
 
     tenantId = (o instanceof Request) ? server.tenant(o, session).tenantId : o;
 
     if (user.current(session)) {
         store = session.get(TENANT_STORE);
-        if (store) {
+        if (cached && store) {
             return store;
         }
         store = new Store(tenantId, session);
@@ -128,7 +129,7 @@ var store = function (o, session) {
     }
     configs = server.configs(tenantId);
     store = configs[TENANT_STORE];
-    if (store) {
+    if (cached && store) {
         return store;
     }
     store = new Store(tenantId);
@@ -137,10 +138,14 @@ var store = function (o, session) {
 };
 
 var assetManager = function (type, reg) {
-    var azzet,
-        path = ASSETS_EXT_PATH + type + '/asset.js';
-    azzet = (new File(path).isExists() && (azzet = require(path)).Manager) ? azzet : require('/modules/asset.js');
-    return new azzet.Manager(reg, type);
+    var asset,
+        azzet = require('/modules/asset.js'),
+        path = ASSETS_EXT_PATH + type + '/asset.js',
+        manager = new azzet.Manager(reg, type);
+    if (new File(path).isExists() && (asset = require(path)).hasOwnProperty('assetManager')) {
+        manager = asset.assetManager(manager);
+    }
+    return manager;
 };
 
 var configs = function (tenantId) {
@@ -500,10 +505,12 @@ Store.prototype.recentAssets = function (type, count) {
     var paging = {
         start: 0,
         count: count || 5,
-        sort: 'recent'
+        sortBy: 'overview_createdtime',
+        sort: 'older'
     };
     var options = {};
     options = obtainViewQuery(options);
+    options['attributes'] = {};
 
     var recent = this.assetManager(type).search(options, paging);
 
@@ -626,6 +633,12 @@ Store.prototype.removeAsset = function (type, options) {
     this.assetManager(type).remove(options);
 };
 
+Store.prototype.rxtManager = function(type) {
+    return storeManagers(this.tenantId, this.session).rxtManager.findAssetTemplate(function(tmpl) {
+        return tmpl.shortName === type;
+    });
+};
+
 var LIFECYCLE_STATE_PROPERTY = 'lifecycleState';
 var DEFAULT_ASSET_VIEW_STATE = 'published'; //Unless specified otherwise, assets are always visible when Published
 
@@ -648,7 +661,7 @@ var obtainViewQuery = function (options) {
     return options;
 }
 
-var TENANT_STORE_MANAGERS='store.managers'
+var TENANT_STORE_MANAGERS='store.managers';
 var SUPER_TENANT = -1234;
 var APP_MANAGERS = 'application.master.managers';
 var LOGGED_IN_USER = 'LOGGED_IN_USER';
@@ -666,7 +679,7 @@ var storeManagers = function (o, session) {
     var server = require('/modules/server.js');
 
     //We check if there is a valid session
-    if (session.get(LOGGED_IN_USER) != null) {
+    if (require('/modules/user.js').current(session) != null) {
         return handleLoggedInUser(o, session);
     }
     else {

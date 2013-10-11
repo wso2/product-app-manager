@@ -34,7 +34,7 @@ var installer = function () {
         //Create the deployment object
         var artifact = {};
 
-        var now = new Date();
+        var now = new Date().getTime();
 
         artifact['attributes'] = {};
 

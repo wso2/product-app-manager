@@ -1,4 +1,4 @@
-var configs = require('/sso.js').config();
+var configs = require('/config/sso.js').config();
 
 var server = require('/modules/server.js');
 server.init(configs);

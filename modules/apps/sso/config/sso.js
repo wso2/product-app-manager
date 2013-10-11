@@ -3,7 +3,7 @@ var config;
     config = function () {
         var log = new Log(),
             pinch = require('/modules/pinch.min.js').pinch,
-            config = require('/sso.json'),
+            config = require('/config/sso.json'),
             process = require('process'),
             localIP = process.getProperty('server.host'),
             httpPort = process.getProperty('http.port'),
