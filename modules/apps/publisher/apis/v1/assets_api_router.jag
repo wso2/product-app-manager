@@ -12,7 +12,7 @@ var log = new Log();
 routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{type}/', function (context) {
     var type = context.params.type;
 
-    var username = require('/modules/user.js').current(session).username;
+    var username = require('store').server.current(session).username;
     var startDate = context.post.startDate;
     var endDate = context.post.endDate;
 
@@ -77,7 +77,7 @@ var passed=sm.check(function(){
 //Stop servicing the request if the check failed
 if(passed){
 
-    var user = require('/modules/user.js');
+    var user = require('store').user;
     var publisher = require('/modules/publisher.js').publisher(request, session);
     var stats = require('/modules/statistics.js');
 

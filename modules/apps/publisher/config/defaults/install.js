@@ -12,7 +12,7 @@ var installer = function () {
     var log = new Log('master.installer');
     var utility = require('/modules/utility.js').rxt_utility();
     var carbon = require('carbon');
-    var server = require('/modules/server.js');
+    var server = require('store').server;
     var GovernanceUtils = Packages.org.wso2.carbon.governance.api.util.GovernanceUtils;
     var SUPER_TENANT_ID = -1234;
     var SEARCH_INDEX = 'overview_name';
@@ -88,7 +88,7 @@ var installer = function () {
     function onCreateArtifactManager(context) {
 
         //Create a registry instance
-        var registry = new carbon.registry.Registry(server.server(), {
+        var registry = new carbon.registry.Registry(server.instance(), {
             username: 'admin',
             tenantId: SUPER_TENANT_ID
         });

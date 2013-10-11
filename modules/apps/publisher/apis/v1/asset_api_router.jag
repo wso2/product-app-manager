@@ -36,7 +36,7 @@ routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}', functio
         var model = modelManager.getModel(shortName);
         //Obtain the username from the session and populate the provider field
 
-        var username=require('/modules/user.js').current(session).username;//.get('LOGGED_IN_USER');
+        var username=require('store').server.current(session).username;//.get('LOGGED_IN_USER');
         model.set('overview.provider',username);
         var output=model.export('form');
 
@@ -247,7 +247,7 @@ var passed=sm.check(function(){
 //Stop servicing the request if the check failed
 if(passed){
 
-    var user=require('/modules/user.js');
+    var user=require('store').user;
     var publisher = require('/modules/publisher.js').publisher(request, session);
 
 

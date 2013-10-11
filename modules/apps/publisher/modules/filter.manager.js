@@ -90,7 +90,7 @@ var filterManagementModule = function () {
             isObject = false;
         }
 
-        var user = require('/modules/user.js').current(session);
+        var user = require('store').server.current(session);
 
         context['data'] = getData(data);
         context['roles'] = user.getRoles();

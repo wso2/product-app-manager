@@ -179,7 +179,7 @@ var sugyamaModule = function () {
     var START_X=20;
     var START_Y=500;
     var LEVEL_SPACE=200;
-    var VERTEX_RADIUS=15;
+    var VERTEX_RADIUS=10;
     var LEVEL_SEP=100;
 
 
@@ -218,9 +218,9 @@ var sugyamaModule = function () {
             for (var key in coords) {
                 var element = coords[key];
                 var circle = paper.circle(element.x, element.y, VERTEX_RADIUS);
-                circle.attr('fill', '#f00');
+                circle.attr('fill', '#6EC87F');
                 circle.node.setAttribute('class', element.label);
-                paper.text(element.x, element.y+VERTEX_RADIUS+10, element.label);
+                var txt = paper.text(element.x, element.y+VERTEX_RADIUS+10, element.label);
                 points.push(element);
             }
 

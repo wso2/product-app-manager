@@ -121,7 +121,7 @@ var passed=sm.check(function(){
 //Stop servicing the request if the check failed
 if(passed){
 
-    var user=require('/modules/user.js');
+    var user=require('store').user;
     var publisher = require('/modules/publisher.js').publisher(request, session);
 
     var rxtManager = publisher.rxtManager;

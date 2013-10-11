@@ -22,26 +22,17 @@
             "/permission/admin/login": ["ui.execute"]
         }
     },
-    "userSpace": {
-        "space": "publisher",
-        "options": {
-            "type": "registry",
-            "serverUrl": "%https.host%/admin",
-            "path": "/_system/governance/users",
-            "username": "admin",
-            "password": "admin"
-        },
-        "accessible": [
-            {
-                "context": "/_system/governance",
-                "collections": ["gadgets", "sites", "ebooks"],
-                "actions": ["http://www.wso2.org/projects/registry/actions/get",
-                    "http://www.wso2.org/projects/registry/actions/add",
-                    "http://www.wso2.org/projects/registry/actions/delete",
-                    "authorize"]
-            }
-        ]
-    },
+    "userSpace": "/_system/governance/users",
+    "accessible": [
+        {
+            "context": "/_system/governance",
+            "collections": ["gadgets", "sites", "ebooks"],
+            "actions": ["http://www.wso2.org/projects/registry/actions/get",
+                "http://www.wso2.org/projects/registry/actions/add",
+                "http://www.wso2.org/projects/registry/actions/delete",
+                "authorize"]
+        }
+    ],
     "app": {
         "RXT_MANAGER": "rxt_manager",
         "ROUTE_MANAGER": "route_manager",

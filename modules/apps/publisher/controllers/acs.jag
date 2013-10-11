@@ -46,7 +46,7 @@
 
                         sso_sessions[sessionObj.sessionId] = sessionObj.sessionIndex;
 
-                        var user = require('/modules/user.js');
+                        var user = require('store').user;
 
                         if (user.loginWithSAML(sessionObj.loggedInUser)) {
                             log.debug('user is set :::' + sessionObj.loggedInUser);
