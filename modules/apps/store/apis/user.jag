@@ -3,7 +3,7 @@
     var action, data, message, exists,
             error = false,
             log = new Log(),
-            user = require('/modules/user.js'),
+            user = require('store').user,
             matcher = new URIMatcher(request.getRequestURI());
 
     if (matcher.match('/{context}/apis/user/{action}')) {

@@ -36,7 +36,7 @@ var init = function (options) {
     event.on('tenantCreate', function (tenantId) {
         var carbon = require('carbon'),
             config = require('/store-tenant.json'),
-            server = require('/modules/server.js'),
+            server = require('store').server,
             system = server.systemRegistry(tenantId);
         //um = server.userManager(tenantId),
         //GovernanceConstants = org.wso2.carbon.governance.api.util.GovernanceConstants;
@@ -55,8 +55,9 @@ var init = function (options) {
     });
 
     event.on('tenantLoad', function (tenantId) {
-        var user = require('/modules/user.js'),
-            server = require('/modules/server.js'),
+        var mod = require('store'),
+            user = mod.user,
+            server = mod.server,
             carbon = require('carbon'),
             config = server.configs(tenantId),
             CommonUtil = Packages.org.wso2.carbon.governance.registry.extensions.utils.CommonUtil,
@@ -112,13 +113,13 @@ var currentAsset = function () {
  */
 var store = function (o, session) {
     var store, configs, tenantId,
-        user = require('/modules/user.js'),
-        server = require('/modules/server.js'),
+        mod = require('store'),
+        server = mod.server,
         cached = server.options().cached;
 
     tenantId = (o instanceof Request) ? server.tenant(o, session).tenantId : o;
 
-    if (user.current(session)) {
+    if (server.current(session)) {
         store = session.get(TENANT_STORE);
         if (cached && store) {
             return store;
@@ -149,7 +150,7 @@ var assetManager = function (type, reg) {
 };
 
 var configs = function (tenantId) {
-    var server = require('/modules/server.js'),
+    var server = require('store').server,
         registry = server.systemRegistry(tenantId);
     return JSON.parse(registry.content(STORE_CONFIG_PATH));
 };
@@ -164,15 +165,17 @@ var configs = function (tenantId) {
  */
 var Store = function (tenantId, session) {
     var assetManagers = {},
-        user = require('/modules/user.js');
+        mod = require('store'),
+        user = mod.user,
+        server = mod.server;
     this.tenantId = tenantId;
-    this.servmod = require('/modules/server.js');
+    this.servmod = server;
     this.assetManagers = assetManagers;
     if (session) {
-        this.user = user.current(session);
+        this.user = server.current(session);
         this.registry = user.userRegistry(session);
         this.session = session;
-        this.userSpace = user.userSpace(this.user.username);
+        this.userSpace = user.userSpace(this.user);
     } else {
         configs(tenantId).assets.forEach(function (type) {
             assetManagers[type] = assetManager(type, server.anonRegistry(tenantId));
@@ -680,10 +683,10 @@ var LOGGED_IN_USER = 'LOGGED_IN_USER';
 var storeManagers = function (o, session) {
     var storeMasterManager;
     var tenantId;
-    var server = require('/modules/server.js');
+    var server = require('store').server;
 
     //We check if there is a valid session
-    if (require('/modules/user.js').current(session) != null) {
+    if (server.current(session) != null) {
         return handleLoggedInUser(o, session);
     }
     else {
@@ -739,7 +742,7 @@ function handleAnonUser() {
  @session: The session of the currently logged in user
  */
 function StoreMasterManager(tenantId, session) {
-    var user = require('/modules/user.js');
+    var user = require('store').user;
     var registry = user.userRegistry(session);
 
     var managers = buildManagers(registry,tenantId);
@@ -826,7 +829,7 @@ var buildManagers = function (registry,tenantId) {
     var ext_core = require('/modules/rxt/ext/core/extension.core.js').extension_core();
     var ext_mng = require('/modules/rxt/ext/core/extension.management.js').extension_management();
     var config = require('/store-tenant.json');
-    var server=require('/modules/server.js');
+    var server=require('store').server;
     var um=server.userManager(tenantId);
     var rxtManager = new rxt_management.RxtManager(registry);
     var securityProviderModule = require('/modules/security/storage.security.provider.js').securityModule();

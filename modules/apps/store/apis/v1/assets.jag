@@ -5,7 +5,7 @@ var log = new Log(),
 (function () {
     var type, elems, assets, asset, azzet, options, man,
             carbon = require('carbon'),
-            server = require('/modules/server.js'),
+            server = require('store').server,
             start = request.getParameter('start') || 0,
             count = request.getParameter('count') || 10,
             user = carbon.server.tenantUser(request.getUser()),

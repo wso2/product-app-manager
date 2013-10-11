@@ -48,11 +48,10 @@ caramel.configs({
 
 var configs = require('/store.js').config();
 
-var server = require('/modules/server.js');
-server.init(configs);
+var mod = require('store');
+mod.server.init(configs);
 
-var user = require('/modules/user.js');
-user.init(configs);
+mod.user.init(configs);
 
 var store = require('/modules/store.js');
 store.init(configs);
@@ -72,7 +71,7 @@ var registry=new carbon.registry.Registry(server,{
 
 //TODO : fix this
 var tenantId = -1234;
-var event = require('/modules/event.js');
+var event = require('event');
 event.emit('tenantLoad', tenantId);
 
 

@@ -12,6 +12,7 @@
                 </thead>
                 <tbody>
                  {{#each artifacts}}
+                
                     <tr>
                         <td>
                         <img src="{{this.attributes.images_thumbnail}}" class="" />
@@ -31,7 +32,7 @@
                         <span class="lifecycle-state"><small><i class="icon-circle text-green"></i> {{this.lifecycleState}}</small></span>
                         </td>
                         <td>
-                        <small>Fri 29 Mar 2013 01:45:08 PM IST</small>
+                        <small>{{this.attributes.overview_createdtime}}</small>
                         </td>
                     </tr>
                 {{/each}}

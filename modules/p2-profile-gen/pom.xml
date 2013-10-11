@@ -109,6 +109,9 @@
                                     org.wso2.carbon:org.wso2.carbon.registry.resource.properties.feature:${patch.version.421}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.registry.ui.menu.governance.feature:${carbon.platform.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.registry.contentsearch.server.feature:${patch.version.421}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
@@ -140,7 +143,7 @@
                                     org.wso2.carbon:org.wso2.carbon.identity.core.feature:${patch.version.421}
                                 </feaureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.governance.metadata.server.feature:${patch.version.421}
+                                    org.wso2.carbon:org.wso2.carbon.governance.metadata.feature:${patch.version.421}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.governance.lifecycle.management.server.feature:${carbon.platform.version}
@@ -192,6 +195,12 @@
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.statistics.feature:${cep.component.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.registry.ws.feature:${carbon.platform.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.governance.lifecycle.management.feature:${carbon.platform.version}
                                 </featureArtifactDef>
 
                             </featureArtifacts>
@@ -250,6 +259,10 @@
                                     <version>${patch.version.421}</version>
                                 </feature>
                                 <feature>
+                                    <id>org.wso2.carbon.registry.ws.feature.group</id>
+                                    <version>${carbon.platform.version}</version>
+                                </feature>
+                                <feature>
                                     <id>org.wso2.carbon.governance.lifecycle.management.server.feature.group</id>
                                     <version>${carbon.platform.version}</version>
                                 </feature>
@@ -296,8 +309,16 @@
                                     <version>${patch.version.421}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.governance.metadata.server.feature.group</id>
+                                    <id>org.wso2.carbon.governance.metadata.feature.group</id>
                                     <version>${patch.version.421}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.registry.ui.menu.governance.feature.group</id>
+                                    <version>${carbon.platform.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.governance.lifecycle.management.feature.group</id>
+                                    <version>${carbon.platform.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.stratos.common.feature.group</id>
