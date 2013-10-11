@@ -3,7 +3,7 @@ var site = function (tenantId, options) {
         carbon = require('carbon'),
         store = require('/modules/store.js'),
         path = '/_system/governance/sites/' + options.provider + '/' + options.name + '/' + options.version,
-        server = require('/modules/server.js'),
+        server = require('store').server,
     //site = require('/modules/site-browser.js'),
         um = server.userManager(tenantId),
         registry = server.systemRegistry(tenantId),
@@ -59,7 +59,7 @@ var ebook = function (tenantId, options) {
         carbon = require('carbon'),
         store = require('/modules/store.js'),
         path = '/_system/governance/ebooks/' + options.provider + '/' + options.name + '/' + options.version,
-        server = require('/modules/server.js'),
+        server = require('store').server,
         um = server.userManager(tenantId),
         registry = server.systemRegistry(tenantId),
         am = store.assetManager('ebook', registry);
@@ -118,7 +118,7 @@ var gadget = function (tenantId, options) {
         carbon = require('carbon'),
         store = require('/modules/store.js'),
         path = '/_system/governance/gadgets/' + options.provider + '/' + options.name + '/' + options.version,
-        server = require('/modules/server.js'),
+        server = require('store').server,
         um = server.userManager(tenantId),
         registry = server.systemRegistry(tenantId),
         am = store.assetManager('gadget', registry);
@@ -208,7 +208,7 @@ var buildEBookRXT = function (options) {
 
 var sso = function (tenantId, options) {
     var path = '/_system/config/repository/identity/SAMLSSO/' + options.issuer64,
-        server = require('/modules/server.js'),
+        server = require('store').server,
         registry = server.systemRegistry(tenantId);
     registry.put(path, {
         properties: {

@@ -7,13 +7,12 @@ var user = {};
 
     var USER_ROLE_PREFIX = 'Internal/private_';
 
-
-    var privateRole = function (username) {
-        return USER_ROLE_PREFIX + cleanUsername(username);
-    };
-
     var cleanUsername = function (username) {
         return username.replace('@', ':');
+    };
+
+    user.privateRole = function (username) {
+        return USER_ROLE_PREFIX + cleanUsername(username);
     };
 
     user.USER_OPTIONS = 'server.user.options';
@@ -63,7 +62,7 @@ var user = {};
             space = user.userSpace(usr);
             session.put(USER_SPACE, space);
             if (!usr.isAuthorized(space, carbon.registry.actions.PUT)) {
-                emit('userRegister', tenantId, usr);
+                event.emit('userRegister', tenantId, usr);
             }
         });
 
@@ -90,7 +89,7 @@ var user = {};
                     log.debug('user space was created for user : ' + usr.username + ' at ' + space);
                 }
             }
-            role = privateRole(usr.username);
+            role = user.privateRole(usr.username);
             perms = {};
             perms[space] = [
                 carbon.registry.actions.GET,
@@ -110,7 +109,7 @@ var user = {};
             if (usr.hasRoles[role]) {
                 usr.addRoles([role]);
             }
-            um.authorizeRole(privateRole(usr.username), perms);
+            um.authorizeRole(user.privateRole(usr.username), perms);
             if (log.isDebugEnabled()) {
                 log.debug('user ' + usr.username + ' was initialized and role ' + role +
                     ' was authorized to access user space ' + space);

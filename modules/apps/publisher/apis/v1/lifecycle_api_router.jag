@@ -341,9 +341,10 @@ var passed=sm.check(function(){
 
 //Stop servicing the request if the check failed
 if(passed){
-    var user = require('/modules/user.js');
+    var store = require('store');
+    var user = store.user;
     var utility=require('/modules/utility.js').rxt_utility();
-    var server=require('/modules/server.js');
+    var server=store.server;
 
     var publisher = require('/modules/publisher.js').publisher(request, session);
     var rxtManager = publisher.rxtManager;
