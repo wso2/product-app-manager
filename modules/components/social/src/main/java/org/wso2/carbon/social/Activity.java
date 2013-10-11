@@ -36,23 +36,23 @@ public class Activity {
 
     public String getTargetId() {
         JsonObject target = body.getAsJsonObject("target");
-        if(target!=null){
+        if (target != null) {
             JsonElement targetId = target.get("id");
-            if(targetId!=null){
+            if (targetId != null) {
                 return targetId.getAsString();
             }
         }
         return null;
     }
 
-    public void getLikeCount() {
-        JsonObject target = body.getAsJsonObject("like");
-        if(target!=null){
-            JsonElement targetId = target.get("id");
-            if(targetId!=null){
-//                return targetId.getAsString();
+    public int getLikeCount() {
+        JsonObject likes = body.getAsJsonObject("likes");
+        if (likes != null) {
+            JsonElement count = likes.get("totalItems");
+            if (count != null) {
+                return count.getAsInt();
             }
         }
-
+        return 0;
     }
 }

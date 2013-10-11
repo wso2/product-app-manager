@@ -8,23 +8,18 @@ import java.util.List;
 public enum SortOrder {
     NEWEST(new Comparator<Activity>() {
         @Override
-        public int compare(Activity o1, Activity o2) {
-            return o1.getTimestamp() - o2.getTimestamp();
-        }
-    }),
-    OLDEST(new Comparator<Activity>() {
-        @Override
-        public int compare(Activity o1, Activity o2) {
+        public int compare(Activity o2, Activity o1) {
             return o2.getTimestamp() - o1.getTimestamp();
         }
     }),
+    OLDEST(null),
     POPULAR(new Comparator<Activity>() {
         @Override
         public int compare(Activity o1, Activity o2) {
-//            o1.getLikeCount();
-            return 0;
+            return o2.getLikeCount() - o1.getLikeCount();
         }
     });
+
     private Comparator<? super Activity> comparator;
 
     SortOrder(Comparator<Activity> comparator) {
@@ -32,8 +27,9 @@ public enum SortOrder {
     }
 
     public void sort(List<Activity> activities) {
-        Collections.sort(activities, comparator);
+        if (comparator != null) {
+            Collections.sort(activities, comparator);
+        }
     }
-
 
 }

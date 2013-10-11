@@ -31,7 +31,7 @@ var caramel;
     var obj, reviewsJSON;
     if (target) {
         try {
-            obj = JSON.parse(String(social.getSocialObjectJson(target,"NEWEST")));
+            obj = JSON.parse(String(social.getSocialObjectJson(target,"POPULAR")));
             reviewsJSON = obj.attachments;
         } catch (e) {
             log.error(e);
