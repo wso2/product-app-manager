@@ -33,8 +33,15 @@ public class SocialActivityServiceImpl implements SocialActivityService {
     }
 
     @Override
-    public String getSocialObjectJson(String targetId) {
-        JsonObject socialObject = activityBrowser.getSocialObject(targetId);
+    public String getSocialObjectJson(String targetId, String sortOrder) {
+        SortOrder order;
+        try {
+            order = SortOrder.valueOf(sortOrder);
+        } catch (IllegalArgumentException e) {
+            order = SortOrder.NEWEST;
+        }
+        JsonObject socialObject = activityBrowser.getSocialObject(targetId, order);
+
         if (socialObject != null) {
             return socialObject.toString();
         } else {

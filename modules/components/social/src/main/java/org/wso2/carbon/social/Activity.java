@@ -44,4 +44,15 @@ public class Activity {
         }
         return null;
     }
+
+    public void getLikeCount() {
+        JsonObject target = body.getAsJsonObject("like");
+        if(target!=null){
+            JsonElement targetId = target.get("id");
+            if(targetId!=null){
+//                return targetId.getAsString();
+            }
+        }
+
+    }
 }

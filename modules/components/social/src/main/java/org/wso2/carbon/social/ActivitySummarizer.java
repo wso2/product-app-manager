@@ -7,15 +7,14 @@ import com.google.gson.JsonPrimitive;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ActivitySummarizer {
 
     Map<String, JsonObject> objects = new HashMap<String, JsonObject>();
     private static final Log LOG = LogFactory.getLog(ActivityPublisher.class);
     private String rootId;
+    private List<Activity> rootActivities = new ArrayList<Activity>();
 
     public ActivitySummarizer(String rootId) {
         this.rootId = rootId;
@@ -26,8 +25,10 @@ public class ActivitySummarizer {
         String parentId = activity.getTargetId();
         if (parentId != null) {
             JsonObject parent = getSubObject(parentId);
-            JsonObject child = getSubObject(activity.getId());
-            merge(activity.getBody(), child);
+            String id = activity.getId();
+            JsonObject child = activity.getBody();
+            merge(getSubObject(id, child), child);
+
 
             if (child.get("verb").getAsString().equals("like")) {
                 String actorId = activity.getActorId();
@@ -82,8 +83,12 @@ public class ActivitySummarizer {
                 }
 
             } else {
-                JsonArray attachments = addArrIfNot(parent, "attachments");
-                attachments.add(child);
+                if (parentId.equals(rootId)) {
+                    rootActivities.add(activity);
+                } else {
+                    JsonArray attachments = addArrIfNot(parent, "attachments");
+                    attachments.add(child);
+                }
             }
         } else {
             LOG.error("failed to summarize activity (has no target id) : " + activity);
@@ -122,8 +127,21 @@ public class ActivitySummarizer {
         return attachments;
     }
 
-    public JsonObject summarize() {
-        return objects.get(rootId);
+    public JsonObject summarize(SortOrder order) {
+        JsonObject root = new JsonObject();
+        JsonArray attachments = addArrIfNot(root, "attachments");
+
+        Collections.sort(rootActivities, new Comparator<Activity>() {
+            @Override
+            public int compare(Activity o1, Activity o2) {
+                return o1.getTimestamp() - o2.getTimestamp();
+            }
+        });
+        order.sort(rootActivities);
+        for (Activity activity : rootActivities) {
+            attachments.add(activity.getBody());
+        }
+        return root;
     }
 
     private void merge(JsonObject form, JsonObject to) {
@@ -138,9 +156,13 @@ public class ActivitySummarizer {
     }
 
     private JsonObject getSubObject(String id) {
+        return getSubObject(id, null);
+    }
+
+    private JsonObject getSubObject(String id, JsonObject obj) {
         JsonObject jsonElement = objects.get(id);
         if (jsonElement == null) {
-            jsonElement = new JsonObject();
+            jsonElement = obj == null ? new JsonObject() : obj;
             objects.put(id, jsonElement);
         }
         return jsonElement;

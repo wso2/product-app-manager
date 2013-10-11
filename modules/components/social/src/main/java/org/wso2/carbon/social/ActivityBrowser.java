@@ -22,7 +22,7 @@ public class ActivityBrowser {
         int totalRatings = 0;
         int numRatings = 0;
 
-        JsonObject socialObject = getSocialObject(targetId);
+        JsonObject socialObject = getSocialObject(targetId,null);
         JsonArray attachments = socialObject.get("attachments").getAsJsonArray();
 
         for (JsonElement r : attachments) {
@@ -39,13 +39,13 @@ public class ActivityBrowser {
         }
     }
 
-    public JsonObject getSocialObject(String targetId) {
+    public JsonObject getSocialObject(String targetId,SortOrder order) {
         List<Activity> activities = listActivitiesChronologically(targetId);
         ActivitySummarizer summarizer = new ActivitySummarizer(targetId);
         for (Activity activity : activities) {
             summarizer.add(activity);
         }
-        return summarizer.summarize();
+        return summarizer.summarize(order);
     }
 
     public List<Activity> listActivities(String contextId) {
