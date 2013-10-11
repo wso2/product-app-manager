@@ -417,8 +417,10 @@ Store.prototype.tagged = function (type, tag, paging) {
     var assets;
     var length;
 
-    options['tag'] = tag;
-    options = obtainViewQuery(options);
+    //options['tag'] = tag;
+    //options = obtainViewQuery(options);
+    //TODO move this LCState to config
+    options = {"tag" : tag, "lifecycleState" : ["published"]};
 
     assets = this.assetManager(type).search(options, paging);
 
