@@ -25,7 +25,7 @@ var renderAssets, mouseStop, isAssertTrue, addAssert;
     renderAssetsScroll = function(data){
     	var temp = '{{#slice assets size="4"}}<div class="row-fluid">';
         	temp += '{{#each .}}';
-			temp += '<div class="span3 asset" data-path="{{path}}" data-type="{{type}}">';
+			temp += '<div class="span3 asset" data-id="{{id}}" data-path="{{path}}" data-type="{{type}}">';
 			temp += '	{{#attributes}}';
 			temp += '	<a href="{{url "/assets"}}/{{../type}}/{{../id}}">';
 			temp += '	<div class="asset-icon">';	

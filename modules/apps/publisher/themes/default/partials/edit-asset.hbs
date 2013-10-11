@@ -11,16 +11,16 @@
 				</div>
 				<div class="widget-content">
 					<form class="form-horizontal" id='form-asset-edit'>
-
 						{{#each data.fields}}
+						
 						<div class="control-group">
 							<b><label class="control-label">{{this.label}}:</label></b>
 							<div class="controls">
 
-								{{#if this.isOptions}}
+								{{#if this.isOptions}}							
                                     <select id="{{this.name}}" class="span8 selectpicker">
-                                    {{#each this.valueList}}
-                                        <option>{{this}}</option>
+                                    {{#each ../../categorySelect}}
+                                        <option {{#if this.sel}}selected{{/if}}>{{this.cat}}</option>
                                     {{/each}}
                                     </select>
                                 {{else}}

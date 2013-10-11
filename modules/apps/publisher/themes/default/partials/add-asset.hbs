@@ -60,7 +60,22 @@
                                     <textarea id='{{this.name}}' value='{{this.value}}' class="span8"></textarea>
                                 {{/if}}
                                 {{#if this.isFile}}
-                                   <input id='{{this.name}}' type='file' class="span8" />
+                                	<div class="span8">
+                                		<div class="tbl-upload">
+                                			<div class="tbl-upload-row">
+                                				<div class="tbl-upload-cell">
+                                					 <input type="text" class="txt-filepath" disabled="true"/>
+                                				</div>
+                                				<div class="tbl-upload-cell">
+                                					<button class="btn btn-upload">Browse</button>
+                                   					<input id='{{this.name}}' type='file'/>
+                                				</div>
+                                			</div>
+                                		</div>
+                                		
+                                	</div>
+                                  
+                                  
                                 {{/if}}
                                	{{#if this.isRequired}}
                                 <span class="label-required">*</span>

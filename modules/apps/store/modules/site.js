@@ -21,6 +21,7 @@ var navigation = function (tenantId) {
         links = store.assetLinks(type);
         if (links.isCategorySupport) {
             links.categories = utility.getCategories(tenantId, type);
+
         }
         /*
          length1 = links.length;

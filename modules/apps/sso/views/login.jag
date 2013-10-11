@@ -5,7 +5,7 @@ var e = session.get('error') || {};
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Sign in or Register | User Engagement Server</title>
+    <title>Sign in or Register | WSO2 Enterprise Store</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">

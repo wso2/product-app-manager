@@ -91,7 +91,7 @@ $(function () {
         for(var index in report){
 
             for(var item in report[index]){
-                msg+=report[index][item];
+                msg+=report[index][item] + "<br>";
             }
         }
 
