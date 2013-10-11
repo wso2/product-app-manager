@@ -17,12 +17,13 @@ public class ActivityBrowser {
 
     private JsonParser parser = new JsonParser();
     private Connection conn;
+    private Cache cache = new Cache();
 
     public double getRating(String targetId) {
         int totalRatings = 0;
         int numRatings = 0;
 
-        JsonObject socialObject = getSocialObject(targetId,null);
+        JsonObject socialObject = getSocialObject(targetId, null);
         JsonArray attachments = socialObject.get("attachments").getAsJsonArray();
 
         for (JsonElement r : attachments) {
@@ -39,13 +40,15 @@ public class ActivityBrowser {
         }
     }
 
-    public JsonObject getSocialObject(String targetId,SortOrder order) {
+    public JsonObject getSocialObject(String targetId, SortOrder order) {
         List<Activity> activities = listActivitiesChronologically(targetId);
         ActivitySummarizer summarizer = new ActivitySummarizer(targetId);
         for (Activity activity : activities) {
             summarizer.add(activity);
         }
-        return summarizer.summarize(order);
+        JsonObject summarize = summarizer.summarize(order);
+        cache.put(targetId, summarize);
+        return summarize;
     }
 
     public List<Activity> listActivities(String contextId) {
