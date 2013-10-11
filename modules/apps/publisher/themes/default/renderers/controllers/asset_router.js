@@ -17,6 +17,7 @@ var render=function(theme,data,meta,require){
 		break;
     case 'edit':
         listPartial='edit-asset';
+        data = require('/helpers/edit-asset.js').selectCategory(data);
         break;
     case 'lifecycle':
         listPartial='lifecycle-asset';
