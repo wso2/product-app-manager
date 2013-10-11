@@ -1,213 +1,233 @@
-window.showAlert = function(msg, type){
-    	var html = '<div class="info-div alert">';
-    		html += ' <a data-dismiss="alert" class="close">x</a><i class="icon-info-sign"></i> <span></span>';
-    		html += '</div>';
-    		
-    	var container = $('.asset-view-container');
-    	
-    	if(!container.has('.alert').length){
-    		container.prepend(html);
-    	}
-    	var alert = container.find('.alert');
-    	alert.removeClass().addClass('info-div alert alert-' + type).find('span').text(msg);
-    	alert.fadeIn("fast");
+window.showAlert = function(msg, type) {
+	var html = '<div class="info-div alert">';
+	html += ' <a data-dismiss="alert" class="close">x</a><i class="icon-info-sign"></i> <span></span>';
+	html += '</div>';
+
+	var container = $('.asset-view-container');
+
+	if (!container.has('.alert').length) {
+		container.prepend(html);
+	}
+	var alert = container.find('.alert');
+	alert.removeClass().addClass('info-div alert alert-' + type).find('span').text(msg);
+	alert.fadeIn("fast");
 }
- 
-$(document).ready(function(){
-	
-	 /* creating a new version */
-    //The existing versions of the asset
-    var existingVersionList=null;
-    var ASSET_VERSION_CONTAINER='#asset-new-version-control-group';
-    var ASSET_NEW_VERSION_MSG_CONTAINER='#asset-new-version-msgs';
-    var CSS_ERR='control-group error';
-    var CSS_SUCCESS='control-group success';
-    
-    
+
+$(document).ready(function() {
+
+	/* creating a new version */
+	//The existing versions of the asset
+	var existingVersionList = null;
+	var ASSET_VERSION_CONTAINER = '#asset-new-version-control-group';
+	var ASSET_NEW_VERSION_MSG_CONTAINER = '#asset-new-version-msgs';
+	var CSS_ERR = 'control-group error';
+	var CSS_SUCCESS = 'control-group success';
+
 	$('.dropdown-toggle').dropdown();
-	$('#asset_view_tabs a').click(function (e) {
-	  e.preventDefault();
-	  $(this).tab('show');
+	$('#asset_view_tabs a').click(function(e) {
+		e.preventDefault();
+		$(this).tab('show');
 	});
-    setTimeout(function(){
-        ($('.publisher-left').height() < $('.publisher-right').height()) && $('.publisher-left').height($('.publisher-right').height() + 15);
-    }, 200);
-    
-    $('.list-asset-table').on('click', 'tr', function(){
-    	var link = $(this).find('.asset-listing-name a').attr('href');
-    	window.location = link;
-    });
-    
-     $('#search-button').on('click', function(){
-    	var searchAssetString = $('#inp_searchAsset').val();
-    	if(searchAssetString !=""){    	
-    	var link = '?query='+searchAssetString;
-    	window.location = link;
-    	}
-    });
-    
-    $('#asset-new-version-control-group').click(function(e){
-    	e.stopPropagation();
-    });
-    
-    
-    
-     /* creating a new version */
-      //initCssContainer(ASSET_VERSION_CONTAINER,[CSS_ERR,CSS_SUCCESS]);
+	setTimeout(function() {
+		($('.publisher-left').height() < $('.publisher-right').height()) && $('.publisher-left').height($('.publisher-right').height() + 15);
+	}, 200);
 
-    $('#btn-increase-version-asset').on('click', function (e) {
-    	e.preventDefault();
-    	
-        var MSG_ERR_NO_VERSION='Version number is empty.';
+	$('.list-asset-table').on('click', 'tr', function() {
+		var link = $(this).find('.asset-listing-name a').attr('href');
+		window.location = link;
+	});
 
-        var url=window.location.pathname;
+	$('#search-button').on('click', search);
 
-        //Obtain the asset id
-        var assetId=getAssetIdFromUrl(url);
+	$('#inp_searchAsset').keypress(function(e) {
+		if (e.which == 13)
+			search();
+	});
 
-        var assetType=$('#meta-asset-type').val();
+	$('#asset-new-version-control-group').click(function(e) {
+		e.stopPropagation();
+	});
 
-        //Obtain the version entered by the user
-        var userProvidedVersion = $('#asset-new-version').val();
+	/* creating a new version */
+	//initCssContainer(ASSET_VERSION_CONTAINER,[CSS_ERR,CSS_SUCCESS]);
 
-        //Check if the user has entered a version
-        if(!userProvidedVersion){
-            //alert(MSG_ERR_NO_VERSION);
-            displayVersionMessage({msgCss:CSS_ERR,message:MSG_ERR_NO_VERSION});
-            return;
-        }
+	$('#btn-increase-version-asset').on('click', function(e) {
+		e.preventDefault();
 
-        displayVersionMessage({msgCss:CSS_SUCCESS,message:'Checking version..'});
+		var MSG_ERR_NO_VERSION = 'Version number is empty.';
 
-        //alert('id: '+assetId+' version: '+userProvidedVersion);
+		var url = window.location.pathname;
 
-        var path='/publisher/api/version/'+assetType+'/'+assetId;
+		//Obtain the asset id
+		var assetId = getAssetIdFromUrl(url);
 
-        //Make a call an obtain the existing asset versions
-        $.ajax({
-            url:path,
-            type:'GET',
-            success:function(response){
-              // alert(response);
+		var assetType = $('#meta-asset-type').val();
 
-               var versionList=JSON.parse(response);
+		//Obtain the version entered by the user
+		var userProvidedVersion = $('#asset-new-version').val();
 
-               //Check if the version entered by the user is an existing one
-               var existingVersion=checkIfExisting(versionList,userProvidedVersion);
+		//Check if the user has entered a version
+		if (!userProvidedVersion) {
+			//alert(MSG_ERR_NO_VERSION);
+			displayVersionMessage({
+				msgCss : CSS_ERR,
+				message : MSG_ERR_NO_VERSION
+			});
+			return;
+		}
 
-               //Display a message to the user indicating the version exists
-               if(existingVersion){
-               	 displayVersionMessage({msgCss:CSS_ERR,message:'Version already exists.'});
-                 return;
-               }
+		displayVersionMessage({
+			msgCss : CSS_SUCCESS,
+			message : 'Checking version..'
+		});
 
-                displayVersionMessage({msgCss:CSS_SUCCESS,message:'Creating new version..'});
+		//alert('id: '+assetId+' version: '+userProvidedVersion);
 
-                createNewVersion(userProvidedVersion,assetId,assetType);
-            },
-            error:function(){
-                alert('unable to retrieve asset version details.');
-            }
-        });
+		var path = '/publisher/api/version/' + assetType + '/' + assetId;
 
-    });
+		//Make a call an obtain the existing asset versions
+		$.ajax({
+			url : path,
+			type : 'GET',
+			success : function(response) {
+				// alert(response);
 
-    /*
-    The function is used to check if the version entered by the user exists
-    @versionList: A list of versions
-    @newVersion: The new version entered by the user
-    @return: True if the version exists,else False
-     */
-    function checkIfExisting(versionList,newVersion){
-        var found=false;
+				var versionList = JSON.parse(response);
 
-        for(var index=0;(index<versionList.length)&&(!found);index++){
-            if(versionList[index].version==newVersion){
-                  found=true;
-            }
-        }
+				//Check if the version entered by the user is an existing one
+				var existingVersion = checkIfExisting(versionList, userProvidedVersion);
 
-        return found;
-    }
+				//Display a message to the user indicating the version exists
+				if (existingVersion) {
+					displayVersionMessage({
+						msgCss : CSS_ERR,
+						message : 'Version already exists.'
+					});
+					return;
+				}
 
-    /*
-    The function is used to create a new version of a given asset
-    @assetId: The id of the asset to be created
-    @newVersion: The new version of the asset to be created
-     */
-    function createNewVersion(newVersion,assetId,assetType){
-        var path='/publisher/api/version/'+assetType+'/'+assetId+'/'+newVersion;
+				displayVersionMessage({
+					msgCss : CSS_SUCCESS,
+					message : 'Creating new version..'
+				});
 
+				createNewVersion(userProvidedVersion, assetId, assetType);
+			},
+			error : function() {
+				alert('unable to retrieve asset version details.');
+			}
+		});
 
-        $.ajax({
-            url:path,
-            type:'POST',
-            success:function(response){
+	});
+
+	/*
+	 The function is used to check if the version entered by the user exists
+	 @versionList: A list of versions
+	 @newVersion: The new version entered by the user
+	 @return: True if the version exists,else False
+	 */
+	function checkIfExisting(versionList, newVersion) {
+		var found = false;
+
+		for (var index = 0; (index < versionList.length) && (!found); index++) {
+			if (versionList[index].version == newVersion) {
+				found = true;
+			}
+		}
+
+		return found;
+	}
+
+	/*
+	 The function is used to create a new version of a given asset
+	 @assetId: The id of the asset to be created
+	 @newVersion: The new version of the asset to be created
+	 */
+	function createNewVersion(newVersion, assetId, assetType) {
+		var path = '/publisher/api/version/' + assetType + '/' + assetId + '/' + newVersion;
+
+		$.ajax({
+			url : path,
+			type : 'POST',
+			success : function(response) {
 				$('#modal-redirect').modal('show');
-				setTimeout(function(){
-					 var newVersionDetails=JSON.parse(response);
-                	 window.location=newVersionDetails.url;
-				},2000);
-               
-            },
-            error:function(){
-                displayVersionMessage({msgCss:CSS_ERR,message:'A new version of this '+assetType+' was not created.'})
-            }
-        })
-    }
+				setTimeout(function() {
+					var newVersionDetails = JSON.parse(response);
+					window.location = newVersionDetails.url;
+				}, 2000);
 
-    /*
-    The function is used to display a message in-line
-    @msg: The message to be displayed
-     */
-    function displayVersionMessage(msg){
-        var container=ASSET_VERSION_CONTAINER;
-        var containerCss=msg.msgCss;
-        var msgContainer=ASSET_NEW_VERSION_MSG_CONTAINER;
-        var message=msg.message;
+			},
+			error : function() {
+				displayVersionMessage({
+					msgCss : CSS_ERR,
+					message : 'A new version of this ' + assetType + ' was not created.'
+				})
+			}
+		})
+	}
 
-		if( $(msgContainer).attr('expanded') != 'true' ){
+	/*
+	 The function is used to display a message in-line
+	 @msg: The message to be displayed
+	 */
+	function displayVersionMessage(msg) {
+		var container = ASSET_VERSION_CONTAINER;
+		var containerCss = msg.msgCss;
+		var msgContainer = ASSET_NEW_VERSION_MSG_CONTAINER;
+		var message = msg.message;
+
+		if ($(msgContainer).attr('expanded') != 'true') {
 			$(msgContainer).attr('expanded', 'true');
 			$(msgContainer).closest('.dropdown-menu').height('+=10');
 		}
-		
-        $(container).attr('class',containerCss);
-        $(msgContainer).html(message);
-     
-    }
 
-    /*
-    The function is used to initialize the container housing the version
-    input
-    @container: The container within which the version details reside
-    @classes: The CSS classes to be added to the container.
-     */
-    function initCssContainer(container,classes){
-       /* for(var index in classes){
-            console.log('container: '+container+' added class: '+classes[index]);
+		$(container).attr('class', containerCss);
+		$(msgContainer).html(message);
 
-            $(container).addClass(classes[index]);
-            $(container).toggleClass(classes[index]);
-        }  */
+	}
 
-    }
+	/*
+	 The function is used to initialize the container housing the version
+	 input
+	 @container: The container within which the version details reside
+	 @classes: The CSS classes to be added to the container.
+	 */
+	function initCssContainer(container, classes) {
+		/* for(var index in classes){
+		 console.log('container: '+container+' added class: '+classes[index]);
 
-    /*
-     The function is used to parse a url to obtain the
-     asset id and type.
-     @return: The id component of the url
-     */
-    function getAssetIdFromUrl(url) {
-        //The id
-        //Break the url into components
-        var comps = url.split('/');
+		 $(container).addClass(classes[index]);
+		 $(container).toggleClass(classes[index]);
+		 }  */
 
-        //Given a url of the form /pub/api/asset/{asset-type}/{asset-id}
-        //length=5
-        //then: length-2 = {asset-type} length-1 = {asset-id}
-        var id = comps[comps.length - 1];
+	}
 
-        return id;
-    }
-     
+	/*
+	 The function is used to parse a url to obtain the
+	 asset id and type.
+	 @return: The id component of the url
+	 */
+	function getAssetIdFromUrl(url) {
+		//The id
+		//Break the url into components
+		var comps = url.split('/');
+
+		//Given a url of the form /pub/api/asset/{asset-type}/{asset-id}
+		//length=5
+		//then: length-2 = {asset-type} length-1 = {asset-id}
+		var id = comps[comps.length - 1];
+
+		return id;
+	}
+
+	function search() {
+		var searchAssetString = $('#inp_searchAsset').val();
+		var searchPrefix = $('#search-prefix').val();
+
+		if (searchAssetString != "") {
+			var link = '/publisher/assets/' + searchPrefix + '/?query=' + searchAssetString;
+			window.location = link;
+		}
+	}
+
 });
