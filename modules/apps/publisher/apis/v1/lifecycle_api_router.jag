@@ -180,11 +180,37 @@ routeManager.register('PUT', 'publisher', '/publisher/api/lifecycle/{action}/{ty
 
 });
 
+/*
+ The function returns the lifecycle structure of a given asset
+ */
+function obtainLifeCycle(type){
+    CommonUtil = Packages.org.wso2.carbon.governance.lcm.util.CommonUtil;
+    var rootReg=rxtManager.registry.registry;
+    var configReg = rootReg.getChrootedRegistry('/_system/config');
+
+    //Obtain a model of the type
+    var model=modelManager.getModel(type);
+
+    var lifecycle=model.get('*.lifeCycle').value;
+
+    var data=CommonUtil.getLifecycleConfiguration(lifecycle,configReg);
+
+    //Convert to an xml
+    data='<?xml version="1.0" encoding="ISO-8859-1"?>'+data;
+    var xml=new XML(data);
+
+    //Convert to a json
+    data=data.replace('<?xml version="1.0" encoding="ISO-8859-1"?>','');
+    var lcJSON=utility.xml.convertE4XtoJSON(xml);
+
+    return lcJSON;
+}
+
 routeManager.register('GET','publisher','/publisher/api/lifecycle/{type}/{id}',function(context){
 
 
     try{
-        log.debug('Entered check lifecycle/type/id ');
+        log.info('Entered check lifecycle/type/id ');
         var shortName=context.params.type;
         var id=context.params.id;
 
@@ -193,10 +219,18 @@ routeManager.register('GET','publisher','/publisher/api/lifecycle/{type}/{id}',f
         var artifact=artifactManager.get(id);
         var state=artifactManager.getLifecycleState(artifact);
         var actions=artifactManager.availableActions(artifact);
+
+
+        var lcJSON=obtainLifeCycle(shortName);
+
+
         var msg={};
         msg['status']='ok';
         msg['state']=state;
         msg['actions']=actions;
+        msg['lifecycle']=lcJSON;
+
+
         log.debug(msg);
         print(msg);
     }
@@ -313,6 +347,7 @@ if(passed){
 
     var publisher = require('/modules/publisher.js').publisher(request, session);
     var rxtManager = publisher.rxtManager;
+    var modelManager=publisher.modelManager;
 
     routeManager.handle(request, response);
 }
