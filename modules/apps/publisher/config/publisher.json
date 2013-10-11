@@ -54,6 +54,11 @@
             "onAttach": {
                 "action": "Promote"
             }
+        },
+        "MobileAppLifeCycle":{
+            "onAttach":{
+                "action":"Create"
+            }
         }
     },
 

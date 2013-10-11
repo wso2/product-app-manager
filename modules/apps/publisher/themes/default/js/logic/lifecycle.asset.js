@@ -244,8 +244,9 @@ $(function(){
 
             $(BUTTON_CONTAINER).append(element);
             $('#btn'+action).on('click',function(e){
+                var clicked=e.target.value;
                 e.preventDefault();
-                buttonClickLogic(action);
+                buttonClickLogic(clicked);
             });
         }
     }
