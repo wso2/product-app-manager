@@ -89,24 +89,29 @@ $btn.click(function (e) {
 
         var callback = function () {
             $('#newest').addClass('selected');
-            publish(activity, function (published) {
-                if ($firstReview.length) $firstReview.hide();
-                $btn.removeAttr('disabled');
+            $.get("/store/apis/rate", {
+                asset: target,
+                value: rating
+            }, function (r) {
+                publish(activity, function (published) {
+                    if ($firstReview.length) $firstReview.hide();
+                    $btn.removeAttr('disabled');
 
-                if (published.success) {
-                    showLoading(false);
-                    $radio.rating('select', null);
-                    $textArea.val('');
+                    if (published.success) {
+                        showLoading(false);
+                        $radio.rating('select', null);
+                        $textArea.val('');
 
-                    activity.id = published.id;
-                    usingTemplate(function (template) {
-                        var newComment = template(activity);
-                        $stream.prepend(newComment);
-                        if (adjustHeight) {
-                            adjustHeight();
-                        }
-                    });
-                }
+                        activity.id = published.id;
+                        usingTemplate(function (template) {
+                            var newComment = template(activity);
+                            $stream.prepend(newComment);
+                            if (adjustHeight) {
+                                adjustHeight();
+                            }
+                        });
+                    }
+                });
             });
         };
 
@@ -163,7 +168,7 @@ var redrawReviews = function (sortBy, callback) {
             callback && callback();
         });
     })
-}
+};
 
 $(document).on('click', '.com-sort a', function (e) {
     var $target = $(e.target);
