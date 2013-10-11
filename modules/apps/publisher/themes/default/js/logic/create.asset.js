@@ -127,17 +127,19 @@ $(function () {
 
         var tagArray = [];
 
-        if(!$(TAG_CONTAINER)){
+        try{
+            var tags = $(TAG_CONTAINER).tokenInput('get');
+
+            for (var index in tags) {
+                tagArray.push(tags[index].name);
+            }
+
+            return tagArray;
+        }
+        catch(e){
             return tagArray;
         }
 
-        var tags = $(TAG_CONTAINER).tokenInput('get');
-
-        for (var index in tags) {
-            tagArray.push(tags[index].name);
-        }
-
-        return tagArray;
     }
     
     $('.selectpicker').selectpicker();
