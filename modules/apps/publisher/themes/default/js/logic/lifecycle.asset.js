@@ -13,6 +13,8 @@
  */
 
 var onCheckListItemClick=function(){};
+var sugyamaModule=sugyamaModule();
+var sugyama=new sugyamaModule.Sugyama();
 
 
 $(function(){
@@ -24,6 +26,7 @@ $(function(){
 
     //Break the url into components
     var comps=url.split('/');
+
 
     //Given a url of the form /pub/api/asset/{asset-type}/{asset-id}
     //length=5
@@ -147,17 +150,26 @@ $(function(){
             success:function(response){
                 var element=$('#canvas');
                 if(element){
+                    var paper=new Raphael('canvas');
                     //element.html(response);
 
-                    if(!graph.Renderer.config.canvas.canvasElement){
+                   /* if(!graph.Renderer.config.canvas.canvasElement){
 
                         graph.Renderer.config.canvas.canvasElement=element;
 
                         graph.Renderer.initRaphael();
                         graph.Renderer.render(graph.NMap);
-                    }
+                    }       */
                     var statInfo=JSON.parse(response);
-                    graph.Renderer.setSelected(statInfo.state);
+                    sugyama.init(statInfo.lifecycle,paper);
+                    var START_X=10;
+                    var START_Y=50;
+                    var VERTEX_RADIUS=25;
+                    var LAYER_SEP=85;
+                    var LAYER_SPACE=200;
+                    sugyama.draw(START_X,START_Y,VERTEX_RADIUS,LAYER_SPACE,LAYER_SEP);
+
+                    //graph.Renderer.setSelected(statInfo.state);
                     disableActions(statInfo.actions);
                 }
                 //$('#canvas').html(response);
