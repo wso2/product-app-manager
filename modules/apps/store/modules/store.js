@@ -512,7 +512,7 @@ Store.prototype.recentAssets = function (type, count) {
     };
     var options = {};
     options = obtainViewQuery(options);
-    options['attributes'] = {};
+    options = {"attributes" : options};
 
     var recent = this.assetManager(type).search(options, paging);
 
