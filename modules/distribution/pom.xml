@@ -13,7 +13,7 @@
     <artifactId>wso2store</artifactId>
     <packaging>jar</packaging>
     <name>WSO2 Enterprise Store - Distribution</name>
-    <description>User Engagement Server Distribution</description>
+    <description>WSO2 Enterprise Store Distribution</description>
 
     <dependencies>
         <dependency>
