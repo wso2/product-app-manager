@@ -11,6 +11,7 @@ var render = function (theme, data, meta, require) {
     switch (data.op) {
         case 'list':
             listPartial = 'list-assets';
+            data = require('/helpers/view-asset.js').format(data);
             break;
         case 'statistics':
             listPartial = 'statistics';

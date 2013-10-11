@@ -141,7 +141,27 @@ public class ActivitySummarizer {
         for (Activity activity : rootActivities) {
             attachments.add(activity.getBody());
         }
+        root.add("rating", new JsonPrimitive(getRating()));
         return root;
+    }
+
+    private double getRating() {
+        int totalRatings = 0;
+        int numRatings = 0;
+
+        for (Activity activity : rootActivities) {
+            JsonObject r = activity.getBody();
+            JsonElement ratingElm = r.getAsJsonObject("object").get("rating");
+            if (ratingElm != null) {
+                numRatings++;
+                totalRatings += ratingElm.getAsInt();
+            }
+        }
+        if (numRatings == 0) {
+            return 0;
+        } else {
+            return ((double) totalRatings) / numRatings;
+        }
     }
 
     private void merge(JsonObject form, JsonObject to) {
