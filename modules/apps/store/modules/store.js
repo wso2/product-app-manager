@@ -506,7 +506,7 @@ Store.prototype.recentAssets = function (type, count) {
         start: 0,
         count: count || 5,
         sortBy: 'overview_createdtime',
-        sortOrder: 'older'
+        sort: 'older'
     };
     var options = {};
     options = obtainViewQuery(options);
