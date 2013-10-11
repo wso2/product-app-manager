@@ -749,7 +749,7 @@ function StoreMasterManager(tenantId, session) {
 }
 
 function PaginationFormBuilder(pagin) {
-	log.info(pagin);
+
 	var DEFAULT_PAGIN = {"start" : 0.0, "count" : 5};
 	// switch sortOrder from ES to pagination Context
 
@@ -758,12 +758,10 @@ function PaginationFormBuilder(pagin) {
 			case 'recent':
 				DEFAULT_PAGIN.sortOrder = 'DES';
 				DEFAULT_PAGIN.sortBy  = 'overview_createdtime';
-				log.info("AAxxxx")
 				break;
 			case 'older':
 				DEFAULT_PAGIN.sortOrder = 'ASC'
 				DEFAULT_PAGIN.sortBy  = 'overview_createdtime';
-				log.info("DDxxxx")
 				break;
 			case 'popular':
 				// no regsiter pagination support, socail feature need to check
@@ -793,9 +791,6 @@ function PaginationFormBuilder(pagin) {
 		if(pagin.paginationLimit != null) {
 			DEFAULT_PAGIN.paginationLimit = 120000;
 		}
-		
-		log.info("DEFAULT_PAGIN");
-		log.info(DEFAULT_PAGIN);
 		return DEFAULT_PAGIN;
 
 		
