@@ -10,5 +10,7 @@ public interface SocialActivityService {
 
     String[] listActivities(String contextId);
 
-    String getSocialObjectJson(String targetId);
+    double getRating(String targetId);
+
+    String getSocialObjectJson(String targetId, String sortOrder);
 }

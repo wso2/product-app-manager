@@ -95,56 +95,51 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
     }
 
 
-    var search = function (that, options,paging ) {
-    var assets;
+  
+	var search = function(that, options, paging) {
+		var assets;
 
-        if (options.tag) {
-            var registry = that.registry,
-                tag = options.tag;
-            assets=that.manager.find(function (artifact) {
-                if (registry.tags(artifact.path).indexOf(tag) != -1) {
-                    //return matchAttr(options.attributes, artifact.attributes); -To accommodate filtering by lifecycle state
-                    return matchArtifact(options, artifact);
-                }
-                return false;
-            },paging);
+		if(options.tag) {
+			var registry = that.registry, tag = options.tag;
+			assets = that.manager.find(function(artifact) {
+				if(registry.tags(artifact.path).indexOf(tag) != -1) {
+					//return matchAttr(options.attributes, artifact.attributes); -To accommodate filtering by lifecycle state
+					return matchArtifact(options, artifact);
+				}
+				return false;
+			}, paging);
 
-            dataInjector.cached().inject(assets,DataInjectorModes.DISPLAY);
+			dataInjector.cached().inject(assets, DataInjectorModes.DISPLAY);
 
-            return assets;
-        }
-        if (options.query) {
-            var query = options.query;
-            assets= that.manager.search(query,paging);
+			return assets;
+		}
+		if(options.query) {
+			var query = options.query;
+			assets = that.manager.search(query, paging);
 
-            dataInjector.cached().inject(assets,DataInjectorModes.DISPLAY);
+			dataInjector.cached().inject(assets, DataInjectorModes.DISPLAY);
 
-            return assets;
-        
-        } if (options.attributes) {
-        	
-        	var searchArtifact = options.attributes;
-        	 
-            assets= that.manager.search(searchArtifact,paging);
+			return assets;
 
-            dataInjector.cached().inject(assets,DataInjectorModes.DISPLAY);
+		} else if(options.attributes) {
 
-            return assets;
-        }
-        if (options) {
+			var searchArtifact = options.attributes;
+			assets = that.manager.search(searchArtifact, paging);
 
-            assets= that.manager.find(function (artifact) {
-                // return matchAttr(options.attributes, artifact.attributes);
-                return matchArtifact(options, artifact);
+			dataInjector.cached().inject(assets, DataInjectorModes.DISPLAY);
 
-            },paging);
+			return assets;
+		} else if(options) {
+			assets = that.manager.search(null, paging);
+			dataInjector.cached().inject(assets, DataInjectorModes.DISPLAY);
 
-            dataInjector.cached().inject(assets,DataInjectorModes.DISPLAY);
+			return assets;
+		}
 
-            return assets;
-        }
-        return [];
-    };
+		return [];
+	};
+
+
 
     var loadRatings = function (manager, items) {
         var i, asset,

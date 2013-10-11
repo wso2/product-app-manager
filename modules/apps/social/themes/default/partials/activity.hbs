@@ -19,7 +19,7 @@
             <div class="com-thumbs">
                 <ul>
                     <li>
-                        <a href="#"><i class="icon icon-thumbs-up {{#if iLike}}selected{{/if}}"></i><span class="com-like-count">{{likes.totalItems}}</span></a>
+                        <a href="#"><i class="icon icon-thumbs-up {{#if iLike}}selected{{/if}}"></i><span class="com-like-count">{{#if likes.totalItems}} {{likes.totalItems}} {{/if}}</span></a>
                     </li>
                     <li>
                         <a href="#"><i class="icon icon-thumbs-down"></i></a>

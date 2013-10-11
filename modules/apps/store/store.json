@@ -28,7 +28,7 @@
         }
     },
     "lifeCycleBehaviour":{
-        "visibleIn":["published"]
+        "visibleIn":["Published"]
     },
     "userSpace": {
         "store": "/_system/governance/users/store"

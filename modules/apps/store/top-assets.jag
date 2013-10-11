@@ -90,7 +90,7 @@ var caramel;
     var rxtAttributes = require('modules/util.js').getRXTAttributes(tenantId, "gadget");
 
     caramel.render({
-		title : 'Store | User Engagement Center',
+		title : 'Store | WSO2 Enterprise Store',
 		user : loggedUser,
 		sso:sso,
 		header : site.header(tenantId, {
@@ -110,7 +110,7 @@ var caramel;
 				site : sites,
                 ebook : ebooks
 			},
-			popularAssets : popularAssets,
+			popularAssets : (popularAssets.length)?popularAssets:null,
             recent : recent
 		},
 		tags : {

@@ -5,12 +5,10 @@ import com.google.gson.JsonObject;
 
 public class Activity {
 
-    private String id;
     private final JsonObject body;
     private final int timestamp;
 
-    public Activity(String id, JsonObject body, int timestamp) {
-        this.id = id;
+    public Activity(JsonObject body, int timestamp) {
         this.body = body;
         this.timestamp = timestamp;
     }
@@ -38,12 +36,23 @@ public class Activity {
 
     public String getTargetId() {
         JsonObject target = body.getAsJsonObject("target");
-        if(target!=null){
+        if (target != null) {
             JsonElement targetId = target.get("id");
-            if(targetId!=null){
+            if (targetId != null) {
                 return targetId.getAsString();
             }
         }
         return null;
+    }
+
+    public int getLikeCount() {
+        JsonObject likes = body.getAsJsonObject("likes");
+        if (likes != null) {
+            JsonElement count = likes.get("totalItems");
+            if (count != null) {
+                return count.getAsInt();
+            }
+        }
+        return 0;
     }
 }

@@ -115,7 +115,7 @@ $(function () {
      */
 
     var buildParams = function (query) {
-        return (query.indexOf('=') === -1) ? 'query=' + query : 'fields=true&' + query;
+        return 'query=' + query;
     };
     var search = function () {
         var url, searchVal = $('#search').val();
@@ -352,11 +352,11 @@ $(function () {
             var $this = $(this);
             if ($('#search').val().length > 0) {
                 if ($this.find('input').val().length > 0) {
-                    $('#search').val($('#search').val() + '&' + $this.find('input').attr('name') + '=' + $this.find('input').val());
+                    $('#search').val($('#search').val() + ' ' + $this.find('input').attr('name') + ':"' + $this.find('input').val() + '"');
                 }
             } else {
                 if ($this.find('input').val().length > 0) {
-                    $('#search').val($this.find('input').attr('name') + '=' + $this.find('input').val());
+                    $('#search').val($this.find('input').attr('name') + ':"' + $this.find('input').val() + '"');
                 }
             }
 

@@ -130,6 +130,8 @@ var permitted = function (username, session) {
     user = um.getUser(usr.username);
     user.tenantDomain = carbon.server.tenantDomain({tenantId: usr.tenantId});
     perms = opts.permissions.login;
+    new Log().info(perms);
+    
     L1:
         for (perm in perms) {
             if (perms.hasOwnProperty(perm)) {

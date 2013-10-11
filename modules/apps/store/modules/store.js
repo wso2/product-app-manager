@@ -388,11 +388,12 @@ Store.prototype.assets = function (type, paging) {
 
     var options = {};
     options = obtainViewQuery(options);
+    options = {"attributes" : options};
     var i;
-
+    var newPaging = PaginationFormBuilder(paging);
     //var assetz = this.assetManager(type).list(paging);
 
-    var assetz = this.assetManager(type).search(options, paging);
+    var assetz = this.assetManager(type).search(options, newPaging);
 
 
     for (i = 0; i < assetz.length; i++) {
@@ -416,8 +417,10 @@ Store.prototype.tagged = function (type, tag, paging) {
     var assets;
     var length;
 
-    options['tag'] = tag;
-    options = obtainViewQuery(options);
+    //options['tag'] = tag;
+    //options = obtainViewQuery(options);
+    //TODO move this LCState to config
+    options = {"tag" : tag, "lifecycleState" : ["published"]};
 
     assets = this.assetManager(type).search(options, paging);
 
@@ -484,7 +487,8 @@ Store.prototype.popularAssets = function (type, count) {
     var paging = {
         start: 0,
         count: count || 5,
-        sort: 'popular'
+        sortBy: 'overview_name',
+        sortOrder: 'ASC'
     };
 
     var assets = this.assetManager(type).search(options, paging);
@@ -505,10 +509,12 @@ Store.prototype.recentAssets = function (type, count) {
     var paging = {
         start: 0,
         count: count || 5,
-        sort: 'recent'
+        sortBy: 'overview_createdtime',
+        sort: 'older'
     };
     var options = {};
     options = obtainViewQuery(options);
+    options = {"attributes" : options};
 
     var recent = this.assetManager(type).search(options, paging);
 
@@ -631,8 +637,14 @@ Store.prototype.removeAsset = function (type, options) {
     this.assetManager(type).remove(options);
 };
 
-var LIFECYCLE_STATE_PROPERTY = 'lifecycleState';
-var DEFAULT_ASSET_VIEW_STATE = 'published'; //Unless specified otherwise, assets are always visible when Published
+Store.prototype.rxtManager = function(type) {
+    return storeManagers(this.tenantId, this.session).rxtManager.findAssetTemplate(function(tmpl) {
+        return tmpl.shortName === type;
+    });
+};
+
+var LIFECYCLE_STATE_PROPERTY = 'lcState';
+var DEFAULT_ASSET_VIEW_STATE = 'Published'; //Unless specified otherwise, assets are always visible when Published
 
 /*
  The function creates a query object to be used in the Manager.search
@@ -653,7 +665,7 @@ var obtainViewQuery = function (options) {
     return options;
 }
 
-var TENANT_STORE_MANAGERS='store.managers'
+var TENANT_STORE_MANAGERS='store.managers';
 var SUPER_TENANT = -1234;
 var APP_MANAGERS = 'application.master.managers';
 var LOGGED_IN_USER = 'LOGGED_IN_USER';
@@ -671,7 +683,7 @@ var storeManagers = function (o, session) {
     var server = require('/modules/server.js');
 
     //We check if there is a valid session
-    if (session.get(LOGGED_IN_USER) != null) {
+    if (require('/modules/user.js').current(session) != null) {
         return handleLoggedInUser(o, session);
     }
     else {
@@ -736,6 +748,54 @@ function StoreMasterManager(tenantId, session) {
     this.rxtManager = managers.rxtManager;
     this.storageSecurityProvider=managers.storageSecurityProvider;
     this.tenantId = tenantId;
+}
+
+function PaginationFormBuilder(pagin) {
+
+	var DEFAULT_PAGIN = {"start" : 0.0, "count" : 5};
+	// switch sortOrder from ES to pagination Context
+
+		switch (pagin.sort) {
+			
+			case 'recent':
+				DEFAULT_PAGIN.sortOrder = 'DES';
+				DEFAULT_PAGIN.sortBy  = 'overview_createdtime';
+				break;
+			case 'older':
+				DEFAULT_PAGIN.sortOrder = 'ASC'
+				DEFAULT_PAGIN.sortBy  = 'overview_createdtime';
+				break;
+			case 'popular':
+				// no regsiter pagination support, socail feature need to check
+				break;
+			case 'unpopular':
+				// no regsiter pagination support, socail feature need to check
+				break;
+			case 'az':
+				DEFAULT_PAGIN.sortOrder = 'ASC'
+				DEFAULT_PAGIN.sortBy  = 'overview_name';
+				break;
+			case 'za':
+				DEFAULT_PAGIN.sortOrder = 'DES';
+				DEFAULT_PAGIN.sortBy  = 'overview_name';
+				break;
+			default:
+				DEFAULT_PAGIN.sortOrder = 'ASC';
+		}
+
+		//sortBy only have overview_name name still for assert type attributes
+		if(pagin.count != null) {
+			DEFAULT_PAGIN.count = pagin.count;
+		}
+		if(pagin.start != null) {
+			DEFAULT_PAGIN.start = pagin.start;
+		}
+		if(pagin.paginationLimit != null) {
+			DEFAULT_PAGIN.paginationLimit = 120000;
+		}
+		return DEFAULT_PAGIN;
+
+		
 }
 
 /*

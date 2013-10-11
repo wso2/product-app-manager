@@ -25,7 +25,6 @@ breadcrumbItems=deploymentManager.getAssetData();
 
 generateBreadcrumbJson = function(data) {
 
-
 	var currentTypeObj = getTypeObj(data.shortName);
 		
     var breadcrumbJson = {
@@ -33,7 +32,8 @@ generateBreadcrumbJson = function(data) {
         currentTitle : currentTypeObj.assetTitle,
         currentUrl : currentTypeObj.url,
         breadcrumb : breadcrumbItems,
-        shortName : data.shortName
+        shortName : data.shortName,
+        query : data.query
     };
     
     if(data.artifact){
