@@ -27,7 +27,7 @@ var filterManager=publisher.filterManager;
 var log=new Log();
 
 var DEFAULT_PAGE = 10;
-var DEFAULT_PAGIN = {'start':0, 'count':1000 , 'sort':'az','sortBy': 'overview_name', 'paginationLimit':1000};
+var DEFAULT_PAGIN = {'start':0, 'count':1000 , 'sortOrder':'asc','sortBy': 'overview_name', 'paginationLimit':1000};
 
 
 /*routeMnger.register('GET','publisher','/publisher/assets/list',function(context){
@@ -61,7 +61,7 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 
 		} else if (sortby && sort){			
 			DEFAULT_PAGIN.sortBy = 'overview_'+sortby;
-			DEFAULT_PAGIN.sort = sort;
+			DEFAULT_PAGIN.sortOrder = sort.toUpperCase();
 			var artifacts = artifactManager.search(null,DEFAULT_PAGIN) || [];
 
 		} else {
