@@ -16,6 +16,10 @@ var matcher = new URIMatcher(request.getRequestURI());
 
     if (matcher.match('/{context}/apis/rate')) {
         aid = request.getParameter('asset');
+        if (!aid) {
+            var asset = store.asset(request.getParameter('type'),request.getParameter('id'));
+            aid=asset.path;
+        }
         store.rate(aid, request.getParameter('value'));
         print(store.rating(aid));
         return;

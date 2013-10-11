@@ -9,7 +9,7 @@ window.showAlert = function(msg, type) {
 		container.prepend(html);
 	}
 	var alert = container.find('.alert');
-	alert.removeClass().addClass('info-div alert alert-' + type).find('span').text(msg);
+	alert.removeClass().addClass('info-div alert alert-' + type).find('span').html(msg);
 	alert.fadeIn("fast");
 }
 
@@ -120,6 +120,14 @@ $(document).ready(function() {
 
 	});
 
+	$('.btn-upload').on('click', function(e) {
+		e.preventDefault();
+		$(this).parents('.tbl-upload-row').find('input[type="file"]').click();
+	});
+
+	$('input[type="file"]').change(function() {
+		$(this).parents('.tbl-upload-row').find('.txt-filepath').val($(this).val());
+	})
 	/*
 	 The function is used to check if the version entered by the user exists
 	 @versionList: A list of versions

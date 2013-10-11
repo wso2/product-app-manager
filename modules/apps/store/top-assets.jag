@@ -110,7 +110,7 @@ var caramel;
 				site : sites,
                 ebook : ebooks
 			},
-			popularAssets : popularAssets,
+			popularAssets : (popularAssets.length)?popularAssets:null,
             recent : recent
 		},
 		tags : {

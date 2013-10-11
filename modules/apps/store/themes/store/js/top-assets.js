@@ -21,28 +21,7 @@ $(function() {
 	});
 
 	mouseStop();
-
-	$("#asset-slideshow").carouFredSel({
-		items : {
-			visible : 3
-		},
-		height : 300,
-		scroll : 1,
-		auto : false,
-		prev : {
-			button : "#asset-slideshow-next",
-			key : "left"
-		},
-		next : {
-			button : "#asset-slideshow-prev",
-			key : "right"
-		}
-
-	}).find(".slide").hover(function() {
-		$(this).find(".asset-intro-box").slideDown("fast");
-	}, function() {
-		$(this).find(".asset-intro-box").slideUp("fast");
-	});
+	applyTopAssetsSlideshow();
 
 	$("#top-asset-slideshow-gadget").carouFredSel({
 		items : 4,
@@ -101,3 +80,38 @@ var mouseStop = function() {
 
 }
 
+var applyTopAssetsSlideshow = function(){
+	var visible,
+		size =  $('#asset-slideshow-cont').find('.slide').size();
+		
+	if(size<=3){
+		visible = 1;
+		$('#asset-slideshow-cont .html_carousel').css('margin-left', 163);
+	} else {
+		visible = 3;
+	}
+	
+	$("#asset-slideshow").carouFredSel({
+		items : {
+			visible : visible
+		},
+		height : 300,
+		scroll : 1,
+		auto : true,
+		prev : {
+			button : "#asset-slideshow-next",
+			key : "left"
+		},
+		next : {
+			button : "#asset-slideshow-prev",
+			key : "right"
+		}
+
+	}).find(".slide").hover(function() {
+		$(this).find(".asset-intro-box").slideDown("fast");
+	}, function() {
+		$(this).find(".asset-intro-box").slideUp("fast");
+	});
+	
+	
+}

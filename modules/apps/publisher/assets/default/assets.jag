@@ -58,7 +58,6 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 		if(query) {
 			assets = artifactManager.search(query, null);
 			artifacts = assets;
-
 		} else if (sortby && sort){			
 			DEFAULT_PAGIN.sortBy = 'overview_'+sortby;
 			DEFAULT_PAGIN.sortOrder = sort.toUpperCase();
@@ -79,7 +78,8 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 			op : 'list',
 			cuser : user.current(session),
 			shortName : context.params.type,
-			artifacts : artifacts
+			artifacts : artifacts,
+			query : query
 		});
 	} catch (e) {
 		response.sendError(400, "Your request is malformed");
