@@ -14,7 +14,6 @@ var selectCategory = function(data) {
 		currentCategory = data.artifact.attributes['overview_category'],
 		categories = selectCategories(data.data.fields);
 
-
 	for (var i in categories) {
 		
 		selected = (currentCategory == categories[i])?true:false;

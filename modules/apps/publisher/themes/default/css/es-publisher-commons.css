@@ -1085,3 +1085,8 @@ span.title {
     vertical-align: top;
     margin-left: 8px;
 }
+
+.tbl-upload-cell .btn{
+    margin-right:0;
+}
+
