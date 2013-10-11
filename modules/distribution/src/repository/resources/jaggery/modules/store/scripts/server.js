@@ -38,9 +38,15 @@ var server = {};
         });
 
         event.on('tenantLoad', function (tenantId) {
-            var log = new Log(),
+            var loader,
+                log = new Log(),
                 carbon = require('carbon'),
                 config = server.configs(tenantId);
+
+            //initialize tenant registry
+            loader = carbon.server.osgiService('org.wso2.carbon.registry.core.service.TenantRegistryLoader');
+            loader.loadTenantRegistry(tenantId);
+
             //loads tenant's system registry
             config[SYSTEM_REGISTRY] = new carbon.registry.Registry(server.instance(), {
                 system: true,
