@@ -388,6 +388,7 @@ Store.prototype.assets = function (type, paging) {
 
     var options = {};
     options = obtainViewQuery(options);
+    options = {"attributes" : options};
     var i;
 
     //var assetz = this.assetManager(type).list(paging);
@@ -639,8 +640,8 @@ Store.prototype.rxtManager = function(type) {
     });
 };
 
-var LIFECYCLE_STATE_PROPERTY = 'lifecycleState';
-var DEFAULT_ASSET_VIEW_STATE = 'published'; //Unless specified otherwise, assets are always visible when Published
+var LIFECYCLE_STATE_PROPERTY = 'lcState';
+var DEFAULT_ASSET_VIEW_STATE = 'Published'; //Unless specified otherwise, assets are always visible when Published
 
 /*
  The function creates a query object to be used in the Manager.search
