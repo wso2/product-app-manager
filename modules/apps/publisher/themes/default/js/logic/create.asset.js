@@ -61,7 +61,7 @@ $(function () {
 
                 //Check if the asset was added
                 if(result.ok){
-                    alert('asset added.');
+                    showAlert('Asset added successfully.', 'success');
                     window.location = '/publisher/assets/' + type + '/';
                 }
                 else{
@@ -127,7 +127,7 @@ $(function () {
 
         var tagArray = [];
 
-        if($(TAG_CONTAINER)){
+        if(!$(TAG_CONTAINER)){
             return tagArray;
         }
 
