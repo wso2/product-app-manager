@@ -77,14 +77,14 @@
         </fileSet>
 
         <fileSet>
-            <directory>../styles/service/src/main/resources/web/styles/css</directory>
+            <directory>src/repository/resources/styles/css</directory>
             <outputDirectory>wso2store-${pom.version}/resources/allthemes/Default/admin</outputDirectory>
             <includes>
                 <include>**/**.css</include>
             </includes>
         </fileSet>
         <fileSet>
-            <directory>../styles/service/src/main/resources/web/styles/images</directory>
+            <directory>src/repository/resources/styles/images</directory>
             <outputDirectory>wso2store-${pom.version}/resources/allthemes/Default/images</outputDirectory>
             <includes>
                 <include>**/**.gif</include>
