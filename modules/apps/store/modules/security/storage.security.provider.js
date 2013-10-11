@@ -84,7 +84,7 @@ var securityModule = function () {
         var asset=artifactManager.get(assetId);
 
         //Obtain the signed in user
-        var userInstance=require('/modules/user.js').current(session);
+        var userInstance=require('store').server.current(session);
 
         var roles=[];
         var username = null;

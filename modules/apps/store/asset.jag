@@ -9,7 +9,7 @@ var caramel;
             store = require('/modules/store.js').store(request, session),
             config = require('/store.js').config(),
             site = require('/modules/site.js'),
-            user = require('/modules/user.js').current(session),
+            user = require('store').server.current(session),
             utility = require('/modules/util.js'),
             sso = configs.ssoConfiguration.enabled,
             inDashboard = false,

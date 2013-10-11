@@ -6,7 +6,7 @@ var caramel;
 			subscriptions ={},
 	    	subscription = false,
             log = new Log(),
-            user = require('/modules/user.js').current(session),
+            user = require('store').server.current(session),
             configs = require('/store.js').config(),
             store = require('/modules/store.js').store(request, session),
             site = require('/modules/site.js'),
