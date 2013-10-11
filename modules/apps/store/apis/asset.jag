@@ -14,7 +14,7 @@ response.addHeader("Content-Type", "application/json");
     var isMyAsset = false;
     if(matcher.match('/{context}/apis/myAsset')){
         isMyAsset = true;
-        if (!require('/modules/user.js').current(session)) {
+        if (!require('store').server.current(session)) {
             response.sendError(401, 'Unauthorized');
             return;
         }

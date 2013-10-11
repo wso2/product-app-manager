@@ -40,7 +40,7 @@ var navigation = function (tenantId) {
 var header = function (tenantId, options) {
 
 
-    var user = require('/modules/user.js');
+    var user = require('store').user;
 
    
     return {

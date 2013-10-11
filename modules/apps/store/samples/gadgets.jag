@@ -17,7 +17,7 @@ var tags = ['wso2', 'ues', 'jaggery', 'mobile', 'weather', 'sri lanka'];
 var url = 'http://localhost:9443/portal/gadgets/my-gadget/gadget.xml';
 
 var rxtPath = '/_system/governance/gadgets/';
-var store = require('/modules/server.js');
+var store = require('store').server;
 var reg = store.systemRegistry();
 var thumbLength = thumbnails.length;
 var tagsLength = tags.length;

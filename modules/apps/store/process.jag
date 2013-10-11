@@ -1,7 +1,6 @@
 <%
 (function () {
-    var user = require('/modules/user.js'),
-            usr = user.current(session);
+    var usr = require('store').server.current(session);
 
     if (!usr) {
         response.sendError(401, 'Unauthorized');
