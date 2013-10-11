@@ -87,26 +87,34 @@ $btn.click(function (e) {
         $btn.attr('disabled', 'disabled');
         showLoading(true);
 
-        publish(activity, function (published) {
-            if ($firstReview.length) $firstReview.hide();
-            $btn.removeAttr('disabled');
+        var callback = function () {
+            $('#newest').addClass('selected');
+            publish(activity, function (published) {
+                if ($firstReview.length) $firstReview.hide();
+                $btn.removeAttr('disabled');
 
-            if (published.success) {
-                showLoading(false);
-                $radio.rating('select', null);
-                $textArea.val('');
+                if (published.success) {
+                    showLoading(false);
+                    $radio.rating('select', null);
+                    $textArea.val('');
 
-                activity.id = published.id;
-                usingTemplate(function (template) {
-                    var newComment = template(activity);
-                    $stream.prepend(newComment);
-                    if (adjustHeight) {
-                        adjustHeight();
-                    }
-                });
-            }
-        });
+                    activity.id = published.id;
+                    usingTemplate(function (template) {
+                        var newComment = template(activity);
+                        $stream.prepend(newComment);
+                        if (adjustHeight) {
+                            adjustHeight();
+                        }
+                    });
+                }
+            });
+        };
 
+        if ($('#newest').hasClass('selected')) {
+            callback();
+        } else {
+            redrawReviews("bla", callback);
+        }
     }
 });
 
@@ -135,29 +143,33 @@ $stream.on('click', '.icon-thumbs-up', function (e) {
 
 });
 
+var redrawReviews = function (sortBy, callback) {
+    $('.com-sort .selected').removeClass('selected');
+    $.get('apis/object.jag', {
+        target: target,
+        sortBy: sortBy
+    }, function (obj) {
+        var reviews = obj.attachments;
+        usingTemplate(function (template) {
+            var str = "";
+            for (var i = 0; i < reviews.length; i++) {
+                var review = reviews[i];
+                var iLike = didILike(review, user);
+                review.iLike = iLike;
+                console.log(iLike);
+                str += template(review);
+            }
+            $stream.html(str);
+            callback && callback();
+        });
+    })
+}
 
-$(document).on('click', '.com-sort', function (e) {
+$(document).on('click', '.com-sort a', function (e) {
     var $target = $(e.target);
     if (!$target.hasClass('selected')) {
-        $('.com-sort .selected').removeClass('selected');
+        redrawReviews($target.text().toUpperCase());
         $target.addClass('selected');
-        $.get('apis/object.jag', {
-            target: target,
-            sortBy: $target.text().toUpperCase()
-        }, function (obj) {
-            var reviews = obj.attachments;
-            usingTemplate(function (template) {
-                var str = "";
-                for (var i = 0; i < reviews.length; i++) {
-                    var review = reviews[i];
-                    var iLike = didILike(review, user);
-                    review.iLike = iLike;
-                    console.log(iLike);
-                    str += template(review);
-                }
-                $stream.html(str);
-            });
-        })
     }
 });
 
