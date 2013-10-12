@@ -25,7 +25,7 @@ var user = {};
         event.on('tenantCreate', function (tenantId) {
             var role, roles,
                 um = server.userManager(tenantId),
-                options = server.options();
+                options = server.configs(tenantId)[user.USER_OPTIONS];
             roles = options.roles;
             for (role in roles) {
                 if (roles.hasOwnProperty(role)) {
@@ -78,7 +78,7 @@ var user = {};
                 carbon = require('carbon'),
                 event = require('event'),
                 um = server.userManager(usr.tenantId),
-                opts = server.options(usr.tenantId),
+                opts = server.configs(usr.tenantId)[user.USER_OPTIONS],
                 space = user.userSpace(usr),
                 registry = server.systemRegistry(tenantId);
             if (!registry.exists(space)) {
@@ -196,12 +196,12 @@ var user = {};
     /**
      * Returns the user's registry space. This should be called once with the username,
      * then can be called without the username.
-     * @param user user object
+     * @param usr user object
      * @return {*}
      */
-    user.userSpace = function (user) {
+    user.userSpace = function (usr) {
         try {
-            return server.configs(user.tenantId).userSpace + '/' + cleanUsername(user.username);
+            return server.configs(usr.tenantId)[user.USER_OPTIONS].userSpace + '/' + cleanUsername(usr.username);
         } catch (e) {
             return null;
         }

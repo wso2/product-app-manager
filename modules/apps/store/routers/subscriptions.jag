@@ -6,7 +6,10 @@ var type;
             mod = require('/modules/store.js'),
             file = require('/modules/file.js'),
             log = new Log(),
-            matcher = new URIMatcher(request.getRequestURI());
+            matcher = new URIMatcher(request.getRequestURI()),
+            server = require('store').server,
+            tenant = server.tenant(request, session),
+            configs = mod.configs(tenant.tenantId);
     mapper = function (path) {
         return function () {
             return path;

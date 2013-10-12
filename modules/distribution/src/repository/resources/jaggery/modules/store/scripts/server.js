@@ -201,7 +201,7 @@ var server = {};
             config = server.configs(tenantId);
         if (!config || !config[ANONYMOUS_REGISTRY]) {
             carbon = require('carbon');
-            return new carbon.registry.Registry(server(), {
+            return new carbon.registry.Registry(server.instance(), {
                 tenantId: tenantId
             });
         }
@@ -230,7 +230,7 @@ var server = {};
             config = server.configs(tenantId);
         if (!config || !config[USER_MANAGER]) {
             carbon = require('carbon');
-            return new carbon.user.UserManager(server(), tenantId);
+            return new carbon.user.UserManager(server.instance(), tenantId);
         }
         return server.configs(tenantId)[USER_MANAGER];
     };
