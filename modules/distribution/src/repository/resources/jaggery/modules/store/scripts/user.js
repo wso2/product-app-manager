@@ -23,10 +23,21 @@ var user = {};
     user.init = function (options) {
         var event = require('event');
         event.on('tenantCreate', function (tenantId) {
-            var role, roles,
-                um = server.userManager(tenantId),
-                options = server.configs(tenantId)[user.USER_OPTIONS];
-            roles = options.roles;
+            var role,
+                um = server.userManager(tenantId);
+                //options = server.configs(tenantId)[user.USER_OPTIONS];
+            var roles = {
+                "roles": {
+                    "Internal/store": {
+                        "/permission/admin/login": ["ui.execute"]
+                    },
+                    "Internal/publisher": {
+                        "/permission/admin/login": ["ui.execute"]
+                    }
+
+                }
+            };
+
             for (role in roles) {
                 if (roles.hasOwnProperty(role)) {
                     if (um.roleExists(role)) {
