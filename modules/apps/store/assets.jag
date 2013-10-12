@@ -109,7 +109,22 @@ var caramel;
 
 
         assets = function () {
-            return store.assets(type, paging);
+            if(paging.sort=='popular'){
+                var db = new Database('SOCIAL_CACHE');
+                var result = db.query("SELECT ID FROM SOCIAL_CACHE WHERE TYPE='" + type.replace(/\W/g, '') + "' ORDER BY RATING DESC LIMIT " + paging.start + ",12");
+                var assets = [];
+                var pos,aid,asset;
+                for (var n = 0; n < result.length; n++) {
+                    var combinedAid = String(result[n].ID);
+                    pos = combinedAid.indexOf(':');
+                    aid =  combinedAid.substring(pos + 1);
+                    asset =  store.asset(type,aid);
+                    assets.push(asset);
+                }
+                return assets;
+            }else{
+                return store.assets(type, paging);
+            }
         }
 
     }
