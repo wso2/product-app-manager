@@ -1,34 +1,45 @@
 package org.wso2.carbon.social;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.wso2.carbon.social.summarizer.DefaultSummarizer;
+import org.wso2.carbon.social.summarizer.Summarizer;
+import org.wso2.carbon.social.summarizer.SummarizerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class ActivitySummarizer {
 
-    Map<String, JsonObject> objects = new HashMap<String, JsonObject>();
-    private static final Log LOG = LogFactory.getLog(ActivityPublisher.class);
+    private static final Log LOG = LogFactory.getLog(ActivitySummarizer.class);
     private String rootId;
+
+    Map<String, Summarizer> summarizerMap = new HashMap<String, Summarizer>();
+    Summarizer defaultSummarizer;
 
     public ActivitySummarizer(String rootId) {
         this.rootId = rootId;
+        defaultSummarizer = new DefaultSummarizer(rootId);
     }
 
 
     public void add(Activity activity) {
         String parentId = activity.getTargetId();
         if (parentId != null) {
-            JsonObject parent = getSubObject(parentId);
-            JsonObject child = getSubObject(activity.getId());
-            merge(activity.getBody(), child);
+            String verb = activity.getBody().get("verb").getAsString();
+            Summarizer summarizer = summarizerMap.get(verb);
+            if (summarizer == null) {
+                summarizer = SummarizerFactory.create(verb,rootId);
+                if (summarizer == null) {
+                    summarizer = defaultSummarizer;
+                } else {
+                    summarizerMap.put(verb, summarizer);
+                }
+            }
+            summarizer.add(activity);
 
+            /*
             if (child.get("verb").getAsString().equals("like")) {
                 String actorId = activity.getActorId();
 
@@ -85,64 +96,19 @@ public class ActivitySummarizer {
                 JsonArray attachments = addArrIfNot(parent, "attachments");
                 attachments.add(child);
             }
+            */
         } else {
             LOG.error("failed to summarize activity (has no target id) : " + activity);
         }
     }
 
-    // needed because http://code.google.com/p/google-gson/issues/detail?id=353
-    private void removeElement(JsonObject root, String arrayName, int i) {
-        JsonArray oldArray = root.getAsJsonArray(arrayName);
-        JsonArray newArray = new JsonArray();
-        for (int j = 0; j < oldArray.size(); j++) {
-            if (j != i) {
-                newArray.add(oldArray.get(j));
-            }
-        }
-        root.add(arrayName, newArray);
-    }
-
-    private int likedByMe(JsonArray items, String actorId) {
-        for (int i = 0; i < items.size(); i++) {
-            JsonElement item = items.get(i);
-            if (item.getAsJsonObject().get("id").getAsString().equals(actorId)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-
-    private JsonArray addArrIfNot(JsonObject root, String arrName) {
-        JsonArray attachments = root.getAsJsonArray(arrName);
-        if (attachments == null) {
-            attachments = new JsonArray();
-            root.add(arrName, attachments);
-        }
-        return attachments;
-    }
 
     public JsonObject summarize() {
-        return objects.get(rootId);
-    }
-
-    private void merge(JsonObject form, JsonObject to) {
-        Set<Map.Entry<String, JsonElement>> entries = form.entrySet();
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            String key = entry.getKey();
-            JsonElement jsonElement = to.get(key);
-            if (jsonElement == null) {
-                to.add(key, entry.getValue());
-            }
+        JsonObject root = new JsonObject();
+        defaultSummarizer.summarize(root);
+        for (Summarizer summarizer : summarizerMap.values()) {
+            summarizer.summarize(root);
         }
-    }
-
-    private JsonObject getSubObject(String id) {
-        JsonObject jsonElement = objects.get(id);
-        if (jsonElement == null) {
-            jsonElement = new JsonObject();
-            objects.put(id, jsonElement);
-        }
-        return jsonElement;
+        return root;
     }
 }
