@@ -260,7 +260,7 @@ var sugyamaModule = function () {
 
                         angle = angle * (180 / Math.PI);
 
-                       // drawArrow({x: toPoint.x - 15, y: toPoint.y, angle: angle}, paper);
+                        drawArrow({x: (toPoint.x +fromPoint.x)/2, y: (toPoint.y+fromPoint.y)/2, angle: angle}, paper);
                     }
                 }
             }
