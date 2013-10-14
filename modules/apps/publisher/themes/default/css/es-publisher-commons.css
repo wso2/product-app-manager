@@ -959,7 +959,7 @@ span.title {
     overflow: hidden;
     position: relative;
     top: -0.550003px;
-    width: 410px;
+    width: 500px;
 }
 #state {
     /* background: none repeat scroll 0 0 #FFFFFF;*/
@@ -1089,4 +1089,15 @@ span.title {
 .tbl-upload-cell .btn{
     margin-right:0;
 }
+.lifecycle #canvas svg{
+    left:-63px !important;
+}
 
+#form-asset-create .icon-ok, #form-asset-create .icon-ban-circle{
+     margin-left: -18px;
+    margin-right: 4px;
+    opacity:.5;
+}
+.icon-check-appname{
+    display:none;
+}

@@ -193,7 +193,9 @@ $(function(){
             url:'/publisher/api/lifecycle/'+action+'/'+asset+'/'+id,
             type:'PUT',
             success:function(response){
-                showAlert('Asset demoted successfully', 'success');
+                var actionName=action.toLowerCase();
+                actionName+='d';
+                showAlert('Asset was '+actionName+' successfully.', 'success');
                 $.ajax({
                     url:'/publisher/api/lifecycle/'+asset+'/'+id,
                     type:'GET',
