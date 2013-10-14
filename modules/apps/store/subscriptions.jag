@@ -5,7 +5,7 @@ var caramel;
             log = new Log(),
             store = require('/modules/store.js').store(request, session),
             types = store.assetTypes(),
-            user = require('/modules/user.js').current(session),
+            user = require('store').server.current(session),
             tags = []
             sso = configs.ssoConfiguration.enabled;
     caramel = require('caramel');

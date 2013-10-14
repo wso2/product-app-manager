@@ -1,36 +1,15 @@
 {
-    "assets": ["gadget", "site", "ebook"],
     "assetsUrlPrefix": "/assets",
     "extensionsUrlPrefix": "/extensions",
     "subscriptionsUrlPrefix": "/subscriptions",
-    "assetsPageSize": 4,
-    "commentsPageSize": 10,
     "socialCommentsEnable": true,
-    "tenanted": true,
+    "cached": false,
     "server": {
         "https": "%https.host%/admin",
         "http": "%http.host%"
     },
-    "roles": {
-        "internal/store": {
-            "/permission/admin/login": ["ui.execute"]
-        }
-    },
-    "user": {
-        "username": "admin",
-        "password": "admin"
-    },
-    "userRoles": ["internal/store"],
-    "permissions": {
-        "login": {
-            "/permission/admin/login": ["ui.execute"]
-        }
-    },
     "lifeCycleBehaviour":{
-        "visibleIn":["published"]
-    },
-    "userSpace": {
-        "store": "/_system/governance/users/store"
+        "visibleIn":["Published"]
     },
     "ssoConfiguration": {
         "enabled": true,

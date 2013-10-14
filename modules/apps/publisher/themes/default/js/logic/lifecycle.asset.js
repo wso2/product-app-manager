@@ -13,6 +13,8 @@
  */
 
 var onCheckListItemClick=function(){};
+var sugyamaModule=sugyamaModule();
+var sugyama=new sugyamaModule.Sugyama();
 
 
 $(function(){
@@ -24,6 +26,7 @@ $(function(){
 
     //Break the url into components
     var comps=url.split('/');
+
 
     //Given a url of the form /pub/api/asset/{asset-type}/{asset-id}
     //length=5
@@ -41,7 +44,7 @@ $(function(){
     /*
     Promotes an asset
      */
-    $('#btn-asset-promote').on('click',function(e){
+  /*  $('#btn-asset-promote').on('click',function(e){
     	e.preventDefault();
        console.log('/publisher/api/lifecycle/Promote/'+asset+'/'+id);
         $.ajax({
@@ -72,12 +75,12 @@ $(function(){
 			showAlert('Error occured while promoting', 'error');
           }
         });
-    });
+    }); */
 
     /*
     Demotes an asset
      */
-    $('#btn-asset-demote').on('click',function(e){
+ /*   $('#btn-asset-demote').on('click',function(e){
     	e.preventDefault();
         $.ajax({
             url:'/publisher/api/lifecycle/Demote/'+asset+'/'+id,
@@ -109,7 +112,7 @@ $(function(){
         });
 
 
-    });
+    });*/
 
     /*
     The method only enables and disables the appropriate actions
@@ -137,6 +140,7 @@ $(function(){
     }
 
 
+
     /*
     The function builds the LC graph
      */
@@ -147,18 +151,29 @@ $(function(){
             success:function(response){
                 var element=$('#canvas');
                 if(element){
+                    var paper=new Raphael('canvas');
                     //element.html(response);
 
-                    if(!graph.Renderer.config.canvas.canvasElement){
+                   /* if(!graph.Renderer.config.canvas.canvasElement){
 
                         graph.Renderer.config.canvas.canvasElement=element;
 
                         graph.Renderer.initRaphael();
                         graph.Renderer.render(graph.NMap);
-                    }
+                    }       */
                     var statInfo=JSON.parse(response);
-                    graph.Renderer.setSelected(statInfo.state);
+                    sugyama.init(statInfo.lifecycle,paper);
+                    var START_X=10;
+                    var START_Y=50;
+                    var VERTEX_RADIUS=22;
+                    var LAYER_SEP=85;
+                    var LAYER_SPACE=200;
+                    sugyama.draw(START_X,START_Y,VERTEX_RADIUS,LAYER_SPACE,LAYER_SEP);
+
+                    //graph.Renderer.setSelected(statInfo.state);
                     disableActions(statInfo.actions);
+                    buildButtons(statInfo.actions);
+                    highlightTransition(statInfo.state);
                 }
                 //$('#canvas').html(response);
             },
@@ -166,6 +181,74 @@ $(function(){
                 $('#canvas').html('Error obtaining life-cycle state of asset.');
             }
         });
+    }
+
+    /*
+     The function encapsulates all of the logic which occurs when a user clicks a
+     lifecycle button
+     @action: The action for the button
+     */
+    function buttonClickLogic(action){
+        $.ajax({
+            url:'/publisher/api/lifecycle/'+action+'/'+asset+'/'+id,
+            type:'PUT',
+            success:function(response){
+                showAlert('Asset demoted successfully', 'success');
+                $.ajax({
+                    url:'/publisher/api/lifecycle/'+asset+'/'+id,
+                    type:'GET',
+                    success:function(response){
+                        //Convert the response to a JSON object
+                        var statInfo=JSON.parse(response);
+
+                        $('#state').html(statInfo.state);
+                        $('#view-lifecyclestate').html(statInfo.state);
+                        //disableActions(statInfo.actions);
+                        buildCheckList(asset,id);
+                        buildLCGraph();
+                        buildHistory(asset,id);
+                    },
+                    error:function(response){
+                        $('#state').html('Error obtaining life-cycle state of asset.');
+                    }
+                });
+            },
+            error:function(response){
+                showAlert('Error occured while demoting', 'error');
+            }
+        });
+    }
+
+    /*
+    The function is used to populate the buttons
+    @actions: The actions available to the current state
+     */
+    function buildButtons(actions){
+
+        //Obtain the button container
+        var BUTTON_CONTAINER='#form-actions';
+
+        //Clear the button container of previous buttons
+        $(BUTTON_CONTAINER).html('');
+
+        for(var index in actions){
+            var action=actions[index];
+
+            //Populate  buttons based on the action
+            var element=document.createElement('input');
+            element.type='button';
+            element.value=action;
+            element.className='btn btn-primary pull-right';
+            element.id='btn'+action;
+
+
+            $(BUTTON_CONTAINER).append(element);
+            $('#btn'+action).on('click',function(e){
+                var clicked=e.target.value;
+                e.preventDefault();
+                buttonClickLogic(clicked);
+            });
+        }
     }
 
     /*
@@ -302,6 +385,11 @@ $(function(){
     	alert.delay(1000).fadeIn("fast").delay(2000).fadeOut("fast");
     }
 
+	function highlightTransition(state){
+      var elem = $('.'+state);
+      elem.attr('fill', '#52B9E9');
+      //$('#canvas').attr('data-current', state);
+    }
    /*
    Click handlers for the checkboxes
     */

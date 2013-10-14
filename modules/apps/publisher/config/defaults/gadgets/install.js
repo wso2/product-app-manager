@@ -34,7 +34,18 @@ var installer = function () {
         //Create the deployment object
         var artifact = {};
 
-        var now = new Date();
+        var now =new String(new Date().valueOf());
+        var length = now.length;
+        var prefix = 20;
+        var onsetVal = '';
+            if(length != prefix){
+                    var onset = prefix - length;
+                    for(var i = 0; i < onset; i++){
+                        onsetVal+='0';
+                    }
+            }
+        now = onsetVal+now;
+
 
         artifact['attributes'] = {};
 

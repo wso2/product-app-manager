@@ -7,7 +7,10 @@ var type;
             store = require('/modules/store.js'),
             file = require('/modules/file.js'),
             matcher = new URIMatcher(request.getRequestURI()),
-            prefix = config.extensionsUrlPrefix + config.assetsUrlPrefix + '/';
+            prefix = config.extensionsUrlPrefix + config.assetsUrlPrefix + '/',
+            server = require('store').server,
+            tenant = server.tenant(request, session),
+            configs = store.configs(tenant.tenantId);
     mapper = function (path) {
         return function () {
             return path;

@@ -7,14 +7,10 @@ Welcome to the WSO2 Enterprise Store ${product.version} release
 
 Key Features
 ------------
-[1] Creating & Sharing Dashboards
-[2] Creating & Sharing Microsites
-[3] Creating & Sharing Gadgets
-[4] Adding external gadgets by URL
-[5] Pre-built graph gadgets
-[6] Store integration to dashboard creation flow
-[7] Enterprise store aspect
-[8] Sample microsites
+[1] Enterprise Asset Management
+[2] Store of Anything - provisioning the store to adopt any asset type
+[2] Asset Lifecycle Governance
+[3] Social Interaction on Assets
 
 
 Installation & Running
@@ -22,7 +18,7 @@ Installation & Running
 1. extract the downloaded zip file
 2. Run the wso2server.sh or wso2server.bat file in the bin directory
 3. Once the server starts, point your Web browser to
-   https://localhost:9443/portal/
+   https://localhost:9443/store/
 
 For more details, see the Installation Guide
 
@@ -34,17 +30,17 @@ System Requirements
 3. Portal app requires full Javascript enablement of the Web browser
 
 For more details see
-http://docs.wso2.org/wiki/display/UES100/Installation+Prerequisites
+http://docs.wso2.org/wiki/display/ES100/Installation+Prerequisites
 
 Known Issues
 ------------
-https://wso2.org/jira/issues/?filter=11174
+https://wso2.org/jira/browse/STORE-250?filter=11199
 
 
 WSO2 Enterprise Store Binary Distribution Directory Structure
 -----------------------------------------------------
 
-	UES_HOME
+	ES_HOME
         .
         ├── bin   //executables
         ├── dbscripts        //DBScripts

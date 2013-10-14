@@ -4,9 +4,8 @@ var type;
     var prefix, pages, path, suffix, theme, links, link, i, length, elements, mapper,
             store = require('/modules/store.js'),
             config = require('/store.js').config(),
-            mod = require('/modules/store.js'),
             file = require('/modules/file.js'),
-            server = require('/modules/server.js'),
+            server = require('store').server,
             log = new Log(),
             matcher = new URIMatcher(request.getRequestURI()),
             tenant = server.tenant(request, session),
@@ -33,7 +32,7 @@ var type;
             response.sendError(404, 'Request Resource cannot be found');
             return;
         } 
-        path = mod.ASSETS_EXT_PATH + type + '/pages/' + 'assets.jag';
+        path = store.ASSETS_EXT_PATH + type + '/pages/' + 'assets.jag';
         if (!new File(path).isExists()) {
             path = '/assets.jag';
         }

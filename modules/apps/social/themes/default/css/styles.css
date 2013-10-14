@@ -286,3 +286,6 @@ button:hover {
     opacity: .5;
 }
 
+.com-sort-hidden{
+    display:none;
+}

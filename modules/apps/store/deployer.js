@@ -165,7 +165,7 @@ var populateSites = function (tenantId) {
 };
 
 var tenantId = -1234;
-var server = require('/modules/server.js');
+var server = require('store').server;
 server.loadTenant(tenantId);
 
 //populate(tenantId);

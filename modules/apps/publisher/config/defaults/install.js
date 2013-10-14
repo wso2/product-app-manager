@@ -12,7 +12,7 @@ var installer = function () {
     var log = new Log('master.installer');
     var utility = require('/modules/utility.js').rxt_utility();
     var carbon = require('carbon');
-    var server = require('/modules/server.js');
+    var server = require('store').server;
     var GovernanceUtils = Packages.org.wso2.carbon.governance.api.util.GovernanceUtils;
     var SUPER_TENANT_ID = -1234;
     var SEARCH_INDEX = 'overview_name';
@@ -88,7 +88,7 @@ var installer = function () {
     function onCreateArtifactManager(context) {
 
         //Create a registry instance
-        var registry = new carbon.registry.Registry(server.server(), {
+        var registry = new carbon.registry.Registry(server.instance(), {
             username: 'admin',
             tenantId: SUPER_TENANT_ID
         });
@@ -162,6 +162,22 @@ var installer = function () {
     }
 
     /*
+     adds the asset to Social Cache DB. (this is a hack to warm up the cache,
+     so it want be empty at start up)
+     */
+    function addToSocialCache(asset) {
+        if (asset) {
+            var CREATE_QUARY = "CREATE TABLE IF NOT EXISTS SOCIAL_CACHE (id VARCHAR(255) NOT NULL,type VARCHAR(255), " +
+                "body VARCHAR(5000), rating DOUBLE,  PRIMARY KEY ( id ))";
+            var db = new Database("SOCIAL_CACHE");
+            db.query(CREATE_QUARY);
+            var combinedId = asset.type + ':' + asset.id;
+            db.query("MERGE INTO SOCIAL_CACHE (id,type,body,rating) VALUES('" + combinedId + "','" + asset.type + "','',0)");
+            db.close();
+        }
+    }
+
+    /*
      The function is used to add a new asset instance to the registry
      */
     function onAddAsset(context) {
@@ -184,6 +200,8 @@ var installer = function () {
 
         context['currentAsset'] = assets[0] || null;
         log.debug('added asset: ' + stringify(context.currentAsset));
+
+        addToSocialCache(context.currentAsset);
     }
 
     /*
@@ -196,6 +214,8 @@ var installer = function () {
 
         //Set the id
         artifact.id = currentAsset.id;
+        //Disable createdtime update of a default asset
+        artifact.attributes.overview_createdtime = currentAsset.attributes.overview_createdtime;
 
         //Store any resources in the Storage Manager
         context.dataInjector.inject(artifact, context.dataInjectorModes.STORAGE);

@@ -36,7 +36,7 @@ var init = function (options) {
     event.on('tenantCreate', function (tenantId) {
         var carbon = require('carbon'),
             config = require('/store-tenant.json'),
-            server = require('/modules/server.js'),
+            server = require('store').server,
             system = server.systemRegistry(tenantId);
         //um = server.userManager(tenantId),
         //GovernanceConstants = org.wso2.carbon.governance.api.util.GovernanceConstants;
@@ -55,8 +55,9 @@ var init = function (options) {
     });
 
     event.on('tenantLoad', function (tenantId) {
-        var user = require('/modules/user.js'),
-            server = require('/modules/server.js'),
+        var mod = require('store'),
+            user = mod.user,
+            server = mod.server,
             carbon = require('carbon'),
             config = server.configs(tenantId),
             CommonUtil = Packages.org.wso2.carbon.governance.registry.extensions.utils.CommonUtil,
@@ -112,14 +113,15 @@ var currentAsset = function () {
  */
 var store = function (o, session) {
     var store, configs, tenantId,
-        user = require('/modules/user.js'),
-        server = require('/modules/server.js');
+        mod = require('store'),
+        server = mod.server,
+        cached = server.options().cached;
 
     tenantId = (o instanceof Request) ? server.tenant(o, session).tenantId : o;
 
-    if (user.current(session)) {
+    if (server.current(session)) {
         store = session.get(TENANT_STORE);
-        if (store) {
+        if (cached && store) {
             return store;
         }
         store = new Store(tenantId, session);
@@ -128,7 +130,7 @@ var store = function (o, session) {
     }
     configs = server.configs(tenantId);
     store = configs[TENANT_STORE];
-    if (store) {
+    if (cached && store) {
         return store;
     }
     store = new Store(tenantId);
@@ -137,14 +139,18 @@ var store = function (o, session) {
 };
 
 var assetManager = function (type, reg) {
-    var azzet,
-        path = ASSETS_EXT_PATH + type + '/asset.js';
-    azzet = (new File(path).isExists() && (azzet = require(path)).Manager) ? azzet : require('/modules/asset.js');
-    return new azzet.Manager(reg, type);
+    var asset,
+        azzet = require('/modules/asset.js'),
+        path = ASSETS_EXT_PATH + type + '/asset.js',
+        manager = new azzet.Manager(reg, type);
+    if (new File(path).isExists() && (asset = require(path)).hasOwnProperty('assetManager')) {
+        manager = asset.assetManager(manager);
+    }
+    return manager;
 };
 
 var configs = function (tenantId) {
-    var server = require('/modules/server.js'),
+    var server = require('store').server,
         registry = server.systemRegistry(tenantId);
     return JSON.parse(registry.content(STORE_CONFIG_PATH));
 };
@@ -159,15 +165,17 @@ var configs = function (tenantId) {
  */
 var Store = function (tenantId, session) {
     var assetManagers = {},
-        user = require('/modules/user.js');
+        mod = require('store'),
+        user = mod.user,
+        server = mod.server;
     this.tenantId = tenantId;
-    this.servmod = require('/modules/server.js');
+    this.servmod = server;
     this.assetManagers = assetManagers;
     if (session) {
-        this.user = user.current(session);
+        this.user = server.current(session);
         this.registry = user.userRegistry(session);
         this.session = session;
-        this.userSpace = user.userSpace(this.user.username);
+        this.userSpace = user.userSpace(this.user);
     } else {
         configs(tenantId).assets.forEach(function (type) {
             assetManagers[type] = assetManager(type, server.anonRegistry(tenantId));
@@ -383,11 +391,12 @@ Store.prototype.assets = function (type, paging) {
 
     var options = {};
     options = obtainViewQuery(options);
+    options = {"attributes" : options};
     var i;
-
+    var newPaging = PaginationFormBuilder(paging);
     //var assetz = this.assetManager(type).list(paging);
 
-    var assetz = this.assetManager(type).search(options, paging);
+    var assetz = this.assetManager(type).search(options, newPaging);
 
 
     for (i = 0; i < assetz.length; i++) {
@@ -411,8 +420,10 @@ Store.prototype.tagged = function (type, tag, paging) {
     var assets;
     var length;
 
-    options['tag'] = tag;
-    options = obtainViewQuery(options);
+    //options['tag'] = tag;
+    //options = obtainViewQuery(options);
+    //TODO move this LCState to config
+    options = {"tag" : tag, "lifecycleState" : ["published"]};
 
     assets = this.assetManager(type).search(options, paging);
 
@@ -479,7 +490,8 @@ Store.prototype.popularAssets = function (type, count) {
     var paging = {
         start: 0,
         count: count || 5,
-        sort: 'popular'
+        sortBy: 'overview_name',
+        sortOrder: 'ASC'
     };
 
     var assets = this.assetManager(type).search(options, paging);
@@ -500,10 +512,12 @@ Store.prototype.recentAssets = function (type, count) {
     var paging = {
         start: 0,
         count: count || 5,
-        sort: 'recent'
+        sortBy: 'overview_createdtime',
+        sort: 'older'
     };
     var options = {};
     options = obtainViewQuery(options);
+    options = {"attributes" : options};
 
     var recent = this.assetManager(type).search(options, paging);
 
@@ -626,8 +640,14 @@ Store.prototype.removeAsset = function (type, options) {
     this.assetManager(type).remove(options);
 };
 
-var LIFECYCLE_STATE_PROPERTY = 'lifecycleState';
-var DEFAULT_ASSET_VIEW_STATE = 'published'; //Unless specified otherwise, assets are always visible when Published
+Store.prototype.rxtManager = function(type) {
+    return storeManagers(this.tenantId, this.session).rxtManager.findAssetTemplate(function(tmpl) {
+        return tmpl.shortName === type;
+    });
+};
+
+var LIFECYCLE_STATE_PROPERTY = 'lcState';
+var DEFAULT_ASSET_VIEW_STATE = 'Published'; //Unless specified otherwise, assets are always visible when Published
 
 /*
  The function creates a query object to be used in the Manager.search
@@ -648,7 +668,7 @@ var obtainViewQuery = function (options) {
     return options;
 }
 
-var TENANT_STORE_MANAGERS='store.managers'
+var TENANT_STORE_MANAGERS='store.managers';
 var SUPER_TENANT = -1234;
 var APP_MANAGERS = 'application.master.managers';
 var LOGGED_IN_USER = 'LOGGED_IN_USER';
@@ -663,10 +683,10 @@ var LOGGED_IN_USER = 'LOGGED_IN_USER';
 var storeManagers = function (o, session) {
     var storeMasterManager;
     var tenantId;
-    var server = require('/modules/server.js');
+    var server = require('store').server;
 
     //We check if there is a valid session
-    if (session.get(LOGGED_IN_USER) != null) {
+    if (server.current(session) != null) {
         return handleLoggedInUser(o, session);
     }
     else {
@@ -722,7 +742,7 @@ function handleAnonUser() {
  @session: The session of the currently logged in user
  */
 function StoreMasterManager(tenantId, session) {
-    var user = require('/modules/user.js');
+    var user = require('store').user;
     var registry = user.userRegistry(session);
 
     var managers = buildManagers(registry,tenantId);
@@ -731,6 +751,54 @@ function StoreMasterManager(tenantId, session) {
     this.rxtManager = managers.rxtManager;
     this.storageSecurityProvider=managers.storageSecurityProvider;
     this.tenantId = tenantId;
+}
+
+function PaginationFormBuilder(pagin) {
+
+	var DEFAULT_PAGIN = {"start" : 0.0, "count" : 5};
+	// switch sortOrder from ES to pagination Context
+
+		switch (pagin.sort) {
+			
+			case 'recent':
+				DEFAULT_PAGIN.sortOrder = 'DES';
+				DEFAULT_PAGIN.sortBy  = 'overview_createdtime';
+				break;
+			case 'older':
+				DEFAULT_PAGIN.sortOrder = 'ASC'
+				DEFAULT_PAGIN.sortBy  = 'overview_createdtime';
+				break;
+			case 'popular':
+				// no regsiter pagination support, socail feature need to check
+				break;
+			case 'unpopular':
+				// no regsiter pagination support, socail feature need to check
+				break;
+			case 'az':
+				DEFAULT_PAGIN.sortOrder = 'ASC'
+				DEFAULT_PAGIN.sortBy  = 'overview_name';
+				break;
+			case 'za':
+				DEFAULT_PAGIN.sortOrder = 'DES';
+				DEFAULT_PAGIN.sortBy  = 'overview_name';
+				break;
+			default:
+				DEFAULT_PAGIN.sortOrder = 'ASC';
+		}
+
+		//sortBy only have overview_name name still for assert type attributes
+		if(pagin.count != null) {
+			DEFAULT_PAGIN.count = pagin.count;
+		}
+		if(pagin.start != null) {
+			DEFAULT_PAGIN.start = pagin.start;
+		}
+		if(pagin.paginationLimit != null) {
+			DEFAULT_PAGIN.paginationLimit = 120000;
+		}
+		return DEFAULT_PAGIN;
+
+		
 }
 
 /*
@@ -761,7 +829,7 @@ var buildManagers = function (registry,tenantId) {
     var ext_core = require('/modules/rxt/ext/core/extension.core.js').extension_core();
     var ext_mng = require('/modules/rxt/ext/core/extension.management.js').extension_management();
     var config = require('/store-tenant.json');
-    var server=require('/modules/server.js');
+    var server=require('store').server;
     var um=server.userManager(tenantId);
     var rxtManager = new rxt_management.RxtManager(registry);
     var securityProviderModule = require('/modules/security/storage.security.provider.js').securityModule();

@@ -6,7 +6,7 @@ var caramel;
 			subscriptions ={},
 	    	subscription = false,
             log = new Log(),
-            user = require('/modules/user.js').current(session),
+            user = require('store').server.current(session),
             configs = require('/store.js').config(),
             store = require('/modules/store.js').store(request, session),
             site = require('/modules/site.js'),
@@ -57,8 +57,9 @@ var caramel;
 
         options = {
             type: type,
-            query: query
+            attributes: require('/modules/search.js').build(query)
         };
+
         total = store.assetCount(type, options);
         subPage = '/ Search: "' + query + '"';
         if (paging.start > total || paging.start < 0) {
@@ -73,14 +74,14 @@ var caramel;
         var parts, param, params, value;
         options = {
             type: type,
-            attributes: {}
+            attributes: {"lcState" : configs.lifeCycleBehaviour.visibleIn}
         };
         query = '';
         params = request.getAllParameters();
         //advanced search is only allowed for fields under overview section
         for (param in params) {
             if (param !== 'fields' && params.hasOwnProperty(param)) {
-                options.attributes['overview_' + param.trim().toLocaleLowerCase()] = new RegExp(params[param], "i");
+               options.attributes['overview_' + param.trim().toLocaleLowerCase()] = params[param];
                 if (query !== '') {
                     query += '&';
                 }
@@ -108,7 +109,22 @@ var caramel;
 
 
         assets = function () {
-            return store.assets(type, paging);
+            if(paging.sort=='popular'){
+                var db = new Database('SOCIAL_CACHE');
+                var result = db.query("SELECT ID FROM SOCIAL_CACHE WHERE TYPE='" + type.replace(/\W/g, '') + "' ORDER BY RATING DESC LIMIT " + paging.start + ",12");
+                var assets = [];
+                var pos,aid,asset;
+                for (var n = 0; n < result.length; n++) {
+                    var combinedAid = String(result[n].ID);
+                    pos = combinedAid.indexOf(':');
+                    aid =  combinedAid.substring(pos + 1);
+                    asset =  store.asset(type,aid);
+                    assets.push(asset);
+                }
+                return assets;
+            }else{
+                return store.assets(type, paging);
+            }
         }
 
     }

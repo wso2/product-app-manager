@@ -103,7 +103,7 @@ var rxt_management=function(){
 	*/
 	RxtManager.prototype.getArtifactManager=function(type){
         log.debug('Getting registry');
-        var user=require('/modules/user.js');
+        var user=require('store').user;
         //log.debug('session: '+stringify(session));
         var userRegistry=this.registry;
 

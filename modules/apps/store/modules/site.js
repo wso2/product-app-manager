@@ -21,6 +21,7 @@ var navigation = function (tenantId) {
         links = store.assetLinks(type);
         if (links.isCategorySupport) {
             links.categories = utility.getCategories(tenantId, type);
+
         }
         /*
          length1 = links.length;
@@ -40,7 +41,7 @@ var navigation = function (tenantId) {
 var header = function (tenantId, options) {
 
 
-    var user = require('/modules/user.js');
+    var user = require('store').user;
 
    
     return {

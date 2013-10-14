@@ -34,9 +34,17 @@ var module=function(){
             var model=context.model;
             var template=context.template;
 
-            var now =new Date();
-            model.setField('overview.createdtime',now);
-
+            var now =new String(new Date().valueOf());
+            var length = now.length;
+            var prefix = configs.constants.assetCreatedDateLength;
+            var onsetVal = '';
+            if(length != prefix){
+                    var onset = prefix - length;
+                    for(var i = 0; i < onset; i++){
+                       onsetVal+='0';
+                    }
+            }
+            model.setField('overview.createdtime',onsetVal+now);
             var name=model.getField('overview.name').value;
             var version=model.getField('overview.version').value;
             var shortName=template.shortName;

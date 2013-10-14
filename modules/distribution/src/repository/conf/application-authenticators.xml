@@ -18,6 +18,6 @@
 
 <Authenticators>
     <Authenticator name="BasicAuthenticator" disabled="false" factor="1">
-        <Status value="10" loginPage="/sso/login.jag" />
+        <Status value="10" loginPage="/sso/login" />
     </Authenticator>
 </Authenticators>

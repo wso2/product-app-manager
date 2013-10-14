@@ -82,18 +82,19 @@ var securityModule = function () {
         var asset=artifactManager.get(assetId);
 
         //Obtain the signed in user
-        var userInstance=require('/modules/user.js').current(session);
+        var userInstance=require('store').server.current(session);
 
         var roles=[];
-
+        var username = null;
         //If a user is not logged in they will recieve anon rights
-        if(!user){
+        if(!userInstance){
             log.debug('a user is not logged in.');
             roles.push(ROLE_ANON);
         }
         else{
             //Obtain the roles
             roles=userInstance.getRoles();
+            username = userInstance.username;
         }
 
         //Obtain the field name
@@ -104,7 +105,7 @@ var securityModule = function () {
             return false;
         }
 
-        var isAllowed=this.isAllowed(asset,user,roles,asset.lifecycleState,field);
+        var isAllowed=this.isAllowed(asset,username,roles,asset.lifecycleState,field);
 
         return isAllowed;
     };

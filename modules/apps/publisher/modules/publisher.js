@@ -6,12 +6,12 @@ var utility=require('/modules/utility.js').rxt_utility();
 var SUPER_TENANT=-1234;
 
 var init = function (options) {
-    var event = require('/modules/event.js');
+    var event = require('event');
 
     event.on('tenantCreate', function (tenantId) {
         var carbon = require('carbon'),
             config = require('/config/publisher-tenant.json'),
-            server = require('/modules/server.js'),
+            server = require('store').server,
             system = server.systemRegistry(tenantId),
             um = server.userManager(tenantId),
             CommonUtil = Packages.org.wso2.carbon.governance.registry.extensions.utils.CommonUtil,
@@ -29,8 +29,9 @@ var init = function (options) {
     });
 
     event.on('tenantLoad', function (tenantId) {
-        var user = require('/modules/user.js'),
-            server = require('/modules/server.js'),
+        var store = require('store'),
+            user = store.user,
+            server = store.server,
             carbon = require('carbon'),
             config = server.configs(tenantId);
         var reg = server.systemRegistry(tenantId);
@@ -90,7 +91,7 @@ var init = function (options) {
 };
 
 var configs = function (tenantId) {
-    var server = require('/modules/server.js'),
+    var server = require('store').server,
         registry = server.systemRegistry(tenantId);
     return JSON.parse(registry.content(PUBLISHER_CONFIG_PATH));
 };
@@ -132,8 +133,9 @@ var addLifecycles = function (registry) {
 
 var publisher = function (o, session) {
     var publisher, tenantId,
-        user = require('/modules/user.js'),
-        server = require('/modules/server.js');
+        store = require('store'),
+        user = store.user,
+        server = store.server;
 
     tenantId = (o instanceof Request) ? server.tenant(o, session).tenantId : o;
 
@@ -147,8 +149,9 @@ var publisher = function (o, session) {
 };
 
 var Publisher = function (tenantId, session) {
-    var server = require('/modules/server.js'),
-        user = require('/modules/user.js'),
+    var store = require('store'),
+        server = store.server,
+        user = store.user,
         managers = buildManagers(tenantId, user.userRegistry(session));
     this.tenantId = tenantId;
     this.modelManager = managers.modelManager;
@@ -171,12 +174,13 @@ var buildManagers = function (tenantId, registry) {
     var ext_domain = require('/modules/ext/core/extension.domain.js').extension_domain();
     var ext_core = require('/modules/ext/core/extension.core.js').extension_core();
     var ext_mng = require('/modules/ext/core/extension.management.js').extension_management();
+    var validationManagement=require('/modules/validations/validation.manager.js').validationManagement();
     var rxt_management = require('/modules/rxt.manager.js').rxt_management();
     var route_management = require('/modules/router-g.js').router();
     var dataInjectorModule=require('/modules/data/data.injector.js').dataInjectorModule();
     var filterManagementModule=require('/modules/filter.manager.js').filterManagementModule();
     var securityProviderModule=require('/modules/security/storage.security.provider.js').securityModule();
-    var server=require('/modules/server.js');
+    var server=require('store').server;
     var userManager=server.userManager(tenantId);
     var storageSecurityProvider=new securityProviderModule.SecurityProvider();
     var filterManager=new filterManagementModule.FilterManager();
@@ -203,7 +207,7 @@ var buildManagers = function (tenantId, registry) {
     var rxtManager = new rxt_management.RxtManager(registry);
     var routeManager = new route_management.Router();
 
-    var server = require('/modules/server.js');
+    var server = require('store').server;
     var conf = configs(tenantId);
     var config = server.configs(tenantId);
 
@@ -234,7 +238,10 @@ var buildManagers = function (tenantId, registry) {
     var actionManager = new ext_core.ActionManager({templates: parser.templates});
     actionManager.init();
 
-    var modelManager = new ext_mng.ModelManager({parser: parser, adapterManager: adapterManager, actionManager: actionManager, rxtManager: rxtManager});
+    var validationManager=new validationManagement.ValidationManager();
+
+    var modelManager = new ext_mng.ModelManager({parser: parser, adapterManager: adapterManager,
+        actionManager: actionManager, rxtManager: rxtManager ,validationManager:validationManager});
 
     return {
         modelManager: modelManager,
@@ -258,9 +265,9 @@ var buildManagers = function (tenantId, registry) {
 var buildPermissionsList = function (tenantId, username, permissions, server) {
     var log = new Log();
     log.info('Entered buildPermissionsList');
-    var server = require('/modules/server.js');
+    var server = require('store').server;
     //Obtain the accessible collections
-    var accessible = server.options(tenantId).userSpace.accessible;
+    var accessible = server.options(tenantId).accessible;
     log.info(stringify(accessible));
 
     var id;
@@ -335,8 +342,9 @@ var configureUser = function (tenantId, user) {
         return;
     }
 
-    var server = require('/modules/server.js');
-    var umod = require('/modules/user.js');
+    var store = require('store');
+    var server = store.server;
+    var umod = store.user;
     var um = server.userManager(tenantId);
     var config = configs(tenantId);
     var user = um.getUser(user.username);

@@ -9,14 +9,15 @@ var caramel;
             type = 'gadget',
             options = {},
             log = new Log(),
-            user = require('/modules/user.js'),
+            mod = require('store'),
+            user = mod.user,
             configs = require('/store.js').config(),
             site = require('/modules/site.js'),
             tag = request.getParameter('tag'),
             query = request.getParameter('query'),
             fields = request.getParameter('fields'),
-            server = require('/modules/server.js'),
-            ssoUser = user.current(session),
+            server = mod.server,
+            ssoUser = server.current(session),
             tenant = server.tenant(request, session),
             tenantId = tenant.tenantId,
             store = require('/modules/store.js').store(tenantId, session);
@@ -24,7 +25,7 @@ var caramel;
 	sso = configs.ssoConfiguration.enabled;
 	loggedUser = (sso && ssoUser) ? {
 		username : ssoUser.username
-	} : user.current(session);
+	} : server.current(session);
 	paging = store.assetsPaging(request);
 	total = store.assetCount(type);
 
@@ -57,7 +58,7 @@ var caramel;
         //advanced search is only allowed for fields under overview section
         for (param in params) {
             if (param !== 'fields' && params.hasOwnProperty(param)) {
-                options.attributes['overview_' + param.trim().toLocaleLowerCase()] = new RegExp(params[param], "i");
+                options.attributes['overview_' + param.trim().toLocaleLowerCase()] = params[param];
             }
         }
         options.type = 'gadget';
@@ -90,7 +91,7 @@ var caramel;
     var rxtAttributes = require('modules/util.js').getRXTAttributes(tenantId, "gadget");
 
     caramel.render({
-		title : 'Store | User Engagement Center',
+		title : 'Store | WSO2 Enterprise Store',
 		user : loggedUser,
 		sso:sso,
 		header : site.header(tenantId, {
@@ -110,7 +111,7 @@ var caramel;
 				site : sites,
                 ebook : ebooks
 			},
-			popularAssets : popularAssets,
+			popularAssets : (popularAssets.length)?popularAssets:null,
             recent : recent
 		},
 		tags : {

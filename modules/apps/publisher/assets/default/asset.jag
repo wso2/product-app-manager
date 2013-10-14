@@ -15,7 +15,7 @@
 
 var config = require('/config/publisher.json');
 var caramel = require('caramel');
-var user = require('/modules/user.js');
+var server = require('store').server;
 var utility = require('/modules/utility.js').rxt_utility();
 var publisher = require('/modules/publisher.js').publisher(request, session);
 var storageModule = require('/modules/data/storage.js').storageModule();
@@ -49,12 +49,12 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}', function (c
     }
     else {
         //Obtain the username from the session and populate the provider field
-        var username = require('/modules/user.js').current(session).username;//.get('LOGGED_IN_USER');
+        var username = server.current(session).username;//.get('LOGGED_IN_USER');
         model.set('overview.provider', username);
 
         var output = model.export('form');
 
-        caramel.render({op: operation, cuser: user.current(session), shortName: shortName, rxtTemplate: rxtTemplate, data: output});
+        caramel.render({op: operation, cuser: server.current(session), shortName: shortName, rxtTemplate: rxtTemplate, data: output});
     }
 });
 
@@ -105,7 +105,7 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
         //Get the list of versions
         var versionList = artifactManager.getAllAssetVersions(assetName);
 
-        caramel.render({op: operation, cuser: user.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList});
+        caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList});
     } catch (e) {
         log.info('The asset with id ' + id + ' could not be found due to : ' + e);
         response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check server log.');
@@ -145,7 +145,7 @@ routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/
         //Get the list of versions
         var versionList = artifactManager.getAllAssetVersions(assetName);
 
-        caramel.render({op: operation, cuser: user.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList});
+        caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList});
     } catch (e) {
         log.debug('The asset with id ' + id + ' could not be found due to : ' + e);
         response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check server log.');
@@ -175,7 +175,15 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
 
         model.import('form.importer', context.post);
 
-        log.info('not saving because of file upload changes.');
+
+        //Perform validation on the model
+        var report=model.validate();
+
+        if((report)&&(report.failed)){
+
+            print({ok:false,message:'Validation failure',report:report});
+            return;
+        }
 
         //log.info(context.post);
 
@@ -188,6 +196,8 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
 
         //Add the tags
         addTags(context.post,assetId,artifactManager,reg);
+
+        print({ok:true,message:'asset added'});
     }
     catch (e) {
         log.error(e);

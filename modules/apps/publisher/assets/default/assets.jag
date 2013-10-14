@@ -13,7 +13,7 @@
 var router = require('/modules/router-g.js').router();
 var config = require('/config/publisher.json');
 var caramel = require('caramel');
-var user = require('/modules/user.js');
+var server = require('store').server;
 var publisher = require('/modules/publisher.js').publisher(request, session);
 
 var routeMnger = new router.Router();
@@ -27,7 +27,8 @@ var filterManager=publisher.filterManager;
 var log=new Log();
 
 var DEFAULT_PAGE = 10;
-var DEFAULT_PAGIN = {'start':0, 'count':20 , 'sortOrder':'za','sortBy': 'overview_name', 'paginationLimit':1000};
+var DEFAULT_PAGIN = {'start':0, 'count':1000 , 'sortOrder':'asc','sortBy': 'overview_name', 'paginationLimit':1000};
+
 
 /*routeMnger.register('GET','publisher','/publisher/assets/list',function(context){
 
@@ -45,6 +46,7 @@ var log = new Log();
 routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(context) {
 	var query = request.getParameter("query");
 	var sortby = request.getParameter("sortby");
+	var sort = request.getParameter("sort");
 	try {
 
 		//TODO: Check for valid asset types
@@ -56,11 +58,10 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 		if(query) {
 			assets = artifactManager.search(query, null);
 			artifacts = assets;
-
-		} else if (sortby){
-			//normal list for asserts
+		} else if (sortby && sort){			
 			DEFAULT_PAGIN.sortBy = 'overview_'+sortby;
-			var artifacts = artifactManager.list(DEFAULT_PAGIN) || [];
+			DEFAULT_PAGIN.sortOrder = sort.toUpperCase();
+			var artifacts = artifactManager.search(null,DEFAULT_PAGIN) || [];
 
 		} else {
 			//normal list for asserts
@@ -75,9 +76,10 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 
 		caramel.render({
 			op : 'list',
-			cuser : user.current(session),
+			cuser : server.current(session),
 			shortName : context.params.type,
-			artifacts : artifacts
+			artifacts : artifacts,
+			query : query
 		});
 	} catch (e) {
 		response.sendError(400, "Your request is malformed");
@@ -98,7 +100,7 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{operation}/{type}/',
         try {
             caramel.render({
                 op: operation,
-                cuser: user.current(session),
+                cuser: server.current(session),
                 shortName: type
             });
 

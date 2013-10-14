@@ -30,6 +30,9 @@ body {
 input, button, select, textarea {
     font: 13px/1.531 'Lato', sans-serif;
 }
+input[type="file"] {
+    display: none;
+}
 textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="color"]:focus, .uneditable-input:focus {
     box-shadow: none;
 }
@@ -286,10 +289,10 @@ textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[ty
     left: 0;
     right: 0;
     height: 50px;
-  /*
-    border-right: 1px solid rgba(0, 0, 0, 0.06);
-      border-left: 1px solid rgba(0, 0, 0, 0.06);*/
-  
+    /*
+     border-right: 1px solid rgba(0, 0, 0, 0.06);
+     border-left: 1px solid rgba(0, 0, 0, 0.06);*/
+
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 .publisher-footer > .span12 {
@@ -300,7 +303,7 @@ textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[ty
     position: absolute;
     right: 20px;
     width: 100px;
-    color:#888;
+    color: #888;
 }
 .copyright-note a.logo-wso2 {
     background: url("../img/wso2-logo-small.png") no-repeat scroll left top transparent;
@@ -322,9 +325,9 @@ textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[ty
 }
 .thumbnail-div {
     margin: 10px;
-    height:105px;
+    height: 105px;
     display: block;
-    overflow:hidden;
+    overflow: hidden;
 }
 .thumbnail-div img {
     max-width: 300px;
@@ -437,16 +440,16 @@ label, input, button, select, textarea {
     background: #F5F5F5;
     border-right: 1px solid #DADADA;
 }
-.content-area-cont{
-    background:#fff;
-    border:1px solid #ccc;
+.content-area-cont {
+    background: #fff;
+    border: 1px solid #ccc;
 }
 .content-area {
     -moz-border-bottom-colors: none;
     -moz-border-left-colors: none;
     -moz-border-right-colors: none;
     -moz-border-top-colors: none;
-  /*  background: none repeat scroll 0 0 #FFFFFF;*/
+    /*  background: none repeat scroll 0 0 #FFFFFF;*/
     /*border-color: #ccc;*/
     border-image: none;
     /*border-style: solid solid none;*/
@@ -554,7 +557,7 @@ td.asset-listing-btn {
 
 .list-asset-table thead th {
     line-height: 0;
-    overflow:hidden;
+    overflow: hidden;
 }
 .list-asset-table thead th a {
     color: #9F9F9F;
@@ -777,6 +780,9 @@ td.asset-listing-btn {
 .emptyAssets-MsgDiv .largeMsgIcon {
     font-size: 200px;
     color: #E2EFE5;
+}
+.emptyAssets span {
+    text-transform: capitalize;
 }
 .btn-addNewAssetLarge {
     background: none repeat scroll 0 0 #27AE60;
@@ -1029,18 +1035,58 @@ span.title {
     padding-bottom: 0px;
     margin-bottom: 0px;
 }
-#asset-new-version{
-    margin:0;
-    min-width:81px;
+#asset-new-version {
+    margin: 0;
+    min-width: 81px;
 }
-#btn-increase-version-asset{
+#btn-increase-version-asset {
     padding: 3px;
 }
 
-.label-required{
-    color:#b94a48;
+.label-required {
+    color: #b94a48;
 }
-.bootstrap-select button{
+.bootstrap-select button {
     border: 1px solid #CCCCCC;
     box-shadow: none;
 }
+
+.tbl-upload {
+    display: table;
+    width: 100%;
+}
+.tbl-upload-row {
+    display: table-row;
+}
+.tbl-upload-cell {
+    display: table-cell;
+}
+.tbl-upload-row .tbl-upload-cell:last-child {
+    width: 88px;
+    text-align: right;
+}
+.tbl-upload-cell input.txt-filepath {
+    width: 100%;
+    margin: 0px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    display: inline-block;
+    height: 30px;
+}
+
+.info-div i {
+    display: inline-block;
+}
+
+.info-div > span {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 8px;
+}
+
+.tbl-upload-cell .btn{
+    margin-right:0;
+}
+

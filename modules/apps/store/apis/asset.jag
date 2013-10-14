@@ -14,7 +14,7 @@ response.addHeader("Content-Type", "application/json");
     var isMyAsset = false;
     if(matcher.match('/{context}/apis/myAsset')){
         isMyAsset = true;
-        if (!require('/modules/user.js').current(session)) {
+        if (!require('store').server.current(session)) {
             response.sendError(401, 'Unauthorized');
             return;
         }
@@ -37,7 +37,7 @@ response.addHeader("Content-Type", "application/json");
                     type: type
                 }, {
                     start: Number(request.getParameter('start')) || 0,
-                    count: Number(request.getParameter('count')) || Number.MAX_VALUE,
+                    count: Number(request.getParameter('count')) || 50000,
                     sort: 'recent'
                 }));
                 return;
@@ -47,7 +47,7 @@ response.addHeader("Content-Type", "application/json");
                 var assetsFunc = isMyAsset ? store.userAssets : store.assets ;
                 print(assetsFunc.call(store, type, {
                     start: Number(request.getParameter('start')) || 0,
-                    count: Number(request.getParameter('count')) || Number.MAX_VALUE,
+                    count: Number(request.getParameter('count')) || 50000,
                     sort: request.getParameter('sort') || 'recent'
                 }));
                 return;
