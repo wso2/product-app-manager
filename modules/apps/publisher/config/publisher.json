@@ -1,5 +1,4 @@
 {
-    "tenanted": true,
     "server": {
         "https": "%https.host%/admin",
         "http": "%http.host%"
@@ -9,16 +8,6 @@
         "password": "admin"
     },
     "tenantConfigs": "/_system/config/publisher/configs/publisher.json",
-    "accessible": [
-        {
-            "context": "/_system/governance",
-            "collections": ["gadgets", "sites", "ebooks"],
-            "actions": ["http://www.wso2.org/projects/registry/actions/get",
-                "http://www.wso2.org/projects/registry/actions/add",
-                "http://www.wso2.org/projects/registry/actions/delete",
-                "authorize"]
-        }
-    ],
     "app": {
         "RXT_MANAGER": "rxt_manager",
         "ROUTE_MANAGER": "route_manager",

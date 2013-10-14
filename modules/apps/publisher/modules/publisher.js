@@ -9,9 +9,12 @@ var init = function (options) {
     var event = require('event');
 
     event.on('tenantCreate', function (tenantId) {
-        var carbon = require('carbon'),
-            config = require('/config/publisher-tenant.json'),
-            server = require('store').server,
+        var role, roles,
+            carbon = require('carbon'),
+            mod = require('store'),
+            server = mod.server,
+            user = mod.user,
+            config = user.configs(tenantId),
             system = server.systemRegistry(tenantId),
             um = server.userManager(tenantId),
             CommonUtil = Packages.org.wso2.carbon.governance.registry.extensions.utils.CommonUtil,
@@ -21,6 +24,16 @@ var init = function (options) {
             content: JSON.stringify(config),
             mediaType: 'application/json'
         });
+        roles = config.roles;
+        for (role in roles) {
+            if (roles.hasOwnProperty(role)) {
+                if (um.roleExists(role)) {
+                    um.authorizeRole(role, roles[role]);
+                } else {
+                    um.addRole(role, [], roles[role]);
+                }
+            }
+        }
 
         CommonUtil.addRxtConfigs(system.registry.getChrootedRegistry("/_system/governance"), tenantId);
         um.authorizeRole(carbon.user.anonRole, GovernanceConstants.RXT_CONFIGS_PATH, carbon.registry.actions.GET);
@@ -30,7 +43,6 @@ var init = function (options) {
 
     event.on('tenantLoad', function (tenantId) {
         var store = require('store'),
-            user = store.user,
             server = store.server,
             carbon = require('carbon'),
             config = server.configs(tenantId);
@@ -39,12 +51,6 @@ var init = function (options) {
         var GovernanceConstants = org.wso2.carbon.governance.api.util.GovernanceConstants;
         var um = server.userManager(tenantId);
         var publisherConfig=require('/config/publisher-tenant.json');
-
-
-        //check whether tenantCreate has been called
-        if (!reg.exists(PUBLISHER_CONFIG_PATH)) {
-            event.emit('tenantCreate', tenantId);
-        }
 
         //Check if the tenant is the super tenant
         if(tenantId==SUPER_TENANT){
@@ -260,12 +266,14 @@ var buildManagers = function (tenantId, registry) {
  @username: The username of the account to which the permissions will be attached
  @permissions: An object of permissions which will be assigned to the newly created user role
  */
-var buildPermissionsList = function (tenantId, username, permissions, server) {
+var buildPermissionsList = function (tenantId, username, permissions) {
     var log = new Log();
     log.info('Entered buildPermissionsList');
-    var server = require('store').server;
+    var store = require('store');
+    var server = store.server;
+    var user = store.user;
     //Obtain the accessible collections
-    var accessible = server.options(tenantId).accessible;
+    var accessible = user.configs(tenantId).accessible;
     log.info(stringify(accessible));
 
     var id;

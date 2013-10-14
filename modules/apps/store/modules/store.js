@@ -36,8 +36,10 @@ var init = function (options) {
     event.on('tenantCreate', function (tenantId) {
         var role, roles,
             carbon = require('carbon'),
-            config = require('/store-tenant.json'),
-            server = require('store').server,
+            mod = require('store'),
+            user = mod.user,
+            server = mod.server,
+            config = user.configs(tenantId),
             system = server.systemRegistry(tenantId),
             um = server.userManager(tenantId);
         system.put(options.tenantConfigs, {
@@ -716,6 +718,7 @@ The function handles the initialization and caching of managers when a user is l
  */
 function handleLoggedInUser(o, session) {
     var storeMasterManager = session.get(TENANT_STORE_MANAGERS);
+    var server = require('store').server;
 
     var tenantId = (o instanceof Request) ? server.tenant(o, session).tenantId : o;
 
@@ -818,7 +821,8 @@ function PaginationFormBuilder(pagin) {
  All managers user the system registry
  */
 function AnonStoreMasterManager() {
-    var registry = server.systemRegistry(SUPER_TENANT);
+    var store = require('store');
+    var registry = store.server.systemRegistry(SUPER_TENANT);
 
     var managers = buildManagers(registry,SUPER_TENANT);
 

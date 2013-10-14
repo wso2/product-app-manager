@@ -1,9 +1,9 @@
 {
     "roles": {
-        "publisher": {
+        "Internal/publisher": {
             "/permission/admin/login": ["ui.execute"]
         },
-        "reviewer": {
+        "Internal/reviewer": {
             "/permission/admin/login": ["ui.execute"]
         }
     },
