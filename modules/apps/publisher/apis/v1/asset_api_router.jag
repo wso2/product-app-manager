@@ -182,7 +182,7 @@ routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', fu
             +' were modified: '+diff);
             return;
         }
-
+        modelA.set("overview.createdtime",modelB.get("overview.createdtime").value);
         var artifact = modelA.export('asset.exporter');
         artifactManager.update(artifact);
 
