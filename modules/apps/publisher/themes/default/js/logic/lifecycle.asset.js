@@ -193,8 +193,9 @@ $(function(){
             url:'/publisher/api/lifecycle/'+action+'/'+asset+'/'+id,
             type:'PUT',
             success:function(response){
-            	var action2 = (action == 'Promote')?'Promoted':'Demoted';
-                showAlert('Asset ' + action2 + ' successfully', 'success');
+                var actionName=action.toLowerCase();
+                actionName+='d';
+                showAlert('Asset was '+actionName+' successfully.', 'success');
                 $.ajax({
                     url:'/publisher/api/lifecycle/'+asset+'/'+id,
                     type:'GET',
