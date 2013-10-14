@@ -6,4 +6,59 @@ Filename: validations_api_router.jag
 Created Date: 8/10/2013
 */
 
+var config = require('/config/publisher.json');
+var caramel = require('caramel');
+
+var router = require('/modules/router-g.js').router();
+var routeManager = new router.Router();
+
+var log = new Log();
+
+routeManager.register('GET', 'publisher', '/publisher/api/validations/assets/{type}/{field}', function (context) {
+    var shortName = context.params.type;
+    var field = context.params.field;
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+	
+	log.info("Validations");
+	
+    //Check if the type is valid
+    try {
+
+        var model=modelManager.getModel(shortName);
+
+        //assigning default thumbnail and banner if not provided.
+        if(context.post['images_thumbnail'] == '') {
+            context.post['images_thumbnail'] = '/publisher/config/defaults/img/thumbnail.jpg';
+        }
+        if(context.post['images_banner'] == '') {
+            context.post['images_banner'] = '/publisher/config/defaults/img/banner.jpg';
+        }
+        
+        
+        if(context.post.realtime){
+			print({ok:false});
+            return;
+		}
+		
+        model.import('form.importer',context.post);
+
+        //Perform validations on the asset
+        var report=model.validate();
+
+        //If the report indicates the model has failed validations send an error
+        if((report)&&(report.failed)){
+            print({ok:false,message:'Validation failure',report:report});
+            return;
+        }
+
+
+    }
+    catch (e) {
+        log.debug('An asset of type: ' + shortName + ' could not be created.The following exception was thrown: ' + e);
+        response.sendError(500, 'An asset of type: ' + shortName + ' could not be created.Please check the server logs.');
+    }
+
+});
+
+
 %>

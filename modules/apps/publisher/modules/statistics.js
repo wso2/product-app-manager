@@ -11,7 +11,7 @@ var getBookmarkStats = function (loggedInUser) {
         "JOIN REG_RESOURCE RR ON RS.REG_UUID=RR.REG_NAME " +
         "JOIN REG_PATH RP ON  RR.REG_PATH_ID = RP.REG_PATH_ID " +
         "WHERE RS.REG_CREATOR = '" + loggedInUser + "' AND " +
-        "RP.REG_PATH_VALUE like '/_system/governance/users/store%' AND " +
+        "RP.REG_PATH_VALUE like '/_system/governance/users/%' AND " +
         "RR.REG_NAME IS NOT NULL GROUP BY RR.REG_NAME" ;
     return db.query(query);
 
@@ -23,7 +23,7 @@ var getHotAssetStats = function (startDate, endDate) {
         "FROM REG_RESOURCE RS " +
         "JOIN REG_RESOURCE RR ON RS.REG_UUID=RR.REG_NAME " +
         "JOIN REG_PATH RP ON  RR.REG_PATH_ID = RP.REG_PATH_ID " +
-        "WHERE RP.REG_PATH_VALUE like '/_system/governance/users/store%' AND " +
+        "WHERE RP.REG_PATH_VALUE like '/_system/governance/users/%' AND " +
         "RR.REG_LAST_UPDATED_TIME BETWEEN '" + startDate + "' AND '" + endDate + "' AND " +
         "RR.REG_NAME IS NOT NULL " +
         "GROUP BY RR.REG_NAME";

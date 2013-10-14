@@ -44,8 +44,13 @@ var server = {};
                 config = server.configs(tenantId);
 
             //initialize tenant registry
-            loader = carbon.server.osgiService('org.wso2.carbon.registry.core.service.TenantRegistryLoader');
-            loader.loadTenantRegistry(tenantId);
+				var options = {
+					'tenantId' : tenantId
+				};
+				var domain = carbon.server.tenantDomain(options);
+				var service = carbon.server.osgiService('org.wso2.carbon.utils.ConfigurationContextService');
+				org.wso2.carbon.core.multitenancy.utils.TenantAxisUtils.getTenantConfigurationContext(domain, service.getServerConfigContext());
+
 
             //loads tenant's system registry
             config[SYSTEM_REGISTRY] = new carbon.registry.Registry(server.instance(), {
