@@ -17,7 +17,7 @@ var init = function (options) {
             CommonUtil = Packages.org.wso2.carbon.governance.registry.extensions.utils.CommonUtil,
             GovernanceConstants = org.wso2.carbon.governance.api.util.GovernanceConstants;
 
-        system.put(PUBLISHER_CONFIG_PATH, {
+        system.put(options.tenantConfigs, {
             content: JSON.stringify(config),
             mediaType: 'application/json'
         });

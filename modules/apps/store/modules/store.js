@@ -40,7 +40,7 @@ var init = function (options) {
             server = require('store').server,
             system = server.systemRegistry(tenantId),
             um = server.userManager(tenantId);
-        system.put(STORE_CONFIG_PATH, {
+        system.put(options.tenantConfigs, {
             content: JSON.stringify(config),
             mediaType: 'application/json'
         });
@@ -78,11 +78,6 @@ var init = function (options) {
             GovernanceConstants = org.wso2.carbon.governance.api.util.GovernanceConstants,
             reg = server.systemRegistry(tenantId),
             um = server.userManager(tenantId);
-
-        //check whether tenantCreate has been called
-        if (!reg.exists(STORE_CONFIG_PATH)) {
-            event.emit('tenantCreate', tenantId);
-        }
 
         CommonUtil.addRxtConfigs(reg.registry.getChrootedRegistry("/_system/governance"), reg.tenantId);
         um.authorizeRole(carbon.user.anonRole, GovernanceConstants.RXT_CONFIGS_PATH, carbon.registry.actions.GET);

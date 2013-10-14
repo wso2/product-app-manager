@@ -62,7 +62,7 @@ var user = {};
                 carbon = require('carbon'),
                 event = require('event'),
                 um = server.userManager(usr.tenantId),
-                opts = server.configs(usr.tenantId)[user.USER_OPTIONS],
+                opts = user.configs(usr.tenantId),
                 space = user.userSpace(usr),
                 registry = server.systemRegistry(tenantId);
             if (!registry.exists(space)) {
@@ -134,10 +134,7 @@ var user = {};
             carbon = require('carbon'),
             event = require('event'),
             usr = carbon.server.tenantUser(username);
-        if (!server.configs(usr.tenantId)) {
-            event.emit('tenantCreate', usr.tenantId);
-        }
-        if (!server.configs(usr.tenantId)[user.USER_OPTIONS]) {
+        if (!user.configs(usr.tenantId)) {
             event.emit('tenantLoad', usr.tenantId);
         }
 
@@ -186,7 +183,7 @@ var user = {};
      */
     user.userSpace = function (usr) {
         try {
-            return server.configs(usr.tenantId)[user.USER_OPTIONS].userSpace + '/' + cleanUsername(usr.username);
+            return user.configs(usr.tenantId).userSpace + '/' + cleanUsername(usr.username);
         } catch (e) {
             return null;
         }
@@ -233,11 +230,7 @@ var user = {};
             event = require('event'),
             usr = carbon.server.tenantUser(username),
             um = server.userManager(usr.tenantId);
-
-        if (!server.configs(usr.tenantId)) {
-            event.emit('tenantCreate', usr.tenantId);
-        }
-        if (!server.configs(usr.tenantId)[user.USER_OPTIONS]) {
+        if (!user.configs(usr.tenantId)) {
             event.emit('tenantLoad', usr.tenantId);
         }
 
