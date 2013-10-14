@@ -5,14 +5,17 @@ var caramel;
             type = 'gadget',
             log = new Log(),
             count = 0,
-            store = require('/modules/store.js').store(request, session),
+            mod = require('store'),
+            tenant = mod.server.tenant(request, session),
+            tenantId = tenant.tenantId,
+            store = require('/modules/store.js').store(tenantId, session),
             types = store.assetTypes(),
-            user = require('store').server.current(session),
+            user = mod.server.current(session),
             tags = [],
             sso = configs.ssoConfiguration.enabled;
 	caramel = require('caramel');
 
- 	var rxtAttributes = require('modules/util.js').getRXTAttributes(store.tenantId, type);
+ 	var rxtAttributes = require('modules/util.js').getRXTAttributes(tenantId, type);
 
 	if(!user) {
 		response.sendRedirect(caramel.configs().context);

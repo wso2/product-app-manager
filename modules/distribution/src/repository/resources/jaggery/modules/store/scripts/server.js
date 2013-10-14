@@ -17,6 +17,8 @@ var server = {};
 
     var USER = 'server.user';
 
+    var log = new Log();
+
     /**
      * Initializes the server for the first time. This should be called when app is being deployed.
      * @param options
@@ -25,7 +27,6 @@ var server = {};
         var carbon = require('carbon'),
             event = require('event'),
             srv = new carbon.server.Server({
-                tenanted: options.tenanted,
                 url: options.server.https
             });
         application.put(SERVER, srv);
@@ -38,20 +39,26 @@ var server = {};
         });
 
         event.on('tenantLoad', function (tenantId) {
-            var loader,
-                log = new Log(),
+            var config, domain, service,
                 carbon = require('carbon'),
-                config = server.configs(tenantId);
+                reg = server.systemRegistry(tenantId),
+                TenantAxisUtils = org.wso2.carbon.core.multitenancy.utils.TenantAxisUtils;
+
+            //check whether tenantCreate has been called
+            if (!reg.exists(options.tenantConfigs)) {
+                event.emit('tenantCreate', tenantId);
+            }
 
             //initialize tenant registry
-				var options = {
-					'tenantId' : tenantId
-				};
-				var domain = carbon.server.tenantDomain(options);
-				var service = carbon.server.osgiService('org.wso2.carbon.utils.ConfigurationContextService');
-				org.wso2.carbon.core.multitenancy.utils.TenantAxisUtils.getTenantConfigurationContext(domain, service.getServerConfigContext());
+            if (carbon.server.superTenant.tenantId != tenantId) {
+                domain = carbon.server.tenantDomain({
+                    tenantId: tenantId
+                });
+                service = carbon.server.osgiService('org.wso2.carbon.utils.ConfigurationContextService');
+                TenantAxisUtils.getTenantConfigurationContext(domain, service.getServerConfigContext());
+            }
 
-
+            config = server.configs(tenantId);
             //loads tenant's system registry
             config[SYSTEM_REGISTRY] = new carbon.registry.Registry(server.instance(), {
                 system: true,
@@ -96,21 +103,11 @@ var server = {};
      * @param session
      */
     server.tenant = function (request, session) {
-        var obj, domain, user, matcher,
-            opts = server.options(),
-            carbon = require('carbon');
-        if (!opts.tenanted) {
-            return {
-                tenantId: carbon.server.superTenant.tenantId,
-                domain: carbon.server.superTenant.domain,
-                secured: false
-            };
-        }
+        var obj, domain, user, carbon;
         /*matcher = new URIMatcher(request.getRequestURI());
          if (matcher.match('/{context}/' + opts.tenantPrefix + '/{domain}') ||
          matcher.match('/{context}/' + opts.tenantPrefix + '/{domain}/{+any}')) {
          domain = matcher.elements().domain; */
-        domain = request.getParameter('domain');
         user = server.current(session);
         if (user) {
             obj = {
@@ -120,6 +117,7 @@ var server = {};
             };
         } else {
             carbon = require('carbon');
+            domain = request.getParameter('domain') || carbon.server.superTenant.domain;
             obj = {
                 tenantId: carbon.server.tenantId({
                     domain: domain
@@ -155,14 +153,6 @@ var server = {};
      */
     server.instance = function () {
         return application.get(SERVER);
-    };
-
-    /**
-     * Checks whether server runs on multi-tenanted mode.
-     * @return {*}
-     */
-    server.tenanted = function () {
-        return server.options().tenanted;
     };
 
     /**

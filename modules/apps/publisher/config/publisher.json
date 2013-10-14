@@ -1,38 +1,13 @@
 {
-    "tenanted": true,
     "server": {
         "https": "%https.host%/admin",
         "http": "%http.host%"
-    },
-    "roles": {
-        "internal/publisher": {
-            "/permission/admin/login": ["ui.execute"]
-        },
-        "internal/reviewer": {
-            "/permission/admin/login": ["ui.execute"]
-        }
     },
     "user": {
         "username": "admin",
         "password": "admin"
     },
-    "userRoles": ["internal/publisher"],
-    "permissions": {
-        "login": {
-            "/permission/admin/login": ["ui.execute"]
-        }
-    },
-    "userSpace": "/_system/governance/users",
-    "accessible": [
-        {
-            "context": "/_system/governance",
-            "collections": ["gadgets", "sites", "ebooks"],
-            "actions": ["http://www.wso2.org/projects/registry/actions/get",
-                "http://www.wso2.org/projects/registry/actions/add",
-                "http://www.wso2.org/projects/registry/actions/delete",
-                "authorize"]
-        }
-    ],
+    "tenantConfigs": "/_system/config/publisher/configs/publisher.json",
     "app": {
         "RXT_MANAGER": "rxt_manager",
         "ROUTE_MANAGER": "route_manager",
