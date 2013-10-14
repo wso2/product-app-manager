@@ -151,7 +151,7 @@ $(function(){
             success:function(response){
                 var element=$('#canvas');
                 if(element){
-                    var paper=new Raphael('canvas');
+                    var paper=new Raphael('canvas',600,500);
                     //element.html(response);
 
                    /* if(!graph.Renderer.config.canvas.canvasElement){
