@@ -119,6 +119,7 @@ var caramel;
                     pos = combinedAid.indexOf(':');
                     aid =  combinedAid.substring(pos + 1);
                     asset =  store.asset(type,aid);
+                    asset.indashboard = store.isuserasset(aid, type);
                     assets.push(asset);
                 }
                 return assets;
