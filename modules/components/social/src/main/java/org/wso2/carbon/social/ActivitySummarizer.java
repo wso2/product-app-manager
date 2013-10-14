@@ -39,64 +39,6 @@ public class ActivitySummarizer {
             }
             summarizer.add(activity);
 
-            /*
-            if (child.get("verb").getAsString().equals("like")) {
-                String actorId = activity.getActorId();
-
-                JsonObject likes = parent.getAsJsonObject("likes");
-                if (likes == null) {
-                    likes = new JsonObject();
-                    parent.add("likes", likes);
-                }
-                JsonElement totalItems = likes.get("totalItems");
-                int totalItemsCount = 0;
-                if (totalItems != null) {
-                    totalItemsCount = totalItems.getAsInt();
-                }
-
-                JsonArray items = addArrIfNot(likes, "items");
-                if (likedByMe(items, actorId) < 0) {
-                    JsonObject person = new JsonObject();
-                    person.add("id", new JsonPrimitive(actorId));
-                    items.add(person);
-
-                    likes.add("totalItems", new JsonPrimitive(totalItemsCount + 1));
-
-                    LOG.debug("liked " + parentId + " : " + activity);
-                } else {
-                    LOG.debug("ignored activity (duplicate like) : " + activity);
-                }
-
-            } else if (child.get("verb").getAsString().equals("unlike")) {
-                String actorId = activity.getActorId();
-
-                JsonObject likes = parent.getAsJsonObject("likes");
-                if (likes == null) {
-                    likes = new JsonObject();
-                    parent.add("likes", likes);
-                }
-                JsonElement totalItems = likes.get("totalItems");
-                int totalItemsCount = 0;
-                if (totalItems != null) {
-                    totalItemsCount = totalItems.getAsInt();
-                }
-
-                JsonArray items = addArrIfNot(likes, "items");
-                int i = likedByMe(items, actorId);
-                if (i >= 0) {
-                    removeElement(likes, "items", i);
-                    likes.add("totalItems", new JsonPrimitive(totalItemsCount - 1));
-
-                    LOG.debug("unliked " + parentId + " : " + activity);
-                } else {
-                    LOG.debug("ignored activity (unlike without a like) : " + activity);
-                }
-
-            } else {
-                JsonArray attachments = addArrIfNot(parent, "attachments");
-                attachments.add(child);
-            }
-            */
         } else {
             LOG.error("failed to summarize activity (has no target id) : " + activity);
         }
