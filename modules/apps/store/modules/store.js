@@ -37,9 +37,8 @@ var init = function (options) {
         var role, roles,
             carbon = require('carbon'),
             mod = require('store'),
-            user = mod.user,
             server = mod.server,
-            config = user.configs(tenantId),
+            config = require('/store-tenant.json'),
             system = server.systemRegistry(tenantId),
             um = server.userManager(tenantId);
         system.put(options.tenantConfigs, {

@@ -90,7 +90,7 @@ var user = {};
             if (!um.roleExists(role)) {
                 um.addRole(role, [], perms);
             }
-            if (!usr.hasRoles[role]) {
+            if (!usr.hasRoles([role])) {
                 usr.addRoles([role]);
             }
             um.authorizeRole(user.privateRole(usr.username), perms);
