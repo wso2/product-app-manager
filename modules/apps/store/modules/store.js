@@ -34,12 +34,12 @@ var init = function (options) {
     var event = require('/modules/event.js');
 
     event.on('tenantCreate', function (tenantId) {
-        var carbon = require('carbon'),
+        var role, roles,
+            carbon = require('carbon'),
             config = require('/store-tenant.json'),
             server = require('store').server,
-            system = server.systemRegistry(tenantId);
-        //um = server.userManager(tenantId),
-        //GovernanceConstants = org.wso2.carbon.governance.api.util.GovernanceConstants;
+            system = server.systemRegistry(tenantId),
+            um = server.userManager(tenantId);
         system.put(STORE_CONFIG_PATH, {
             content: JSON.stringify(config),
             mediaType: 'application/json'
@@ -51,12 +51,26 @@ var init = function (options) {
                 resultType: 'Tags'
             }
         });
+        roles = config.roles;
+        for (role in roles) {
+            if (roles.hasOwnProperty(role)) {
+                if (um.roleExists(role)) {
+                    um.authorizeRole(role, roles[role]);
+                } else {
+                    um.addRole(role, [], roles[role]);
+                }
+            }
+        }
+        /*user = um.getUser(options.user.username);
+         if (!user.hasRoles(options.userRoles)) {
+         user.addRoles(options.userRoles);
+         }*/
+        //application.put(key, options);
         //um.authorizeRole(carbon.user.anonRole, GovernanceConstants.RXT_CONFIGS_PATH, carbon.registry.actions.GET);
     });
 
     event.on('tenantLoad', function (tenantId) {
         var mod = require('store'),
-            user = mod.user,
             server = mod.server,
             carbon = require('carbon'),
             config = server.configs(tenantId),
@@ -72,7 +86,6 @@ var init = function (options) {
 
         CommonUtil.addRxtConfigs(reg.registry.getChrootedRegistry("/_system/governance"), reg.tenantId);
         um.authorizeRole(carbon.user.anonRole, GovernanceConstants.RXT_CONFIGS_PATH, carbon.registry.actions.GET);
-        config[user.USER_OPTIONS] = configs(tenantId);
 
         config[TENANT_STORE] = new Store(tenantId);
 
@@ -88,6 +101,10 @@ var init = function (options) {
          assetManagers[type] = new azzet.Manager(server.anonRegistry(tenantId), type);
          });
          session[ASSET_MANAGERS] = assetManagers;*/
+    });
+
+    event.on('userRegister', function(tenantId, user) {
+        user.addRoles(configs(tenantId).userRoles);
     });
 };
 

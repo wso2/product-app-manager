@@ -23,39 +23,12 @@ var user = {};
     user.init = function (options) {
         var event = require('event');
         event.on('tenantCreate', function (tenantId) {
-            var role,
-                um = server.userManager(tenantId);
-                //options = server.configs(tenantId)[user.USER_OPTIONS];
-            var roles = {
-                "roles": {
-                    "Internal/store": {
-                        "/permission/admin/login": ["ui.execute"]
-                    },
-                    "Internal/publisher": {
-                        "/permission/admin/login": ["ui.execute"]
-                    }
 
-                }
-            };
-
-            for (role in roles) {
-                if (roles.hasOwnProperty(role)) {
-                    if (um.roleExists(role)) {
-                        um.authorizeRole(role, roles[role]);
-                    } else {
-                        um.addRole(role, [], roles[role]);
-                    }
-                }
-            }
-            /*user = um.getUser(options.user.username);
-             if (!user.hasRoles(options.userRoles)) {
-             user.addRoles(options.userRoles);
-             }*/
-            //application.put(key, options);
         });
 
         event.on('tenantLoad', function (tenantId) {
-
+            var registry = server.systemRegistry(tenantId);
+            user.configs(tenantId, JSON.parse(registry.content(options.tenantConfigs)));
         });
 
         event.on('tenantUnload', function (tenantId) {
@@ -132,8 +105,9 @@ var user = {};
      * Returns user options of the tenant.
      * @return {Object}
      */
-    user.options = function (tenantId) {
-        return server.configs(tenantId)[user.USER_OPTIONS];
+    user.configs = function (tenantId, configs) {
+        var o = server.configs(tenantId);
+        return configs ? (o[user.USER_OPTIONS] = configs) : o[user.USER_OPTIONS];
     };
 
     /**
@@ -167,7 +141,7 @@ var user = {};
             event.emit('tenantLoad', usr.tenantId);
         }
 
-        opts = user.options(usr.tenantId);
+        opts = user.configs(usr.tenantId);
         um = server.userManager(usr.tenantId);
         usr = um.getUser(usr.username);
         usr.tenantDomain = carbon.server.tenantDomain({tenantId: usr.tenantId});
@@ -236,7 +210,7 @@ var user = {};
     user.logout = function () {
         var usr = server.current(session),
             event = require('event'),
-            opts = server.options(usr.tenantId);
+            opts = server.configs(usr.tenantId);
         if (opts.logout) {
             opts.logout(usr, session);
         }
@@ -267,9 +241,7 @@ var user = {};
             event.emit('tenantLoad', usr.tenantId);
         }
 
-        var opts = server.options(usr.tenantId);
-
-        um.addUser(usr.username, password, opts.userRoles);
+        um.addUser(usr.username, password, []);
         usr = um.getUser(usr.username);
         event.emit('userRegister', usr.tenantId, usr);
         //login(username, password);

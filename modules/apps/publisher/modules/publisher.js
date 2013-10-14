@@ -46,8 +46,6 @@ var init = function (options) {
             event.emit('tenantCreate', tenantId);
         }
 
-        config[user.USER_OPTIONS] = configs(tenantId);
-
         //Check if the tenant is the super tenant
         if(tenantId==SUPER_TENANT){
 
