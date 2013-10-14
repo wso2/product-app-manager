@@ -193,7 +193,8 @@ $(function(){
             url:'/publisher/api/lifecycle/'+action+'/'+asset+'/'+id,
             type:'PUT',
             success:function(response){
-                showAlert('Asset demoted successfully', 'success');
+            	var action2 = (action == 'Promote')?'Promoted':'Demoted';
+                showAlert('Asset ' + action2 + ' successfully', 'success');
                 $.ajax({
                     url:'/publisher/api/lifecycle/'+asset+'/'+id,
                     type:'GET',

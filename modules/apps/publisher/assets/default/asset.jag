@@ -169,7 +169,7 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
         if (context.post['images_banner'] == '') {
             context.post['images_banner'] = '/publisher/config/defaults/img/banner.jpg';
         }
-
+		
         //Process and add any files in the request
         inspectFiles(request, context.post);
 
