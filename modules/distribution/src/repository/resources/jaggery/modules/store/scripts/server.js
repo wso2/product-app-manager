@@ -38,20 +38,23 @@ var server = {};
         });
 
         event.on('tenantLoad', function (tenantId) {
-            var loader,
-                log = new Log(),
+            var config,
                 carbon = require('carbon'),
-                config = server.configs(tenantId);
+                reg = server.systemRegistry(tenantId);
+
+            //check whether tenantCreate has been called
+            if (!reg.exists(options.tenantConfigs)) {
+                event.emit('tenantCreate', tenantId);
+            }
 
             //initialize tenant registry
-				var options = {
-					'tenantId' : tenantId
-				};
-				var domain = carbon.server.tenantDomain(options);
-				var service = carbon.server.osgiService('org.wso2.carbon.utils.ConfigurationContextService');
-				org.wso2.carbon.core.multitenancy.utils.TenantAxisUtils.getTenantConfigurationContext(domain, service.getServerConfigContext());
+            var domain = carbon.server.tenantDomain({
+                tenantId: tenantId
+            });
+            var service = carbon.server.osgiService('org.wso2.carbon.utils.ConfigurationContextService');
+            org.wso2.carbon.core.multitenancy.utils.TenantAxisUtils.getTenantConfigurationContext(domain, service.getServerConfigContext());
 
-
+            config = server.configs(tenantId);
             //loads tenant's system registry
             config[SYSTEM_REGISTRY] = new carbon.registry.Registry(server.instance(), {
                 system: true,

@@ -4,25 +4,11 @@
         "https": "%https.host%/admin",
         "http": "%http.host%"
     },
-    "roles": {
-        "internal/publisher": {
-            "/permission/admin/login": ["ui.execute"]
-        },
-        "internal/reviewer": {
-            "/permission/admin/login": ["ui.execute"]
-        }
-    },
     "user": {
         "username": "admin",
         "password": "admin"
     },
-    "userRoles": ["internal/publisher"],
-    "permissions": {
-        "login": {
-            "/permission/admin/login": ["ui.execute"]
-        }
-    },
-    "userSpace": "/_system/governance/users",
+    "tenantConfigs": "/_system/config/publisher/configs/publisher.json",
     "accessible": [
         {
             "context": "/_system/governance",

@@ -17,7 +17,7 @@ var init = function (options) {
             CommonUtil = Packages.org.wso2.carbon.governance.registry.extensions.utils.CommonUtil,
             GovernanceConstants = org.wso2.carbon.governance.api.util.GovernanceConstants;
 
-        system.put(PUBLISHER_CONFIG_PATH, {
+        system.put(options.tenantConfigs, {
             content: JSON.stringify(config),
             mediaType: 'application/json'
         });
@@ -45,8 +45,6 @@ var init = function (options) {
         if (!reg.exists(PUBLISHER_CONFIG_PATH)) {
             event.emit('tenantCreate', tenantId);
         }
-
-        config[user.USER_OPTIONS] = configs(tenantId);
 
         //Check if the tenant is the super tenant
         if(tenantId==SUPER_TENANT){
