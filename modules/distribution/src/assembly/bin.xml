@@ -39,6 +39,7 @@
                 <exclude>**/version.txt</exclude>
                 <exclude>**/carbon.xml</exclude>
                 <exclude>**/registry.xml</exclude>
+				<exclude>**/schema.xml</exclude>
                 <exclude>**/axis2/axis2.xml</exclude>
                 <!--exclude>**/ciphertool.bat</exclude-->
                 <exclude>**/master-datasources.xml</exclude>
@@ -300,6 +301,11 @@
         <file>
             <source>src/repository/conf/registry.xml</source>
             <outputDirectory>wso2store-${pom.version}/repository/conf/</outputDirectory>
+            <filtered>true</filtered>
+        </file>
+		<file>
+            <source>src/repository/conf/solr/conf/schema.xml</source>
+            <outputDirectory>wso2store-${pom.version}/repository/conf/solr/conf/schema.xml</outputDirectory>
             <filtered>true</filtered>
         </file>
         <file>
