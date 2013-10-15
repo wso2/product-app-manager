@@ -304,7 +304,7 @@ routeManager.register('GET','publisher','/publisher/api/lifecycle/information/hi
 
        log.debug('history retrieved from '+historyPath);
 
-       var systemRegistry=server.systemRegistry();
+       var systemRegistry=rxtManager.registry;//server.systemRegistry();
 
        //var actions=artifactManager.availableActions(artifact);
 
