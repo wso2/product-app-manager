@@ -53,6 +53,7 @@ var driver = function () {
         var isParam=options.PARAMETERIZED||false;
         var result;
 
+
         if (isParam) {
             var args = getValueArray(model, schema, query);
 
@@ -61,6 +62,7 @@ var driver = function () {
         else {
             result = this.instance.query(query) || [];
         }
+
 
         var processed;
         processed = this.queryTranslator.translate(schema, modelManager, result);

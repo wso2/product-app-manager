@@ -6,6 +6,20 @@ Created Date: 15/10/2013
 
 var queryProvider=function(){
 
-    return{
+    var dbScriptManager=require('/modules/data/common/db.script.manager.js').dbScriptManagerModule().getInstance();
+
+    var MYSQL_DRIVER='h2';
+    var log=new Log('query.provider');
+    /*
+     The function builds a CREATE sql statement based on the provided schema
+     */
+    function create(schema){
+        var query=dbScriptManager.find(MYSQL_DRIVER,schema.table);
+        return query;
     }
+
+    return{
+        create:create
+    }
+
 };

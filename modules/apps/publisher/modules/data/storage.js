@@ -19,7 +19,11 @@ var storageModule = function () {
         this.context = null;
         this.isCached = false;
 
+
+
         this.init(options);
+
+
 
         //If caching is enabled obtain
         if (this.isCached) {
@@ -39,7 +43,7 @@ var storageModule = function () {
         this.prepare();
 
         //Attach a new driver
-        var driver = this.driverManager.get('default');
+        var driver = this.driverManager.get(this.connectionInfo.dataSource);
         this.modelManager.driver = driver;
 
     };
@@ -53,7 +57,7 @@ var storageModule = function () {
         this.driverManager = new driverManagement.DriverManager();
 
         //Get a default driver
-        var driver = this.driverManager.get('default');
+        var driver = this.driverManager.get(this.connectionInfo.dataSource);
 
         //Create an instance of the model manager
         this.modelManager = new modelManagement.ModelManager({driver: driver, connectionInfo: this.connectionInfo});

@@ -11,7 +11,7 @@ var driverManager=function(){
     var FILE_QP='query.provider.js';
     var FILE_QT='query.translator.js';
     var FILE_DRIVER='driver.js';
-    var DEFAULT_DRIVER='default';
+    var DEFAULT_DRIVER='h2';
     var EXTENSIONS_DIR='/modules/data/extensions';
 
 
@@ -173,21 +173,26 @@ var driverManager=function(){
      */
     DriverManager.prototype.get=function(source){
 
-        //Get the driver type
-        var driverType=this.getDriver(source);
 
-        if(!driverType){
-            throw 'A driver for the '+driverType+' could not be found.';
+
+        var queryProviderType=this.getDriver(source);
+
+        //Set the driver type to H2
+        var driverType=DEFAULT_DRIVER;
+
+        if(!queryProviderType){
+            throw 'A driver for the '+queryProviderType+' could not be found.';
         }
 
         //Obtain the query provider for the driver type
-        var queryProvider=this.getQueryProvider(driverType);
+        var queryProvider=this.getQueryProvider(queryProviderType);
 
 
         if(!queryProvider){
-            throw 'A query provider for '+driverType+' could not be found.';
+            throw 'A query provider for '+queryProviderType+' could not be found.';
         }
 
+        //log.info('source: '+source+' provider '+stringify(queryProvider));
 
         //Check if the driver is supported
         if(this.driverMap.hasOwnProperty(driverType)){
