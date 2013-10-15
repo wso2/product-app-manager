@@ -16,7 +16,7 @@ public class ActivitySummarizer {
     private String rootId;
 
     Map<String, Summarizer> summarizerMap = new HashMap<String, Summarizer>();
-    Summarizer defaultSummarizer;
+    DefaultSummarizer defaultSummarizer;
 
     public ActivitySummarizer(String rootId) {
         this.rootId = rootId;
@@ -30,7 +30,7 @@ public class ActivitySummarizer {
             String verb = activity.getBody().get("verb").getAsString();
             Summarizer summarizer = summarizerMap.get(verb);
             if (summarizer == null) {
-                summarizer = SummarizerFactory.create(verb,rootId);
+                summarizer = SummarizerFactory.create(verb, rootId, summarizerMap);
                 if (summarizer == null) {
                     summarizer = defaultSummarizer;
                 } else {
@@ -47,10 +47,11 @@ public class ActivitySummarizer {
 
     public JsonObject summarize() {
         JsonObject root = new JsonObject();
-        defaultSummarizer.summarize(root);
+        Map<String, Activity> activities = defaultSummarizer.getActivities();
         for (Summarizer summarizer : summarizerMap.values()) {
-            summarizer.summarize(root);
+            summarizer.summarize(root, activities);
         }
+        defaultSummarizer.summarize(root, activities);
         return root;
     }
 }

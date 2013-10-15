@@ -7,10 +7,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.social.Activity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DefaultSummarizer implements Summarizer {
 
@@ -29,11 +26,11 @@ public class DefaultSummarizer implements Summarizer {
     }
 
     @Override
-    public void summarize(JsonObject root) {
-        for (Activity activity : activities.values()) {
+    public void summarize(JsonObject root, Map<String, Activity> activities) {
+        for (Activity activity : this.activities.values()) {
             String targetId = activity.getTargetId();
             if (!targetId.equals(rootId)) {
-                Activity parent = activities.get(targetId);
+                Activity parent = this.activities.get(targetId);
                 if (parent != null) {
                     attach(activity, parent.getBody());
                 } else {
@@ -43,6 +40,10 @@ public class DefaultSummarizer implements Summarizer {
                 attach(activity, root);
             }
         }
+    }
+
+    public Map<String, Activity> getActivities(){
+        return Collections.unmodifiableMap(activities);
     }
 
     private void attach(Activity activity, JsonObject to) {
