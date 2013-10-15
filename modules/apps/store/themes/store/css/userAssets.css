@@ -75,8 +75,8 @@ a.ebook{
     height: 39px;
     margin: 0;
     position: absolute;
-    right: 10px;
-    top: 0;
+    right: 73px;
+    top: 1px;
 }
 
 .caroufredsel_wrapper{
@@ -100,4 +100,14 @@ a.ebook{
 
 #myasset-container{
     padding-top:20px;
+}
+
+.link-view-all{
+    position: absolute;
+    right:15px;
+    font-size:12px;
+    text-transform: uppercase;
+}
+.link-view-all small{
+    font-size:11px;
 }

@@ -1,4 +1,3 @@
-
 .store-my-item img {
     width: 128px;
     float: left;
@@ -22,54 +21,53 @@
 }
 
 .store-my-item .btn-group {
-    display: block; 
+    display: block;
 }
 
-a.site{
-display:none;
+a.site {
+    display: none;
 }
 
-
-a.ebook{
-    display:none;
+a.ebook {
+    display: none;
 }
-.store-my-item{
-	position:relative;
-	width:200px;
-	height:237px;
-	float:left;
-	display:block;
-	margin-right:20px;
+.store-my-item {
+    position: relative;
+    width: 197px;
+    height: 237px;
+    float: left;
+    display: block;
+    margin-right: 20px;
 }
 
-.store-my-item small{
+.store-my-item small {
     clear: both;
-    display:block;
+    display: block;
     line-height: 0 !important;
 }
 
-.own-asset-slideshow-cont .asset{
-    width:200px;
+.own-asset-slideshow-cont .asset {
+    width: 200px;
     margin-right: 17px;
     display: inline-block;
 }
 
-.own-asset-slideshow-cont .asset:first-child{
-    margin-left:10px;
+.own-asset-slideshow-cont .asset:first-child {
+    margin-left: 10px;
 }
 
-.own-asset-slideshow-pag a.selected{
-    background-position:center left;
+.own-asset-slideshow-pag a.selected {
+    background-position: center left;
 }
 
-.own-asset-slideshow-pag a{
-    width:8px;
-    height:39px;
-    font-size:0;
-    background:url(../img/asset-slideshow-pag.png) no-repeat center right;
-    margin-left:8px;
-    display:inline-block;
-    float:left;
+.own-asset-slideshow-pag a {
+    width: 8px;
+    height: 39px;
+    font-size: 0;
+    background: url(../img/asset-slideshow-pag.png) no-repeat center right;
+    margin-left: 8px;
+    display: inline-block;
+    float: left;
 }
 
 .own-asset-slideshow-pag {
@@ -80,25 +78,26 @@ a.ebook{
     top: 0;
 }
 
-.caroufredsel_wrapper{
-	height: 220px !important; 
+.caroufredsel_wrapper {
+    height: 220px !important;
 }
 
-.popover{	
-	left: 0px !important; 
-	width: 190px;
+.popover {
+    left: 0px !important;
+    width: 190px;
 }
-.arrow{
-	left: 18% !important; 
-}
-
-.asset-in-site{
-	left: 0px !important; 
-}
-.bookmark-assert-provider{
-	padding-top: 7px;
+.arrow {
+    left: 18% !important;
 }
 
-#myasset-container{
-    padding-top:20px;
+.asset-in-site {
+    left: 0px !important;
 }
+.bookmark-assert-provider {
+    padding-top: 7px;
+}
+
+#myasset-container {
+    padding-top: 20px;
+}
+

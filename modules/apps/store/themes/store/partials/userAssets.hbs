@@ -2,7 +2,7 @@
 	<div class="span9">
 		{{#if userAssets}}
 		{{#itr userAssets}}
-		<h3 class="asset-title-separator asset-type-{{key}}">{{cap key}}s</span><div class="pagination own-asset-slideshow-pag" id="own-asset-slideshow-pag-{{key}}"></div></h3>
+		<h3 class="asset-title-separator asset-type-{{key}}">{{cap key}}s</span><div class="pagination own-asset-slideshow-pag" id="own-asset-slideshow-pag-{{key}}"></div><a class="link-view-all" href="{{url "/subscriptions/"}}{{key}}"><small>View all</small></a></h3>
 		<div class="top-asset-slideshow-cont">
 		<div class="html_carousel">
 		<div id="asset-in-{{key}}">
