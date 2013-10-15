@@ -604,9 +604,9 @@ Store.prototype.search = function (options, paging) {
 
     //We should only obtain assets in the Published life-cycle state.
     options = obtainViewQuery(options);
-
+	var builtPaging = PaginationFormBuilder(paging);
     if (type) {
-        var assetz = this.assetManager(type).search(options, paging);
+        var assetz = this.assetManager(type).search(options, builtPaging);
         for (i = 0; i < assetz.length; i++) {
             assetz[i].indashboard = this.isuserasset(assetz[i].id, type);
         }
@@ -617,7 +617,7 @@ Store.prototype.search = function (options, paging) {
     length = types.length;
     for (i = 0; i < length; i++) {
         type = types[i];
-        assets[type] = this.assetManager(types[i]).search(options, paging);
+        assets[type] = this.assetManager(types[i]).search(options, builtPaging);
     }
     return assets;
 };
