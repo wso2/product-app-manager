@@ -3,6 +3,9 @@
  */
 var queryProvider = function () {
     var queryMap = {};
+    var H2_DRIVER='h2';
+    var dbScriptManager=require('/modules/data/common/db.script.manager.js').dbScriptManagerModule().getInstance();
+
     var log=new Log();
     queryMap['resource'] = {};
     queryMap['resource']['create'] = 'CREATE TABLE resource ( uuid VARCHAR(250), tenantId VARCHAR(250),fileName VARCHAR(250), contentLength INT,contentType VARCHAR(150), content BLOB );';
@@ -11,7 +14,8 @@ var queryProvider = function () {
 
     //The function checks the schema and returns a query for creating a table in the desired database
     function create(schema) {
-        var query = queryMap[schema.table]['create'];
+        log.info('h2 create called.');
+        var query = dbScriptManager.find(H2_DRIVER,schema.table);//queryMap[schema.table]['create'];
         return query;
     }
 

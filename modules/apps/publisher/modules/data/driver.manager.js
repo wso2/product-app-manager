@@ -12,15 +12,17 @@ var driverManager=function(){
     var FILE_QT='query.translator.js';
     var FILE_DRIVER='driver.js';
     var DEFAULT_DRIVER='default';
+    var EXTENSIONS_DIR='/modules/data/extensions';
+
 
     var dsm=org.wso2.carbon.ndatasource.core.DataSourceManager;
 
 
     var DB_DRIVERS={
-        MYSQL_DRIVER:'jdbc:mysql',
-        ORACLE_DRIVER:'jdbc:oracle',
-        H2_DRIVER:'jdbc:h2',
-        UNSUPPORTED:'none'
+        MYSQL_DRIVER:{key:'jdbc:mysql',value:'mysql'},
+        ORACLE_DRIVER:{key:'jdbc:oracle',value:'oracle'},
+        H2_DRIVER:{key:'jdbc:h2',value:'h2'},
+        UNSUPPORTED:{key:'none',value:'none'}
     };
 
     /*
@@ -38,10 +40,14 @@ var driverManager=function(){
         this.driverMap={};
         this.defaultQP=null;
         this.defaultQT=null;
+
+        this.queryProviderMap={};
         this.dataSourceManager=new DataSourceManager();
 
         //Create the default which will be used to build all other drivers
         this.createDefaultDriver();
+        this.loadExtensions();
+
     }
 
     /*
@@ -92,15 +98,100 @@ var driverManager=function(){
     };
 
     /*
+    The function creates a map of the query providers
+     */
+    DriverManager.prototype.loadExtensions=function(){
+
+        var extensionBundleManager=new bundler.BundleManager({path:EXTENSIONS_DIR});
+
+        //Go through each bundle in the extensions directory
+        var extensionRoot=extensionBundleManager.getRoot();
+
+        var that=this;
+
+        //Go through each bundle
+        extensionRoot.each(function(bundle){
+
+            //Check if the bundle is a directory
+            if(!bundle.isDirectory()){
+                return;
+            }
+
+            handleQueryProvider(bundle,that.queryProviderMap,that);
+
+        });
+    };
+
+    /*
+    The function returns the query provider for a given driver type
+     */
+    DriverManager.prototype.getQueryProvider=function(driverType){
+
+        if(!this.queryProviderMap.hasOwnProperty(driverType)){
+            return null;
+        }
+
+        if(!this.queryProviderMap[driverType].hasOwnProperty('queryProvider')){
+            return null;
+        }
+
+        return this.queryProviderMap[driverType]['queryProvider'];
+    };
+
+    function handleQueryProvider(bundle,map,dm){
+
+        var bundleName=bundle.getName();
+        var QUERY_PROVIDER='queryProvider';
+        map[bundleName]={};
+
+
+        var defaultObject=utility.cloneObject(dm.defaultQP);
+
+        //Go through each bundle in the directory
+        bundle.each(function(currentScript){
+
+            //Check if the current file matches the query provider
+            if(currentScript.getName()==FILE_QP){
+
+                //Load and instaniate script
+                var script=require(EXTENSIONS_DIR+'/'+bundle.getName()+'/'+currentScript.getName());
+
+                script=script.queryProvider();
+
+                //Override the default provider with the methods in the script
+                utility.extend(defaultObject,script);
+
+                map[bundleName][QUERY_PROVIDER]=defaultObject;
+            }
+        });
+    }
+
+    /*
     The function returns a database driver after calling the drivers initialize method
     @driverType: The type of driver
     @return: A driver instance
      */
-    DriverManager.prototype.get=function(driverType){
+    DriverManager.prototype.get=function(source){
+
+        //Get the driver type
+        var driverType=this.getDriver(source);
+
+        if(!driverType){
+            throw 'A driver for the '+driverType+' could not be found.';
+        }
+
+        //Obtain the query provider for the driver type
+        var queryProvider=this.getQueryProvider(driverType);
+
+
+        if(!queryProvider){
+            throw 'A query provider for '+driverType+' could not be found.';
+        }
+
 
         //Check if the driver is supported
         if(this.driverMap.hasOwnProperty(driverType)){
-            this.driverMap[driverType].init({queryProvider:this.defaultQP, queryTranslator:this.defaultQT});
+            this.driverMap[driverType].init({queryProvider:queryProvider, queryTranslator:this.defaultQT});
             return this.driverMap[driverType];
         }
 
@@ -113,14 +204,21 @@ var driverManager=function(){
     @name: The name of a datasource to be accessed
      */
     DriverManager.prototype.getDriver=function(name){
+
         var datasource=this.dataSourceManager.get(name);
+
+
+        if(!datasource){
+            throw 'cannot find Datasource: '+name;
+        }
+
         var driverType=datasource.getDriver();
 
-        if(datasource==DB_DRIVERS.UNSUPPORTED){
+        if(driverType==DB_DRIVERS.UNSUPPORTED){
             throw 'Cannot find a driver for '+name;
         }
 
-
+        return driverType;
     };
 
 
@@ -142,18 +240,18 @@ var driverManager=function(){
        var connectionUrl=this.instance.getUrl();
 
        if(!connectionUrl){
-           return DB_DRIVERS.UNSUPPORTED;
+           return null;
        }
 
        for(var key in DB_DRIVERS){
 
            //Check if the url matches one of the DB_DRIVERS
-           if(connectionUrl.indexOf(DB_DRIVERS[key])!=-1){
-               return key;
+           if(connectionUrl.indexOf(DB_DRIVERS[key].key)!=-1){
+               return DB_DRIVERS[key].value;
            }
        }
        log.info('driver type in '+connectionUrl+' not found.');
-       return DB_DRIVERS.UNSUPPORTED;
+       return null;
 
     };
 
@@ -182,6 +280,9 @@ var driverManager=function(){
 
         return new DataSource(dsObject);
     };
+
+
+
 
     return{
         DriverManager:DriverManager,
