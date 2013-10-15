@@ -6,6 +6,8 @@ function onMessage1(messageEvent) {
         var height = messageEvent.data.expanded;
         if (height) {
             $('#socialIfr').height(height);
+        } else {
+        	onMessage1(messageEvent);
         }
     }
 }

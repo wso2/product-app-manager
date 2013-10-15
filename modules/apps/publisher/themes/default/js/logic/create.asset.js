@@ -34,10 +34,12 @@ $(function() {
 	$('#overview_name').on('blur', function() {
 		var $this = $(this),
 			flag = $('.icon-check-appname'), 
+			btnCreate = $('#btn-create-asset'),
 			assetName = $this.val();
 			
 		if(!flag.length) {
 			$this.after('<i class="icon-check-appname"></i>');
+			flag = $('.icon-check-appname');
 		}
 
 		//check if the asset name available as user types in
@@ -51,13 +53,15 @@ $(function() {
 				//Check if the asset was added
 				if (result.ok) {
 					flag.removeClass().addClass('icon-ok icon-check-appname').show();
+					btnCreate.removeAttr('disabled');		
 				} else {		
 					flag.removeClass().addClass('icon-ban-circle icon-check-appname').show();
+					btnCreate.attr('disabled', 'disabled');		
 				}
 
 			},
 			error : function(response) {
-				showAlert('Failed to add asset.', 'error');
+				showAlert('Unable to auto check Asset name availability', 'error');
 			}
 		});
 
