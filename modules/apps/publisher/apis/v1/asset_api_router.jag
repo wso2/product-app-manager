@@ -58,7 +58,7 @@ routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}/{id}', fu
         var artifact = artifactManager.get(id);
 
         //Perform some filerting logic
-        artifact=filterManager.filter(artifact);
+        artifact=filterManager.filter(artifact,session);
 
         if(!artifact){
             response.sendError(401,'You do not have viewing rights for this asset');
