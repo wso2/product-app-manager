@@ -17,23 +17,7 @@
                             <small> {{t "Version"}} {{overview_version}}</small>
                             <small> {{t "by"}} {{overview_provider}} </small>
 					<span class="asset-rating">
-                        {{#if ../../user}}
-                            <span class="user-rating" data-rating="{{../../rating.user}}">
-							<input class="auto-submit-star" name="star2" type="radio" class="star"
-                                   value="1"/>
-							<input class="auto-submit-star" name="star2" type="radio" class="star"
-                                   value="2"/>
-							<input class="auto-submit-star" name="star2" type="radio" class="star"
-                                   value="3"/>
-							<input class="auto-submit-star" name="star2" type="radio" class="star"
-                                   value="4"/>
-							<input class="auto-submit-star" name="star2" type="radio" class="star"
-                                   value="5"/>
-						</span>  <div class="rate-num-assert">({{../../rating.user}})</div>
-                        {{else}}
-                            <div class="asset-rating-{{../../rating.average}}star"></div>
-                        {{/if}}
-
+                            <div class="asset-rating-{{../rating.average}}star"></div>
                     </span>
                           {{>asset-utilization ../../.}}
                          </div>
