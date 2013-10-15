@@ -13,6 +13,16 @@ var driverManager=function(){
     var FILE_DRIVER='driver.js';
     var DEFAULT_DRIVER='default';
 
+    var dsm=org.wso2.carbon.ndatasource.core.DataSourceManager;
+
+
+    var DB_DRIVERS={
+        MYSQL_DRIVER:'jdbc:mysql',
+        ORACLE_DRIVER:'jdbc:oracle',
+        H2_DRIVER:'jdbc:h2',
+        UNSUPPORTED:'none'
+    };
+
     /*
    Paths
      */
@@ -28,6 +38,7 @@ var driverManager=function(){
         this.driverMap={};
         this.defaultQP=null;
         this.defaultQT=null;
+        this.dataSourceManager=new DataSourceManager();
 
         //Create the default which will be used to build all other drivers
         this.createDefaultDriver();
@@ -97,7 +108,83 @@ var driverManager=function(){
         return null;
     };
 
+    /*
+    The function is used to locate a driver that supports the provided datasource
+    @name: The name of a datasource to be accessed
+     */
+    DriverManager.prototype.getDriver=function(name){
+        var datasource=this.dataSourceManager.get(name);
+        var driverType=datasource.getDriver();
+
+        if(datasource==DB_DRIVERS.UNSUPPORTED){
+            throw 'Cannot find a driver for '+name;
+        }
+
+
+    };
+
+
+    /*
+    The class is used to store information on a DataSource used by a driver
+     */
+    function DataSource(dsObject){
+       this.instance=dsObject;
+    }
+
+    /*
+    The function returns the type of driver required by the datasource by looking
+    at the connection url
+    @return: The driver type based on the connection string.If there is no match UNSUPPORTED
+            is returned.If there is no connection url the unsupported value is returned.
+     */
+    DataSource.prototype.getDriver=function(){
+
+       var connectionUrl=this.instance.getUrl();
+
+       if(!connectionUrl){
+           return DB_DRIVERS.UNSUPPORTED;
+       }
+
+       for(var key in DB_DRIVERS){
+
+           //Check if the url matches one of the DB_DRIVERS
+           if(connectionUrl.indexOf(DB_DRIVERS[key])!=-1){
+               return key;
+           }
+       }
+
+       return DB_DRIVERS.UNSUPPORTED;
+
+    };
+
+    /*
+    The class is used to access the carbon datasources repository
+     */
+    function DataSourceManager(){
+        this.instance=new dsm();
+    }
+
+    /*
+    The function is used to obtain a reference to a datasource defined in the
+    master.datasources.xml.
+    @name: The name of the datasource
+    @return: A DataSource object
+     */
+    DataSourceManager.prototype.get=function(name){
+
+        var datasource=this.instance.getInstance().getDataSourceRepository().getDataSource(name);
+        var dsObject=datasource.getDSObject();
+
+        //If the datasource is not found
+        if(!datasource){
+           return null;
+        }
+
+        return new DataSource(dsObject);
+    };
+
     return{
-        DriverManager:DriverManager
+        DriverManager:DriverManager,
+        DataSourceManager:DataSourceManager
     }
 };
