@@ -74,7 +74,7 @@ var filterManagementModule = function () {
      @data: The data to be filtered
      @return: A filtered array of data
      */
-    FilterManager.prototype.filter = function (data) {
+    FilterManager.prototype.filter = function (data,session) {
 
         var filter;
         var context = {};

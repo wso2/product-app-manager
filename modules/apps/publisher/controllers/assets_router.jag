@@ -21,7 +21,7 @@
     var sm=securityModule.cached();
 
     //This will short circuit the handling of the requests
-    var passed=sm.check();
+    var passed=sm.check(session);
 
     //Stop servicing the request if the check failed
     if(!passed){

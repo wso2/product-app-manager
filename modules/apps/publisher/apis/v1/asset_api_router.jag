@@ -58,7 +58,7 @@ routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}/{id}', fu
         var artifact = artifactManager.get(id);
 
         //Perform some filerting logic
-        artifact=filterManager.filter(artifact);
+        artifact=filterManager.filter(artifact,session);
 
         if(!artifact){
             response.sendError(401,'You do not have viewing rights for this asset');
@@ -239,7 +239,7 @@ var securityModule=require('/modules/security/security.manager.js').securityMana
 var sm=securityModule.cached();
 
 //This will short circuit the handling of the requests
-var passed=sm.check(function(){
+var passed=sm.check(session,function(){
     response.sendError(401);
 
 });
