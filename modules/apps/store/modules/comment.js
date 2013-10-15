@@ -13,7 +13,7 @@
 
 var getComments = function (rid, start, count) {
     var comments,
-        store = require('/store.js').config(),
+        store = require('/config/store.js').config(),
         registry = require('/modules/store.js').systemRegistry();
     comments = registry.comments(rid);
     return comments;

@@ -4,7 +4,7 @@
        data-aid="{{thisAsset.id}}" data-type="{{thisAsset.type}}"> {{t "Download"}} </a>
 {{else}}
     {{# if ssoParam}}
-        <a href="{{url "/login.jag"}}" class="btn btn-primary asset-add-btn">{{>process-asset-text}}</a>
+        <a href="{{url "/login"}}" class="btn btn-primary asset-add-btn">{{>process-asset-text}}</a>
     {{else}}
         <a href="{{thisAsset.attributes.overview_url}}" target="_blank"
            class="btn btn-primary asset-add-btn">{{>process-asset-text}}</a>

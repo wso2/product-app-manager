@@ -1,6 +1,6 @@
 var addRating = function (aid, value) {
     var rating,
-        store = require('/store.js').config(),
+        store = require('/config/store.js').config(),
         registry = require('/modules/store.js').systemRegistry();
 
     registry.rate(aid, value);
@@ -9,7 +9,7 @@ var addRating = function (aid, value) {
 
 var getRating = function (aid) {
     var rating,
-        store = require('/store.js').config(),
+        store = require('/config/store.js').config(),
         registry = require('/modules/store.js').systemRegistry();
 
     rating = {

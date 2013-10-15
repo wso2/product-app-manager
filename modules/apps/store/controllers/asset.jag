@@ -1,0 +1,69 @@
+<%
+
+var caramel;
+
+(function () {
+
+    var asset, aid,title,
+            log = new Log(),
+            mod = require('store'),
+            tenant = mod.server.tenant(request, session),
+            tenantId = tenant.tenantId,
+            store = require('/modules/store.js').store(tenantId, session),
+            config = require('/config/store.js').config(),
+            site = require('/modules/site.js'),
+            user = mod.server.current(session),
+            utility = require('/modules/util.js'),
+            sso = configs.ssoConfiguration.enabled,
+            inDashboard = false,
+            matcher = new URIMatcher(request.getRequestURI());
+    caramel = require('caramel');
+    matcher.match('/{context}' + config.assetsUrlPrefix + '/{type}/{aid}');
+    aid = matcher.elements().aid;
+	title = store.assetLinks(type).title;
+    try {
+        asset = store.asset(type, aid);
+    } catch (e) {
+        response.sendError(404, 'Requested page cannot be found');
+        return;
+    }
+
+    if (store.isuserasset(aid, type)) {
+        inDashboard = true;
+    }
+
+    var rxtAttributes = utility.getRXTAttributes(tenantId, type);
+
+    caramel.render({
+        title: 'Store | ' + type,
+        user: user,
+        sso: sso,
+       
+         header : site.header(tenantId, {
+                   sso: sso,
+                   user: user
+               }),
+       
+        navigation: site.navigation(tenantId),
+        search: {
+            search: {title: type},
+            isTopAssets: false,
+            searchFields: rxtAttributes
+        },
+        isSocial:config.socialCommentsEnable,
+        
+        type: type,
+        embedURL: config.server.http + '/gadgets/ifr?url=' + asset.attributes.overview_url,
+        inDashboard: inDashboard,
+        asset: asset,
+        tags: [
+            {
+                url: '/assets/' + type + '/?page=1&tag=',
+                data: store.tags(type)
+            }
+        ],
+        myAssets : { user:user, type: type, title: title },
+        recentAssets: store.recentAssets(type)
+    });
+}());
+%>

@@ -2,7 +2,7 @@ var tokens = function (username, password) {
     var token,
         log = new Log(),
         base64 = require('/modules/base64.js'),
-        store = require('/store.js').config();
+        store = require('/config/store.js').config();
 
     token = post(store.oauthEPR + '/token', {
         grant_type: 'password',

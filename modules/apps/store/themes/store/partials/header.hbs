@@ -33,7 +33,7 @@
 
 							{{#if user}}
 							<li class="nav-separator">
-								<a href="{{url "/dashboard.jag"}}"><i
+								<a href="{{url "/dashboard"}}"><i
 								class="icon-bookmark store-topnav-bookmark"></i> {{t "My Items"}}</a>
 							</li>
 							<li>
@@ -42,7 +42,7 @@
 								class="icon-user"></i> {{user.username}} <b class="caret"></b></a>
 								<ul class="dropdown-menu dropdown-account" role="menu" aria-labelledby="dLabel">
 									<li>
-										{{#if sso}}<a href="{{url "/logout.jag"}}"><i class="icon-signout"></i> {{t "Sign out"}} </a>{{else}}<a id="btn-signout" href="#"><i class="icon-signout"></i> {{t "Sign out"}} </a>{{/if}}
+										{{#if sso}}<a href="{{url "/logout"}}"><i class="icon-signout"></i> {{t "Sign out"}} </a>{{else}}<a id="btn-signout" href="#"><i class="icon-signout"></i> {{t "Sign out"}} </a>{{/if}}
 									</li>
 								</ul>
 
@@ -51,10 +51,10 @@
 
 							{{#if sso}}
 							<li>
-								<a href="{{url "/login.jag"}}">{{t "Sign in"}}</a>
+								<a href="{{url "/login"}}">{{t "Sign in"}}</a>
 							</li>
 							<li>
-								<a href="{{url "/login.jag"}}" id="btn-register"
+								<a href="{{url "/login"}}" id="btn-register"
 								class="btn btn-primary">{{t "Register"}}</a>
 							</li>
 							{{else}}
