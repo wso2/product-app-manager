@@ -152,7 +152,7 @@ var driverManager=function(){
                return key;
            }
        }
-
+       log.info('driver type in '+connectionUrl+' not found.');
        return DB_DRIVERS.UNSUPPORTED;
 
     };
