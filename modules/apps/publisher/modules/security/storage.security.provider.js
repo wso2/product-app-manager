@@ -70,7 +70,7 @@ var securityModule = function () {
     /*
     The function hand
      */
-    SecurityProvider.prototype.execute=function(assetType,assetId,uuid){
+    SecurityProvider.prototype.execute=function(assetType,assetId,uuid,session){
 
         //Load the governance artifacts
         GovernanceUtils.loadGovernanceArtifacts(this.registry.registry);

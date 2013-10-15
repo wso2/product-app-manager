@@ -19,12 +19,12 @@ securityManagementModule=function(){
     @cb: An optional callback function which will be invoked if a check fails
     @return: True if the check passes,else false
      */
-    SecurityManager.prototype.check=function(cb){
+    SecurityManager.prototype.check=function(session,cb){
 
         var passed=false;
 
         //Checks whether the request can be handled
-        if(this.provider.isPermitted()){
+        if(this.provider.isPermitted(session)){
             log.debug('passed the security check.');
 
             this.provider.onSecurityCheckPass();

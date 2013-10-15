@@ -60,7 +60,7 @@ function handleResourceRequest(matchedElements) {
     var id = matchedElements['id'];
 
     //Check if the user is allowed to access the resource
-    var isAllowed = storageSecurityProvider.execute(type, id, compoundKey);
+    var isAllowed = storageSecurityProvider.execute(type, id, compoundKey,session);
 
     //Stop the request if the user does not have permission
     if (!isAllowed) {

@@ -12,6 +12,7 @@ var caramel;
         if (likes) {
             for (var j = 0; j < likes.length; j++) {
                 var like = likes[j];
+                log.error(like);
                 if (like.id == username) {
                     return true;
                 }

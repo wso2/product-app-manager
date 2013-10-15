@@ -88,7 +88,7 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
 
 
         //Perform filtering logic on the artifact
-        artifact=filterManager.filter(artifact);
+        artifact=filterManager.filter(artifact,session);
 
         //If there is no data after the filtering step we need to send an error
         if(!artifact){

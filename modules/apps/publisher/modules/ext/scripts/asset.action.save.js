@@ -21,6 +21,20 @@ var module=function(){
     var configs=require('/config/publisher.json');
     var log=new Log();
 
+    /*
+    adding asset details to Social Cache DB.
+    */
+   function addToSocialCache(id,type) {
+       if (id) {
+           var CREATE_QUERY = "CREATE TABLE IF NOT EXISTS SOCIAL_CACHE (id VARCHAR(255) NOT NULL,type VARCHAR(255), " +
+               "body VARCHAR(5000), rating DOUBLE,  PRIMARY KEY ( id ))";
+           var db = new Database("SOCIAL_CACHE");
+           db.query(CREATE_QUERY);
+           var combinedId = type + ':' + id;
+           db.query("MERGE INTO SOCIAL_CACHE (id,type,body,rating) VALUES('" + combinedId + "','" + type + "','',0)");
+           db.close();
+       }
+   }
 
 	return{
 		execute:function(context){
@@ -91,6 +105,9 @@ var module=function(){
             var id=artifact[0].id||' ';
 
             log.debug('Setting id of model to '+id);
+
+            //adding asset to social
+            addToSocialCache(id,template.shortName);
 
             //Save the id data to the model
             model.setField('*.id',id);

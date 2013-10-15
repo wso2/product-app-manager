@@ -60,7 +60,7 @@ function handleResourceRequest(matchedElements){
     var id=matchedElements['id'];
 
     //log.info(compoundKey);
-    var isAllowed=storageSecurityProvider.execute(type,id,compoundKey);
+    var isAllowed=storageSecurityProvider.execute(type,id,compoundKey,session);
 
     //log.info(isAllowed);
 
