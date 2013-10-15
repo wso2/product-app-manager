@@ -1,14 +1,17 @@
 <%
 var caramel;
 (function () {
-    var assets, paging, count, current, total, sso, url, mainPage, subPage,title,
+    var assets, paging, current, total, sso, url, mainPage, subPage,title,
             options = {},
 			subscriptions ={},
 	    	subscription = false,
             log = new Log(),
-            user = require('store').server.current(session),
+            mod = require('store'),
+            user = mod.server.current(session),
             configs = require('/store.js').config(),
-            store = require('/modules/store.js').store(request, session),
+            tenant = mod.server.tenant(request, session),
+            tenantId = tenant.tenantId,
+            store = require('/modules/store.js').store(tenantId, session),
             site = require('/modules/site.js'),
             tag = request.getParameter('tag'),
             query = request.getParameter('query'),
@@ -19,8 +22,7 @@ var caramel;
     caramel = require('caramel');
 
     sso = configs.ssoConfiguration.enabled;
-
-    url = '/assets/' + type + '/?' + (tag ? 'tag=' + tag + '&' : '') + (query ? 'query=' + query + '&' : '');
+    url = '/assets/' + type + '/?' + (tag ? 'tag=' + tag + '&' : '') + (query ? 'query=' + query + '&' : '')+ (selectedCategory ? 'category=' + selectedCategory + '&' : '');
 
     paging = store.assetsPaging(request);
 
@@ -53,6 +55,7 @@ var caramel;
         assets = function () {
             return store.tagged(type, tag, paging);
         };
+        
     } else if (query) {
 
         options = {
@@ -69,6 +72,7 @@ var caramel;
         assets = function () {
             return store.search(options, paging);
         };
+        
     } else if (fields) {
 
         var parts, param, params, value;
@@ -78,6 +82,7 @@ var caramel;
         };
         query = '';
         params = request.getAllParameters();
+        
         //advanced search is only allowed for fields under overview section
         for (param in params) {
             if (param !== 'fields' && params.hasOwnProperty(param)) {
@@ -97,7 +102,40 @@ var caramel;
         assets = function () {
             return store.search(options, paging);
         };
-    } else {
+        
+    } else if (selectedCategory) {
+
+        var parts, param, params, value;
+      
+        options = {
+            type: type,
+            attributes: {"lcState" : configs.lifeCycleBehaviour.visibleIn}
+        };
+        query = '';
+        params = request.getAllParameters();
+        
+        //skip attribut for sort
+        for (param in params) {
+            if (param !== 'sort' && params.hasOwnProperty(param)) {
+               options.attributes['overview_' + param.trim().toLocaleLowerCase()] = params[param];
+                if (query !== '') {
+                    query += '&';
+                }
+                query += (param + '=' + params[param]);
+            }
+        }
+       // paging.sort=sort;
+        total = store.assetCount(type, options);
+       
+        subPage = '/ Search: "' + query + '"';
+        if (paging.start > total || paging.start < 0) {
+            response.sendError(404, 'Requested page cannot be found');
+            return;
+        }
+        assets = function () {
+            return store.search(options, paging);
+        };
+    }else {
 
         total = store.assetCount(type);
 
@@ -119,6 +157,7 @@ var caramel;
                     pos = combinedAid.indexOf(':');
                     aid =  combinedAid.substring(pos + 1);
                     asset =  store.asset(type,aid);
+                    asset.indashboard = store.isuserasset(aid, type);
                     assets.push(asset);
                 }
                 return assets;
@@ -161,6 +200,7 @@ var caramel;
                },
         type: type,
         selectedCategory: selectedCategory,
+       
         /*tag: tag,*/
         tags: function () {
             return [

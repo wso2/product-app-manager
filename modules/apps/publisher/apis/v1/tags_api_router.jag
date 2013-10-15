@@ -124,7 +124,7 @@ var securityModule=require('/modules/security/security.manager.js').securityMana
 var sm=securityModule.cached();
 
 //This will short circuit the handling of the requests
-var passed=sm.check(function(){
+var passed=sm.check(session,function(){
     response.sendError(401);
 });
 

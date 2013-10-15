@@ -44,7 +44,7 @@ var engine = caramel.engine('handlebars', (function () {
                         return theme.__proto__.resolve.call(theme, path);
                     };
                 partials(new File(resolve('partials')));
-                return options.fn(context);
+                return options.fn(this);
             });
         },
         render: function (data, meta) {

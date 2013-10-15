@@ -4,7 +4,7 @@
     "commentsPageSize": 10,
     "userSpace": "/_system/governance/users",
     "roles": {
-        "store": {
+        "Internal/store": {
             "/permission/admin/login": ["ui.execute"]
         }
     },

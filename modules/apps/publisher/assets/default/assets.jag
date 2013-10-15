@@ -56,7 +56,7 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 
 		// for queries
 		if(query) {
-			assets = artifactManager.search(query, null);
+			assets = artifactManager.search(query, DEFAULT_PAGIN);
 			artifacts = assets;
 		} else if (sortby && sort){			
 			DEFAULT_PAGIN.sortBy = 'overview_'+sortby;
@@ -72,7 +72,7 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 		dataInjector.inject(artifacts, DataInjectorModes.DISPLAY);
 
         //Perform some filtering logic on the artifacts
-        artifacts=filterManager.filter(artifacts);
+        artifacts=filterManager.filter(artifacts,session);
 
 		caramel.render({
 			op : 'list',

@@ -114,9 +114,19 @@ $(function () {
      };
      */
 
-    var buildParams = function (query) {
-        return 'query=' + query;
-    };
+
+	var buildParams = function(query) {
+		var sURL = window.document.URL.toString();
+		if(sURL.indexOf('category') != -1) {
+			var category = sURL.split("category=")[1];
+			return 'query=name:"' + query + '"%20category:"' + category + '"&category=' + category;
+		} else {
+			return 'query=' + query;
+		}
+	};
+
+
+    
     var search = function () {
         var url, searchVal = $('#search').val();
         //var url, searchVal = test($('#search').val());

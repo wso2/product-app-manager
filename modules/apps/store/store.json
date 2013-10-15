@@ -2,6 +2,7 @@
     "assetsUrlPrefix": "/assets",
     "extensionsUrlPrefix": "/extensions",
     "subscriptionsUrlPrefix": "/subscriptions",
+    "tenantConfigs": "/_system/config/store/configs/store.json",
     "socialCommentsEnable": true,
     "cached": false,
     "server": {

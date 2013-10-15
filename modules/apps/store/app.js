@@ -70,9 +70,9 @@ var registry=new carbon.registry.Registry(server,{
  */
 
 //TODO : fix this
-var tenantId = -1234;
+/*var tenantId = -1234;
 var event = require('event');
-event.emit('tenantLoad', tenantId);
+event.emit('tenantLoad', tenantId);*/
 
 
 
