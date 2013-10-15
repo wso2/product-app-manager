@@ -439,6 +439,10 @@ label, input, button, select, textarea {
 .publisher-left {
     background: #F5F5F5;
     border-right: 1px solid #DADADA;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    top: 0;
 }
 .content-area-cont {
     background: #fff;
@@ -457,8 +461,11 @@ label, input, button, select, textarea {
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 .publisher-right {
-    min-height: 500px !important;
-    min-width: 480px;
+    /*
+     min-height: 500px !important;
+     min-width: 480px;*/
+    float: right !important;
+    position: relative;
 }
 
 .dropdown-submenu > .publisher-left-submenu {
@@ -1086,18 +1093,18 @@ span.title {
     margin-left: 8px;
 }
 
-.tbl-upload-cell .btn{
-    margin-right:0;
+.tbl-upload-cell .btn {
+    margin-right: 0;
 }
-.lifecycle #canvas svg{
-    left:-63px !important;
+.lifecycle #canvas svg {
+    left: -63px !important;
 }
 
-#form-asset-create .icon-ok, #form-asset-create .icon-ban-circle{
-     margin-left: -18px;
+#form-asset-create .icon-ok, #form-asset-create .icon-ban-circle {
+    margin-left: -18px;
     margin-right: 4px;
-    opacity:.5;
+    opacity: .5;
 }
-.icon-check-appname{
-    display:none;
+.icon-check-appname {
+    display: none;
 }

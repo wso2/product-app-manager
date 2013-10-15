@@ -13,10 +13,6 @@ window.showAlert = function(msg, type) {
 	alert.stop().fadeIn("fast");
 }
 
-$(window).load(function(){
-	($('.publisher-left').height() < $('.publisher-right').height()) && $('.publisher-left').height($('.publisher-right').height() + 15);
-});
-
 $(document).ready(function() {
 
 	/* creating a new version */
