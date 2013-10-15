@@ -38,7 +38,7 @@ var init = function (options) {
             carbon = require('carbon'),
             mod = require('store'),
             server = mod.server,
-            config = require('/store-tenant.json'),
+            config = require('/config/store-tenant.json'),
             system = server.systemRegistry(tenantId),
             um = server.userManager(tenantId);
         system.put(options.tenantConfigs, {
@@ -106,12 +106,12 @@ var init = function (options) {
 
 //TODO:
 var currentAsset = function () {
-    var prefix = require('/store.js').config().assetsUrlPrefix,
+    var prefix = require('/config/store.js').config().assetsUrlPrefix,
         matcher = new URIMatcher(request.getRequestURI());
     if (matcher.match('/{context}' + prefix + '/{type}/{+any}') || matcher.match('/{context}' + prefix + '/{type}')) {
         return matcher.elements().type;
     }
-    prefix = require('/store.js').config().extensionsUrlPrefix + prefix;
+    prefix = require('/config/store.js').config().extensionsUrlPrefix + prefix;
     if (matcher.match('/{context}' + prefix + '/{type}/{+any}') || matcher.match('/{context}' + prefix + '/{type}')) {
         return matcher.elements().type;
     }
@@ -670,7 +670,7 @@ var DEFAULT_ASSET_VIEW_STATE = 'Published'; //Unless specified otherwise, assets
  */
 var obtainViewQuery = function (options) {
 
-    var storeConfig = require('/store.json').lifeCycleBehaviour;
+    var storeConfig = require('/config/store.json').lifeCycleBehaviour;
     var visibleStates = storeConfig.visibleIn || DEFAULT_ASSET_VIEW_STATE;
 
     options[LIFECYCLE_STATE_PROPERTY] = visibleStates;
@@ -843,7 +843,8 @@ var buildManagers = function (registry,tenantId) {
     var ext_parser = require('/modules/rxt/ext/core/extension.parser.js').extension_parser();
     var ext_core = require('/modules/rxt/ext/core/extension.core.js').extension_core();
     var ext_mng = require('/modules/rxt/ext/core/extension.management.js').extension_management();
-    var config = require('/store-tenant.json');
+    //TODO: sameera need to get store.json from registry
+    var config = require('/config/store-tenant.json');
     var server=require('store').server;
     var um=server.userManager(tenantId);
     var rxtManager = new rxt_management.RxtManager(registry);

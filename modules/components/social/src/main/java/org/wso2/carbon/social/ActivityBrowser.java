@@ -46,7 +46,7 @@ public class ActivityBrowser {
         for (Activity activity : activities) {
             summarizer.add(activity);
         }
-        JsonObject summarize = summarizer.summarize(order);
+        JsonObject summarize = summarizer.summarize();
         cache.put(targetId, summarize);
         return summarize;
     }

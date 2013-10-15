@@ -165,7 +165,7 @@ var redrawReviews = function (sortBy, callback) {
         target: target,
         sortBy: sortBy
     }, function (obj) {
-        var reviews = obj.attachments;
+        var reviews = obj.attachments || [];
         usingTemplate(function (template) {
             var str = "";
             for (var i = 0; i < reviews.length; i++) {

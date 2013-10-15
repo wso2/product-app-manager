@@ -30,7 +30,8 @@ public class Cache {
             statement.setString(1, id);
             statement.setString(2, id.substring(0, id.indexOf(':')));
             statement.setString(3, obj.toString());
-            Number rating = obj.get("rating").getAsNumber();
+            JsonElement ratingJSON = obj.get("rating");
+            Number rating = ratingJSON == null ? 0 : ratingJSON.getAsNumber();
             statement.setDouble(4, rating.doubleValue());
             statement.executeUpdate();
         } catch (SQLException e) {

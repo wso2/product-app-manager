@@ -55,4 +55,23 @@ public class Activity {
         }
         return 0;
     }
+
+    public String getObjectType() {
+        JsonObject object = body.getAsJsonObject("object");
+        if (object != null) {
+            JsonElement type = object.get("objectType");
+            if (type != null) {
+                return type.getAsString();
+            }
+        }
+        return null;
+    }
+
+    public String getVerb() {
+        JsonElement verb = body.get("verb");
+        if (verb != null) {
+            return verb.getAsString();
+        }
+        return null;
+    }
 }
