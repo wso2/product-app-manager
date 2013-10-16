@@ -13,7 +13,6 @@
         response.sendError(404, 'Not Found');
         return;
     }
-    new Log().info(asset);
     store.subscribe(type, aid);
     response.sendRedirect(request.getParameter('destination'));
 })();

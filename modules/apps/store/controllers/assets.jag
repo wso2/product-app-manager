@@ -15,7 +15,6 @@ var caramel;
             site = require('/modules/site.js'),
             tag = request.getParameter('tag'),
             query = request.getParameter('query'),
-            fields = request.getParameter('fields'),
             selectedCategory = request.getParameter('category'),
             event = require('/modules/event.js');
 
@@ -31,7 +30,7 @@ var caramel;
     title = store.assetLinks(type).title;
     
     if(user){
-	subscriptions = store.subscriptions(type);
+	    subscriptions = store.subscriptions(type);
 		if(subscriptions[type]){
 			var count = Object.keys(subscriptions[type]).length;
 		    if(count == 0){
@@ -40,41 +39,18 @@ var caramel;
 				subscription =true;
 			}
 		}
-	}	
+	}
+
+    query = selectedCategory ? ((query || '') + ' category:"' + selectedCategory + '"') : query;
      
     if (tag) {
         subPage = '/ Tag: "' + tag + '"';
-        log.info(paging);
         assets = store.tagged(type, tag, paging);
-        log.info(assets);
     } else if (query) {
         options = {
             type: type,
             attributes: require('/modules/search.js').build(query)
         };
-        subPage = '/ Search: "' + query + '"';
-        assets = store.search(options, paging);
-    } else if (selectedCategory) {
-
-        var parts, param, params, value;
-      
-        options = {
-            type: type,
-            attributes: {"lcState" : configs.lifeCycleBehaviour.visibleIn}
-        };
-        query = '';
-        params = request.getAllParameters();
-        
-        //skip attribut for sort
-        for (param in params) {
-            if (param !== 'sort' && params.hasOwnProperty(param)) {
-               options.attributes['overview_' + param.trim().toLocaleLowerCase()] = params[param];
-                if (query !== '') {
-                    query += '&';
-                }
-                query += (param + '=' + params[param]);
-            }
-        }
         subPage = '/ Search: "' + query + '"';
         assets = store.search(options, paging);
     } else {

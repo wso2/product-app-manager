@@ -5,7 +5,7 @@
  ;
  */
 
-var opened = false, currentPage = 1;
+var opened = false, currentPage = 1, infiniteScroll = true;
 
 $(function() {
 
@@ -33,7 +33,7 @@ $(function() {
 		caramel.data({
 			title : null,
 			header : ['header'],
-			body : ['assets', 'pagination', 'sort-assets']
+			body : ['assets', 'sort-assets']
 		}, {
 			url : url,
 			success : function(data, status, xhr) {
@@ -62,12 +62,13 @@ $(function() {
 		}, {
 			url : url,
 			success : function(data, status, xhr) {
-                active = data.body.assets.context.assets.length >= 12;
+                infiniteScroll = data.body.assets.context.assets.length >= 12;
+                currentPag = 1;
 				renderAssetsScroll(data);
 				$('.loading-inf-scroll').hide();
 			},
 			error : function(xhr, status, error) {
-                active = false;
+                infiniteScroll = false;
 			}
 		});
 		$('.loading-inf-scroll').show();
@@ -92,18 +93,15 @@ $(function() {
 		loadAssets(url);
 	});
 
-	var active = true;
+	var scroll = function() {
 
-	var infiniteScroll = function() {
-		totalPages = $('#assets-container').data('pages');
-
-		if(active) {
+		if(infiniteScroll) {
 			if($(window).scrollTop() + $(window).height() >= $(document).height() * .8) {
 				var url = caramel.url(store.asset.paging.url + (++currentPage));
 				loadAssetsScroll(url);
-				$(window).unbind('scroll', infiniteScroll);
+				$(window).unbind('scroll', scroll);
 				setTimeout(function() {
-					$(window).bind('scroll', infiniteScroll);
+					$(window).bind('scroll', scroll);
 				}, 500);
 			}
 		} else {
@@ -111,7 +109,7 @@ $(function() {
 		}
 	}
 
-	$(window).bind('scroll', infiniteScroll);
+	$(window).bind('scroll', scroll);
 
 	$("a[data-toggle='tooltip']").tooltip();
 	

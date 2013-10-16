@@ -136,7 +136,7 @@ $(function () {
             caramel.data({
                 title: null,
                 header: ['header'],
-                body: ['assets', 'pagination', 'sort-assets']
+                body: ['assets', 'sort-assets']
             }, {
                 url: url,
                 success: function (data, status, xhr) {
