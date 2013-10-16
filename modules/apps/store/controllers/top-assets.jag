@@ -111,7 +111,7 @@ var caramel;
 				site : sites,
                 ebook : ebooks
 			},
-			popularAssets : (popularAssets.length)?popularAssets:null,
+			popularAssets : (popularAssets)?popularAssets:null,
             recent : recent
 		},
 		tags : {
