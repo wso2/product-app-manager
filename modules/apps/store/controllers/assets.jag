@@ -3,8 +3,8 @@ var caramel;
 (function () {
     var assets, paging, current, total, sso, url, mainPage, subPage,title, selectedCategory, key,
             options = {},
-			subscriptions ={},
-	    	subscription = false,
+            subscriptions ={},
+            subscription = false,
             log = new Log(),
             mod = require('store'),
             user = mod.server.current(session),
@@ -25,21 +25,21 @@ var caramel;
     paging = store.assetsPaging(request);
 
     mainPage = type;
-    
+
     title = store.assetLinks(type).title;
-    
+
     if(user){
-	    subscriptions = store.subscriptions(type);
-		if(subscriptions[type]){
-			var count = Object.keys(subscriptions[type]).length;
-		    if(count == 0){
-				subscriptions[type]={};
-			}else{
-				subscription =true;
-			}
-		}
-	}
-     
+        subscriptions = store.subscriptions(type);
+        if(subscriptions[type]){
+            var count = Object.keys(subscriptions[type]).length;
+            if(count == 0){
+                subscriptions[type]={};
+            }else{
+                subscription =true;
+            }
+        }
+    }
+
     if (tag) {
         subPage = '/ Tag: "' + tag + '"';
         assets = store.tagged(type, tag, paging);
@@ -58,10 +58,13 @@ var caramel;
         assets = store.search(options, paging);
     } else {
         if(paging.sort=='popular'){
+            //TODO:  move to a module.
             var db = new Database('SOCIAL_CACHE');
-            var result = db.query("SELECT ID FROM SOCIAL_CACHE WHERE TYPE='" + type.replace(/\W/g, '') + "' ORDER BY RATING DESC LIMIT " + paging.start + ",12");
-            assets = [];
-            var pos,aid,asset;
+            var showDefaults = user.tenantDomain == "carbon.super" ? "OR TENANT IS NULL" : "";
+            var result = db.query("SELECT ID FROM SOCIAL_CACHE WHERE TYPE='" + type.replace(/\W/g, '') + "' AND " +
+                    "(TENANT='" + user.tenantDomain + "' " + showDefaults + " ) ORDER BY RATING DESC LIMIT " + paging.start + ",12");
+            var assets = [];
+            var pos, aid, asset;
             for (var n = 0; n < result.length; n++) {
                 var combinedAid = String(result[n].ID);
                 pos = combinedAid.indexOf(':');
@@ -70,6 +73,7 @@ var caramel;
                 asset.indashboard = store.isuserasset(aid, type);
                 assets.push(asset);
             }
+            return assets;
         } else{
             assets = store.assets(type, paging);
         }
@@ -87,11 +91,11 @@ var caramel;
         }),
         navigation: site.navigation(tenantId),
         search: {
-                   mainPage: mainPage,
-                   subPage: subPage,
-                   isTopAssets: false,
-                   searchFields: rxtAttributes
-               },
+            mainPage: mainPage,
+            subPage: subPage,
+            isTopAssets: false,
+            searchFields: rxtAttributes
+        },
         type: type,
         selectedCategory: selectedCategory,
         tags: function () {
@@ -119,3 +123,4 @@ var caramel;
     });
 }());
 %>
+

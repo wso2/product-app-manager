@@ -30,7 +30,8 @@ var caramel;
     var obj, reviewsJSON;
     if (target) {
         try {
-            obj = JSON.parse(String(social.getSocialObjectJson(target, "POPULAR")));
+            var tenantDomain = logged ? logged.tenantDomain : "carbon.super";
+            obj = JSON.parse(String(social.getSocialObjectJson(target, tenantDomain, "POPULAR")));
             reviewsJSON = obj.attachments;
         } catch (e) {
             log.error(e);

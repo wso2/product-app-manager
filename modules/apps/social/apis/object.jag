@@ -9,7 +9,7 @@ response.addHeader("Content-Type", "application/json");
         var social = carbon.server.osgiService('org.wso2.carbon.social.service.SocialActivityService');
         var target = request.getParameter('target');
         var sortBy = request.getParameter('sortBy') || "NEWEST";
-        var obj = social.getSocialObjectJson(target, sortBy.toUpperCase());
+        var obj = social.getSocialObjectJson(target, logged.tenantDomain, sortBy.toUpperCase());
 
         print(obj);
     } else {

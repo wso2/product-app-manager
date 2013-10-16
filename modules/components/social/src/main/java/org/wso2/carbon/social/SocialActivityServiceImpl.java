@@ -19,7 +19,7 @@ public class SocialActivityServiceImpl implements SocialActivityService {
 
     @Override
     public String[] listActivities(String contextId) {
-        List<Activity> activities = activityBrowser.listActivitiesChronologically(contextId);
+        List<Activity> activities = activityBrowser.listActivitiesChronologically(contextId, null);
         String[] serializedActivities = new String[activities.size()];
         for (int i = 0; i < activities.size(); i++) {
             serializedActivities[i] = activities.get(i).toString();
@@ -28,19 +28,19 @@ public class SocialActivityServiceImpl implements SocialActivityService {
     }
 
     @Override
-    public double getRating(String targetId) {
-        return activityBrowser.getRating(targetId);
+    public double getRating(String targetId, String tenant) {
+        return activityBrowser.getRating(targetId, tenant);
     }
 
     @Override
-    public String getSocialObjectJson(String targetId, String sortOrder) {
+    public String getSocialObjectJson(String targetId, String tenant, String sortOrder) {
         SortOrder order;
         try {
             order = SortOrder.valueOf(sortOrder);
         } catch (IllegalArgumentException e) {
             order = SortOrder.NEWEST;
         }
-        JsonObject socialObject = activityBrowser.getSocialObject(targetId, order);
+        JsonObject socialObject = activityBrowser.getSocialObject(targetId, tenant, order);
 
         if (socialObject != null) {
             return socialObject.toString();
