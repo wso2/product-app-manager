@@ -1,5 +1,5 @@
 /*
- Description: The class is used to create and manage modes from schemas
+ Description: The class is used to create and manage models from schemas
  Filename:model.creator.js
  Created Date:23/9/2013
  */

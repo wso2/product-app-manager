@@ -1,5 +1,12 @@
 /*
- The class provides the template for a database driver with common functionality
+ Description: The class provides the template for a database driver which is capable of;
+               1. connecting
+               2. disconnecting
+               3. querying
+              A connection to the database can be made either usinga  connection string or a datasource.
+              The datasource should be defined in the repository/datasources/master.datasource.xml.
+Filename: driver.js
+Created Date: 15/10/2013
  */
 
 var driver = function () {
@@ -16,17 +23,23 @@ var driver = function () {
         utility.config(options, this);
     };
 
+    /*
+    The function creates a database connection either using a query string or
+    using a Datasource.
+     The datasource should be defined in the repository/datasources/master.datasource.xml.
+    @config: A configuration object containing the connection information
+     */
     DBDriver.prototype.connect = function (config) {
         var connectionString = '' || config.connectionString;
         var username = config.username;
         var password = config.password;
         var dbConfig = config.dbConfig || {};
-        var dataSource=config.dataSource||null;
+        var dataSource = config.dataSource || null;
         try {
-            if(dataSource){
-                this.instance=new Database(dataSource);
+            if (dataSource) {
+                this.instance = new Database(dataSource);
             }
-            else{
+            else {
                 this.instance = new Database(connectionString, username, password, dbConfig);
             }
 
@@ -36,6 +49,9 @@ var driver = function () {
         }
     };
 
+    /*
+    The function closes the connection to the database
+     */
     DBDriver.prototype.disconnect = function () {
         this.instance.close();
     };
@@ -49,9 +65,10 @@ var driver = function () {
      */
     DBDriver.prototype.query = function (query, schema, modelManager, model, options) {
 
-        var options=options||{};
-        var isParam=options.PARAMETERIZED||false;
+        var options = options || {};
+        var isParam = options.PARAMETERIZED || false;
         var result;
+
 
         if (isParam) {
             var args = getValueArray(model, schema, query);
@@ -61,6 +78,7 @@ var driver = function () {
         else {
             result = this.instance.query(query) || [];
         }
+
 
         var processed;
         processed = this.queryTranslator.translate(schema, modelManager, result);
@@ -82,10 +100,10 @@ var driver = function () {
         var field;
         for (var index in schema.fields) {
             field = schema.fields[index];
-            if(model[field.name] instanceof File){
+            if (model[field.name] instanceof File) {
                 values.push(model[field.name].getStream());
             }
-            else{
+            else {
                 values.push(model[field.name]);
             }
 
