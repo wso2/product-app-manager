@@ -5,11 +5,9 @@
  ;
  */
 
-var opened = false, currentPage = 1, totalPages;
+var opened = false, currentPage = 1;
 
 $(function() {
-	var paging = store.asset.paging;
-	paging.current = 1;
 
 	$(document).on('click', '#assets-container .asset-add-btn', function(event) {
 		var parent = $(this).parent().parent().parent();
@@ -60,16 +58,16 @@ $(function() {
 	var loadAssetsScroll = function(url) {
 		caramel.data({
 			title : null,
-			header : ['header'],
-			body : ['assets', 'pagination', 'sort-assets']
+			body : ['assets']
 		}, {
 			url : url,
 			success : function(data, status, xhr) {
+                active = data.body.assets.context.assets.length >= 12;
 				renderAssetsScroll(data);
 				$('.loading-inf-scroll').hide();
 			},
 			error : function(xhr, status, error) {
-
+                active = false;
 			}
 		});
 		$('.loading-inf-scroll').show();
@@ -94,18 +92,14 @@ $(function() {
 		loadAssets(url);
 	});
 
-	
+	var active = true;
 
 	var infiniteScroll = function() {
 		totalPages = $('#assets-container').data('pages');
 
-		if(currentPage < totalPages) {
+		if(active) {
 			if($(window).scrollTop() + $(window).height() >= $(document).height() * .8) {
-				var selType = $('.selected-type').data('sort'), pathName = window.location.pathname, search = window.location.search;
-				search += (search != "") ? '&' : '?';
-
-				var url = pathName + search + 'page=' + (++currentPage);
-
+				var url = caramel.url(store.asset.paging.url + (++currentPage));
 				loadAssetsScroll(url);
 				$(window).unbind('scroll', infiniteScroll);
 				setTimeout(function() {
@@ -113,7 +107,6 @@ $(function() {
 				}, 500);
 			}
 		} else {
-
 			$('.loading-inf-scroll').hide();
 		}
 	}

@@ -83,9 +83,6 @@ var renderAssets, mouseStop;
        caramel.js($('body'), data.body['assets'].resources.js, 'assets', function () {
                 mouseStop();
             });
-            caramel.js($('body'), data.header['sort-assets'].resources.js, 'sort-assets', function () {
-                updateSortUI();
-            });
     	
     };
 

@@ -109,13 +109,14 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
 				}
 				return false;
 			}, paging);
-
 			dataInjector.cached().inject(assets, DataInjectorModes.DISPLAY);
 
 			return assets;
 		}
 		if(options.query) {
 			var query = options.query;
+            log.info('==================================================');
+                        log.info(query);
 			assets = that.manager.search(query, paging);
 
 			dataInjector.cached().inject(assets, DataInjectorModes.DISPLAY);
@@ -245,27 +246,6 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
         return items.slice(paging.start, (paging.start + paging.count));
     };
 
-    /*Manager.prototype.search = function (filters, paging) {
-     var all = this.manager.find(function (artifact) {
-     var expected, field, actual;
-     for (field in filters) {
-     if (filters.hasOwnProperty(field)) {
-     expected = filters[field];
-     actual = artifact.attribute(field);
-     if (expected instanceof RegExp) {
-     if (!expected.test(actual)) {
-     return false;
-     }
-     } else {
-     return expected == actual;
-     }
-     }
-     }
-     return true;
-     });
-     return this.sorter.paginate(all, paging);
-     };*/
-
     Manager.prototype.search = function (options, paging) {
         return loadRatings(this, search(this, options,paging), paging);
     };
@@ -335,36 +315,6 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
 
         return loadRatings(this, this.sorter.paginate(all, paging));*/
         return null;
-    };
-
-    /*
-    The method will now count the number of assets matching the query
-    encapsulated in the options object.
-    @options: An object with properties that must be matched
-    @return:An integer count of the number of matches,else false.
-     */
-    Manager.prototype.count = function (options) {
-        if (options) {
-            return search(this, options).length;
-        }
-
-        var matchingCount = 0;
-
-
-        this.manager.find(function (asset) {
-
-            //If the passed in asset matches the current asset we
-            //increase published count.
-            if(matchArtifact(options,asset)){
-                matchingCount++;
-            }
-
-        },null);
-
-        log.debug('Number of assets counted : ' + matchingCount);
-
-        //return this.manager.count();
-        return matchingCount;
     };
 
     /*
