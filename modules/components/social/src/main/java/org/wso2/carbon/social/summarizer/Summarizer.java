@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface Summarizer {
 
-    void add(Activity activity);
+    boolean add(Activity activity);
 
     void summarize(JsonObject root, Map<String, Activity> activities);
 }

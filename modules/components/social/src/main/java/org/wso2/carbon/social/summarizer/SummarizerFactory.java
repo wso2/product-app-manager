@@ -12,6 +12,8 @@ public class SummarizerFactory {
             return getLikeSummarizer(summarizerMap);
         } else if (summarizerName.equals("undislike")) {
             return getLikeSummarizer(summarizerMap);
+        } else if (summarizerName.equals("review")) {
+            return new ReviewSummarizer();
         } else {
             return null;
         }

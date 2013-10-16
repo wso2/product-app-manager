@@ -21,8 +21,9 @@ public class DefaultSummarizer implements Summarizer {
 
 
     @Override
-    public void add(Activity activity) {
+    public boolean add(Activity activity) {
         activities.put(activity.getId(), activity);
+        return true;
     }
 
     @Override
