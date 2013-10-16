@@ -67,6 +67,7 @@
                 <exclude>**/oracle.sql</exclude>
             </excludes>
         </fileSet>
+	
         <!--Multitenancy related file -->
         <fileSet>
             <directory>
@@ -137,6 +138,13 @@
                 <exclude>**/oracle.sql</exclude>
             </excludes>
         </fileSet>
+
+        <!--Storage SQL scripts-->
+        <fileSet>
+            <directory>src/repository/dbscripts/storage</directory>
+            <ouputDirectory>${pom.artifactId}-${pom.version}/dbscripts/storage/</ouputDirectory>
+        </fileSet>
+
         <!--copy jaxrs web app for OAuth feature-->
         <fileSet>
             <directory>
