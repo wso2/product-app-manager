@@ -18,9 +18,9 @@ public class ActivitySummarizer {
     Map<String, Summarizer> summarizerMap = new HashMap<String, Summarizer>();
     DefaultSummarizer defaultSummarizer;
 
-    public ActivitySummarizer(String rootId) {
+    public ActivitySummarizer(String rootId, SortOrder order) {
         this.rootId = rootId;
-        defaultSummarizer = new DefaultSummarizer(rootId);
+        defaultSummarizer = new DefaultSummarizer(rootId, order);
     }
 
 

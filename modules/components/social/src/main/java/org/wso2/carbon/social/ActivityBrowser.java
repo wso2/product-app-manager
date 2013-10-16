@@ -42,7 +42,7 @@ public class ActivityBrowser {
 
     public JsonObject getSocialObject(String targetId, SortOrder order) {
         List<Activity> activities = listActivitiesChronologically(targetId);
-        ActivitySummarizer summarizer = new ActivitySummarizer(targetId);
+        ActivitySummarizer summarizer = new ActivitySummarizer(targetId, order);
         for (Activity activity : activities) {
             summarizer.add(activity);
         }
