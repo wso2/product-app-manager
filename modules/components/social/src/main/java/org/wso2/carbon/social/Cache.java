@@ -18,21 +18,22 @@ public class Cache {
     private static final Log LOG = LogFactory.getLog(Cache.class);
     private Connection connection = null;
 
-    public void put(String id, JsonObject obj) {
+    public void put(String id, String tenant, JsonObject obj) {
         if (connection == null) {
             init();
         }
 
-        String insertTableSQL = "MERGE INTO " + TABLE_NAME + "(id,type , body , rating) VALUES(?,?,?,?)";
+        String insertTableSQL = "MERGE INTO " + TABLE_NAME + "(id,tenant ,type , body , rating) VALUES(?,?,?,?,?)";
         PreparedStatement statement = null;
         try {
             statement = connection.prepareStatement(insertTableSQL);
             statement.setString(1, id);
-            statement.setString(2, id.substring(0, id.indexOf(':')));
-            statement.setString(3, obj.toString());
+            statement.setString(2, tenant);
+            statement.setString(3, id.substring(0, id.indexOf(':')));
+            statement.setString(4, obj.toString());
             JsonElement ratingJSON = obj.get("rating");
             Number rating = ratingJSON == null ? 0 : ratingJSON.getAsNumber();
-            statement.setDouble(4, rating.doubleValue());
+            statement.setDouble(5, rating.doubleValue());
             statement.executeUpdate();
         } catch (SQLException e) {
             LOG.error("could not cache WSO2 Social object", e);
@@ -76,7 +77,7 @@ public class Cache {
             DataSource dataSource = (DataSource) carbonDataSource.getDSObject();
             connection = dataSource.getConnection();
             if (!tableExists()) {
-                executeUpdate("CREATE TABLE " + TABLE_NAME + " (id VARCHAR(255) NOT NULL,type VARCHAR(255), body VARCHAR(5000), rating DOUBLE,  PRIMARY KEY ( id ))");
+                executeUpdate("CREATE TABLE " + TABLE_NAME + " (id VARCHAR(255) NOT NULL, tenant VARCHAR(255),type VARCHAR(255), body VARCHAR(5000), rating DOUBLE,  PRIMARY KEY ( id ))");
                 LOG.info("table '" + TABLE_NAME + "' created for storing WSO2 Social object cache");
             }
         } catch (DataSourceException e) {

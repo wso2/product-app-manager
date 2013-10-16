@@ -19,11 +19,11 @@ public class ActivityBrowser {
     private Connection conn;
     private Cache cache = new Cache();
 
-    public double getRating(String targetId) {
+    public double getRating(String targetId, String tenant) {
         int totalRatings = 0;
         int numRatings = 0;
 
-        JsonObject socialObject = getSocialObject(targetId, null);
+        JsonObject socialObject = getSocialObject(targetId, tenant, null);
         JsonArray attachments = socialObject.get("attachments").getAsJsonArray();
 
         for (JsonElement r : attachments) {
@@ -40,18 +40,18 @@ public class ActivityBrowser {
         }
     }
 
-    public JsonObject getSocialObject(String targetId, SortOrder order) {
-        List<Activity> activities = listActivitiesChronologically(targetId);
+    public JsonObject getSocialObject(String targetId, String tenant, SortOrder order) {
+        List<Activity> activities = listActivitiesChronologically(targetId, tenant);
         ActivitySummarizer summarizer = new ActivitySummarizer(targetId, order);
         for (Activity activity : activities) {
             summarizer.add(activity);
         }
         JsonObject summarize = summarizer.summarize();
-        cache.put(targetId, summarize);
+        cache.put(targetId, tenant, summarize);
         return summarize;
     }
 
-    public List<Activity> listActivities(String contextId) {
+    public List<Activity> listActivities(String contextId, String tenantDomain) {
         List<Activity> activities = null;
         Connection connection = getConnection();
         if (connection != null) {
@@ -63,9 +63,12 @@ public class ActivityBrowser {
                 resultSet = statement.executeQuery();
                 activities = new ArrayList<Activity>();
                 while (resultSet.next()) {
-                    JsonElement body = parser.parse(resultSet.getString(BODY_COLUMN));
-                    Activity activity = new Activity(body.getAsJsonObject(), resultSet.getInt(TIMESTAMP_COLUMN));
-                    activities.add(activity);
+                    JsonObject body = (JsonObject) parser.parse(resultSet.getString(BODY_COLUMN));
+                    String tenant = getTenant(body);
+                    if (tenantDomain.equals(tenant)) {
+                        Activity activity = new Activity(body.getAsJsonObject(), resultSet.getInt(TIMESTAMP_COLUMN));
+                        activities.add(activity);
+                    }
                 }
             } catch (SQLException e) {
                 String message = e.getMessage();
@@ -94,8 +97,20 @@ public class ActivityBrowser {
         }
     }
 
-    public List<Activity> listActivitiesChronologically(String contextId) {
-        List<Activity> activities = listActivities(contextId);
+    private String getTenant(JsonObject body) {
+        JsonObject actor = body.getAsJsonObject("actor");
+        if (actor != null) {
+            String id = actor.get("id").getAsString();
+            int j = id.lastIndexOf('@') + 1;
+            if (j > 0) {
+                return id.substring(j);
+            }
+        }
+        return null;
+    }
+
+    public List<Activity> listActivitiesChronologically(String contextId, String tenantDomain) {
+        List<Activity> activities = listActivities(contextId, tenantDomain);
         Collections.sort(activities, new Comparator<Activity>() {
             @Override
             public int compare(Activity a1, Activity a2) {
