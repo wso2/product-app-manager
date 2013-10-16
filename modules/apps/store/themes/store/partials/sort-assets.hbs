@@ -18,7 +18,7 @@
 						</li>
 						{{#each categories}}
 						<li>
-							<a href="{{url "/assets"}}/{{../../type}}?fields=true&category={{this}}">{{this}}</a>
+							<a href='{{url "/assets"}}/{{../../type}}?query=category:"{{this}}"'>{{this}}</a>
 						</li>
 						{{/each}}
 					</ul>
@@ -60,11 +60,6 @@
 				</li>
 			</ul>
 		</div>
-
-		<!--
-		<div class="span4 pull-right txt-right">
-		{{t "Showing assets"}} <strong>{{start}}-{{end}}</strong> of {{total}}
-		</div>-->
 
 	</div>
 </div>

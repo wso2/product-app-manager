@@ -1,58 +1,57 @@
 <%
 
 /*
-Description:
+Description: The class is used to perform validations on a field name value pair
+            GET /api/validations/assets/{type}/{fieldName}/{fieldValue}     Returns a message object indicating
+                                                                            whether the field is correct
 Filename: validations_api_router.jag
 Created Date: 8/10/2013
 */
 
 var config = require('/config/publisher.json');
 var caramel = require('caramel');
+var utility=require('/modules/utility.js').rxt_utility();
 
 var router = require('/modules/router-g.js').router();
 var routeManager = new router.Router();
 
 var log = new Log();
-log.info("Validations");
-print({ok:true});
 
-routeManager.register('GET', 'publisher', '/publisher/api/validations/assets/{type}/{field}', function (context) {
+routeManager.register('GET', 'publisher', '/publisher/api/validations/assets/{type}/{fieldName}/{fieldValue}', function (context) {
     var shortName = context.params.type;
-    var field = context.params.field;
+    var fieldName = context.params.fieldName;
+    var fieldValue=context.params.fieldValue;
     var artifactManager = rxtManager.getArtifactManager(shortName);
 	
 	
-	
-    //Check if the type is valid
-    try {
+    try{
 
-        var model=modelManager.getModel(shortName);
+        //A predicate object used in the comparison
+        var predicate={}
+        predicate['attributes']={};
 
-        //assigning default thumbnail and banner if not provided.
-        if(context.post['images_thumbnail'] == '') {
-            context.post['images_thumbnail'] = '/publisher/config/defaults/img/thumbnail.jpg';
-        }
-        if(context.post['images_banner'] == '') {
-            context.post['images_banner'] = '/publisher/config/defaults/img/banner.jpg';
-        }
-        
-        
-        if(context.post.realtime){
-			print({ok:false});
-            return;
-		}
-		
-        model.import('form.importer',context.post);
+        predicate['attributes'][fieldName]=fieldValue;
 
-        //Perform validations on the asset
-        var report=model.validate();
+        //Perform a search for an asset with the provided name
+        var matches=artifactManager.find(function(asset){
+            var equal=utility.assertEqualCaseSensitive(asset,predicate);
 
-        //If the report indicates the model has failed validations send an error
-        if((report)&&(report.failed)){
-            print({ok:false,message:'Validation failure',report:report});
-            return;
+            return equal;
+        },null);
+
+
+        var msg={};
+        var errors=[];
+        msg['ok']=true;
+
+        //Check if there are any matches for the asset
+        if(matches.length>0){
+            msg['ok']=false;
+            errors.push(fieldName+' is present');
+            msg['errors']=errors;
         }
 
+        print(msg);
 
     }
     catch (e) {
@@ -62,5 +61,26 @@ routeManager.register('GET', 'publisher', '/publisher/api/validations/assets/{ty
 
 });
 
+
+var securityModule=require('/modules/security/security.manager.js').securityManagementModule();
+
+var sm=securityModule.cached();
+
+//This will short circuit the handling of the requests
+var passed=sm.check(session,function(){
+    response.sendError(401);
+});
+
+//Stop servicing the request if the check failed
+if(passed){
+
+    var user=require('store').user;
+    var publisher = require('/modules/publisher.js').publisher(request, session);
+
+    var rxtManager = publisher.rxtManager;
+    var modelManager = publisher.modelManager;
+    var tagModule=require('/modules/tag.management.js').tagModule();
+    routeManager.handle(request,response);
+}
 
 %>

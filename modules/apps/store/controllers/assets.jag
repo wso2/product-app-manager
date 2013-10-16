@@ -1,7 +1,7 @@
 <%
 var caramel;
 (function () {
-    var assets, paging, current, total, sso, url, mainPage, subPage,title,
+    var assets, paging, current, total, sso, url, mainPage, subPage,title, selectedCategory, key,
             options = {},
 			subscriptions ={},
 	    	subscription = false,
@@ -15,14 +15,12 @@ var caramel;
             site = require('/modules/site.js'),
             tag = request.getParameter('tag'),
             query = request.getParameter('query'),
-            fields = request.getParameter('fields'),
-            selectedCategory = request.getParameter('category'),
             event = require('/modules/event.js');
 
     caramel = require('caramel');
 
     sso = configs.ssoConfiguration.enabled;
-    url = '/assets/' + type + '/?' + (tag ? 'tag=' + tag + '&' : '') + (query ? 'query=' + query + '&' : '')+ (selectedCategory ? 'category=' + selectedCategory + '&' : '');
+    url = '/assets/' + type + '/?' + (tag ? 'tag=' + tag + '&' : '') + (query ? 'query=' + query + '&' : '');
 
     paging = store.assetsPaging(request);
 
@@ -31,7 +29,7 @@ var caramel;
     title = store.assetLinks(type).title;
     
     if(user){
-	subscriptions = store.subscriptions(type);
+	    subscriptions = store.subscriptions(type);
 		if(subscriptions[type]){
 			var count = Object.keys(subscriptions[type]).length;
 		    if(count == 0){
@@ -40,145 +38,42 @@ var caramel;
 				subscription =true;
 			}
 		}
-	}	
+	}
      
     if (tag) {
-
-        total = store.assetCount(type, {
-            tag: tag
-        });
         subPage = '/ Tag: "' + tag + '"';
-        if (paging.start > total || paging.start < 0) {
-            response.sendError(404, 'Requested page cannot be found');
-            return;
-        }
-        assets = function () {
-            return store.tagged(type, tag, paging);
-        };
-        
+        assets = store.tagged(type, tag, paging);
     } else if (query) {
-
+        query = require('/modules/search.js').build(query);
         options = {
             type: type,
-            attributes: require('/modules/search.js').build(query)
+            attributes: query
         };
-
-        total = store.assetCount(type, options);
-        subPage = '/ Search: "' + query + '"';
-        if (paging.start > total || paging.start < 0) {
-            response.sendError(404, 'Requested page cannot be found');
-            return;
-        }
-        assets = function () {
-            return store.search(options, paging);
-        };
-        
-    } else if (fields) {
-
-        var parts, param, params, value;
-        options = {
-            type: type,
-            attributes: {"lcState" : configs.lifeCycleBehaviour.visibleIn}
-        };
-        query = '';
-        params = request.getAllParameters();
-        
-        //advanced search is only allowed for fields under overview section
-        for (param in params) {
-            if (param !== 'fields' && params.hasOwnProperty(param)) {
-               options.attributes['overview_' + param.trim().toLocaleLowerCase()] = params[param];
-                if (query !== '') {
-                    query += '&';
-                }
-                query += (param + '=' + params[param]);
+        for(key in query) {
+            if(query.hasOwnProperty(key) && key === 'overview_category') {
+                selectedCategory = query[key];
             }
         }
-        total = store.assetCount(type, options);
         subPage = '/ Search: "' + query + '"';
-        if (paging.start > total || paging.start < 0) {
-            response.sendError(404, 'Requested page cannot be found');
-            return;
-        }
-        assets = function () {
-            return store.search(options, paging);
-        };
-        
-    } else if (selectedCategory) {
-
-        var parts, param, params, value;
-      
-        options = {
-            type: type,
-            attributes: {"lcState" : configs.lifeCycleBehaviour.visibleIn}
-        };
-        query = '';
-        params = request.getAllParameters();
-        
-        //skip attribut for sort
-        for (param in params) {
-            if (param !== 'sort' && params.hasOwnProperty(param)) {
-               options.attributes['overview_' + param.trim().toLocaleLowerCase()] = params[param];
-                if (query !== '') {
-                    query += '&';
-                }
-                query += (param + '=' + params[param]);
+        assets = store.search(options, paging);
+    } else {
+        if(paging.sort=='popular'){
+            var db = new Database('SOCIAL_CACHE');
+            var result = db.query("SELECT ID FROM SOCIAL_CACHE WHERE TYPE='" + type.replace(/\W/g, '') + "' ORDER BY RATING DESC LIMIT " + paging.start + ",12");
+            assets = [];
+            var pos,aid,asset;
+            for (var n = 0; n < result.length; n++) {
+                var combinedAid = String(result[n].ID);
+                pos = combinedAid.indexOf(':');
+                aid =  combinedAid.substring(pos + 1);
+                asset =  store.asset(type,aid);
+                asset.indashboard = store.isuserasset(aid, type);
+                assets.push(asset);
             }
+        } else{
+            assets = store.assets(type, paging);
         }
-       // paging.sort=sort;
-        total = store.assetCount(type, options);
-       
-        subPage = '/ Search: "' + query + '"';
-        if (paging.start > total || paging.start < 0) {
-            response.sendError(404, 'Requested page cannot be found');
-            return;
-        }
-        assets = function () {
-            return store.search(options, paging);
-        };
-    }else {
-
-        total = store.assetCount(type);
-
-
-        if (paging.start > total || paging.start < 0) {
-            response.sendError(404, 'Requested page cannot be found');
-            return;
-        }
-
-
-        assets = function () {
-            if(paging.sort=='popular'){
-                var db = new Database('SOCIAL_CACHE');
-                var result = db.query("SELECT ID FROM SOCIAL_CACHE WHERE TYPE='" + type.replace(/\W/g, '') + "' ORDER BY RATING DESC LIMIT " + paging.start + ",12");
-                var assets = [];
-                var pos,aid,asset;
-                for (var n = 0; n < result.length; n++) {
-                    var combinedAid = String(result[n].ID);
-                    pos = combinedAid.indexOf(':');
-                    aid =  combinedAid.substring(pos + 1);
-                    asset =  store.asset(type,aid);
-                    asset.indashboard = store.isuserasset(aid, type);
-                    assets.push(asset);
-                }
-                return assets;
-            }else{
-                return store.assets(type, paging);
-            }
-        }
-
     }
-
-    //Check if there is a type before trying to read attributes
-    /*var type=(type=='null')?null:type;
-    var rxtAttributes={};
-    if(type){
-        log.info('Before obtaining rxt attributes');
-        var rxtAttributes = require('modules/util.js').getRXTAttributes(tenantId, type);
-        log.info('After obtaining rxt attributes');
-    }*/
-   
-   //log.info(selectedCategory);
-   
 
     var rxtAttributes = require('/modules/util.js').getRXTAttributes(tenantId, type);
 
@@ -191,7 +86,6 @@ var caramel;
             user: user
         }),
         navigation: site.navigation(tenantId),
-       
         search: {
                    mainPage: mainPage,
                    subPage: subPage,
@@ -200,8 +94,6 @@ var caramel;
                },
         type: type,
         selectedCategory: selectedCategory,
-       
-        /*tag: tag,*/
         tags: function () {
             return [
                 {
@@ -210,15 +102,12 @@ var caramel;
                 }
             ];
         },
-        assets: assets(),
+        assets: assets,
         paging: {
             url: url + 'sort=' + paging.sort + '&page=',
-            start: paging.start || 0,
-            count: paging.count || store.assetsPageSize(),
-            size: store.assetsPageSize(),
-            total: total,
             sort: paging.sort,
-            tag: tag
+            tag: tag,
+            size: assets.length
         },
         sorting: {
             url: url + 'sort='
