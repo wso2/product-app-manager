@@ -37,6 +37,7 @@ public class ReviewSummarizer implements Summarizer {
             if (activity != null) {
                 object = activity.getBody();
             } else {
+                //TODO: ideally we should check if (activityRatingEntry.getKey() == rootId)
                 object = root;
             }
             object.add("rating", new JsonPrimitive(((double) totalRatings) / numOfRatings));
