@@ -187,7 +187,7 @@ var installer = function () {
 
 
         //Add the asset
-        log.debug('about to add the asset : ' + artifact.name);
+        log.info('about to add the asset : ' + artifact.name);
 
         //Store any resources in the Storage Manager
         context.dataInjector.inject(artifact, context.dataInjectorModes.STORAGE);
@@ -196,12 +196,13 @@ var installer = function () {
 
         var assets = artifactManager.find(function (adapter) {
             return (adapter.attributes.overview_name == name) ? true : false;
-        }, 1);
+        }, null);
 
         context['currentAsset'] = assets[0] || null;
-        log.debug('added asset: ' + stringify(context.currentAsset));
+        //log.info('added asset: ' + stringify(context.currentAsset));
 
         addToSocialCache(context.currentAsset);
+        log.info('finished');
     }
 
     /*
@@ -233,6 +234,8 @@ var installer = function () {
         var currentLifeCycleName = currentAsset.lifecycle || null;
         var currentLifeCycleState = currentAsset.lifecycleState || null;
         var attempts = 0;
+
+        log.info('attaching lifecycle to: '+currentAsset.attributes.overview_name);
 
         log.debug('current lifecycle: ' + currentLifeCycleName + ' , current state: ' + currentLifeCycleState);
 
@@ -268,6 +271,8 @@ var installer = function () {
 
             log.debug('current lifecycle state: ' + currentLifeCycleState);
         }
+
+        log.info('final state of : '+currentAsset.attributes.overview_name+' '+currentLifeCycleState);
     }
 
     /*
