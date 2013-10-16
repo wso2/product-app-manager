@@ -45,18 +45,18 @@
     <div id="slideshow-clearfix"></div>
 {{/if}}
 
-{{#itr recentAssets}}
+{{#each assets}}
     <div class="assets-container">
-        <h3 class="asset-title-separator asset-type-{{key}}"><span>{{#if ../recent}}Recent {{/if}}{{cap key}}s</span>
+        <h3 class="asset-title-separator asset-type-{{type}}"><span>Recent {{plural}}</span>
 
-            <div class="pagination top-asset-slideshow-pag" id="top-asset-slideshow-pag-{{key}}"></div>
+            <div class="pagination top-asset-slideshow-pag" id="top-asset-slideshow-pag-{{type}}"></div>
         </h3>
 
         <div class="top-asset-slideshow-cont">
             <div class="html_carousel">
-                <div id="top-asset-slideshow-{{key}}">
-                    {{#if value}}
-                        {{#each value}}
+                <div id="top-asset-slideshow-{{type}}">
+                    {{#if assets}}
+                        {{#each assets}}
                             {{#attributes}}
                                 <div class="slide asset" data-id="{{../id}}" data-type="{{../type}}">
                                     <a href="#">
@@ -83,7 +83,7 @@
                                             <ul>
                                                 <li>
                                                     <h4>{{t "Category"}}</h4>
-                                                    <a class="asset-category" href="#">{{cap ../type}}</a>
+                                                    <a class="asset-category" href="#">{{../../singular}}</a>
                                                 </li>
                                                 <li>
                                                     <h4>{{t "Author"}}</h4>
@@ -111,5 +111,5 @@
 
         </div>
     </div>
-{{/itr}}
+{{/each}}
 
