@@ -33,10 +33,6 @@ var caramel;
     popularDiff = popularCount - popular * length;
     paging = store.assetsPaging(request);
     query = query ? require('/modules/search.js').build(String(query)) : null;
-    log.info(popular);
-    log.info(recent);
-    log.info(popularDiff);
-    log.info(recentDiff);
     types.forEach(function (type) {
         manager = store.rxtManager(type, session);
         if (query) {
@@ -60,9 +56,6 @@ var caramel;
         recentItems = recentItems.concat(store.recentAssets(type, first ? (recent + recentDiff) : recent));
         first = false;
     });
-    log.info(popularItems.length);
-    log.info(recentItems.length);
-    //log.info(items);
     caramel = require('caramel');
     sso = configs.ssoConfiguration.enabled;
     loggedUser = (sso && ssoUser) ? {
