@@ -27,7 +27,11 @@ routeManager.register('GET','publisher','/publisher/api/tag/{type}',function(con
 
     var type=context.params.type;
 
+    log.info('before executing query');
+
     var tags=rxtManager.registry.query(TAG_QUERY);
+
+    log.info(tags);
 
     var tagManager=new tagModule.TagManager();
 

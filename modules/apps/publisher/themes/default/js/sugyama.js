@@ -219,6 +219,9 @@ var sugyamaModule = function () {
                 var element = coords[key];
                 var circle = paper.circle(element.x, element.y, VERTEX_RADIUS);
                 circle.attr('fill', '#6EC87F');
+                circle.attr('stroke-width', '3px');
+                circle.attr('stroke', '#647E9A');
+                circle.attr('r', VERTEX_RADIUS);
                 circle.node.setAttribute('class', element.label);
                 var txt = paper.text(element.x, element.y+VERTEX_RADIUS+10, element.label);
                 points.push(element);
@@ -254,8 +257,11 @@ var sugyamaModule = function () {
                         path.push('L')
                         path.push(toPoint.x);
                         path.push(toPoint.y);
-                        paper.path(path.join(','));
-
+                        
+                        var edge=paper.path(path.join(','));
+                        edge.attr('stroke', '#647E9A');
+                        edge.attr('stroke-width', '3px');
+                        
                         var angle = Math.atan2(toPoint.y - fromPoint.y, toPoint.x - fromPoint.x);
 
                         angle = angle * (180 / Math.PI);
@@ -288,7 +294,7 @@ var sugyamaModule = function () {
         var width = options.width || 4;
         var height = options.height || 8;
         var angle = options.angle || null;
-        var attributes = options.attributes || {fill: 'black'};
+        var attributes = options.attributes || {fill: '#647E9A', stroke:'#647E9A'};
         var rotateX = x;
         var rotateY = y;
 
