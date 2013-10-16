@@ -56,11 +56,15 @@ var driver = function () {
 
         if (isParam) {
             var args = getValueArray(model, schema, query);
+            log.info('executing query '+query);
 
             result = this.instance.query.apply(this.instance, args) || [];
+            log.info('result size: '+result.length);
         }
         else {
+            log.info('executing non parameter query '+query);
             result = this.instance.query(query) || [];
+            log.info('result size: '+result);
         }
 
 

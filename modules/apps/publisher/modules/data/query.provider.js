@@ -73,9 +73,11 @@ var queryProvider = function () {
     }
 
     function checkIfTableExists(schema) {
+
+
         var tableName = schema.table.toUpperCase();
         var query = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME='" + tableName + "' AND TABLE_SCHEMA='PUBLIC'; ";
-
+        log.info('checking if table exists '+query);
         return query;
     }
 

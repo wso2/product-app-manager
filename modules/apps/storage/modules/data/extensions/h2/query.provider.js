@@ -8,15 +8,13 @@ var queryProvider=function(){
 
     var dbScriptManager=require('/modules/data/common/db.script.manager.js').dbScriptManagerModule().getInstance();
 
-    var H2_DRIVER='h2';
+    var MYSQL_DRIVER='h2';
     var log=new Log('query.provider');
     /*
      The function builds a CREATE sql statement based on the provided schema
      */
     function create(schema){
-
-        var query=dbScriptManager.find(H2_DRIVER,schema.table);
-        log.info('using query: '+query);
+        var query=dbScriptManager.find(MYSQL_DRIVER,schema.table);
         return query;
     }
 

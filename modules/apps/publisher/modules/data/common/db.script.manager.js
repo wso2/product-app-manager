@@ -5,7 +5,7 @@ var dbScriptManagerModule = function () {
     var HOME = carbon.server.home;
     var DBSCRIPT_HOME = '/dbscripts';
     var CACHE_DBSCMANAGER = 'db.script.manager';
-    var STORAGE = '/storage';
+    var STORAGE = '/storage/';
     var log = new Log('db.script.manager');
 
 
@@ -14,6 +14,7 @@ var dbScriptManagerModule = function () {
      */
     function DBScriptManager() {
         this.map = {};
+        log.info('path: '+HOME + DBSCRIPT_HOME + STORAGE);
         this.bundleManager = new bundler.BundleManager({path: HOME + DBSCRIPT_HOME + STORAGE});
 
     }
@@ -22,9 +23,11 @@ var dbScriptManagerModule = function () {
      The function reads the contents of the dbscripts/storage directory
      */
     DBScriptManager.prototype.load = function () {
+        log.info('loading scripts');
         var rootBundle = this.bundleManager.getRoot();
         var that = this;
         rootBundle.each(function (bundle) {
+            log.info('inspecting bundle: '+bundle.getName());
             if (!bundle.isDirectory()) {
                 return;
             }
@@ -43,11 +46,15 @@ var dbScriptManagerModule = function () {
 
         //Check if the db type is handled
         if (!this.map.hasOwnProperty(dbType)) {
+            //throw 'required script repository for database type: '+dbType
+            //    +'not found.Please check if {SERVER_HOME}/dbscripts/storage/'+dbType+' is present.';
             return '';
         }
 
         //Check if the schema is handled
         if (!this.map[dbType].hasOwnProperty(schema)) {
+            //throw 'required script repository for database type: '+dbType+' schema: '+schema+' not found.'
+            //    +'Please check if {SERVER_HOME}/dbscripts/storage'+dbType+'/'+schema+'.sql is present.';
             return '';
         }
 
@@ -95,8 +102,10 @@ var dbScriptManagerModule = function () {
 
         //Check if there is already a cached copy of the script manager
         if (!instance) {
+            log.info('creating dbscript manager instance');
             instance = new DBScriptManager();
             instance.load();
+            log.info(instance.map);
             application.put(CACHE_DBSCMANAGER, instance);
         }
 
