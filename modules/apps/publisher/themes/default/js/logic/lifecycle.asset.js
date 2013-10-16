@@ -327,7 +327,7 @@ $(function () {
         for (var itemIndex in items) {
             output += '<tr>';
             output += '<td><span class="dateFull"> ' + items[itemIndex].timestamp + '</span></td>';
-            output += '<td><a href="#">' + items[itemIndex].user + '</a> changed the asset from ' + items[itemIndex].state
+            output += '<td><b>' + items[itemIndex].user + '</b> changed the asset from ' + items[itemIndex].state
                 + ' to ' + items[itemIndex].targetState + '</td>';
             output += '</tr>';
         }
