@@ -1,7 +1,7 @@
 <%
 var caramel;
 (function () {
-    var assets, paging, current, total, sso, url, mainPage, subPage,title,
+    var assets, paging, current, total, sso, url, mainPage, subPage,title, selectedCategory, key,
             options = {},
 			subscriptions ={},
 	    	subscription = false,
@@ -15,13 +15,12 @@ var caramel;
             site = require('/modules/site.js'),
             tag = request.getParameter('tag'),
             query = request.getParameter('query'),
-            selectedCategory = request.getParameter('category'),
             event = require('/modules/event.js');
 
     caramel = require('caramel');
 
     sso = configs.ssoConfiguration.enabled;
-    url = '/assets/' + type + '/?' + (tag ? 'tag=' + tag + '&' : '') + (query ? 'query=' + query + '&' : '')+ (selectedCategory ? 'category=' + selectedCategory + '&' : '');
+    url = '/assets/' + type + '/?' + (tag ? 'tag=' + tag + '&' : '') + (query ? 'query=' + query + '&' : '');
 
     paging = store.assetsPaging(request);
 
@@ -40,17 +39,21 @@ var caramel;
 			}
 		}
 	}
-
-    query = selectedCategory ? ((query || '') + ' category:"' + selectedCategory + '"') : query;
      
     if (tag) {
         subPage = '/ Tag: "' + tag + '"';
         assets = store.tagged(type, tag, paging);
     } else if (query) {
+        query = require('/modules/search.js').build(query);
         options = {
             type: type,
-            attributes: require('/modules/search.js').build(query)
+            attributes: query
         };
+        for(key in query) {
+            if(query.hasOwnProperty(key) && key === 'overview_category') {
+                selectedCategory = query[key];
+            }
+        }
         subPage = '/ Search: "' + query + '"';
         assets = store.search(options, paging);
     } else {

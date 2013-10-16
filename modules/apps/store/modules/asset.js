@@ -115,8 +115,6 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
 		}
 		if(options.query) {
 			var query = options.query;
-            log.info('==================================================');
-                        log.info(query);
 			assets = that.manager.search(query, paging);
 
 			dataInjector.cached().inject(assets, DataInjectorModes.DISPLAY);

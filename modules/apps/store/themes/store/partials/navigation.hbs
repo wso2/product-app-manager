@@ -13,7 +13,7 @@
                                                             <ul aria-labelledby="dLabel" role="menu" class="dropdown-menu">
                                                                 {{#each value.categories}}
                                                                     <li>
-                                                                        <a href="{{url "/assets"}}/{{../../key}}?category={{this}}">{{this}}</a>
+                                                                        <a href='{{url "/assets"}}/{{../../key}}?query=category:"{{this}}"'>{{this}}</a>
                                                                     </li>
                                                                 {{/each}}
                                                             </ul>
