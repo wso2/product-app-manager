@@ -18,26 +18,33 @@ public class ActivitySummarizer {
     Map<String, Summarizer> summarizerMap = new HashMap<String, Summarizer>();
     DefaultSummarizer defaultSummarizer;
 
-    public ActivitySummarizer(String rootId) {
+    public ActivitySummarizer(String rootId, SortOrder order) {
         this.rootId = rootId;
-        defaultSummarizer = new DefaultSummarizer(rootId);
+        defaultSummarizer = new DefaultSummarizer(rootId, order);
     }
 
 
     public void add(Activity activity) {
         String parentId = activity.getTargetId();
         if (parentId != null) {
-            String verb = activity.getBody().get("verb").getAsString();
-            Summarizer summarizer = summarizerMap.get(verb);
+            boolean added = false;
+            String objectType = activity.getObjectType();
+            String key = objectType == null ? activity.getVerb() : objectType;
+            Summarizer summarizer = summarizerMap.get(key);
             if (summarizer == null) {
-                summarizer = SummarizerFactory.create(verb, rootId, summarizerMap);
-                if (summarizer == null) {
-                    summarizer = defaultSummarizer;
-                } else {
-                    summarizerMap.put(verb, summarizer);
+                summarizer = SummarizerFactory.create(key, rootId, summarizerMap);
+                if (summarizer != null) {
+                    summarizerMap.put(key, summarizer);
                 }
             }
-            summarizer.add(activity);
+
+            if (summarizer != null) {
+                added = summarizer.add(activity);
+            }
+
+            if (!added) {
+                defaultSummarizer.add(activity);
+            }
 
         } else {
             LOG.error("failed to summarize activity (has no target id) : " + activity);

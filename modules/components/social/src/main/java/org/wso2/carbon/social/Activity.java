@@ -74,4 +74,15 @@ public class Activity {
         }
         return null;
     }
+
+    public int getRating() {
+        JsonObject object = body.getAsJsonObject("object");
+        if (object != null) {
+            JsonElement type = object.get("rating");
+            if (type != null) {
+                return type.getAsInt();
+            }
+        }
+        return 0;
+    }
 }

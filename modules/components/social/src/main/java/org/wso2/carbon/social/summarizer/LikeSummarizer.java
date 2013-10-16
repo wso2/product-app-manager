@@ -12,7 +12,7 @@ public class LikeSummarizer implements Summarizer {
     Map<String, LikeInfo> map = new HashMap<String, LikeInfo>();
 
     @Override
-    public void add(Activity activity) {
+    public boolean add(Activity activity) {
         String verb = activity.getVerb();
         if (verb.equals("like")) {
             LikeInfo likeInfo = getLikeInfo(activity);
@@ -27,6 +27,7 @@ public class LikeSummarizer implements Summarizer {
             LikeInfo likeInfo = getLikeInfo(activity);
             likeInfo.removeDislike(activity.getActorId());
         }
+        return true;
     }
 
     private LikeInfo getLikeInfo(Activity activity) {
