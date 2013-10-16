@@ -60,7 +60,7 @@ var caramel;
         if(paging.sort=='popular'){
             //TODO:  move to a module.
             var db = new Database('SOCIAL_CACHE');
-            var tenantDomain = user || "carbon.super";
+            var tenantDomain = user ? user.tenantDomain : "carbon.super";
             var showDefaults = (tenantDomain == "carbon.super") ? "OR TENANT IS NULL" : "";
             var result = db.query("SELECT ID FROM SOCIAL_CACHE WHERE TYPE='" + type.replace(/\W/g, '') + "' AND " +
                     "(TENANT='" + tenantDomain + "' " + showDefaults + " ) ORDER BY RATING DESC LIMIT " + paging.start + ",12");
@@ -74,7 +74,6 @@ var caramel;
                 asset.indashboard = store.isuserasset(aid, type);
                 assets.push(asset);
             }
-            return assets;
         } else{
             assets = store.assets(type, paging);
         }
