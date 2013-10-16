@@ -128,6 +128,23 @@ var rxt_utility = function () {
     }
 
     /*
+     The function checks if a and b are equal for the property key.
+     If a is an array then b's key is checked against the array to see if there is a match
+     @a: The object to match against
+     @b: The target of the check
+     @return: True if a and b are equal
+     */
+    function checkEqualityCaseSensitive(a, b, key) {
+        if (a[key] instanceof  Array) {
+
+            return (a[key].indexOf(b[key]) != -1) ? true : false;
+        }
+        else {
+            return a[key].toLowerCase() == b[key].toLowerCase();
+        }
+    }
+
+    /*
      The function asserts whether the two provided objects are equal.
      @target: The target to be checked
      @predicateObj: An object containing properties to be checked
@@ -170,6 +187,70 @@ var rxt_utility = function () {
                         else {
                             //isEqual=(obj[key]==target[key]);
                             isEqual = checkEquality(obj, target, key);
+                        }
+                    }
+                    else {
+
+                        //If the target does not have the property then it cannot be equal
+                        return false;
+                    }
+
+                    //Check if the object is not equal
+                    if (!isEqual) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        }
+
+        return recursiveInspect(target, predicateObj, true);
+    }
+
+    /*
+     The function asserts whether the two provided objects are equal.
+     @target: The target to be checked
+     @predicateObj: An object containing properties to be checked
+     @return: True if the target values match the predicate object
+     */
+    function assertCaseSensitive(target, predicateObj) {
+
+        //The function counts the number of properties in an object
+        function countProps(obj) {
+            var count = 0;
+            for (var index in obj) {
+                count++;
+            }
+            return count;
+        }
+
+
+        //The function recursively matches properties between the two
+        //objects
+        function recursiveInspect(target, obj, isEqual) {
+
+            //Check if the object is empty
+            if (countProps(obj) == 0) {
+                //log.info('empty object');
+                return true;
+            }
+            else {
+
+                //Go through each property
+                for (var key in obj) {
+
+                    //Check if the target's property is a predicate
+                    if (target.hasOwnProperty(key)) {
+
+                        //Check if it is an object
+                        if (countProps(target[key]) > 0) {
+
+                            isEqual = recursiveInspect(target[key], obj[key]);
+                        }
+                        else {
+                            //isEqual=(obj[key]==target[key]);
+                            isEqual = checkEqualityCaseSensitive(obj, target, key);
                         }
                     }
                     else {
@@ -407,6 +488,10 @@ var rxt_utility = function () {
          */
         assertEqual: function (target, predicateObj) {
             return assert(target, predicateObj);
+        },
+
+        assertEqualCaseSensitive:function(target,predicateObj){
+            return assertCaseSensitive(target,predicateObj);
         },
         /*
          The function clones the provided object to a new one while
