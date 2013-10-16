@@ -2,15 +2,25 @@
 response.addHeader("Content-Type", "application/json");
 
 (function () {
-    var carbon = require('carbon');
-    var social = carbon.server.osgiService('org.wso2.carbon.social.service.SocialActivityService');
-    var id = social.publish(JSON.parse(request.getParameter('activity')));
+    var userModule = require('/modules/user.js');
+    var logged = userModule.current(session);
+    if (logged) {
+        var carbon = require('carbon');
+        var social = carbon.server.osgiService('org.wso2.carbon.social.service.SocialActivityService');
 
-    var result = {
-        success: Boolean(id),
-        id: id
-    };
+        var username = String(logged.username) + '@' + logged.tenantDomain;
+        var activity = JSON.parse(request.getParameter('activity'));
+        activity.actor = {"id": username, "objectType": "person" };
+        var id = social.publish(activity);
 
-    print(result);
+        var result = {
+            success: Boolean(id),
+            id: id
+        };
+
+        print(result);
+    } else {
+        request.sendError(401);
+    }
 })();
 %>

@@ -30,7 +30,6 @@ var publish = function (activity, onSuccess) {
     } else {
         activity.target = {"id": target};
     }
-    activity.actor = {"id": user, "objectType": "person" };
     $.get('apis/comments.jag', {
         activity: JSON.stringify(activity)
     }, onSuccess)
