@@ -24,8 +24,13 @@ var queryProvider = function () {
         return query;
     }
 
+    function checkIfTableExists(schema){
+        return '';
+    }
+
     return{
-        create: create
+        create: create,
+        checkIfTableExists:checkIfTableExists
     }
 
 };
