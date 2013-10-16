@@ -389,7 +389,7 @@ $(function() {
 	function highlightTransition(state) {
 		var elem = $('.' + state);
 		elem.attr('fill', '#FFBE6B');
-		elem.attr('stroke', '#FF8C00');
+		//elem.attr('stroke', '#FF8C00');
 		//$('#canvas').attr('data-current', state);
 	}
 

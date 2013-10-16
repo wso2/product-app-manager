@@ -45,7 +45,7 @@ $(function() {
 
 		//check if the asset name available as user types in
 		$.ajax({
-			url : '/publisher/api/validations/assets/' + type + '/' + assetName,
+			url : '/publisher/api/validations/assets/' + type + '/overview_name/' + assetName,
 			type : 'GET',
 			success : function(response) {
 
