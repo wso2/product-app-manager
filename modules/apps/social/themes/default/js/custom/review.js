@@ -135,6 +135,30 @@ $btn.click(function (e) {
     }
 });
 
+$stream.on('click', '.icon-thumbs-down', function (e) {
+    e.preventDefault();
+    var $likeBtn = $(e.target);
+    var $review = $likeBtn.parents('.com-review');
+    var id = $review.attr('data-target-id');
+    var $likeCount = $review.find('.com-dislike-count');
+
+    var activity = { target: {id: id} };
+
+    if ($likeBtn.hasClass('selected')) {
+        activity.verb = 'undislike';
+        publish(activity, function () {
+            $likeCount.text((Number($likeCount.text()) - 1) || '');
+        });
+        $likeBtn.removeClass('selected');
+    } else {
+        activity.verb = 'dislike';
+        publish(activity, function () {
+            $likeCount.text(Number($likeCount.text()) + 1);
+        });
+        $likeBtn.addClass('selected');
+    }
+});
+
 $stream.on('click', '.icon-thumbs-up', function (e) {
     e.preventDefault();
     var $likeBtn = $(e.target);

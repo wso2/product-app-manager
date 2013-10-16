@@ -56,6 +56,18 @@ public class Activity {
         return 0;
     }
 
+
+    public int getDislikeCount() {
+        JsonObject likes = body.getAsJsonObject("dislikes");
+        if (likes != null) {
+            JsonElement count = likes.get("totalItems");
+            if (count != null) {
+                return count.getAsInt();
+            }
+        }
+        return 0;
+    }
+
     public String getObjectType() {
         JsonObject object = body.getAsJsonObject("object");
         if (object != null) {
