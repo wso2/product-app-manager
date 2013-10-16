@@ -14,20 +14,17 @@ var dbScriptManagerModule = function () {
      */
     function DBScriptManager() {
         this.map = {};
-        log.info('path: '+HOME + DBSCRIPT_HOME + STORAGE);
         this.bundleManager = new bundler.BundleManager({path: HOME + DBSCRIPT_HOME + STORAGE});
-
     }
 
     /*
      The function reads the contents of the dbscripts/storage directory
      */
     DBScriptManager.prototype.load = function () {
-        log.info('loading scripts');
         var rootBundle = this.bundleManager.getRoot();
         var that = this;
         rootBundle.each(function (bundle) {
-            log.info('inspecting bundle: '+bundle.getName());
+
             if (!bundle.isDirectory()) {
                 return;
             }
@@ -102,10 +99,8 @@ var dbScriptManagerModule = function () {
 
         //Check if there is already a cached copy of the script manager
         if (!instance) {
-            log.info('creating dbscript manager instance');
             instance = new DBScriptManager();
             instance.load();
-            log.info(instance.map);
             application.put(CACHE_DBSCMANAGER, instance);
         }
 

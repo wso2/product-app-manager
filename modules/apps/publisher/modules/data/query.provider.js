@@ -14,7 +14,7 @@ var queryProvider = function () {
 
     //The function checks the schema and returns a query for creating a table in the desired database
     function create(schema) {
-        log.info('h2 create called.');
+        //log.info('h2 create called.');
         var query = dbScriptManager.find(H2_DRIVER,schema.table);//queryMap[schema.table]['create'];
         return query;
     }
@@ -77,7 +77,7 @@ var queryProvider = function () {
 
         var tableName = schema.table.toUpperCase();
         var query = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME='" + tableName + "' AND TABLE_SCHEMA='PUBLIC'; ";
-        log.info('checking if table exists '+query);
+        //log.info('checking if table exists '+query);
         return query;
     }
 

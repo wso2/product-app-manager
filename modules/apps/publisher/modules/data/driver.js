@@ -21,12 +21,12 @@ var driver = function () {
         var username = config.username;
         var password = config.password;
         var dbConfig = config.dbConfig || {};
-        var dataSource=config.dataSource||null;
+        var dataSource = config.dataSource || null;
         try {
-            if(dataSource){
-                this.instance=new Database(dataSource);
+            if (dataSource) {
+                this.instance = new Database(dataSource);
             }
-            else{
+            else {
                 this.instance = new Database(connectionString, username, password, dbConfig);
             }
 
@@ -49,22 +49,18 @@ var driver = function () {
      */
     DBDriver.prototype.query = function (query, schema, modelManager, model, options) {
 
-        var options=options||{};
-        var isParam=options.PARAMETERIZED||false;
+        var options = options || {};
+        var isParam = options.PARAMETERIZED || false;
         var result;
 
 
         if (isParam) {
             var args = getValueArray(model, schema, query);
-            log.info('executing query '+query);
 
             result = this.instance.query.apply(this.instance, args) || [];
-            log.info('result size: '+result.length);
         }
         else {
-            log.info('executing non parameter query '+query);
             result = this.instance.query(query) || [];
-            log.info('result size: '+result);
         }
 
 
@@ -88,10 +84,10 @@ var driver = function () {
         var field;
         for (var index in schema.fields) {
             field = schema.fields[index];
-            if(model[field.name] instanceof File){
+            if (model[field.name] instanceof File) {
                 values.push(model[field.name].getStream());
             }
-            else{
+            else {
                 values.push(model[field.name]);
             }
 
