@@ -1,5 +1,10 @@
 /*
-The class is used to manage the database drivers
+Description:The class is used to manage the assembling of the database drivers.
+            The script has facilities to load extensions for generating queries provided by the user.
+            In order for queryProviders to be loaded they must be placed in a folder matching the
+            database type (e.g. h2 ,mysql or oracle) and be named as FILE_QT (refer variable in script below)
+Filename:  driver.manager.js
+Created Date: 15/10/2013
  */
 var driverManager=function(){
 
@@ -46,6 +51,8 @@ var driverManager=function(){
 
         //Create the default which will be used to build all other drivers
         this.createDefaultDriver();
+
+        //Load the user defined query providers from the extensions directory
         this.loadExtensions();
 
     }
@@ -89,6 +96,7 @@ var driverManager=function(){
 
     /*
     The function loads drivers in the driver directory
+    Note: Not used
      */
     DriverManager.prototype.loadDrivers=function(){
 
@@ -98,7 +106,7 @@ var driverManager=function(){
     };
 
     /*
-    The function creates a map of the query providers
+    The function creates a map of the query providers  in the extensions folder.
      */
     DriverManager.prototype.loadExtensions=function(){
 
@@ -138,6 +146,10 @@ var driverManager=function(){
         return this.queryProviderMap[driverType]['queryProvider'];
     };
 
+    /*
+    The function is used to read a folder defining extensions for a database
+
+     */
     function handleQueryProvider(bundle,map,dm){
 
         var bundleName=bundle.getName();
@@ -207,14 +219,16 @@ var driverManager=function(){
     /*
     The function is used to locate a driver that supports the provided datasource
     @name: The name of a datasource to be accessed
+    @return: The type of driver (e.g. h2 or mysql)
      */
     DriverManager.prototype.getDriver=function(name){
 
+        //Obain a reference to the datasource
         var datasource=this.dataSourceManager.get(name);
 
 
         if(!datasource){
-            throw 'cannot find Datasource: '+name;
+            throw 'Cannot find Datasource: '+name;
         }
 
         var driverType=datasource.getDriver();

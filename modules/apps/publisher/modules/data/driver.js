@@ -1,5 +1,12 @@
 /*
- The class provides the template for a database driver with common functionality
+ Description: The class provides the template for a database driver which is capable of;
+               1. connecting
+               2. disconnecting
+               3. querying
+              A connection to the database can be made either usinga  connection string or a datasource.
+              The datasource should be defined in the repository/datasources/master.datasource.xml.
+Filename: driver.js
+Created Date: 15/10/2013
  */
 
 var driver = function () {
@@ -16,6 +23,12 @@ var driver = function () {
         utility.config(options, this);
     };
 
+    /*
+    The function creates a database connection either using a query string or
+    using a Datasource.
+     The datasource should be defined in the repository/datasources/master.datasource.xml.
+    @config: A configuration object containing the connection information
+     */
     DBDriver.prototype.connect = function (config) {
         var connectionString = '' || config.connectionString;
         var username = config.username;
@@ -36,6 +49,9 @@ var driver = function () {
         }
     };
 
+    /*
+    The function closes the connection to the database
+     */
     DBDriver.prototype.disconnect = function () {
         this.instance.close();
     };

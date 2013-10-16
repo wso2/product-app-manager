@@ -1,3 +1,13 @@
+/*
+ Description: The DBScriptManager class is responsible for loading the storage scripts found in
+ dbscripts folder.It first reads the contents of the storage folder and builds a map
+ of the scripts based on the type of db (e.g.h2 ).
+ The index used for a script is the directory name it is located along with the name.
+ The name of the script is used when retrieving a script.
+ Note: If an instance is obtained via getInstance(), it will be cached in the application context
+ Filename: db,script.manager.js
+ Created Date: 15/10/2013
+ */
 var dbScriptManagerModule = function () {
 
     var bundler = require('/modules/bundler.js').bundle_logic();
@@ -6,11 +16,13 @@ var dbScriptManagerModule = function () {
     var DBSCRIPT_HOME = '/dbscripts';
     var CACHE_DBSCMANAGER = 'db.script.manager';
     var STORAGE = '/storage/';
+    var SQL_EXTENSION='sql';
     var log = new Log('db.script.manager');
 
 
     /*
-     The class is used to read the scripts
+     The class is used to read the database scripts from the dbscripts folder
+     and index them based on their database type and the name of the resource
      */
     function DBScriptManager() {
         this.map = {};
@@ -19,12 +31,16 @@ var dbScriptManagerModule = function () {
 
     /*
      The function reads the contents of the dbscripts/storage directory
+     and loads the scripts for each database type.
      */
     DBScriptManager.prototype.load = function () {
+
         var rootBundle = this.bundleManager.getRoot();
         var that = this;
+
         rootBundle.each(function (bundle) {
 
+            //We ignore anything not in a folder
             if (!bundle.isDirectory()) {
                 return;
             }
@@ -36,7 +52,7 @@ var dbScriptManagerModule = function () {
     /*
      The function returns the schema create script for a given db type
      @dbType: The type of database (e.g. h2, mysql or oracle)
-     @schema: The type of schema
+     @schema: The type of schema (e.g. resource where the script is called schema.sql)
      @return: A string copy of the sql script
      */
     DBScriptManager.prototype.find = function (dbType, schema) {
@@ -77,7 +93,7 @@ var dbScriptManagerModule = function () {
         bundle.each(function (scriptBundle) {
 
             //Get all of the sql files
-            if (scriptBundle.getExtension() == 'sql') {
+            if (scriptBundle.getExtension() == SQL_EXTENSION) {
 
                 //Get the name of the file
                 var scriptName = scriptBundle.getName().replace('.' + scriptBundle.getExtension(), '');
@@ -91,7 +107,8 @@ var dbScriptManagerModule = function () {
     }
 
     /*
-     The function caches the DBScriptManager in the application context
+     The function caches the DBScriptManager in the application context the first
+     time the method is invoked.All subsequent requests get the cached copy.
      */
     function getInstance() {
 
