@@ -142,7 +142,7 @@
         <!--Storage SQL scripts-->
         <fileSet>
             <directory>src/repository/dbscripts/storage</directory>
-            <ouputDirectory>${pom.artifactId}-${pom.version}/dbscripts/storage/</ouputDirectory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/dbscripts/storage/</outputDirectory>
         </fileSet>
 
         <!--copy jaxrs web app for OAuth feature-->

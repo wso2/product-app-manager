@@ -9,8 +9,10 @@ $(function () {
     var MSG_CONTAINER='#msg-container-recent-activity';
     var ERROR_CSS='alert alert-error';
     var SUCCESS_CSS='alert alert-info';
+    var CHARS_REM = 'chars-rem';
+    var DESC_MAX_CHARS = 1000;
     
-   
+    $('#overview_description').after('<span class="span8 '+CHARS_REM+'"></span>');
 
     $('#editAssetButton').on('click', function () {
         var data = {};
@@ -70,6 +72,21 @@ $(function () {
         })
 
     });
+    
+    $('#overview_description').keyup(function(){
+    	var self =  $(this), 
+    	 	length = self.val().length,
+    	 	left = DESC_MAX_CHARS - length,
+    		temp;
+    	
+    	if(length > DESC_MAX_CHARS) {
+    		temp = self.val();
+    		$(this).val(temp.substring(0,DESC_MAX_CHARS));
+    		console.log("Max chars reached");
+    		return;
+    	}
+    	$('.' + CHARS_REM).text('Characters left: ' + left);
+    });
 
     /*
      The function is used to build a report message indicating the errors in the form
@@ -105,8 +122,8 @@ $(function () {
         //Place the message
         $(containerElement).html(infoMessage);
     }
-    
-    
+   
+   
 	$('.selectpicker').selectpicker();
 
 });

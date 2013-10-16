@@ -437,7 +437,7 @@ label, input, button, select, textarea {
     content: "\f02d";
 }
 .publisher-left {
-    background: #F5F5F5;
+    background: #F7F9F9;
     border-right: 1px solid #DADADA;
     bottom: 0;
     left: 0;
@@ -1107,4 +1107,14 @@ span.title {
 }
 .icon-check-appname {
     display: none;
+}
+
+.chars-rem {
+    color: #8B8B8B;
+    font-size: 12px;
+    height: 24px;
+    margin-bottom: -20px;
+    padding-right: 18px;
+    text-align: right;
+      margin-top: 3px;
 }
