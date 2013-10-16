@@ -13,6 +13,10 @@ $(function() {
 	var tagUrl = TAG_API_URL + tagType;
 	var THEME = 'facebook';
 	var TAG_CONTAINER = '#tag-container';
+	var CHARS_REM = 'chars-rem';
+	var DESC_MAX_CHARS = 1000;
+
+	$('#overview_description').after('<span class="span8 ' + CHARS_REM + '"></span>');
 
 	//Obtain all of the tags for the given asset type
 	$.ajax({
@@ -32,12 +36,9 @@ $(function() {
 	});
 
 	$('#overview_name').on('blur', function() {
-		var $this = $(this),
-			flag = $('.icon-check-appname'), 
-			btnCreate = $('#btn-create-asset'),
-			assetName = $this.val();
-			
-		if(!flag.length) {
+		var $this = $(this), flag = $('.icon-check-appname'), btnCreate = $('#btn-create-asset'), assetName = $this.val();
+
+		if (!flag.length) {
 			$this.after('<i class="icon-check-appname"></i>');
 			flag = $('.icon-check-appname');
 		}
@@ -53,10 +54,10 @@ $(function() {
 				//Check if the asset was added
 				if (result.ok) {
 					flag.removeClass().addClass('icon-ok icon-check-appname').show();
-					btnCreate.removeAttr('disabled');		
-				} else {		
+					btnCreate.removeAttr('disabled');
+				} else {
 					flag.removeClass().addClass('icon-ban-circle icon-check-appname').show();
-					btnCreate.attr('disabled', 'disabled');		
+					btnCreate.attr('disabled', 'disabled');
 				}
 
 			},
@@ -113,7 +114,18 @@ $(function() {
 		//$.post('/publisher/asset/'+type, data);
 
 	});
-	//}
+
+	$('#overview_description').keyup(function() {
+		var self = $(this), length = self.val().length, left = DESC_MAX_CHARS - length, temp;
+
+		if (length > DESC_MAX_CHARS) {
+			temp = self.val();
+			$(this).val(temp.substring(0, DESC_MAX_CHARS));
+			console.log("Max chars reached");
+			return;
+		}
+		$('.' + CHARS_REM).text('Characters left: ' + left);
+	});
 
 	/*
 	 The function is used to build a report message indicating the errors in the form
