@@ -98,7 +98,7 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
   
 	var search = function(that, options, paging) {
 		var assets;
-        var configs = require('/store.js').config();
+        var configs = require('/config/store.js').config();
 
 		if(options.tag) {
 			var registry = that.registry, tag = options.tag;

@@ -55,11 +55,11 @@ var loginLinks = function (tenantId) {
     return {
         login: {
             title: 'Login',
-            url: 'login.jag'
+            url: 'login'
         },
         register: {
             title: 'Register',
-            url: 'register.jag'
+            url: '/controllers/register.jag'
         }
     };
 };

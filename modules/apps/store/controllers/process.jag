@@ -1,0 +1,20 @@
+<%
+(function () {
+    var usr = require('store').server.current(session);
+
+    if (!usr) {
+        response.sendError(401, 'Unauthorized');
+        return;
+    }
+
+    var aid = request.getParameter('asset'),
+            store = require('/modules/store.js').store(request, session);
+    if(!(asset = store.asset(type, aid))) {
+        response.sendError(404, 'Not Found');
+        return;
+    }
+    new Log().info(asset);
+    store.subscribe(type, aid);
+    response.sendRedirect(request.getParameter('destination'));
+})();
+%>

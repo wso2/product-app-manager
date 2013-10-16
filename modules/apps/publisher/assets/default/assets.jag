@@ -64,8 +64,10 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 			var artifacts = artifactManager.search(null,DEFAULT_PAGIN) || [];
 
 		} else {
-			//normal list for asserts
-			var artifacts = artifactManager.list(DEFAULT_PAGE) || [];
+			//normal list for asserts			
+			var queryz = {};
+			assets = artifactManager.search(queryz, DEFAULT_PAGIN);
+			artifacts = assets;
 
 		}
 

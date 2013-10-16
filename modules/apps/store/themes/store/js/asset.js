@@ -1,4 +1,8 @@
 $(function () {
+	$('a[data-type=comments]').click(function(){
+		$('#tab-reviews').css({position:'static', visibility:'visible'});
+	});
+	
     if (isSocial) {
         var script = document.createElement('script');
         script.type = 'text/javascript';
@@ -159,11 +163,7 @@ $(function () {
     }
     $('#btn-add-gadget').click(function () {
         var elem = $(this);
-        if (store.user) {
-            isAssertTrue(elem.data('aid'), elem.data('type'));
-        } else {
-            asset.process(elem.data('type'), elem.data('aid'), location.href);
-        }
+        asset.process(elem.data('type'), elem.data('aid'), location.href);
     });
 
     $("a[data-toggle='tooltip']").tooltip();
