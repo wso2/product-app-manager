@@ -4,7 +4,7 @@
 
 var caramel;
 ( function() {
-	var gadgets, sites,ebooks, paging, count, current, total, loggedUser, popularAssets,
+	var gadgets, sites,ebooks, paging, count, current, loggedUser, popularAssets,
             recent = false,
             type = 'gadget',
             options = {},
@@ -27,12 +27,6 @@ var caramel;
 		username : ssoUser.username
 	} : server.current(session);
 	paging = store.assetsPaging(request);
-	total = store.assetCount(type);
-
-	if(paging.start > total || paging.start < 0) {
-		response.sendError(404, 'Requested page cannot be found');
-		return;
-	}
 
     if (query) {
         gadgets = store.search({

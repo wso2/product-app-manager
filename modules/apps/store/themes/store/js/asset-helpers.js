@@ -1,4 +1,4 @@
-var renderAssets, mouseStop;
+var renderAssets, mouseStop, renderAssetsScroll;
 
 (function () {
     renderAssets = function (data) {
@@ -7,11 +7,9 @@ var renderAssets, mouseStop;
         caramel.code($('head'), data.body['assets'].resources.code);
         caramel.partials(data._.partials, function () {
             var assets = Handlebars.partials['assets'](data.body.assets.context),
-                paging = Handlebars.partials['pagination'](data.body.pagination.context),
                 sort = Handlebars.partials['sort-assets'](data.body['sort-assets'].context);
             theme.loaded(el, sort);
             el.append(assets);
-            el.append(paging);
             caramel.js($('body'), data.body['assets'].resources.js, 'assets', function () {
                 mouseStop();
             });
@@ -19,6 +17,8 @@ var renderAssets, mouseStop;
                 updateSortUI();
             });
             $(document).scrollTop(0);
+
+            infiniteScroll = data.body.assets.context.assets.length >= 12;
         });
     };
 
@@ -82,9 +82,6 @@ var renderAssets, mouseStop;
       
        caramel.js($('body'), data.body['assets'].resources.js, 'assets', function () {
                 mouseStop();
-            });
-            caramel.js($('body'), data.header['sort-assets'].resources.js, 'sort-assets', function () {
-                updateSortUI();
             });
     	
     };

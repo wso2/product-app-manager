@@ -51,6 +51,9 @@ var init = function (options) {
         var um = server.userManager(tenantId);
         var publisherConfig=require('/config/publisher-tenant.json');
 
+        //Load the tag dependencies
+        loadTagDependencies(reg);
+
         //Check if the tenant is the super tenant
         if(tenantId==SUPER_TENANT){
 
@@ -255,6 +258,35 @@ var buildManagers = function (tenantId, registry) {
         filterManager:filterManager,
         storageSecurityProvider:storageSecurityProvider
     };
+};
+
+/*
+The function is used to load tag dependencies
+ */
+var loadTagDependencies=function(registry){
+
+    var TAGS_QUERY='SELECT RT.REG_TAG_ID FROM REG_RESOURCE_TAG RT ORDER BY RT.REG_TAG_ID';
+    var TAGS_QUERY_PATH='/_system/config/repository/components/org.wso2.carbon.registry/queries/allTags';
+
+    //Check if the tag path exists
+    var resource=registry.get(TAGS_QUERY_PATH);
+
+    //Check if the tag is present
+    if(!resource){
+
+        log.info('tag query path does not exist.');
+
+        registry.put(TAGS_QUERY_PATH, {
+            content: TAGS_QUERY,
+            mediaType: 'application/vnd.sql.query',
+            properties: {
+                resultType: 'Tags'
+            }
+        });
+
+        log.info('tag query has been added.');
+    }
+
 };
 
 /*

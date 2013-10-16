@@ -548,26 +548,6 @@ Store.prototype.recentAssets = function (type, count) {
     return recent;
 };
 
-Store.prototype.assetCount = function (type, options) {
-
-    //Check if the type is provided
-    //var type=(type=='null')?null:type;
-
-    //Check if the asset type is provided
-    //If there is no asset type then return 0
-    /*if(!type){
-     log.info('Returning 0 for Store.assetCount.');
-     return 0;
-     }*/
-
-    //Create the default query by lifecycle state
-    options = options || {};
-    options = obtainViewQuery(options);
-
-
-    return this.assetManager(type).count(options);
-};
-
 /**
  * Returns all enabled asset types for the current user
  */
