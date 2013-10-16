@@ -36,7 +36,8 @@ $(function() {
 	});
 
 	$('#overview_name').on('blur', function() {
-		var $this = $(this), flag = $('.icon-check-appname'), btnCreate = $('#btn-create-asset'), assetName = $this.val();
+		var $this = $(this), flag = $('.icon-check-appname'), btnCreate = $('#btn-create-asset');
+		var assetName = $this.val();
 
 		if (!flag.length) {
 			$this.after('<i class="icon-check-appname"></i>');

@@ -633,8 +633,8 @@ Store.prototype.removeAsset = function (type, options) {
     this.assetManager(type).remove(options);
 };
 
-Store.prototype.rxtManager = function(type) {
-    return storeManagers(this.tenantId, this.session).rxtManager.findAssetTemplate(function(tmpl) {
+Store.prototype.rxtManager = function(type, session) {
+    return storeManagers(this.tenantId, session).rxtManager.findAssetTemplate(function(tmpl) {
         return tmpl.shortName === type;
     });
 };
