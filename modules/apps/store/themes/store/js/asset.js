@@ -1,4 +1,8 @@
 $(function () {
+	$('a[data-type=comments]').click(function(){
+		$('#tab-reviews').css({position:'static', visibility:'visible'});
+	});
+	
     if (isSocial) {
         var script = document.createElement('script');
         script.type = 'text/javascript';

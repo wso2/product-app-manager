@@ -37,7 +37,8 @@ var publish = function (activity, onSuccess) {
 };
 
 var adjustHeight = function () {
-    windowProxy.post({'expanded': $(document).height()});
+	var docHeight = $(document).height();
+    windowProxy.post({'expanded':docHeight});
 };
 
 var showAlert = function (msg) {
