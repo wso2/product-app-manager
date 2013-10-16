@@ -60,9 +60,10 @@ var caramel;
         if(paging.sort=='popular'){
             //TODO:  move to a module.
             var db = new Database('SOCIAL_CACHE');
-            var showDefaults = user.tenantDomain == "carbon.super" ? "OR TENANT IS NULL" : "";
+            var tenantDomain = user || "carbon.super";
+            var showDefaults = (tenantDomain == "carbon.super") ? "OR TENANT IS NULL" : "";
             var result = db.query("SELECT ID FROM SOCIAL_CACHE WHERE TYPE='" + type.replace(/\W/g, '') + "' AND " +
-                    "(TENANT='" + user.tenantDomain + "' " + showDefaults + " ) ORDER BY RATING DESC LIMIT " + paging.start + ",12");
+                    "(TENANT='" + tenantDomain + "' " + showDefaults + " ) ORDER BY RATING DESC LIMIT " + paging.start + ",12");
             var assets = [];
             var pos, aid, asset;
             for (var n = 0; n < result.length; n++) {
