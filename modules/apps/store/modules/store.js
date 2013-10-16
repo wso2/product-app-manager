@@ -100,7 +100,12 @@ var init = function (options) {
     });
 
     event.on('userRegister', function(tenantId, user) {
-        user.addRoles(configs(tenantId).userRoles);
+        configs(tenantId).userRoles.forEach(function(role) {
+            if(user.hasRoles([role])) {
+                return;
+            }
+            user.addRoles([role]);
+        });
     });
 };
 
