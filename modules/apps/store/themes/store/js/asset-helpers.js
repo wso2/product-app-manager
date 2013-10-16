@@ -1,4 +1,4 @@
-var renderAssets, mouseStop, isAssertTrue, addAssert;
+var renderAssets, mouseStop;
 
 (function () {
     renderAssets = function (data) {
@@ -61,7 +61,7 @@ var renderAssets, mouseStop, isAssertTrue, addAssert;
 			temp += '			<a href="#" class="btn disabled btn-added">{{t "Bookmarked"}}</a>';
 			temp += '			{{else}}';
 			temp += '				{{# if ../../../../sso}}';			
-			temp += '				<a href="{{url "/login.jag"}}" class="btn btn-primary asset-add-btn">{{t "Bookmark"}}</a>';							
+			temp += '				<a href="{{url "/login"}}" class="btn btn-primary asset-add-btn">{{t "Bookmark"}}</a>';
 			temp += '				{{else}}';							
 			temp += '					<a href="#" class="btn btn-primary asset-add-btn">{{t "Bookmark"}}</a>';
 			temp += '				{{/if}}';
@@ -87,7 +87,7 @@ var renderAssets, mouseStop, isAssertTrue, addAssert;
                 updateSortUI();
             });
     	
-    }
+    };
 
     mouseStop = function () {
     	var windowWidth = $(window).width();
@@ -109,23 +109,4 @@ var renderAssets, mouseStop, isAssertTrue, addAssert;
                 $(this).find('.asset-details').animate({top: offsetTop}, 200);
             });
     };
-
-    isAssertTrue = function (aid,type) {
-	var array = new Array();
-	caramel.get('/apis/asset/'+type,{
-            }, function (data) {
-		for(j = 0; j < data.length; j++){
-		    if(data[j]['id']==aid){
-		       array.push(data[j]['id']);
-		    		}
-        	}
-		addAssert(aid,type,array);
-            });
-	};
-
-     addAssert = function (aid,type,array) {
-	if(array.length>0){
-		asset.process(type, aid, location.href);
-		}	
-	};
 }());

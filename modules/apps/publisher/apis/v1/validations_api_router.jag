@@ -13,13 +13,15 @@ var router = require('/modules/router-g.js').router();
 var routeManager = new router.Router();
 
 var log = new Log();
+log.info("Validations");
+print({ok:true});
 
 routeManager.register('GET', 'publisher', '/publisher/api/validations/assets/{type}/{field}', function (context) {
     var shortName = context.params.type;
     var field = context.params.field;
     var artifactManager = rxtManager.getArtifactManager(shortName);
 	
-	log.info("Validations");
+	
 	
     //Check if the type is valid
     try {
