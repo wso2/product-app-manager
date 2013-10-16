@@ -7,11 +7,10 @@ var caramel;
     var userModule = require('/modules/user.js');
     var logged = userModule.current(session);
 
-    var didILike = function (review,username) {
-        var likes = review.likes && review.likes.items;
-        if (likes) {
-            for (var j = 0; j < likes.length; j++) {
-                var like = likes[j];
+    var isUserInList = function (lists, username) {
+        if (lists) {
+            for (var j = 0; j < lists.length; j++) {
+                var like = lists[j];
                 if (like.id == username) {
                     return true;
                 }
@@ -31,7 +30,8 @@ var caramel;
     var obj, reviewsJSON;
     if (target) {
         try {
-            obj = JSON.parse(String(social.getSocialObjectJson(target,"POPULAR")));
+            var tenantDomain = logged ? logged.tenantDomain : "carbon.super";
+            obj = JSON.parse(String(social.getSocialObjectJson(target, tenantDomain, "POPULAR")));
             reviewsJSON = obj.attachments;
         } catch (e) {
             log.error(e);
@@ -42,7 +42,8 @@ var caramel;
         if (reviewsJSON) {
             for (var i = 0; i < reviewsJSON.length; i++) {
                 var review = reviewsJSON[i];
-                review.iLike = didILike(review,username);
+                review.iLike = isUserInList(review.likes && review.likes.items, username);
+                review.iDislike = isUserInList(review.dislikes && review.dislikes.items, username);
             }
         }
 

@@ -14,9 +14,12 @@ public enum SortOrder {
     }),
     OLDEST(null),
     POPULAR(new Comparator<Activity>() {
+
         @Override
         public int compare(Activity o1, Activity o2) {
-            return o2.getLikeCount() - o1.getLikeCount();
+            int x =  o2.getLikeCount() - o2.getDislikeCount();
+            int y = o1.getLikeCount() - o1.getDislikeCount();
+            return x - y;
         }
     });
 

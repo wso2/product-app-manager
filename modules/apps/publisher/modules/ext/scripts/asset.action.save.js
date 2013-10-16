@@ -26,7 +26,7 @@ var module=function(){
     */
    function addToSocialCache(id,type) {
        if (id) {
-           var CREATE_QUERY = "CREATE TABLE IF NOT EXISTS SOCIAL_CACHE (id VARCHAR(255) NOT NULL,type VARCHAR(255), " +
+           var CREATE_QUERY = "CREATE TABLE IF NOT EXISTS SOCIAL_CACHE (id VARCHAR(255) NOT NULL,tenant VARCHAR(255),type VARCHAR(255), " +
                "body VARCHAR(5000), rating DOUBLE,  PRIMARY KEY ( id ))";
            var db = new Database("SOCIAL_CACHE");
            db.query(CREATE_QUERY);
