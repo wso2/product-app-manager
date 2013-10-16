@@ -5,11 +5,9 @@
  ;
  */
 
-var opened = false, currentPage = 1, totalPages;
+var opened = false, currentPage = 1, infiniteScroll = true;
 
 $(function() {
-	var paging = store.asset.paging;
-	paging.current = 1;
 
 	$(document).on('click', '#assets-container .asset-add-btn', function(event) {
 		var parent = $(this).parent().parent().parent();
@@ -35,7 +33,7 @@ $(function() {
 		caramel.data({
 			title : null,
 			header : ['header'],
-			body : ['assets', 'pagination', 'sort-assets']
+			body : ['assets', 'sort-assets']
 		}, {
 			url : url,
 			success : function(data, status, xhr) {
@@ -60,16 +58,17 @@ $(function() {
 	var loadAssetsScroll = function(url) {
 		caramel.data({
 			title : null,
-			header : ['header'],
-			body : ['assets', 'pagination', 'sort-assets']
+			body : ['assets']
 		}, {
 			url : url,
 			success : function(data, status, xhr) {
+                infiniteScroll = data.body.assets.context.assets.length >= 12;
+                currentPag = 1;
 				renderAssetsScroll(data);
 				$('.loading-inf-scroll').hide();
 			},
 			error : function(xhr, status, error) {
-
+                infiniteScroll = false;
 			}
 		});
 		$('.loading-inf-scroll').show();
@@ -94,31 +93,23 @@ $(function() {
 		loadAssets(url);
 	});
 
-	
+	var scroll = function() {
 
-	var infiniteScroll = function() {
-		totalPages = $('#assets-container').data('pages');
-
-		if(currentPage < totalPages) {
+		if(infiniteScroll) {
 			if($(window).scrollTop() + $(window).height() >= $(document).height() * .8) {
-				var selType = $('.selected-type').data('sort'), pathName = window.location.pathname, search = window.location.search;
-				search += (search != "") ? '&' : '?';
-
-				var url = pathName + search + 'page=' + (++currentPage);
-
+				var url = caramel.url(store.asset.paging.url + (++currentPage));
 				loadAssetsScroll(url);
-				$(window).unbind('scroll', infiniteScroll);
+				$(window).unbind('scroll', scroll);
 				setTimeout(function() {
-					$(window).bind('scroll', infiniteScroll);
+					$(window).bind('scroll', scroll);
 				}, 500);
 			}
 		} else {
-
 			$('.loading-inf-scroll').hide();
 		}
 	}
 
-	$(window).bind('scroll', infiniteScroll);
+	$(window).bind('scroll', scroll);
 
 	$("a[data-toggle='tooltip']").tooltip();
 	
