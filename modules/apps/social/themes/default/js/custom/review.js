@@ -7,9 +7,6 @@ var $alert = $('.com-alert');
 var $sort = $('.com-sort');
 var windowProxy;
 
-var onMessage = function (messageEvent) {
-    console.log(messageEvent);
-};
 
 var didILike = function (review, username) {
     var likes = review.likes && review.likes.items;
@@ -35,10 +32,6 @@ var publish = function (activity, onSuccess) {
     }, onSuccess)
 };
 
-var adjustHeight = function () {
-	var docHeight = $(document).height();
-    windowProxy.post({'expanded':docHeight});
-};
 
 var showAlert = function (msg) {
     $alert.html(msg).fadeIn("fast").css('display', 'inline-block');
@@ -57,12 +50,6 @@ var usingTemplate = function (callback) {
         callback(Handlebars.partials['activity']);
     });
 };
-
-$(function () {
-    windowProxy = new Porthole.WindowProxy();
-    windowProxy.addEventListener(onMessage);
-    setTimeout(adjustHeight,1000);
-});
 
 $radio.rating({
     callback: function (value) {
