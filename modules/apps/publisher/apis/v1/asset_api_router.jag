@@ -146,9 +146,15 @@ routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', fu
         var modelA = modelManager.getModel(shortName);
         var modelB = modelManager.getModel(shortName);
 
+        //Get the original artifact
+        var originalArtifact = artifactManager.get(id);
+
         log.debug('POST:' + stringify(context.content));
 
         modelA.import('form.importer', context.content);
+
+        //Validation requires the lifecycle state
+        modelA.set('*.lifecycleState',originalArtifact.lifecycleState);
 
         var report=modelA.validate();
 
@@ -163,8 +169,7 @@ routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', fu
 
         modelA.set('*.id', id);
 
-        //Get the original artifact
-        var originalArtifact = artifactManager.get(id);
+
 
 
         modelB.import('asset', originalArtifact);
