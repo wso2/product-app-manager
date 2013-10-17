@@ -103,10 +103,12 @@ $(document).ready(function() {
 					return;
 				}
 
+				/*
 				displayVersionMessage({
-					msgCss : CSS_SUCCESS,
-					message : 'Creating new version..'
-				});
+									msgCss : CSS_SUCCESS,
+									message : 'Creating new version..'
+								});*/
+				
 
 				createNewVersion(userProvidedVersion, assetId, assetType);
 			},
