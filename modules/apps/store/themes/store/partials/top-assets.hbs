@@ -8,32 +8,31 @@
                             <div class="asset-banner">
                                 <img src="{{images_banner}}">
                             </div>
-                        <div class="asset-intro-box">
-                            <img src="{{images_thumbnail}}">
-                            <h3><span>{{overview_name}}</span>
-                                <small>{{overview_version}}</small>
-                            </h3>
-
-                        {{/attributes}}
-                        <br>
-					<span class="star-rating">
-						<div class="asset-rating">
-                            <div class="asset-rating-{{rating.average}}star">
-
-                            </div>
-                        </div>
-						<small> by {{attributes.overview_provider}} </small>
-					</span>
-
-                        <a data-type="gadget" class="btn btn-primary" id="btn-add-gadget"
+                        	<div class="asset-intro-box">
+                            	<div><img src="{{images_thumbnail}}"></div>
+                            	<div class="asset-intro-inner">
+	                            	<h3><span>{{overview_name}}</span>
+	                               		<small>{{overview_version}}</small>
+	                            	</h3>
+	                            	<div class="star-rating">
+										<div class="asset-rating">
+				                            <div class="asset-rating-{{rating.average}}star">
+				
+				                            </div>
+				                        </div>
+										<small> by {{overview_provider}} </small>
+									</div>
+                            	</div>
+							
+								<a data-type="gadget" class="btn btn-primary" id="btn-add-gadget"
                            href="{{url "/assets"}}/{{type}}/{{id}}">View</a>
+							</div>
+                        {{/attributes}}
 
                     </div>
-
-                    </div>
-                {{/each}}
-
+				{{/each}}
             </div>
+
             <div class="clearfix"></div>
             <a class="prev" id="asset-slideshow-prev" href="#"><span>prev</span></a>
             <a class="next" id="asset-slideshow-next" href="#"><span>next</span></a>
@@ -47,7 +46,7 @@
 
 {{#each assets}}
     <div class="assets-container">
-        <h3 class="asset-title-separator asset-type-{{type}}"><span>Recent {{plural}}</span>
+        <h3 class="asset-type-default asset-title-separator asset-type-{{type}}"><span>Recent {{plural}}</span>
 
             <div class="pagination top-asset-slideshow-pag" id="top-asset-slideshow-pag-{{type}}"></div>
         </h3>

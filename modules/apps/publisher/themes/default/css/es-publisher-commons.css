@@ -1099,11 +1099,16 @@ span.title {
 .lifecycle #canvas svg {
     left: -63px !important;
 }
-
+#form-asset-create .icon-ok{
+    color:#167E00;
+}
+#form-asset-create .icon-ban-circle{
+    color:red;
+}
 #form-asset-create .icon-ok, #form-asset-create .icon-ban-circle {
     margin-left: -18px;
     margin-right: 4px;
-    opacity: .5;
+    opacity: .8;
 }
 .icon-check-appname {
     display: none;
