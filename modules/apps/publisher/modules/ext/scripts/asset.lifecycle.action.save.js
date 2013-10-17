@@ -28,7 +28,6 @@ var module=function(){
            var template=context.template;
            var type=template.shortName;
 
-           log.info('Entered '+meta.name);
            log.debug(stringify(context.actionMap));
 
            //Get the id of the model
@@ -43,7 +42,7 @@ var module=function(){
 
            var asset=context.parent.export('asset.exporter');
 
-           log.info('Attempting to attach the lifecycle :'+lifeCycle+'to asset with id: '+id);
+           log.debug('Attempting to attach the lifecycle :'+lifeCycle+'to asset with id: '+id);
 
            artifactManager.attachLifecycle(lifeCycle,asset);
 
