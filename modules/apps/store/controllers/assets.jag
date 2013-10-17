@@ -64,7 +64,7 @@ var caramel;
             var showDefaults = (tenantDomain == "carbon.super") ? "OR TENANT IS NULL" : "";
             var result = db.query("SELECT ID FROM SOCIAL_CACHE WHERE TYPE='" + type.replace(/\W/g, '') + "' AND " +
                     "(TENANT='" + tenantDomain + "' " + showDefaults + " ) ORDER BY RATING DESC LIMIT " + paging.start + ",12");
-            var assets = [];
+            assets = [];
             var pos, aid, asset;
             for (var n = 0; n < result.length; n++) {
                 var combinedAid = String(result[n].ID);

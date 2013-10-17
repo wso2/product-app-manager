@@ -127,16 +127,27 @@ var server = {};
             };
         }
         //loads the tenant if it hasn't been loaded
-        server.loadTenant(obj.tenantId);
+        server.loadTenant(obj);
         return obj;
     };
 
-    server.loadTenant = function (tenantId) {
-        var config = server.configs(tenantId);
+    server.loadTenant = function (tenant) {
+        var config, context, PrivilegedCarbonContext,
+            carbon = require('carbon');
+        if (tenant.secured && tenant.tenantId != carbon.server.superTenant.tenantId) {
+            log.info('=============================== tenant flow is starting in store : ' + JSON.stringify(tenant));
+            PrivilegedCarbonContext = Packages.org.wso2.carbon.context.PrivilegedCarbonContext;
+            PrivilegedCarbonContext.startTenantFlow();
+            context = PrivilegedCarbonContext.getThreadLocalCarbonContext();
+            context.setTenantId(tenant.tenantId);
+            context.setTenantDomain(tenant.domain);
+            log.info('=============================== tenant flow started in store');
+        }
+        config = server.configs(tenant.tenantId);
         if (config[ANONYMOUS_REGISTRY]) {
             return;
         }
-        require('event').emit('tenantLoad', tenantId);
+        require('event').emit('tenantLoad', tenant.tenantId);
     };
 
     /**
