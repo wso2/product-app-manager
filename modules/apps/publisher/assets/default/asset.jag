@@ -70,11 +70,11 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
     //TODO: Return an empty artifact or null
     try {
 
-        log.info('look for '+id);
+        log.debug('look for '+id);
 
         var artifact = artifactManager.get(id);
 
-        log.info('left');
+        log.debug('left');
 
         //Get the template
         var rxtTemplate = rxtManager.findAssetTemplate(function (template) {

@@ -228,6 +228,7 @@ $(function () {
 
     $('#search-dropdown-arrow').click(function (e) {
         e.stopPropagation();
+        e.preventDefault();
         var icon = $(this).find('i'), cls = icon.attr('class');
         icon.removeClass().addClass(cls == 'icon-sort-down' ? 'icon-sort-up' : 'icon-sort-down');
         if ($('#search').val().length > 0) {

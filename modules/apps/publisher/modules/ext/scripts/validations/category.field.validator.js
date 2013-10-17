@@ -4,7 +4,7 @@
  Created Date: 15/11/2013
  */
 var validatorModule = function () {
-     var log=new Log('category.field.validator');
+    var log = new Log('category.field.validator');
 
     /*
      The function is used to check if the context can be handled by the
@@ -31,19 +31,17 @@ var validatorModule = function () {
 
         var template = context.template;
         var model = context.model;
-        var report=context.report;
-		var field=model.get('overview.category');
+        var report = context.report;
+        var field = model.get('overview.category');
 
-	log.info(field);
+        //Go through each field and check category
+        if (field) {
+            for (var index in template.tables) {
 
-    //Go through each field and check category
-	if(field){
-        for (var index in template.tables) {
+                validateCategory(template.tables[index], model.get("overview.category").value, report);
 
-            validateCategory(template.tables[index],model.get("overview.category").value,report);
-
+            }
         }
-	}
         return true;
     }
 
@@ -53,21 +51,21 @@ var validatorModule = function () {
      @category: Provided category
      @report: The report on the validation
      */
-    function validateCategory(table,category,report) {
+    function validateCategory(table, category, report) {
         var field;
         for (var fieldIndex in table.fields) {
 
             field = table.fields[fieldIndex];
-			if(field.name == 'Category'){
-				var arry = field.value;
-					if(arry.indexOf(category) != -1){
-						log.debug("Correct category provided !");
-						return true;
-						}else{
-							report.record(field.name,'Error returned while adding '+field.name);
-                			return;
-						}
-				}
+            if (field.name == 'Category') {
+                var arry = field.value;
+                if (arry.indexOf(category) != -1) {
+                    log.debug("Correct category provided !");
+                    return true;
+                } else {
+                    report.record(field.name, 'Error incorrect category.' + field.name);
+                    return;
+                }
+            }
 
         }
     }
