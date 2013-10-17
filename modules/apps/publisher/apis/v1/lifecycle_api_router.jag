@@ -210,7 +210,7 @@ routeManager.register('GET','publisher','/publisher/api/lifecycle/{type}/{id}',f
 
 
     try{
-        log.info('Entered check lifecycle/type/id ');
+
         var shortName=context.params.type;
         var id=context.params.id;
 
@@ -300,23 +300,14 @@ routeManager.register('GET','publisher','/publisher/api/lifecycle/information/hi
        var artifactManager=rxtManager.getArtifactManager(shortName);
        var artifact=artifactManager.get(id);
 
-       var historyPath=artifactManager.getLifecycleHistoryPath(artifact);
 
-       log.debug('history retrieved from '+historyPath);
-
-       var systemRegistry=rxtManager.registry;//server.systemRegistry();
-
-       //var actions=artifactManager.availableActions(artifact);
-
-       //log.debug(actions);
-
-       var resourceInstance=systemRegistry.get(historyPath);
+       var historyRes=artifactManager.getLifecycleHistory(artifact);
 
        var json={};
 
-       if(resourceInstance!=undefined){
+       if(historyRes!=undefined){
 
-           var xml=new XML(resourceInstance.content);
+           var xml=new XML(historyRes.content);
 
            json=utility.xml.convertE4XtoJSON(xml);
 
