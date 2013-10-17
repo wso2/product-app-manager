@@ -132,8 +132,13 @@ var server = {};
     };
 
     server.loadTenant = function (tenantId) {
-        var config = server.configs(tenantId);
-        if (config[ANONYMOUS_REGISTRY]) {
+        var config = server.configs(tenantId),
+            service = carbon.server.osgiService('org.wso2.carbon.utils.ConfigurationContextService'),
+            TenantAxisUtils = org.wso2.carbon.core.multitenancy.utils.TenantAxisUtils,
+            domain = carbon.server.tenantDomain({
+                tenantId: tenantId
+            });
+        if (config[ANONYMOUS_REGISTRY] && TenantAxisUtils.getTenantConfigurationContexts(service.getServerConfigContext()).get(domain) != null) {
             return;
         }
         require('event').emit('tenantLoad', tenantId);
