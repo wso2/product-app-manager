@@ -3,14 +3,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="https://localhost:9443/" />
-<title>PromoteToInReview</title>
+<link rel="selenium.base" href="http://localhost:9763/" />
+<title>PromoteToPublished</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">PromoteToInReview</td></tr>
+<tr><td rowspan="1" colspan="3">PromoteToPublished</td></tr>
 </thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/publisher/assets/gadget/</td>
+	<td></td>
+</tr>
 <tr>
 	<td>clickAndWait</td>
 	<td>//a[contains(text(),&quot;userAddedAsset&quot;)]</td>
@@ -39,7 +44,7 @@
 <tr>
 	<td>verifyTable</td>
 	<td>lc-history.0.1</td>
-	<td>supertenantuser changed the asset from Created to In-Review</td>
+	<td>admin changed the asset from In-Review to Published</td>
 </tr>
 </tbody></table>
 </body>
