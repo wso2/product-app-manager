@@ -356,7 +356,9 @@ h3.asset-title-separator {
     position: relative;
     font-size: 18px;
 }
-
+.store-left h3.asset-type-default {
+    background: url("../img/icon-bar-default.png") no-repeat scroll 2px 1px rgb(235, 243, 243);
+}
 .store-left h3.asset-type-gadget {
     background: url("../img/icon-bar-gadget.png") no-repeat scroll 2px 1px rgb(235, 243, 243);
 }
@@ -366,7 +368,7 @@ h3.asset-title-separator {
 }
 
 .store-left h3.asset-type-ebook {
-    background: url("../img/icon-bar-site.png") no-repeat scroll 2px 1px rgb(235, 243, 243);
+    background: url("../img/icon-bar-ebook.png") no-repeat scroll 2px 1px rgb(235, 243, 243);
 }
 #container-header .nav.menu li:last-child{
      border-right:1px solid transparent;
@@ -570,12 +572,18 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 .recently-added {
     margin-bottom: 10px;
 }
-.recently-added .span3 img {
-    width: 93%;
+.recently-added .span3 > a{
+    display:block;
+    overflow:hidden;
+    width: 60px;
+    height: 60px;
 }
 .recently-added small {
     display: block;
     clear: both;
+}
+.recently-added > .span3 > a{
+    
 }
 .recently-added .star-rating {
     display: block;
@@ -945,11 +953,20 @@ div.rating-cancel, div.star-rating {
     background-color: #fff !important;
     margin-top: 2px;
 }
+.asset-intro-box > div{
+    display:block;
+}
+.asset-intro-box > div:nth-last-child{
+    margin-left:55px;
+}
 .asset-intro-box img {
     width: 50px;
     border: 1px solid #FFFFFF;
     vertical-align: top;
     float: left;
+}
+.asset-intro-inner{
+    margin-left:53px;
 }
 .asset-intro-box h3 {
     line-height: normal;
@@ -957,7 +974,7 @@ div.rating-cancel, div.star-rating {
     overflow: hidden;
     font-size: 18px;
     margin: 4px 0 0 10px;
-    float: left;
+    display:block;
 }
 .asset-intro-box h3 span {
     max-width: 324px;

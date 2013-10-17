@@ -111,3 +111,10 @@ a.ebook{
 .link-view-all small{
     font-size:11px;
 }
+
+.store-my-item-thumbnail > a{
+    display:block;
+    width:128px;
+    height:128px;
+    overflow: hidden;
+}
