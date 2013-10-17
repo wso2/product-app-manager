@@ -48,21 +48,28 @@ var filterModule = function () {
 
             item = data[index];
 
-            //Obtain the permissions for the current lifecycle state
-            permissableRoles = obtainPermissibleRoles(context, item.lifecycleState);
+            //TODO: We are ignoring any assets without a lifecycle state
+            if(item.lifecycleState) {
 
-            //Fill in dynamic values
-            permissableRoles = fillDynamicPermissibleRoles(item, permissableRoles);
+                //Obtain the permissions for the current lifecycle state
+                permissableRoles = obtainPermissibleRoles(context, item.lifecycleState);
 
-            //Check if the user has any of the roles specified for the state
-            var commonRoles = utility.intersect(userRoles, permissableRoles, function (a, b) {
-                return (a == b);
-            });
+                //Fill in dynamic values
+                permissableRoles = fillDynamicPermissibleRoles(item, permissableRoles);
 
-            //Check if we have common roles
-            if (commonRoles.length > 0) {
+                //Check if the user has any of the roles specified for the state
+                var commonRoles = utility.intersect(userRoles, permissableRoles, function (a, b) {
+                    return (a == b);
+                });
 
-                items.push(item);
+                //Check if we have common roles
+                if (commonRoles.length > 0) {
+
+                    items.push(item);
+                }
+            }
+            else{
+                log.info('ignoring '+item.attributes.overview_name+' as it does not have a lifecycle state.');
             }
         }
 

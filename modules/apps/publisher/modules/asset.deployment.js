@@ -162,7 +162,9 @@ var deployment_logic = function () {
             modifiedScriptObject.invoke(METHOD_ON_SET_RATING, [context]);
 
             //Attach the life-cycle
+            //log.info('trying to attach lifecycle');
             modifiedScriptObject.invoke(METHOD_ON_ATTACH_LIFECYCLE, [context]);
+            //log.info('finished');
 
             return;
         }

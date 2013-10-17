@@ -135,6 +135,13 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
 			dataInjector.cached().inject(assets, DataInjectorModes.DISPLAY);
 
 			return assets;
+				
+		} else if(options.lcState) {
+			assets = that.manager.search(options, paging);
+			dataInjector.cached().inject(assets, DataInjectorModes.DISPLAY);
+			
+			return assets;
+			
 		} else if(options) {
 			assets = that.manager.search(null, paging);
 			dataInjector.cached().inject(assets, DataInjectorModes.DISPLAY);

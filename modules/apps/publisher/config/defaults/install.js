@@ -196,12 +196,13 @@ var installer = function () {
 
         var assets = artifactManager.find(function (adapter) {
             return (adapter.attributes.overview_name == name) ? true : false;
-        }, 1);
+        }, null);
 
         context['currentAsset'] = assets[0] || null;
-        log.debug('added asset: ' + stringify(context.currentAsset));
+        //log.info('added asset: ' + stringify(context.currentAsset));
 
         addToSocialCache(context.currentAsset);
+        //log.info('finished');
     }
 
     /*
@@ -233,6 +234,8 @@ var installer = function () {
         var currentLifeCycleName = currentAsset.lifecycle || null;
         var currentLifeCycleState = currentAsset.lifecycleState || null;
         var attempts = 0;
+
+        log.debug('attaching lifecycle to: '+currentAsset.attributes.overview_name);
 
         log.debug('current lifecycle: ' + currentLifeCycleName + ' , current state: ' + currentLifeCycleState);
 
@@ -268,6 +271,8 @@ var installer = function () {
 
             log.debug('current lifecycle state: ' + currentLifeCycleState);
         }
+
+        log.debug('final state of : '+currentAsset.attributes.overview_name+' '+currentLifeCycleState);
     }
 
     /*
