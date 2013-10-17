@@ -272,7 +272,7 @@ var installer = function () {
             log.debug('current lifecycle state: ' + currentLifeCycleState);
         }
 
-        log.info('final state of : '+currentAsset.attributes.overview_name+' '+currentLifeCycleState);
+        log.debug('final state of : '+currentAsset.attributes.overview_name+' '+currentLifeCycleState);
     }
 
     /*
