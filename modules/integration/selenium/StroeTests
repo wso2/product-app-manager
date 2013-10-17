@@ -20,6 +20,9 @@
 <tr><td><a href="tests/FilterByTag">FilterByTag</a></td></tr>
 <tr><td><a href="tests/Logout">Logout</a></td></tr>
 <tr><td><a href="tests/CreateSuperTenantUser">CreateSuperTenantUser</a></td></tr>
+<tr><td><a href="tests/BookmarkAsset">BookmarkAsset</a></td></tr>
+<tr><td><a href="tests/ShowMyItems">ShowMyItems</a></td></tr>
+<tr><td><a href="tests/AddNewAsset">AddNewAsset</a></td></tr>
 </tbody></table>
 </body>
 </html>
