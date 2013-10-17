@@ -103,7 +103,8 @@ var server = {};
      * @param session
      */
     server.tenant = function (request, session) {
-        var obj, domain, user, carbon;
+        var obj, domain, user,
+            carbon = require('carbon');
         /*matcher = new URIMatcher(request.getRequestURI());
          if (matcher.match('/{context}/' + opts.tenantPrefix + '/{domain}') ||
          matcher.match('/{context}/' + opts.tenantPrefix + '/{domain}/{+any}')) {
@@ -112,7 +113,9 @@ var server = {};
         if (user) {
             obj = {
                 tenantId: user.tenantId,
-                domain: user.domain,
+                domain: carbon.server.tenantDomain({
+                    tenantId: user.tenantId
+                }),
                 secured: true
             };
         } else {
@@ -246,6 +249,19 @@ var server = {};
             return new carbon.user.UserManager(server.instance(), tenantId);
         }
         return server.configs(tenantId)[USER_MANAGER];
+    };
+
+    server.privileged = function (fn) {
+        var o, context,
+            carbon = require('carbon'),
+            PrivilegedCarbonContext = org.wso2.carbon.context.PrivilegedCarbonContext;
+        PrivilegedCarbonContext.startTenantFlow();
+        context = PrivilegedCarbonContext.getThreadLocalCarbonContext();
+        context.setTenantDomain(carbon.server.superTenant.domain);
+        context.setTenantId(carbon.server.superTenant.tenantId);
+        o = fn();
+        context.endTenantFlow();
+        return o;
     };
 }(server));
 

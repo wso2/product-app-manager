@@ -288,8 +288,11 @@ var driverManager=function(){
     @return: A DataSource object
      */
     DataSourceManager.prototype.get=function(name){
-
-        var datasource=this.instance.getInstance().getDataSourceRepository().getDataSource(name);
+        var server = require('store').server;
+        var that = this;
+        var datasource = server.privileged(function() {
+            return that.instance.getInstance().getDataSourceRepository().getDataSource(name);
+        });
         var dsObject=datasource.getDSObject();
 
         //If the datasource is not found

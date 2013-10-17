@@ -17,10 +17,11 @@ var securityModule = function () {
     function isPermitted(session) {
 
         //Obtain the session and check if there is a user
-        var user = require('store').server.current(session),
-            PrivilegedCarbonContext = Packages.org.wso2.carbon.context.PrivilegedCarbonContext,
-            context = PrivilegedCarbonContext.getThreadLocalCarbonContext();
+        var context,
+            user = require('store').server.current(session),
+            PrivilegedCarbonContext = Packages.org.wso2.carbon.context.PrivilegedCarbonContext;
         if (user) {
+            context = PrivilegedCarbonContext.getThreadLocalCarbonContext();
             context.setUsername(user.username);
             return true;
         }
