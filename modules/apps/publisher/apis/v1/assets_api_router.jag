@@ -13,6 +13,7 @@ routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{t
     var type = context.params.type;
 
     var username = require('store').server.current(session).username;
+    var domain = require('store').server.current(session).tenantDomain;//.get(Domain of tenant)
     var startDate = context.post.startDate;
     var endDate = context.post.endDate;
 
@@ -31,7 +32,7 @@ routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{t
 
     if (!context.post.isOnChoice) {
 
-        var bookmarkStats = stats.filterResultsByAssetType(stats.getBookmarkStats(username), type);
+        var bookmarkStats = stats.filterResultsByAssetType(stats.getBookmarkStats(username,domain), type);
         var bookmarkTicks = [], bookmarkStatData = [], assetName;
         for (var i = 0; i < bookmarkStats.length; i++) {
             artifact = artifactManager.get(bookmarkStats[i].ASSET_ID);

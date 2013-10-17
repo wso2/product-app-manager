@@ -1,6 +1,6 @@
 var db = new Database('WSO2_CARBON_DB');
 
-var getBookmarkStats = function (loggedInUser) {
+var getBookmarkStats = function (loggedInUser,domainName) {
 
     //Temporary fix as defautls assets are deployed as wso2.system.user
     /*if (loggedInUser == 'admin') {
@@ -10,7 +10,7 @@ var getBookmarkStats = function (loggedInUser) {
         "FROM REG_RESOURCE RS " +
         "JOIN REG_RESOURCE RR ON RS.REG_UUID=RR.REG_NAME " +
         "JOIN REG_PATH RP ON  RR.REG_PATH_ID = RP.REG_PATH_ID " +
-        "WHERE RS.REG_CREATOR = '" + loggedInUser + "' AND " +
+          "WHERE RS.REG_CREATOR = '" + loggedInUser + "@"+domainName+"' AND " +
         "RP.REG_PATH_VALUE like '/_system/governance/users/%' AND " +
         "RR.REG_NAME IS NOT NULL GROUP BY RR.REG_NAME" ;
     return db.query(query);
