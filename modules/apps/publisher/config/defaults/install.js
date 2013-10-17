@@ -187,7 +187,7 @@ var installer = function () {
 
 
         //Add the asset
-        log.info('about to add the asset : ' + artifact.name);
+        log.debug('about to add the asset : ' + artifact.name);
 
         //Store any resources in the Storage Manager
         context.dataInjector.inject(artifact, context.dataInjectorModes.STORAGE);
@@ -202,7 +202,7 @@ var installer = function () {
         //log.info('added asset: ' + stringify(context.currentAsset));
 
         addToSocialCache(context.currentAsset);
-        log.info('finished');
+        //log.info('finished');
     }
 
     /*
@@ -235,7 +235,7 @@ var installer = function () {
         var currentLifeCycleState = currentAsset.lifecycleState || null;
         var attempts = 0;
 
-        log.info('attaching lifecycle to: '+currentAsset.attributes.overview_name);
+        log.debug('attaching lifecycle to: '+currentAsset.attributes.overview_name);
 
         log.debug('current lifecycle: ' + currentLifeCycleName + ' , current state: ' + currentLifeCycleState);
 
@@ -272,7 +272,7 @@ var installer = function () {
             log.debug('current lifecycle state: ' + currentLifeCycleState);
         }
 
-        log.info('final state of : '+currentAsset.attributes.overview_name+' '+currentLifeCycleState);
+        log.debug('final state of : '+currentAsset.attributes.overview_name+' '+currentLifeCycleState);
     }
 
     /*

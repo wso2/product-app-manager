@@ -132,20 +132,27 @@ var server = {};
     };
 
     server.loadTenant = function (tenant) {
-        var config, context, PrivilegedCarbonContext,
-            carbon = require('carbon');
-        if (tenant.secured && tenant.tenantId != carbon.server.superTenant.tenantId) {
-            log.info('=============================== tenant flow is starting in store : ' + JSON.stringify(tenant));
-            PrivilegedCarbonContext = Packages.org.wso2.carbon.context.PrivilegedCarbonContext;
-            PrivilegedCarbonContext.startTenantFlow();
-            context = PrivilegedCarbonContext.getThreadLocalCarbonContext();
-            context.setTenantId(tenant.tenantId);
-            context.setTenantDomain(tenant.domain);
-            log.info('=============================== tenant flow started in store');
-        }
-        config = server.configs(tenant.tenantId);
-        if (config[ANONYMOUS_REGISTRY]) {
-            return;
+        var context, service, ctxs, TenantAxisUtils, PrivilegedCarbonContext,
+            carbon = require('carbon'),
+            config = server.configs(tenant.tenantId);
+        if (tenant.tenantId == carbon.server.superTenant.tenantId) {
+            if (config[ANONYMOUS_REGISTRY]) {
+                return;
+            }
+        } else {
+            if (tenant.secured) {
+                PrivilegedCarbonContext = org.wso2.carbon.context.PrivilegedCarbonContext;
+                PrivilegedCarbonContext.startTenantFlow();
+                context = PrivilegedCarbonContext.getThreadLocalCarbonContext();
+                context.setTenantId(tenant.tenantId);
+                context.setTenantDomain(tenant.domain);
+            }
+            service = carbon.server.osgiService('org.wso2.carbon.utils.ConfigurationContextService');
+            TenantAxisUtils = org.wso2.carbon.core.multitenancy.utils.TenantAxisUtils;
+            ctxs = TenantAxisUtils.getTenantConfigurationContexts(service.getServerConfigContext());
+            if (config[ANONYMOUS_REGISTRY] && ctxs.get(tenant.domain) != null) {
+                return;
+            }
         }
         require('event').emit('tenantLoad', tenant.tenantId);
     };

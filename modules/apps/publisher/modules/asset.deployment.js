@@ -148,7 +148,7 @@ var deployment_logic = function () {
 
             //Check if there is a current asset to which the operations can be performed
             if (!context.currentAsset) {
-                log.info('there is no current asset.Aborting all other operations.');
+                log.debug('there is no current asset.Aborting all other operations.');
                 return;
             }
 
@@ -162,9 +162,9 @@ var deployment_logic = function () {
             modifiedScriptObject.invoke(METHOD_ON_SET_RATING, [context]);
 
             //Attach the life-cycle
-            log.info('trying to attach lifecycle');
+            //log.info('trying to attach lifecycle');
             modifiedScriptObject.invoke(METHOD_ON_ATTACH_LIFECYCLE, [context]);
-            log.info('finished');
+            //log.info('finished');
 
             return;
         }

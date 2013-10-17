@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+  <title>Test Suite</title>
+</head>
+<body>
+<table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
+<tr><td><b>Test Suite</b></td></tr>
+<tr><td><a href="tests/LoginToCarbon">LoginToCarbon</a></td></tr>
+<tr><td><a href="tests/AddTenant">AddTenant</a></td></tr>
+<tr><td><a href="tests/TestGadgetsAvailable">TestGadgetsAvailable</a></td></tr>
+<tr><td><a href="tests/TestSortByPopDefaults">TestSortByPopDefaults</a></td></tr>
+<tr><td><a href="tests/LoginAsAdmin">LoginAsAdmin</a></td></tr>
+<tr><td><a href="tests/BookmarkAsset">BookmarkAsset</a></td></tr>
+<tr><td><a href="tests/ShowMyItems">ShowMyItems</a></td></tr>
+<tr><td><a href="tests/TestAddReview">TestAddReview</a></td></tr>
+<tr><td><a href="tests/TestSortByPopAfterReview">TestSortByPopAfterReview</a></td></tr>
+<tr><td><a href="tests/FilterByTag">FilterByTag</a></td></tr>
+<tr><td><a href="tests/Logout">Logout</a></td></tr>
+<tr><td><a href="tests/CreateSuperTenantUser">CreateSuperTenantUser</a></td></tr>
+<tr><td><a href="tests/BookmarkAsset">BookmarkAsset</a></td></tr>
+<tr><td><a href="tests/ShowMyItems">ShowMyItems</a></td></tr>
+<tr><td><a href="tests/AddNewAsset">AddNewAsset</a></td></tr>
+</tbody></table>
+</body>
+</html>
