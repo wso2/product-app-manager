@@ -138,8 +138,12 @@ var server = {};
             domain = carbon.server.tenantDomain({
                 tenantId: tenantId
             });
-        if (config[ANONYMOUS_REGISTRY] && TenantAxisUtils.getTenantConfigurationContexts(service.getServerConfigContext()).get(domain) != null) {
-            return;
+        if (domain == carbon.server.superTenant.domain) {
+            if (config[ANONYMOUS_REGISTRY]) return;
+        } else {
+            if (config[ANONYMOUS_REGISTRY] && TenantAxisUtils.getTenantConfigurationContexts(service.getServerConfigContext()).get(domain) != null) {
+                return;
+            }
         }
         require('event').emit('tenantLoad', tenantId);
     };
