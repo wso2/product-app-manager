@@ -1,111 +1,5 @@
 var sugyamaModule = function () {
 
-    var data={"class" : "org.wso2.jaggery.scxml.aspects.JaggeryTravellingPermissionLifeCycle", "name" : "MobileAppLifeCycle", "configuration" : [{"type" : "literal", "lifecycle" : [{"scxml" : [{"initialstate" : "Initial", "version" : "1.0", "xmlns" : "http://www.w3.org/2005/07/scxml", "state" : [{"id" : "Initial", "datamodel" : [{"data" : [{"name" : "transitionExecution", "execution" : [{"class" : "org.wso2.jaggery.scxml.generic.GenericExecutor", "forEvent" : "Create", "parameter" : [{"name" : "PERMISSION:get", "value" : "http://www.wso2.org/projects/registry/actions/get"}, {"name" : "PERMISSION:add", "value" : "http://www.wso2.org/projects/registry/actions/add"}, {"name" : "PERMISSION:delete", "value" : "http://www.wso2.org/projects/registry/actions/delete"}, {"name" : "PERMISSION:authorize", "value" : "authorize"}, {"name" : "STATE_RULE1:Created", "value" : "private_{asset_author}:+add,+delete,+authorize"}, {"name" : "STATE_RULE2:Created", "value" : "Internal/everyone:-add,-delete,-authorize"}]}]}]}], "transition" : [{"event" : "Create", "target" : "Created"}]}, {"id" : "Created", "datamodel" : [{"data" : [{"name" : "transitionExecution", "execution" : [{"class" : "org.wso2.jaggery.scxml.generic.GenericExecutor", "forEvent" : "Submit", "parameter" : [{"name" : "PERMISSION:get", "value" : "http://www.wso2.org/projects/registry/actions/get"}, {"name" : "PERMISSION:add", "value" : "http://www.wso2.org/projects/registry/actions/add"}, {"name" : "PERMISSION:delete", "value" : "http://www.wso2.org/projects/registry/actions/delete"}, {"name" : "PERMISSION:authorize", "value" : "authorize"}, {"name" : "STATE_RULE1:In-Review", "value" : "private_{asset_author}:-add,-delete,-authorize"}, {"name" : "STATE_RULE2:In-Review", "value" : "reviewer:+add,-delete,+authorize"}, {"name" : "STATE_RULE3:In-Review", "value" : "Internal/everyone:-add,-delete,-authorize"}]}]}]}], "transition" : [{"event" : "Submit", "target" : "In-Review"}]}, {"id" : "In-Review", "datamodel" : [{"data" : [{"name" : "transitionExecution", "execution" : [{"class" : "org.wso2.jaggery.scxml.generic.GenericExecutor", "forEvent" : "Approve", "parameter" : [{"name" : "PERMISSION:get", "value" : "http://www.wso2.org/projects/registry/actions/get"}, {"name" : "PERMISSION:add", "value" : "http://www.wso2.org/projects/registry/actions/add"}, {"name" : "PERMISSION:delete", "value" : "http://www.wso2.org/projects/registry/actions/delete"}, {"name" : "PERMISSION:authorize", "value" : "authorize"}, {"name" : "STATE_RULE1:Approved", "value" : "private_{asset_author}:+get,-add,-delete,-authorize"}, {"name" : "STATE_RULE2:Approved", "value" : "reviewer:-add,-delete,-authorize"}, {"name" : "STATE_RULE3:Approved", "value" : "Internal/everyone:-add,-delete,-authorize"}]}, {"class" : "org.wso2.jaggery.scxml.generic.GenericExecutor", "forEvent" : "Reject", "parameter" : [{"name" : "PERMISSION:get", "value" : "http://www.wso2.org/projects/registry/actions/get"}, {"name" : "PERMISSION:add", "value" : "http://www.wso2.org/projects/registry/actions/add"}, {"name" : "PERMISSION:delete", "value" : "http://www.wso2.org/projects/registry/actions/delete"}, {"name" : "PERMISSION:authorize", "value" : "authorize"}, {"name" : "STATE_RULE1:Rejected", "value" : "private_{asset_author}:+add,+delete,+authorize"}, {"name" : "STATE_RULE2:Rejected", "value" : "reviewer:-add,-delete,-authorize"}, {"name" : "STATE_RULE3:Rejected", "value" : "Internal/everyone:-add,-delete,-authorize"}]}]}]}], "transition" : [{"event" : "Approve", "target" : "Approved"}, {"event" : "Reject", "target" : "Rejected"}]}, {"id" : "Approved", "datamodel" : [{"data" : [{"name" : "transitionExecution", "execution" : [{"class" : "org.wso2.jaggery.scxml.generic.GenericExecutor", "forEvent" : "Publish", "parameter" : [{"name" : "PERMISSION:get", "value" : "http://www.wso2.org/projects/registry/actions/get"}, {"name" : "PERMISSION:add", "value" : "http://www.wso2.org/projects/registry/actions/add"}, {"name" : "PERMISSION:delete", "value" : "http://www.wso2.org/projects/registry/actions/delete"}, {"name" : "PERMISSION:authorize", "value" : "authorize"}, {"name" : "STATE_RULE1:Published", "value" : "private_{asset_author}:-add,+delete,-authorize"}, {"name" : "STATE_RULE2:Published", "value" : "reviewer:-add,-delete,-authorize"}, {"name" : "STATE_RULE3:Published", "value" : "Internal/everyone:-add,-delete,-authorize"}]}]}]}], "transition" : [{"event" : "Publish", "target" : "Published"}]}, {"id" : "Rejected", "datamodel" : [{"data" : [{"name" : "transitionExecution", "execution" : [{"class" : "org.wso2.jaggery.scxml.generic.GenericExecutor", "forEvent" : "Submit", "parameter" : [{"name" : "PERMISSION:get", "value" : "http://www.wso2.org/projects/registry/actions/get"}, {"name" : "PERMISSION:add", "value" : "http://www.wso2.org/projects/registry/actions/add"}, {"name" : "PERMISSION:delete", "value" : "http://www.wso2.org/projects/registry/actions/delete"}, {"name" : "PERMISSION:authorize", "value" : "authorize"}, {"name" : "STATE_RULE1:In-Review", "value" : "private_{asset_author}:-add,-delete,-authorize"}, {"name" : "STATE_RULE2:In-Review", "value" : "reviewer:+add,-delete,+authorize"}, {"name" : "STATE_RULE3:In-Review", "value" : "Internal/everyone:-add,-delete,-authorize"}]}]}]}], "transition" : [{"event" : "Re-Submit", "target" : "In-Review"}]}, {"id" : "Published", "datamodel" : [{"data" : [{"name" : "transitionExecution", "execution" : [{"class" : "org.wso2.jaggery.scxml.generic.GenericExecutor", "forEvent" : "Unpublish", "parameter" : [{"name" : "PERMISSION:get", "value" : "http://www.wso2.org/projects/registry/actions/get"}, {"name" : "PERMISSION:add", "value" : "http://www.wso2.org/projects/registry/actions/add"}, {"name" : "PERMISSION:delete", "value" : "http://www.wso2.org/projects/registry/actions/delete"}, {"name" : "PERMISSION:authorize", "value" : "authorize"}, {"name" : "STATE_RULE1:Unpublished", "value" : "private_{asset_author}:-add,-delete,-authorize"}, {"name" : "STATE_RULE2:Unpublished", "value" : "reviewer:-add,-delete,-authorize"}, {"name" : "STATE_RULE3:Unpublished", "value" : "Internal/everyone:-add,-delete,-authorize"}]}, {"class" : "org.wso2.jaggery.scxml.generic.GenericExecutor", "forEvent" : "Deprecate", "parameter" : [{"name" : "PERMISSION:get", "value" : "http://www.wso2.org/projects/registry/actions/get"}, {"name" : "PERMISSION:add", "value" : "http://www.wso2.org/projects/registry/actions/add"}, {"name" : "PERMISSION:delete", "value" : "http://www.wso2.org/projects/registry/actions/delete"}, {"name" : "PERMISSION:authorize", "value" : "authorize"}, {"name" : "STATE_RULE1:Deprecated", "value" : "private_{asset_author}:-add,-delete,-authorize"}, {"name" : "STATE_RULE2:Deprecated", "value" : "reviewer:-add,-delete,-authorize"}, {"name" : "STATE_RULE3:Deprecated", "value" : "Internal/everyone:-add,-delete,-authorize"}]}]}]}], "transition" : [{"event" : "Unpublish", "target" : "Unpublished"}, {"event" : "Deprecate", "target" : "Deprecated"}]}, {"id" : "Unpublished", "datamodel" : [{"data" : [{"name" : "transitionExecution", "execution" : [{"class" : "org.wso2.jaggery.scxml.generic.GenericExecutor", "forEvent" : "Publish", "parameter" : [{"name" : "PERMISSION:get", "value" : "http://www.wso2.org/projects/registry/actions/get"}, {"name" : "PERMISSION:add", "value" : "http://www.wso2.org/projects/registry/actions/add"}, {"name" : "PERMISSION:delete", "value" : "http://www.wso2.org/projects/registry/actions/delete"}, {"name" : "PERMISSION:authorize", "value" : "authorize"}, {"name" : "STATE_RULE1:Published", "value" : "private_{asset_author}:-add,+delete,-authorize"}, {"name" : "STATE_RULE2:Published", "value" : "reviewer:-add,-delete,-authorize"}, {"name" : "STATE_RULE3:Published", "value" : "Internal/everyone:-add,-delete,-authorize"}]}, {"class" : "org.wso2.jaggery.scxml.generic.GenericExecutor", "forEvent" : "Retire", "parameter" : [{"name" : "PERMISSION:get", "value" : "http://www.wso2.org/projects/registry/actions/get"}, {"name" : "PERMISSION:add", "value" : "http://www.wso2.org/projects/registry/actions/add"}, {"name" : "PERMISSION:delete", "value" : "http://www.wso2.org/projects/registry/actions/delete"}, {"name" : "PERMISSION:authorize", "value" : "authorize"}, {"name" : "STATE_RULE1:Retired", "value" : "private_{asset_author}:-add,+delete,-authorize"}, {"name" : "STATE_RULE2:Retired", "value" : "reviewer:-add,-delete,-authorize"}, {"name" : "STATE_RULE3:Retired", "value" : "Internal/everyone:-add,-delete,-authorize"}]}]}]}], "transition" : [{"event" : "Publish", "target" : "Published"}, {"event" : "Retire", "target" : "Retired"}]}, {"id" : "Deprecated", "datamodel" : [{"data" : [{"name" : "transitionExecution", "execution" : [{"class" : "org.wso2.jaggery.scxml.generic.GenericExecutor", "forEvent" : "Retire", "parameter" : [{"name" : "PERMISSION:get", "value" : "http://www.wso2.org/projects/registry/actions/get"}, {"name" : "PERMISSION:add", "value" : "http://www.wso2.org/projects/registry/actions/add"}, {"name" : "PERMISSION:delete", "value" : "http://www.wso2.org/projects/registry/actions/delete"}, {"name" : "PERMISSION:authorize", "value" : "authorize"}, {"name" : "STATE_RULE1:Retired", "value" : "private_{asset_author}:-add,+delete,-authorize"}, {"name" : "STATE_RULE2:Retired", "value" : "reviewer:-add,-delete,-authorize"}, {"name" : "STATE_RULE3:Retired", "value" : "Internal/everyone:-add,-delete,-authorize"}]}]}]}], "transition" : [{"event" : "Retire", "target" : "Retired"}]}, {"id" : "Retired"}]}]}]}]};
-   /*var data = {"class": "org.wso2.jaggery.scxml.aspects.JaggeryTravellingPermissionLifeCycle", "name": "SampleLifeCycle2", "configuration": [
-        {"type": "literal", "lifecycle": [
-            {"scxml": [
-                {"initialstate": "Initial", "version": "1.0", "xmlns": "http://www.w3.org/2005/07/scxml", "state": [
-                    {"id": "Initial", "datamodel": [
-                        {"data": [
-                            {"name": "transitionExecution", "execution": [
-                                {"class": "org.wso2.jaggery.scxml.generic.GenericExecutor", "forEvent": "Promote", "parameter": [
-                                    {"name": "PERMISSION:get", "value": "http://www.wso2.org/projects/registry/actions/get"},
-                                    {"name": "PERMISSION:add", "value": "http://www.wso2.org/projects/registry/actions/add"},
-                                    {"name": "PERMISSION:delete", "value": "http://www.wso2.org/projects/registry/actions/delete"},
-                                    {"name": "PERMISSION:authorize", "value": "authorize"},
-                                    {"name": "STATE_RULE1:Created", "value": "Internal/private_{asset_author}:+get,+add,+delete,+authorize"},
-                                    {"name": "STATE_RULE2:Created", "value": "Internal/reviewer:+get,-add,-delete,-authorize"},
-                                    {"name": "STATE_RULE3:Created", "value": "Internal/everyone:+get,-add,-delete,-authorize"}
-                                ]}
-                            ]}
-                        ]}
-                    ], "transition": [
-                        {"event": "Promote", "target": "Created"}
-                    ]},
-                    {"id": "Created", "datamodel": [
-                        {"data": [
-                            {"name": "transitionExecution", "execution": [
-                                {"class": "org.wso2.jaggery.scxml.generic.GenericExecutor", "forEvent": "Promote", "parameter": [
-                                    {"name": "PERMISSION:get", "value": "http://www.wso2.org/projects/registry/actions/get"},
-                                    {"name": "PERMISSION:add", "value": "http://www.wso2.org/projects/registry/actions/add"},
-                                    {"name": "PERMISSION:delete", "value": "http://www.wso2.org/projects/registry/actions/delete"},
-                                    {"name": "PERMISSION:authorize", "value": "authorize"},
-                                    {"name": "STATE_RULE1:In-Review", "value": "Internal/private_{asset_author}:+get,-add,-delete,-authorize"},
-                                    {"name": "STATE_RULE2:In-Review", "value": "Internal/reviewer:+get,+add,-delete,+authorize"},
-                                    {"name": "STATE_RULE3:In-Review", "value": "Internal/everyone:+get,-add,-delete,-authorize"}
-                                ]}
-                            ]}
-                        ]}
-                    ], "transition": [
-                        {"event": "Promote", "target": "In-Review"}
-                    ]},
-                    {"id": "In-Review", "datamodel": [
-                        {"data": [
-                            {"name": "transitionExecution", "execution": [
-                                {"class": "org.wso2.jaggery.scxml.generic.GenericExecutor", "forEvent": "Promote", "parameter": [
-                                    {"name": "PERMISSION:get", "value": "http://www.wso2.org/projects/registry/actions/get"},
-                                    {"name": "PERMISSION:add", "value": "http://www.wso2.org/projects/registry/actions/add"},
-                                    {"name": "PERMISSION:delete", "value": "http://www.wso2.org/projects/registry/actions/delete"},
-                                    {"name": "PERMISSION:authorize", "value": "authorize"},
-                                    {"name": "STATE_RULE1:Published", "value": "Internal/private_{asset_author}:+get,+add,-delete,+authorize"},
-                                    {"name": "STATE_RULE2:Published", "value": "Internal/reviewer:+get,-add,-delete,-authorize"},
-                                    {"name": "STATE_RULE3:Published", "value": "Internal/everyone:+get,-add,-delete,-authorize"}
-                                ]}
-                            ]}
-                        ]}
-                    ], "transition": [
-                        {"event": "Promote", "target": "Published"}
-                    ]},
-                    {"id": "Published", "datamodel": [
-                        {"data": [
-                            {"name": "transitionExecution", "execution": [
-                                {"class": "org.wso2.jaggery.scxml.generic.GenericExecutor", "forEvent": "Demote", "parameter": [
-                                    {"name": "PERMISSION:get", "value": "http://www.wso2.org/projects/registry/actions/get"},
-                                    {"name": "PERMISSION:add", "value": "http://www.wso2.org/projects/registry/actions/add"},
-                                    {"name": "PERMISSION:delete", "value": "http://www.wso2.org/projects/registry/actions/delete"},
-                                    {"name": "PERMISSION:authorize", "value": "authorize"},
-                                    {"name": "STATE_RULE1:Unpublished", "value": "Internal/private_{asset_author}:+get,+add,+delete,+authorize"},
-                                    {"name": "STATE_RULE2:Unpublished", "value": "Internal/reviewer:+get,-add,-delete,-authorize"},
-                                    {"name": "STATE_RULE3:Unpublished", "value": "Internal/everyone:+get,-add,-delete,-authorize"}
-                                ]}
-                            ]}
-                        ]}
-                    ], "transition": [
-                        {"event": "Demote", "target": "Unpublished"}
-                    ]},
-                    {"id": "Unpublished", "datamodel": [
-                        {"data": [
-                            {"name": "transitionExecution", "execution": [
-                                {"class": "org.wso2.jaggery.scxml.generic.GenericExecutor", "forEvent": "Promote", "parameter": [
-                                    {"name": "PERMISSION:get", "value": "http://www.wso2.org/projects/registry/actions/get"},
-                                    {"name": "PERMISSION:add", "value": "http://www.wso2.org/projects/registry/actions/add"},
-                                    {"name": "PERMISSION:delete", "value": "http://www.wso2.org/projects/registry/actions/delete"},
-                                    {"name": "PERMISSION:authorize", "value": "authorize"},
-                                    {"name": "STATE_RULE1:In-Review", "value": "Internal/private_{asset_author}:+get,-add,-delete,-authorize"},
-                                    {"name": "STATE_RULE2:In-Review", "value": "Internal/reviewer:+get,+add,-delete,+authorize"},
-                                    {"name": "STATE_RULE3:In-Review", "value": "Internal/everyone:+get,-add,-delete,-authorize"}
-                                ]}
-                            ]}
-                        ]}
-                    ], "transition": [
-                        {"event": "Promote", "target": "In-Review"}
-                    ]}
-                ]}
-            ]}
-        ]}
-    ]};*/
-
-    function Vertex() {
-        this.id = '';
-        this.x = 0;
-        this.y = 0;
-    }
-
-    function Edge() {
-        this.a = null;
-        this.b = null;
-    }
-
     function Matrix(map) {
         this.matrix = map || {};
     }
@@ -119,35 +13,87 @@ var sugyamaModule = function () {
         this.map = {};
     }
 
+
     /*
      The function adds a given a vertex to a provided depth
      */
-    LevelMap.prototype.add = function (vertex, depth) {
+    LevelMap.prototype.add = function (vertex, level) {
+        //Construct the key which will be used to retrieve the level
+        var level = getLevel(level);
 
         //Create a new depth for it
-        if (!this.map.hasOwnProperty(['l' + depth])) {
-            this.map['l' + depth] = [];
+        if (!this.map.hasOwnProperty([level])) {
+            this.map[level] = [];
         }
 
-        this.map['l' + depth].push(vertex);
+        //this.map['l' + depth].push(vertex);
+        this.map[level].push(new Node(vertex));
 
 
         return this.map;
     }
 
+    /*
+     The function returns the depth key based on the provided depth
+     @depth: The depth of the level
+     @return: The id
+     */
+    function getLevel(level) {
+        return 'l' + level;
+    }
+
+    /*
+     The function returns a list of nodes present in a given level
+     @level: The level to be inspected
+     @return: An array of nodes in a given level
+     */
     LevelMap.prototype.get = function (level) {
 
-        if (this.map.hasOwnProperty('l' + level)) {
-            return this.map['l' + level];
-        }
+        level = getLevel(level);
+        var nodes
 
+        //Check if a level exists
+        if (this.map.hasOwnProperty(level)) {
+            nodes = this.map[level];
+            return getNodeIds(nodes);
+        }
         return [];
     }
 
-    LevelMap.prototype.count=function(){
-        var counter=0;
+    /*
+     The function returns all of the node ids in a given node list
+     stored by the level map
+     */
+    function getNodeIds(nodes) {
+        var nodeIds = [];
 
-        for(var key in this.map){
+        //Go through each index in the nodes
+        for (var index in nodes) {
+
+            nodeIds.push(nodes[index].label);
+        }
+
+        return nodeIds;
+    }
+
+    /*
+     The function returns all of the nodes in a given level
+     */
+    LevelMap.prototype.getNodesInLevel = function (level) {
+        var level = getLevel(level);
+        var nodes = [];
+
+        if (this.map.hasOwnProperty(level)) {
+            nodes = this.map[level];
+        }
+
+        return nodes;
+    };
+
+    LevelMap.prototype.count = function () {
+        var counter = 0;
+
+        for (var key in this.map) {
             counter++;
         }
 
@@ -160,27 +106,196 @@ var sugyamaModule = function () {
         }
     };
 
+    /*
+     The function is used to create pseudo paths between nodes
+     which are not in opposite levels
+     */
+    LevelMap.prototype.createPseudoPaths = function (matrix) {
+        var from;
+        var to;
+
+        for (var index in matrix) {
+            from = index;
+
+            for (var indexTwo in matrix[from]) {
+
+                to = indexTwo;
+
+                if (matrix[from][indexTwo] == 1) {
+
+                    this.addPseudoPath(from, to);
+
+                }
+            }
+        }
+    };
+
+    /*
+     The function is used to add fake nodes to the level map to create
+     paths between nodes that are not opposite one another
+     */
+    LevelMap.prototype.addPseudoPath = function (start, end) {
+        var nodes;
+        var distance = 0;
+        var startLevel = this.getLevelOfNode(start);
+        var endLevel = this.getLevelOfNode(end);
+        var level;
+
+        //Go through each level starting from the start to the end
+        //The starting value is higher than the end
+        //e.g. L5 ---> L0 , the first nodes are in L5
+        for (var index = startLevel - 1; index >= endLevel; index--) {
+
+            level = getLevel(index);
+            nodes = this.map[level];
+
+            //Stop the processing if the current level has the end
+            if (isNodePresent(end, nodes)) {
+                return;
+            }
+            else {
+                nodes.push(new Node(start, true, index));
+            }
+
+            distance++;
+        }
+
+    };
+
+    /*
+     The function returns the level to which a given node belongs
+     */
+    LevelMap.prototype.getLevelOfNode = function (id) {
+
+        var levelCounter = this.count() - 1;
+        var nodes = [];
+
+        for (var index in this.map) {
+            nodes = this.map[index];
+
+            if (isNodePresent(id, nodes)) {
+                return levelCounter;
+            }
+
+            levelCounter--;
+        }
+
+        return levelCounter;
+    };
+
+    /*
+     The function sorts the nodes in each level based on the distance value to the connected node
+     */
+    LevelMap.prototype.sort = function () {
+
+        for (var index in this.map) {
+            //Sort the current level
+            sortLevel(index, this.map);
+        }
+
+    };
+
+    /*
+     The function performs a simple bubble sort based on the distance value of each node.
+     @level: The level of the nodes to be sorted
+     */
+    function sortLevel(level, map) {
+
+        var nodes;
+        var node;
+
+        //Check if the map has the indicated level
+        if (!map.hasOwnProperty(level)) {
+            return;
+        }
+
+        //Get the nodes in the indicated level
+        nodes = map[level];
+
+        //Go through each node
+        for (var index = 0; index < nodes.length; index++) {
+
+            node = nodes[index];
+
+            //Go through the rest of the node starting from the index
+            for (var indexCompare = 0; indexCompare < nodes.length ; indexCompare++) {
+
+                //Sort the levels in descending order
+                if (node.distance > nodes[indexCompare].distance) {
+                    swap(index,indexCompare,nodes);
+                }
+            }
+
+        }
+    }
+
+    /*
+     The function swaps the position of the two elements in the given array
+     a is moved to b, and the value at b is moved to a
+     */
+    function swap(a, b, array) {
+        var temp = array[a];
+        array[a] = array[b];
+        array[b] = temp;
+
+    }
+
+    /*
+     The function checks whether a given node with the provided id is present in an array of nodes
+     @id: The id of the node to be checked
+     @nodes: The list of nodes to be checked against
+     @return: True if the node is present else false
+     */
+    function isNodePresent(label, nodes) {
+
+        var node;
+
+        for (var index in nodes) {
+            node = nodes[index];
+
+            if (node.label == label) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    function Node(label, isFake, distance) {
+        this.label = label;
+        this.isFake = isFake || false;
+        this.distance = distance || 0;
+        this.x = 0;
+        this.y = 0;
+    }
+
     function createCoordinateMap(levelMap, level, length, startX, startY) {
         //Get the residents for the level
-        var residents = levelMap.get(level);
+        var residents = levelMap.getNodesInLevel(level);
         var mapping = [];
+        var node;
 
         //Calculate the spacing
         var spacing = length / residents.length;
 
         for (var index in residents) {
-            mapping.push({label: residents[index], x: startX, y: startY});
+            node = residents[index];
+            node.x = startX;
+            node.y = startY;
+            mapping.push({label: node.label, x: startX, y: startY, isFake: node.isFake});
             startY += spacing;
+
+
         }
 
         return mapping;
     }
 
-    var START_X=20;
-    var START_Y=500;
-    var LEVEL_SPACE=200;
-    var VERTEX_RADIUS=10;
-    var LEVEL_SEP=100;
+    var START_X = 20;
+    var START_Y = 500;
+    var LEVEL_SPACE = 200;
+    var VERTEX_RADIUS = 10;
+    var LEVEL_SEP = 100;
 
 
     function getPoints(levelMap) {
@@ -216,15 +331,18 @@ var sugyamaModule = function () {
 
             //Draw the items in the coords
             for (var key in coords) {
-                var element = coords[key];
-                var circle = paper.circle(element.x, element.y, VERTEX_RADIUS);
-                circle.attr('fill', '#6EC87F');
-                circle.attr('stroke-width', '3px');
-                circle.attr('stroke', '#647E9A');
-                circle.attr('r', VERTEX_RADIUS);
-                circle.node.setAttribute('class', element.label);
-                var txt = paper.text(element.x, element.y+VERTEX_RADIUS+10, element.label);
-                points.push(element);
+
+                if (!coords[key].isFake) {
+                    var element = coords[key];
+                    var circle = paper.circle(element.x, element.y, VERTEX_RADIUS);
+                    circle.attr('fill', '#6EC87F');
+                    circle.attr('stroke-width', '3px');
+                    circle.attr('stroke', '#647E9A');
+                    circle.attr('r', VERTEX_RADIUS);
+                    circle.node.setAttribute('class', element.label);
+                    paper.text(element.x, element.y + VERTEX_RADIUS + 10, element.label);
+                    points.push(element);
+                }
             }
 
             startX += LEVEL_SEP;
@@ -233,14 +351,83 @@ var sugyamaModule = function () {
         return points;
     }
 
-    function drawEdges(matrix, paper, points) {
+
+
+    /*
+     The function checks whether two edges are connected
+     @a: The starting point of the connection
+     @b: The ending point of the connection
+     @matrix: The matrix recording the relationship between the nodes
+     @return: True if the nodes are connected,else False
+     */
+    function isConnected(a, b, matrix) {
+
+        if(!matrix.hasOwnProperty(a.label)){
+            return false;
+        }
+
+        if (matrix[a.label].hasOwnProperty(b.label)) {
+
+            if (matrix[a.label][b.label] == 1) {
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
+
+    /*
+     The function is used to draw arrowheads
+     */
+    function drawArrowHead(a,b,paper,matrix){
+
+        var angle;
+        var arrow;
+
+        //Check if there is an arrow from a-> b
+        if(checkDoubleArrow(a,b,matrix)){
+
+            angle = Math.atan2(b.y - a.y, b.x - a.x);
+            angle = angle * (180 / Math.PI);
+
+            drawArrow({x: (b.x+ a.x)/2, y: (b.y+ a.y)/2, angle: angle}, paper);
+        }
+
+        //Check if there is an arrow from b -> a
+        if(checkDoubleArrow(b,a,matrix)){
+
+            angle = Math.atan2(a.y - b.y, a.x - b.x);
+            angle = angle * (180 / Math.PI);
+
+            drawArrow({x: (a.x+ b.x)/2, y: (a.y+ b.y)/2, angle: angle}, paper);
+        }
+    }
+
+    /*
+     The function checks if there is an arrow head between point a and b
+     */
+    function checkDoubleArrow(a,b,matrix){
+        if(!matrix.hasOwnProperty(a.label)){
+            return false;
+        }
+
+        if(matrix[a.label].hasOwnProperty(b.label)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function drawEdges(matrix, paper, points,rawMap) {
         var matrix = matrix.matrix;
         for (var index in matrix) {
 
             //Find the point of the matrix
             var fromPoint = findPoint(index, points);
 
-            var connected=getAllConnectedEdges(matrix,index);
+            var connected = getAllConnectedEdges(matrix, index);
 
             for (var to in connected) {
 
@@ -254,19 +441,21 @@ var sugyamaModule = function () {
                         path.push('M')
                         path.push(fromPoint.x);
                         path.push(fromPoint.y);
-                        path.push('L')
+
+
+                        path.push('L');
                         path.push(toPoint.x);
                         path.push(toPoint.y);
-                        
                         var edge=paper.path(path.join(','));
                         edge.attr('stroke', '#647E9A');
                         edge.attr('stroke-width', '3px');
-                        
+
+
                         var angle = Math.atan2(toPoint.y - fromPoint.y, toPoint.x - fromPoint.x);
 
                         angle = angle * (180 / Math.PI);
 
-                        drawArrow({x: (toPoint.x +fromPoint.x)/2, y: (toPoint.y+fromPoint.y)/2, angle: angle}, paper);
+                        drawArrowHead(fromPoint,toPoint,paper,matrix);
                     }
                 }
             }
@@ -284,6 +473,7 @@ var sugyamaModule = function () {
 
         return null;
     }
+
 
     /*
      The function creates a path object for an arrow at point
@@ -329,61 +519,6 @@ var sugyamaModule = function () {
 
     }
 
-
-    //var keys = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'];
-    //var keys=['created','inreview','published','unpublished'];
-    var keys = ['created', 'inreview', 'approve', 'published', 'depricate', 'unpublished', 'reject', 'delete', 'retired']
-
-    /*
-     The function creates a matrix with all cycles removed
-     */
-    function buildMatrix(master) {
-
-        var matrix = master.matrix;
-
-
-        for (var index in keys) {
-            var item = keys[index];
-            matrix[item] = {};
-        }
-
-        matrix['created']['inreview'] = 1;
-        matrix['inreview']['approve'] = 1;
-        matrix['inreview']['reject'] = 1;
-        matrix['approve']['published'] = 1;
-        matrix['published']['unpublished'] = 1;
-        matrix['unpublished']['retired'] = 1;
-        matrix['published']['depricate'] = 1;
-        matrix['depricate']['retired'] = 1;
-        matrix['reject']['delete'] = 1;
-        matrix['retired']['delete'] = 1;
-
-        /*matrix['created']['inreview']=1;
-         matrix['inreview']['published']=1;
-         matrix['published']['unpublished']=1;
-         matrix['inreview']['unpublished']=1;*/
-
-
-        /*  matrix['a']['b'] = 1;
-         matrix['b']['c'] = 1;
-         matrix['b']['i'] = 1;
-         matrix['c']['d'] = 1;
-         matrix['d']['e'] = 1;
-         matrix['d']['f'] = 1;
-         matrix['d']['g'] =1;
-         matrix['f']['h']=1;
-         //matrix['e']['d'] = 1;
-         matrix['e']['g'] = 1;
-         matrix['g']['h'] = 1;
-         matrix['i']['h'] = 1; */
-
-        /* matrix['a']['b']=1;
-         matrix['b']['c']=1;
-         matrix['c']['d']=1;
-         matrix['b']['d']=1; */
-
-        return matrix;
-    }
 
 
     function findHighestSinks(master) {
@@ -440,7 +575,7 @@ var sugyamaModule = function () {
 
             for (var index in map[from]) {
 
-                if(map[from][index]==1){
+                if (map[from][index] == 1) {
                     items.push(index);
                 }
 
@@ -497,9 +632,9 @@ var sugyamaModule = function () {
         return levels;
     }
 
-    function Sugyama(data,paper){
-        this.paper=paper;
-        this.data=data;
+    function Sugyama(data, paper) {
+        this.paper = paper;
+        this.data = data;
     }
 
     Sugyama.prototype.init=function(data,paper){
@@ -507,12 +642,12 @@ var sugyamaModule = function () {
         this.data=data;
     }
 
-    Sugyama.prototype.draw=function(startX,startY,vertexRadius,levelSpace,levelSep){
-         START_X=startX;
-         START_Y=startY;
-        VERTEX_RADIUS=vertexRadius;
-        LEVEL_SEP=levelSep;
-        LEVEL_SPACE=levelSpace;
+    Sugyama.prototype.draw = function (startX, startY, vertexRadius, levelSpace, levelSep) {
+        START_X = startX;
+        START_Y = startY;
+        VERTEX_RADIUS = vertexRadius;
+        LEVEL_SEP = levelSep;
+        LEVEL_SPACE = levelSpace;
 
         var module = graphDataModule();
 
@@ -520,8 +655,9 @@ var sugyamaModule = function () {
 
         dataProvider.prepareData(this.data);
 
+
         var matrix = new Matrix(dataProvider.map);
-        keys=dataProvider.keys;
+        keys = dataProvider.keys;
 
         var levels = new LevelMap();
 
@@ -529,10 +665,16 @@ var sugyamaModule = function () {
 
         levels.show();
 
+        levels.createPseudoPaths(matrix.matrix);
+        levels.sort();
+
         var points = getPoints(levels);
-        drawEdges(matrix, this.paper, points);
+        drawEdges(matrix, this.paper, points,dataProvider.rawMap);
         drawChart(levels, this.paper);
-    }
+
+    } ;
+
+
 
     return{
         Sugyama:Sugyama
