@@ -455,7 +455,7 @@ var sugyamaModule = function () {
 
                         angle = angle * (180 / Math.PI);
 
-                        drawArrowHead(fromPoint,toPoint,paper,matrix);
+                        drawArrowHead(fromPoint,toPoint,paper,rawMap);
                     }
                 }
             }
