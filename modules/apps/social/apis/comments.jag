@@ -20,7 +20,7 @@ response.addHeader("Content-Type", "application/json");
 
         print(result);
     } else {
-        request.sendError(401);
+        response.sendError(401);
     }
 })();
 %>

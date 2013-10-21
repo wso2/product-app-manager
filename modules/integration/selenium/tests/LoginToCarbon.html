@@ -3,50 +3,39 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="https://localhost:9443/" />
-<title>CreateSuperTenantUser</title>
+<link rel="selenium.base" href="https://localhost:9443" />
+<title>LoginToCarbon</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">CreateSuperTenantUser</td></tr>
+<tr><td rowspan="1" colspan="3">LoginToCarbon</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
-	<td>/store/</td>
+	<td>/admin/carbon/admin/login.jsp</td>
 	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>css=#txtUserName.user</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>css=#txtPassword</td>
+	<td>admin</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>id=btn-register</td>
+	<td>css=input.button</td>
 	<td></td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>id=reg-username</td>
-	<td>supertanantuser</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=reg-password</td>
-	<td>supertanantuser</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=reg-password2</td>
-	<td>supertanantuser</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>id=registrationSubmit</td>
+	<td>assertTitle</td>
+	<td>WSO2 Management Console</td>
 	<td></td>
 </tr>
-<tr>
-	<td>verifyText</td>
-	<td>css=ul.nav li a.dropdown-toggle</td>
-	<td>supertanantuser</td>
-</tr>
-
 </tbody></table>
 </body>
 </html>

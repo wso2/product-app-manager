@@ -34,6 +34,17 @@
                                                     </td>
                                                 </tr>
                                             {{/each}}
+                                            {{#if tags}}
+                                            
+                                                <tr>
+                                                    <td class="span3">Tags</td>
+                                                    <td>
+                                                    	{{#each tags}}
+                                                        <span class="view-tag">{{this}}</span>
+                                                        {{/each}}
+                                                    </td>
+                                                </tr>
+                                            {{/if}}
                                             </tbody>
                                         </table>
                                 </div>
