@@ -654,7 +654,7 @@ var sugyamaModule = function () {
         var dataProvider = new module.DataProvider();
 
         dataProvider.prepareData(this.data);
-
+		console.log(dataProvider.rawMap);
 
         var matrix = new Matrix(dataProvider.map);
         keys = dataProvider.keys;
@@ -674,7 +674,14 @@ var sugyamaModule = function () {
 
     } ;
 
+	Sugyama.prototype.getRawMap = function(){
+		var module = graphDataModule();
 
+        var dataProvider = new module.DataProvider();
+
+        dataProvider.prepareData(this.data);
+		return dataProvider.rawMap;
+	}
 
     return{
         Sugyama:Sugyama
