@@ -17,7 +17,8 @@ var dataInjectorModule = function () {
         'DEFAULT': 1,
         'INIT': 2,
         'STORAGE': 3,
-        'DISPLAY': 4
+        'DISPLAY': 4,
+        'UPDATE':5
     };
 
 
@@ -28,6 +29,7 @@ var dataInjectorModule = function () {
         this.injectors[INJECTOR_MODES.STORAGE] = [];
         this.injectors[INJECTOR_MODES.DISPLAY] = [];
         this.injectors[INJECTOR_MODES.DEFAULT]=[];
+        this.injectors[INJECTOR_MODES.UPDATE]=[];
         this.globals={};
 
         this.buildInjector();

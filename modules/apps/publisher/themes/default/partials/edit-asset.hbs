@@ -26,9 +26,27 @@
                                 {{else}}
                                 	 {{#if this.isTextArea}}
                                     	<textarea id='{{this.name}}' class="span8">{{this.value}}</textarea>
-                               		 {{else}}
+                               		 {{/if}}
+                                     {{#if this.isTextBox}}
                                 		<input id='{{this.name}}' name='{{this.name}}' type='text'  class="span8" value='{{this.value}}' {{#unless isEditable}} disabled="true" {{/unless}} {{#if this.isRequired}} required{{/if}}/>
                                 	{{/if}}
+                                    {{#if this.isFile}}
+                                        <div class="span8">
+                                            <div class="tbl-upload">
+                                                <div class="tbl-upload-row">
+                                                    <div class="tbl-upload-cell">
+                                                        <label id='preview-{{this.name}}'>{{this.value}}</label>
+                                                        <input id='{{this.name}}' type="text" class="txt-filepath" disabled="true" />
+                                                    </div>
+                                                    <div class="tbl-upload-cell">
+                                                        <button class="btn btn-upload">Browse</button>
+                                                        <input id='{{this.name}}' type='file'/>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    {{/if}}
                                 {{/if}}
                                 
                                
