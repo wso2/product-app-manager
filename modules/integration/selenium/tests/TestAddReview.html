@@ -57,9 +57,14 @@
 	<td></td>
 </tr>
 <tr>
-	<td>verifyElementPresent</td>
-	<td>css=span.asset-rating div.asset-rating-3star</td>
-	<td></td>
+	<td>storeElementWidth</td>
+	<td>css=.asset-introduction-box &gt; .asset-rating &gt; div</td>
+	<td>starWidth</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>Math.round(Number(${starWidth})/16)</td>
+	<td>3</td>
 </tr>
 </tbody></table>
 </body>
