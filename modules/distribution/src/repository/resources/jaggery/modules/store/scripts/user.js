@@ -8,7 +8,13 @@ var user = {};
     var USER_ROLE_PREFIX = 'Internal/private_';
 
     var cleanUsername = function (username) {
-        return username.replace('@', ':');
+        /**
+         * this is a one-way hash function, @ is replaced if the user name is an email
+         * if the user name is coming from a secondery user store it will be second.com/user hence
+         * "/" will be replaced.
+         */
+
+        return username.replace('@', ':').replace('/', ':');
     };
 
     user.privateRole = function (username) {
