@@ -134,14 +134,11 @@ var store = function (o, session) {
         carbon = require('carbon'),
         mod = require('store'),
         server = mod.server,
-        cached = server.options().cached,
-        PrivilegedCarbonContext = Packages.org.wso2.carbon.context.PrivilegedCarbonContext,
-        context = PrivilegedCarbonContext.getThreadLocalCarbonContext();
+        cached = server.options().cached;
 
     tenantId = (o instanceof Request) ? server.tenant(o, session).tenantId : o;
     user = server.current(session);
     if (user) {
-        context.setUsername(user.username);
         store = session.get(TENANT_STORE);
         if (cached && store) {
             return store;
@@ -150,7 +147,6 @@ var store = function (o, session) {
         session.put(TENANT_STORE, store);
         return store;
     }
-    context.setUsername(carbon.user.anonUser);
     configs = server.configs(tenantId);
     store = configs[TENANT_STORE];
     if (cached && store) {

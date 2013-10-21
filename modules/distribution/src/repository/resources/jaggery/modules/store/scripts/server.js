@@ -116,6 +116,7 @@ var server = {};
                 domain: carbon.server.tenantDomain({
                     tenantId: user.tenantId
                 }),
+                username: user.username,
                 secured: true
             };
         } else {
@@ -126,6 +127,7 @@ var server = {};
                     domain: domain
                 }),
                 domain: domain,
+                username: carbon.user.anonUser,
                 secured: false
             };
         }
@@ -134,30 +136,32 @@ var server = {};
         return obj;
     };
 
-    server.loadTenant = function (tenant) {
-        var context, service, ctxs, TenantAxisUtils, PrivilegedCarbonContext,
+    server.loadTenant = function (o) {
+        var context, service, ctxs, TenantAxisUtils,
             carbon = require('carbon'),
-            config = server.configs(tenant.tenantId);
-        if (tenant.tenantId == carbon.server.superTenant.tenantId) {
+            config = server.configs(o.tenantId),
+            PrivilegedCarbonContext = org.wso2.carbon.context.PrivilegedCarbonContext;
+        //log.info(java.lang.Thread.currentThread().getId() + ' : ' + stringify(o));
+        if (o.tenantId == carbon.server.superTenant.tenantId) {
+            context = PrivilegedCarbonContext.getThreadLocalCarbonContext();
+            context.setUsername(o.username);
             if (config[ANONYMOUS_REGISTRY]) {
                 return;
             }
         } else {
-            if (tenant.secured) {
-                PrivilegedCarbonContext = org.wso2.carbon.context.PrivilegedCarbonContext;
-                PrivilegedCarbonContext.startTenantFlow();
-                context = PrivilegedCarbonContext.getThreadLocalCarbonContext();
-                context.setTenantId(tenant.tenantId);
-                context.setTenantDomain(tenant.domain);
-            }
+            PrivilegedCarbonContext.startTenantFlow();
+            context = PrivilegedCarbonContext.getThreadLocalCarbonContext();
+            context.setTenantId(o.tenantId);
+            context.setTenantDomain(o.domain);
+            context.setUsername(o.username);
             service = carbon.server.osgiService('org.wso2.carbon.utils.ConfigurationContextService');
             TenantAxisUtils = org.wso2.carbon.core.multitenancy.utils.TenantAxisUtils;
             ctxs = TenantAxisUtils.getTenantConfigurationContexts(service.getServerConfigContext());
-            if (config[ANONYMOUS_REGISTRY] && ctxs.get(tenant.domain) != null) {
+            if (config[ANONYMOUS_REGISTRY] && ctxs.get(o.domain) != null) {
                 return;
             }
         }
-        require('event').emit('tenantLoad', tenant.tenantId);
+        require('event').emit('tenantLoad', o.tenantId);
     };
 
     /**
