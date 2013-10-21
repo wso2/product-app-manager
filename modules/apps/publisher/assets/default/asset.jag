@@ -104,8 +104,11 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
 
         //Get the list of versions
         var versionList = artifactManager.getAllAssetVersions(assetName);
-
-        caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList});
+		
+		var path = artifact.path;
+		var tags = rxtManager.registry.tags(path);
+		
+        caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags});
     } catch (e) {
         log.info('The asset with id ' + id + ' could not be found due to : ' + e);
         response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check server log.');

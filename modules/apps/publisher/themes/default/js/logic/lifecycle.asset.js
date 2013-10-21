@@ -249,6 +249,16 @@ $(function() {
 			}, function() {
 				$(this).attr('r', 15);
 			});
+			
+			$('circle').click(function() {
+				var thisState = $(this).attr('class');
+				if(isClickable(thisState)){
+					alert("OK")
+				} else {
+					//$this.toggleClass('circle-invalid');	
+					alert("Invalid operation!")
+				}
+			});
 		}
 	}
 
@@ -390,9 +400,18 @@ $(function() {
 		var elem = $('.' + state);
 		elem.attr('fill', '#FFBE6B');
 		//elem.attr('stroke', '#FF8C00');
-		//$('#canvas').attr('data-current', state);
+		elem.attr('data-currentState', true);
 	}
-
+	
+	function isClickable(state){
+		var curState = $('circle[data-currentstate=true]').attr('class');
+		var rawMap = sugyama.getRawMap();
+		if(rawMap[curState][state] == 1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	/*
 	 Click handlers for the checkboxes
 	 */
