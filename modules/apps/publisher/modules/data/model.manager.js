@@ -99,12 +99,18 @@ var modelManager = function () {
     };
 
     ModelManager.prototype.connect = function () {
-        this.driver.connect(this.connectionInfo);
+        var that = this;
+        require('store').server.privileged(function() {
+            that.driver.connect(that.connectionInfo);
+        });
     };
 
     ModelManager.prototype.disconnect = function () {
-        this.driver.disconnect();
-    }
+        var that = this;
+        require('store').server.privileged(function () {
+            that.driver.disconnect();
+        });
+    };
 
 
     function attachDefaultOperations(model, modelManager) {

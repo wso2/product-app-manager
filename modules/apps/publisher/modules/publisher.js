@@ -138,13 +138,9 @@ var addLifecycles = function (registry) {
 };
 
 var publisher = function (o, session) {
-    var publisher, tenantId,
-        store = require('store'),
-        user = store.user,
-        server = store.server;
-
+    var publisher, tenantId, store,
+        server = require('store').server;
     tenantId = (o instanceof Request) ? server.tenant(o, session).tenantId : o;
-
     publisher = session.get(TENANT_PUBLISHER);
     if (publisher) {
         return publisher;

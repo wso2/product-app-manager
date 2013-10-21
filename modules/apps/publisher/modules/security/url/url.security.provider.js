@@ -17,9 +17,8 @@ var securityModule = function () {
     function isPermitted(session) {
 
         //Obtain the session and check if there is a user
-        var loggedInUser = session.get(LOGGED_IN_USER);
-
-        if (loggedInUser) {
+        var user = require('store').server.current(session);
+        if (user) {
             return true;
         }
 

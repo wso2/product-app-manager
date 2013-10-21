@@ -5,7 +5,7 @@
  ;
  */
 
-var opened = false, currentPage = 1, infiniteScroll = true;
+var opened = false, currentPage = 1, infiniteScroll = null;
 
 $(function() {
 
@@ -95,7 +95,7 @@ $(function() {
 
 	var scroll = function() {
 
-		if(infiniteScroll) {
+		if(infiniteScroll || (store.asset.paging.size >= 12 && infiniteScroll == null)) {
 			if($(window).scrollTop() + $(window).height() >= $(document).height() * .8) {
 				var url = caramel.url(store.asset.paging.url + (++currentPage));
 				loadAssetsScroll(url);

@@ -103,7 +103,8 @@ var server = {};
      * @param session
      */
     server.tenant = function (request, session) {
-        var obj, domain, user, carbon;
+        var obj, domain, user,
+            carbon = require('carbon');
         /*matcher = new URIMatcher(request.getRequestURI());
          if (matcher.match('/{context}/' + opts.tenantPrefix + '/{domain}') ||
          matcher.match('/{context}/' + opts.tenantPrefix + '/{domain}/{+any}')) {
@@ -112,7 +113,10 @@ var server = {};
         if (user) {
             obj = {
                 tenantId: user.tenantId,
-                domain: user.domain,
+                domain: carbon.server.tenantDomain({
+                    tenantId: user.tenantId
+                }),
+                username: user.username,
                 secured: true
             };
         } else {
@@ -123,29 +127,41 @@ var server = {};
                     domain: domain
                 }),
                 domain: domain,
+                username: carbon.user.anonUser,
                 secured: false
             };
         }
         //loads the tenant if it hasn't been loaded
-        server.loadTenant(obj.tenantId);
+        server.loadTenant(obj);
         return obj;
     };
 
-    server.loadTenant = function (tenantId) {
-        var config = server.configs(tenantId),
-            service = carbon.server.osgiService('org.wso2.carbon.utils.ConfigurationContextService'),
-            TenantAxisUtils = org.wso2.carbon.core.multitenancy.utils.TenantAxisUtils,
-            domain = carbon.server.tenantDomain({
-                tenantId: tenantId
-            });
-        if (domain == carbon.server.superTenant.domain) {
-            if (config[ANONYMOUS_REGISTRY]) return;
+    server.loadTenant = function (o) {
+        var context, service, ctxs, TenantAxisUtils,
+            carbon = require('carbon'),
+            config = server.configs(o.tenantId),
+            PrivilegedCarbonContext = org.wso2.carbon.context.PrivilegedCarbonContext;
+        //log.info(java.lang.Thread.currentThread().getId() + ' : ' + stringify(o));
+        if (o.tenantId == carbon.server.superTenant.tenantId) {
+            context = PrivilegedCarbonContext.getThreadLocalCarbonContext();
+            context.setUsername(o.username);
+            if (config[ANONYMOUS_REGISTRY]) {
+                return;
+            }
         } else {
-            if (config[ANONYMOUS_REGISTRY] && TenantAxisUtils.getTenantConfigurationContexts(service.getServerConfigContext()).get(domain) != null) {
+            PrivilegedCarbonContext.startTenantFlow();
+            context = PrivilegedCarbonContext.getThreadLocalCarbonContext();
+            context.setTenantId(o.tenantId);
+            context.setTenantDomain(o.domain);
+            context.setUsername(o.username);
+            service = carbon.server.osgiService('org.wso2.carbon.utils.ConfigurationContextService');
+            TenantAxisUtils = org.wso2.carbon.core.multitenancy.utils.TenantAxisUtils;
+            ctxs = TenantAxisUtils.getTenantConfigurationContexts(service.getServerConfigContext());
+            if (config[ANONYMOUS_REGISTRY] && ctxs.get(o.domain) != null) {
                 return;
             }
         }
-        require('event').emit('tenantLoad', tenantId);
+        require('event').emit('tenantLoad', o.tenantId);
     };
 
     /**
@@ -237,6 +253,19 @@ var server = {};
             return new carbon.user.UserManager(server.instance(), tenantId);
         }
         return server.configs(tenantId)[USER_MANAGER];
+    };
+
+    server.privileged = function (fn) {
+        var o, context,
+            carbon = require('carbon'),
+            PrivilegedCarbonContext = org.wso2.carbon.context.PrivilegedCarbonContext;
+        PrivilegedCarbonContext.startTenantFlow();
+        context = PrivilegedCarbonContext.getThreadLocalCarbonContext();
+        context.setTenantDomain(carbon.server.superTenant.domain);
+        context.setTenantId(carbon.server.superTenant.tenantId);
+        o = fn();
+        context.endTenantFlow();
+        return o;
     };
 }(server));
 

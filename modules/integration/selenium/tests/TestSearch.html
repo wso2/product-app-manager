@@ -4,68 +4,49 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost:9763/" />
-<title>TestAddReview</title>
+<title>TestSearch</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">TestAddReview</td></tr>
+<tr><td rowspan="1" colspan="3">TestSearch</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
-	<td>/store/assets/gadget</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>xpath=((//div[@class='span3 asset'])[5])//a</td>
+	<td>/store/assets/gadget/</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>link=User Reviews</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForFrameToLoad</td>
-	<td>id=socialIfr</td>
+	<td>css=i.icon-sort-down</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>id=com-body</td>
-	<td>my test rating with 3 stars </td>
+	<td>id=name</td>
+	<td>wso</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>link=3</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=btn-post</td>
+	<td>id=search-button2</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>css=.com-review</td>
+	<td>css=.loading</td>
 	<td></td>
 </tr>
 <tr>
-	<td>refreshAndWait</td>
-	<td></td>
+	<td>waitForElementNotPresent</td>
+	<td>css=.loading</td>
 	<td></td>
 </tr>
 <tr>
-	<td>storeElementWidth</td>
-	<td>css=.asset-introduction-box &gt; .asset-rating &gt; div</td>
-	<td>starWidth</td>
+	<td>verifyCssCount</td>
+	<td>.asset-icon</td>
+	<td>4</td>
 </tr>
-<tr>
-	<td>verifyEval</td>
-	<td>Math.round(Number(${starWidth})/16)</td>
-	<td>3</td>
-</tr>
+
 </tbody></table>
 </body>
 </html>
