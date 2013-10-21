@@ -3,13 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="https://localhost:9443" />
-<title>LoginToCarbon</title>
+<link rel="selenium.base" href="https://localhost:9443/" />
+<title>LoginToCarbonAsTenant</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">LoginToCarbon</td></tr>
+<tr><td rowspan="1" colspan="3">LoginToCarbonAsTenant</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
@@ -19,12 +19,12 @@
 <tr>
 	<td>type</td>
 	<td>css=#txtUserName.user</td>
-	<td>admin</td>
+	<td>tenantAdmin@mytestdomain.com</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>css=#txtPassword</td>
-	<td>admin</td>
+	<td>admin1234</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -36,6 +36,7 @@
 	<td>WSO2 Management Console</td>
 	<td></td>
 </tr>
+
 </tbody></table>
 </body>
 </html>
