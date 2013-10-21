@@ -106,7 +106,6 @@ var modelManager = function () {
     };
 
     ModelManager.prototype.disconnect = function () {
-        this.driver.disconnect();
         var that = this;
         require('store').server.privileged(function () {
             that.driver.disconnect();
