@@ -118,13 +118,9 @@ $(function () {
 
                 inputField=$('#'+fieldId);
 
-                var form=$('<form>');
-                var targ=inputField.clone().appendTo(form);
-                form[0].reset();
-                inputField.replaceWith(targ);
-
-                //Replace the input field with a clone of itself
-                //inputField.replaceWith(inputField=inputField.clone(true));
+                var e=inputField;
+                e.wrap('<form>').parent('form').trigger('reset');
+                e.unwrap();
 
                 //Update the label
                 $('#'+previewId).html(fieldValue);

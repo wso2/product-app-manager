@@ -147,8 +147,6 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
         var modelA = modelManager.getModel(shortName);
         var modelB = modelManager.getModel(shortName);
 
-        log.info('posted '+stringify(context.post));
-
         //Handle any files
         inspectFiles(request,context.post);
 
@@ -192,12 +190,8 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
         modelA.set("overview.createdtime",modelB.get("overview.createdtime").value);
         var artifact = modelA.export('asset.exporter');
 
-
-        log.info('before injector');
-
         dataInjector.inject(artifact,DataInjectorModes.UPDATE);
 
-        log.info('not updating'+stringify(artifact));
         artifactManager.update(artifact);
 
         dataInjector.inject(artifact,DataInjectorModes.DISPLAY);
@@ -212,6 +206,51 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
         response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
     }
 });
+
+/*
+ The function inspects the files sent with a request.If files are found
+ they are added to Storage and then the generated uuids are added to
+ the POST parameter object
+ @req: A request object
+ @params: The POST parameters
+ */
+function inspectFiles(req, params) {
+    var files = req.getAllFiles();
+    var fileName;
+    var file;
+    var uuid = '';
+    var extension;
+
+
+    var storageManager = new storageModule.StorageManager({
+        context: 'storage',
+        isCached: false,
+        connectionInfo: {
+            dataSource: storageConfig.dataSource
+        }
+    });
+
+
+    for (var index in files) {
+
+        file = files[index];
+
+        log.info('file: ' + index);
+
+        //Put the file in storage and get a uuid as a reference
+        var resource = {};
+        resource['file'] = file;
+        extension = utility.fileio.getExtension(file);
+        resource['contentType'] = utility.fileio.getContentType(extension);
+
+        uuid=storageManager.put(resource);
+
+        log.info('uuid added: '+uuid);
+
+        //Add a new  entry into the POST parameters containing the uuid
+        params[index] = uuid;
+    }
+}
 
 routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
     var shortName = context.params.type;
@@ -276,52 +315,7 @@ routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', fu
     }
 });
 
-/*
- The function inspects the files sent with a request.If files are found
- they are added to Storage and then the generated uuids are added to
- the POST parameter object
- @req: A request object
- @params: The POST parameters
- */
-function inspectFiles(req, params) {
-    var files = req.getAllFiles();
-    var fileName;
-    var file;
-    var uuid = '';
-    var extension;
 
-    log.info('trying to save');
-    log.info(storageConfig.dataSource);
-
-    var storageManager = new storageModule.StorageManager({
-        context: 'storage',
-        isCached: false,
-        connectionInfo: {
-            dataSource: storageConfig.dataSource
-        }
-    });
-
-
-    for (var index in files) {
-
-        file = files[index];
-
-        log.info('file: ' + index);
-
-        //Put the file in storage and get a uuid as a reference
-        var resource = {};
-        resource['file'] = file;
-        extension = utility.fileio.getExtension(file);
-        resource['contentType'] = utility.fileio.getContentType(extension);
-
-        uuid=storageManager.put(resource);
-
-        log.info('uuid added: '+uuid);
-
-        //Add a new  entry into the POST parameters containing the uuid
-        params[index] = uuid;
-    }
-}
 
 routeManager.register('DELETE', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
     var shortName = context.params.type;

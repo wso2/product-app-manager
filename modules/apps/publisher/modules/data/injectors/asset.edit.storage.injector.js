@@ -102,8 +102,6 @@ var injector = function () {
         //Break up the value based on /
         comps=value.split('/');
 
-        log.info('comps: '+comps);
-
         //Do nothing if the number of components is 2 or less
         if(comps.length<=FIELD_ELEMENT_LIMIT){
             log.debug('only uuid/file present');
