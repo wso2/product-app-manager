@@ -14,11 +14,19 @@ var injector = function () {
     var process=require('process');
 
     /*
+    Constants
+     */
+    var FIELD_ELEMENT_LIMIT=2; //The minimum size of a url uuid/file
+    var UUID_OFFSET=2;         //The location of the uuid
+    var FILE_OFFSET=1;         //The locate of the file
+
+
+    /*
      The modes in which the handler should be executed
      @return: The operation mode in which the handler should be executed
      */
     function operationModes() {
-        return modes.DISPLAY;
+        return modes.UPDATE;
     }
 
     function init(context){
@@ -66,78 +74,55 @@ var injector = function () {
                 //Current field been examined
                 field=fields[index];
 
-                //Obtain the uuid
-                url=object.attributes[field];
-
-                uuid=getUUID(url);
-
-                //Check if it is a valid uuid and create a new url
-                if((uuid)&&(utility.isValidUuid(uuid))){
-                    log.debug('creating a new url for '+url);
-                    object.attributes[field]=getUrl(url,config,object);
-                }
+                //Extract the uuid/filename from a url and write them back to the asset.
+                extractUUID(field,object);
 
             });
         }
-
-        //log.info(object);
 
         return true;
     }
 
     /*
-     The function obtains the UUID from a value
-     @value: A string containing a UUID
-     @return: A UUID if one is present else null
+    The function checks if the field is a url,if it is a url then the UUID and filename values are extracted.
+    These extracted values are then written back to the field.
+    @field: The field to be examined
+    @asset: An artifact instance containing the field
+    @throws: If the UUID is not valid then an exception is thrown.
      */
-    function getUUID(value){
+    function extractUUID(field,asset){
+        var value;
+        var comps;
+        var uuid;
+        var fileName;
 
-        //Check if the uuid is present as uuid/file
-        var components=value.split('/');
-        var uuid=null;
+        //Obtain the value
+        value=asset.attributes[field];
 
-        //A single value,could be a uuid
-        if(components.length==1){
-            uuid=components[0];
+        //Break up the value based on /
+        comps=value.split('/');
+
+        log.info('comps: '+comps);
+
+        //Do nothing if the number of components is 2 or less
+        if(comps.length<=FIELD_ELEMENT_LIMIT){
+            log.debug('only uuid/file present');
+           return;
         }
-        //Not a uuid/file value
-        else if(components.length>1){
-            uuid=components[0];
+
+        //Get the last two values in the component array
+        uuid=comps[comps.length-UUID_OFFSET];
+        fileName=comps[comps.length-FILE_OFFSET];
+
+
+        //Check if the uuid is valid
+        if(!utility.isValidUuid(uuid)){
+            log.debug('the uuid: '+uuid+' is not valid.');
+            throw 'Invalid UUID in storage field.';
         }
 
-        return uuid;
-
+        asset.attributes[field]=uuid+'/'+fileName;
     }
-
-    /*
-     The function builds a url based on the provided pattern
-     @uuid: The uuid of the resource to which the url should point
-     @config: The config object used to store the context
-     @object: The object containing an id
-     @return: A url for the provided uuid for the current context
-     */
-    function getUrl(uuid,config,object){
-
-        var context=config.context;
-        var storageUrlPattern=config.storageUrlPattern;
-        var ip=process.getProperty('server.host');
-        var https=process.getProperty('https.port');
-        var http=process.getProperty('http.port');
-
-        storageUrlPattern=storageUrlPattern.replace('{ip}',ip);
-
-        storageUrlPattern=storageUrlPattern.replace('{http}',http);
-        storageUrlPattern=storageUrlPattern.replace('{https}',https);
-
-        storageUrlPattern=storageUrlPattern.replace('{context}',context);
-        storageUrlPattern=storageUrlPattern.replace('{uuid}',uuid);
-        storageUrlPattern=storageUrlPattern.replace('{id}',object.id);
-        storageUrlPattern=storageUrlPattern.replace('{type}',object.type);
-
-        log.debug('new url: '+storageUrlPattern);
-        return storageUrlPattern;
-    }
-
 
     return{
         init:init,

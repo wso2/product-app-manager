@@ -192,11 +192,19 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
         modelA.set("overview.createdtime",modelB.get("overview.createdtime").value);
         var artifact = modelA.export('asset.exporter');
 
+
+        log.info('before injector');
+
+        dataInjector.inject(artifact,DataInjectorModes.UPDATE);
+
         log.info('not updating'+stringify(artifact));
-        //artifactManager.update(artifact);
+        artifactManager.update(artifact);
+
+        dataInjector.inject(artifact,DataInjectorModes.DISPLAY);
 
         msg['ok']=true;
         msg['message']='asset updated';
+        msg['asset']=artifact;
         print(msg);
 
     } catch (e) {

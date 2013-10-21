@@ -62,8 +62,11 @@ $(function () {
 
                 var result=JSON.parse(response);
 
+
                 if(result.ok){
+                    var asset=result.asset;
                     createMessage(MSG_CONTAINER,SUCCESS_CSS,'Asset updated successfully');
+                    updateFileFields(asset);
                 }
                 else{
                     var report=processErrorReport(result.report);
@@ -93,7 +96,52 @@ $(function () {
     	$('.' + CHARS_REM).text('Characters left: ' + left);
     });
 
+    /*
+    The function updates the file upload fields after recieving a response from
+     the server
+     @asset: An updated asset instance
+     */
+    function updateFileFields(asset){
+        var fields = $('#form-asset-edit :input');
+        var fieldId;
+        var previewId;
+        var fieldValue;
+        var inputField;
 
+        fields.each(function(){
+
+            //We only to update the file fields
+            if(this.type=='file'){
+                fieldId=this.id;
+                previewId=getFileLabelId(fieldId);
+                fieldValue=asset.attributes[fieldId];
+
+                inputField=$('#'+fieldId);
+
+                var form=$('<form>');
+                var targ=inputField.clone().appendTo(form);
+                form[0].reset();
+                inputField.replaceWith(targ);
+
+                //Replace the input field with a clone of itself
+                //inputField.replaceWith(inputField=inputField.clone(true));
+
+                //Update the label
+                $('#'+previewId).html(fieldValue);
+            }
+        });
+    }
+
+    function getFileLabelId(fieldId){
+        return 'preview-'+fieldId;
+    }
+
+    /*
+     The function is used to add a given field to a FormData element
+     @field: The field to be added to the formData
+     @formData: The FormDara object used to store the field
+     @return: A FormData object with the added field
+     */
     function fillForm(field, formData){
         var fieldType = field.type;
 
