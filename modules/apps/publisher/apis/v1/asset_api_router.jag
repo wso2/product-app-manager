@@ -136,11 +136,130 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}', functi
 
 });
 
+routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
+    var shortName = context.params.type;
+    var id = context.params.id;
+    var msg={};
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+
+
+    try {
+        var modelA = modelManager.getModel(shortName);
+        var modelB = modelManager.getModel(shortName);
+
+        //Handle any files
+        inspectFiles(request,context.post);
+
+        //Get the original artifact
+        var originalArtifact = artifactManager.get(id);
+
+        modelA.import('form.importer', context.post);
+
+        //Validation requires the lifecycle state
+        modelA.set('*.lifecycleState',originalArtifact.lifecycleState);
+
+        var report=modelA.validate();
+
+        //Check if the validation check has failed
+        if((report)&&(report.failed)){
+
+            msg['ok']=false;
+            msg['report']=report;
+            print(msg);
+            log.info(msg);
+            return;
+        }
+
+
+        modelA.set('*.id', id);
+
+        modelB.import('asset', originalArtifact);
+
+        //Checks whether two models are equal
+        var reqProps=['overview.name', 'overview.provider', 'overview.version']
+
+        var isEqual = modelManager.assertEqual(modelA, modelB,reqProps);
+
+        //If they are not equal,abort the operation
+        if (!isEqual) {
+            log.debug('trying to get fields which are different');
+            var diff=modelManager.diff(modelA,modelB,reqProps);
+            response.sendError(406, 'The name,provider and version of an asset cannot be changed.The following fields'
+                    +' were modified: '+diff);
+            return;
+        }
+        modelA.set("overview.createdtime",modelB.get("overview.createdtime").value);
+        var artifact = modelA.export('asset.exporter');
+
+        dataInjector.inject(artifact,DataInjectorModes.UPDATE);
+
+        artifactManager.update(artifact);
+
+        dataInjector.inject(artifact,DataInjectorModes.DISPLAY);
+
+        msg['ok']=true;
+        msg['message']='asset updated';
+        msg['asset']=artifact;
+        print(msg);
+
+    } catch (e) {
+        log.info('The asset ' + id + ' could not be updated.The following exception was thrown: ' + e);
+        response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
+    }
+});
+
+/*
+ The function inspects the files sent with a request.If files are found
+ they are added to Storage and then the generated uuids are added to
+ the POST parameter object
+ @req: A request object
+ @params: The POST parameters
+ */
+function inspectFiles(req, params) {
+    var files = req.getAllFiles();
+    var fileName;
+    var file;
+    var uuid = '';
+    var extension;
+
+
+    var storageManager = new storageModule.StorageManager({
+        context: 'storage',
+        isCached: false,
+        connectionInfo: {
+            dataSource: storageConfig.dataSource
+        }
+    });
+
+
+    for (var index in files) {
+
+        file = files[index];
+
+        log.info('file: ' + index);
+
+        //Put the file in storage and get a uuid as a reference
+        var resource = {};
+        resource['file'] = file;
+        extension = utility.fileio.getExtension(file);
+        resource['contentType'] = utility.fileio.getContentType(extension);
+
+        uuid=storageManager.put(resource);
+
+        log.info('uuid added: '+uuid);
+
+        //Add a new  entry into the POST parameters containing the uuid
+        params[index] = uuid;
+
+    }
+}
+
 routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
     var shortName = context.params.type;
     var id = context.params.id;
     var msg={};
     var artifactManager = rxtManager.getArtifactManager(shortName);
+
 
     try {
         var modelA = modelManager.getModel(shortName);
@@ -148,8 +267,6 @@ routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', fu
 
         //Get the original artifact
         var originalArtifact = artifactManager.get(id);
-
-        log.debug('POST:' + stringify(context.content));
 
         modelA.import('form.importer', context.content);
 
@@ -169,9 +286,6 @@ routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', fu
 
         modelA.set('*.id', id);
 
-
-
-
         modelB.import('asset', originalArtifact);
 
         //Checks whether two models are equal
@@ -189,7 +303,9 @@ routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', fu
         }
         modelA.set("overview.createdtime",modelB.get("overview.createdtime").value);
         var artifact = modelA.export('asset.exporter');
-        artifactManager.update(artifact);
+
+        log.info('not updating'+artifact);
+        //artifactManager.update(artifact);
 
         msg['ok']=true;
         msg['message']='asset updated';
@@ -199,27 +315,9 @@ routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', fu
         log.debug('The asset ' + id + ' could not be updated.The following exception was thrown: ' + e);
         response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
     }
-    /*var shortName=context.params.type;
-     var id=context.params.id;
-     var attribute=context.params.attr;
-     var attributeValue=context.params.value;
-     var artifactManager=rxtManager.getArtifactManager(shortName);
-
-     //Obtain the artifact
-     try{
-     var result=artifactManager.update({
-     id:id,
-     attributes: {
-     attribute:attributeValue,
-     overview_type:'default'
-     }
-     });
-     print(result);
-
-     }catch(e){
-     print('unable to update artifact with id'+e);
-     }*/
 });
+
+
 
 routeManager.register('DELETE', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
     var shortName = context.params.type;
@@ -262,6 +360,9 @@ if(passed){
     var dataInjector=publisher.dataInjector;
     var DataInjectorModes=publisher.DataInjectorModes;
     var filterManager=publisher.filterManager;
+    var storageModule = require('/modules/data/storage.js').storageModule();
+    var storageConfig = require('/config/storage.json');
+    var utility = require('/modules/utility.js').rxt_utility();
     var log=new Log();
 
 

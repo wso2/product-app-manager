@@ -130,14 +130,15 @@ var currentAsset = function () {
  * @return {*}
  */
 var store = function (o, session) {
-    var store, configs, tenantId,
+    var user, store, configs, tenantId,
+        carbon = require('carbon'),
         mod = require('store'),
         server = mod.server,
         cached = server.options().cached;
 
     tenantId = (o instanceof Request) ? server.tenant(o, session).tenantId : o;
-
-    if (server.current(session)) {
+    user = server.current(session);
+    if (user) {
         store = session.get(TENANT_STORE);
         if (cached && store) {
             return store;
