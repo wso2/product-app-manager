@@ -46,20 +46,21 @@ $(function () {
             }
         });
 
+        console.log(JSON.stringify(formData));
+
         var url='/publisher/api/asset/'+type+'/'+id;
 
         //Make an AJAX call to edit the asset
         $.ajax({
             url:url,
-            type:'PUT',
+            type:'POST',
             data:formData,
             cache:false,
-            contentType:'multipart/form-data',
+            contentType:false,
             processData:false,
-            dataType:'json',
             success:function(response){
 
-                var result=response;//JSON.parse(response);
+                var result=JSON.parse(response);
 
                 if(result.ok){
                     createMessage(MSG_CONTAINER,SUCCESS_CSS,'Asset updated successfully');
@@ -97,10 +98,14 @@ $(function () {
         var fieldType = field.type;
 
         if (fieldType == 'file') {
-
             //Only add the file if the user has selected a new file
             if(field.files[0]){
                 formData.append(field.id, field.files[0]);
+            }
+            else{
+                //Locate the existing url from the preview label
+                var existingUrl=$('#preview-'+field.id).html();
+                formData.append(field.id,existingUrl);
             }
         } else {
             formData.append(field.id, field.value);

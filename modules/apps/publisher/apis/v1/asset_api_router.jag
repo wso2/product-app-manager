@@ -136,6 +136,75 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}', functi
 
 });
 
+routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
+    var shortName = context.params.type;
+    var id = context.params.id;
+    var msg={};
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+
+
+    try {
+        var modelA = modelManager.getModel(shortName);
+        var modelB = modelManager.getModel(shortName);
+
+        log.info('posted '+stringify(context.post));
+
+        //Handle any files
+        inspectFiles(request,context.post);
+
+        //Get the original artifact
+        var originalArtifact = artifactManager.get(id);
+
+        modelA.import('form.importer', context.post);
+
+        //Validation requires the lifecycle state
+        modelA.set('*.lifecycleState',originalArtifact.lifecycleState);
+
+        var report=modelA.validate();
+
+        //Check if the validation check has failed
+        if((report)&&(report.failed)){
+
+            msg['ok']=false;
+            msg['report']=report;
+            print(msg);
+            log.info(msg);
+            return;
+        }
+
+        modelA.set('*.id', id);
+
+        modelB.import('asset', originalArtifact);
+
+        //Checks whether two models are equal
+        var reqProps=['overview.name', 'overview.provider', 'overview.version']
+
+        var isEqual = modelManager.assertEqual(modelA, modelB,reqProps);
+
+        //If they are not equal,abort the operation
+        if (!isEqual) {
+            log.debug('trying to get fields which are different');
+            var diff=modelManager.diff(modelA,modelB,reqProps);
+            response.sendError(406, 'The name,provider and version of an asset cannot be changed.The following fields'
+                    +' were modified: '+diff);
+            return;
+        }
+        modelA.set("overview.createdtime",modelB.get("overview.createdtime").value);
+        var artifact = modelA.export('asset.exporter');
+
+        log.info('not updating'+stringify(artifact));
+        //artifactManager.update(artifact);
+
+        msg['ok']=true;
+        msg['message']='asset updated';
+        print(msg);
+
+    } catch (e) {
+        log.debug('The asset ' + id + ' could not be updated.The following exception was thrown: ' + e);
+        response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
+    }
+});
+
 routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
     var shortName = context.params.type;
     var id = context.params.id;
@@ -149,9 +218,6 @@ routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', fu
 
         //Get the original artifact
         var originalArtifact = artifactManager.get(id);
-
-        log.info('POST:' + stringify(context.content));
-        log.info('params:'+stringify(context.post.overview_description));
 
         modelA.import('form.importer', context.content);
 
@@ -189,7 +255,7 @@ routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', fu
         modelA.set("overview.createdtime",modelB.get("overview.createdtime").value);
         var artifact = modelA.export('asset.exporter');
 
-        log.info('not updating');
+        log.info('not updating'+artifact);
         //artifactManager.update(artifact);
 
         msg['ok']=true;
@@ -216,6 +282,7 @@ function inspectFiles(req, params) {
     var uuid = '';
     var extension;
 
+    log.info('trying to save');
     log.info(storageConfig.dataSource);
 
     var storageManager = new storageModule.StorageManager({
@@ -289,6 +356,9 @@ if(passed){
     var dataInjector=publisher.dataInjector;
     var DataInjectorModes=publisher.DataInjectorModes;
     var filterManager=publisher.filterManager;
+    var storageModule = require('/modules/data/storage.js').storageModule();
+    var storageConfig = require('/config/storage.json');
+    var utility = require('/modules/utility.js').rxt_utility();
     var log=new Log();
 
 
