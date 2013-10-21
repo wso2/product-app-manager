@@ -6,6 +6,7 @@ var graphDataModule=function(){
 
     function DataProvider(){
         this.map={};
+        this.rawMap={};
         this.keys=[];
     }
 
@@ -22,6 +23,7 @@ var graphDataModule=function(){
             var transitions=state.transition;
 
             this.map[state.id]={};
+            this.rawMap[state.id]={};
             this.keys.push(state.id);
 
             for(var transitionIndex in transitions){
@@ -29,6 +31,7 @@ var graphDataModule=function(){
                 var transition=transitions[transitionIndex];
                 console.log('adding '+transition.target);
                 this.map[state.id][transition.target]=1;
+                this.rawMap[state.id][transition.target]=1;
             }
 
         }
