@@ -170,6 +170,7 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
             return;
         }
 
+
         modelA.set('*.id', id);
 
         modelB.import('asset', originalArtifact);
@@ -202,7 +203,7 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
         print(msg);
 
     } catch (e) {
-        log.debug('The asset ' + id + ' could not be updated.The following exception was thrown: ' + e);
+        log.info('The asset ' + id + ' could not be updated.The following exception was thrown: ' + e);
         response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
     }
 });
@@ -249,6 +250,7 @@ function inspectFiles(req, params) {
 
         //Add a new  entry into the POST parameters containing the uuid
         params[index] = uuid;
+
     }
 }
 

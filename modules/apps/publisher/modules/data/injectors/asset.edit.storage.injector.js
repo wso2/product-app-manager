@@ -115,8 +115,11 @@ var injector = function () {
 
         //Check if the uuid is valid
         if(!utility.isValidUuid(uuid)){
-            log.debug('the uuid: '+uuid+' is not valid.');
-            throw 'Invalid UUID in storage field.';
+            log.debug('the uuid: '+uuid+' is not valid for field '+field);
+
+            asset.attributes[field]=value;
+            return;
+            //throw 'Invalid UUID in storage field.'+field;
         }
 
         asset.attributes[field]=uuid+'/'+fileName;
