@@ -138,13 +138,13 @@ var addLifecycles = function (registry) {
 };
 
 var publisher = function (o, session) {
-    var publisher, tenantId,
-        store = require('store'),
-        user = store.user,
-        server = store.server;
-
+    var publisher, tenantId, store, user, context,
+        server = require('store').server,
+        PrivilegedCarbonContext = Packages.org.wso2.carbon.context.PrivilegedCarbonContext;
     tenantId = (o instanceof Request) ? server.tenant(o, session).tenantId : o;
-
+    user = server.current(session);
+    context = PrivilegedCarbonContext.getThreadLocalCarbonContext();
+    context.setUsername(user.username);
     publisher = session.get(TENANT_PUBLISHER);
     if (publisher) {
         return publisher;
