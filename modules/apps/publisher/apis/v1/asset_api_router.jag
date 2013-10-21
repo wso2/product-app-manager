@@ -142,6 +142,7 @@ routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', fu
     var msg={};
     var artifactManager = rxtManager.getArtifactManager(shortName);
 
+
     try {
         var modelA = modelManager.getModel(shortName);
         var modelB = modelManager.getModel(shortName);
@@ -149,7 +150,8 @@ routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', fu
         //Get the original artifact
         var originalArtifact = artifactManager.get(id);
 
-        log.debug('POST:' + stringify(context.content));
+        log.info('POST:' + stringify(context.content));
+        log.info('params:'+stringify(context.post.overview_description));
 
         modelA.import('form.importer', context.content);
 
@@ -169,9 +171,6 @@ routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', fu
 
         modelA.set('*.id', id);
 
-
-
-
         modelB.import('asset', originalArtifact);
 
         //Checks whether two models are equal
@@ -189,7 +188,9 @@ routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', fu
         }
         modelA.set("overview.createdtime",modelB.get("overview.createdtime").value);
         var artifact = modelA.export('asset.exporter');
-        artifactManager.update(artifact);
+
+        log.info('not updating');
+        //artifactManager.update(artifact);
 
         msg['ok']=true;
         msg['message']='asset updated';
@@ -199,27 +200,53 @@ routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', fu
         log.debug('The asset ' + id + ' could not be updated.The following exception was thrown: ' + e);
         response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
     }
-    /*var shortName=context.params.type;
-     var id=context.params.id;
-     var attribute=context.params.attr;
-     var attributeValue=context.params.value;
-     var artifactManager=rxtManager.getArtifactManager(shortName);
-
-     //Obtain the artifact
-     try{
-     var result=artifactManager.update({
-     id:id,
-     attributes: {
-     attribute:attributeValue,
-     overview_type:'default'
-     }
-     });
-     print(result);
-
-     }catch(e){
-     print('unable to update artifact with id'+e);
-     }*/
 });
+
+/*
+ The function inspects the files sent with a request.If files are found
+ they are added to Storage and then the generated uuids are added to
+ the POST parameter object
+ @req: A request object
+ @params: The POST parameters
+ */
+function inspectFiles(req, params) {
+    var files = req.getAllFiles();
+    var fileName;
+    var file;
+    var uuid = '';
+    var extension;
+
+    log.info(storageConfig.dataSource);
+
+    var storageManager = new storageModule.StorageManager({
+        context: 'storage',
+        isCached: false,
+        connectionInfo: {
+            dataSource: storageConfig.dataSource
+        }
+    });
+
+
+    for (var index in files) {
+
+        file = files[index];
+
+        log.info('file: ' + index);
+
+        //Put the file in storage and get a uuid as a reference
+        var resource = {};
+        resource['file'] = file;
+        extension = utility.fileio.getExtension(file);
+        resource['contentType'] = utility.fileio.getContentType(extension);
+
+        uuid=storageManager.put(resource);
+
+        log.info('uuid added: '+uuid);
+
+        //Add a new  entry into the POST parameters containing the uuid
+        params[index] = uuid;
+    }
+}
 
 routeManager.register('DELETE', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
     var shortName = context.params.type;

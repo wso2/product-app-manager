@@ -16,6 +16,7 @@ $(function () {
 
     $('#editAssetButton').on('click', function () {
         var data = {};
+        var formData=new FormData();
 
         //Obtain the current url
         var url=window.location.pathname;
@@ -41,6 +42,7 @@ $(function () {
 
             if ((this.type != 'button')&&(this.type!='reset')&&(this.type!='hidden')) {
                 data[this.id] = this.value;
+                formData=fillForm(this,formData);
             }
         });
 
@@ -50,8 +52,10 @@ $(function () {
         $.ajax({
             url:url,
             type:'PUT',
-            data:JSON.stringify(data),
-            contentType:'application/json; charset=utf-8',
+            data:formData,
+            cache:false,
+            contentType:'multipart/form-data',
+            processData:false,
             dataType:'json',
             success:function(response){
 
@@ -88,6 +92,22 @@ $(function () {
     	$('.' + CHARS_REM).text('Characters left: ' + left);
     });
 
+
+    function fillForm(field, formData){
+        var fieldType = field.type;
+
+        if (fieldType == 'file') {
+
+            //Only add the file if the user has selected a new file
+            if(field.files[0]){
+                formData.append(field.id, field.files[0]);
+            }
+        } else {
+            formData.append(field.id, field.value);
+        }
+
+        return formData;
+    }
     /*
      The function is used to build a report message indicating the errors in the form
      @report: The report to be processed
