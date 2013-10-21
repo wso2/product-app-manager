@@ -16,6 +16,7 @@ $(function () {
 
     $('#editAssetButton').on('click', function () {
         var data = {};
+        var formData=new FormData();
 
         //Obtain the current url
         var url=window.location.pathname;
@@ -41,24 +42,31 @@ $(function () {
 
             if ((this.type != 'button')&&(this.type!='reset')&&(this.type!='hidden')) {
                 data[this.id] = this.value;
+                formData=fillForm(this,formData);
             }
         });
+
+        console.log(JSON.stringify(formData));
 
         var url='/publisher/api/asset/'+type+'/'+id;
 
         //Make an AJAX call to edit the asset
         $.ajax({
             url:url,
-            type:'PUT',
-            data:JSON.stringify(data),
-            contentType:'application/json; charset=utf-8',
-            dataType:'json',
+            type:'POST',
+            data:formData,
+            cache:false,
+            contentType:false,
+            processData:false,
             success:function(response){
 
-                var result=response;//JSON.parse(response);
+                var result=JSON.parse(response);
+
 
                 if(result.ok){
+                    var asset=result.asset;
                     createMessage(MSG_CONTAINER,SUCCESS_CSS,'Asset updated successfully');
+                    updateFileFields(asset);
                 }
                 else{
                     var report=processErrorReport(result.report);
@@ -88,6 +96,67 @@ $(function () {
     	$('.' + CHARS_REM).text('Characters left: ' + left);
     });
 
+    /*
+    The function updates the file upload fields after recieving a response from
+     the server
+     @asset: An updated asset instance
+     */
+    function updateFileFields(asset){
+        var fields = $('#form-asset-edit :input');
+        var fieldId;
+        var previewId;
+        var fieldValue;
+        var inputField;
+
+        fields.each(function(){
+
+            //We only to update the file fields
+            if(this.type=='file'){
+                fieldId=this.id;
+                previewId=getFileLabelId(fieldId);
+                fieldValue=asset.attributes[fieldId];
+
+                inputField=$('#'+fieldId);
+
+                var e=inputField;
+                e.wrap('<form>').parent('form').trigger('reset');
+                e.unwrap();
+
+                //Update the label
+                $('#'+previewId).html(fieldValue);
+            }
+        });
+    }
+
+    function getFileLabelId(fieldId){
+        return 'preview-'+fieldId;
+    }
+
+    /*
+     The function is used to add a given field to a FormData element
+     @field: The field to be added to the formData
+     @formData: The FormDara object used to store the field
+     @return: A FormData object with the added field
+     */
+    function fillForm(field, formData){
+        var fieldType = field.type;
+
+        if (fieldType == 'file') {
+            //Only add the file if the user has selected a new file
+            if(field.files[0]){
+                formData.append(field.id, field.files[0]);
+            }
+            else{
+                //Locate the existing url from the preview label
+                var existingUrl=$('#preview-'+field.id).html();
+                formData.append(field.id,existingUrl);
+            }
+        } else {
+            formData.append(field.id, field.value);
+        }
+
+        return formData;
+    }
     /*
      The function is used to build a report message indicating the errors in the form
      @report: The report to be processed
