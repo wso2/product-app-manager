@@ -210,7 +210,7 @@ $(function() {
 				});
 			},
 			error : function(response) {
-				showAlert('Error occured while demoting', 'error');
+				showAlert(action + ' operation failed', 'error');
 			}
 		});
 	}
