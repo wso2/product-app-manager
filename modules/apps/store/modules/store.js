@@ -279,7 +279,11 @@ Store.prototype.subscriptions = function (type) {
         type = path.substr(path.lastIndexOf('/') + 1);
         //obj = obj();
         obj.forEach(function (path) {
-            items.push(that.asset(type, path.substr(path.lastIndexOf('/') + 1)))
+            try {
+                items.push(that.asset(type, path.substr(path.lastIndexOf('/') + 1)))
+            } catch (e) {
+                log.warn('asset for path="' + path + '" could not be retrieved, try reverting it form registry.');
+            }
         });
         assetz[type] = items;
     };
