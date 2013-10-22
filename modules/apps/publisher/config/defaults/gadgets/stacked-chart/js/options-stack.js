@@ -62,7 +62,7 @@ $(function(){
 	$(".btn-group button").click(function(){
 		$(".btn-group button").removeClass("btn-success");
 		$(this).addClass("btn-success");
-		console.info($(this).text());
+		console.debug($(this).text());
 		options.series.bars.show = $(this).text().indexOf("Bar") != -1;
 		options.series.lines.show = $(this).text().indexOf("Line") != -1;
 		overviewOptions.series.bars.show = $(this).text().indexOf("Bar") != -1;

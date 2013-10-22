@@ -57,7 +57,7 @@ var init = function (options) {
     event.on('login', function (tenantId, user, session) {
         //we check the existence of user manager in the application ctx and
         //decide whether tenant has been already loaded.
-        /*log.info('login : ' + tenantId + ' User : ' + JSON.stringify(user));
+        /*log.debug('login : ' + tenantId + ' User : ' + JSON.stringify(user));
          if (application.get(tenantId + USER_MANAGER)) {
          //return;
          }

@@ -262,8 +262,7 @@ $(function() {
 					var action = getAction(thisState);
 					buttonClickLogic(action);
 				} else {
-					//$this.toggleClass('circle-invalid');	
-					alert("Invalid operation!")
+					showAlert('Invalid operation', 'error');
 				}
 			});
 		}
@@ -400,7 +399,7 @@ $(function() {
 	function showAlert(msg, type) {
 		var alert = $('.widget-content .alert');
 		alert.removeClass().addClass('info-div alert alert-' + type).find('span').text(msg);
-		alert.delay(1000).fadeIn("fast").delay(2000).fadeOut("fast");
+		alert.delay(500).fadeIn("fast").delay(2000).fadeOut("fast");
 	}
 
 	function highlightTransition(state) {

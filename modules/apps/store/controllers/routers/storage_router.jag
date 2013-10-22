@@ -59,10 +59,10 @@ function handleResourceRequest(matchedElements){
     var type=matchedElements['type'];
     var id=matchedElements['id'];
 
-    //log.info(compoundKey);
+    //log.debug(compoundKey);
     var isAllowed=storageSecurityProvider.execute(type,id,compoundKey,session);
 
-    //log.info(isAllowed);
+    //log.debug(isAllowed);
 
     if(!isAllowed){
          response.sendError(401,ERROR_AUTH_REQ);

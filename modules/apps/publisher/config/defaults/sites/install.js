@@ -21,8 +21,9 @@ var installer = function () {
      in the registry.If it is not present then rxt template is copied to the directory
      @context: An object containing a reference to the root of an asset
      */
-    function onAssetTypeInitialisation(context) {
-        log.info('loading site rxt data');
+
+    function onAssetTypeInitialisation(context){
+         log.debug('loading site rxt data');
     }
 
     function onAssetInitialization(context) {

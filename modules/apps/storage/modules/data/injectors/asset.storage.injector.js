@@ -79,7 +79,7 @@ var injector=function(){
             });
         }
 
-        log.info(object);
+        log.debug(object);
 
         return true;
     }
@@ -95,7 +95,7 @@ var injector=function(){
 
         //Only add it storage if it is a valid path and get the uuid
         if(file.isExists()){
-            log.info('loaded resource '+path+' into storage.');
+            log.debug('loaded resource '+path+' into storage.');
             uuid=useStorageManager(path,file,context);
         }
 

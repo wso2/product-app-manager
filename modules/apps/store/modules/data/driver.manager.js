@@ -204,7 +204,7 @@ var driverManager=function(){
             throw 'A query provider for '+queryProviderType+' could not be found.';
         }
 
-        //log.info('source: '+source+' provider '+stringify(queryProvider));
+        //log.debug('source: '+source+' provider '+stringify(queryProvider));
 
         //Check if the driver is supported
         if(this.driverMap.hasOwnProperty(driverType)){
@@ -212,7 +212,7 @@ var driverManager=function(){
             return this.driverMap[driverType];
         }
 
-        log.info('driver for '+driverType+' not found.');
+        log.debug('driver for '+driverType+' not found.');
         return null;
     };
 
@@ -269,7 +269,7 @@ var driverManager=function(){
                return DB_DRIVERS[key].value;
            }
        }
-       log.info('driver type in '+connectionUrl+' not found.');
+       log.debug('driver type in '+connectionUrl+' not found.');
        return null;
 
     };

@@ -1,8 +1,15 @@
 $(function () {
-	$('a[data-type=comments]').click(function(){
-		$('#tab-reviews').css({position:'static', visibility:'visible'});
-	});
-	
+    var $tab = $('#tab-reviews');
+    $('a').click(function(){
+        var tab = $(this).data("type");
+        if(tab=="basic"){
+            $tab.css({position:'static', visibility:'hidden'});
+        }else if(tab=="comments"){
+            $tab.css({position:'static', visibility:'visible'});
+
+        }
+    });
+
     if (isSocial) {
         var script = document.createElement('script');
         script.type = 'text/javascript';
@@ -20,7 +27,7 @@ $(function () {
                 partial: '/themes/store/partials/pagination.hbs'
             };
 
-        $('#tab-reviews').on('click', '.pagination a', function (e) {
+        $tab.on('click', '.pagination a', function (e) {
             e.preventDefault();
             var page,
                 thiz = $(this),

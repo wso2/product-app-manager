@@ -53,7 +53,7 @@ routeManager.register('GET', 'publisher', '/publisher/api/cache/{type}', functio
         print(msg);
 
     }catch(e){
-        log.info('Unable to return the cached assets.The following exception was thrown: '+e);
+        log.debug('Unable to return the cached assets.The following exception was thrown: '+e);
         response.sendError(404,'Unable to retrieve assets.Please check the server log.');
     }
 });

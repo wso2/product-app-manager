@@ -60,7 +60,7 @@ var weaver=function(){
 
     Weaver.prototype.prepareAll=function(object){
          if(object['_hidden_weaved']){
-             log.info('Hidden Weave property exists');
+             log.debug('Hidden Weave property exists');
              return;
          }
 

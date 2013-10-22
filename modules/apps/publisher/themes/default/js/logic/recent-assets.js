@@ -22,6 +22,12 @@ $(function () {
        retrieve(context);
 
     }, REFRESH_TIMER);
+	var recentTmpl = '{{#each cachedAssets}}';
+		recentTmpl += '		<div class="row-fluid">';
+		recentTmpl += '			<div class="span10"><i class="icon-ok-circle"></i> <span><strong>{{attributes.overview_name}}</strong> is being added</span></div>';
+		recentTmpl += '			<div class="span2"><i class="icon-refresh icon-spin"></i></div>';
+		recentTmpl += '     </div>';
+		recentTmpl += '{{/each}}';
 
     /*
     The function is used to fetch pending assets.A pending asset is one which has been added but not indexed
@@ -34,8 +40,12 @@ $(function () {
             success: function (response) {
 
                 var respObj=JSON.parse(response);
-                showMessage(JSON.stringify(respObj));
-
+               	
+               	if(respObj.cachedAssets.length){
+               		var recentTmplComp =  Handlebars.compile(recentTmpl);
+					$('.asset-being-added').html(recentTmplComp(respObj)).slideDown();
+               	}
+				
                 if(respObj.cachedAssetsBefore!=respObj.cachedAssetsAfter){
 
                     window.location='/publisher/assets/'+context.type+'/';

@@ -70,7 +70,7 @@ var init = function (options) {
             //Attempt to load the default assets
             var deployer = require('/modules/asset.deployment.js').deployment_logic();
 
-            log.info('starting auto deployment of default assets.');
+            log.debug('starting auto deployment of default assets.');
 
             //Create a deployment manager instance
             var deploymentManager = new deployer.Deployer({
@@ -83,7 +83,7 @@ var init = function (options) {
 
             deploymentManager.autoDeploy();
 
-            log.info('finished auto deployment of default assets.');
+            log.debug('finished auto deployment of default assets.');
         }
 
 
@@ -188,12 +188,12 @@ var buildManagers = function (tenantId, registry) {
     var filterManager=new filterManagementModule.FilterManager();
 
 
-    log.info('tenant: '+tenantId);
+    log.debug('tenant: '+tenantId);
 
     //The security provider requires the registry and user manager to work
     storageSecurityProvider.provideContext(registry,userManager);
 
-    log.info(userManager);
+    log.debug(userManager);
 
     filterManager.setContext(userManager);
 
@@ -270,7 +270,7 @@ var loadTagDependencies=function(registry){
     //Check if the tag is present
     if(!resource){
 
-        log.info('tag query path does not exist.');
+        log.debug('tag query path does not exist.');
 
         registry.put(TAGS_QUERY_PATH, {
             content: TAGS_QUERY,
@@ -280,7 +280,7 @@ var loadTagDependencies=function(registry){
             }
         });
 
-        log.info('tag query has been added.');
+        log.debug('tag query has been added.');
     }
 
 };
@@ -295,13 +295,13 @@ var loadTagDependencies=function(registry){
  */
 var buildPermissionsList = function (tenantId, username, permissions) {
     var log = new Log();
-    log.info('Entered buildPermissionsList');
+    log.debug('Entered buildPermissionsList');
     var store = require('store');
     var server = store.server;
     var user = store.user;
     //Obtain the accessible collections
     var accessible = user.configs(tenantId).accessible;
-    log.info(stringify(accessible));
+    log.debug(stringify(accessible));
 
     var id;
     var accessibleContext;
@@ -335,7 +335,7 @@ var buildPermissionsList = function (tenantId, username, permissions) {
 
             //Only add permissions if the path  does not exist
             if (col == undefined) {
-                log.info('collection: ' + id + ' does not exist.');
+                log.debug('collection: ' + id + ' does not exist.');
                 //Assign the actions to the id
                 permissions[id] = actions;
 
@@ -351,7 +351,7 @@ var buildPermissionsList = function (tenantId, username, permissions) {
                 });
             }
             else {
-                log.info('collection: ' + id + 'is present.');
+                log.debug('collection: ' + id + 'is present.');
             }
         }
 
@@ -386,7 +386,7 @@ var configureUser = function (tenantId, user) {
     var defaultRoles = config.userRoles;
     var log = new Log();
 
-    log.info('Starting configuringUser.');
+    log.debug('Starting configuringUser.');
 
     //Create the permissions in the options configuration file
     perms = buildPermissionsList(tenantId, user.username, perms, server);
@@ -395,14 +395,14 @@ var configureUser = function (tenantId, user) {
 
     if (!checkIfEmpty(perms)) {
 
-        //log.info('length: '+perms.length);
+        //log.debug('length: '+perms.length);
 
         //Register the role
         //We assume that the private_role is already present
         //TODO: This needs to be replaced.
         um.authorizeRole(role, perms);
 
-        //log.info('after add role');
+        //log.debug('after add role');
 
         //user.addRoles(role);
     }

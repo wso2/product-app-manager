@@ -3,5 +3,5 @@
         l = new Log();
     l.debug("session deleting :: " + session.getId() + " :: " + sso_sessions[session.getId()]);
     delete sso_sessions[session.getId()];
-    //l.info("sessions :: " + stringify(sso_sessions));
+    //l.debug("sessions :: " + stringify(sso_sessions));
 }());

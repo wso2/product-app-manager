@@ -279,7 +279,11 @@ Store.prototype.subscriptions = function (type) {
         type = path.substr(path.lastIndexOf('/') + 1);
         //obj = obj();
         obj.forEach(function (path) {
-            items.push(that.asset(type, path.substr(path.lastIndexOf('/') + 1)))
+            try {
+                items.push(that.asset(type, path.substr(path.lastIndexOf('/') + 1)))
+            } catch (e) {
+                log.warn('asset for path="' + path + '" could not be retrieved, try reverting it form registry.');
+            }
         });
         assetz[type] = items;
     };
@@ -404,7 +408,7 @@ Store.prototype.assets = function (type, paging) {
 
     //Check if a type has been provided
     /*if(!type){
-     log.info('Returning an empty [] for Store.assets.');
+     log.debug('Returning an empty [] for Store.assets.');
      return [];
      }*/
 
@@ -430,7 +434,7 @@ Store.prototype.tagged = function (type, tag, paging) {
 
     //Check if a type has been provided.
     /*if(!type){
-     log.info('Returning an empty [] for Store.tagged.');
+     log.debug('Returning an empty [] for Store.tagged.');
      return [];
      } */
 
@@ -465,7 +469,7 @@ Store.prototype.asset = function (type, aid) {
 
     //Check if a type has been provided.
     /*if(!type){
-     log.info('Returning an empty [] for store.asset');
+     log.debug('Returning an empty [] for store.asset');
      return [];
      }*/
 
@@ -500,7 +504,7 @@ Store.prototype.popularAssets = function (type, count) {
 
     //Check if a type has been provided.
     /*if(!type){
-     log.info('Returning an empty [] for  store.popularAssets.');
+     log.debug('Returning an empty [] for  store.popularAssets.');
      return [];
      }*/
 
@@ -523,7 +527,7 @@ Store.prototype.recentAssets = function (type, count) {
 
     //If a type is not given
     /*if(!type){
-     log.info('Returning an empty [] for Store.recentAssets.');
+     log.debug('Returning an empty [] for Store.recentAssets.');
      return [];
      }*/
 
@@ -540,7 +544,7 @@ Store.prototype.recentAssets = function (type, count) {
 
     var recent = this.assetManager(type).search(options, paging);
 
-    //log.info('re')
+    //log.debug('re')
     /* var recent = this.assetManager(type).list({
      start: 0,
      count: count || 5,
