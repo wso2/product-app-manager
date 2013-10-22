@@ -117,11 +117,11 @@ var installer = function () {
             return;
         }
 
-        log.info('attempting to execute the robot path: '+stringify(pathToDesiredState));
+        log.debug('attempting to execute the robot path: '+stringify(pathToDesiredState));
 
         executeRobotPath(pathToDesiredState,artifactManager,currentAsset);
 
-        log.info('finished executing robot path');
+        log.debug('finished executing robot path');
 
         //Try to reach the desired life-cycle state before the attempt limit
         /*while ((currentLifeCycleState != DESIRED_LIFECYCLE_STATE) && (attempts < PROMOTE_COUNT)) {
@@ -146,9 +146,9 @@ var installer = function () {
         for(var index in path){
             operation=path[index];
 
-            log.info('invoking action: '+operation.action);
+            log.debug('invoking action: '+operation.action);
             artifactManager.promoteLifecycleState(operation.action,asset);
-            log.info('new state: '+artifactManager.getLifecycleState(asset));
+            log.debug('new state: '+artifactManager.getLifecycleState(asset));
 
         }
     }
