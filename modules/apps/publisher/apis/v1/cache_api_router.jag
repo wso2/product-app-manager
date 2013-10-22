@@ -29,7 +29,10 @@ routeManager.register('GET', 'publisher', '/publisher/api/cache/{type}', functio
 
 
 
+    //TODO: Get a fresh copy of the session!!!
+
     try{
+
 
         artifactManager=rxtManager.getArtifactManager(shortName);
 
@@ -37,22 +40,20 @@ routeManager.register('GET', 'publisher', '/publisher/api/cache/{type}', functio
 
         assets=artifactManager.search(null,DEFAULT_PAGIN)||[];
 
-        cachedAssetsBeforeRefresh=assetCacheManager.getCachedAssetCount();
+        cachedAssetsBeforeRefresh=assetCacheManager.getCachedAssetCount(shortName);
         cachedAssetsAfterRefresh=assetCacheManager.refresh(assets,shortName);
 
         results=assetCacheManager.get(shortName);
 
-        log.info('after refresh: '+cachedAssetsAfterRefresh);
-
         msg['ok']=true;
-        msg['cachedAssetCount']=cachedAssetsBeforeRefresh;
-        msg['updatedAssetCount']=cachedAssetsBeforeRefresh-cachedAssetsAfterRefresh;
+        msg['cachedAssetsBefore']=cachedAssetsBeforeRefresh;
+        msg['cachedAssetsAfter']=cachedAssetsAfterRefresh;
         msg['cachedAssets']=results;
 
         print(msg);
 
     }catch(e){
-        log.debug('Unable to return the cached assets.The following exception was thrown: '+e);
+        log.info('Unable to return the cached assets.The following exception was thrown: '+e);
         response.sendError(404,'Unable to retrieve assets.Please check the server log.');
     }
 });
