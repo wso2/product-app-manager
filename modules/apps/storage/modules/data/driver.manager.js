@@ -93,7 +93,7 @@ var driverManager=function(){
             return this.driverMap[driverType];
         }
 
-        log.info('driver for '+driverType+' not found.');
+        log.debug('driver for '+driverType+' not found.');
         return null;
     };
 

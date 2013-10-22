@@ -37,10 +37,10 @@ dataInjector.addToContext('storageManager',storageManager);
 
 dataInjector.inject(list,dataInjectorModule.Modes.DISPLAY);
 
-//log.info('content type: '+request.getContentType());
-//log.info('content length: '+request.getContentLength());
-//log.info('content: '+request.getContent());
-//log.info(request.getParameter('file'));
+//log.debug('content type: '+request.getContentType());
+//log.debug('content length: '+request.getContentLength());
+//log.debug('content: '+request.getContent());
+//log.debug(request.getParameter('file'));
 
 /* var UUID=java.util.UUID;
 
@@ -50,14 +50,14 @@ dataInjector.inject(list,dataInjectorModule.Modes.DISPLAY);
 
 /*var contents=request.getAllParameters('UTF-8');
 
- log.info('content is'+contents[0]);*/
+ log.debug('content is'+contents[0]);*/
 
 //var db=new Database('JAGH2');
 
 //var selectQuery='SELECT content FROM resource;';
 
 //var result=db.query(selectQuery);
-//log.info(result.length);
+//log.debug(result.length);
 
 /* var db=new Database('jdbc:h2:~/test','sa','');
 
@@ -73,7 +73,7 @@ dataInjector.inject(list,dataInjectorModule.Modes.DISPLAY);
 
  var result=db.query(selectQuery);
 
- log.info(result.length);
+ log.debug(result.length);
  var temp;
 
  for(var row in result){
@@ -83,9 +83,9 @@ dataInjector.inject(list,dataInjectorModule.Modes.DISPLAY);
  }
  }
 
- log.info(temp[index]);
+ log.debug(temp[index]);
  response.addHeader('Content-Type','image/png');
- log.info('length of original file: '+file.getLength());
+ log.debug('length of original file: '+file.getLength());
  response.addHeader('Content-Length',file.getLength()+'');
 
  print(temp[index]);*/

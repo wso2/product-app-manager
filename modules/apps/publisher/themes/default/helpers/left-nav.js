@@ -1,5 +1,13 @@
-var generateLeftNavJson = function(data, listPartial) {
+var getTypeObj, breadcrumbItems;
+var deploymentManagement=require('/modules/deployment/deployment.manager.js').deploymentManagementModule();
+var deploymentManager=deploymentManagement.cached();
 
+breadcrumbItems = deploymentManager.getAssetData()
+
+var generateLeftNavJson = function(data, listPartial) {
+	
+	var currentTypeObj = getTypeObj(data.shortName);
+	
     var leftNavItems = { leftNavLinks :
         [
            /*
@@ -10,7 +18,7 @@ var generateLeftNavJson = function(data, listPartial) {
                        },*/
            
             {
-                name : "Add " + data.shortName + "",
+                name : "Add " + currentTypeObj.assetTitle + "",
                 iconClass : "icon-plus-sign-alt",
                 additionalClasses : (listPartial == "add-asset" ) ? "prominent-link" : null,
                 url : "/publisher/asset/" + data.shortName + ""
@@ -56,3 +64,12 @@ var generateLeftNavJson = function(data, listPartial) {
     }
     return leftNavItems;
 };
+
+getTypeObj = function(type){
+	for(item in breadcrumbItems){
+		var obj = breadcrumbItems[item]
+		if(obj.assetType == type){
+			return obj;
+		}
+	}
+}

@@ -41,7 +41,7 @@ var router_module = function() {
 		}
 
 		var url=this.verbs[str].url;
-		l.info(url);
+		l.debug(url);
 		var uriMatcher=new URIMatcher(req.getRequestURI());
 		
 		//If it is a match send the arguments to the callback

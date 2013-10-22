@@ -22,7 +22,7 @@ routeManager.register('GET','publisher','/publisher/api/version/{type}/{id}',fun
     var shortName=context.params.type;
     var id=context.params.id;
 
-    log.info('type: '+shortName+' id: '+id);
+    log.debug('type: '+shortName+' id: '+id);
 
     try{
 
@@ -41,7 +41,7 @@ routeManager.register('GET','publisher','/publisher/api/version/{type}/{id}',fun
         }
 
     }catch(e){
-        log.info('Unable to obtain the version list of asset : '+id+'.The following exception was thrown: '+e);
+        log.debug('Unable to obtain the version list of asset : '+id+'.The following exception was thrown: '+e);
         response.sendError(500,'Unable to obtain the version list of asset : '+id+'.Please check server log');
     }
 
@@ -53,7 +53,7 @@ routeManager.register('POST','publisher','/publisher/api/version/{type}/{id}/{ve
     var id=context.params.id;
     var version=context.params.version;
 
-    //log.info('type: '+shortName+' id: '+id+' version: '+version);
+    //log.debug('type: '+shortName+' id: '+id+' version: '+version);
 
     try{
 
@@ -69,7 +69,7 @@ routeManager.register('POST','publisher','/publisher/api/version/{type}/{id}/{ve
 
         //Do not create a new version if it already exists
         if(foundAsset){
-            log.info('a duplicate version exists');
+            log.debug('a duplicate version exists');
             response.sendError(406,'The version : '+version+' already exists for asset: '+id);
             return;
         }
@@ -79,7 +79,7 @@ routeManager.register('POST','publisher','/publisher/api/version/{type}/{id}/{ve
         //Import the artifact data
         model.import('asset',oldArtifact);
 
-        //log.info(oldArtifact);
+        //log.debug(oldArtifact);
 
         //Delete the id
         model.set('*.id','');
@@ -101,7 +101,7 @@ routeManager.register('POST','publisher','/publisher/api/version/{type}/{id}/{ve
 
     }catch(e){
 
-        log.info('Unable to create a new version of the '+type+' '+id+' version: '+version+'Please'
+        log.debug('Unable to create a new version of the '+type+' '+id+' version: '+version+'Please'
                 +' refer to the server logs for details.The following exception was throw: '+e);
 
         response.sendError(500,'Unable to create a new version of the '+type+' '+id+' version: '+version+'Please'

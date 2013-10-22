@@ -169,8 +169,8 @@ var rxt_converter=function(){
 
 				//Check if there are any values
 				for each(var v in field.values.value){	
-					//log.info(v.toString());	
-					//log.info(stringify(objField));		
+					//log.debug(v.toString());
+					//log.debug(stringify(objField));
 					objField.addValue(v.toString());
 				}
 

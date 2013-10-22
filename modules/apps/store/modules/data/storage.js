@@ -78,11 +78,11 @@ var storageModule = function () {
         var cachedManager = application.get(CACHE_SM);
 
         if (cachedManager) {
-            //log.info('cached');
+            //log.debug('cached');
             return cachedManager;
         }
         else {
-            //log.info('not cached');
+            //log.debug('not cached');
             return null;
         }
     }
@@ -154,19 +154,19 @@ var storageModule = function () {
         var id;
         //The key did not have a file component
         if(splitList.length<2){
-            //log.info('just uuid');
+            //log.debug('just uuid');
             id=key;
         }
         else{
-            //log.info('uuid/file');
+            //log.debug('uuid/file');
             id=splitList[0];
         }
 
-        //log.info('uuid is '+id);
+        //log.debug('uuid is '+id);
 
         var results = resource.find({uuid:id}) || [];
 
-        //log.info(results[0].fileName);
+        //log.debug(results[0].fileName);
         return results[0] || null;
     };
 

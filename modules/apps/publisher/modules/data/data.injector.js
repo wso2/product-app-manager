@@ -50,7 +50,7 @@ var dataInjectorModule = function () {
 
         //Skip the injection step as the default mode will not do anything
         if(mode==INJECTOR_MODES.DEFAULT){
-            log.info('The default mode does nothing :p .Specify an injector mode!');
+            log.debug('The default mode does nothing :p .Specify an injector mode!');
             return;
         }
 
@@ -137,7 +137,7 @@ var dataInjectorModule = function () {
 
                 //Check if handling logic should halt
                 if (!result) {
-                    log.info('failed to execute injector on object: ' + stringify(object));
+                    log.debug('failed to execute injector on object: ' + stringify(object));
                     return;
                 }
             }

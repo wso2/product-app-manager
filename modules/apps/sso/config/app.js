@@ -56,12 +56,12 @@ event.on('tenantLoad', function (tenantId) {
 
 /*
 var log = new Log();
-log.info('XXXXXXXXXXXXXXXXXXXXXXX');
+log.debug('XXXXXXXXXXXXXXXXXXXXXXX');
 
 event.on('tenantLoad', function (tenantId) {
 
     var log = new Log();
-    log.info('======================================================================================');
+    log.debug('======================================================================================');
     event.emit('tenantCreate', tenantId);
     var server = require('/modules/server.js');
     var user = require('/modules/user.js');

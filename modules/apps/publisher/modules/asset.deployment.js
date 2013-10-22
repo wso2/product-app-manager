@@ -101,7 +101,7 @@ var deployment_logic = function () {
         //Check if any of the vital resources are missing
         if ((!artifactManager) || (!userManager) || (!registry)) {
 
-            log.info('there is no artifact manager ,userManager or registry  for ' + assetType + ' that can handle deployment.');
+            log.debug('there is no artifact manager ,userManager or registry  for ' + assetType + ' that can handle deployment.');
             return;
         }
 
@@ -162,9 +162,9 @@ var deployment_logic = function () {
             modifiedScriptObject.invoke(METHOD_ON_SET_RATING, [context]);
 
             //Attach the life-cycle
-            //log.info('trying to attach lifecycle');
+            //log.debug('trying to attach lifecycle');
             modifiedScriptObject.invoke(METHOD_ON_ATTACH_LIFECYCLE, [context]);
-            //log.info('finished');
+            //log.debug('finished');
 
             return;
         }
@@ -291,12 +291,12 @@ var deployment_logic = function () {
                 }
 
                 if (isIgnored(assetConfiguration, bundle.getName())) {
-                    //log.info('ignoring ' + assetType + " : " + bundle.getName() + '. Please change configuration file to enable.');
+                    //log.debug('ignoring ' + assetType + " : " + bundle.getName() + '. Please change configuration file to enable.');
                     return;
                 }
                 that.invoke(assetType, bundle, context);
 
-                //log.info('finished deploying ' + assetType + ' : ' + bundle.getName());
+                //log.debug('finished deploying ' + assetType + ' : ' + bundle.getName());
 
             });
 
@@ -424,7 +424,7 @@ var deployment_logic = function () {
     ScriptObject.prototype.invoke = function (methodName, arguments) {
         if (this.functionObject.hasOwnProperty(methodName)) {
             //log.debug('invoking method: ' + methodName);
-            //log.info(this.functionObject);
+            //log.debug(this.functionObject);
             this.functionObject[methodName].apply(this.functionObject, arguments);
             return true;
         }
@@ -447,7 +447,7 @@ var deployment_logic = function () {
 
         if (scriptInstance.hasOwnProperty(INSTALLER_MODULE_NAME)) {
             logicObject = scriptInstance[INSTALLER_MODULE_NAME]();
-            //log.info('clone: '+stringify(cloned));
+            //log.debug('clone: '+stringify(cloned));
 
             //Go through each property in the logic object
             for (var index in logicObject) {

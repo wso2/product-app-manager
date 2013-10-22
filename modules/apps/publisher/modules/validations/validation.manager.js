@@ -28,7 +28,7 @@ var validationManagement=function(){
         var root=bundleManager.getRoot();
         var that=this;
         root.each(function(bundle){
-           //log.info('looking at: '+bundle.getName());
+           //log.debug('looking at: '+bundle.getName());
             //Load the script
             var file=require(VALIDATOR_PATH+'/'+bundle.getName()).validatorModule();
             var validatorName=bundle.getName().replace(bundle.getExtension(),'');

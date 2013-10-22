@@ -15,7 +15,7 @@ var installer=function(){
     @context: An object containing a reference to the root of an asset
      */
     function onAssetTypeInitialisation(context){
-         log.info('loading site rxt data');
+         log.debug('loading site rxt data');
     }
 
 	function onAssetInitialization(context) {

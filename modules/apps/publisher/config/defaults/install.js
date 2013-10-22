@@ -100,7 +100,7 @@ var installer = function () {
             //Create a new artifact manager
             var artifactManager = new carbon.registry.ArtifactManager(registry, context.assetType);
         } catch (e) {
-            log.info('unable to create artifactManager of type: ' + context.assetType);
+            log.debug('unable to create artifactManager of type: ' + context.assetType);
             return;
         }
 
@@ -110,7 +110,7 @@ var installer = function () {
         context['registry'] = registry;
         context['userManager'] = userManager;
 
-        log.info('created artifact manager for ' + context.assetType);
+        log.debug('created artifact manager for ' + context.assetType);
     }
 
     /*
@@ -120,7 +120,7 @@ var installer = function () {
     function onSetAssetPermissions(context) {
         var userManager = context.userManager;
 
-        //log.info('anon role: '+carbon.user.anonRole);
+        //log.debug('anon role: '+carbon.user.anonRole);
         log.debug('giving anon role GET rights to ' + context.path);
         userManager.authorizeRole(carbon.user.anonRole, context.path, carbon.registry.actions.GET);
     }
@@ -199,10 +199,10 @@ var installer = function () {
         }, null);
 
         context['currentAsset'] = assets[0] || null;
-        //log.info('added asset: ' + stringify(context.currentAsset));
+        //log.debug('added asset: ' + stringify(context.currentAsset));
 
         addToSocialCache(context.currentAsset);
-        //log.info('finished');
+        //log.debug('finished');
     }
 
     /*
@@ -222,7 +222,7 @@ var installer = function () {
         context.dataInjector.inject(artifact, context.dataInjectorModes.STORAGE);
 
         artifactManager.update(artifact);
-        //log.info('finished updating the artifact : '+currentAsset.name);
+        //log.debug('finished updating the artifact : '+currentAsset.name);
     }
 
     /*
