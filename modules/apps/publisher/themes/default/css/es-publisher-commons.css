@@ -1067,6 +1067,31 @@ span.title {
     width: 100%;
     border: 1px solid #ccc;
 }
+#form-asset-create .tbl-upload{
+    border:none;
+}
+.tbl-upload-row {
+    display: table-row;
+}
+.tbl-upload-cell {
+    display: table-cell;
+}
+.tbl-upload-row .tbl-upload-cell:last-child {
+    width: 88px;
+    text-align: right;
+}
+.tbl-upload-cell input.txt-filepath {
+    width: 100%;
+    margin: 0px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    display: inline-block;
+    height: 30px;
+}
+
+
 
 td.tbl-upload-preview {
     position: relative;
