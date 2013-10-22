@@ -9,7 +9,12 @@ var installer = function () {
     var log = new Log();
     var DESIRED_LIFECYCLE_STATE = 'Published';
     var DEFAULT_LIFECYCLE = 'MobileAppLifeCycle';
+    var START_STATE='Initial';
+    var robot=require('/modules/automation/lifecycle.robot.js').robot();
 
+    var lifeCycleRobot=new robot.LifeCycleRobot();
+    lifeCycleRobot.init({lifecycle:DEFAULT_LIFECYCLE});
+    var pathToDesiredState=lifeCycleRobot.move(DEFAULT_LIFECYCLE,START_STATE,DESIRED_LIFECYCLE_STATE);
 
     /*
      The function initializes an asset by checking if an assets rxt is present
@@ -111,8 +116,14 @@ var installer = function () {
             return;
         }
 
+        log.info('attempting to execute the robot path: '+pathToDesiredState);
+
+        executeRobotPath(pathToDesiredState,artifactManager,currentAsset);
+
+        log.info('finished executing robot path');
+
         //Try to reach the desired life-cycle state before the attempt limit
-        while ((currentLifeCycleState != DESIRED_LIFECYCLE_STATE) && (attempts < PROMOTE_COUNT)) {
+        /*while ((currentLifeCycleState != DESIRED_LIFECYCLE_STATE) && (attempts < PROMOTE_COUNT)) {
 
             artifactManager.promoteLifecycleState(INVOKED_OPERATION, currentAsset);
 
@@ -125,12 +136,26 @@ var installer = function () {
             log.debug('current lifecycle state: ' + currentLifeCycleState);
         }
 
-        log.debug('final state of : ' + currentAsset.attributes.overview_name + ' ' + currentLifeCycleState);
+        log.debug('final state of : ' + currentAsset.attributes.overview_name + ' ' + currentLifeCycleState);  */
+    }
+
+    function executeRobotPath(path,artifactManager,asset){
+        var operation;
+
+        for(var index in path){
+            operation=path[index];
+
+            log.info('invoking action: '+operation.action);
+            artifactManager.promoteLifecycleState(operation.action,asset);
+            log.info('new state: '+artifactManager.getLifecycleState(asset));
+
+        }
     }
 
     return{
         onAssetTypeInitialisation: onAssetTypeInitialisation,
-        onAssetInitialization: onAssetInitialization
+        onAssetInitialization: onAssetInitialization,
+        onAttachLifecycle:onAttachLifecycle
     }
 };
 
