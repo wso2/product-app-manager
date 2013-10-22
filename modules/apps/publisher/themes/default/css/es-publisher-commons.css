@@ -974,14 +974,17 @@ span.title {
 }
 #state {
     /* background: none repeat scroll 0 0 #FFFFFF;*/
-    color: #fff;
+    color: #A36515;
     font-size: 12px;
     font-weight: bold;
     margin-left: 11px;
-    padding: 0 3px;
+     padding: 0 4px;
     text-transform: uppercase;
     margin-top: 6px;
+      background: none repeat scroll 0 0 #FFBE6B;
+    border-radius: 4px 4px 4px 4px;
 }
+
 #container-header > .row {
     background-color: rgba(0, 0, 0, 0);
     border: medium none;
@@ -1200,4 +1203,13 @@ color:#229A55;
 .asset-being-added .span2 .icon-refresh{
     margin-right: 28px;
     opacity:.5;
+}
+.lifecycle{
+    position:relative;
+}
+.lifecycle-tip{
+    position:absolute;
+    bottom:0;
+    right:20px;
+    opacity: .5;
 }

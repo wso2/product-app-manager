@@ -1244,7 +1244,9 @@ ol.linenums li {
 .icon-site:before {
     content: "\F0AC";
 }
-
+.icon-ebook:before {
+    content: "\F15C";
+}
 
 @media all and (max-width: 980px) {
     .asset {
