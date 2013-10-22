@@ -11,8 +11,10 @@ var log = new Log();
 
 routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{type}/', function (context) {
     var type = context.params.type;
-
-    var username = require('store').server.current(session).username;
+    
+	var server  = require('store').server;
+    var username = server.current(session).username;
+    var tenantId = server.current(session).tenantId;
     var startDate = context.post.startDate;
     var endDate = context.post.endDate;
 
@@ -31,7 +33,7 @@ routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{t
 
     if (!context.post.isOnChoice) {
 
-        var bookmarkStats = stats.filterResultsByAssetType(stats.getBookmarkStats(username), type);
+        var bookmarkStats = stats.filterResultsByAssetType(stats.getBookmarkStats(username,tenantId), type);
         var bookmarkTicks = [], bookmarkStatData = [], assetName;
         for (var i = 0; i < bookmarkStats.length; i++) {
             artifact = artifactManager.get(bookmarkStats[i].ASSET_ID);
@@ -47,7 +49,7 @@ routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{t
         output['bookmarkTicks'] = bookmarkTicks;
     }
 
-    var hotAssetsStats = stats.filterResultsByAssetType(stats.getHotAssetStats(startDate,endDate), type);
+    var hotAssetsStats = stats.filterResultsByAssetType(stats.getHotAssetStats(startDate,endDate,tenantId), type);
     var hotAssetticks = [], hotstAssetData = [], hotAssetName;
     for (var j = 0; j < hotAssetsStats.length; j++) {
         artifact = artifactManager.get(hotAssetsStats[j].ASSET_ID);
