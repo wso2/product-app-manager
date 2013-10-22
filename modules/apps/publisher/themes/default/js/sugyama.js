@@ -682,6 +682,17 @@ var sugyamaModule = function () {
         dataProvider.prepareData(this.data);
 		return dataProvider.rawMap;
 	}
+	
+	Sugyama.prototype.getKeys = function(){
+		var module = graphDataModule();
+
+        var dataProvider = new module.DataProvider();
+
+        dataProvider.prepareData(this.data);
+		return dataProvider.keys;
+	}
+	
+	
 
     return{
         Sugyama:Sugyama

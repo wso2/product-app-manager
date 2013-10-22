@@ -16,6 +16,8 @@ var onCheckListItemClick = function() {
 };
 var sugyamaModule = sugyamaModule();
 var sugyama = new sugyamaModule.Sugyama();
+var actions;
+var keys;
 
 $(function() {
 
@@ -146,6 +148,7 @@ $(function() {
 				var element = $('#canvas');
 				if (element) {
 					var paper = new Raphael('canvas', 600, 500);
+					
 					//element.html(response);
 
 					/* if(!graph.Renderer.config.canvas.canvasElement){
@@ -163,7 +166,9 @@ $(function() {
 					var LAYER_SEP = 85;
 					var LAYER_SPACE = 200;
 					sugyama.draw(START_X, START_Y, VERTEX_RADIUS, LAYER_SPACE, LAYER_SEP);
-
+					
+					actions = statInfo.lifecycle.configuration[0].lifecycle[0].scxml[0].state;
+					keys = sugyama.getKeys();
 					//graph.Renderer.setSelected(statInfo.state);
 					disableActions(statInfo.actions);
 					buildButtons(statInfo.actions);
@@ -253,7 +258,9 @@ $(function() {
 			$('circle').click(function() {
 				var thisState = $(this).attr('class');
 				if(isClickable(thisState)){
-					alert("OK")
+					//console.log(getAction(thisState));
+					var action = getAction(thisState);
+					buttonClickLogic(action);
 				} else {
 					//$this.toggleClass('circle-invalid');	
 					alert("Invalid operation!")
@@ -411,6 +418,32 @@ $(function() {
 		} else {
 			return false;
 		}
+	}
+	
+	function getTransitions(){
+		var i=0;
+		var transitions;
+		var curState = $('circle[data-currentstate=true]').attr('class');
+		
+		for(var index in keys){
+			if(keys[index] == curState){
+				break;
+			}
+			i++;
+		}
+		transitions = actions[i].transition; 
+		return transitions;
+	}
+	
+	
+	function getAction(state){
+		transitions = getTransitions();
+		for(var i in transitions){
+			if(transitions[i].target == state){
+				return transitions[i].event;
+			}
+		}
+		return null;
 	}
 	/*
 	 Click handlers for the checkboxes
