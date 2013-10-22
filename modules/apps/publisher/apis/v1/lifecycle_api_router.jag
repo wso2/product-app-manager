@@ -241,7 +241,7 @@ routeManager.register('GET','publisher','/publisher/api/lifecycle/{type}/{id}',f
 });
 
 routeManager.register('GET','publisher','/publisher/api/lifecycle/checklist/{type}/{id}',function(context){
-   //log.info('short name: '+context.params.type);
+   //log.debug('short name: '+context.params.type);
 
    try{
        log.debug('Entered check list/type/id ');

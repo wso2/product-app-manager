@@ -260,7 +260,7 @@ var extension_management = function () {
             fieldA = a.get(fieldProp);
             fieldB = b.get(fieldProp);
 
-            log.info('field A ' + fieldA.getValue() + ' field B: ' + fieldB.getValue());
+            log.debug('field A ' + fieldA.getValue() + ' field B: ' + fieldB.getValue());
 
             if (fieldA.getValue() != fieldB.getValue()) {
                 difference.push(fieldProp);

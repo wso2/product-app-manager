@@ -62,7 +62,7 @@ var value = {};
 //value['fileName']='out2.png';
 //var id=storageManager.put(value);
 //var url=storageModule.constructStorageUrl('storage','5f5db9a3-b3fe-49a8-9c5b-c3df9c2f1c53');
-//log.info('url:'+url);
+//log.debug('url:'+url);
 
 //Get the resource in storage from the uuid or uuid/filename
 //var result=storageManager.get('5f5db9a3-b3fe-49a8-9c5b-c3df9c2f1c53');
@@ -76,9 +76,9 @@ var isMatch=uriMatcher.match('/{context}/storage/{uuid}/{fileName}');
 if(isMatch){
     var matchedElements=uriMatcher.elements();
 
-    //log.info(matchedElements['context']);
-    //log.info(matchedElements['fileName']);
-    //log.info(matchedElements['uuid']);
+    //log.debug(matchedElements['context']);
+    //log.debug(matchedElements['fileName']);
+    //log.debug(matchedElements['uuid']);
 
     handleResourceRequest(matchedElements);
 }

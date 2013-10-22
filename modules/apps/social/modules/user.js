@@ -125,7 +125,7 @@ var permitted = function (username, session) {
     }
 
     opts = options(usr.tenantId);
-    //log.info(usr.tenantId);
+    //log.debug(usr.tenantId);
     um = server.userManager(usr.tenantId);
     user = um.getUser(usr.username);
     user.tenantDomain = carbon.server.tenantDomain({tenantId: usr.tenantId});

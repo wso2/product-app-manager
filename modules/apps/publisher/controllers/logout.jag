@@ -14,7 +14,7 @@
 
         var log = new Log();
 
-        log.info("portal session index : " + sso_sessions[session.getId()]);
+        log.debug("portal session index : " + sso_sessions[session.getId()]);
 
         %>
         <div>

@@ -166,7 +166,7 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
             msg['ok']=false;
             msg['report']=report;
             print(msg);
-            log.info(msg);
+            log.debug(msg);
             return;
         }
 
@@ -203,7 +203,7 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
         print(msg);
 
     } catch (e) {
-        log.info('The asset ' + id + ' could not be updated.The following exception was thrown: ' + e);
+        log.debug('The asset ' + id + ' could not be updated.The following exception was thrown: ' + e);
         response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
     }
 });
@@ -236,7 +236,7 @@ function inspectFiles(req, params) {
 
         file = files[index];
 
-        log.info('file: ' + index);
+        log.debug('file: ' + index);
 
         //Put the file in storage and get a uuid as a reference
         var resource = {};
@@ -246,7 +246,7 @@ function inspectFiles(req, params) {
 
         uuid=storageManager.put(resource);
 
-        log.info('uuid added: '+uuid);
+        log.debug('uuid added: '+uuid);
 
         //Add a new  entry into the POST parameters containing the uuid
         params[index] = uuid;
@@ -304,7 +304,7 @@ routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', fu
         modelA.set("overview.createdtime",modelB.get("overview.createdtime").value);
         var artifact = modelA.export('asset.exporter');
 
-        log.info('not updating'+artifact);
+        log.debug('not updating'+artifact);
         //artifactManager.update(artifact);
 
         msg['ok']=true;
