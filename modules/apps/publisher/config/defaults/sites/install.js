@@ -116,7 +116,7 @@ var installer = function () {
             return;
         }
 
-        log.info('attempting to execute the robot path: '+pathToDesiredState);
+        log.info('attempting to execute the robot path: '+stringify(pathToDesiredState));
 
         executeRobotPath(pathToDesiredState,artifactManager,currentAsset);
 
