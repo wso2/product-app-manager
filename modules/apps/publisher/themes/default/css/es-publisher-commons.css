@@ -1213,3 +1213,6 @@ color:#229A55;
     right:20px;
     opacity: .5;
 }
+.tbl-upload-inner label{
+    display:none;
+}

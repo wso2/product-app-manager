@@ -42,14 +42,12 @@
                                            			<td>
                                            				<table class="tbl-upload-inner">
                                            					<tr>
-                                           						<td>
-                                           							 <input id='{{this.name}}' type="text" class="txt-filepath" disabled="true" placeholder="Upload a new file"/>
-                                                                                  <input id='{{this.name}}' type='file'/>
+                                           						<td><label id='preview-{{this.name}}'>{{this.value}}</label>
+                                           							 <input id='{{this.name}}' type="text" class="txt-filepath" disabled="true" placeholder="Upload a new file"/>            
                                            						</td>
                                            						<td width="25%">
-                                           							<button class="btn btn-upload">
-                                                                                Browse
-                                                                            </button>
+                                           							<button class="btn btn-upload">Browse</button>
+                                                                    <input id='{{this.name}}' type='file'/>
                                            						</td>
                                            					</tr>
                                            				</table>

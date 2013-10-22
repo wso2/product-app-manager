@@ -121,7 +121,7 @@ $(document).ready(function() {
 
 	$('.btn-upload').on('click', function(e) {
 		e.preventDefault();
-		$(this).parents('.tbl-upload-inner').find('input[type="file"]').click();
+		$(this).next().click();
 	});
 
 	$('input[type="file"]').change(function() {
