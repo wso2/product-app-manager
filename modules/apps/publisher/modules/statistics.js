@@ -1,12 +1,13 @@
-var db = new Database('WSO2_CARBON_DB');
-var currentTenant,o,
-    store = require('store'),
-    server = store.server;
+var server = require('store').server;
+var db = server.privileged(function() {
+	var localdb = new Database('WSO2_CARBON_DB');
+	return localdb;
+});
 
-    currentTenant = server.tenant(o, session).tenantId;
 
-var getBookmarkStats = function (loggedInUser) {
 
+var getBookmarkStats = function (loggedInUser, currentTenant) {
+ 
     //Temporary fix as defautls assets are deployed as wso2.system.user
     /*if (loggedInUser == 'admin') {
         loggedInUser = 'wso2.system.user';
@@ -23,7 +24,7 @@ var getBookmarkStats = function (loggedInUser) {
 
 };
 
-var getHotAssetStats = function (startDate, endDate) {
+var getHotAssetStats = function (startDate, endDate, currentTenant) {
 
     var query = "SELECT RR.REG_NAME AS asset_id, RS.REG_MEDIA_TYPE AS asset_type,COUNT(RR.REG_NAME) AS no_of_bookmarks " +
         "FROM REG_RESOURCE RS " +
