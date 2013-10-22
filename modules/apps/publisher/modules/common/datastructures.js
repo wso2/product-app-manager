@@ -44,6 +44,16 @@ var datastructuresModule = function () {
     };
 
     /*
+    The function removes the head from the linked list
+     */
+    LinkedList.prototype.removeHead=function(){
+        var item=this.head;
+        deleteHeadNode(this);
+        //log.info(node.data);
+        return item.data;
+    };
+
+    /*
      The function converts the linked list to an array
      */
     LinkedList.prototype.toArray = function () {
@@ -56,6 +66,43 @@ var datastructuresModule = function () {
         }
 
         return results;
+    };
+
+    /*
+     The class describes a node in a linked list with two connections
+     */
+    function Node(data) {
+        this.data = data;
+        this.next = null;
+        this.previous = null;
+    }
+
+    /*
+    The class implements a simple stack which add data at the head
+    and removes it from the same location
+     */
+    function Stack(){
+        this.ll=new LinkedList();
+    }
+
+    /*
+    The function puts a data item to the top of the stack
+    @data: The data item to be placed in the stack
+     */
+    Stack.prototype.push=function(data){
+        this.ll.add(data);
+    };
+
+    /*
+    The function removes a data item from the top of the stack
+    @return: The data item at the top of the stack
+     */
+    Stack.prototype.pop=function(){
+        return this.ll.removeHead();
+    };
+
+    Stack.prototype.toArray=function(){
+        return this.ll.toArray();
     };
 
     /*
@@ -92,17 +139,23 @@ var datastructuresModule = function () {
         }
     }
 
-    /*
-     The class describes a node in a linked list with two connections
-     */
-    function Node(data) {
-        this.data = data;
-        this.next = null;
-        this.previous = null;
+    function deleteHeadNode(ll){
+        var head=ll.head;
+
+        if(head.next==null){
+            ll.head=null;
+        }
+        else {
+            ll.head=head.next;
+
+        }
     }
 
 
+
+
     return{
-        LinkedList: LinkedList
+        LinkedList: LinkedList,
+        Stack:Stack
     }
 };

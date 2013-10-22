@@ -12,39 +12,39 @@
     <tr><td rowspan="1" colspan="3">PromoteToInReviewTenant</td></tr>
     </thead><tbody>
 <tr>
-    <td>open</td>
-    <td>/publisher/assets/gadget/</td>
-    <td></td>
+	<td>open</td>
+	<td>/publisher/assets/gadget/</td>
+	<td></td>
 </tr>
 <tr>
-    <td>clickAndWait</td>
-    <td>//a[contains(text(),&quot;userAddedAsset&quot;)]</td>
-    <td></td>
+	<td>clickAndWait</td>
+	<td>//a[contains(text(),&quot;userAddedAsset&quot;)]</td>
+	<td></td>
 </tr>
 <tr>
-    <td>clickAndWait</td>
-    <td>link=Life Cycle</td>
-    <td></td>
+	<td>clickAndWait</td>
+	<td>link=Life Cycle</td>
+	<td></td>
 </tr>
 <tr>
-    <td>pause</td>
-    <td>2000</td>
-    <td></td>
+	<td>pause</td>
+	<td>2000</td>
+	<td></td>
 </tr>
 <tr>
-    <td>click</td>
-    <td>id=btnPromote</td>
-    <td></td>
+	<td>click</td>
+	<td>css=.In-Review</td>
+	<td></td>
 </tr>
 <tr>
-    <td>pause</td>
-    <td>2000</td>
-    <td></td>
+	<td>pause</td>
+	<td>2000</td>
+	<td></td>
 </tr>
 <tr>
-    <td>verifyTable</td>
-    <td>lc-history.0.1</td>
-    <td>tenantUser changed the asset from Created to In-Review</td>
+	<td>verifyTable</td>
+	<td>lc-history.0.1</td>
+	<td>tenantUser changed the asset from Created to In-Review</td>
 </tr>
 </tbody></table>
 </body>
