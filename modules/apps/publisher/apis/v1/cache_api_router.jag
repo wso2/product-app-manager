@@ -25,7 +25,7 @@ routeManager.register('GET', 'publisher', '/publisher/api/cache/{type}', functio
     var msg={};
     var cachedAssetsAfterRefresh=0;
     var cachedAssetsBeforeRefresh=0;
-    //var session=context.session;
+    var session=context.session;
 
 
 
@@ -85,7 +85,7 @@ if(passed){
     var utility = require('/modules/utility.js').rxt_utility();
     var assetCachingModule=require('/modules/cache/cache.manager.js').assetCachingModule();
 
-    routeManager.handle(request, response);
+    routeManager.handle(request, response,session);
 }
 
 %>

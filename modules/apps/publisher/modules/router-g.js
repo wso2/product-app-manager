@@ -149,7 +149,7 @@ var router=function(){
 	/*
 	Locates an appropriate route and executes it 
 	*/
-	Router.prototype.handle=function(request,response){
+	Router.prototype.handle=function(request,response,session){
 	
 		var method=request.getMethod(),		
 			uri=request.getRequestURI(),
@@ -185,6 +185,7 @@ var router=function(){
 				 params:params,
 				 post:postParams,
                  content:putContent,
+                 session:session||null,
 				 renderer:this.renderer});
 		}
 		else{
