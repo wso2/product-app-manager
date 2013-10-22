@@ -373,7 +373,10 @@ textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[ty
     font-size: 13px;
     border: 0 none;
     border-radius: 0 0 0 0 !important;
+    display: block;
+    overflow: hidden;
 }
+
 .content-div .form-horizontal {
     font-size: 14px;
 }
@@ -428,13 +431,13 @@ label, input, button, select, textarea {
     color: #4F4F4F;
 }
 .icon-gadget:before {
-    content: "\f0e4";
+    content: "\F013";
 }
 .icon-site:before {
-    content: "\f14e";
+    content: "\F0AC";
 }
 .icon-ebook:before {
-    content: "\f02d";
+    content: "\F15C";
 }
 .publisher-left {
     background: #F7F9F9;
@@ -947,6 +950,7 @@ span.title {
 }
 .widget .table {
     margin-bottom: 0;
+    table-layout: fixed;
 }
 .lifecycle legend {
     font-size: 14px;
@@ -1061,28 +1065,28 @@ span.title {
 .tbl-upload {
     display: table;
     width: 100%;
-}
-.tbl-upload-row {
-    display: table-row;
-}
-.tbl-upload-cell {
-    display: table-cell;
-}
-.tbl-upload-row .tbl-upload-cell:last-child {
-    width: 88px;
-    text-align: right;
-}
-.tbl-upload-cell input.txt-filepath {
-    width: 100%;
-    margin: 0px;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    display: inline-block;
-    height: 30px;
+    border: 1px solid #ccc;
 }
 
+td.tbl-upload-preview {
+    position: relative;
+    text-align: center;
+}
+
+td.tbl-upload-preview .lbl-url {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);
+    bottom: 0;
+    color: #333333;
+    font-size: 10px;
+    height: 20px;
+    left: 0;
+    line-height: normal;
+    overflow: auto;
+    padding: 7px;
+    position: absolute;
+    right: 0;
+    text-align: left;
+}
 .info-div i {
     display: inline-block;
 }
@@ -1093,17 +1097,21 @@ span.title {
     margin-left: 8px;
 }
 
-.tbl-upload-cell .btn {
-    margin-right: 0;
+.tbl-upload-inner td:first-child input {
+    width: 100%;
+}
+.tbl-upload-inner td:last-child {
+    text-align: right;
 }
 .lifecycle #canvas svg {
     left: -63px !important;
 }
-#form-asset-create .icon-ok{
-    color:#167E00;
+
+#form-asset-create .icon-ok {
+    color: #167E00;
 }
-#form-asset-create .icon-ban-circle{
-    color:red;
+#form-asset-create .icon-ban-circle {
+    color: red;
 }
 #form-asset-create .icon-ok, #form-asset-create .icon-ban-circle {
     margin-left: -18px;
@@ -1121,17 +1129,50 @@ span.title {
     margin-bottom: -20px;
     padding-right: 18px;
     text-align: right;
-      margin-top: 3px;
+    margin-top: 3px;
 }
 
-circle:hover{
+circle:hover {
     cursor: pointer;
 }
-.circle-invalid{
-  opacity:.5;
+.circle-invalid {
+    opacity: .5;
 }
-.view-tag{
+.view-tag {
     border: 1px solid #CCCCCC;
     border-radius: 4px 4px 4px 4px;
     padding: 3px 5px;
+}
+
+.table th, .table td{
+    vertical-align: middle;
+}
+.asset-being-added{
+    display: none;
+}
+.asset-being-added:after {
+    background: none repeat scroll 0 0 #CCCCCC;
+    content: "";
+    height: 1px;
+    left: -30px;
+    padding-left: 30px;
+    position: absolute;
+    width: 100%;
+}
+.asset-being-added .row-fluid{
+     height: 50px;
+    line-height: 50px;
+}
+.asset-being-added .span2{
+    text-align: right;
+}
+.asset-being-added .span10 .icon-ok-circle{
+color:#229A55;
+}
+.asset-being-added .span10 span{
+ margin-left: 7px;
+}
+.asset-being-added .span2 .icon-refresh{
+    margin-right: 28px;
+    opacity:.5;
 }

@@ -32,19 +32,31 @@
                                 	{{/if}}
                                     {{#if this.isFile}}
                                         <div class="span8">
-                                            <div class="tbl-upload">
-                                                <div class="tbl-upload-row">
-                                                    <div class="tbl-upload-cell">
-                                                        <label id='preview-{{this.name}}'>{{this.value}}</label>
-                                                        <input id='{{this.name}}' type="text" class="txt-filepath" disabled="true" />
-                                                    </div>
-                                                    <div class="tbl-upload-cell">
-                                                        <button class="btn btn-upload">Browse</button>
-                                                        <input id='{{this.name}}' type='file'/>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                           <table class="table tbl-upload">
+                                           		<tr>
+                                           			<td class="tbl-upload-preview">
+                                           				<img src="{{this.value}}" alt="{{this.value}}">
+                                           			</td>
+                                           		</tr>
+                                           		<tr>
+                                           			<td>
+                                           				<table class="tbl-upload-inner">
+                                           					<tr>
+                                           						<td>
+                                           							 <input id='{{this.name}}' type="text" class="txt-filepath" disabled="true" placeholder="Upload a new file"/>
+                                                                                  <input id='{{this.name}}' type='file'/>
+                                           						</td>
+                                           						<td width="25%">
+                                           							<button class="btn btn-upload">
+                                                                                Browse
+                                                                            </button>
+                                           						</td>
+                                           					</tr>
+                                           				</table>
 
+                                           			</td>
+                                           		</tr>
+                                           </table>
                                         </div>
                                     {{/if}}
                                 {{/if}}

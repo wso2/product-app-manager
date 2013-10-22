@@ -1238,6 +1238,14 @@ ol.linenums li {
     width: 100%;
 }
 
+.icon-gadget:before {
+    content: "\F013";
+}
+.icon-site:before {
+    content: "\F0AC";
+}
+
+
 @media all and (max-width: 980px) {
     .asset {
         height: 217px !important;
