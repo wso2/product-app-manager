@@ -17,6 +17,7 @@ var config = require('/config/publisher.json');
 var caramel = require('caramel');
 var server = require('store').server;
 var utility = require('/modules/utility.js').rxt_utility();
+var assetCachingModule=require('/modules/cache/cache.manager.js').assetCachingModule();
 var publisher = require('/modules/publisher.js').publisher(request, session);
 var storageModule = require('/modules/data/storage.js').storageModule();
 var storageConfig = require('/config/storage.json');
@@ -165,6 +166,7 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
     var shortName = context.params.type;
     var artifactManager = rxtManager.getArtifactManager(shortName);
     var model = modelManager.getModel(shortName);
+    var assetCacheManager=new assetCachingModule.AssetCacheManager(session);
 
     //Check if the type is valid
     try {
@@ -198,6 +200,12 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
 
         //Obtain the asset id in order to retrieve the asset again
         var assetId=model.get('*.id').value;
+
+        //Convert the model to an artifact
+        var asset=model.export('asset.exporter');
+
+        //Cache the asset
+        assetCacheManager.add(asset,shortName);
 
         var reg=rxtManager.registry;
 
