@@ -1,9 +1,16 @@
 package org.wso2.carbon.social;
 
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.wso2.carbon.ndatasource.common.DataSourceException;
+import org.wso2.carbon.ndatasource.core.CarbonDataSource;
+import org.wso2.carbon.ndatasource.core.DataSourceManager;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.*;
 
@@ -146,19 +153,13 @@ public class ActivityBrowser {
     public Connection getConnection() {
         if (conn == null) {
             try {
-                Class.forName("org.apache.cassandra.cql.jdbc.CassandraDriver");
-            } catch (ClassNotFoundException e) {
-                LOG.error("unable to load Cassandra driver class", e);
-            }
-            Properties connectionProps = new Properties();
-            //TODO: not to hardcore this
-            connectionProps.put("user", "admin");
-            connectionProps.put("password", "admin");
-
-            try {
-                conn = DriverManager.getConnection("jdbc:cassandra://localhost:9160/EVENT_KS?version=2.0.0", connectionProps);
+                CarbonDataSource carbonDataSource = DataSourceManager.getInstance().getDataSourceRepository().getDataSource("SOCIAL_CASSANDRA_DB");
+                DataSource dataSource = (DataSource) carbonDataSource.getDSObject();
+                conn = dataSource.getConnection();
             } catch (SQLException e) {
                 LOG.error("Can't create JDBC connection to Cassandra", e);
+            } catch (DataSourceException e) {
+                LOG.error("Can't create create data source for Cassandra", e);
             }
         }
         return conn;
