@@ -28,7 +28,7 @@ var filterModule = function () {
             return true;
         }
 
-        log.info('not applying filter as a permission block has not been specified for the asset type.');
+        log.debug('not applying filter as a permission block has not been specified for the asset type.');
 
         return false;
     }
@@ -69,7 +69,7 @@ var filterModule = function () {
                 }
             }
             else{
-                log.info('ignoring '+item.attributes.overview_name+' as it does not have a lifecycle state.');
+                log.debug('ignoring '+item.attributes.overview_name+' as it does not have a lifecycle state.');
             }
         }
 

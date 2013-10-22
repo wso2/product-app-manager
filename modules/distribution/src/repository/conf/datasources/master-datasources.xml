@@ -87,6 +87,19 @@
             </definition>
         </datasource>
 
+        <datasource>
+            <name>SOCIAL_CASSANDRA_DB</name>
+            <description>The cassandra  datasource used for storing social activities</description>
+            <definition type="RDBMS">
+                <configuration>
+                    <url>jdbc:cassandra://localhost:9160/EVENT_KS</url>
+                    <username>admin</username>
+                    <password>admin</password>
+                     <driverClassName>org.apache.cassandra.cql.jdbc.CassandraDriver</driverClassName>
+                </configuration>
+            </definition>
+        </datasource>
+
 	<datasource>
             <name>JAGH2</name>
             <description>The datasource used for by the Jaggery Storage Manager</description>

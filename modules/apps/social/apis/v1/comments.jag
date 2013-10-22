@@ -52,7 +52,7 @@ var matcher = new URIMatcher(request.getRequestURI()),
      if (matcher.match('/{context}/apis/v1/comments/{id}')) {
      	
      	asset = request.getParameter('id');
-     	new Log().info(asset);
+     	new Log().debug(asset);
      	result = db.query("SELECT * FROM org_wso2_ues_social_comments_stream WHERE KEY='" + asset + "'");
 		print(result);
 		return;

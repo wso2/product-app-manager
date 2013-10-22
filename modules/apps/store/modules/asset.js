@@ -305,12 +305,12 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
      * METHOD IS DEPRECATED
      */
     Manager.prototype.list = function (paging) {
-        log.info('Calling deprecated method list - A method from down under-give him a vegimite sandwich');
+        log.debug('Calling deprecated method list - A method from down under-give him a vegimite sandwich');
         //Obtain the visible states from the
         /*var storeConfig = require('/store.json').lifeCycleBehaviour;
         var visibleStates = storeConfig.visibleIn || DEFAULT_ASSET_VIEW_STATE;
 
-        log.info('Searching for assets in the ' + visibleStates + ' states.');
+        log.debug('Searching for assets in the ' + visibleStates + ' states.');
 
         var all = this.search({
             lifecycleState: visibleStates

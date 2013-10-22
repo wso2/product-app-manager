@@ -111,7 +111,7 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
 		
         caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags});
     } catch (e) {
-        log.info('The asset with id ' + id + ' could not be found due to : ' + e);
+        log.debug('The asset with id ' + id + ' could not be found due to : ' + e);
         response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check server log.');
     }
 
@@ -194,7 +194,7 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
             return;
         }
 
-        //log.info(context.post);
+        //log.debug(context.post);
 
         model.save();
 
@@ -264,7 +264,7 @@ function inspectFiles(req, params) {
     var uuid = '';
     var extension;
 
-    log.info(storageConfig.dataSource);
+    log.debug(storageConfig.dataSource);
 
     var storageManager = new storageModule.StorageManager({
         context: 'storage',
@@ -279,7 +279,7 @@ function inspectFiles(req, params) {
 
         file = files[index];
 
-        log.info('file: ' + index);
+        log.debug('file: ' + index);
 
         //Put the file in storage and get a uuid as a reference
         var resource = {};
@@ -289,7 +289,7 @@ function inspectFiles(req, params) {
 
         uuid=storageManager.put(resource);
 
-        log.info('uuid added: '+uuid);
+        log.debug('uuid added: '+uuid);
 
         //Add a new  entry into the POST parameters containing the uuid
         params[index] = uuid;
@@ -297,7 +297,7 @@ function inspectFiles(req, params) {
 }
 
 routeManager.register('PUT', 'publisher', '/publisher/asset/{type}/{id}/{attr}/{value}', function (context) {
-    log.info('Unsupported method PUT for /asset called.');
+    log.debug('Unsupported method PUT for /asset called.');
     /*var shortName=context.params.type;
      var id=context.params.id;
      var attribute=context.params.attr;

@@ -14,7 +14,7 @@
 
         var log = new Log();
 
-        log.info("store session index : " + sso_sessions[session.getId()]);
+        log.debug("store session index : " + sso_sessions[session.getId()]);
 
 
         %>

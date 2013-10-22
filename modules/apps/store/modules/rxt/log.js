@@ -50,7 +50,7 @@ var LogContainer = function() {
 	return {
 
 		info : function(msg) {
-			//loggers[INFO_TYPE].log(cLogDec.info(msg));
+			//loggers[INFO_TYPE].log(cLogDec.debug(msg));
 		},
 
 		debug : function(msg) {

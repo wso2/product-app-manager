@@ -168,7 +168,7 @@ var rxt_utility = function () {
 
             //Check if the object is empty
             if (countProps(obj) == 0) {
-                //log.info('empty object');
+                //log.debug('empty object');
                 return true;
             }
             else {
@@ -232,7 +232,7 @@ var rxt_utility = function () {
 
             //Check if the object is empty
             if (countProps(obj) == 0) {
-                //log.info('empty object');
+                //log.debug('empty object');
                 return true;
             }
             else {

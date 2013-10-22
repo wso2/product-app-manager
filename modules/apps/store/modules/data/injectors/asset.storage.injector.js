@@ -65,7 +65,7 @@ var injector=function(){
             //Current field been examined
             field=fields[index];
 
-            //log.info(field);
+            //log.debug(field);
 
             utility.isPresent(object.attributes,field,function(){
 
@@ -82,7 +82,7 @@ var injector=function(){
             });
         }
 
-        //log.info(object);
+        //log.debug(object);
 
         return true;
     }
@@ -95,10 +95,10 @@ var injector=function(){
     function addToStorage(path,context){
         var file=new File(path);
         var uuid=null;
-        //log.info('examining path: '+path);
+        //log.debug('examining path: '+path);
         //Only add it storage if it is a valid path and get the uuid
         if(file.isExists()){
-            log.info('loaded resource '+path+' into storage.');
+            log.debug('loaded resource '+path+' into storage.');
             uuid=useStorageManager(path,file,context);
         }
 
