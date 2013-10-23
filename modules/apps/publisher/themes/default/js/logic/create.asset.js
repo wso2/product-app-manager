@@ -14,7 +14,7 @@ $(function() {
 	var THEME = 'facebook';
 	var TAG_CONTAINER = '#tag-container';
 	var CHARS_REM = 'chars-rem';
-	var DESC_MAX_CHARS = 1000;
+	var DESC_MAX_CHARS = 995;
 
 	$('#overview_description').after('<span class="span8 ' + CHARS_REM + '"></span>');
 

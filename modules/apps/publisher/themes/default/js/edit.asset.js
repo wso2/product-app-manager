@@ -10,7 +10,7 @@ $(function () {
     var ERROR_CSS='alert alert-error';
     var SUCCESS_CSS='alert alert-info';
     var CHARS_REM = 'chars-rem';
-    var DESC_MAX_CHARS = 1000;
+    var DESC_MAX_CHARS = 995;
     
     $('#overview_description').after('<span class="span8 '+CHARS_REM+'"></span>');
 
