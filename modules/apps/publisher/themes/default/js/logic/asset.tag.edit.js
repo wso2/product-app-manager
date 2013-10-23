@@ -22,6 +22,9 @@ $(function () {
     var TAG_CONTAINER = '#tag-test';
     var TAG_API = '/publisher/api/tag/'
     var TAG_THEME = 'facebook';
+    var ERROR_CSS='alert alert-error';
+    var MSG_CONTAINER='#msg-container-recent-activity';
+
 
 
     //$(TAG_CONTAINER).tokenInput([],{theme: TAG_THEME});
@@ -97,7 +100,7 @@ $(function () {
             success:function(response){
             },
             error:function(){
-                console.log('not able to add tag');
+                createMessage(MSG_CONTAINER,ERROR_CSS,'Unable to add the selected tag.');
             }
         });
     }
@@ -120,9 +123,27 @@ $(function () {
             success:function(response){
             },
             error:function(){
-                console.log('not able to add tag');
+                createMessage(MSG_CONTAINER,ERROR_CSS,'Unable to detach the selected tag.');
             }
         });
+    }
+
+    /*
+     The function creates a message and displays it in the provided container element.
+     @containerElement: The html element within which the message will be displayed
+     @cssClass: The type of message to be displayed
+     @msg: The message to be displayed
+     */
+    function createMessage(containerElement,cssClass,msg){
+        var date=new Date();
+        var time=date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear()+' '+date.getHours()+':'+date.getMinutes()
+            +':'+date.getSeconds();
+        var infoMessage='<div class="'+cssClass+'">'
+            +'<a data-dismiss="alert" class="close">x</a>'
+            +time+' '+msg+'</div';
+
+        //Place the message
+        $(containerElement).html(infoMessage);
     }
 
 });
