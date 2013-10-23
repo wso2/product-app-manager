@@ -7,13 +7,15 @@
                     <div id="asset-in-{{key}}">
                         {{#each value}}
                             {{#attributes}}
+                            
                                 <div class="store-my-item">
 
                                     <div class="store-my-item-thumbnail">
+                                    {{#if ../isPublished}}
                                         <a href="{{url "/assets/"}}{{../../key}}/{{../id}}"><img
                                                 src="{{images_thumbnail}}"></a>
-                                    </div>
-                                    <div class="store-my-item-info">
+                                        <div class="store-my-item-info">
+                                 
                                         <a class="asset-title" href="{{url "/asset/"}}{{../../key}}/{{../id}}">
                                             <strong>{{overview_name}}</strong>
                                         </a>
@@ -39,6 +41,20 @@
                                             </a>
                                         </div>
                                     </div>
+                                     {{else}}
+										<img src="{{images_thumbnail}}">
+										<div class="store-my-item-info">
+                                 
+                                        <a class="asset-title">
+                                            <strong>{{overview_name}}</strong>
+                                        </a>
+                                        <small class="bookmark-assert-provider">by {{overview_provider}}</small>                                        
+                                        <br>
+                                        </div>
+                                        <i class="icon-trash store-icon-trash"></i>
+									{{/if}}           
+                                    </div>
+                                  
 
                                 </div>
                             {{/attributes}}
