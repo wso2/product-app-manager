@@ -39,9 +39,10 @@ routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{t
             artifact = artifactManager.get(bookmarkStats[i].ASSET_ID);
             model.import('asset', artifact);
             assetName = (model.get('overview.name')).value;
+            assetVersion = (model.get('overview.version')).value;
             bookmarkStatData.push([i, parseInt(bookmarkStats[i]['NO_OF_BOOKMARKS'])]);
             bookmarkStats[i]['ASSET_ID'] = assetName;
-            bookmarkTicks.push([i, assetName]);
+            bookmarkTicks.push([i, assetName+assetVersion]);
 
         }
 
@@ -55,9 +56,10 @@ routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{t
         artifact = artifactManager.get(hotAssetsStats[j].ASSET_ID);
         model.import('asset', artifact);
         hotAssetName = (model.get('overview.name')).value;
+        hotAssetVersion = (model.get('overview.version')).value;
         hotstAssetData.push([j, parseInt(hotAssetsStats[j]['NO_OF_BOOKMARKS'])]);
         hotAssetsStats[j]['ASSET_ID'] = hotAssetName;
-        hotAssetticks.push([j, hotAssetName]);
+        hotAssetticks.push([j, hotAssetName+hotAssetVersion]);
 
     }
 
