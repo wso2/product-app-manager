@@ -62,20 +62,37 @@ var caramel;
             var server = require('store').server;
             server.privileged(function () {
                 //TODO:  move to a module.
-                var db = new Database('SOCIAL_CACHE');
                 var tenantDomain = user ? user.tenantDomain : "carbon.super";
                 var showDefaults = (tenantDomain == "carbon.super") ? "OR TENANT IS NULL" : "";
-                var result = db.query("SELECT ID FROM SOCIAL_CACHE WHERE TYPE='" + type.replace(/\W/g, '') + "' AND " +
-                        "(TENANT='" + tenantDomain + "' " + showDefaults + " ) ORDER BY RATING DESC LIMIT " + paging.start + ",12");
+                var index = 0,maxTry = 0;
+                var getNextassetSet = function(){
+                    var db = new Database('SOCIAL_CACHE');
+                    var result = db.query("SELECT ID FROM SOCIAL_CACHE WHERE TYPE='" + type.replace(/\W/g, '') + "' AND " +
+                            "(TENANT='" + tenantDomain + "' " + showDefaults + " ) ORDER BY RATING DESC LIMIT " + (paging.start+index) + ",3");
+                    db.close();
+                    index+=3;
+                    return result;
+                };
                 assets = [];
                 var pos, aid, asset;
-                for (var n = 0; n < result.length; n++) {
-                    var combinedAid = String(result[n].ID);
-                    pos = combinedAid.indexOf(':');
-                    aid =  combinedAid.substring(pos + 1);
-                    asset =  store.asset(type,aid);
-                    asset.indashboard = store.isuserasset(aid, type);
-                    assets.push(asset);
+                while(assets.length<12 && maxTry<10){
+                    maxTry++;
+                    var result = getNextassetSet();
+                    for (var n = 0; n < result.length && assets.length < 12; n++) {
+                        var combinedAid = String(result[n].ID);
+                        pos = combinedAid.indexOf(':');
+                        aid =  combinedAid.substring(pos + 1);
+                        try {
+                            asset = store.asset(type, aid);
+                            asset.indashboard = store.isuserasset(aid, type);
+                            if ( configs.lifeCycleBehaviour.visibleIn.indexOf(String(asset.lifecycleState),0) >= 0) {
+                              assets.push(asset);
+                            }
+                        } catch (e) {
+                            log.warn("error retrieving asset from store ,information might be stale in social cache. id=" +
+                                    combinedAid);
+                        }
+                    }
                 }
             });
 
