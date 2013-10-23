@@ -17,7 +17,7 @@
                                 <parameter name="PERMISSION:authorize" value="authorize"/>
 
                                 <parameter name="STATE_RULE1:Created"
-                                           value="private_{asset_author}:+add,+delete,+authorize"/>
+                                           value="Internal/private_{asset_author}:+add,+delete,+authorize"/>
                                 <parameter name="STATE_RULE2:Created" value="Internal/everyone:-add,-delete,-authorize"/>
                             </execution>
                         </data>
@@ -37,8 +37,8 @@
                                 <parameter name="PERMISSION:authorize" value="authorize"/>
 
                                 <parameter name="STATE_RULE1:In-Review"
-                                           value="private_{asset_author}:-add,-delete,-authorize"/>
-                                <parameter name="STATE_RULE2:In-Review" value="reviewer:+add,-delete,+authorize"/>
+                                           value="Internal/private_{asset_author}:-add,-delete,-authorize"/>
+                                <parameter name="STATE_RULE2:In-Review" value="Internal/reviewer:+add,-delete,+authorize"/>
                                 <parameter name="STATE_RULE3:In-Review" value="Internal/everyone:-add,-delete,-authorize"/>
                             </execution>
                         </data>
@@ -58,8 +58,8 @@
                                 <parameter name="PERMISSION:authorize" value="authorize"/>
 
                                 <parameter name="STATE_RULE1:Approved"
-                                           value="private_{asset_author}:+get,-add,-delete,-authorize"/>
-                                <parameter name="STATE_RULE2:Approved" value="reviewer:-add,-delete,-authorize"/>
+                                           value="Internal/private_{asset_author}:+get,+add,-delete,+authorize"/>
+                                <parameter name="STATE_RULE2:Approved" value="Internal/reviewer:-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE3:Approved" value="Internal/everyone:-add,-delete,-authorize"/>
                             </execution>
                             <execution forEvent="Reject" class="org.wso2.jaggery.scxml.generic.GenericExecutor">
@@ -72,8 +72,8 @@
                                 <parameter name="PERMISSION:authorize" value="authorize"/>
 
                                 <parameter name="STATE_RULE1:Rejected"
-                                           value="private_{asset_author}:+add,+delete,+authorize"/>
-                                <parameter name="STATE_RULE2:Rejected" value="reviewer:-add,-delete,-authorize"/>
+                                           value="Internal/private_{asset_author}:+add,+delete,+authorize"/>
+                                <parameter name="STATE_RULE2:Rejected" value="Internal/reviewer:-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE3:Rejected" value="Internal/everyone:-add,-delete,-authorize"/>
                             </execution>
                         </data>
@@ -94,9 +94,9 @@
                                 <parameter name="PERMISSION:authorize" value="authorize"/>
 
                                 <parameter name="STATE_RULE1:Published"
-                                           value="private_{asset_author}:-add,+delete,-authorize"/>
+                                           value="Internal/private_{asset_author}:-add,+delete,-authorize"/>
                                 <parameter name="STATE_RULE2:Published"
-                                           value="reviewer:-add,-delete,-authorize"/>
+                                           value="Internal/reviewer:-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE3:Published"
                                            value="Internal/everyone:-add,-delete,-authorize"/>
                             </execution>
@@ -117,8 +117,8 @@
                                 <parameter name="PERMISSION:authorize" value="authorize"/>
 
                                 <parameter name="STATE_RULE1:In-Review"
-                                           value="private_{asset_author}:-add,-delete,-authorize"/>
-                                <parameter name="STATE_RULE2:In-Review" value="reviewer:+add,-delete,+authorize"/>
+                                           value="Internal/private_{asset_author}:-add,-delete,-authorize"/>
+                                <parameter name="STATE_RULE2:In-Review" value="Internal/reviewer:+add,-delete,+authorize"/>
                                 <parameter name="STATE_RULE3:In-Review" value="Internal/everyone:-add,-delete,-authorize"/>
                             </execution>
                         </data>
@@ -138,9 +138,9 @@
                                 <parameter name="PERMISSION:authorize" value="authorize"/>
 
                                 <parameter name="STATE_RULE1:Unpublished"
-                                           value="private_{asset_author}:-add,-delete,-authorize"/>
+                                           value="Internal/private_{asset_author}:-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE2:Unpublished"
-                                           value="reviewer:-add,-delete,-authorize"/>
+                                           value="Internal/reviewer:-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE3:Unpublished"
                                            value="Internal/everyone:-add,-delete,-authorize"/>
                             </execution>
@@ -154,9 +154,9 @@
                                 <parameter name="PERMISSION:authorize" value="authorize"/>
 
                                 <parameter name="STATE_RULE1:Deprecated"
-                                           value="private_{asset_author}:-add,-delete,-authorize"/>
+                                           value="Internal/private_{asset_author}:-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE2:Deprecated"
-                                           value="reviewer:-add,-delete,-authorize"/>
+                                           value="Internal/reviewer:-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE3:Deprecated"
                                            value="Internal/everyone:-add,-delete,-authorize"/>
                             </execution>
@@ -178,9 +178,9 @@
                                 <parameter name="PERMISSION:authorize" value="authorize"/>
 
                                 <parameter name="STATE_RULE1:Published"
-                                           value="private_{asset_author}:-add,+delete,-authorize"/>
+                                           value="Internal/private_{asset_author}:-add,+delete,-authorize"/>
                                 <parameter name="STATE_RULE2:Published"
-                                           value="reviewer:-add,-delete,-authorize"/>
+                                           value="Internal/reviewer:-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE3:Published"
                                            value="Internal/everyone:-add,-delete,-authorize"/>
                             </execution>
@@ -194,8 +194,8 @@
                                 <parameter name="PERMISSION:authorize" value="authorize"/>
 
                                 <parameter name="STATE_RULE1:Retired"
-                                           value="private_{asset_author}:-add,+delete,-authorize"/>
-                                <parameter name="STATE_RULE2:Retired" value="reviewer:-add,-delete,-authorize"/>
+                                           value="Internal/private_{asset_author}:-add,+delete,-authorize"/>
+                                <parameter name="STATE_RULE2:Retired" value="Internal/reviewer:-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE3:Retired" value="Internal/everyone:-add,-delete,-authorize"/>
                             </execution>
                         </data>
@@ -216,8 +216,8 @@
                                 <parameter name="PERMISSION:authorize" value="authorize"/>
 
                                 <parameter name="STATE_RULE1:Retired"
-                                           value="private_{asset_author}:-add,+delete,-authorize"/>
-                                <parameter name="STATE_RULE2:Retired" value="reviewer:-add,-delete,-authorize"/>
+                                           value="Internal/private_{asset_author}:-add,+delete,-authorize"/>
+                                <parameter name="STATE_RULE2:Retired" value="Internal/reviewer:-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE3:Retired" value="Internal/everyone:-add,-delete,-authorize"/>
                             </execution>
                         </data>
