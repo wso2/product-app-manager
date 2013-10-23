@@ -278,13 +278,22 @@ Store.prototype.subscriptions = function (type) {
         }
         type = path.substr(path.lastIndexOf('/') + 1);
         //obj = obj();
-        obj.forEach(function (path) {
-            try {
-                items.push(that.asset(type, path.substr(path.lastIndexOf('/') + 1)))
-            } catch (e) {
-                log.warn('asset for path="' + path + '" could not be retrieved, try reverting it form registry.');
-            }
-        });
+
+			obj.forEach(function(path) {
+				try {
+					var iteamOut = that.asset(type, path.substr(path.lastIndexOf('/') + 1))
+					if(iteamOut.lifecycleState == 'Published') {
+						iteamOut.isPublished = true;
+					} else {
+						iteamOut.isPublished = false;
+					}
+
+					items.push(iteamOut);
+				} catch (e) {
+					log.warn('asset for path="' + path + '" could not be retrieved, try reverting it form registry.');
+				}
+			});
+
         assetz[type] = items;
     };
     if (type) {

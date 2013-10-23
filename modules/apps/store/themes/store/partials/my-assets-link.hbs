@@ -8,6 +8,7 @@
 			{{#each .}}
 			<div class="row-fluid recently-added">
 				{{#attributes}}
+				{{#if ../isPublished}}
 				<div class="span3">
 					<a href="{{url "/assets"}}/{{../type}}/{{../id}}"><img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}"></a>
 				</div>
@@ -21,6 +22,17 @@
 							</div>
 						</div> </span>
 				</div>
+				{{else}}
+				<div class="span3">
+					<img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}">
+				</div>
+				<div class="span9">
+					<strong><a>{{overview_name}}</a></strong>
+					<small>by <a>{{overview_provider}}</a></small>
+					<span class="label label-unavailable">Currently Unavailable</span>
+					
+				</div>
+				{{/if}}
 				{{/attributes}}
 
 			</div>

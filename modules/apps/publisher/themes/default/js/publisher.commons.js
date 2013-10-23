@@ -29,7 +29,7 @@ $(document).ready(function() {
 		$(this).tab('show');
 	});
 
-	$('.list-asset-table').on('click', 'tr', function() {
+	$('.list-asset-table').on('click', 'tr:not(:first-child)', function() {
 		var link = $(this).find('.asset-listing-name a').attr('href');
 		window.location = link;
 	});

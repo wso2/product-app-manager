@@ -55,10 +55,14 @@ var adjustStoreRight = function(){
 		$('.store-right > .row > .span12').removeClass('span12').addClass('span3');
 		$('.asset-description-header > .row > .span12').removeClass('span12').addClass('span9');
 		
+	/*
 		setTimeout(function(){ 
-		($('.store-right').height() < $('.store-left').height()) &&  $('.store-right').height($('.store-left').height() + 15);
-		}, 200);
+			($('.store-right').height() < $('.store-left').height()) &&  $('.store-right').height($('.store-left').height() + 15);
+			}, 200);*/
+	
 	}
+	
+	$('.store-right').niceScroll();
 	
 	
 	

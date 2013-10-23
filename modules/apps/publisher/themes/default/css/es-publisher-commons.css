@@ -19,12 +19,8 @@ body {
     font: 14px/1.531 'Lato', sans-serif;
     color: #34495E;
     height: 100%;
-    /*
-     padding-left: 25px;
-     padding-top: 46px;*/
-
-    /* background: url(../img/search-bg.png) repeat-x left -7px #ecf0f1;*/
     background: url(../img/header-bg.gif) repeat-x left -10px #ecf0f1;
+    padding-bottom: 25px;
 }
 
 input, button, select, textarea {
@@ -301,22 +297,34 @@ textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[ty
 .copyright-note {
     bottom: 10px;
     position: absolute;
-    right: 20px;
-    width: 100px;
-    color: #888;
+    left: 20px;
+    width: 100%;
+    color: rgba(255,255,255,.5);
+    font-size:12px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 .copyright-note a.logo-wso2 {
-    background: url("../img/wso2-logo-small.png") no-repeat scroll left top transparent;
+    background: url("../img/wso2-logo-small.png") no-repeat scroll left -18px rgba(0, 0, 0, 0);
     display: inline-block;
     height: 17px;
-    position: absolute;
+    margin-right: 4px;
     top: 2px;
+    vertical-align: middle;
     width: 41px;
-    margin-left: 4px;
 }
+
+.copyright-note .version {
+    opacity: 0.5;
+    position: absolute;
+    right: 30px;
+    top: 0;
+}
+/*
 .copyright-note a.logo-wso2:hover {
     background-position: left -18px;
-}
+}*/
+
 .publisher-left-nav {
     width: 200px;
     float: left;
@@ -365,8 +373,8 @@ textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[ty
     outline: medium none;
     padding: 15px 20px;
     position: relative;
-    border-bottom: 1px solid #DADADA;
-    color: #828282;
+    border-bottom: 1px solid #34495e;
+    color: #fff;
     text-transform: capitalize;
 }
 .widget-table {
@@ -440,12 +448,7 @@ label, input, button, select, textarea {
     content: "\F15C";
 }
 .publisher-left {
-    background: #F7F9F9;
-    border-right: 1px solid #DADADA;
-    bottom: 0;
-    left: 0;
-    position: absolute;
-    top: 0;
+    background: #2C3E50;
 }
 .content-area-cont {
     background: #fff;
@@ -499,9 +502,9 @@ label, input, button, select, textarea {
     line-height: 26px;
 }
 .nav-list > li > a:hover, .nav-list > li > a:focus {
-    color: #828282;
+    color: #fff;
     text-shadow: none;
-    background: none repeat scroll 0 0 #e7e7e7;
+    background: none repeat scroll 0 0 #34495e;
     text-decoration: none;
     /* border-right: 1px solid #74B749;*/
 }
@@ -1216,4 +1219,13 @@ color:#229A55;
 }
 .tbl-upload-inner label{
     display:none;
+}
+
+@media all and (min-width:768px){
+    .publisher-left {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    top: 0;
+}
 }

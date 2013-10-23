@@ -97,7 +97,21 @@ a.ebook {
     padding-top: 7px;
 }
 
+.store-icon-trash{
+    color: #000000;
+    font-size: 40px;
+    position: absolute;
+    right: 60px;
+    text-shadow: 1px 1px #848484;
+    top: 100px;
+    z-index: 1;
+}
+
 #myasset-container {
     padding-top: 20px;
 }
 
+.store-my-item .btn-group {
+    display: block;
+    margin-top: 8px;
+}
