@@ -148,7 +148,7 @@ $(function() {
 				var element = $('#canvas');
 				if (element) {
 					var paper = new Raphael('canvas', 600, 500);
-					
+
 					//element.html(response);
 
 					/* if(!graph.Renderer.config.canvas.canvasElement){
@@ -166,7 +166,7 @@ $(function() {
 					var LAYER_SEP = 85;
 					var LAYER_SPACE = 200;
 					sugyama.draw(START_X, START_Y, VERTEX_RADIUS, LAYER_SPACE, LAYER_SEP);
-					
+
 					actions = statInfo.lifecycle.configuration[0].lifecycle[0].scxml[0].state;
 					keys = sugyama.getKeys();
 					//graph.Renderer.setSelected(statInfo.state);
@@ -243,29 +243,29 @@ $(function() {
 			element.id = 'btn' + action;
 
 			$(BUTTON_CONTAINER).append(element);
-			$('#btn' + action).on('click', function(e) {
-				var clicked = e.target.value;
-				e.preventDefault();
-				buttonClickLogic(clicked);
-			});
-
-			$('circle').hover(function() {
-				$(this).attr('r', 18);
-			}, function() {
-				$(this).attr('r', 15);
-			});
-			
-			$('circle').click(function() {
-				var thisState = $(this).attr('class');
-				if(isClickable(thisState)){
-					//console.log(getAction(thisState));
-					var action = getAction(thisState);
-					buttonClickLogic(action);
-				} else {
-					showAlert('Invalid operation', 'error');
-				}
-			});
+			/*
+			 $('#btn' + action).on('click', function(e) {
+			 var clicked = e.target.value;
+			 e.preventDefault();
+			 buttonClickLogic(clicked);
+			 });*/
 		}
+		$('circle').hover(function() {
+			$(this).attr('r', 18);
+		}, function() {
+			$(this).attr('r', 15);
+		});
+
+		$('circle').click(function(e) {
+			var thisState = $(this).attr('class');
+			if (isClickable(thisState)) {
+				//console.log(getAction(thisState));
+				var action = getAction(thisState);
+				buttonClickLogic(action);
+			} else {
+				showAlert('Invalid operation', 'error');
+			}
+		});
 	}
 
 	/*
@@ -408,45 +408,45 @@ $(function() {
 		//elem.attr('stroke', '#FF8C00');
 		elem.attr('data-currentState', true);
 	}
-	
-	function isClickable(state){
+
+	function isClickable(state) {
 		var curState = $('circle[data-currentstate=true]').attr('class');
 		var rawMap = sugyama.getRawMap();
-		if(rawMap[curState][state] == 1) {
+		if (rawMap[curState][state] == 1) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
-	function getTransitions(){
-		var i=0;
+
+	function getTransitions() {
+		var i = 0;
 		var transitions;
 		var curState = $('circle[data-currentstate=true]').attr('class');
-		
-		for(var index in keys){
-			if(keys[index] == curState){
+
+		for (var index in keys) {
+			if (keys[index] == curState) {
 				break;
 			}
 			i++;
 		}
-		transitions = actions[i].transition; 
+		transitions = actions[i].transition;
 		return transitions;
 	}
-	
-	
-	function getAction(state){
+
+	function getAction(state) {
 		transitions = getTransitions();
-		for(var i in transitions){
-			if(transitions[i].target == state){
+		for (var i in transitions) {
+			if (transitions[i].target == state) {
 				return transitions[i].event;
 			}
 		}
 		return null;
 	}
+
 	/*
 	 Click handlers for the checkboxes
 	 */
 	onCheckListItemClick = onCheckListItemClickHandler;
 
-}); 
+});
