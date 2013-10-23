@@ -7,34 +7,33 @@
                     <div id="asset-in-{{key}}">
                         {{#each value}}
                             {{#attributes}}
-                            
                                 <div class="store-my-item">
 
                                     <div class="store-my-item-thumbnail">
                                     {{#if ../isPublished}}
-                                        <a href="{{url "/assets/"}}{{../../key}}/{{../id}}"><img
+                                        <a href="{{url "/assets/"}}{{../../type}}/{{../../id}}"><img
                                                 src="{{images_thumbnail}}"></a>
                                         <div class="store-my-item-info">
                                  
-                                        <a class="asset-title" href="{{url "/asset/"}}{{../../key}}/{{../id}}">
+                                        <a class="asset-title" href="{{url "/asset/"}}{{../../type}}/{{../../id}}">
                                             <strong>{{overview_name}}</strong>
                                         </a>
                                         <small class="bookmark-assert-provider">by {{overview_provider}}</small>
                                         <div class="btn-group">
                                             <a class="btn btn-mini" data-toggle="tooltip"
-                                               title="{{t "View"}} {{../../key}}"
-                                               href="{{url "/assets/"}}{{../../key}}/{{../id}}">
+                                               title="{{t "View"}} {{../../type}}"
+                                               href="{{url "/assets/"}}{{../../type}}/{{../../id}}">
                                                 <i class="icon-eye-open"></i>
                                             </a>
-                                            <a class="btn btn-popover btn-mini {{../../key}}"
+                                            <a class="btn btn-popover btn-mini {{../../type}}"
                                                data-content='&lt;iframe src="{{../../../../URL}}/gadgets/ifr?url={{overview_url}}"&gt;&lt;/iframe&gt;'
                                                data-toggle="popover" data-placement="top"
-                                               title="{{t "Embed this"}} {{../../key}}">
+                                               title="{{t "Embed this"}} {{../../type}}">
                                                 <i class="icon-angle-left"></i> <i class="icon-angle-right"></i>
                                             </a>
-                                            <a class="btn btn-mini asset-remove-btn" type="{{../../key}}"
-                                               data-aid="{{../id}}" data-toggle="tooltip"
-                                               title="{{t "Remove"}} {{../../key}}">
+                                            <a class="btn btn-mini asset-remove-btn" type="{{../../type}}"
+                                               data-aid="{{../../id}}" data-toggle="tooltip"
+                                               title="{{t "Remove"}} {{../../type}}">
                                                 <i class="icon-remove"></i>
                                             </a>
                                         </div>
