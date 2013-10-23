@@ -73,9 +73,14 @@ var caramel;
                     var combinedAid = String(result[n].ID);
                     pos = combinedAid.indexOf(':');
                     aid =  combinedAid.substring(pos + 1);
-                    asset =  store.asset(type,aid);
-                    asset.indashboard = store.isuserasset(aid, type);
-                    assets.push(asset);
+                    try {
+                        asset = store.asset(type, aid);
+                        asset.indashboard = store.isuserasset(aid, type);
+                        assets.push(asset);
+                    } catch (e) {
+                        log.warn("error retrieving asset from store ,information might be stale in social cache. id=" +
+                                combinedAid);
+                    }
                 }
             });
 
