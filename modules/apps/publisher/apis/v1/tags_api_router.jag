@@ -87,6 +87,19 @@ routeManager.register('PUT','publisher','/publisher/api/tag/{type}/{id}',functio
 
     var artifact=artifactManager.get(id);
 
+    var model=modelManager.get(type);
+    model.import('asset',artifact);
+
+    var report=model.validate();
+
+    //Check if the model is valid, the important validation here is checking if the asset is in the published state
+    if((report)&&(report.failed)){
+        msg.ok=false;
+        msg.status=404;
+        print(msg);
+        return;
+    }
+
     //If tags are not specified then do nothing
     if(tags.length==0){
 
