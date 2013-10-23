@@ -27,7 +27,7 @@ var filterManager=publisher.filterManager;
 var log=new Log();
 
 var DEFAULT_PAGE = 10;
-var DEFAULT_PAGIN = {'start':0, 'count':1000 , 'sortOrder':'asc','sortBy': 'overview_name', 'paginationLimit':1000};
+var DEFAULT_PAGIN = {'start':0, 'count':1000 , 'sortOrder':'desc','sortBy': 'overview_createdtime', 'paginationLimit':1000};
 
 
 /*routeMnger.register('GET','publisher','/publisher/assets/list',function(context){
