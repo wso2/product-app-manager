@@ -465,9 +465,8 @@ label, input, button, select, textarea {
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 .publisher-right {
-    /*
-     min-height: 500px !important;
-     min-width: 480px;*/
+    
+    min-height: 500px !important;
     float: right !important;
     position: relative;
 }

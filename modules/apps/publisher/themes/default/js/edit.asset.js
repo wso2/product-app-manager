@@ -122,6 +122,7 @@ $(function () {
                 e.wrap('<form>').parent('form').trigger('reset');
                 e.unwrap();
 
+				//$('#img-preview-'+ fieldId).attr('src', fieldValue);
                 //Update the label
                 $('#'+previewId).html(fieldValue);
             }
