@@ -2,11 +2,10 @@ $(function () {
     var $tab = $('#tab-reviews');
     $('a').click(function(){
         var tab = $(this).data("type");
-        if(tab=="basic"){
-            $tab.css({position:'static', visibility:'hidden'});
-        }else if(tab=="comments"){
+        if(tab=="comments"){
             $tab.css({position:'static', visibility:'visible'});
-
+        }else{
+            $tab.css({position:'static', visibility:'hidden'});
         }
     });
 
