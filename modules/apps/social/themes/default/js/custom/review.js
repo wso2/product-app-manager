@@ -69,12 +69,12 @@ $btn.click(function (e) {
                 value: rating
             }, function (r) {
                 publish(activity, function (published) {
-                    if ($firstReview.length) {	
-                    	$firstReview.hide();
-                    	$sort.removeClass('com-sort-hidden');
+                    if ($firstReview.length) {
+                        $firstReview.hide();
+                        $sort.removeClass('com-sort-hidden');
                     }
                     $btn.removeAttr('disabled');
-                    
+
 
                     if (published.success) {
                         showLoading(false);
@@ -82,6 +82,7 @@ $btn.click(function (e) {
                         $textArea.val('');
 
                         activity.id = published.id;
+                        activity.actor = {id: user};
                         usingTemplate(function (template) {
                             var newComment = template(activity);
                             $stream.prepend(newComment);
