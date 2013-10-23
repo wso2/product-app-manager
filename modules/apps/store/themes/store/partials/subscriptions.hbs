@@ -20,8 +20,6 @@
                                             <strong>{{overview_name}}</strong>
                                         </a>
                                         <small class="bookmark-assert-provider">by {{overview_provider}}</small>
-                                        <br>
-
                                         <div class="btn-group">
                                             <a class="btn btn-mini" data-toggle="tooltip"
                                                title="{{t "View"}} {{../../key}}"
@@ -44,18 +42,14 @@
                                      {{else}}
 										<img src="{{images_thumbnail}}">
 										<div class="store-my-item-info">
-                                 
-                                        <a class="asset-title">
-                                            <strong>{{overview_name}}</strong>
-                                        </a>
-                                        <small class="bookmark-assert-provider">by {{overview_provider}}</small>                                        
-                                        <br>
-                                        </div>
-                                        <i class="icon-trash store-icon-trash"></i>
+	                                        <a class="asset-title">
+	                                            <strong>{{overview_name}}</strong>
+	                                        </a>
+	                                        <small class="bookmark-assert-provider">by {{overview_provider}}</small>    
+	                                        <span class="label label-unavailable">Currently Unavailable</span>                                    
+                                        </div> 
 									{{/if}}           
                                     </div>
-                                  
-
                                 </div>
                             {{/attributes}}
                         {{/each}}

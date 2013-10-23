@@ -385,7 +385,7 @@ h3.asset-title-separator {
     height: 1px;
     position: absolute;
     width: 100%;
-    z-index: 1001;
+    z-index: 9003;
 }
 #container-search.affix {
     left: 0;
@@ -600,6 +600,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     padding-left: 20px;
     border-left: 1px solid #ecf0f1;
     background: none repeat scroll 0 0 #F7F9F9;
+    outline: none;
 }
 .store-right a {
     color: #34495E;
@@ -843,7 +844,19 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     display: block;
     clear: both;
 }
-
+.recently-added .label-unavailable{
+    line-height: 14px;
+    margin-top: 5px;
+}
+.label-unavailable {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: 1px solid #CCCCCC;
+    color: #888888;
+    font-size: 11px;
+    line-height: 20px;
+    margin-top: 10px;
+    text-shadow: none;
+}
 .pagination {
     text-align: center;
 }
@@ -1268,7 +1281,8 @@ ol.linenums li {
         bottom: 47px;
     }
     #container-search.affix {
-        margin: 0 0 0 -360px !important;
+       /* margin: 0 0 0 -360px !important;*/
+      margin-left:0;
     }
 }
 
@@ -1287,7 +1301,8 @@ ol.linenums li {
         border-left: 1px solid #CCCCCC;
     }
     #container-search.affix {
-        margin: 0 0 0 -468px;
+       /* margin: 0 0 0 -468px;*/
+      margin-left:0;
     }
     /*
      .asset-intro-box {
@@ -1349,7 +1364,7 @@ ol.linenums li {
 
 }
 
-@media all and (min-width: 1200px) {
+@media all and (min-width: 1212px) {
     .store-right {
         bottom: 0;
         height: auto;

@@ -26,7 +26,7 @@
 					</a>
 					{{#if ../isPublished}}
 						<small class="bookmark-assert-provider">by {{overview_provider}}</small>
-						<br><div class="btn-group">
+						<div class="btn-group">
 							<a class="btn btn-mini" data-toggle="tooltip" title="{{t "View"}} {{../../key}}" href="{{url "/assets/"}}{{../../key}}/{{../id}}">
 							<i class="icon-eye-open"></i>
 							</a>
@@ -39,7 +39,7 @@
 						</div> 
 					{{else}}  
 						<small class="bookmark-assert-provider">by {{overview_provider}}</small>
-						<i class="icon-trash store-icon-trash"></i>
+						<span class="label label-unavailable">Currently Unavailable</span>
 					{{/if}}
 					
 				</div>

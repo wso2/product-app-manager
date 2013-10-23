@@ -449,10 +449,6 @@ label, input, button, select, textarea {
 }
 .publisher-left {
     background: #2C3E50;
-    bottom: 0;
-    left: 0;
-    position: absolute;
-    top: 0;
 }
 .content-area-cont {
     background: #fff;
@@ -1223,4 +1219,13 @@ color:#229A55;
 }
 .tbl-upload-inner label{
     display:none;
+}
+
+@media all and (min-width:768px){
+    .publisher-left {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    top: 0;
+}
 }

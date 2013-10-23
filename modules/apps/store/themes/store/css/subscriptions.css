@@ -111,3 +111,7 @@ a.ebook {
     padding-top: 20px;
 }
 
+.store-my-item .btn-group {
+    display: block;
+    margin-top: 8px;
+}
