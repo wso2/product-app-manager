@@ -11,7 +11,7 @@
 
 	<div class="btn-group context_menu left">
 		
-		<a class="btn" href="{{currentUrl}}">
+		<a class="btn" href="{{currentUrl}}?sortby=createdtime&sort=desc">
 			<small>Type</small> <span class="publisherTitle">
 				<!--<i class="icon-{{currentType}}"></i> -->
 				{{currentTitle}}</span>
@@ -23,7 +23,7 @@
 		<ul class="dropdown-menu">
 			{{#each breadcrumb}}
 			<li>
-				<a target="_self" href="{{this.url}}"><i class="{{this.assetIcon}}"></i>{{this.assetTitle}}</a>
+				<a target="_self" href="{{this.url}}?sortby=createdtime&sort=desc"><i class="{{this.assetIcon}}"></i>{{this.assetTitle}}</a>
 			</li>
 			{{/each}}
 		</ul>
