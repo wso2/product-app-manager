@@ -15,7 +15,12 @@
         src: url('../font/Lato-Bol-webfont.eot?#iefix') format('embedded-opentype'), url('../font/Lato-Bol-webfont.woff') format('woff'), url('../font/Lato-Bol-webfont.ttf') format('truetype'), url('../font/Lato-Bol-webfont.svg#cherokee') format('svg');
     }
 }
-
+html, body {
+min-width: 960px !important;
+}
+@media all and (max-width:960px){
+    min-width: 960px !important;
+}
 body {
     font: 14px/1.531 'Lato', sans-serif;
     color: #34495E;
@@ -1373,6 +1378,7 @@ ol.linenums li {
         top: 0;
         overflow-x: hidden;
         overflow-y: auto;
+        min-height: 1500px;
         
     }
     .store-left {
