@@ -118,3 +118,13 @@ a.ebook{
     height:128px;
     overflow: hidden;
 }
+
+.store-icon-trash{
+    color: #000000;
+    font-size: 40px;
+    position: absolute;
+    right: 60px;
+    text-shadow: 1px 1px #848484;
+    top: 100px;
+    z-index: 1;
+}
