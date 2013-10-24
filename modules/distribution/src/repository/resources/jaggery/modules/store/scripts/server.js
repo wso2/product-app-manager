@@ -260,7 +260,7 @@ var server = {};
             carbon = require('carbon'),
             PrivilegedCarbonContext = org.wso2.carbon.context.PrivilegedCarbonContext;
         PrivilegedCarbonContext.startTenantFlow();
-        log.info('====================================startTenantFlow===================================');
+        log.debug('startTenantFlow');
         try {
             log.info(options);
             context = PrivilegedCarbonContext.getThreadLocalCarbonContext();
@@ -272,7 +272,7 @@ var server = {};
             return fn();
         } finally {
             PrivilegedCarbonContext.endTenantFlow();
-            log.info('====================================endTenantFlow===================================');
+            log.debug('endTenantFlow');
         }
     };
 }(server));
