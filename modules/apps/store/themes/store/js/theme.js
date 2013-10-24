@@ -56,13 +56,19 @@ var adjustStoreRight = function(){
 		$('.asset-description-header > .row > .span12').removeClass('span12').addClass('span9');
 		
 	
+		
 		setTimeout(function(){ 
-			($('.store-right').height() < $('.store-left').height()) &&  $('.store-right').height($('.store-left').height() + 15);
-			}, 200);
+					($('.store-right').height() < $('.store-left').height()) &&  $('.store-right').height($('.store-left').height() + 15);
+					}, 200);
+		
 	
 	}
 	$('.store-left').resize(function(){
-		$('.store-right').height($(this).height() + 15);
+		var right = $('.store-right');
+		var left = $(this);
+		if(right.height > left.height) {
+			right.height(left.height());
+		} 
 	});
 	
 }
