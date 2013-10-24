@@ -74,6 +74,13 @@ var registry=new carbon.registry.Registry(server,{
 var event = require('event');
 event.emit('tenantLoad', tenantId);*/
 
+//for server startup log for informing store URL
+var logStoreUrl = function() {
+	var log = new Log();
+	log.info("Store URL : " + configs.server.http + caramel.configs().context);
+};
+
+setTimeout(logStoreUrl, 7000);
 
 
 
