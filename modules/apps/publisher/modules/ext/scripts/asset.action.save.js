@@ -23,23 +23,26 @@ var module=function(){
 
     /*
     adding asset details to Social Cache DB.
-    */
-   function addToSocialCache(id,type) {
-       if (id) {
-           var CREATE_QUERY = "CREATE TABLE IF NOT EXISTS SOCIAL_CACHE (id VARCHAR(255) NOT NULL,tenant VARCHAR(255),type VARCHAR(255), " +
-               "body VARCHAR(5000), rating DOUBLE,  PRIMARY KEY ( id ))";
-           var server = require('store').server;
-           server.privileged(function () {
-               var db = new Database("SOCIAL_CACHE");
-               db.query(CREATE_QUERY);
-               var combinedId = type + ':' + id;
-               db.query("MERGE INTO SOCIAL_CACHE (id,type,body,rating) VALUES('" + combinedId + "','" + type + "','',0)");
-               db.close();
-           });
-       }
-   }
+     */
+    function addToSocialCache(id, type) {
+        if (id) {
+            var logged = require('store').server.current(session);
+            var domain = (logged && logged.tenantDomain) ? logged.tenantDomain : "carbon.super";
 
-	return{
+            var CREATE_QUERY = "CREATE TABLE IF NOT EXISTS SOCIAL_CACHE (id VARCHAR(255) NOT NULL,tenant VARCHAR(255),type VARCHAR(255), " +
+                "body VARCHAR(5000), rating DOUBLE,  PRIMARY KEY ( id ))";
+            var server = require('store').server;
+            server.privileged(function () {
+                var db = new Database("SOCIAL_CACHE");
+                db.query(CREATE_QUERY);
+                var combinedId = type + ':' + id;
+                db.query("MERGE INTO SOCIAL_CACHE (id,tenant,type,body,rating) VALUES('" + combinedId + "','" + domain + "','" + type + "','',0)");
+                db.close();
+            });
+        }
+    }
+
+    return{
 		execute:function(context){
 
             var utility=require('/modules/utility.js').rxt_utility();
