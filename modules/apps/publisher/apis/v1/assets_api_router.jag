@@ -42,7 +42,7 @@ routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{t
             assetVersion = (model.get('overview.version')).value;
             bookmarkStatData.push([i, parseInt(bookmarkStats[i]['NO_OF_BOOKMARKS'])]);
             bookmarkStats[i]['ASSET_ID'] = assetName;
-            bookmarkTicks.push([i, assetName+assetVersion]);
+            bookmarkTicks.push([i, assetName+'-'+assetVersion]);
 
         }
 
@@ -59,7 +59,7 @@ routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{t
         hotAssetVersion = (model.get('overview.version')).value;
         hotstAssetData.push([j, parseInt(hotAssetsStats[j]['NO_OF_BOOKMARKS'])]);
         hotAssetsStats[j]['ASSET_ID'] = hotAssetName;
-        hotAssetticks.push([j, hotAssetName+hotAssetVersion]);
+        hotAssetticks.push([j, hotAssetName+'-'+hotAssetVersion]);
 
     }
 
