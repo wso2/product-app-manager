@@ -262,7 +262,6 @@ var server = {};
         PrivilegedCarbonContext.startTenantFlow();
         log.debug('startTenantFlow');
         try {
-            log.info(options);
             context = PrivilegedCarbonContext.getThreadLocalCarbonContext();
             context.setTenantDomain(carbon.server.tenantDomain({
                 tenantId: options.tenantId
