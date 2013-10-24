@@ -137,8 +137,6 @@ require('/modules/store.js').exec(function (ctx) {
         myAssets : { user:user, type: type, title: title, subscriptions: subscriptions[type], subscription : subscription},
         recentAssets: store.recentAssets(type)
 
-        myAssets: { user: user, type: type, title: title, subscriptions: subscriptions[type], subscription: subscription},
-        recentAssets: store.recentAssets(type)
     });
 }, request, response, session);
 %>
