@@ -138,9 +138,7 @@ var caramel;
             url: url + 'sort='
         },
         myAssets : { user:user, type: type, title: title, subscriptions: subscriptions[type], subscription : subscription},
-        recentAssets: function () {
-            return store.recentAssets(type);
-        }
+        recentAssets: store.recentAssets(type)
     });
 }());
 %>

@@ -170,6 +170,7 @@ hr.emboss {
 .dropdown-menu.dropdown-account {
     margin-top: 0;
     padding: 8px 5px;
+    overflow: hidden;
 }
 .dropdown-menu li > a {
     color: #34495E;
