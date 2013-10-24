@@ -61,11 +61,16 @@ caramel.configs({
 
 });
 
+//startup log for url
+var logPublisherUrl = function () {
+	var log = new Log();
+    log.info("Publisher URL : " + config.server.http + caramel.configs().context);
+};
 
 //Cause the super tenant to be load
 var SUPER_TENANT = -1234;
 var event = require('event');
 event.emit('tenantLoad', SUPER_TENANT);
 
-
+setTimeout(logPublisherUrl, 7000);
 
