@@ -2,7 +2,7 @@ $(function() {
 
 	/*
 	Creates a new asset
-	*/
+	 */
 
 	//var id=$('#meta-asset-id').html();
 	var type = $('#meta-asset-type').val();
@@ -56,7 +56,7 @@ $(function() {
 				if (result.ok) {
 					flag.removeClass().addClass('icon-ok icon-check-appname').show();
 					btnCreate.removeAttr('disabled');
-                    $(".alert-error").hide();
+					$(".alert-error").hide();
 				} else {
 					flag.removeClass().addClass('icon-ban-circle icon-check-appname').show();
 					btnCreate.attr('disabled', 'disabled');
@@ -64,7 +64,7 @@ $(function() {
 
 			},
 			error : function(response) {
-                flag.removeClass().addClass('icon-ok icon-check-appname').hide();
+				flag.removeClass().addClass('icon-ok icon-check-appname').hide();
 				showAlert('Unable to auto check Asset name availability', 'error');
 			}
 		});
