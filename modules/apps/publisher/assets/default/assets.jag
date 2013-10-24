@@ -47,10 +47,11 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 	var query = request.getParameter("query");
 	var sortby = request.getParameter("sortby");
 	var sort = request.getParameter("sort");
+	var type = context.params.type;
 	try {
 
 		//TODO: Check for valid asset types
-		var artifactManager = rxtManager.getArtifactManager(context.params.type);
+		var artifactManager = rxtManager.getArtifactManager(type);
 
 		var artifacts = artifactManager.list(DEFAULT_PAGE) || [];
 
@@ -79,9 +80,10 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 		caramel.render({
 			op : 'list',
 			cuser : server.current(session),
-			shortName : context.params.type,
+			shortName : type,
 			artifacts : artifacts,
-			query : query
+			query : query,
+			title : type
 		});
 	} catch (e) {
 		response.sendError(400, "Your request is malformed");
@@ -103,7 +105,8 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{operation}/{type}/',
             caramel.render({
                 op: operation,
                 cuser: server.current(session),
-                shortName: type
+                shortName: type,
+                title: type
             });
 
         } catch (e) {

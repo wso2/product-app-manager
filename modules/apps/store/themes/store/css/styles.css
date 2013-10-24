@@ -345,7 +345,7 @@ section {
 }
 .store-left {
     position: relative;
-    margin-bottom: 20px;
+    min-height:420px;
 }
 
 .store-left .row {
@@ -407,7 +407,7 @@ h3.asset-title-separator {
 #container-assets > .row:first-child {
     position: relative;
     overflow: hidden;
-    min-height:600px;
+    min-height:420px;
 }
 #search {
     font-size: 18px;
@@ -455,6 +455,11 @@ h3.asset-title-separator {
 }
 .search-bar .dropdown-toggle:first-child {
     margin-left: -14px;
+      margin-right: 3px;
+}
+.search-bar .dropdown-toggle{
+    float: left;
+    display: block;
 }
 .search-bar .dropdown {
     display: inline-block;
@@ -467,11 +472,19 @@ h3.asset-title-separator {
     font-size: 14px;
     border-right: 1px solid #DADADA;
     font-weight: bold;
+    height:49px;
+}
+.search-bar .dropdown img{
+    display:block;
+    margin:0 auto;
 }
 .search-bar .dropdown.selected, .search-bar .dropdown.selected:hover {
     background: #E84C3D;
     color: #fff;
-    opacity: 1;
+    opacity: 1; 
+}
+.search-bar .dropdown.selected .dropdown-icon-cont div{
+     background-position: bottom left;
 }
 .search-bar .dropdown:hover {
     background: #F7F9F9;
@@ -483,6 +496,16 @@ h3.asset-title-separator {
 .search-bar .dropdown i {
     font-size: 28px;
     display: block;
+}
+.search-bar .dropdown .dropdown-icon-cont{
+    height:28px;
+}
+.search-bar .dropdown .dropdown-icon-cont div{
+    width:28px;
+    height:28px;
+    display:block;
+    overflow: hidden;
+    margin:0 auto;
 }
 .search-bar .span3 {
     margin-top: 12px;
@@ -606,6 +629,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     border-left: 1px solid #ecf0f1;
     background: none repeat scroll 0 0 #F7F9F9;
     outline: none;
+    min-height:420px;
 }
 .store-right a {
     color: #34495E;
@@ -1270,6 +1294,9 @@ ol.linenums li {
 .icon-ebook:before {
     content: "\F15C";
 }
+.tooltip{
+    position:fixed;
+}
 
 @media all and (max-width: 980px) {
     .asset {
@@ -1370,19 +1397,5 @@ ol.linenums li {
 }
 
 @media all and (min-width: 1212px) {
-    .store-right {
-        bottom: 0;
-        height: auto;
-        position: absolute;
-        right: 0;
-        top: 0;
-        overflow-x: hidden;
-        overflow-y: auto;
-        min-height: 1500px;
-        
-    }
-    .store-left {
-        float: left !important;
-        position: relative;
-    }
+   
 }

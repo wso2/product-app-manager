@@ -5,7 +5,6 @@
  */
 
 var render = function (theme, data, meta, require) {
-
     var listPartial = 'list-assets';
 //Determine what view to show
     switch (data.op) {

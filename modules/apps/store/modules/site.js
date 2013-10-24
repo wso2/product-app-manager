@@ -11,18 +11,26 @@ var navigation = function (tenantId) {
     var i, type, links,
         assetLinks = {},
 
-        store = require('/modules/store.js').store(tenantId, session),
+        storemod = require('/modules/store.js'),
+        store = storemod.store(tenantId, session),
         utility = require('/modules/util.js'),
         types = store.assetTypes(),
         length = types.length;
+        
+       
         
     for (i = 0; i < length; i++) {
         type = types[i];
         links = store.assetLinks(type);
         if (links.isCategorySupport) {
-            links.categories = utility.getCategories(tenantId, type);
-
+            links.categories = utility.getCategories(tenantId, type);	
         }
+        var iconPath = storemod.ASSETS_EXT_PATH + type + '/resources/' + 'icon-sprite.png';
+		
+		if (new File(iconPath).isExists()) {
+	    	links.icon = iconPath;
+	    }	
+			
         /*
          length1 = links.length;
 
@@ -32,7 +40,6 @@ var navigation = function (tenantId) {
          }*/
         assetLinks[type] = links;
     }
-
     return {
         assets: assetLinks
     };

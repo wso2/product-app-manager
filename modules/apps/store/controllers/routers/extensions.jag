@@ -27,6 +27,17 @@ var type;
         file.send(prefix + '/themes/' + elements.file);
         return;
     }
+    if (matcher.match('/{context}' + prefix + '{type}/resources/{+file}')) {
+        elements = matcher.elements();
+        type = elements.type;
+        if (configs.assets.indexOf(type) === -1) {
+            response.sendError(404, 'Request Resource cannot be found');
+            return;
+        }
+        prefix = store.ASSETS_EXT_PATH + type;
+        file.send(prefix + '/resources/' + elements.file);
+        return;
+    }
     if (matcher.match('/{context}' + prefix + '{type}/{+suffix}')) {
         mod = require('/modules/store.js');
         elements = matcher.elements();

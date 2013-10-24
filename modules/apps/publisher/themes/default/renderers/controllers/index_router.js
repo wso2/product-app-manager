@@ -1,6 +1,6 @@
 var render = function (theme, data, meta, require) {
     theme('single-col-fluid', {
-        title: data.title,
+        title: data.data.title,
         ribbon: [
             {
                 partial: 'ribbon'
