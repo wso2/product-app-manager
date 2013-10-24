@@ -62,7 +62,7 @@ var render = function (theme, data, meta, require) {
         right: [
             {
                 partial: 'recent-assets',
-                context: data.recentAssets
+                 context: require('/helpers/asset.js').formatRatings(data.recentAssets)
             },
             {
                 partial: 'tags',

@@ -29,6 +29,15 @@ var format = function (context) {
     return context;
 };
 
+var formatRatings = function(context){
+	var avg;
+	for(var i in context){
+		avg = context[i].rating;
+		context[i].ratingPx = ratingToPixels(avg);
+	}
+
+	return context;
+}
 var ratingToPixels = function(avg) {
 	var STAR_WIDTH = 84;
 	var MAX_RATING = 5;

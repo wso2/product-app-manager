@@ -133,10 +133,12 @@ require('/modules/store.js').exec(function (ctx) {
         sorting: {
             url: url + 'sort='
         },
+
+        myAssets : { user:user, type: type, title: title, subscriptions: subscriptions[type], subscription : subscription},
+        recentAssets: store.recentAssets(type)
+
         myAssets: { user: user, type: type, title: title, subscriptions: subscriptions[type], subscription: subscription},
-        recentAssets: function () {
-            return store.recentAssets(type);
-        }
+        recentAssets: store.recentAssets(type)
     });
 }, request, response, session);
 %>

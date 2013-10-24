@@ -751,7 +751,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     height: inherit;
 }
 
-.asset-rating-0star {
+.asset-rating-0star, .asset-rating-star {
     width: 0;
     display: block;
 }
