@@ -104,3 +104,33 @@ var build = function (query) {
     });
     return advanced ? obj : query;
 };
+
+var fields = function () {
+    return [
+        {
+            "field_name": "provider",
+            "field_label": "Provider",
+            "search": false
+        },
+        {
+            "field_name": "name",
+            "field_label": "Name",
+            "search": false
+        },
+        {
+            "field_name": "version",
+            "field_label": "Version",
+            "search": false
+        },
+        {
+            "field_name": "category",
+            "field_label": "Category",
+            "search": false
+        },
+        {
+            "field_name": "description",
+            "field_label": "Description",
+            "search": false
+        }
+    ];
+};

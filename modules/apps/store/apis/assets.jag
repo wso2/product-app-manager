@@ -3,7 +3,7 @@ var caramel = require('caramel'),
         log = new Log(),
         matcher = new URIMatcher(request.getRequestURI());
 // http://localhost:9763/caramel/apis/asset/1234/comments
-(function () {
+require('/modules/store.js').exec(function (ctx) {
     var server = require('store').server,
             tenant = server.tenant(request, session),
             tenantId = tenant.tenantId,
@@ -25,5 +25,6 @@ var caramel = require('caramel'),
         return;
     }
     response.sendError(404, 'API Endpoint Not Found');
-})();
+
+}, request, response, session);
 %>

@@ -12,6 +12,7 @@
  Created Date: 29/7/2013
  */
 
+require('/modules/publisher.js').exec(function(ctx) {
 
 var config = require('/config/publisher.json');
 var caramel = require('caramel');
@@ -338,5 +339,7 @@ routeManager.register('DELETE', 'publisher', '/publisher/asset/{type}/{id}', fun
 
 });
 routeManager.handle(request, response);
+
+}, request, response, session);
 
 %>

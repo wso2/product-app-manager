@@ -1,25 +1,23 @@
 <%
 var caramel;
-(function () {
-    var assets, paging, current, total, sso, url, mainPage, subPage,title, selectedCategory, key,
-            options = {},
-            subscriptions ={},
-            subscription = false,
-            log = new Log(),
-            mod = require('store'),
-            user = mod.server.current(session),
-            configs = require('/config/store.js').config(),
-            tenant = mod.server.tenant(request, session),
-            tenantId = tenant.tenantId,
-            store = require('/modules/store.js').store(tenantId, session),
-            site = require('/modules/site.js'),
-            tag = request.getParameter('tag'),
-            query = request.getParameter('query'),
-            event = require('/modules/event.js');
+
+require('/modules/store.js').exec(function (ctx) {
+    var options, assets, paging, current, total, url, mainPage, subPage, title, selectedCategory, key,
+            log = ctx.log,
+            sso = ctx.sso,
+            query = ctx.params.query,
+            tag = ctx.params.tag,
+            store = ctx.store,
+            user = ctx.user,
+            server = ctx.server,
+            tenantId = ctx.tenantId,
+            configs = ctx.configs,
+            site = ctx.site,
+            subscriptions = {},
+            subscription = false;
 
     caramel = require('caramel');
 
-    sso = configs.ssoConfiguration.enabled;
     url = '/assets/' + type + '/?' + (tag ? 'tag=' + tag + '&' : '') + (query ? 'query=' + query + '&' : '');
 
     paging = store.assetsPaging(request);
@@ -28,14 +26,14 @@ var caramel;
 
     title = store.assetLinks(type).title;
 
-    if(user){
+    if (user) {
         subscriptions = store.subscriptions(type);
-        if(subscriptions[type]){
+        if (subscriptions[type]) {
             var count = Object.keys(subscriptions[type]).length;
-            if(count == 0){
-                subscriptions[type]={};
-            }else{
-                subscription =true;
+            if (count == 0) {
+                subscriptions[type] = {};
+            } else {
+                subscription = true;
             }
         }
     }
@@ -49,43 +47,41 @@ var caramel;
             type: type,
             attributes: query
         };
-        for(key in query) {
-            if(query.hasOwnProperty(key) && key === 'overview_category') {
+        for (key in query) {
+            if (query.hasOwnProperty(key) && key === 'overview_category') {
                 selectedCategory = query[key];
             }
         }
         subPage = '/ Search: "' + query + '"';
         assets = store.search(options, paging);
     } else {
-        if(paging.sort=='popular'){
-
-            var server = require('store').server;
+        if (paging.sort == 'popular') {
             server.privileged(function () {
                 //TODO:  move to a module.
                 var tenantDomain = user ? user.tenantDomain : "carbon.super";
-                var index = 0,maxTry = 0;
-                var getNextassetSet = function(){
+                var index = 0, maxTry = 0;
+                var getNextassetSet = function () {
                     var db = new Database('SOCIAL_CACHE');
                     var result = db.query("SELECT ID FROM SOCIAL_CACHE WHERE TYPE='" + type.replace(/\W/g, '') + "' AND " +
-                            "TENANT='" + tenantDomain + "' ORDER BY RATING DESC LIMIT " + (paging.start+index) + ",12");
+                            "TENANT='" + tenantDomain + "' ORDER BY RATING DESC LIMIT " + (paging.start + index) + ",12");
                     db.close();
-                    index+=12;
+                    index += 12;
                     return result;
                 };
                 assets = [];
                 var pos, aid, asset;
-                while(assets.length<12 && maxTry<10){
+                while (assets.length < 12 && maxTry < 10) {
                     maxTry++;
                     var result = getNextassetSet();
                     for (var n = 0; n < result.length && assets.length < 12; n++) {
                         var combinedAid = String(result[n].ID);
                         pos = combinedAid.indexOf(':');
-                        aid =  combinedAid.substring(pos + 1);
+                        aid = combinedAid.substring(pos + 1);
                         try {
                             asset = store.asset(type, aid);
                             asset.indashboard = store.isuserasset(aid, type);
-                            if ( configs.lifeCycleBehaviour.visibleIn.indexOf(String(asset.lifecycleState),0) >= 0) {
-                              assets.push(asset);
+                            if (configs.lifeCycleBehaviour.visibleIn.indexOf(String(asset.lifecycleState), 0) >= 0) {
+                                assets.push(asset);
                             }
                         } catch (e) {
                             log.warn("error retrieving asset from store ,information might be stale in social cache. id=" +
@@ -95,7 +91,7 @@ var caramel;
                 }
             });
 
-        } else{
+        } else {
             assets = store.assets(type, paging);
         }
     }
@@ -106,7 +102,7 @@ var caramel;
         title: 'Store | Assets',
         user: user,
         sso: sso,
-        header : site.header(tenantId, {
+        header: site.header(tenantId, {
             sso: sso,
             user: user
         }),
@@ -137,9 +133,13 @@ var caramel;
         sorting: {
             url: url + 'sort='
         },
+
         myAssets : { user:user, type: type, title: title, subscriptions: subscriptions[type], subscription : subscription},
         recentAssets: store.recentAssets(type)
+
+        myAssets: { user: user, type: type, title: title, subscriptions: subscriptions[type], subscription: subscription},
+        recentAssets: store.recentAssets(type)
     });
-}());
+}, request, response, session);
 %>
 

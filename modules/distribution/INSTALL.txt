@@ -41,7 +41,6 @@ System Requirements
      level in Internet Explorer 6.x.
 
 For more details see
-http://docs.wso2.org/wiki/display/UES100/Installation+Prerequisites
-
+http://docs.wso2.org/display/ES100/Installation+Prerequisites
 
 

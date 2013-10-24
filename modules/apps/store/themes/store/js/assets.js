@@ -56,6 +56,11 @@ $(function() {
 	};
 
 	var loadAssetsScroll = function(url) {
+		//TO-DO 
+		/* As tags are not Indexing so far
+		*  Assert pagination and is not supporteed and There for infiniteScroll is disable to 'Tag'
+		* */
+		if(url.indexOf('tag')== -1){
 		caramel.data({
 			title : null,
 			body : ['assets']
@@ -72,6 +77,7 @@ $(function() {
 			}
 		});
 		$('.loading-inf-scroll').show();
+		}
 	};
 
 	$(document).on('click', '#ul-sort-assets li a', function(e) {
