@@ -99,9 +99,9 @@ var init = function (options) {
          session[ASSET_MANAGERS] = assetManagers;*/
     });
 
-    event.on('userRegister', function(tenantId, user) {
-        configs(tenantId).userRoles.forEach(function(role) {
-            if(user.hasRoles([role])) {
+    event.on('userRegister', function (tenantId, user) {
+        configs(tenantId).userRoles.forEach(function (role) {
+            if (user.hasRoles([role])) {
                 return;
             }
             user.addRoles([role]);
@@ -279,20 +279,20 @@ Store.prototype.subscriptions = function (type) {
         type = path.substr(path.lastIndexOf('/') + 1);
         //obj = obj();
 
-			obj.forEach(function(path) {
-				try {
-					var iteamOut = that.asset(type, path.substr(path.lastIndexOf('/') + 1))
-					if(iteamOut.lifecycleState == 'Published') {
-						iteamOut.isPublished = true;
-					} else {
-						iteamOut.isPublished = false;
-					}
+        obj.forEach(function (path) {
+            try {
+                var iteamOut = that.asset(type, path.substr(path.lastIndexOf('/') + 1))
+                if (iteamOut.lifecycleState == 'Published') {
+                    iteamOut.isPublished = true;
+                } else {
+                    iteamOut.isPublished = false;
+                }
 
-					items.push(iteamOut);
-				} catch (e) {
-					log.warn('asset for path="' + path + '" could not be retrieved, try reverting it form registry.');
-				}
-			});
+                items.push(iteamOut);
+            } catch (e) {
+                log.warn('asset for path="' + path + '" could not be retrieved, try reverting it form registry.');
+            }
+        });
 
         assetz[type] = items;
     };
@@ -423,7 +423,7 @@ Store.prototype.assets = function (type, paging) {
 
     var options = {};
     options = obtainViewQuery(options);
-    options = {"attributes" : options};
+    options = {"attributes": options};
     var i;
     var newPaging = PaginationFormBuilder(paging);
     //var assetz = this.assetManager(type).list(paging);
@@ -455,7 +455,7 @@ Store.prototype.tagged = function (type, tag, paging) {
     //options['tag'] = tag;
     //options = obtainViewQuery(options);
     //TODO move this LCState to config
-    options = {"tag" : tag, "lifecycleState" : ["published"]};
+    options = {"tag": tag, "lifecycleState": ["published"]};
 
     assets = this.assetManager(type).search(options, paging);
 
@@ -549,7 +549,7 @@ Store.prototype.recentAssets = function (type, count) {
     };
     var options = {};
     options = obtainViewQuery(options);
-    options = {"attributes" : options};
+    options = {"attributes": options};
 
     var recent = this.assetManager(type).search(options, paging);
 
@@ -603,7 +603,7 @@ Store.prototype.search = function (options, paging) {
 
     //We should only obtain assets in the Published life-cycle state.
     options = obtainViewQuery(options);
-	var builtPaging = PaginationFormBuilder(paging);
+    var builtPaging = PaginationFormBuilder(paging);
     if (type) {
         var assetz = this.assetManager(type).search(options, builtPaging);
         for (i = 0; i < assetz.length; i++) {
@@ -652,8 +652,8 @@ Store.prototype.removeAsset = function (type, options) {
     this.assetManager(type).remove(options);
 };
 
-Store.prototype.rxtManager = function(type, session) {
-    return storeManagers(this.tenantId, session).rxtManager.findAssetTemplate(function(tmpl) {
+Store.prototype.rxtManager = function (type, session) {
+    return storeManagers(this.tenantId, session).rxtManager.findAssetTemplate(function (tmpl) {
         return tmpl.shortName === type;
     });
 };
@@ -680,7 +680,7 @@ var obtainViewQuery = function (options) {
     return options;
 }
 
-var TENANT_STORE_MANAGERS='store.managers';
+var TENANT_STORE_MANAGERS = 'store.managers';
 var SUPER_TENANT = -1234;
 var APP_MANAGERS = 'application.master.managers';
 var LOGGED_IN_USER = 'LOGGED_IN_USER';
@@ -709,10 +709,10 @@ var storeManagers = function (o, session) {
 
 }
 /*
-The function handles the initialization and caching of managers when a user is logged in
-@o: The current request
-@session: The current session
-@return: An instance of a MasterManager object either anon or store
+ The function handles the initialization and caching of managers when a user is logged in
+ @o: The current request
+ @session: The current session
+ @return: An instance of a MasterManager object either anon or store
  */
 function handleLoggedInUser(o, session) {
     var storeMasterManager = session.get(TENANT_STORE_MANAGERS);
@@ -731,7 +731,7 @@ function handleLoggedInUser(o, session) {
 }
 
 /*
-The function handles the initialization of managers when a user is not logged in (annoymous accesS)
+ The function handles the initialization of managers when a user is not logged in (annoymous accesS)
  */
 function handleAnonUser() {
     var anonMasterManager = application.get(APP_MANAGERS);
@@ -758,60 +758,60 @@ function StoreMasterManager(tenantId, session) {
     var user = require('store').user;
     var registry = user.userRegistry(session);
 
-    var managers = buildManagers(registry,tenantId);
+    var managers = buildManagers(registry, tenantId);
 
     this.modelManager = managers.modelManager;
     this.rxtManager = managers.rxtManager;
-    this.storageSecurityProvider=managers.storageSecurityProvider;
+    this.storageSecurityProvider = managers.storageSecurityProvider;
     this.tenantId = tenantId;
 }
 
 function PaginationFormBuilder(pagin) {
 
-	var DEFAULT_PAGIN = {"start" : 0.0, "count" : 5};
-	// switch sortOrder from ES to pagination Context
+    var DEFAULT_PAGIN = {"start": 0.0, "count": 5};
+    // switch sortOrder from ES to pagination Context
 
-		switch (pagin.sort) {
-			
-			case 'recent':
-				DEFAULT_PAGIN.sortOrder = 'DES';
-				DEFAULT_PAGIN.sortBy  = 'overview_createdtime';
-				break;
-			case 'older':
-				DEFAULT_PAGIN.sortOrder = 'ASC'
-				DEFAULT_PAGIN.sortBy  = 'overview_createdtime';
-				break;
-			case 'popular':
-				// no regsiter pagination support, socail feature need to check
-				break;
-			case 'unpopular':
-				// no regsiter pagination support, socail feature need to check
-				break;
-			case 'az':
-				DEFAULT_PAGIN.sortOrder = 'ASC'
-				DEFAULT_PAGIN.sortBy  = 'overview_name';
-				break;
-			case 'za':
-				DEFAULT_PAGIN.sortOrder = 'DES';
-				DEFAULT_PAGIN.sortBy  = 'overview_name';
-				break;
-			default:
-				DEFAULT_PAGIN.sortOrder = 'ASC';
-		}
+    switch (pagin.sort) {
 
-		//sortBy only have overview_name name still for assert type attributes
-		if(pagin.count != null) {
-			DEFAULT_PAGIN.count = pagin.count;
-		}
-		if(pagin.start != null) {
-			DEFAULT_PAGIN.start = pagin.start;
-		}
-		if(pagin.paginationLimit != null) {
-			DEFAULT_PAGIN.paginationLimit = 120000;
-		}
-		return DEFAULT_PAGIN;
+        case 'recent':
+            DEFAULT_PAGIN.sortOrder = 'DES';
+            DEFAULT_PAGIN.sortBy = 'overview_createdtime';
+            break;
+        case 'older':
+            DEFAULT_PAGIN.sortOrder = 'ASC'
+            DEFAULT_PAGIN.sortBy = 'overview_createdtime';
+            break;
+        case 'popular':
+            // no regsiter pagination support, socail feature need to check
+            break;
+        case 'unpopular':
+            // no regsiter pagination support, socail feature need to check
+            break;
+        case 'az':
+            DEFAULT_PAGIN.sortOrder = 'ASC'
+            DEFAULT_PAGIN.sortBy = 'overview_name';
+            break;
+        case 'za':
+            DEFAULT_PAGIN.sortOrder = 'DES';
+            DEFAULT_PAGIN.sortBy = 'overview_name';
+            break;
+        default:
+            DEFAULT_PAGIN.sortOrder = 'ASC';
+    }
 
-		
+    //sortBy only have overview_name name still for assert type attributes
+    if (pagin.count != null) {
+        DEFAULT_PAGIN.count = pagin.count;
+    }
+    if (pagin.start != null) {
+        DEFAULT_PAGIN.start = pagin.start;
+    }
+    if (pagin.paginationLimit != null) {
+        DEFAULT_PAGIN.paginationLimit = 120000;
+    }
+    return DEFAULT_PAGIN;
+
+
 }
 
 /*
@@ -822,11 +822,11 @@ function AnonStoreMasterManager() {
     var store = require('store');
     var registry = store.server.systemRegistry(SUPER_TENANT);
 
-    var managers = buildManagers(registry,SUPER_TENANT);
+    var managers = buildManagers(registry, SUPER_TENANT);
 
     this.modelManager = managers.modelManager;
     this.rxtManager = managers.rxtManager;
-    this.storageSecurityProvider=managers.storageSecurityProvider;
+    this.storageSecurityProvider = managers.storageSecurityProvider;
     this.tenantId = SUPER_TENANT;
 }
 
@@ -836,7 +836,7 @@ function AnonStoreMasterManager() {
  @registry: The registry of the current user who is logged in
  @return: The managers used by the store
  */
-var buildManagers = function (registry,tenantId) {
+var buildManagers = function (registry, tenantId) {
 
     var rxt_management = require('/modules/rxt/rxt.manager.js').rxt_management();
     var ext_parser = require('/modules/rxt/ext/core/extension.parser.js').extension_parser();
@@ -844,8 +844,8 @@ var buildManagers = function (registry,tenantId) {
     var ext_mng = require('/modules/rxt/ext/core/extension.management.js').extension_management();
     //TODO: sameera need to get store.json from registry
     var config = require('/config/store-tenant.json');
-    var server=require('store').server;
-    var um=server.userManager(tenantId);
+    var server = require('store').server;
+    var um = server.userManager(tenantId);
     var rxtManager = new rxt_management.RxtManager(registry);
     var securityProviderModule = require('/modules/security/storage.security.provider.js').securityModule();
 
@@ -884,6 +884,39 @@ var buildManagers = function (registry,tenantId) {
     return{
         modelManager: modelManager,
         rxtManager: rxtManager,
-        storageSecurityProvider:securityProvider
+        storageSecurityProvider: securityProvider
     }
-}
+};
+
+var exec = function (fn, request, response, session) {
+    var es = require('store'),
+        carbon = require('carbon'),
+        tenant = es.server.tenant(request, session),
+        user = es.server.current(session);
+
+    es.server.sandbox({
+        tenantId: tenant.tenantId,
+        username: user ? user.username : carbon.user.anonUser
+    }, function () {
+        var configs = require('/config/store.js').config();
+        return fn.call(null, {
+            tenant: tenant,
+            server: es.server,
+            sso: configs.ssoConfiguration.enabled,
+            usr: es.user,
+            user: user,
+            store: require('/modules/store.js').store(tenant.tenantId, session),
+            configs: configs,
+            request: request,
+            response: response,
+            session: session,
+            application: application,
+            event: require('event'),
+            params: request.getAllParameters(),
+            files: request.getAllFiles(),
+            matcher: new URIMatcher(request.getRequestURI()),
+            site: require('/modules/site.js'),
+            log: new Log(request.getMappedPath())
+        });
+    });
+};

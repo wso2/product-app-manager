@@ -3,9 +3,20 @@
 //response.sendRedirect('.' + require('/store.js').config().assetsUrlPrefix + '/gadget');
 
 var caramel;
-( function () {
-    var gadgets, sites, ebooks, paging, count, current, loggedUser, manager, assets,
-            length, recentDiff, popularDiff, recent, popular, sso, type,
+
+require('/modules/store.js').exec(function (ctx) {
+    var paging, count, current, loggedUser, manager, assets, length, recentDiff,
+            popularDiff, recent, popular, type,
+            log = ctx.log,
+            query = ctx.params.query,
+            tag = ctx.params.tag,
+            sso = ctx.sso,
+            store = ctx.store,
+            user = ctx.user,
+            tenantId = ctx.tenantId,
+            configs = ctx.configs,
+            site = ctx.site,
+            matcher = ctx.matcher,
             first = true,
             recentCount = 10,
             popularCount = 10,
@@ -13,26 +24,20 @@ var caramel;
             popularItems = [],
             recentItems = [],
             options = {},
-            log = new Log(),
-            mod = require('store'),
-            user = mod.user,
-            configs = require('/config/store.js').config(),
-            site = require('/modules/site.js'),
-            tag = request.getParameter('tag'),
-            query = request.getParameter('query'),
-            server = mod.server,
-            ssoUser = server.current(session),
-            tenant = server.tenant(request, session),
-            tenantId = tenant.tenantId,
-            store = require('/modules/store.js').store(tenantId, session),
-            types = store.assetTypes();
+            types = store.assetTypes(),
+            search = require('/modules/search.js'),
+            utility = require('/modules/util.js');
+
+    caramel = require('caramel');
+
     length = types.length;
     recent = Math.floor(recentCount / length);
     recentDiff = recentCount - recent * length;
     popular = Math.floor(popularCount / length);
     popularDiff = popularCount - popular * length;
     paging = store.assetsPaging(request);
-    query = query ? require('/modules/search.js').build(String(query)) : null;
+    query = query ? search.build(String(query)) : null;
+
     types.forEach(function (type) {
         manager = store.rxtManager(type, session);
         if (query) {
@@ -56,51 +61,20 @@ var caramel;
         recentItems = recentItems.concat(store.recentAssets(type, first ? (recent + recentDiff) : recent));
         first = false;
     });
-    caramel = require('caramel');
-    sso = configs.ssoConfiguration.enabled;
-    loggedUser = (sso && ssoUser) ? {
-        username: ssoUser.username
-    } : server.current(session);
 
     caramel.render({
         title: 'Store | WSO2 Enterprise Store',
-        user: loggedUser,
+        user: user,
         sso: sso,
         header: site.header(tenantId, {
             sso: sso,
-            user: loggedUser
+            user: user
         }),
         navigation: site.navigation(tenantId),
         search: {
             title: "Top Assets",
             isTopAssets: true,
-            searchFields: [
-                {
-                    "field_name": "provider",
-                    "field_label": "Provider",
-                    "search": false
-                },
-                {
-                    "field_name": "name",
-                    "field_label": "Name",
-                    "search": false
-                },
-                {
-                    "field_name": "version",
-                    "field_label": "Version",
-                    "search": false
-                },
-                {
-                    "field_name": "category",
-                    "field_label": "Category",
-                    "search": false
-                },
-                {
-                    "field_name": "description",
-                    "field_label": "Description",
-                    "search": false
-                }
-            ]
+            searchFields: search.fields()
         },
         topAssets: {
             assets: items,
@@ -111,11 +85,7 @@ var caramel;
             data: store.tags(type)
         },
         recentAssets: recentItems
-
         // type: type,  tag: tag,
-
     });
-
-}());
-
+}, request, response, session);
 %>

@@ -2,8 +2,7 @@
 response.addHeader("Access-Control-Allow-Origin", "*");
 response.addHeader("Content-Type", "application/json");
 
-(function () {
-
+require('/modules/store.js').exec(function (ctx) {
     var elems,
             store = require('/modules/store.js').store(request, session),
             paging = store.assetsPaging(request),
@@ -12,7 +11,7 @@ response.addHeader("Content-Type", "application/json");
             aid = request.getParameter('id');
 
     var isMyAsset = false;
-    if(matcher.match('/{context}/apis/myAsset')){
+    if (matcher.match('/{context}/apis/myAsset')) {
         isMyAsset = true;
         if (!require('store').server.current(session)) {
             response.sendError(401, 'Unauthorized');
@@ -29,7 +28,7 @@ response.addHeader("Content-Type", "application/json");
             print(asset);
             return;
         } else {
-            if(query){
+            if (query) {
                 //request format : GET /store/apis/asset/gadget?query=wso2
                 //                 GET /store/apis/asset/gadget?query=wso2&start=4&count=7
                 print(store.search({
@@ -41,10 +40,10 @@ response.addHeader("Content-Type", "application/json");
                     sort: 'recent'
                 }));
                 return;
-            }else{
+            } else {
                 //request formats: GET /store/apis/asset/gadget?start=4
                 //                 GET /store/apis/asset/gadget?start=4&count=7
-                var assetsFunc = isMyAsset ? store.userAssets : store.assets ;
+                var assetsFunc = isMyAsset ? store.userAssets : store.assets;
                 print(assetsFunc.call(store, type, {
                     start: Number(request.getParameter('start')) || 0,
                     count: Number(request.getParameter('count')) || 50000,
@@ -62,5 +61,6 @@ response.addHeader("Content-Type", "application/json");
         return;
     }
     response.sendError(404, 'API Endpoint Not Found');
-})();
+
+}, request, response, session);
 %>

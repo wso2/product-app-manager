@@ -5,6 +5,7 @@
  Created Date: 26/9/2013
  */
 
+require('/modules/publisher.js').exec(function(ctx) {
 
 /*
  Constant variables used to designate Header parameters
@@ -93,4 +94,5 @@ function handleResourceRequest(matchedElements) {
     }
 }
 
+}, request, response, session);
 %>
