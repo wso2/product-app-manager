@@ -98,15 +98,7 @@ $(function() {
         window.location = url;
     });
 
-	$(".dropdown-menu").niceScroll();
 
-	$(".dropdown-menu").mouseover(function() {
-		$('div[id^="ascrail"]').css('visibility', 'visible');
-		$(".dropdown-menu").getNiceScroll().resize();
-	}).mouseleave(function() {
-		$('div[id^="ascrail"]').css('visibility', 'hidden');
-	});
-	
 	$('.dropdown-toggle').click(function(){
 		window.location = $(this).attr('href');
 	});
