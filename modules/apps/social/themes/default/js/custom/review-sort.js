@@ -37,6 +37,7 @@ var redrawReviews = function (sortBy, callback) {
             }
             $stream.html(str);
             callback && callback();
+            adjustHeight();
         });
     })
 };
