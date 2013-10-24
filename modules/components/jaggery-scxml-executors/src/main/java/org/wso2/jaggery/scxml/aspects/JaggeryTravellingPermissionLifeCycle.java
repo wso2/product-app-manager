@@ -510,7 +510,7 @@ public class JaggeryTravellingPermissionLifeCycle extends Aspect {
             throw new RegistryException(e.getMessage());
         }
         finally{
-           // JaggeryThreadLocalMediator.unset();
+            JaggeryThreadLocalMediator.unset();
         }
     }
 
