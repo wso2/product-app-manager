@@ -18,7 +18,7 @@ var generateLeftNavJson = function(data, listPartial) {
                        },*/
            
             {
-                name : "Add " + currentTypeObj.assetTitle + "",
+                name : "Add " + data.shortName + "",
                 iconClass : "icon-plus-sign-alt",
                 additionalClasses : (listPartial == "add-asset" ) ? "prominent-link" : null,
                 url : "/publisher/asset/" + data.shortName + ""

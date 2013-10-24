@@ -61,7 +61,7 @@ $btn.click(function (e) {
         var type = target.substring(0, pos);
 
 
-        var callback = function () {
+        var addAndRenderNew = function (successCallback) {
             $('#newest').addClass('selected');
             $.get("/store/apis/rate", {
                 id: aid,
@@ -86,20 +86,16 @@ $btn.click(function (e) {
                         usingTemplate(function (template) {
                             var newComment = template(activity);
                             $stream.prepend(newComment);
-                            if (adjustHeight) {
-                                adjustHeight();
-                            }
+                            successCallback && successCallback();
                         });
                     }
                 });
             });
         };
 
-        if ($('#newest').hasClass('selected')) {
-            callback();
-        } else {
-            redrawReviews("bla", callback);
-        }
+        addAndRenderNew(function(){
+            redrawReviews();
+        });
     }
 });
 
