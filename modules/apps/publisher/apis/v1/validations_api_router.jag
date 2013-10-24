@@ -18,11 +18,12 @@ var routeManager = new router.Router();
 var log = new Log();
 
 routeManager.register('GET', 'publisher', '/publisher/api/validations/assets/{type}/{fieldName}/{fieldValue}', function (context) {
-    var shortName = context.params.type;
-    var fieldName = context.params.fieldName;
-    var fieldValue=context.params.fieldValue;
-    var artifactManager = rxtManager.getArtifactManager(shortName);
-	
+    if(context.params){
+      var shortName = context.params.type;
+      var fieldName = context.params.fieldName;
+      var fieldValue=context.params.fieldValue;
+      var artifactManager = rxtManager.getArtifactManager(shortName);
+    }
 	
     try{
 
