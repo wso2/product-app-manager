@@ -48,6 +48,7 @@ import org.wso2.carbon.registry.core.jdbc.handlers.RequestContext;
 import org.wso2.carbon.registry.core.session.CurrentSession;
 import org.wso2.carbon.registry.core.utils.RegistryUtils;
 import org.wso2.carbon.user.core.UserStoreException;
+import org.wso2.jaggery.scxml.threading.JaggeryThreadLocalMediator;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -360,6 +361,7 @@ public class JaggeryTravellingPermissionLifeCycle extends Aspect {
     @Override
     public void invoke(RequestContext requestContext, String action,Map<String,String> parameterMap)
             throws RegistryException {
+        try{
         boolean preserveOldResource = !Boolean.toString(false).equals(parameterMap.remove(
                 "preserveOriginal"));
         Resource resource = requestContext.getResource();
@@ -502,6 +504,13 @@ public class JaggeryTravellingPermissionLifeCycle extends Aspect {
         //        adding the logs to the registry
         if (isAuditEnabled) {
             StatWriter.writeHistory(statCollection);
+        }
+        }catch(RegistryException e){
+            log.error(e);
+            throw new RegistryException(e.getMessage());
+        }
+        finally{
+            JaggeryThreadLocalMediator.unset();
         }
     }
 
