@@ -63,12 +63,11 @@ var caramel;
             server.privileged(function () {
                 //TODO:  move to a module.
                 var tenantDomain = user ? user.tenantDomain : "carbon.super";
-                var showDefaults = (tenantDomain == "carbon.super") ? "OR TENANT IS NULL" : "";
                 var index = 0,maxTry = 0;
                 var getNextassetSet = function(){
                     var db = new Database('SOCIAL_CACHE');
                     var result = db.query("SELECT ID FROM SOCIAL_CACHE WHERE TYPE='" + type.replace(/\W/g, '') + "' AND " +
-                            "(TENANT='" + tenantDomain + "' " + showDefaults + " ) ORDER BY RATING DESC LIMIT " + (paging.start+index) + ",12");
+                            "TENANT='" + tenantDomain + "' ORDER BY RATING DESC LIMIT " + (paging.start+index) + ",12");
                     db.close();
                     index+=12;
                     return result;

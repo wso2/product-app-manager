@@ -167,13 +167,18 @@ var installer = function () {
      */
     function addToSocialCache(asset) {
         if (asset) {
-            var CREATE_QUARY = "CREATE TABLE IF NOT EXISTS SOCIAL_CACHE (id VARCHAR(255) NOT NULL,tenant VARCHAR(255),type VARCHAR(255), " +
+            var domain = "carbon.super";
+
+            var CREATE_QUERY = "CREATE TABLE IF NOT EXISTS SOCIAL_CACHE (id VARCHAR(255) NOT NULL,tenant VARCHAR(255),type VARCHAR(255), " +
                 "body VARCHAR(5000), rating DOUBLE,  PRIMARY KEY ( id ))";
-            var db = new Database("SOCIAL_CACHE");
-            db.query(CREATE_QUARY);
-            var combinedId = asset.type + ':' + asset.id;
-            db.query("MERGE INTO SOCIAL_CACHE (id,type,body,rating) VALUES('" + combinedId + "','" + asset.type + "','',0)");
-            db.close();
+            var server = require('store').server;
+            server.privileged(function () {
+                var db = new Database("SOCIAL_CACHE");
+                db.query(CREATE_QUERY);
+                var combinedId = asset.type + ':' + asset.id;
+                db.query("MERGE INTO SOCIAL_CACHE (id,tenant,type,body,rating) VALUES('" + combinedId + "','" + domain + "','" + asset.type  + "','',0)");
+                db.close();
+            });
         }
     }
 
