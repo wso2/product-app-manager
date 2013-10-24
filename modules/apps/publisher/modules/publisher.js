@@ -418,3 +418,37 @@ var checkIfEmpty = function (object) {
 
     return true;
 };
+
+var exec = function (fn, request, response, session) {
+    var es = require('store'),
+        carbon = require('carbon'),
+        tenant = es.server.tenant(request, session),
+        user = es.server.current(session);
+    if(!user) {
+        response.sendRedirect(401, 'Unauthorized');
+        return;
+    }
+    es.server.sandbox({
+        tenantId: tenant.tenantId,
+        username: user.username
+    }, function () {
+        //var configs = require('/config/publisher.js').config();
+        return fn.call(null, {
+            //tenant: tenant,
+            //server: es.server,
+            //usr: es.user,
+            //user: user,
+            //publisher: require('/modules/publisher.js').publisher(tenant.tenantId, session),
+            //configs: configs,
+            request: request,
+            response: response,
+            session: session,
+            application: application
+            //event: require('/modules/event.js'),
+            //params: request.getAllParameters(),
+            //files: request.getAllFiles(),
+            //matcher: new URIMatcher(request.getRequestURI()),
+            //log: new Log(request.getMappedPath())
+        });
+    });
+};

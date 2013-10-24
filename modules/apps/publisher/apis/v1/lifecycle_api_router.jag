@@ -21,6 +21,8 @@
  Created Date: 6/8/2013
  */
 
+require('/modules/publisher.js').exec(function(ctx) {
+
 var config = require('/config/publisher.json');
 var caramel = require('caramel');
 
@@ -344,5 +346,6 @@ if(passed){
     routeManager.handle(request, response);
 }
 
+}, request, response, session);
 
 %>

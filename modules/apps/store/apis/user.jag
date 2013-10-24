@@ -1,5 +1,5 @@
 <%
-(function () {
+require('/modules/store.js').exec(function (ctx) {
     var action, data, message, exists,
             error = false,
             log = new Log(),
@@ -75,5 +75,5 @@
         return;
     }
     response.sendError(404, 'API Endpoint Not Found');
-}());
+}, request, response, session);
 %>

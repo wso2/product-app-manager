@@ -9,6 +9,8 @@
  Created Date: 3/10/2013
  */
 
+require('/modules/publisher.js').exec(function(ctx) {
+
 var config = require('/config/publisher.json');
 var caramel = require('caramel');
 var utility = require('/modules/utility.js').rxt_utility();
@@ -166,5 +168,7 @@ if (passed) {
     var tagModule = require('/modules/tag.management.js').tagModule();
     routeManager.handle(request, response);
 }
+
+}, request, response, session);
 
 %>

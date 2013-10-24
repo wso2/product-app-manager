@@ -2,7 +2,7 @@
 var log = new Log(),
         matcher = new URIMatcher(request.getRequestURI()),
         method = request.getMethod();
-(function () {
+require('/modules/store.js').exec(function (ctx) {
     var type, elems, assets, asset, azzet, options, man,
             carbon = require('carbon'),
             server = require('store').server,
@@ -64,7 +64,7 @@ var log = new Log(),
             return;
         }
 
-        if(method === 'GET') {
+        if (method === 'GET') {
             assets = man.search({}, { start: start, count: count });
             print(assets);
             return;
@@ -177,5 +177,6 @@ var log = new Log(),
      }*/
     response.status = 404;
     print({ error: 'API Endpoint not found' });
-})();
+
+}, request, response, session);
 %>

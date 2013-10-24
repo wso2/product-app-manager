@@ -137,23 +137,15 @@ var server = {};
     };
 
     server.loadTenant = function (o) {
-        var context, service, ctxs, TenantAxisUtils,
+        var service, ctxs, TenantAxisUtils,
             carbon = require('carbon'),
-            config = server.configs(o.tenantId),
-            PrivilegedCarbonContext = org.wso2.carbon.context.PrivilegedCarbonContext;
+            config = server.configs(o.tenantId);
         //log.info(java.lang.Thread.currentThread().getId() + ' : ' + stringify(o));
         if (o.tenantId == carbon.server.superTenant.tenantId) {
-            context = PrivilegedCarbonContext.getThreadLocalCarbonContext();
-            context.setUsername(o.username);
             if (config[ANONYMOUS_REGISTRY]) {
                 return;
             }
         } else {
-            PrivilegedCarbonContext.startTenantFlow();
-            context = PrivilegedCarbonContext.getThreadLocalCarbonContext();
-            context.setTenantId(o.tenantId);
-            context.setTenantDomain(o.domain);
-            context.setUsername(o.username);
             service = carbon.server.osgiService('org.wso2.carbon.utils.ConfigurationContextService');
             TenantAxisUtils = org.wso2.carbon.core.multitenancy.utils.TenantAxisUtils;
             ctxs = TenantAxisUtils.getTenantConfigurationContexts(service.getServerConfigContext());
@@ -255,17 +247,32 @@ var server = {};
         return server.configs(tenantId)[USER_MANAGER];
     };
 
-    server.privileged = function (fn) {
-        var o, context,
+    server.privileged = function (fn, username) {
+        return server.sandbox({
+            tenantId: require('carbon').server.superTenant.tenantId,
+            username: username
+        }, fn);
+    };
+
+    server.sandbox = function (options, fn) {
+        var context,
+            log = new Log(),
             carbon = require('carbon'),
             PrivilegedCarbonContext = org.wso2.carbon.context.PrivilegedCarbonContext;
         PrivilegedCarbonContext.startTenantFlow();
-        context = PrivilegedCarbonContext.getThreadLocalCarbonContext();
-        context.setTenantDomain(carbon.server.superTenant.domain);
-        context.setTenantId(carbon.server.superTenant.tenantId);
-        o = fn();
-        context.endTenantFlow();
-        return o;
+        log.info('====================================startTenantFlow===================================');
+        try {
+            log.info(options);
+            context = PrivilegedCarbonContext.getThreadLocalCarbonContext();
+            context.setTenantDomain(carbon.server.tenantDomain({
+                tenantId: options.tenantId
+            }));
+            context.setTenantId(options.tenantId);
+            context.setUsername(options.username || null);
+            return fn();
+        } finally {
+            PrivilegedCarbonContext.endTenantFlow();
+            log.info('====================================endTenantFlow===================================');
+        }
     };
 }(server));
-
