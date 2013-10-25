@@ -226,7 +226,7 @@ $(function () {
 
             dataMap.map[key].output = data.join(',');
         }
-        console.log(getOutput(dataMap));
+        //console.log(getOutput(dataMap));
 
     }
 

@@ -138,13 +138,17 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}', functi
 });
 
 routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
-    log.info(">>>>>>>>>>>>>>>>>>>");
-log.info(context.post);
     var shortName = context.params.type;
     var id = context.params.id;
     var msg={};
     var artifactManager = rxtManager.getArtifactManager(shortName);
 
+if(context.post['images_thumbnail'] instanceof Array){
+	context.post['images_thumbnail'] = context.post['images_thumbnail'][0];
+}
+if(context.post['images_banner'] instanceof Array){
+	context.post['images_banner'] = context.post['images_banner'][0];
+}
 
     try {
         var modelA = modelManager.getModel(shortName);
@@ -272,7 +276,7 @@ routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', fu
         var originalArtifact = artifactManager.get(id);
 
         modelA.import('form.importer', context.content);
-
+        
         //Validation requires the lifecycle state
         modelA.set('*.lifecycleState',originalArtifact.lifecycleState);
 

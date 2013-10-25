@@ -91,13 +91,13 @@ $(function() {
 			formData['tags'] = obtainTags();
 	*/
 	
-	var tags = obtainTags();
+	//var tags = JSON.stringify(obtainTags());
 	
 
  var options = { 
        // target:        '#output1',   // target element(s) to be updated with server response 
        // beforeSubmit:  showRequest,  // pre-submit callback 
-       data : tags,
+      // data : {"tags":tags},
         success:       function(response) {
 
 				var result = JSON.parse(response);

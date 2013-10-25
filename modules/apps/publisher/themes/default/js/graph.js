@@ -120,7 +120,7 @@ var graph = (function ($, Raphael) {
     NodeMap.prototype.listEdges = function () {
         for (var edgeIndex in this.edges) {
             var edge = this.edges[edgeIndex];
-            console.log(edge.fromNode + ' -> ' + edge.toNode + ' ' + edge.type);
+            //console.log(edge.fromNode + ' -> ' + edge.toNode + ' ' + edge.type);
         }
     }
 
