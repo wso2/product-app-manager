@@ -169,6 +169,8 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
     var model = modelManager.getModel(shortName);
     var assetCacheManager=new assetCachingModule.AssetCacheManager(session);
 
+//context.post['tag-container'] = ['tag1', 'tag2'];
+
     //Check if the type is valid
     try {
         //assigning default thumbnail and banner if not provided.
@@ -234,7 +236,8 @@ The function is used to add tags to the provided asset id
 function addTags(params,assetId,artifactManager,reg){
 
     //Obtain the tags parameter
-    var tags=params['tags']||[];
+   // var tags=params['tags']||[];
+	 var tags=params['tag-container']||[];
 
     //Only proceed if there are any tags
     if(tags.length==0){
@@ -246,7 +249,8 @@ function addTags(params,assetId,artifactManager,reg){
     var asset=artifactManager.get(assetId);
 
     var path=asset.path;
-
+	tags = tags.split(',');
+	
     //Attach the tags
     reg.tag(path,tags);
 
