@@ -28,8 +28,8 @@ var module=function(){
 
                //Store in the attributes array
                for each(var field in table.fields){
-                    tableName=table.name.toLowerCase();
-                    fieldName=field.name.toLowerCase();
+                    tableName=table.name;
+                    fieldName=field.name;
                     attributes[tableName+'_'+fieldName]=field.value;
                }
            }

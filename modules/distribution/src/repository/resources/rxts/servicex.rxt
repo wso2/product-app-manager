@@ -66,5 +66,39 @@
                 <name>Thumbnail</name>
             </field>
         </table>
+	 <table name="Doc Links" columns="3">
+            <subheading>
+                <heading>Document Type</heading>
+                <heading>URL</heading>
+                <heading>Comment</heading>
+            </subheading>
+            <field type="text">
+                <name label="Document Type">Document Type</name>
+            </field>
+            <field type="text" url="true">
+                <name label="URL">URL</name>
+            </field>
+            <field type="text-area">
+                <name label="Document Comment">Document Comment</name>
+            </field>
+            <field type="text">
+                <name label="Document Type1">Document Type1</name>
+            </field>
+            <field type="text" url="true">
+                <name label="URL1">URL1</name>
+            </field>
+            <field type="text-area">
+                <name label="Document Comment1">Document Comment1</name>
+            </field>
+            <field type="text">
+                <name label="Document Type2">Document Type2</name>
+            </field>
+            <field type="text" url="true">
+                <name label="URL2">URL2</name>
+            </field>
+            <field type="text-area">
+                <name label="Document Comment2">Document Comment2</name>
+            </field>
+        </table>
     </content>
 </artifactType>
