@@ -29,7 +29,7 @@ var graphDataModule=function(){
             for(var transitionIndex in transitions){
 
                 var transition=transitions[transitionIndex];
-                console.log('adding '+transition.target);
+               // console.log('adding '+transition.target);
                 this.map[state.id][transition.target]=1;
                 this.rawMap[state.id][transition.target]=1;
             }
@@ -161,7 +161,7 @@ var graphDataModule=function(){
 
         for(var key in keys){
             var index=keys[key];
-            console.log('indexing '+index);
+            //console.log('indexing '+index);
             findLoop(index,map,new MStack());
         }
 
