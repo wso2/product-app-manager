@@ -359,7 +359,7 @@ var sugyamaModule = function () {
                                          }*/
                   
                    	//
-                     console.log( circle.node)   ;                
+                   //  console.log( circle.node)   ;                
                    // alert(circle.node.setAttribute("class",""));
                     //circle.node.setAttribute('class', element.label);
                     paper.text(element.x, element.y + VERTEX_RADIUS + 10, element.label);
