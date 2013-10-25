@@ -107,7 +107,7 @@
                 <state id="Rejected">
                     <datamodel>
                         <data name="transitionExecution">
-                            <execution forEvent="Submit" class="org.wso2.jaggery.scxml.generic.GenericExecutor">
+                            <execution forEvent="Re-Submit" class="org.wso2.jaggery.scxml.generic.GenericExecutor">
                                 <parameter name="PERMISSION:get"
                                            value="http://www.wso2.org/projects/registry/actions/get"/>
                                 <parameter name="PERMISSION:add"
