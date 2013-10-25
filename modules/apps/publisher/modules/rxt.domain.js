@@ -144,10 +144,10 @@ var rxt_domain=function(){
 	}
 
 	Name.prototype.getLabel=function(){
-		if(this.name==''){
-			return this.label;
+		if(this.label==''){
+			return this.name;
 		}
-		return this.name;
+		return this.label;
 	}
 
 	/*
