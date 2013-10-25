@@ -2,7 +2,7 @@ var resources = function(page, meta) {
 	var log = new Log('edit-asset');
 	log.debug('resource called');
 	return {
-		js : ['edit.asset.js', '/logic/asset.tag.edit.js', 'bootstrap-select.min.js'],
+		js : ['edit.asset.js', '/logic/asset.tag.edit.js', 'bootstrap-select.min.js','options.text.js'],
 		css : ['bootstrap-select.min.css']
 	};
 

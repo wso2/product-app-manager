@@ -1,5 +1,5 @@
 <%
-var e = session.get('error') || {};
+var e = request.getParameter('authFailure');
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,12 +50,11 @@ var e = session.get('error') || {};
 									<div class="span6">
 										<form id="loginForm" action="/admin/commonauth" method="POST" >
 									        <h2 class="form-signin-heading">Sign in</h2>
-									        <% if(e.error && e.type == 'loginError'){ %>
-									            <div class="alert alert-error"><%= e.msg %></div>
+									        <% if(e){ %>
+									            <div class="alert alert-error">Username or password is invalid</div>
 									        <%
-    e = {};
-    session.put('error', {});
-}%>
+
+                                            }%>
 									        <div class="control"><label>Username</label><input id="username" name="username" type="text" class="input-block-level"></div>
 									        <div class="control"><label>Password</label><input id="password" name="password" type="password" class="input-block-level"></div>
 									        <label class="checkbox lblRemember">
