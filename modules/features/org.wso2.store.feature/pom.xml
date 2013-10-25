@@ -84,9 +84,9 @@
                                 <!--<bundleDef>org.wso2.carbon:org.wso2.carbon.hostobjects.sso</bundleDef>-->
                                 <bundleDef>org.wso2.store:org.wso2.store.sso.common</bundleDef>
                                 <bundleDef>org.wso2.store:org.wso2.store.admin.styles</bundleDef>
-                                <bundleDef>org.wso2.carbon:org.wso2.carbon.social:4.2.0</bundleDef>
+                                <bundleDef>org.wso2.store:org.wso2.carbon.social:4.2.0</bundleDef>
                                 <bundleDef>org.wso2.carbon:org.wso2.carbon.databridge.datasink.cassandra</bundleDef>
-				<bundleDef>org.wso2.jaggery.scxml:jaggery-scxml-executors:1.0</bundleDef>
+				<bundleDef>org.wso2.store:jaggery-scxml-executors:1.0</bundleDef>
                             </bundles>
                             <importBundles>
                             </importBundles>
