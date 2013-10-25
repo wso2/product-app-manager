@@ -7,7 +7,7 @@
 var validatorModule = function () {
 
     var log = new Log('published.state.validator');
-    var LOCKED_STATES = ['Published','In-Review'];
+    var LOCKED_STATES = ['Published'];
 
 
     /*
