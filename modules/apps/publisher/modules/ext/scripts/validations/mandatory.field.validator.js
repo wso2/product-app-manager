@@ -70,7 +70,7 @@ var validatorModule = function () {
      */
     function handleField(field, tableName, model, report) {
     	
-    	log.info('field inspected: '+field.name+' value= '+field.value);
+    	//log.info('field inspected: '+field.name+' value= '+field.value);
     	
         var isRequired = field.required || false;
 
@@ -81,7 +81,7 @@ var validatorModule = function () {
             //Get the value of the field from the model
             var fieldInstance = model.get(tableName + '.' + field.name);
             
-            log.info(fieldInstance);
+            //log.info(fieldInstance);
 
             if(!fieldInstance){
                 report.record(field.name,'Mandatory field '+field.name+' is not present.');

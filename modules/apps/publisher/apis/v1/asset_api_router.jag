@@ -138,8 +138,6 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}', functi
 });
 
 routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
-    log.info(")))))>>>>");
-log.info(context.post);
     var shortName = context.params.type;
     var id = context.params.id;
     var msg={};
@@ -212,7 +210,7 @@ if(context.post['images_banner'] instanceof Array){
         print(msg);
 
     } catch (e) {
-        log.info('The asset ' + id + ' could not be updated.The following exception was thrown: ' + e);
+        log.debug('The asset ' + id + ' could not be updated.The following exception was thrown: ' + e);
         response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
     }
 });
