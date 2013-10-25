@@ -29,7 +29,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.wso2.store.feature</artifactId>
     <packaging>pom</packaging>
-    <name>>WSO2 Enterprise Store feature</name>
+    <name>WSO2 Enterprise Store feature</name>
     <url>http://wso2.org</url>
 
     <dependencies>
@@ -86,7 +86,7 @@
                                 <bundleDef>org.wso2.store:org.wso2.store.admin.styles</bundleDef>
                                 <bundleDef>org.wso2.carbon:org.wso2.carbon.social:4.2.0</bundleDef>
                                 <bundleDef>org.wso2.carbon:org.wso2.carbon.databridge.datasink.cassandra</bundleDef>
-				<bundleDef>org.wso2.jaggery.scxml:jaggery-scxml-executors:1.0-SNAPSHOT</bundleDef>
+				<bundleDef>org.wso2.jaggery.scxml:jaggery-scxml-executors:1.0</bundleDef>
                             </bundles>
                             <importBundles>
                             </importBundles>

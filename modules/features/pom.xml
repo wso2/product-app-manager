@@ -31,7 +31,7 @@
     <artifactId>wso2store-features</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
-    <name>>WSO2 Enterprise Store Features</name>
+    <name>WSO2 Enterprise Store Features</name>
     <url>http://wso2.org</url>
 
     <modules>

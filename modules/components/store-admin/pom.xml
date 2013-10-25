@@ -29,7 +29,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.wso2.store.admin.styles</artifactId>
     <packaging>bundle</packaging>
-    <name>>WSO2 Enterprise Store - UI styles</name>
+    <name>WSO2 Enterprise Store - UI styles</name>
     <url>http://wso2.org</url>
 
     <build>
