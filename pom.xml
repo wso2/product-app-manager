@@ -108,7 +108,7 @@
         <maven-project-info-report-plugin.version>2.4</maven-project-info-report-plugin.version>
         <maven-buildnumber-plugin.version>1.1</maven-buildnumber-plugin.version>
         <maven-dependency-plugin.version>2.4</maven-dependency-plugin.version>
-        <caramel.feature.version>1.0.0-SNAPSHOT</caramel.feature.version>
+        <caramel.feature.version>1.0.0</caramel.feature.version>
 		<wso2.slf4j.version>1.5.10.wso2v1</wso2.slf4j.version>
 		<sso.hostobjects.version>1.0.1</sso.hostobjects.version>
 
