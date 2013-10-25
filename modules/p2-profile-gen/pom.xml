@@ -194,38 +194,6 @@
                                     org.wso2.carbon:org.wso2.carbon.governance.lifecycle.management.feature:${carbon.platform.version}
                                 </featureArtifactDef>
 
-                                <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.event.input.adaptor.feature:${cep.component.version}
-                                </featureArtifactDef>
-
-                                <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.event.builder.feature:${cep.component.version}
-                                </featureArtifactDef>
-
-                                <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.event.statistics.feature:${cep.component.version}
-                                </featureArtifactDef>
-
-                                <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.event.output.adaptor.feature:${cep.component.version}
-                                </featureArtifactDef>
-
-                                <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.event.formatter.feature:${cep.component.version}
-                                </featureArtifactDef>
-
-                                <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.event.processor.feature:${cep.component.version}
-                                </featureArtifactDef>
-
-                                <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.event.tracer.feature:${cep.component.version}
-                                </featureArtifactDef>
-
-                                <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.event.stream.manager.feature:${cep.component.version}
-                                </featureArtifactDef>
-
                             </featureArtifacts>
 
                         </configuration>
@@ -384,45 +352,6 @@
                                     <version>${patch.version.421}</version>
                                 </feature>
 
-                                <feature>
-                                    <id>org.wso2.carbon.event.input.adaptor.feature.group</id>
-                                    <version>${cep.component.version}</version>
-                                </feature>
-
-                                <feature>
-                                    <id>org.wso2.carbon.event.builder.feature.group</id>
-                                    <version>${cep.component.version}</version>
-                                </feature>
-
-                                <feature>
-                                    <id>org.wso2.carbon.event.statistics.feature.group</id>
-                                    <version>${cep.component.version}</version>
-                                </feature>
-
-                                <feature>
-                                    <id>org.wso2.carbon.event.output.adaptor.feature.group</id>
-                                    <version>${cep.component.version}</version>
-                                </feature>
-
-                                <feature>
-                                    <id>org.wso2.carbon.event.formatter.feature.group</id>
-                                    <version>${cep.component.version}</version>
-                                </feature>
-
-                                <feature>
-                                    <id>org.wso2.carbon.event.processor.feature.group</id>
-                                    <version>${cep.component.version}</version>
-                                </feature>
-
-                                <feature>
-                                    <id>org.wso2.carbon.event.tracer.feature.group</id>
-                                    <version>${cep.component.version}</version>
-                                </feature>
-
-                                <feature>
-                                    <id>org.wso2.carbon.event.stream.manager.feature.group</id>
-                                    <version>${cep.component.version}</version>
-                                </feature>
                             </features>
 
 

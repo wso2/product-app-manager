@@ -64,6 +64,16 @@
         </pluginRepository>
     </pluginRepositories>
 
+    <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
+                <version>2.1</version>
+            </extension>
+        </extensions>
+    </build>
+
     <modules>
         <module>modules/components/store-admin</module>
         <module>modules/components/jaggery-scxml-executors</module>
@@ -119,4 +129,16 @@
         <cep.component.version>1.0.0</cep.component.version>
     </properties>
 
+    <distributionManagement>
+        <repository>
+            <id>wso2-maven2-repository</id>
+            <name>WSO2 Maven2 Repository</name>
+            <url>scp://dist.wso2.org/home/httpd/dist.wso2.org/maven2/</url>
+        </repository>
+        <snapshotRepository>
+            <id>wso2-maven2-snapshot-repository</id>
+            <name>WSO2 Maven2 Snapshot Repository</name>
+            <url>scp://dist.wso2.org/home/httpd/dist.wso2.org/snapshots/maven2/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
