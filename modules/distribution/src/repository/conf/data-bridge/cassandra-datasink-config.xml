@@ -14,6 +14,9 @@
   ~ limitations under the License.
   -->
 
-<cassandraDataSinkConfiguration xmlns="http://wso2.org/carbon/cassandraDataSink">
-    <validStreams>*</validStreams>
-</cassandraDataSinkConfiguration>
+<CassandraDataSinkConfiguration xmlns="http://wso2.org/carbon/cassandraDataSink">
+    <PersistedStreams>
+        <Include>*</Include>
+        <Exclude>rt_*</Exclude>
+    </PersistedStreams>
+</CassandraDataSinkConfiguration>
