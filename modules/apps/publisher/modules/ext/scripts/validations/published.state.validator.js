@@ -7,7 +7,8 @@
 var validatorModule = function () {
 
     var log = new Log('published.state.validator');
-    var STATE_PUBLISHED = 'Published';
+    var LOCKED_STATES = ['Published','In-Review'];
+
 
     /*
     The function checks if the validator can execute,It can execute if the model and templates are present.
@@ -36,14 +37,33 @@ var validatorModule = function () {
         var stateField = model.get('*.lifecycleState') || null;
         var state = stateField ? stateField.value : '';
 
+
         //Check if the state is the same
-        if (state == STATE_PUBLISHED) {
+        if (isPresent(LOCKED_STATES,state)) {
 
             report.record('lifecycleState', 'Edit operations have been disabled in this state.');
         }
 
         return true;
 
+    }
+
+    /*
+    The function checks if the given state is present in the provided array
+    @states: a list of states to be checked against
+    @return:True if the state is present,else false
+     */
+    function isPresent(states,state){
+        var item;
+
+        for(var index in states){
+            item=states[index];
+
+            if(item==state){
+                return true;
+            }
+        }
+        return false;
     }
 
     return{
