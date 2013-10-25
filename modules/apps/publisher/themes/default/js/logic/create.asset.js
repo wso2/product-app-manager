@@ -88,6 +88,10 @@ $(function() {
 		//Append the tags to the form data
 		formData.append('tags', obtainTags());
 
+        var optionTexts=optionText.getOutput();
+
+        fillOptionTextFields(formData,optionTexts);
+
 		$.ajax({
 			url : '/publisher/asset/' + type,
 			type : 'POST',
@@ -117,6 +121,17 @@ $(function() {
 		//$.post('/publisher/asset/'+type, data);
 
 	});
+
+    function fillOptionTextFields(formData,data){
+        var item;
+
+        //Go through each entry in the data array and fill the form
+        for(var index in data){
+           item=data[index];
+
+           formData.append(item.fieldName,item.data);
+        }
+    }
 
 	$('#overview_description').keyup(function() {
 		var self = $(this), length = self.val().length, left = DESC_MAX_CHARS - length, temp;

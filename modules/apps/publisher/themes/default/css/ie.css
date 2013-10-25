@@ -1,0 +1,13 @@
+input, #search-button{
+    padding:0 !important;
+}
+
+a{
+    border:none !important;
+}
+
+#container-header .row, #container-header .navbar-inner {
+    background-color: transparent;
+}
+
+
