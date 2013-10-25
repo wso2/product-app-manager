@@ -47,6 +47,20 @@
                 </values>
             </field>
         </table>
+ 	<table name="Contacts">
+            <subheading>
+                <heading>Contact Type</heading>
+                <heading>Contact Name/Organization Name</heading>
+            </subheading>
+            <field type="option-text" maxoccurs="unbounded">
+                <name label="Contact">Contact</name>
+                <values>
+                    <value>None</value>
+                    <value>Technical Owner</value>
+                    <value>Business Owner</value>
+                </values>
+            </field>
+        </table>
         <table name="Images">
             <field type="text" required="true">
                 <name>Thumbnail</name>

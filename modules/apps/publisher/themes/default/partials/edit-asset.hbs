@@ -58,7 +58,10 @@
                                         </div>
                                     {{/if}}
                                 {{/if}}
-                                
+
+                                {{#if this.isOptionsText}}
+                                    <div id="{{this.name}}" class="options-text" data-add-button="Add {{this.label}}" data-selected="{{this.value}}" data-options="{{this.valueList}}" ></div>
+                                {{/if}}
                                
                                 {{#if this.isRequired}}
 								<span class="label-required">*</span>
