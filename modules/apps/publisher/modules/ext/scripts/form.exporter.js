@@ -42,6 +42,7 @@ var module=function(){
 			data['isTextBox']=(fieldTemplate.type=='text')?true:false;
 			data['isTextArea']=(fieldTemplate.type=='text-area')?true:false;
 			data['isOptions']=(fieldTemplate.type=='options')?true:false;
+            data['isOptionsText']=(fieldTemplate.type=='option-text')?true:false;
 
             data['isReadOnly']=(fieldTemplate.meta.readOnly)?fieldTemplate.meta.readOnly:false;
             data['isEditable']=(fieldTemplate.meta.editable)?fieldTemplate.meta.editable:false;
