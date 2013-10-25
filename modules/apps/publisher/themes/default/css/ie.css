@@ -11,3 +11,14 @@ a{
 }
 
 
+
+input[type="file"] {
+    display: inline-block;
+   float:left;
+   width:410px;
+}
+
+.txt-filepath, .btn-upload{
+    display: none !important;
+}
+

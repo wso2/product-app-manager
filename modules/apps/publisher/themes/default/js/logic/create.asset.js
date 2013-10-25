@@ -71,35 +71,34 @@ $(function() {
 
 	});
 
+
 	$('#btn-create-asset').on('click', function(e) {
 		e.preventDefault();
 
+	/*
 		var fields = $('#form-asset-create :input');
-		var data = {};
-		var formData = new FormData();
-		fields.each(function() {
-			if (this.type != 'button') {
-				//console.log(this.value);
-				data[this.id] = this.value;
-				formData = fillForm(this, formData);
-			}
-		});
+			var data = {};
+			var formData = {};
+			fields.each(function() {
+				if (this.type != 'button') {
+					//console.log(this.value);
+					data[this.id] = this.value;
+					formData = fillForm(this, formData);
+				}
+			});
+	
+			//Append the tags to the form data
+			formData['tags'] = obtainTags();
+	*/
+	
+	var tags = obtainTags();
+	
 
-		//Append the tags to the form data
-		formData.append('tags', obtainTags());
-
-        var optionTexts=optionText.getOutput();
-
-        fillOptionTextFields(formData,optionTexts);
-
-		$.ajax({
-			url : '/publisher/asset/' + type,
-			type : 'POST',
-			data : formData,
-			cache : false,
-			contentType : false,
-			processData : false,
-			success : function(response) {
+ var options = { 
+       // target:        '#output1',   // target element(s) to be updated with server response 
+       // beforeSubmit:  showRequest,  // pre-submit callback 
+       data : tags,
+        success:       function(response) {
 
 				var result = JSON.parse(response);
 
@@ -112,26 +111,58 @@ $(function() {
 					showAlert(msg, 'error');
 				}
 
-			},
-			error : function(response) {
-				showAlert('Failed to add asset.', 'error');
-			}
-		});
+			},  // post-submit callback 
+ 		
+		 error : function(response) {
+						 showAlert('Failed to add asset.', 'error');
+				 },
+		 
+        // other available options: 
+        url:       '/publisher/asset/' + type,         // override for form's 'action' attribute 
+        type : 'POST'      // 'get' or 'post', override for form's 'method' attribute 
+        //dataType:  null        // 'xml', 'script', or 'json' (expected server response type) 
+        //clearForm: true        // clear all form fields after successful submit 
+        //resetForm: true        // reset the form after successful submit 
+ 
+        // $.ajax options can be used here too, for example: 
+        //timeout:   3000 
+    }; 
+    
+    
+
+$('#form-asset-create').ajaxSubmit(options); 
+
+
+
+
+		/*
+		$.ajax({
+					url : '/publisher/asset/' + type,
+					type : 'POST',
+					data : formData,
+					success : function(response) {
+		
+						var result = JSON.parse(response);
+		
+						//Check if the asset was added
+						if (result.ok) {
+							showAlert('Asset added successfully.', 'success');
+							//window.location = '/publisher/assets/' + type + '/';
+						} else {
+							var msg = processErrorReport(result.report);
+							showAlert(msg, 'error');
+						}
+		
+					},
+					error : function(response) {
+						showAlert('Failed to add asset.', 'error');
+					}
+				});*/
+		
 
 		//$.post('/publisher/asset/'+type, data);
 
 	});
-
-    function fillOptionTextFields(formData,data){
-        var item;
-
-        //Go through each entry in the data array and fill the form
-        for(var index in data){
-           item=data[index];
-
-           formData.append(item.fieldName,item.data);
-        }
-    }
 
 	$('#overview_description').keyup(function() {
 		var self = $(this), length = self.val().length, left = DESC_MAX_CHARS - length, temp;
@@ -174,9 +205,9 @@ $(function() {
 
 		if (fieldType == 'file') {
 			console.log('added ' + field.id + ' file.');
-			formData.append(field.id, field.files[0]);
+			formData[field.id] = field.files[0];
 		} else {
-			formData.append(field.id, field.value);
+			formData[field.id] = field.value;
 		}
 
 		return formData;

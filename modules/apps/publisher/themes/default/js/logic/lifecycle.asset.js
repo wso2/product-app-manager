@@ -141,8 +141,9 @@ $(function() {
 	 The function builds the LC graph
 	 */
 	function buildLCGraph() {
+		//alert(id);
 		$.ajax({
-			url : '/publisher/api/lifecycle/' + asset + '/' + id,
+			url : '/publisher/api/lifecycle/' + asset + '/' + id + '?t=' + new Date().getTime(),
 			type : 'GET',
 			success : function(response) {
 				var element = $('#canvas');
@@ -263,6 +264,7 @@ $(function() {
 				if (isClickable(thisState)) {
 					//console.log(getAction(thisState));
 					var action = getAction(thisState);
+					//alert(action);
 					buttonClickLogic(action);
 				} else {
 					showAlert('Invalid operation', 'error');
@@ -409,6 +411,7 @@ $(function() {
 	}
 
 	function highlightTransition(state) {
+		//alert(state);
 		//console.log(state);
 		//var elem = $('#' + state);
 		//elem.attr('class', 'LCsel');

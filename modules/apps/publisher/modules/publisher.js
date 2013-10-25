@@ -425,7 +425,7 @@ var exec = function (fn, request, response, session) {
         tenant = es.server.tenant(request, session),
         user = es.server.current(session);
     if(!user) {
-        response.sendRedirect(401, 'Unauthorized');
+        response.sendError(401, 'Unauthorized');
         return;
     }
     es.server.sandbox({

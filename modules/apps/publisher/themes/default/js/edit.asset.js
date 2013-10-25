@@ -15,69 +15,113 @@ $(function () {
     $('#overview_description').after('<span class="span8 '+CHARS_REM+'"></span>');
 
     $('#editAssetButton').on('click', function () {
+       
         var data = {};
-        var formData=new FormData();
+               //var formData=new FormData();
+       
+               //Obtain the current url
+               var url=window.location.pathname;
+       
+               //The type of asset
+               var type=$('#meta-asset-type').val();
+       
+       
+               //The id
+               //Break the url into components
+               var comps=url.split('/');
+       
+               //Given a url of the form /pub/api/asset/{asset-type}/{asset-id}
+               //length=5
+               //then: length-2 = {asset-type} length-1 = {asset-id}
+               var id=comps[comps.length-1];
+       
+               //Extract the fields
+               var fields = $('#form-asset-edit :input');
+       
+               //Create the data object which will be sent to the server
+             /*
+               fields.each(function () {
+                    
+                                if ((this.type != 'button')&&(this.type!='reset')&&(this.type!='hidden')) {
+                                    data[this.id] = this.value;
+                                    formData=fillForm(this,formData);
+                                }
+                            });*/
+             
+       
+              // console.log(JSON.stringify(formData));
+       
+               var url='/publisher/api/asset/'+type+'/'+id;
+      
+       /*
+               //Make an AJAX call to edit the asset
+               $.ajax({
+                   url:url,
+                   type:'POST',
+                   data:formData,
+                   cache:false,
+                   contentType:false,
+                   processData:false,
+                   success:function(response){
+       
+                       var result=JSON.parse(response);
+       
+       
+                       if(result.ok){
+                           var asset=result.asset;
+                           createMessage(MSG_CONTAINER,SUCCESS_CSS,'Asset updated successfully');
+                           updateFileFields(asset);
+                       }
+                       else{
+                           var report=processErrorReport(result.report);
+                           createMessage(MSG_CONTAINER,ERROR_CSS,report);
+                       }
+       
+                   },
+                   error:function(response){
+                       createMessage(MSG_CONTAINER,ERROR_CSS,'Asset was not updated successfully.');
+                   }
+               })*/
+       
+       var options = { 
+       // target:        '#output1',   // target element(s) to be updated with server response 
+       // beforeSubmit:  showRequest,  // pre-submit callback 
+       // data : formData,
+      success:function(response){
+       
+                       var result=JSON.parse(response);
+       
+       
+                       if(result.ok){
+                           var asset=result.asset;
+                           createMessage(MSG_CONTAINER,SUCCESS_CSS,'Asset updated successfully');
+                           updateFileFields(asset);
+                       }
+                       else{
+                           var report=processErrorReport(result.report);
+                           createMessage(MSG_CONTAINER,ERROR_CSS,report);
+                       }
+       
+                   },
+                   error:function(response){
+                       createMessage(MSG_CONTAINER,ERROR_CSS,'Asset was not updated successfully.');
+                   },
+		 
+        // other available options: 
+        url:    url,         // override for form's 'action' attribute 
+        type : 'POST'      // 'get' or 'post', override for form's 'method' attribute 
+        //dataType:  null        // 'xml', 'script', or 'json' (expected server response type) 
+        //clearForm: true        // clear all form fields after successful submit 
+        //resetForm: true        // reset the form after successful submit 
+ 
+        // $.ajax options can be used here too, for example: 
+        //timeout:   3000 
+    }; 
+    
+    
 
-        //Obtain the current url
-        var url=window.location.pathname;
+		$('#form-asset-edit').ajaxSubmit(options); 
 
-        //The type of asset
-        var type=$('#meta-asset-type').val();
-
-
-        //The id
-        //Break the url into components
-        var comps=url.split('/');
-
-        //Given a url of the form /pub/api/asset/{asset-type}/{asset-id}
-        //length=5
-        //then: length-2 = {asset-type} length-1 = {asset-id}
-        var id=comps[comps.length-1];
-
-        //Extract the fields
-        var fields = $('#form-asset-edit :input');
-
-        //Create the data object which will be sent to the server
-        fields.each(function () {
-
-            if ((this.type != 'button')&&(this.type!='reset')&&(this.type!='hidden')) {
-                data[this.id] = this.value;
-                formData=fillForm(this,formData);
-            }
-        });
-
-        console.log(JSON.stringify(formData));
-
-        var url='/publisher/api/asset/'+type+'/'+id;
-
-        //Make an AJAX call to edit the asset
-        $.ajax({
-            url:url,
-            type:'POST',
-            data:formData,
-            cache:false,
-            contentType:false,
-            processData:false,
-            success:function(response){
-
-                var result=JSON.parse(response);
-
-
-                if(result.ok){
-                    var asset=result.asset;
-                    createMessage(MSG_CONTAINER,SUCCESS_CSS,'Asset updated successfully');
-                    updateFileFields(asset);
-                }
-                else{
-                    var report=processErrorReport(result.report);
-                    createMessage(MSG_CONTAINER,ERROR_CSS,report);
-                }
-
-            },
-            error:function(response){
-                createMessage(MSG_CONTAINER,ERROR_CSS,'Asset was not updated successfully.');
-            }
-        })
 
     });
     

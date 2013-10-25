@@ -138,6 +138,8 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}', functi
 });
 
 routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
+    log.info(">>>>>>>>>>>>>>>>>>>");
+log.info(context.post);
     var shortName = context.params.type;
     var id = context.params.id;
     var msg={};

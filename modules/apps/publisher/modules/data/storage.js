@@ -107,7 +107,7 @@ var storageModule = function () {
 
         //Obtain a resource model
         var resource = this.modelManager.get('Resource');
-
+		var fileName;
         //value should contain the file path and content type
         var file;
 
@@ -132,10 +132,68 @@ var storageModule = function () {
 
         //Save the resource
         resource.save();
+        
+        //log.info(file.getPath());
+        
+        //log.info(file.getName());
+        fileName=parseFileName(file.getName());
 
-        return resource.uuid+'/'+file.getName();
+        return resource.uuid+'/'+fileName;
     };
 
+
+var FIRST_ELEMENT=0;
+var WINDOWS_SPLITTER='\\';
+
+/*
+The function accepts a file path and extracts the name.It can process upload file paths
+sent from IE and other browsers
+ */
+function parseFileName(url){
+    var fileName=determineOS(url);
+    //log.info('file name:'+fileName);
+    return fileName;
+}
+
+/*
+The function determines the type of OS which the file path originates
+@path: The path to be processed
+@return: The extracted file name
+ */
+function determineOS(path){
+    var components=path.split('\\');
+
+    if(components.length>1){
+        return obtainFromWindowsPath(components);
+    }
+    return obtainFromOtherOSPath(path);
+}
+
+/*
+The function obtains a windows path
+@path: The  to be processed
+@return: The extracted file name
+ */
+function obtainFromWindowsPath(path){
+	//log.info('windows path:'+fileName);
+   var fileName=path[path.length-1];
+   return fileName;
+}
+
+/*
+The function is used to extract a file name from a non windows path
+@path: The path to be processed
+@return: The extracted file name
+ */
+	function obtainFromOtherOSPath(path){
+	   var comps=path.split('/');
+	   //log.info('other os: '+comps);
+	
+	   if(comps.length<=1){
+	       return comps[FIRST_ELEMENT];
+	   }
+	   return comps[comps.length-1];
+	}
     /*
      The function returns a url to the provided key
      @key: The key by which to search

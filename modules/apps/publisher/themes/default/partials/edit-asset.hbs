@@ -16,16 +16,16 @@
 						<div class="control-group">
 							<b><label class="control-label">{{this.label}}:</label></b>
 							<div class="controls">
-
+								
 								{{#if this.isOptions}}							
-                                    <select id="{{this.name}}" class="span8 selectpicker">
+                                    <select id="{{this.name}}" class="span8 selectpicker" name='{{this.name}}'>
                                     {{#each ../../categorySelect}}
                                         <option {{#if this.sel}}selected{{/if}}>{{this.cat}}</option>
                                     {{/each}}
                                     </select>
                                 {{else}}
                                 	 {{#if this.isTextArea}}
-                                    	<textarea id='{{this.name}}' class="span8">{{this.value}}</textarea>
+                                    	<textarea id='{{this.name}}' class="span8" name='{{this.name}}'>{{this.value}}</textarea>
                                		 {{/if}}
                                      {{#if this.isTextBox}}
                                 		<input id='{{this.name}}' name='{{this.name}}' type='text'  class="span8" value='{{this.value}}' {{#unless isEditable}} disabled="true" {{/unless}} {{#if this.isRequired}} required{{/if}}/>
@@ -47,7 +47,7 @@
                                            						</td>
                                            						<td width="25%">
                                            							<button class="btn btn-upload">Browse</button>
-                                                                    <input id='{{this.name}}' type='file'/>
+                                                                    <input id='{{this.name}}' type='file' name='{{this.name}}'/>
                                            						</td>
                                            					</tr>
                                            				</table>
@@ -60,7 +60,7 @@
                                 {{/if}}
 
                                 {{#if this.isOptionsText}}
-                                    <div id="{{this.name}}" class="options-text" data-add-button="Add {{this.label}}" data-selected="{{this.value}}" data-options="{{this.valueList}}" ></div>
+                                    <div id="{{this.name}}" name='{{this.name}}' class="options-text" data-add-button="Add {{this.label}}" data-selected="{{this.value}}" data-options="{{this.valueList}}" ></div>
                                 {{/if}}
                                
                                 {{#if this.isRequired}}
@@ -73,7 +73,7 @@
 						<div class="control-group">
 							<b><label class="control-label">Tags: </label></b>
 							<div class="controls">
-								<input type='text' id='tag-test'>
+								<input type='text' id='tag-test' name='tags'>
 							</div>
 						</div>
 

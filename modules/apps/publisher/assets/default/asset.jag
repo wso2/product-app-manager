@@ -164,7 +164,6 @@ routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/
 });
 
 routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (context) {
-
     var shortName = context.params.type;
     var artifactManager = rxtManager.getArtifactManager(shortName);
     var model = modelManager.getModel(shortName);
@@ -187,6 +186,7 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
 
 
         //Perform validation on the model
+
         var report=model.validate();
 
         if((report)&&(report.failed)){
@@ -194,6 +194,7 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
             print({ok:false,message:'Validation failure',report:report});
             return;
         }
+
 
         //log.debug(context.post);
 
@@ -265,7 +266,7 @@ function inspectFiles(req, params) {
     var uuid = '';
     var extension;
 
-    log.debug(storageConfig.dataSource);
+    //log.info(storageConfig.dataSource);
 
     var storageManager = new storageModule.StorageManager({
         context: 'storage',
@@ -280,7 +281,7 @@ function inspectFiles(req, params) {
 
         file = files[index];
 
-        log.debug('file: ' + index);
+        //log.debug('file: ' + index);
 
         //Put the file in storage and get a uuid as a reference
         var resource = {};
@@ -290,7 +291,7 @@ function inspectFiles(req, params) {
 
         uuid=storageManager.put(resource);
 
-        log.debug('uuid added: '+uuid);
+        //log.info('uuid added: '+uuid);
 
         //Add a new  entry into the POST parameters containing the uuid
         params[index] = uuid;
