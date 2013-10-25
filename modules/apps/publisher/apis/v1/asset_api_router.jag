@@ -145,6 +145,12 @@ log.info(context.post);
     var msg={};
     var artifactManager = rxtManager.getArtifactManager(shortName);
 
+if(context.post['images_thumbnail'] instanceof Array){
+	context.post['images_thumbnail'] = context.post['images_thumbnail'][0];
+}
+if(context.post['images_banner'] instanceof Array){
+	context.post['images_banner'] = context.post['images_banner'][0];
+}
 
     try {
         var modelA = modelManager.getModel(shortName);

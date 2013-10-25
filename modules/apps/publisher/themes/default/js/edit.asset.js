@@ -87,6 +87,30 @@ $(function () {
        // target:        '#output1',   // target element(s) to be updated with server response 
        // beforeSubmit:  showRequest,  // pre-submit callback 
        // data : formData,
+       beforeSubmit: function(arr, $form, options) { 
+    // The array of form data takes the following form: 
+    // [ { name: 'username', value: 'jresig' }, { name: 'password', value: 'secret' } ] 
+    // console.log(arr);
+    // return false to cancel submit   
+    
+    for(var i in arr){
+    	
+    	if(arr[i].type == 'file' && arr[i].value == ''){
+    		arr[i].value = $('#' + arr[i].name);
+    	}
+    }       
+   /*
+    if(arr[7].value == ''){
+           arr[7].value = arr[6].value;
+       }
+       
+       if(arr[9].value == ''){
+           arr[9].value = arr[8].value;
+       }*/
+   
+    
+    //fillForm()        
+},
       success:function(response){
        
                        var result=JSON.parse(response);
@@ -189,15 +213,15 @@ $(function () {
         if (fieldType == 'file') {
             //Only add the file if the user has selected a new file
             if(field.files[0]){
-                formData.append(field.id, field.files[0]);
+                formData[field.id] = field.files[0];
             }
             else{
                 //Locate the existing url from the preview label
                 var existingUrl=$('#preview-'+field.id).html();
-                formData.append(field.id,existingUrl);
+                formData[field.id] = existingUrl;
             }
         } else {
-            formData.append(field.id, field.value);
+            formData[field.id] = field.value;
         }
 
         return formData;

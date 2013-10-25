@@ -105,7 +105,7 @@ $(function() {
 				//Check if the asset was added
 				if (result.ok) {
 					showAlert('Asset added successfully.', 'success');
-					//window.location = '/publisher/assets/' + type + '/';
+					window.location = '/publisher/assets/' + type + '/';
 				} else {
 					var msg = processErrorReport(result.report);
 					showAlert(msg, 'error');
