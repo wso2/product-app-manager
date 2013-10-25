@@ -70,8 +70,7 @@ var validatorModule = function () {
      */
     function handleField(field, tableName, model, report) {
     	
-    	log.info('field inspected: '+field.name+' value= '+field.value);
-    	
+
         var isRequired = field.required || false;
 
         //Check if the field is required
