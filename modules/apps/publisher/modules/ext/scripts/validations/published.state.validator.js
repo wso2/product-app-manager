@@ -1,5 +1,5 @@
 /*
- Description: The validator prevents edits from occuring to assets in the Published state. It checks the state of
+ Description: The validator prevents edits from occuring to assets in the Published state only. It checks the state of
  the asset if it is present for the Published state.
  Filename: published.state.validator.js
  Created Date: 17/10/2013
@@ -7,7 +7,7 @@
 var validatorModule = function () {
 
     var log = new Log('published.state.validator');
-    var LOCKED_STATES = ['Published','In-Review'];
+    var LOCKED_STATES = ['Published','Approved'];
 
 
     /*
