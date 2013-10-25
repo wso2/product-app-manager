@@ -188,15 +188,6 @@
                                     org.wso2.carbon:org.wso2.carbon.event.feature:${patch.version.421}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.event.input.adaptor.feature:${cep.component.version}
-                                </featureArtifactDef>
-                                <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.event.builder.feature:${cep.component.version}
-                                </featureArtifactDef>
-                                <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.event.statistics.feature:${cep.component.version}
-                                </featureArtifactDef>
-                                <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.registry.ws.feature:${carbon.platform.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
@@ -359,18 +350,6 @@
                                 <feature>
                                     <id>org.wso2.carbon.event.feature.group</id>
                                     <version>${patch.version.421}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.event.input.adaptor.feature.group</id>
-                                    <version>${cep.component.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.event.builder.feature.group</id>
-                                    <version>${cep.component.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.event.statistics.feature.group</id>
-                                    <version>${cep.component.version}</version>
                                 </feature>
 
                             </features>
