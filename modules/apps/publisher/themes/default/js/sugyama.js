@@ -102,7 +102,7 @@ var sugyamaModule = function () {
 
     LevelMap.prototype.show = function () {
         for (var key in this.map) {
-            console.log(key + ' ' + JSON.stringify(this.map[key]));
+           // console.log(key + ' ' + JSON.stringify(this.map[key]));
         }
     };
 
@@ -318,8 +318,14 @@ var sugyamaModule = function () {
 
         return points;
     }
+	
+	function bindClickEvent(label){
+		return function(){
+			window.changeState(label);
+		}
+	}
 
-    function drawChart(levelMap, paper) {
+    function drawChart(levelMap, paper, state) {
 
         var points = [];
         var startX = START_X;
@@ -335,11 +341,27 @@ var sugyamaModule = function () {
                 if (!coords[key].isFake) {
                     var element = coords[key];
                     var circle = paper.circle(element.x, element.y, VERTEX_RADIUS);
-                    circle.attr('fill', '#6EC87F');
+                    if(state == element.label){
+                    	 circle.attr('fill', '#FFBE6B');
+                    } else {
+                    	 circle.attr('fill', '#6EC87F');
+                    }
+                   
                     circle.attr('stroke-width', '3px');
                     circle.attr('stroke', '#647E9A');
                     circle.attr('r', VERTEX_RADIUS);
-                    circle.node.setAttribute('class', element.label);
+                    //circle.node.setAttribute('class', element.label);
+                    circle.node.id = element.label;
+                    circle.node.onclick = bindClickEvent(element.label);
+                  /*
+                   circle.node.onclick = function(){
+                                                                                              window.changeState(circle.node.id);
+                                         }*/
+                  
+                   	//
+                     console.log( circle.node)   ;                
+                   // alert(circle.node.setAttribute("class",""));
+                    //circle.node.setAttribute('class', element.label);
                     paper.text(element.x, element.y + VERTEX_RADIUS + 10, element.label);
                     points.push(element);
                 }
@@ -550,12 +572,12 @@ var sugyamaModule = function () {
             }
 
             if (edgeCounter > 1) {
-                console.log(vertex + ' edge counter: ' + edgeCounter);
+                //console.log(vertex + ' edge counter: ' + edgeCounter);
                 sinks.push(vertex);
             }
         }
 
-        console.log('sinks: ' + JSON.stringify(sinks));
+        //console.log('sinks: ' + JSON.stringify(sinks));
 
         return highestVertex;
     }
@@ -642,7 +664,7 @@ var sugyamaModule = function () {
         this.data=data;
     }
 
-    Sugyama.prototype.draw = function (startX, startY, vertexRadius, levelSpace, levelSep) {
+    Sugyama.prototype.draw = function (startX, startY, vertexRadius, levelSpace, levelSep, state) {
         START_X = startX;
         START_Y = startY;
         VERTEX_RADIUS = vertexRadius;
@@ -654,7 +676,7 @@ var sugyamaModule = function () {
         var dataProvider = new module.DataProvider();
 
         dataProvider.prepareData(this.data);
-		console.log(dataProvider.rawMap);
+		//console.log(dataProvider.rawMap);
 
         var matrix = new Matrix(dataProvider.map);
         keys = dataProvider.keys;
@@ -670,7 +692,7 @@ var sugyamaModule = function () {
 
         var points = getPoints(levels);
         drawEdges(matrix, this.paper, points,dataProvider.rawMap);
-        drawChart(levels, this.paper);
+        drawChart(levels, this.paper, state);
 
     } ;
 

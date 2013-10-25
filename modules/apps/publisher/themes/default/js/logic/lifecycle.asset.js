@@ -35,8 +35,8 @@ $(function() {
 	var id = comps[comps.length - 1];
 	var asset = comps[comps.length - 2];
 
-	console.log(asset);
-	console.log(id);
+	//console.log(asset);
+	//console.log(id);
 
 	buildCheckList(asset, id);
 	buildLCGraph();
@@ -165,7 +165,9 @@ $(function() {
 					var VERTEX_RADIUS = 15;
 					var LAYER_SEP = 85;
 					var LAYER_SPACE = 200;
-					sugyama.draw(START_X, START_Y, VERTEX_RADIUS, LAYER_SPACE, LAYER_SEP);
+					//alert(statInfo.state);
+					//var curState = $('#state').text();
+					sugyama.draw(START_X, START_Y, VERTEX_RADIUS, LAYER_SPACE, LAYER_SEP, statInfo.state);
 
 					actions = statInfo.lifecycle.configuration[0].lifecycle[0].scxml[0].state;
 					keys = sugyama.getKeys();
@@ -256,15 +258,19 @@ $(function() {
 			$(this).attr('r', 15);
 		});
 
+		window.changeState = function(className){
+			var thisState = className;
+				if (isClickable(thisState)) {
+					//console.log(getAction(thisState));
+					var action = getAction(thisState);
+					buttonClickLogic(action);
+				} else {
+					showAlert('Invalid operation', 'error');
+				}
+		}
+		
 		$('circle').click(function(e) {
-			var thisState = $(this).attr('class');
-			if (isClickable(thisState)) {
-				//console.log(getAction(thisState));
-				var action = getAction(thisState);
-				buttonClickLogic(action);
-			} else {
-				showAlert('Invalid operation', 'error');
-			}
+			changeState($(this).attr('class'));
 		});
 	}
 
@@ -403,14 +409,23 @@ $(function() {
 	}
 
 	function highlightTransition(state) {
-		var elem = $('.' + state);
-		elem.attr('fill', '#FFBE6B');
+		//console.log(state);
+		//var elem = $('#' + state);
+		//elem.attr('class', 'LCsel');
+		//elem[0].id = "LCSel_" + elem[0].id;
+		//elem.attr('fillcolor', "#000");
+		//elem.attr('fill', '#FFBE6B');
+		//elem[0].style.backgroundColor = "#FFBE6B";
+		//elem.attr('fill', '#FFBE6B');
 		//elem.attr('stroke', '#FF8C00');
-		elem.attr('data-currentState', true);
+		//elem.attr('data-currentState', true);
 	}
 
 	function isClickable(state) {
-		var curState = $('circle[data-currentstate=true]').attr('class');
+		//var curState = $('circle[data-currentstate=true]').attr('class');
+		//var curState = 'Published';
+		var curState = $('#state').text();
+		
 		var rawMap = sugyama.getRawMap();
 		if (rawMap[curState][state] == 1) {
 			return true;
@@ -418,12 +433,14 @@ $(function() {
 			return false;
 		}
 	}
+	
 
 	function getTransitions() {
 		var i = 0;
 		var transitions;
-		var curState = $('circle[data-currentstate=true]').attr('class');
-
+		//var curState = $('circle[data-currentstate=true]').attr('class');
+		var curState = $('#state').text();
+		
 		for (var index in keys) {
 			if (keys[index] == curState) {
 				break;
