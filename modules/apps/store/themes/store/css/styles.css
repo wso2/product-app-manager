@@ -1384,11 +1384,13 @@ ol.linenums li {
         padding-bottom: 0;
     }
 
+   /*
     .asset-description-header .asset-intro-box {
-        left: 59% !important;
-        right: -1px;
-        background: #fff;
-    }
+           left: 56%;
+           right: -1px;
+           background: #fff;
+       }*/
+   
 
     .container:not(#container-search) > .row > div:first-child {
         margin-left: 9px !important;
@@ -1396,6 +1398,11 @@ ol.linenums li {
 
 }
 
+/*
 @media all and (min-width: 1212px) {
-   
+   .asset-description-header .asset-intro-box {
+        left: 48%;
+      
+    }
 }
+*/

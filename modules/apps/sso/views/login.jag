@@ -26,9 +26,9 @@ var e = session.get('error') || {};
     <!-- Fav and touch icons -->
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
-                                   <link rel="shortcut icon" href="../assets/ico/favicon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="http://wso2.com/files/favicon.ico" type="image/x-icon" />
 
   </head>
 
@@ -144,7 +144,7 @@ var e = session.get('error') || {};
     <script src="views/js/jquery.validate.js"></script>
   	<script type="text/javascript">
 		$(function(){
-			$("#registrationSubmit").click(function(e){
+			function register(){
 				if (!$('#registerForm').valid()) {
 					return;
 				}
@@ -166,6 +166,13 @@ var e = session.get('error') || {};
                         $('#regFormError').text(JSON.parse(data).msg);
                     }
                 });
+			}
+			$("#registrationSubmit").bind('click', register);
+			
+			$('#registerForm input').bind('keypress',function(e){
+				if(e.which == 13){
+					register();
+				}
 			});
 
 			jQuery.validator.addMethod("usrName", function(value, element) {

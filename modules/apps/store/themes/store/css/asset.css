@@ -155,7 +155,7 @@ label.error {
     right: -20px;
     bottom: 0;
     top: 0;
-    left: 580px;
+    left: 565px;
     padding: 20px;
     border-left: 1px solid #ECF0F1;
     border-bottom: 1px solid #ECF0F1;
@@ -187,9 +187,11 @@ label.error {
     float: right;
 }
 
+/*
 .asset-description-header .asset-introduction-box {
     left: 59% !important;
     right: -1px;
     background: #fff;
-}
+}*/
+
 

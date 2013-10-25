@@ -368,9 +368,11 @@ $(function () {
 
     $('#search-button2').click(function () {
         $('#search').val('');
+        
         makeQuery();
         if ($('#search').val() == '') return;
         search();
+        $('#search-dropdown-cont input').val('');
         return false;
     });
     
