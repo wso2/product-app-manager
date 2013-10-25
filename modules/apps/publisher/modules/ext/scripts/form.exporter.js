@@ -36,7 +36,7 @@ var module=function(){
 			if(fieldTemplate.meta.hidden == "false"){
 			var data={};
 
-			data['name']=table.name.toLowerCase()+'_'+field.name.toLowerCase();
+			data['name']=table.name+'_'+field.name;
 			data['label']=(fieldTemplate.label)?fieldTemplate.label:field.name;
 			data['isRequired']=(fieldTemplate.required)?true:false;
 			data['isTextBox']=(fieldTemplate.type=='text')?true:false;
