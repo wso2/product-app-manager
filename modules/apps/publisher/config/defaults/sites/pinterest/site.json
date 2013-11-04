@@ -1,0 +1,15 @@
+{
+    "name": "Pinterest",
+    "tags": "site,social",
+    "rate": 4,
+    "attributes": {
+        "overview_status": "PUBLISHED",
+        "overview_name": "Pinterest",
+        "overview_version": "1.0.0",
+        "overview_url": "https://pinterest.com/",
+        "overview_provider": "admin",
+        "overview_description": "This redirects you to the Pinterest site which is a pinboard-style photo-sharing website that allows users to create and manage theme-based image collections such as events, interests, and hobbies.",
+        "images_thumbnail": "/pinterest/thumbnail.png",
+        "images_banner": "/pinterest/banner.png"
+    }
+}
