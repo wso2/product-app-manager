@@ -29,7 +29,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.wso2.store.styles.feature</artifactId>
     <packaging>pom</packaging>
-    <name>WSO2 Enterprise Store feature</name>
+    <name>WSO2 Enterprise Store Styles Feature</name>
     <url>http://wso2.org</url>
 
     <dependencies>
@@ -55,15 +55,15 @@
                         </goals>
                         <configuration>
                             <id>org.wso2.store.styles</id>
-                            <propertiesFile>../../../../etc/feature.properties</propertiesFile>
-                            <adviceFile>
+                            <propertiesFile>../../etc/feature.properties</propertiesFile>
+                            <!--<adviceFile>
                                 <properties>
                                     <propertyDef>org.wso2.carbon.p2.category.type:console
                                     </propertyDef>
                                     <propertyDef>org.eclipse.equinox.p2.type.group:false
                                     </propertyDef>
                                 </properties>
-                            </adviceFile>
+                            </adviceFile>-->
                             <bundles>
                                 <bundleDef>org.wso2.store:org.wso2.store.admin.styles</bundleDef>
                             </bundles>

@@ -29,7 +29,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.wso2.store.feature</artifactId>
     <packaging>pom</packaging>
-    <name>WSO2 Enterprise Store feature</name>
+    <name>WSO2 Enterprise Store Feature</name>
     <url>http://wso2.org</url>
 
     <dependencies>
@@ -71,14 +71,14 @@
                         <configuration>
                             <id>org.wso2.store</id>
                             <propertiesFile>../../etc/feature.properties</propertiesFile>
-                            <adviceFile>
+                            <!--<adviceFile>
                                 <properties>
                                     <propertyDef>org.wso2.carbon.p2.category.type:server
                                     </propertyDef>
                                     <propertyDef>org.eclipse.equinox.p2.type.group:false
                                     </propertyDef>
                                 </properties>
-                            </adviceFile>
+                            </adviceFile>-->
                             <bundles>
                                 <bundleDef>slf4j.wso2:slf4j:1.5.10.wso2v1</bundleDef>
                                 <!--<bundleDef>org.wso2.carbon:org.wso2.carbon.hostobjects.sso</bundleDef>-->
@@ -228,6 +228,18 @@
                                     <directory>../../</directory>
                                     <includes>
                                         <include>jaggery-modules/**</include>
+                                    </includes>
+                                </resource>
+                                <resource>
+                                    <directory>../../</directory>
+                                    <includes>
+                                        <include>distribution/src/repository/**</include>
+                                    </includes>
+                                </resource>
+                                <resource>
+                                    <directory>../../</directory>
+                                    <includes>
+                                        <include>distribution/src/dbscripts/**</include>
                                     </includes>
                                 </resource>
                             </resources>
