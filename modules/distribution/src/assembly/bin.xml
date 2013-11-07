@@ -148,7 +148,7 @@
             </includes>
         </fileSet>
         <fileSet>
-            <directory>src/repository/conf</directory>
+            <directory>src/repository/conf/security</directory>
             <outputDirectory>wso2store-${pom.version}/repository/conf/security/</outputDirectory>
             <includes>
                 <include>**/application-authenticators.xml</include>
