@@ -161,7 +161,7 @@
                                     org.wso2.carbon.cassandra:${carbon.platform.version}
                                 </importFeatureDef>
                                 <importFeatureDef>
-                                    org.wso2.carbon.cassandra-jdbc-1.2.5.server:4.2.0
+                                    org.wso2.carbon.cassandra-jdbc-1.1.1.server:4.0.1
                                 </importFeatureDef>
                                 <importFeatureDef>
                                     org.wso2.carbon.databridge.datapublisher:4.2.1
