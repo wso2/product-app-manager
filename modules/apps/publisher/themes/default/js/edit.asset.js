@@ -80,7 +80,7 @@ $(function() {
 					}
 				}
 
-				console.log(arr);
+				//console.log(arr);
 
 
 			},
@@ -123,7 +123,7 @@ $(function() {
 		if (length > DESC_MAX_CHARS) {
 			temp = self.val();
 			$(this).val(temp.substring(0, DESC_MAX_CHARS));
-			console.log("Max chars reached");
+			//console.log("Max chars reached");
 			return;
 		}
 		$('.' + CHARS_REM).text('Characters left: ' + left);

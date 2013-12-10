@@ -26,6 +26,12 @@ require('/modules/store.js').exec(function (ctx) {
         return;
     }
 
+    //check asset LC state
+    if(configs.lifeCycleBehaviour.visibleIn.indexOf(String(asset.lifecycleState), 0) < 0){
+        response.sendError(404, 'Requested page cannot be found');
+        return;
+    }
+
     if (store.isuserasset(aid, type)) {
         inDashboard = true;
     }
