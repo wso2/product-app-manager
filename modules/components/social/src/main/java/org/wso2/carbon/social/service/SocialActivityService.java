@@ -6,6 +6,13 @@ import org.mozilla.javascript.NativeObject;
 import java.util.List;
 
 public interface SocialActivityService {
+
+    /**
+     * Allows an external configuration object to be passed into the Service
+     * @param configObject
+     */
+    void configPublisher(NativeObject configObject);
+
     String publish(NativeObject activity);
 
     String[] listActivities(String contextId);

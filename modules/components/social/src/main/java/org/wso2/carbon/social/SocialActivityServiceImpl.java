@@ -5,12 +5,24 @@ import org.mozilla.javascript.NativeObject;
 import org.wso2.carbon.social.service.SocialActivityService;
 
 import java.util.List;
+import java.util.Properties;
 
 public class SocialActivityServiceImpl implements SocialActivityService {
 
 
     private ActivityPublisher activityPublisher = new ActivityPublisher();
     private ActivityBrowser activityBrowser = new ActivityBrowser();
+
+    @Override
+    public void configPublisher(NativeObject configObject) {
+        String host=JSONUtil.getNullableProperty(configObject,ActivityPublisher.PROP_HOST);
+        String port=JSONUtil.getNullableProperty(configObject,ActivityPublisher.PROP_PORT);
+        Properties props=new Properties();
+        props.setProperty(ActivityPublisher.PROP_PORT,port);
+        props.setProperty(ActivityPublisher.PROP_HOST,host);
+
+        activityPublisher.setConfiguration(props);
+    }
 
     @Override
     public String publish(NativeObject activity) {
