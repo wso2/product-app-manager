@@ -22,7 +22,7 @@
         }
     },
     "client":{
-        "port":"8781",
-        "host":"localhost"
+        "port":"7611",
+        "host":"store.wso2.com"
     }
 }

@@ -4,7 +4,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.mozilla.javascript.NativeObject;
 import org.wso2.carbon.databridge.agent.thrift.DataPublisher;
-import org.wso2.carbon.utils.CarbonUtils;
 
 import java.util.Properties;
 import java.util.UUID;
@@ -22,19 +21,20 @@ public class ActivityPublisher {
     //this variable is init lazily. use getStreamId method to access.
     private String streamId;
 
-    private Properties configuration=new Properties();
+    private Properties configuration = new Properties();
 
-    public static String DEFAULT_PORT="7611";
-    public static String DEFAULT_HOST="localhost";
-    public static String PROP_PORT="port";
-    public static String PROP_HOST="host";
-
+    public static String DEFAULT_PORT = "7611";
+    public static String DEFAULT_HOST = "localhost";
+    public static String PROP_PORT = "port";
+    public static String PROP_HOST = "host";
+    public static String SYS_PROP_PORTOFFSET ="portOffset";
     /**
      * The method is used to initialize the
-     * @param props  A Properties object with the configuration details
+     *
+     * @param props A Properties object with the configuration details
      */
-    public void setConfiguration(Properties props){
-          this.configuration=props;
+    public void setConfiguration(Properties props) {
+        this.configuration = props;
     }
 
     public String publish(NativeObject activity) {
@@ -64,7 +64,7 @@ public class ActivityPublisher {
      * @return DataPublisher for publishing activities.
      */
     private DataPublisher getPublisher() {
-        int port=getPort();
+        int port = getPort();
         String host = getHost();
         String url = "tcp://" + host + ":" + port;
         String username = "admin";
@@ -112,31 +112,44 @@ public class ActivityPublisher {
      * The port will be read from the configuration properties, if it is not present then
      * the default port is used.
      * Any port offsets are applied to the port before been sent back
+     *
      * @return An integer value which is the port used by the Data Publisher
      */
-    private int getPort(){
-       //Check if a port property has been provided in the configuration
-       String port=configuration.getProperty(PROP_PORT);
+    private int getPort() {
+        int portOffset = 0; //Assume no portoffset
+        String portOffsetString;
 
-       //Check if the port has been specified,if not then use the default port
-        if(port==null){
-            port=DEFAULT_PORT;
+        //Check if a port property has been provided in the configuration
+        String port = configuration.getProperty(PROP_PORT);
+
+        //Check if the port has been specified,if not then use the default port
+        if (port == null) {
+            port = DEFAULT_PORT;
         }
 
-       //Do any port offsets
+        //Check if a port offset is present
+        portOffsetString = System.getProperty(SYS_PROP_PORTOFFSET);
 
-        return Integer.parseInt(port);
+        //If the portOffset property is present then pickup the offset and
+        //convert to an Integer
+        if (portOffsetString != null) {
+            portOffset = Integer.parseInt(portOffsetString);
+        }
+
+        LOG.info("port offset: "+portOffset+" for port: "+port);
+        return Integer.parseInt(port) + portOffset;
     }
 
     /**
      * The method returns the hostname of the DataPublisher.
+     *
      * @return A string host name
      */
-    private String getHost(){
-        String host=configuration.getProperty(PROP_HOST);
+    private String getHost() {
+        String host = configuration.getProperty(PROP_HOST);
 
-        if(host==null){
-            host=DEFAULT_HOST;
+        if (host == null) {
+            host = DEFAULT_HOST;
         }
 
         return host;
