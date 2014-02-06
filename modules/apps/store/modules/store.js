@@ -622,7 +622,8 @@ Store.prototype.search = function (options, paging) {
 };
 
 /**
- * The method is used to return assets by the given provider.
+ * The method is used to return a subset of the assets created by author of the provided asset
+ * If no paging value is given the number of assets returned
  * @param asset The asset instance
  * @param type: The type of the asset to search
  * @param paging: The paging parameters of assets returned (OPTIONAL)
