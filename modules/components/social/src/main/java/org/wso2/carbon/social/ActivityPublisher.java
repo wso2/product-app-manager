@@ -53,7 +53,6 @@ public class ActivityPublisher {
         for (int index = 0; index < properties.length; index++) {
             property = (String) properties[index];
             value = (String) configObject.get(property, configObject);
-
             this.configuration.setProperty(property, value);
         }
     }
@@ -88,8 +87,11 @@ public class ActivityPublisher {
         int port = getPort();
         String host = getHost();
         String url = "tcp://" + host + ":" + port;
-        String username = "admin";
-        String password = "admin";
+        String username = getUserName();
+        String password = getPassword();
+
+        LOG.info("Host: "+host+" Port: "+port);
+        LOG.info("Username: "+username+" Password: "+password);
 
         if (publisher == null) {
             try {
