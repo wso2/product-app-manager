@@ -38,6 +38,18 @@ var formatRatings = function(context){
 
 	return context;
 }
+
+var formatAssetFromProviderRatings=function(context){
+    var avg;
+    var assets=context.assets;
+    for(var i in assets){
+        avg = assets[i].rating.average;
+        assets[i].ratingPx = ratingToPixels(avg);
+    }
+
+    return context;
+};
+
 var ratingToPixels = function(avg) {
 	var STAR_WIDTH = 84;
 	var MAX_RATING = 5;
@@ -45,3 +57,4 @@ var ratingToPixels = function(avg) {
 	var ratingPx = (avg / MAX_RATING) * STAR_WIDTH;
 	return ratingPx;
 }
+

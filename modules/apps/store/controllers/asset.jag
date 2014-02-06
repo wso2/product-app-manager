@@ -67,7 +67,8 @@ require('/modules/store.js').exec(function (ctx) {
             }
         ],
         myAssets: { user: user, type: type, title: title },
-        recentAssets: store.recentAssets(type)
+        recentAssets: store.recentAssets(type),
+        moreAssetsFromProvider:store.assetsFromProvider(asset,type)
     });
 }, request, response, session);
 %>
