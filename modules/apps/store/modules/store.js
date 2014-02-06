@@ -629,7 +629,8 @@ Store.prototype.search = function (options, paging) {
  * returns: An array of assets by the given the provider
  */
 Store.prototype.assetsFromProvider = function (asset, type, paging) {
-    var paging = paging || {start: 0, count: 10, sort: 'recent'};
+    //We have limited the number of assets to 3 since we do not have much screen real estate
+    var paging = paging || {start: 0, count: 3, sort: 'recent'};
     var assetsFromProvider = {};
     var provider = asset.attributes[ATTR_PROVIDER];
     var currentAssetName=asset.attributes['overview_name'];
