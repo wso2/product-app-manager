@@ -15,13 +15,7 @@ public class SocialActivityServiceImpl implements SocialActivityService {
 
     @Override
     public void configPublisher(NativeObject configObject) {
-        String host=JSONUtil.getNullableProperty(configObject,ActivityPublisher.PROP_HOST);
-        String port=JSONUtil.getNullableProperty(configObject,ActivityPublisher.PROP_PORT);
-        Properties props=new Properties();
-        props.setProperty(ActivityPublisher.PROP_PORT,port);
-        props.setProperty(ActivityPublisher.PROP_HOST,host);
-
-        activityPublisher.setConfiguration(props);
+        activityPublisher.parseJSONConfig(configObject);
     }
 
     @Override

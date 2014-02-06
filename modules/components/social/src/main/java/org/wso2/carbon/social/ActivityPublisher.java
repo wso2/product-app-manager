@@ -3,6 +3,7 @@ package org.wso2.carbon.social;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.mozilla.javascript.NativeObject;
+import org.mozilla.javascript.PropertyException;
 import org.wso2.carbon.databridge.agent.thrift.DataPublisher;
 
 import java.util.Properties;
@@ -25,16 +26,36 @@ public class ActivityPublisher {
 
     public static String DEFAULT_PORT = "7611";
     public static String DEFAULT_HOST = "localhost";
+    public static String DEFAULT_USERNAME = "admin";
+    public static String DEFAULT_PASSWORD = "admin";
     public static String PROP_PORT = "port";
     public static String PROP_HOST = "host";
-    public static String SYS_PROP_PORTOFFSET ="portOffset";
+    public static String PROP_USERNAME = "username";
+    public static String PROP_PASSWORD = "password";
+
     /**
-     * The method is used to initialize the
-     *
-     * @param props A Properties object with the configuration details
+     * The method is used to configure the Data Publisher by using a JSON object containing
+     * connection information.
+     * The properties of the JSON object must match the key attributes ; username,password, host and port
+     * Any non key value is read but is not used.
+     * @param configObject  A JSON object containing the username,password , host and port properties
+     *                      Each property should contain a String value
      */
-    public void setConfiguration(Properties props) {
-        this.configuration = props;
+    public void parseJSONConfig(NativeObject configObject) {
+        Object[] properties;
+        String value;
+        String property;
+
+        //Obtain the list of all properties in the object
+        properties = configObject.getAllIds();
+
+        //We fill the configuration with the value of each property in the object
+        for (int index = 0; index < properties.length; index++) {
+            property = (String) properties[index];
+            value = (String) configObject.get(property, configObject);
+
+            this.configuration.setProperty(property, value);
+        }
     }
 
     public String publish(NativeObject activity) {
@@ -117,7 +138,6 @@ public class ActivityPublisher {
      */
     private int getPort() {
         int portOffset = 0; //Assume no portoffset
-        String portOffsetString;
 
         //Check if a port property has been provided in the configuration
         String port = configuration.getProperty(PROP_PORT);
@@ -127,17 +147,7 @@ public class ActivityPublisher {
             port = DEFAULT_PORT;
         }
 
-        //Check if a port offset is present
-        portOffsetString = System.getProperty(SYS_PROP_PORTOFFSET);
-
-        //If the portOffset property is present then pickup the offset and
-        //convert to an Integer
-        if (portOffsetString != null) {
-            portOffset = Integer.parseInt(portOffsetString);
-        }
-
-        LOG.info("port offset: "+portOffset+" for port: "+port);
-        return Integer.parseInt(port) + portOffset;
+        return Integer.parseInt(port);
     }
 
     /**
@@ -153,6 +163,41 @@ public class ActivityPublisher {
         }
 
         return host;
+    }
+
+    /**
+     * The method returns the username for creating the Data Publisher.
+     * If the configuration object does not contain a value for the username then
+     * a default value is provided
+     *
+     * @return The username used by the DataPublisher
+     */
+    private String getUserName() {
+        //TODO: We should probably find a more secure way of storing the username details
+        String username = configuration.getProperty(PROP_USERNAME);
+
+        if (username == null) {
+            username = DEFAULT_USERNAME;
+        }
+
+        return username;
+    }
+
+    /**
+     * The method returns the password of the user used to initialize the Data Publisher
+     * If no password is found in the configuration properties then the default password is
+     * provided
+     *
+     * @return The password used by the Data Publisher
+     */
+    private String getPassword() {
+        String password = configuration.getProperty(PROP_PASSWORD);
+
+        if (password == null) {
+            password = DEFAULT_PASSWORD;
+        }
+
+        return password;
     }
 
 

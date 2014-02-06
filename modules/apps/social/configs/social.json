@@ -21,8 +21,10 @@
             "/permission/admin/login": ["ui.execute"]
         }
     },
-    "client":{
+    "dataPublisherConnectionInfo":{
         "port":"7611",
-        "host":"store.wso2.com"
+        "host":"localhost",
+        "username":"admin",
+        "password":"admin"
     }
 }
