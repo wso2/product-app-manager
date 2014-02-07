@@ -10,7 +10,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <artifactId>wso2store-profile-gen</artifactId>
     <packaging>pom</packaging>
 
