@@ -9,10 +9,15 @@ $(function () {
         }
     });
 
+    var SOCIAL_CONTAINER_ID='#socialIfr';
+    var SOCIAL_PARAM_SCRIPT_TYPE='scriptType';
+    var SOCIAL_PARAM_SCRIPT='script';
+
     if (isSocial) {
         var script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = 'https://localhost:9443/social/export-js/social.js';
+        script.type = $(SOCIAL_CONTAINER_ID).data(SOCIAL_PARAM_SCRIPT_TYPE);
+        script.src = $(SOCIAL_CONTAINER_ID).data(SOCIAL_PARAM_SCRIPT);
+
         document.body.appendChild(script);
     } else {
         var comments = {
