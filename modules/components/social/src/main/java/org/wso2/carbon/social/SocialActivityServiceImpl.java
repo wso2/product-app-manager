@@ -5,12 +5,18 @@ import org.mozilla.javascript.NativeObject;
 import org.wso2.carbon.social.service.SocialActivityService;
 
 import java.util.List;
+import java.util.Properties;
 
 public class SocialActivityServiceImpl implements SocialActivityService {
 
 
     private ActivityPublisher activityPublisher = new ActivityPublisher();
     private ActivityBrowser activityBrowser = new ActivityBrowser();
+
+    @Override
+    public void configPublisher(NativeObject configObject) {
+        activityPublisher.parseJSONConfig(configObject);
+    }
 
     @Override
     public String publish(NativeObject activity) {
