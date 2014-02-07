@@ -9,9 +9,8 @@
             relayState = '/publisher',
             encodedSAMLAuthRequest = sso.client.getEncodedSAMLAuthRequest(dataConfi.ssoConfiguration.issuer),
             log = new Log(),
-            postUrl = "https://" + process.getProperty('carbon.local.ip') + ":" + process.getProperty('https.port');
-
-
+            postUrl = dataConfi.ssoConfiguration.identityProviderURL;//"https://" + process.getProperty('carbon.local.ip') + ":" + process.getProperty('https.port');
+            log.info('LOgin URL: '+postUrl);
     if (!session.get("Loged")) {
         %>
 
@@ -19,7 +18,7 @@
 
                             <p>You are now being redirected to Identity Server. If the
                             redirection fails, please click on the button below.</p>
-                            <form method="post" action="<%=postUrl%>/admin/samlsso">
+                            <form method="post" action="<%=postUrl%>">
                             <p>
                                <input type="hidden" name="SAMLRequest" value="<%= encodedSAMLAuthRequest %>"/>
                                <input type="hidden" name="RelayState" value="<%= relayState %>"/>

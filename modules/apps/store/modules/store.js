@@ -621,6 +621,40 @@ Store.prototype.search = function (options, paging) {
     return assets;
 };
 
+/**
+ * The method is used to return a subset of the assets created by author of the provided asset
+ * If no paging value is given the number of assets returned
+ * @param asset The asset instance
+ * @param type: The type of the asset to search
+ * @param paging: The paging parameters of assets returned (OPTIONAL)
+ * returns: An array of assets by the given the provider
+ */
+Store.prototype.assetsFromProvider = function (asset, type, paging) {
+    //We have limited the number of assets to 3 since we do not have much screen real estate
+    var paging = paging || {start: 0, count: 3, sort: 'recent'};
+    var assetsFromProvider = {};
+    var provider = asset.attributes[ATTR_PROVIDER];
+    var currentAssetName=asset.attributes['overview_name'];
+    var searchOptions = {};
+
+    searchOptions['attributes'] = {};
+    searchOptions = obtainViewQuery(searchOptions);
+    searchOptions['attributes'][ATTR_PROVIDER] = provider;
+
+
+    assetsFromProvider['overview_provider'] = provider;
+    assetsFromProvider['type'] = type;
+
+    var arrayOfAssets= this.search(searchOptions, paging)[asset.type] || [];
+
+    //Filter the returned assets so as to remove the current asset
+    assetsFromProvider['assets']=arrayOfAssets.filter(function(asset){
+        return (asset.attributes['overview_name']!=currentAssetName)?true:false;
+    });
+
+    return assetsFromProvider;
+};
+
 //TODO: check the logic
 Store.prototype.isuserasset = function (aid, type) {
     var j,
@@ -660,6 +694,8 @@ Store.prototype.rxtManager = function (type, session) {
 
 var LIFECYCLE_STATE_PROPERTY = 'lcState';
 var DEFAULT_ASSET_VIEW_STATE = 'Published'; //Unless specified otherwise, assets are always visible when Published
+var DEFAULT_LC_ATTRIBUTE_NAME = LIFECYCLE_STATE_PROPERTY;
+var ATTR_PROVIDER = 'overview_provider';
 
 /*
  The function creates a query object to be used in the Manager.search
@@ -669,15 +705,23 @@ var DEFAULT_ASSET_VIEW_STATE = 'Published'; //Unless specified otherwise, assets
  */
 var obtainViewQuery = function (options) {
 
+    // var storeConfig = require('/config/store.json').lifeCycleBehaviour;
+    // var visibleStates = storeConfig.visibleIn || DEFAULT_ASSET_VIEW_STATE;
+
+    // options[LIFECYCLE_STATE_PROPERTY] = visibleStates;
+
+    // log.debug('options: ' + stringify(options));
+
     var storeConfig = require('/config/store.json').lifeCycleBehaviour;
     var visibleStates = storeConfig.visibleIn || DEFAULT_ASSET_VIEW_STATE;
+    var attributeName = storeConfig.lcAttributeName || DEFAULT_LC_ATTRIBUTE_NAME;
 
-    options[LIFECYCLE_STATE_PROPERTY] = visibleStates;
-
-    log.debug('options: ' + stringify(options));
-
+    //options[LIFECYCLE_STATE_PROPERTY] = visibleStates;
+    //Changed the query to check for overview_status as opposed to lifecycle state
+    options[attributeName] = visibleStates;
 
     return options;
+
 }
 
 var TENANT_STORE_MANAGERS = 'store.managers';

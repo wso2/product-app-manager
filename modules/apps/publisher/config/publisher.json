@@ -47,7 +47,7 @@
     "ssoConfiguration": {
         "enabled": false,
         "issuer": "publisher",
-        "identityProviderURL": "%https.host%/sso/samlsso.jag",
+        "identityProviderURL": "%https.carbon.local.ip%/admin/samlsso",
         "keyStorePassword": "wso2carbon",
         "identityAlias": "wso2carbon",
         "responseSigningEnabled": "true",

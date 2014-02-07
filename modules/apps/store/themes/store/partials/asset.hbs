@@ -27,7 +27,6 @@
                 </div>
 
             </div>
-
             <div class="assetp-properties">
 
                 <ul class="nav nav-tabs" id="assetp-tabs" data-aid="{{../path}}">
@@ -47,8 +46,8 @@
                     </div>
                     <div class="tab-pane" id="tab-reviews">
                         <iframe name="socialIfr" id="socialIfr"
-                                src="../../../social/?target={{../../type}}:{{../id}}&user={{../../user.username}}"
-                                width="100%" height="100%" style="height: 300px;"></iframe>
+                                src="{{../../socialAppDetails.socialAppUrl}}?target={{../../type}}:{{../id}}&user={{../../user.username}}"
+                                width="100%" height="100%" style="height: 300px;" data-script="{{../../socialAppDetails.script}}" data-script-type="{{../../socialAppDetails.scriptType}}"></iframe>
                        	{{#if ../../inDashboard}}
                        		 <div id="comment-content" class="content"></div>
 						{{else}}
