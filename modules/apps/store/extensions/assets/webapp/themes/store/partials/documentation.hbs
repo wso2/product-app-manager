@@ -1,0 +1,106 @@
+<div>
+
+    {{#with tabs.documentation.data}}
+
+    <div class='accordion' id='documentAccordion'></div>
+
+    {{#if HowTo.hasContent}}
+    <!--How To Documentation -->
+    <div class='accordion-group'>
+        <div class='accordion-heading'>
+            <a class='accordion-toggle' data-toggle='collapse' data-parent='documentAccordion' href='#howToDocs'>
+                {{t "How To"}}
+            </a>
+        </div>
+        <div id='howToDocs' class='accordion-body collapse'>
+            <div class='accordion-inner'>
+                {{> documentation-listing HowTo.entries}}
+            </div>
+        </div>
+    </div>
+    {{/if}}
+
+    <!-- Samples -->
+    {{#if Samples.hasContent}}
+    <div class='accordion-group'>
+        <div class='accordion-heading'>
+            <a class='accordion-toggle' data-toggle='collapse' data-parent='documentAccordion' href='#sampleDocs'>
+                {{t "Samples"}}
+            </a>
+        </div>
+        <div id='sampleDocs' class='accordion-body collapse'>
+            <div class='accordion-inner'>
+                {{> documentation-listing Samples.entries}}
+            </div>
+        </div>
+    </div>
+    {{/if}}
+
+    <!-- Public Forum -->
+    {{#if PublicForum.hasContent}}
+    <div class='accordion-group'>
+        <div class='accordion-heading'>
+            <a class='accordion-toggle' data-toggle='collapse' data-parent='documentAccordion' href='#publicForumDocs'>
+                {{t "Public Forums"}}
+            </a>
+        </div>
+        <div id='publicForumDocs' class='accordion-body collapse'>
+            <div class='accordion-inner'>
+                {{> documentation-listing PublicForum.entries}}
+            </div>
+        </div>
+    </div>
+    {{/if}}
+
+    <!-- Support Forum -->
+    {{#if SupportForum.hasContent}}
+    <div class='accordion-group'>
+        <div class='accordion-heading'>
+            <a class='accordion-toggle' data-toggle='collapse' data-parent='documentAccordion' href='#publicForumDocs'>
+                {{t "Support Forums"}}
+            </a>
+        </div>
+        <div id='publicForumDocs' class='accordion-body collapse'>
+            <div class='accordion-inner'>
+                {{> documentation-listing SupportForum.entries}}
+            </div>
+        </div>
+    </div>
+    {{/if}}
+
+    <!-- API Message Format -->
+    {{#if APIMessageFormat.hasContent}}
+    <div class='accordion-group'>
+        <div class='accordion-heading'>
+            <a class='accordion-toggle' data-toggle='collapse' data-parent='documentAccordion' href='#publicForumDocs'>
+                {{t "API Message Format"}}
+            </a>
+        </div>
+        <div id='publicForumDocs' class='accordion-body collapse'>
+            <div class='accordion-inner'>
+                {{> documentation-listing APIMessageFormat.entries}}
+            </div>
+        </div>
+    </div>
+    {{/if}}
+
+    <!-- Other -->
+    {{#if Other.hasContent}}
+    <div class='accordion-group'>
+        <div class='accordion-heading'>
+            <a class='accordion-toggle' data-toggle='collapse' data-parent='documentAccordion' href='#publicForumDocs'>
+                {{t "Other"}}
+            </a>
+        </div>
+        <div id='publicForumDocs' class='accordion-body collapse'>
+            <div class='accordion-inner'>
+                {{> documentation-listing Other.entries}}
+            </div>
+        </div>
+    </div>
+    {{/if}}
+
+
+
+    {{/with}}
+</div>

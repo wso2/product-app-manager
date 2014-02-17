@@ -1,0 +1,41 @@
+.icon-ebook:before {
+    content: "\F15C";
+}
+
+
+.web-asset-banner{
+    border-bottom: 1px solid #ECF0F1;
+    height: 335px;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    width: 580px;
+}
+
+.web-asset-introduction-box{
+    border-bottom: 1px solid #ECF0F1;
+    border-left: 1px solid #ECF0F1;
+    bottom: 0;
+    left: 565px;
+    padding: 20px;
+    position: absolute;
+    right: -20px;
+    top: 0;
+}
+
+.botton-mar-5{
+	margin-bottom:5px;
+}
+
+.botton-mar-8{
+	margin-bottom:8px;
+}
+
+.web-asset-description-header {
+    background: none repeat scroll 0 0 #FFFFFF;
+}
+
+.web-asset-description-header .row > div{
+	height: 336px;
+	position: relative;
+}

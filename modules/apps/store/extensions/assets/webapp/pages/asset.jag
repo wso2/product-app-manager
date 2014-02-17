@@ -1,0 +1,176 @@
+<%
+var caramel;
+var AuthService;
+var AppService;
+var appInfoApi;
+var authenticator;
+var log = new Log();
+include('../modules/jagg/jagg.jag');
+var DocumentService = require('../services/documentation.js').serviceModule;
+var docsManager = new DocumentService.DocumentationService();
+docsManager.init(jagg, session);
+
+var APIInformationService=require('../services/api-information.js').serviceModule;
+var apiInfoManager=new APIInformationService.APIInformationService();
+apiInfoManager.init(jagg,session);
+
+AppService=require(getServiceDir('app.js')).serviceModule;
+appInfoApi=new AppService.AppService();
+
+appInfoApi.init(jagg,session);
+
+AuthService=require(getServiceDir('authentication.js')).serviceModule;
+
+authenticator=new AuthService.Authenticator();
+
+authenticator.init(jagg,session);
+//var getDocs=jagg.module('documentation').getAllDocumentations;
+
+
+require('/modules/store.js').exec(function (ctx) {
+    var asset, aid, title,
+            log = ctx.log,
+            sso = ctx.sso,
+            store = ctx.store,
+            user = ctx.user,
+            tenantId = ctx.tenantId,
+            configs = ctx.configs,
+            site = ctx.site,
+            matcher = ctx.matcher,
+            inDashboard = false,
+            utility = require('/modules/util.js');
+
+    caramel = require('caramel');
+
+
+
+    matcher.match('/{context}' + configs.assetsUrlPrefix + '/{type}/{aid}');
+    aid = matcher.elements().aid;
+    title = store.assetLinks(type).title;
+    try {
+        asset = store.asset(type, aid);
+    } catch (e) {
+        response.sendError(404, 'Requested page cannot be found');
+        return;
+    }
+
+    //check asset LC state
+    //if (configs.lifeCycleBehaviour.visibleIn.indexOf(String(asset.lifecycleState), 0) < 0) {
+    //}
+
+    if (store.isuserasset(aid, type)) {
+        inDashboard = true;
+    }
+
+    var rxtAttributes = utility.getRXTAttributes(tenantId, type);
+
+    var ATTR_PROVIDER = 'overview_provider';
+    var LIFECYCLE_STATE_PROPERTY = 'lcState';
+    var DEFAULT_ASSET_VIEW_STATE = 'Published'; //Unless specified otherwise, assets are always visible when Published
+    var DEFAULT_LC_ATTRIBUTE_NAME = LIFECYCLE_STATE_PROPERTY;
+
+    /*
+     The function obtains the assets published by the given provider
+     */
+    var getAssetsFromProvider = function (asset, store) {
+
+
+        var assetsFromProvider = {};
+        var provider = asset.attributes[ATTR_PROVIDER];
+        var searchOptions = {};
+        var paging;
+
+        searchOptions['attributes'] = {};
+        searchOptions = obtainViewQuery(searchOptions);
+        searchOptions['attributes'][ATTR_PROVIDER] = provider;
+
+        paging = {start: 0, count: 10, sort: 'recent'};
+
+        assetsFromProvider['overview_provider'] = provider;
+        assetsFromProvider['type'] = type;
+
+        assetsFromProvider['assets'] = store.search(searchOptions, paging)[asset.type] || [];
+
+        return assetsFromProvider;
+    }
+
+    /*
+     The function obtains the query used to search for assets
+     */
+    var obtainViewQuery = function (options) {
+
+        var storeConfig = require('/config/store.json').lifeCycleBehaviour;
+        var visibleStates = storeConfig.visibleIn || DEFAULT_ASSET_VIEW_STATE;
+        var attributeName = storeConfig.lcAttributeName || DEFAULT_LC_ATTRIBUTE_NAME;
+
+        //options[LIFECYCLE_STATE_PROPERTY] = visibleStates;
+        //Changed the query to check for overview_status as opposed to lifecycle state
+        options[attributeName] = visibleStates;
+
+        return options;
+    }
+
+    var assetsByProvider = getAssetsFromProvider(asset, store);
+
+    var docs =docsManager.getAllDocumentation(asset.attributes.overview_provider,
+            asset.attributes.overview_name,
+            asset.attributes.overview_version,
+            'admin');
+
+    var apiData=apiInfoManager.getAPIDescription(asset.attributes.overview_provider,
+           asset.attributes.overview_name,
+           asset.attributes.overview_version);
+    var myapps=appInfoApi.getApplications('admin');
+    var availableTiers=apiInfoManager.getTiers();
+
+    user=authenticator.getLoggedInUser();
+
+
+    caramel.render({
+        title: 'Store | ' + type,
+        user: user,
+        sso: sso,
+
+        header: site.header(tenantId, {
+            sso: sso,
+            user: user
+        }),
+
+        navigation: site.navigation(tenantId),
+        search: {
+            search: {title: type},
+            isTopAssets: false,
+            searchFields: rxtAttributes
+        },
+        isSocial: configs.socialCommentsEnable,
+
+        type: type,
+        embedURL: configs.server.http + '/gadgets/ifr?url=' + asset.attributes.overview_url,
+        inDashboard: inDashboard,
+        asset: asset,
+        tags: [
+            {
+                url: '/assets/' + type + '/?page=1&tag=',
+                data: store.tags(type)
+            }
+        ],
+        myAssets: { user: user, type: type, title: title },
+        recentAssets: store.recentAssets(type),
+        assetsByProvider: assetsByProvider,
+        documentation: docs,
+        apiData:apiData ,
+        metadata:{
+            myapps:myapps,
+            tiers:availableTiers,
+            api:apiData,
+            apiAssetData:asset
+        }
+    });
+
+
+}, request, response, session);
+
+function getServiceDir(serviceName) {
+    return '../services/' + serviceName;
+}
+%>

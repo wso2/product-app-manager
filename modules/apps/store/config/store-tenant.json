@@ -1,5 +1,5 @@
 {
-    "assets": ["gadget", "site", "ebook"],
+    "assets": ["webapp"],
     "assetsPageSize": 12,
     "commentsPageSize": 10,
     "userSpace": "/_system/governance/users",

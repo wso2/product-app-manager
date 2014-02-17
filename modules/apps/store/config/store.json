@@ -12,13 +12,8 @@
     "lifeCycleBehaviour":{
         "visibleIn":["Published"]
     },
-    "socialAppConnectionInfo":{
-        "script":"https://localhost:9443/social/export-js/social.js",
-        "scriptType":"text/javascript",
-        "socialAppUrl":"../../../social/"
-    },
     "ssoConfiguration": {
-        "enabled": true,
+        "enabled": false,
         "issuer": "store",
         "identityProviderURL": "%https.host%/sso/samlsso.jag",
         "keyStorePassword": "wso2carbon",

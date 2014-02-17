@@ -1,0 +1,84 @@
+<script>
+    var isSocial = ('{{isSocial}}' == 'true');
+</script>
+<div class="asset-description">
+
+    {{#with asset}}
+    {{#attributes}}
+    <div class="asset-description-header">
+        <div class="row">
+            <div class="span9">
+                <div class="asset-banner">
+                    <img src="{{#if images_banner}}{{images_banner}}{{/if}}">
+                </div>
+                <div class="asset-introduction-box">
+                    <img src="{{#if overview_thumbnail}}{{overview_thumbnail}}{{/if}}">
+
+                    <h3>{{overview_name}}</h3>
+                    <small> {{t "Version"}} {{overview_version}}</small>
+                    <small> {{t "by"}} {{overview_provider}}</small>
+                    <small> {{t "status"}} : {{overview_status}}</small>
+                    <small>{{t "updated"}} : {{apiData.updatedDate}}</small>
+					<span class="asset-rating">
+                            <div style="width:{{../rating.ratingPx}}px"></div>
+                    </span>
+                    <!--The subscription option should only be visible if the user is logged in-->
+
+                        {{>asset-utilization ../../.}}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    {{/attributes}}
+    {{/with}}
+    <div class="assetp-properties">
+
+        <ul class="nav nav-tabs" id="assetp-tabs" data-aid="{{path}}">
+            <li class="active">
+                <a href="#tab-overview" data-toggle="tab" data-type="basic">{{t "Overview"}}</a>
+            </li>
+            <li>
+                <a href="#tab-docs" data-toggle="tab" data-type="comments">{{t "Documentation"}}</a>
+            </li>
+            <li>
+                <a href="#tab-apiconsole" data-toggle="tab" data-type="comments">{{t "API Console"}}</a>
+            </li>
+            <li>
+                <a href="#tab-throttleinfo" data-toggle="tab" data-type="comments">{{t "Throttling Info"}}</a>
+            </li>
+
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab-overview">
+                <div class="content">
+                    {{>overview .}}
+                </div>
+            </div>
+
+            <div class="tab-pane" id="tab-docs">
+                <div class="content">
+                    {{> documentation .}}
+                </div>
+            </div>
+
+            <div class="tab-pane" id="tab-apiconsole">
+                <div class="content">
+                    {{> apiconsole .}}
+                </div>
+            </div>
+
+            <div class="tab-pane" id="tab-throttleinfo">
+                <div class="content">
+                    {{> throttle .}}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

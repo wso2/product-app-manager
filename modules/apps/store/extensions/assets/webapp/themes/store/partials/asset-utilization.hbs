@@ -1,0 +1,14 @@
+{{#if user}}
+<select id='subsAppName' class='input-small'>
+    {{#each myapps}}
+    <option>{{name}}</option>
+    {{/each}}
+</select>
+
+<select id='subsAppTier' class='input-small'>
+    {{#each tiers}}
+    <option>{{tierName}}</option>
+    {{/each}}
+</select>
+<a href="#" class="btn btn-primary" id='btnSubscribe'>{{t "Subscribe"}}</a>
+ {{/if}}

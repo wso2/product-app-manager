@@ -1,0 +1,32 @@
+<table class='table'>
+    <thead>
+    <th><b>Name</b></th>
+    <th><b>Summary</b></th>
+    <th><b>Content</b></th>
+    </thead>
+    <tbody>
+    <tr>
+        {{#each .}}
+        <td>
+            {{name}}
+        </td>
+        <td>
+            {{summary}}
+        </td>
+        <td>
+            <!--- View Content/Download link -->
+            {{#if isFile}}
+                 <a class='icon-download'></a> <a href='{{filePath}}'>Download</a>
+            {{/if}}
+
+            {{#if isUrl}}
+                <a class='icon-globe'></a> <a href='{{sourceUrl}}'>View Content</a>
+            {{/if}}
+
+        </td>
+
+    </tr>
+    {{/each}}
+    </tbody>
+
+</table>

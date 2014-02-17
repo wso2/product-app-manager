@@ -21,7 +21,7 @@
     "accessible": [
         {
             "context": "/_system/governance",
-            "collections": ["gadgets", "sites", "ebooks"],
+            "collections": ["webapps"],
             "actions": ["http://www.wso2.org/projects/registry/actions/get",
                 "http://www.wso2.org/projects/registry/actions/add",
                 "http://www.wso2.org/projects/registry/actions/delete",
@@ -50,24 +50,7 @@
     "defaultAssets": {
         "root":"/config/defaults",
         "assetData": [
-            {
-                "type": "gadgets",
-                "ignore":["agricultural-land",
-                    "wso2-carbon-dev",
-                    "intro-gadget-1",
-                    "intro-gadget-2",
-                    "show-assets",
-                    "co2-emission",
-                    "electric-power",
-                    "energy-use",
-                    "greenhouse-gas"]
-            },
-            {
-                "type": "ebooks"
-            },
-            {
-                "type": "sites"
-            }
+            
         ]
     },
     "router": {

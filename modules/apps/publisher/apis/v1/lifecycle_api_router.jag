@@ -168,12 +168,22 @@ routeManager.register('PUT', 'publisher', '/publisher/api/lifecycle/{action}/{ty
     var artifactManager = rxtManager.getArtifactManager(shortName);
 
     try {
+
+	
         var artifact = artifactManager.get(id);
+
         log.debug('Calling promoteLifecycleState for action : '+action);
         artifactManager.promoteLifecycleState(action,artifact);
         var msg={};
         msg['status']='ok';
         print(msg);
+	
+	var attributes = artifact.attributes;
+
+        var LifecycleHandler = Packages.org.wso2.carbon.appmgt.impl.lifecycle.LifecycleHandler;
+	var lfcycleMgr = new LifecycleHandler();
+	lfcycleMgr.publishToGateway(attributes['overview_provider'], attributes['overview_name'], attributes['overview_version'], attributes['overview_status']);
+
     }
     catch (e) {
         log.debug('The asset with id: '+id+' could not be found.The following exception was thrown: '+e);

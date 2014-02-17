@@ -4,83 +4,75 @@ $(function() {
 	var comps = url.split('/');
 	var type = comps[comps.length - 2];
 	var operation = comps[comps.length - 3];
+	var action = 'getProviderAPIVersionUserLastAccess';
 
 	var dateRange = $('#date-range-field span').text();
 	var from = dateRange.split('to')[0];
 	var to = dateRange.split('to')[1];
 
 	$.ajax({
-		url : '/publisher/api/assets/' + operation + '/' + type + '/',
+		/*  Web Application Last Access Time Graph  */
+		url : '/publisher/api/assets/' + operation + '/' + type + '/' + action + '/' ,
 		type : 'POST',
 		data : {
 			'startDate' : from,
-			'endDate' : to // <-- the $ sign in the parameter name seems unusual, I would avoid it
+			'endDate' : to 
 		},
 		success : function(response) {
+			drawProviderAPIVersionUserLastAccess(response);	
+		},
+		error : function(response) {
+			alert('Error occured at statistics graph rendering');
+		}
+	});
 
-			var parsedResponse = JSON.parse(response);
-
-			/* Bookmark stats graph */
-			var data = [{
-				data : parsedResponse.bookmarkStats,
-				color : '#409628',
-				label : 'Assets',
-				lines : {
-					show : true
-				},
-				points : {
-					show : true
-				}
-			}];
-
-			var options = {
-				yaxis : {
-					show : true,
-					tickDecimals : 0
-
-				},
-				xaxis : {
-					labelAngle : 90,
-					ticks : parsedResponse.bookmarkTicks
-				}
-			};
-			$.plot($("#placeholder1"), data, options);
-
-			
-			/* Hot assets stats graph */
-			var data2 = [{
-				data : parsedResponse.hotAssetStats,
-				color : '#FFC826',
-				label : 'Assets',
-				bars : {
-						show : true,
-						barWidth : 0.6,
-						align : "center"
-					}
-			}];
-
-			var options2 = {
-				yaxis : {
-					show : true,
-					tickDecimals : 0
-
-				},
-				xaxis : {
-					labelAngle : 90,
-					ticks : parsedResponse.hotAssetTicks
-				}
-				
-			};
-
-			$.plot($("#placeholder2"), data2, options2);
-
-			
+	$.ajax({
+		/* Overall Web Application Usage Graph */
+		url : '/publisher/api/assets/' + operation + '/' + type + '/getProviderAPIUsage/',
+		type : 'POST',
+		data : {
+			'startDate' : from,
+			'endDate' : to 
+		},
+		success : function(response) {
+			drawProviderAPIUsage(response);			
 		},
 		error : function(response) {
 			alert('Error occured at statistics graph rendering');
 		}
 	});
 });
+
+var drawProviderAPIVersionUserLastAccess = function(response){
+	var parsedResponse = JSON.parse(response);
+	/*  Web Application Last Access Time Graph  */
+	$('#placeholder1').append($('<table class="table table-condensed" id="webAppTable">' +
+					'<tr>' +
+    					'<th>Web App Name</th>' +
+    					'<th>Version</th>' +
+					'<th>User</th>' +
+					'<th>Last Access Time</th>' +
+					'</tr>' +
+					'</table>'));
+        for (var i = 0; i < parsedResponse.length; i++) {
+            $('#webAppTable').append($('<tr><td>' + parsedResponse[i].api_name + '</td><td class="tdNumberCell">' + parsedResponse[i].api_version + '</td><td>' + parsedResponse[i].user + '</td><td>' + new Date(parsedResponse[i].lastAccess*1000) + '</td></tr>'));
+
+        } 
+}
+
+var drawProviderAPIUsage = function(response){
+	var parsedResponse = JSON.parse(response);
+	/* Overall Web Application Usage Graph */
+	$('#placeholder2').append($('<table class="table table-condensed" id="webAppTable2">' +
+					'<tr>' +
+    					'<th>Web App Name</th>' +
+    					'<th>Number of Calls</th>' +
+					'</tr>' +
+					'</table>'));
+        for (var i = 0; i < parsedResponse.length; i++) {
+            $('#webAppTable2').append($('<tr><td>' + parsedResponse[i].apiName + '</td><td class="tdNumberCell">' + parsedResponse[i].count + '</td></tr>'));
+        } 
+}
 
 var convertDate = function(date) {
 	var month = date.getMonth() + 1;

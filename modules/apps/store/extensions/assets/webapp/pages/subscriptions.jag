@@ -1,0 +1,53 @@
+<%
+
+var caramel;
+var SubscriptionService;
+var subsApi;
+var AuthService;
+var authenticator;
+var log = new Log('subscriptions');
+
+include('../modules/jagg/jagg.jag');
+
+require('/modules/store.js').exec(function (ctx) {
+    var store = ctx.store;
+    var recentAssets = store.recentAssets('webapp');
+
+    SubscriptionService = require(getServiceDir('subscription.js')).serviceModule;
+    subsApi = new SubscriptionService.SubscriptionService();
+
+    AuthService = require(getServiceDir('authentication.js')).serviceModule;
+
+    authenticator = new AuthService.Authenticator();
+
+    authenticator.init(jagg, session);
+
+    subsApi.init(jagg, session);
+
+    caramel = require('caramel');
+
+
+    var apps = subsApi.getAppsWithSubs({user: 'admin'});
+    var apis = subsApi.getSubsForApp({appName: 'test2', user: 'admin'});
+    var userData = authenticator.getLoggedInUser();
+
+
+    caramel.render({
+        header: {
+            user: userData
+        },
+        appsWithSubs: apps,
+        metadata: {
+            appsWithSubs: apps
+        },
+        recentAssets:recentAssets
+    }, request, response, session);
+
+}, request, response, session);
+
+
+function getServiceDir(serviceName) {
+    return '../services/' + serviceName;
+}
+
+%>
