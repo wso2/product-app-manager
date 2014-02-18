@@ -4,6 +4,11 @@
  Created Date: 7/1/2013
  */
 var serviceModule = (function () {
+
+    var  AuthService = require('authentication.js').serviceModule;
+    authenticator = new AuthService.Authenticator();
+    authenticator.init(jagg, session);
+
     var log = new Log('app service');
     var DEFAULT_FIELD_EMPTY_MSG = 'Not Specified';
 
@@ -47,7 +52,7 @@ var serviceModule = (function () {
         var result = this.instance.updateApplication({
             newAppName: options.newAppName,
             oldAppName: options.oldAppName,
-            username: 'admin',
+            username: authenticator.getLoggedInUser().username,
             tier: options.tier,
             callbackUrl: options.callbackUrl,
             description: options.description

@@ -8,7 +8,13 @@ var resource = (function () {
     SubscriptionService = require('/extensions/assets/webapp/services/subscription.js').serviceModule;
     subsApi = new SubscriptionService.SubscriptionService();
 
-    subsApi.init(jagg, session);
+	subsApi.init(jagg, session);
+
+    AuthService = require('/extensions/assets/webapp/services/authentication.js').serviceModule;
+    authenticator = new AuthService.Authenticator();
+    authenticator.init(jagg, session);
+
+    
 
     /*
      Subscribes the given application to an API with the provided details
@@ -21,14 +27,11 @@ var resource = (function () {
         subscription['apiTier'] = parameters.apiTier;
         subscription['apiProvider'] = parameters.apiProvider;
         subscription['appName'] = parameters.appName;
-        subscription['user'] = 'admin'; //TODO: Get the user from the session or as a request parameter?
+        subscription['user'] = authenticator.getLoggedInUser().username;
 
         log.info('Trying to add a subscription');
 
         var result = subsApi.addSubscription(subscription);
-
-
-        log.info("result:"+result);
 
         return result;
     };
@@ -46,9 +49,10 @@ var resource = (function () {
         if (isMatch) {
 
             var appName = uriMatcher.elements().appName;
+            var userName = authenticator.getLoggedInUser().username;
 
             //Get the api name
-            apis = subsApi.getSubsForApp({appName:appName, user: 'admin'});
+            apis = subsApi.getSubsForApp({appName:appName, user:userName });
         }
         return apis;
     };

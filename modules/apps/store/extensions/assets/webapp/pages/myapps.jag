@@ -33,11 +33,10 @@ require('/modules/store.js').exec(function (ctx) {
     apiInfoApi.init(jagg, session);
 
 
-    apps=appApi.getApplications('admin');
+    apps=appApi.getApplications(authenticator.getLoggedInUser().username);
     tiers=apiInfoApi.getTiers();
 
     userData=authenticator.getLoggedInUser();
-
 
     caramel.render({
         tiers:tiers,

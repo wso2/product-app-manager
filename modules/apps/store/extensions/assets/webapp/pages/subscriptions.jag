@@ -26,10 +26,9 @@ require('/modules/store.js').exec(function (ctx) {
 
     caramel = require('caramel');
 
+   var userData = authenticator.getLoggedInUser();
 
-    var apps = subsApi.getAppsWithSubs({user: 'admin'});
-    var apis = subsApi.getSubsForApp({appName: 'test2', user: 'admin'});
-    var userData = authenticator.getLoggedInUser();
+    var apps = subsApi.getAppsWithSubs({user: userData.username});
 
 
     caramel.render({

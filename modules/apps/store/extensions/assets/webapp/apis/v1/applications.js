@@ -13,7 +13,11 @@ var resource=(function(){
 
         appApi.init(jagg,session);
 
-        return appApi.getApplications('admin');
+        AuthService = require('/extensions/assets/webapp/services/authentication.js').serviceModule;
+        authenticator = new AuthService.Authenticator();
+        authenticator.init(jagg, session);
+
+        return appApi.getApplications(authenticator.getLoggedInUser().username);
 
     };
 

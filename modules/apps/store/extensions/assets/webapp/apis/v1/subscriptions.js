@@ -10,9 +10,15 @@ var serviceModule=(function(){
 
     subsApi.init(jagg, session);
 
+    AuthService = require('/extensions/assets/webapp/services/authentication.js').serviceModule;
+    authenticator = new AuthService.Authenticator();
+    authenticator.init(jagg, session);
+
     var getAppsWithSubs=function(){
 
-        var apps=subsApi.getAppsWithSubs({user:'admin'});
+        var username = authenticator.getLoggedInUser().username;
+
+        var apps=subsApi.getAppsWithSubs({user:username});
 
         log.info(apps);
 

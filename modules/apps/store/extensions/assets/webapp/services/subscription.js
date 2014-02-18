@@ -32,7 +32,6 @@ var serviceModule = (function () {
         apiData['name'] = options.apiName;
         apiData['version'] = options.apiVersion;
         apiData['provider'] = options.apiProvider;
-
         var result = this.instance.addAPISubscription(apiData, options.apiTier, options.appName, options.user);
 
         return result;

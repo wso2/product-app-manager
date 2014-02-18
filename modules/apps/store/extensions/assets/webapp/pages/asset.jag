@@ -115,16 +115,15 @@ require('/modules/store.js').exec(function (ctx) {
     var docs =docsManager.getAllDocumentation(asset.attributes.overview_provider,
             asset.attributes.overview_name,
             asset.attributes.overview_version,
-            'admin');
+            authenticator.getLoggedInUser().username);
 
     var apiData=apiInfoManager.getAPIDescription(asset.attributes.overview_provider,
            asset.attributes.overview_name,
            asset.attributes.overview_version);
-    var myapps=appInfoApi.getApplications('admin');
+    var myapps=appInfoApi.getApplications(authenticator.getLoggedInUser().username);
     var availableTiers=apiInfoManager.getTiers();
 
     user=authenticator.getLoggedInUser();
-
 
     caramel.render({
         title: 'Store | ' + type,

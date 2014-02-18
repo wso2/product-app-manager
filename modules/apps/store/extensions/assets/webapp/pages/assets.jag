@@ -112,7 +112,6 @@ require('/modules/store.js').exec(function (ctx) {
 
     user=authenticator.getLoggedInUser();
 
-
     log.info('EXTENSION ASSETS PAGE')
 
     caramel.render({

@@ -15,14 +15,13 @@ $(function(){
              console.log('Found metadata');
              var appName=getAppName();
              var tier=getTier();
-             console.log('App name: '+appName);
 
              //Obtain the required information
              var subscription={};
              var apiDetails=metadata.apiAssetData.attributes;
              subscription['apiName']=apiDetails.overview_name;
              subscription['apiVersion']=apiDetails.overview_version;
-             subscription['apiTier']=apiDetails.overview_tier;
+             subscription['apiTier']=tier;
              subscription['apiProvider']=apiDetails.overview_provider;
              subscription['appName']=appName;
 

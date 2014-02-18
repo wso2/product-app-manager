@@ -16,8 +16,13 @@ var resource = (function () {
 
         appApi.init(jagg, session);
 
+        AuthService = require('/extensions/assets/webapp/services/authentication.js').serviceModule;
+        authenticator = new AuthService.Authenticator();
+        authenticator.init(jagg, session);
+
+
         var result = appApi.addApplication({
-            username: 'admin',
+            username: authenticator.getLoggedInUser().username,
             application: parameters.appName,
             tier: parameters.appTier,
             callbackUrl: parameters.appCallbackUrl,
@@ -32,6 +37,10 @@ var resource = (function () {
         var AppService = require('/extensions/assets/webapp/services/app.js').serviceModule;
         appApi = new AppService.AppService();
         appApi.init(jagg, session);
+
+        AuthService = require('/extensions/assets/webapp/services/authentication.js').serviceModule;
+        authenticator = new AuthService.Authenticator();
+        authenticator.init(jagg, session);
 
 
         var uriMatcher = new URIMatcher(context.request.getRequestURI());
@@ -48,7 +57,7 @@ var resource = (function () {
             log.info('Removing '+appName);
             appApi.deleteApplication({
                 appName:appName,
-                username:'admin'
+                username:authenticator.getLoggedInUser().username
             });
 
             return {isRemoved:true};
@@ -66,17 +75,19 @@ var resource = (function () {
         var parameters = request.getContent();
 
         var AppService = require('/extensions/assets/webapp/services/app.js').serviceModule;
-
         appApi = new AppService.AppService();
-
         appApi.init(jagg, session);
+
+        AuthService = require('/extensions/assets/webapp/services/authentication.js').serviceModule;
+        authenticator = new AuthService.Authenticator();
+        authenticator.init(jagg, session);
 
         log.info(parameters);
 
         var result=appApi.updateApplication({
             newAppName:parameters.newAppName,
             oldAppName:parameters.appName,
-            username:'admin',
+            username:authenticator.getLoggedInUser().username,
             tier:parameters.tier,
             callbackUrl:parameters.newCallbackUrl,
             description:parameters.newDescription
