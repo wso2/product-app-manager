@@ -18,9 +18,14 @@ package org.wso2.jaggery.scxml.custom;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.wso2.carbon.appmgt.api.APIManagementException;
 import org.wso2.carbon.appmgt.impl.APIConstants;
-import org.wso2.carbon.appmgt.impl.dto.PublishApplicationWorkflowDTO;
-import org.wso2.carbon.appmgt.impl.workflow.*;
+import org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
+import org.wso2.carbon.appmgt.impl.dto.WorkflowDTO;
+import org.wso2.carbon.appmgt.impl.workflow.WorkflowConstants;
+import org.wso2.carbon.appmgt.impl.workflow.WorkflowException;
+import org.wso2.carbon.appmgt.impl.workflow.WorkflowExecutor;
+import org.wso2.carbon.appmgt.impl.workflow.WorkflowExecutorFactory;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.governance.api.generic.GenericArtifactManager;
@@ -76,85 +81,82 @@ public class PublishEventExecutor implements Execution
     @return: True if the execution took place correctly
      */
     @Override
-    public boolean execute(RequestContext requestContext, String s, String s2){
-        String resourceID = requestContext.getResource().getUUID();
-        String appName = null;
-        String appVersion = null;
-        String appProvider = null;
-        String lcState = null;
-        String tenantDomain = null;
-        String workflowRef= null;
-
-        try{
-            //Get the registry
-            Registry registry = RegistryCoreServiceComponent.getRegistryService().getGovernanceUserRegistry(CurrentSession.getUser(), - 1234);
-            //Load Gov Artifacts
-            GovernanceUtils.loadGovernanceArtifacts((UserRegistry) registry);
-
-            GenericArtifactManager artifactManager = new GenericArtifactManager(registry, APIConstants.API_KEY);
-
-            GenericArtifact webappArtifact = artifactManager.getGenericArtifact(resourceID);
-
-            appName = webappArtifact.getAttribute("overview_name");
-            appVersion = webappArtifact.getAttribute("overview_version");
-            appProvider = webappArtifact.getAttribute("overview_provider");
-            tenantDomain = CarbonContext.getThreadLocalCarbonContext().getTenantDomain();
-
-            workflowRef = concatStrings(appName,appVersion,appProvider,tenantDomain);
-            lcState = webappArtifact.getLifecycleState();
-
-        }catch (RegistryException e){
-            e.printStackTrace();
-        }
-
+    public boolean execute(RequestContext requestContext, String s, String s2) {
         WorkflowExecutor appPublishWFExecutor = WorkflowExecutorFactory.getInstance().
                 getWorkflowExecutor(WorkflowConstants.WF_TYPE_AM_APP_PUBLISH);
 
-        PublishApplicationWorkflowDTO workflowDTO = new PublishApplicationWorkflowDTO();
-        workflowDTO.setStatus(WorkflowStatus.CREATED);
-        workflowDTO.setCreatedTime(System.currentTimeMillis());
-//        workflowDTO.setTenantDomain(tenantDomain);
-//        workflowDTO.setTenantId(tenantId);
-        workflowDTO.setExternalWorkflowReference(appPublishWFExecutor.generateUUID());
-        workflowDTO.setWorkflowReference(String.valueOf(workflowRef));
-        workflowDTO.setWorkflowType(WorkflowConstants.WF_TYPE_AM_APP_PUBLISH);
-        workflowDTO.setCallbackUrl(appPublishWFExecutor.getCallbackURL());
-        workflowDTO.setAppName(appName);
-        workflowDTO.setLcState(lcState);
-        workflowDTO.setAppVersion(appVersion);
-        workflowDTO.setAppProvider(appProvider);
+        if(appPublishWFExecutor.isAsynchronus()){
+            String resourceID = requestContext.getResource().getUUID();
+            String appName = null;
+            String appVersion = null;
+            String appProvider = null;
+            String tenantDomain = null;
 
-        try {
-            appPublishWFExecutor.execute(workflowDTO);
-        } catch (WorkflowException e) {
-            log.error("Could not execute Application Publish Workflow", e);
-            //throw new APIManagementException("Could not execute Application Publish Workflow", e);
+            try{
+                //Get the registry
+                Registry registry = RegistryCoreServiceComponent.getRegistryService().getGovernanceUserRegistry(CurrentSession.getUser(), - 1234);
+                //Load Gov Artifacts
+                GovernanceUtils.loadGovernanceArtifacts((UserRegistry) registry);
+
+                GenericArtifactManager artifactManager = new GenericArtifactManager(registry, APIConstants.API_KEY);
+
+                GenericArtifact webappArtifact = artifactManager.getGenericArtifact(resourceID);
+
+                appName = webappArtifact.getAttribute("overview_name");
+                appVersion = webappArtifact.getAttribute("overview_version");
+                appProvider = webappArtifact.getAttribute("overview_provider");
+                tenantDomain = CarbonContext.getThreadLocalCarbonContext().getTenantDomain();
+
+                String searchString = concatStrings(appName,appVersion,appProvider,tenantDomain);
+
+                ApiMgtDAO dao = new ApiMgtDAO();
+
+                try{
+                    WorkflowDTO workflowDTO = dao.retrieveLatestWorkflowByReference(searchString);
+
+                    try {
+                        if(workflowDTO!=null){
+                            appPublishWFExecutor.complete(workflowDTO);
+                        }else{
+                            throw new WorkflowException("Workflow Reference not found");
+                        }
+
+                    } catch (WorkflowException e) {
+                        log.error("Could not execute Application Publish Workflow", e);
+                    }
+
+                }catch(APIManagementException e){
+                    log.error("Error while retrieving workflow details from database");
+                }
+            }catch (RegistryException e){
+                log.error("Error while loading artifact details from registry");
+            }
+        }else{
+
+            JaggeryThreadContext jaggeryThreadContext=new JaggeryThreadContext();
+
+            //The path of the asset
+            String path=requestContext.getResource().getPath();
+
+            //Used to inject asset specific information to a permission instruction
+
+            DynamicValueInjector dynamicValueInjector=new DynamicValueInjector();
+
+            //Set the asset author key
+            dynamicValueInjector.setDynamicValue(DynamicValueInjector.ASSET_AUTHOR_KEY,requestContext.getResource().getAuthorUserName());
+
+            //Execute all permissions for the current state
+            //this.stateExecutor.executePermissions(this.userRealm,dynamicValueInjector,path,s2);
+
+            jaggeryThreadContext.setFromState(s);
+            jaggeryThreadContext.setToState(s2);
+            jaggeryThreadContext.setAssetPath(path);
+            jaggeryThreadContext.setDynamicValueInjector(dynamicValueInjector);
+            jaggeryThreadContext.setUserRealm(userRealm);
+            jaggeryThreadContext.setStateExecutor(stateExecutor);
+
+            JaggeryThreadLocalMediator.set(jaggeryThreadContext);
         }
-
-        JaggeryThreadContext jaggeryThreadContext=new JaggeryThreadContext();
-
-        //The path of the asset
-        String path=requestContext.getResource().getPath();
-
-        //Used to inject asset specific information to a permission instruction
-
-        DynamicValueInjector dynamicValueInjector=new DynamicValueInjector();
-
-        //Set the asset author key
-        dynamicValueInjector.setDynamicValue(DynamicValueInjector.ASSET_AUTHOR_KEY,requestContext.getResource().getAuthorUserName());
-
-        //Execute all permissions for the current state
-        //this.stateExecutor.executePermissions(this.userRealm,dynamicValueInjector,path,s2);
-
-        jaggeryThreadContext.setFromState(s);
-        jaggeryThreadContext.setToState(s2);
-        jaggeryThreadContext.setAssetPath(path);
-        jaggeryThreadContext.setDynamicValueInjector(dynamicValueInjector);
-        jaggeryThreadContext.setUserRealm(userRealm);
-        jaggeryThreadContext.setStateExecutor(stateExecutor);
-
-        JaggeryThreadLocalMediator.set(jaggeryThreadContext);
-
         return true;
     }
 
@@ -166,7 +168,6 @@ public class PublishEventExecutor implements Execution
         sb.append(tenantDomain);
         return sb.toString();
     }
-
 
     /*
     The method obtains the tenant id from a string tenant id
