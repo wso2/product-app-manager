@@ -6,7 +6,6 @@ $(function(){
     var API_URL='/store/resources/webapp/v1/subscription/app';
 
     $('#btnSubscribe').on('click',function(){
-         console.log('Hello');
          getAppDetails();
     });
 
@@ -23,7 +22,7 @@ $(function(){
              subscription['apiVersion']=apiDetails.overview_version;
              subscription['apiTier']=tier;
              subscription['apiProvider']=apiDetails.overview_provider;
-             subscription['appName']=appName;
+             subscription['appName']="DefaultApplication";
 
              console.log(subscription);
 
@@ -49,7 +48,7 @@ $(function(){
            data:subscription,
            success:function(){
                console.info('Successfully subscribed to API: '+subscription.apiName);
-               alert('Succsessfully subscribed to the '+subscription.apiName+' API.');
+               alert('Succsessfully subscribed to the '+subscription.apiName+' Web App.');
            }
         });
     };

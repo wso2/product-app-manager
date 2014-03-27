@@ -34,8 +34,6 @@ var serviceModule = (function () {
             userData['cookie'] = result.cookie;
             this.context.setUser(userData);
 
-            log.info('********User Data *************');
-            log.info(this.context.getUser());
         }
 
     };

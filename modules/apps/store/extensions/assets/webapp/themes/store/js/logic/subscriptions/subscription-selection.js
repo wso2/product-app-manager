@@ -372,7 +372,7 @@ $(function () {
         partial: 'subscriptions/sub-listing',
         beforeRender: function (data) {
             var appName = data.appName;
-            data['subscriptions'] = findSubscriptionDetails(appName);
+            data['subscriptions'] = findSubscriptionDetails("DefaultApplication");
         },
         subscriptions: [EV_APP_SELECT],
         afterRender: function () {

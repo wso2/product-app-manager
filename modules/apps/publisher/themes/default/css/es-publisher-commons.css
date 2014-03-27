@@ -766,7 +766,7 @@ td.asset-listing-btn {
 }
 .content-div .form-horizontal {
     border-radius: 6px 6px 6px 6px;
-    padding: 30px 10px 0;
+    padding: 1px 10px 0;
 }
 .form-actions {
     background-color: #FFFFFF;
@@ -904,6 +904,8 @@ span.title {
     background: none repeat scroll 0 0 #FFFFFF;
     margin-bottom: 20px;
     margin-top: 10px;
+    overflow: hidden;
+    padding-bottom: 32px;
 }
 .widget .widget-head {
     background-color: #F5F5F5;
@@ -965,7 +967,7 @@ span.title {
     font-size: 12.5px !important;
 }
 .lifecycle #canvas {
-    height: 215px;
+    height: 250px;
     display: block;
     margin-left: auto;
     margin-right: auto;

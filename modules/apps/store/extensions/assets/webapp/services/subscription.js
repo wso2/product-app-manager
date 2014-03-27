@@ -52,7 +52,7 @@ var serviceModule = (function () {
 
 
     Subscriber.prototype.getSubsForApp=function(options){
-        var result= this.instance.getAPISubscriptionsForApplication(options.user,options.appName);
+        var result= this.instance.getAPISubscriptionsForApplication(options.user,"DefaultApplication");
         return (result)?result.subscriptions:[];
     };
 

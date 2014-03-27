@@ -293,9 +293,9 @@ var sugyamaModule = function () {
 
     var START_X = 20;
     var START_Y = 500;
-    var LEVEL_SPACE = 200;
+    var LEVEL_SPACE = 400;
     var VERTEX_RADIUS = 10;
-    var LEVEL_SEP = 100;
+    var LEVEL_SEP = 300;
 
 
     function getPoints(levelMap) {

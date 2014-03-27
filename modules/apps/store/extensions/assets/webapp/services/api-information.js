@@ -79,7 +79,7 @@ var serviceModule = (function () {
         var query = getQuery(assetProvider, assetName, assetVersion);
         var user = ofUser || this.user;
         var apiDescription = this.instance.getAPIDescription(query, user);
-
+        
         //Check if an exception has occured during the method invocation
         if (apiDescription.error != false) {
             throw apiDescription.error;
@@ -126,7 +126,7 @@ var serviceModule = (function () {
         map[API_VERSION_KEY] = apiDescription.api.version || MSG_UNABLE_TO_GET_API_DATA;
         map[API_URI_TEMPLATES_KEY] = uriTemplates;
         map[API_UPDATED_KEY] = apiDescription.api.updatedDate || MSG_UNABLE_TO_GET_API_DATA;
-        map[API_SERVERURL_KEY] = readServerURLs(apiDescription.api.serverURL);
+        map[API_SERVERURL_KEY] = readServerURLs(apiDescription.api);
         map[API_DISCOVERYURL_KEY] = apiDescription.discoveryURL || MSG_UNABLE_TO_GET_API_DATA;
         return map;
     };
@@ -134,20 +134,24 @@ var serviceModule = (function () {
     /*
     The function parses the serverURL property of the data returned by the api module
      */
-    var readServerURLs = function (serverUrl) {
-        var serverUrl = serverUrl || '';
-        var components = serverUrl.split(',');
+    var readServerURLs = function (api) {
+        var api = api || {};
+        var components = api.serverURL.split(',');
+
         return{
             description: components[SERVER_URL_DESCRIPTION_INDEX] ?
                 components[SERVER_URL_DESCRIPTION_INDEX] :
                 MSG_UNABLE_TO_GET_API_DATA,
-            sandboxURL: components[SERVER_URL_SANDBOX_INDEX] ?
-                components[SERVER_URL_SANDBOX_INDEX] :
-                MSG_UNABLE_TO_GET_API_DATA,
+            productionURL: components[SERVER_URL_SANDBOX_INDEX] ?
+                components[SERVER_URL_SANDBOX_INDEX] + api.context + "/" + api.version + "/" :
+                MSG_UNABLE_TO_GET_API_DATA
+        };
+        
+        /*        
             productionURL: components[SERVER_URL_PRODUCTION_INDEX] ?
                 components[SERVER_URL_PRODUCTION_INDEX] :
                 MSG_UNABLE_TO_GET_API_DATA
-        };
+        */
     };
 
     /*

@@ -1,6 +1,10 @@
 <%
 include('/extensions/assets/webapp/modules/jagg/jagg.jag');
 
+var log = new Log();
+
+var storeHostObj = jagg.module("manager").getAPIStoreObj();
+
 require('/modules/store.js').exec(function (ctx) {
     var action, data, message, exists,
             error = false,
@@ -59,7 +63,8 @@ require('/modules/store.js').exec(function (ctx) {
             case 'register':
                 try {
                     data = parse(request.getContent());
-                    user.register(data.username, data.password);
+                    //user.register(data.username, data.password);
+		    storeHostObj.addUser(data.username, data.password);
                 } catch (e) {
                     log.error(e);
                     error = true;

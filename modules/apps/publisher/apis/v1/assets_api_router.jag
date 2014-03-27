@@ -9,7 +9,6 @@ var router = require('/modules/router-g.js').router();
 var routeManager = new router.Router();
 
 var appmgtPublisher = require('appmgtpublisher');
-var appMgtProviderObj = new appmgtPublisher.APIProvider();
 
 var log = new Log();
 
@@ -22,6 +21,9 @@ routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{t
     var tenantId = server.current(session).tenantId;
     var startDate = context.post.startDate;
     var endDate = context.post.endDate;
+    
+    var appMgtProviderObj = new appmgtPublisher.APIProvider(stringify(username));
+        
 
     //manipulate endDate to overcome date-picker issue
     var date = new Date(Date.parse(endDate.replace(/-/g,"/")));
@@ -38,9 +40,9 @@ routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{t
     var obj, result;
 
     /* Web Application Last Access Time Graph */
-    if (action == "getProviderAPIVersionUserLastAccess") {
+    if (action == "getSubscriberCountByAPIs") {
 	    //output = stats.getHotAssetStats(startDate,endDate,tenantId);
-	    usage = appMgtProviderObj.getProviderAPIVersionUserLastAccess("__all_providers__",startDate,endDate);
+	    usage = appMgtProviderObj.getSubscriberCountByAPIs("__all_providers__",startDate,endDate);
 	    if (usage == null) {
 		    obj = {
 		        error:true
@@ -53,8 +55,82 @@ routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{t
 		    };
 		}
 	    print(usage);
-   } else if (action == "getProviderAPIUsage") { /* Overall Web Application Usage Graph */
+   } else  if (action == "getProviderAPIUsage") { /* Overall Web Application Usage Graph */
 	    usage = appMgtProviderObj.getProviderAPIUsage("__all_providers__",startDate,endDate);
+	    if (usage == null) {
+		    obj = {
+		        error:true
+		    };
+
+	    } else {
+		    obj = {
+		        error:false,
+		        usage:usage
+		    };
+		}
+	     
+	    print(usage);  
+   }else if (action == "getAPIUsageByUser") { /* Overall Web Application Usage Graph */
+	    usage = appMgtProviderObj.getAPIUsageByUser("__all_providers__",startDate,endDate);
+	    	    
+	    if (usage == null) {
+		    obj = {
+		        error:true
+		    };
+
+	    } else {
+		    obj = {
+		        error:false,
+		        usage:usage
+		    };
+		}
+	     
+	    print(usage);  
+   }else if (action == "getAPIResponseTime") { /* Overall Web Application Usage Graph */
+   		var output  = {};
+   		var apinameData = [],serviceTimeData=[];
+	    usage = appMgtProviderObj.getProviderAPIServiceTime("__all_providers__",startDate,endDate);
+	   
+	    log.info(usage);
+	    for(i=0;i<usage.length;i++){
+	    	apinameData.push([i,usage[i].apiName]);
+	    	serviceTimeData.push([usage[i].serviceTime,i]);
+	    }
+	   output['apiname'] = apinameData;
+	   output['serviceTime'] = serviceTimeData;
+	    //log.info("assests-api-router:usage:"+stringify(usage));
+	    if (usage == null) {
+		    obj = {
+		        error:true
+		    };
+
+	    } else {
+		    obj = {
+		        error:false,
+		        output:output
+		    };
+		}
+	     
+	    print(output);  
+   }else if (action == "getAPIUsageByPage") { /* Overall Web Application Usage Graph */
+	    usage = appMgtProviderObj.getAPIUsageByPage("__all_providers__",startDate,endDate);
+	    
+	    if (usage == null) {
+		    obj = {
+		        error:true
+		    };
+
+	    } else {
+		    obj = {
+		        error:false,
+		        usage:usage
+		    };
+		}
+	     
+	    print(usage);  
+   }else if (action == "getSubscribersOfAPI") { /* Overall Web Application Usage Graph */
+	    usage = appMgtProviderObj.getAPIUsageByPage("__all_providers__",startDate,endDate);
+	    
 	    if (usage == null) {
 		    obj = {
 		        error:true

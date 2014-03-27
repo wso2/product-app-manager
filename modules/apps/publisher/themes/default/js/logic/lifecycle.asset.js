@@ -164,7 +164,7 @@ $(function() {
 					var START_X = 10;
 					var START_Y = 50;
 					var VERTEX_RADIUS = 15;
-					var LAYER_SEP = 85;
+					var LAYER_SEP = 200;
 					var LAYER_SPACE = 200;
 					//alert(statInfo.state);
 					//var curState = $('#state').text();

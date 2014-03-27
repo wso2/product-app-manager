@@ -171,18 +171,21 @@ routeManager.register('PUT', 'publisher', '/publisher/api/lifecycle/{action}/{ty
 
 	
         var artifact = artifactManager.get(id);
+        var attributes = artifact.attributes;
 
-        log.debug('Calling promoteLifecycleState for action : '+action);
+        var previourStatus = artifact['lifecycleState'];
+        log.info("ID VALUE #### "+ id);
+
+        log.info('Calling promoteLifecycleState for action : '+action);
+
         artifactManager.promoteLifecycleState(action,artifact);
         var msg={};
         msg['status']='ok';
         print(msg);
-	
-	var attributes = artifact.attributes;
 
-        var LifecycleHandler = Packages.org.wso2.carbon.appmgt.impl.lifecycle.LifecycleHandler;
-	var lfcycleMgr = new LifecycleHandler();
-	lfcycleMgr.publishToGateway(attributes['overview_provider'], attributes['overview_name'], attributes['overview_version'], attributes['overview_status']);
+        //var LifecycleHandler = Packages.org.wso2.carbon.appmgt.impl.lifecycle.LifecycleHandler;
+	    //var lfcycleMgr = new LifecycleHandler();
+	    //lfcycleMgr.publishToGateway(attributes['overview_provider'], attributes['overview_name'], attributes['overview_version'], artifact['lifecycleState'], previourStatus);
 
     }
     catch (e) {
@@ -223,6 +226,12 @@ routeManager.register('GET','publisher','/publisher/api/lifecycle/{type}/{id}',f
 
     try{
 
+        appPublishWFExecutor = org.wso2.carbon.appmgt.impl.workflow.WorkflowExecutorFactory.getInstance().getWorkflowExecutor("AM_APPLICATION_PUBLISH");
+
+        var isAsynchronousFlow = appPublishWFExecutor.isAsynchronus();
+
+        log.info("IS ASYNCH : " + isAsynchronousFlow);
+
         var shortName=context.params.type;
         var id=context.params.id;
 
@@ -241,6 +250,7 @@ routeManager.register('GET','publisher','/publisher/api/lifecycle/{type}/{id}',f
         msg['state']=state;
         msg['actions']=actions;
         msg['lifecycle']=lcJSON;
+        msg['asynch']=isAsynchronousFlow;
 
 
         log.debug(msg);

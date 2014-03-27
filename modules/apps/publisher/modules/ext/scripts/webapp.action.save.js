@@ -46,7 +46,8 @@ var module = function () {
 		return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 	}
 
-    function addToWebApp(webappProvider, webappName, webappVersion, webappContext, asset) {
+    //TODO: Change this method to take WebAppObj as argument instead of passing properties separately.
+    function addToWebApp(uuid,webappProvider, webappName, webappVersion, webappContext, webappTrackingCode,asset, ssoEnabled, idpProviderUrl, saml2SsoIssuer) {
 
         var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
         var apiIdentifierObj = new apiIdentifier(webappProvider, webappName, webappVersion);
@@ -55,9 +56,16 @@ var module = function () {
         var webAppObj = new webApp(apiIdentifierObj);
 
         webAppObj.setContext(webappContext);
+        webAppObj.setTrackingCode(webappTrackingCode);
+	    webAppObj.setSsoEnabled(ssoEnabled);
+        webAppObj.setIdpProviderURL(idpProviderUrl);
+        webAppObj.setSaml2SsoIssuer(saml2SsoIssuer);
+        webAppObj.setUUID(uuid);
 
         var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
         var apiMgtDAOObj = new apiMgtDAO();
+
+        var identityUtil = Packages.org.wso2.carbon.identity.core.util.IdentityUtil;
         
         var index = 0;
         var attributes = asset.attributes;
@@ -72,14 +80,34 @@ var module = function () {
         		uriTemplate.setAuthType(attributes["uritemplate_authType" + index]);
         		uriTemplate.setUriTemplate(attributes["uritemplate_urlPattern" + index]);
         		uriTemplate.setThrottlingTier(attributes["uritemplate_tier" + index]);
-        		uriTemplate.setSkipThrottling(attributes["uritemplate_skipThrottle" + index] === "True");
+        		uriTemplate.setSkipThrottling(attributes["uritemplate_skipthrottle" + index] === "True");
         		webAppObj.getUriTemplates().add(uriTemplate);
         		               		
         		index++;
         		urlPattern = attributes["uritemplate_urlPattern" + index];        	
-        }			                
-        
+        }
+
         apiMgtDAOObj.addWebApp(webAppObj);
+
+        //Generate consumer/secret for web-app
+        var tenantId = identityUtil.getTenantIdOFUser(webappProvider);
+        apiMgtDAOObj.addOAuthConsumer(webappProvider, tenantId, webappName, "");
+
+        var count = 1;
+        var tokenEndpoint = attributes["oauthapis_apiTokenEndpoint" + count];
+        while (tokenEndpoint != null && trim(tokenEndpoint).length > 0) {
+
+            webAppObj.setTokenEndpoint(attributes["oauthapis_apiTokenEndpoint" + count]);
+            webAppObj.setApiConsumerKey(attributes["oauthapis_apiConsumerKey" + count]);
+            webAppObj.setApiConsumerSecret(attributes["oauthapis_apiConsumerSecret" + count]);
+            webAppObj.setApiName(attributes["oauthapis_apiName" + count]);
+
+            count++;
+            tokenEndpoint = attributes["oauthapis_apiTokenEndpoint" + count];
+
+            //Save OAuth APIs consumer details per given web-app
+            apiMgtDAOObj.addOAuthAPIAccessInfo(webAppObj);
+        }
 
     }
 
@@ -110,6 +138,8 @@ var module = function () {
             var name = model.getField('overview.name').value;
             var version = model.getField('overview.version').value;
             var contextname = model.getField('overview.context').value;
+            var tracking_code = model.getField('overview.trackingCode').value;
+                        
             var shortName = template.shortName;
 
             log.debug('Artifact name: ' + name);
@@ -161,8 +191,11 @@ var module = function () {
             //adding asset to social
             addToSocialCache(id, template.shortName);
 
+            var artifact1 = artifactManager.get(id);
+            var attributes = artifact1.attributes;
+            
             //adding to database
-            addToWebApp(provider, name, version, contextname, asset);
+            addToWebApp(id,provider, name, version, contextname, tracking_code,asset, attributes['sso_singleSignOn'], attributes['sso_idpProviderUrl'], attributes['sso_saml2SsoIssuer']);
 
             //Save the id data to the model
             model.setField('*.id', id);

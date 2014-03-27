@@ -56,7 +56,7 @@ caramel.configs({
     negotiation: true,
     themer: function () {
         //TODO: Hardcoded theme
-        return 'default';
+        return 'appm';
     }
 
 });

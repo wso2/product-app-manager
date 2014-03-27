@@ -39,3 +39,17 @@
 	height: 336px;
 	position: relative;
 }
+.web-asset-description-header .row > div{
+	height: 336px;
+	position: relative;
+}
+.web-asset-img{
+	float:left;
+	margin:0 10px 10px 0;
+}
+.web-asset-clear{
+	clear:left;
+}
+
+
+

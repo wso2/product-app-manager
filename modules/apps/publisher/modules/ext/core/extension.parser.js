@@ -415,7 +415,7 @@ var extension_parser=function(){
     	var value=actionComp[1];
     	
     	if(field.hasOwnProperty(prop)){
-            log.debug('Setting property of field: '+filed.name+' '+prop+' = '+value);
+            log.debug('Setting property of field: '+field.name+' '+prop+' = '+value);
     		field[prop]=value;
     		return;
     	}
