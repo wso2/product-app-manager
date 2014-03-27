@@ -1,0 +1,136 @@
+.graph-container{
+    background: none;
+    box-shadow: none;
+    border: 0 none;
+    width:50%;
+    min-height: 240px;
+    margin: 0 0 0;
+    height: auto;
+}
+
+.widget-content .date-range-wrapper{
+    padding:10px 8px 20px;
+    text-align: right;
+    align: right;
+    
+}
+.widget-content .date-range-wrapper > #date-range{
+    text-align: left;
+}
+
+#placeholder1, #placeholder3 {
+    height:320px;
+    width: 300px;
+}
+#placeholder2 {
+		width: 800px;
+		height:300px;
+}
+
+#placeholder5 {
+		width: 800px;
+		height:300px;
+}
+
+#placeholder {
+		width: 400px;
+		height:300px;
+}
+
+#placeholder31 {
+		width: 400px;
+		height:300px;
+	    position: relative;
+        margin: 0 auto;
+}
+
+#placeholder4 {
+    width: 800px;
+    height: 300px;
+}
+
+.graphTable a {
+       color: #c75f3e;
+}
+
+.graphTable {
+       padding: 0;
+       margin: 10px 0 0 0;
+   border-left: 1px solid #C1DAD7;
+       border-top: 1px solid #C1DAD7;
+}
+
+.graphTable caption {
+       padding: 0 0 5px 0;
+       width: 700px;
+       font: italic 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+       text-align: right;
+}
+
+.graphTable th {
+       font: bold 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+       color: #4f6b72;
+       border-right: 1px solid #C1DAD7;
+       border-bottom: 1px solid #C1DAD7;
+       border-top: 1px solid #C1DAD7;
+       letter-spacing: 2px;
+       text-transform: uppercase;
+       text-align: left;
+       padding: 6px 6px 6px 12px;
+       background: #CAE8EA url(images/bg_header.jpg) no-repeat;
+}
+
+.graphTable  th.nobg {
+       border-top: 0;
+       border-left: 0;
+       border-right: 1px solid #C1DAD7;
+       background: none;
+}
+
+.graphTable td {
+       border-right: 1px solid #C1DAD7;
+       border-bottom: 1px solid #C1DAD7;
+       background: #fff;
+       padding: 6px 6px 6px 12px;
+       color: #4f6b72;
+}
+
+
+.graphTable td.alt {
+       background: #F5FAFA;
+       color: #797268;
+   width:100%;
+}
+
+.graphTable th.spec {
+       border-left: 1px solid #C1DAD7;
+       border-top: 0;
+       background: #fff;
+       font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+}
+
+.graphTable th.specalt {
+       border-left: 1px solid #C1DAD7;
+       border-top: 0;
+       background: #f5fafa;
+       font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+       color: #797268;
+}
+
+.graphTable td.NumberCell{
+    text-align: right;
+}
+
+.legend table, .legend > div {
+            height: 82px !important;
+            opacity: 1 !important;
+            top: 10px;
+            right: 10px;
+            width: 116px !important;
+        }
+ 
+        .legend table {
+            border-spacing: 5px;
+            border: 1px solid #555;
+            padding: 2px;
+        }
