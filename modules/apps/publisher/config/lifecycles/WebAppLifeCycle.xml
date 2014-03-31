@@ -27,7 +27,7 @@
                 <state id="Created">
                     <datamodel>
                         <data name="transitionExecution">
-                            <execution forEvent="Submit" class="org.wso2.jaggery.scxml.custom.PublishWFEventExecutor">
+                            <execution forEvent="Submit" class="org.wso2.carbon.appmgt.impl.extensions.custom.PublishWFEventExecutor">
                                 <parameter name="PERMISSION:get"
                                            value="http://www.wso2.org/projects/registry/actions/get"/>
                                 <parameter name="PERMISSION:add"
@@ -65,7 +65,7 @@
                 <state id="In-Review">
                     <datamodel>
                         <data name="transitionExecution">
-                            <execution forEvent="Approve" class="org.wso2.jaggery.scxml.custom.PublishEventExecutor">
+                            <execution forEvent="Approve" class="org.wso2.carbon.appmgt.impl.extensions.custom.PublishEventExecutor">
                                 <parameter name="PERMISSION:get"
                                            value="http://www.wso2.org/projects/registry/actions/get"/>
                                 <parameter name="PERMISSION:add"
@@ -147,7 +147,7 @@
                 <state id="Unpublished">
                     <datamodel>
                         <data name="transitionExecution">
-                            <execution forEvent="Publish" class="org.wso2.jaggery.scxml.custom.PublishWFEventExecutor">
+                            <execution forEvent="Publish" class="org.wso2.carbon.appmgt.impl.extensions.custom.PublishWFEventExecutor">
                                 <parameter name="PERMISSION:get"
                                            value="http://www.wso2.org/projects/registry/actions/get"/>
                                 <parameter name="PERMISSION:add"
