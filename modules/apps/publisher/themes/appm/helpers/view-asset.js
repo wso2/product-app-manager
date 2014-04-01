@@ -18,3 +18,32 @@ var format = function(data){
 	return data;
 }
 
+
+
+var merge = function(data){
+	
+     var log =  new Log();
+	     
+     var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
+     var apiMgtDAOObj = new apiMgtDAO();
+     var result  = apiMgtDAOObj.getApplicationKeyPair(data.artifact.attributes.overview_name,data.artifact.attributes.overview_provider);
+     
+     var sResult = result.toString();
+      sResult = sResult.substr(1, sResult.length()-2);
+
+	 
+	 for(var i in data.data.fields){
+		 log.info(data.data.fields);
+
+		 if (data.data.fields[i].name == 'oauthapis_webappConsumerKey'){
+			 data.data.fields[i].value =  sResult.split(",")[0];
+		 }else if(data.data.fields[i].name == 'oauthapis_webappConsumerSecret')
+			 data.data.fields[i].value = sResult.split(",")[1];
+
+	 }
+
+	 return data;
+}
+
+
+
