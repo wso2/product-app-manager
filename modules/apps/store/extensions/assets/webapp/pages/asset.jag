@@ -27,6 +27,9 @@ authenticator.init(jagg,session);
 //var getDocs=jagg.module('documentation').getAllDocumentations;
 
 
+var carbon = require('carbon');
+
+
 require('/modules/store.js').exec(function (ctx) {
     var asset, aid, title,
             log = ctx.log,
@@ -38,6 +41,7 @@ require('/modules/store.js').exec(function (ctx) {
             site = ctx.site,
             matcher = ctx.matcher,
             inDashboard = false,
+            isSubscribed = false;
             utility = require('/modules/util.js');
 
     caramel = require('caramel');
@@ -124,7 +128,31 @@ require('/modules/store.js').exec(function (ctx) {
     var availableTiers=apiInfoManager.getTiers();
 
     user=authenticator.getLoggedInUser();
-
+    
+   
+   var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
+   var apiMgtDAOObj = new apiMgtDAO();
+   
+   var subscriberObj = apiMgtDAOObj.getSubscriber(user.username);
+   var result  = apiMgtDAOObj.getSubscribedAPIs(subscriberObj);
+  
+    	 
+  var iterator = Iterator(result);  
+  for (var pair in iterator){
+  var sAPI = Packages.org.wso2.carbon.appmgt.api.model.SubscribedAPI;
+  sAPI = pair;
+  
+  
+  var apiID = org.wso2.carbon.appmgt.api.model.APIIdentifier;
+  apiID = sAPI.getApiId();
+  var apiName = apiID.getApiName();
+  if(apiName ==  asset.attributes['overview_name']){
+  	isSubscribed = true;
+  }
+  
+  }
+    
+   
     caramel.render({
         title: 'Store | ' + type,
         user: user,
@@ -142,10 +170,11 @@ require('/modules/store.js').exec(function (ctx) {
             searchFields: rxtAttributes
         },
         isSocial: configs.socialCommentsEnable,
-
+        
         type: type,
         embedURL: configs.server.http + '/gadgets/ifr?url=' + asset.attributes.overview_url,
         inDashboard: inDashboard,
+        isSubscribed:isSubscribed,
         asset: asset,
         tags: [
             {

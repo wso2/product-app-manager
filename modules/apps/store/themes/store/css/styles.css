@@ -697,6 +697,9 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     height: 248px;
     overflow: hidden;
     position: relative;
+    margin-bottom:7px;
+    margin-right:10px;
+    margin-left :0px!important;
 }
 .asset a:hover {
     text-decoration: none;
@@ -730,7 +733,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 }
 
 .asset-details {
-    height: 244px;
+    height: 100%;
     left: 0;
     padding: 5px 15px 0;
     position: absolute;
@@ -778,7 +781,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 
 .asset-name {
     color: #34495E;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 600;
     max-height: 39px;
     overflow: hidden;

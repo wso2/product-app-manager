@@ -1,4 +1,7 @@
 var render = function(theme, data, meta, require) {
+	var log = new Log();
+	
+	
 	var assetsByProvider=data.assetsByProvider;
     assetsByProvider['assets']=require('/helpers/rating-provider.js').ratingProvider.formatRating(data.assetsByProvider.assets);
 
@@ -27,6 +30,7 @@ var render = function(theme, data, meta, require) {
                 asset : data.asset,
                 type : data.type,
                 inDashboard : data.inDashboard,
+                isSubscribed:data.isSubscribed,
                 embedURL : data.embedURL,
                 isSocial : data.isSocial,
                 tabs:{

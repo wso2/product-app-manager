@@ -27,7 +27,7 @@ var serviceModule = (function () {
      @options.user:
      */
     Subscriber.prototype.addSubscription = function (options) {
-        log.info('Subscription information : ' + stringify(options));
+        
         var apiData = {};
         apiData['name'] = options.apiName;
         apiData['version'] = options.apiVersion;
@@ -39,6 +39,13 @@ var serviceModule = (function () {
 
     Subscriber.prototype.removeSubscription = function (options) {
 
+        var apiData = {};
+        apiData['name'] = options.apiName;
+        apiData['version'] = options.apiVersion;
+        apiData['provider'] = options.apiProvider;
+        var result = this.instance.removeAPISubscription(apiData, options.apiTier, options.appName, options.user);
+
+        return result;
     };
 
     /*

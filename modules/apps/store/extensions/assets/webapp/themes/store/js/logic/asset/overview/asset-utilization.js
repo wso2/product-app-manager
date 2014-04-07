@@ -4,12 +4,21 @@ $(function(){
     var APP_NAME_FIELD='#subsAppName';
     var TIER_FIELD='#subsAppTier';
     var API_URL='/store/resources/webapp/v1/subscription/app';
+    var API_UNSUBSCRIPTION_URL='/store/resources/webapp/v1/unsubscription/app';
 
     $('#btnSubscribe').on('click',function(){
-         getAppDetails();
+			getAppDetails();
     });
+    
+    
+    $('#btnUnsubscribe').on('click',function(){
+    	 removeAppDetails();
+   });
+    
+ 
 
     var getAppDetails=function(){
+
          if(metadata){
              console.log('Found metadata');
              var appName=getAppName();
@@ -29,6 +38,29 @@ $(function(){
              subscribeToApi(subscription);
          }
     };
+    
+    var removeAppDetails=function(){
+
+        if(metadata){
+            console.log('Found metadata');
+            var appName=getAppName();
+            var tier=getTier();
+
+            //Obtain the required information
+            var subscription={};
+            var apiDetails=metadata.apiAssetData.attributes;
+            subscription['apiName']=apiDetails.overview_name;
+            subscription['apiVersion']=apiDetails.overview_version;
+            subscription['apiTier']=tier;
+            subscription['apiProvider']=apiDetails.overview_provider;
+            subscription['appName']="DefaultApplication";
+
+            console.log(subscription);
+
+            unsubscribeToApi(subscription);
+        }
+   };
+    
 
     var getAppName=function(){
        return $(APP_NAME_FIELD)?$(APP_NAME_FIELD).val():'';
@@ -46,10 +78,48 @@ $(function(){
            url:API_URL,
            type:'POST',
            data:subscription,
-           success:function(){
-               console.info('Successfully subscribed to API: '+subscription.apiName);
-               alert('Succsessfully subscribed to the '+subscription.apiName+' Web App.');
-           }
+           success:function(response){
+        	   if(JSON.parse(response).error == false){
+        		   console.info('Successfully subscribed to Web app: '+subscription.apiName);
+        		   alert('Succsessfully subscribed to the '+subscription.apiName+' Web App.');
+        		   $('#btnUnsubscribe').show();
+                   $('#btnSubscribe').hide();
+        	   }else{
+              		console.info('Error occured in subscribe to web app: '+subscription.apiName);
+                   	alert('Error occured in subscribed to the '+subscription.apiName+' Web App.');
+               }
+           },
+           error : function(response) {
+      			alert('Error occured in subscribe');
+      	   }
         });
     };
+    
+    
+    var unsubscribeToApi=function(subscription){
+
+        $.ajax({
+           url:API_UNSUBSCRIPTION_URL,
+           type:'POST',
+           data:subscription,
+           success:function(response){
+        	   if(JSON.parse(response).error == false){
+               	console.info('Successfully unsubscribed to web app: '+subscription.apiName);
+               	alert('Succsessfully unsubscribed to the '+subscription.apiName+' Web App.');
+               $('#btnUnsubscribe').hide();
+               $('#btnSubscribe').show();
+           	   }else{
+           		console.info('Error occured in unsubscribe to web app: '+subscription.apiName);
+               	alert('Error occured in unsubscribed to the '+subscription.apiName+' Web App.');
+           	   }
+        	   
+           },
+           error : function(response) {
+   			alert('Error occured in unsubscribe');
+   		  }
+        });
+    };
+    
+    
+  
 });
