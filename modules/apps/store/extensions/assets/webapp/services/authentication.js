@@ -20,7 +20,6 @@ var serviceModule = (function () {
     };
 
     Authenticator.prototype.login = function (options) {
-        log.info(options);
         var result = this.instance.login(options.username, options.password, options.tenant);
 
         //Check if an error has occurred
