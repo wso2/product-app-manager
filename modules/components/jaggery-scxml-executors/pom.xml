@@ -76,18 +76,7 @@
                   *;resolution:=optional	  
               </Import-Package>
 	      <Export-Package>
-		  org.wso2.jaggery.scxml.generic,
-		  org.wso2.jaggery.scxml.tester,
-		  org.wso2.jaggery.scxml.internal,
-		  org.wso2.jaggery.scxml.domain,
-		  org.wso2.jaggery.scxml.management,
-		  org.wso2.jaggery.scxml.parser,
-		  org.wso2.jaggery.scxml.parser.handlers,
-		  org.wso2.jaggery.scxml.aspects,
-		  org.wso2.jaggery.scxml.registry.filters,
-		  org.wso2.jaggery.scxml.registry.handlers,
-		  org.wso2.jaggery.scxml.threading,
-		  org.wso2.jaggery.scxml.threading.contexts
+		  org.wso2.jaggery.scxml.*
 	      </Export-Package>
           </instructions>
       </configuration>

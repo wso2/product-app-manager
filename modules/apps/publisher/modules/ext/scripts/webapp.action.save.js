@@ -47,7 +47,7 @@ var module = function () {
 	}
 
     //TODO: Change this method to take WebAppObj as argument instead of passing properties separately.
-    function addToWebApp(uuid,webappProvider, webappName, webappVersion, webappContext, webappTrackingCode,asset, ssoEnabled, idpProviderUrl, saml2SsoIssuer) {
+    function addToWebApp(uuid,webappProvider, webappName, webappVersion, webappContext, webappTrackingCode,asset, ssoEnabled, idpProviderUrl, saml2SsoIssuer, logoutURL) {
 
         var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
         var apiIdentifierObj = new apiIdentifier(webappProvider, webappName, webappVersion);
@@ -61,6 +61,7 @@ var module = function () {
         webAppObj.setIdpProviderURL(idpProviderUrl);
         webAppObj.setSaml2SsoIssuer(saml2SsoIssuer);
         webAppObj.setUUID(uuid);
+        webAppObj.setLogoutURL(logoutURL);
 
         var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
         var apiMgtDAOObj = new apiMgtDAO();
@@ -139,6 +140,7 @@ var module = function () {
             var version = model.getField('overview.version').value;
             var contextname = model.getField('overview.context').value;
             var tracking_code = model.getField('overview.trackingCode').value;
+            var logoutURL = model.getField('overview.logoutUrl').value;
                         
             var shortName = template.shortName;
 
@@ -195,7 +197,7 @@ var module = function () {
             var attributes = artifact1.attributes;
             
             //adding to database
-            addToWebApp(id,provider, name, version, contextname, tracking_code,asset, attributes['sso_singleSignOn'], attributes['sso_idpProviderUrl'], attributes['sso_saml2SsoIssuer']);
+            addToWebApp(id,provider, name, version, contextname, tracking_code,asset, attributes['sso_singleSignOn'], attributes['sso_idpProviderUrl'], attributes['sso_saml2SsoIssuer'],logoutURL);
 
             //Save the id data to the model
             model.setField('*.id', id);
