@@ -141,6 +141,9 @@ var module = function () {
             var contextname = model.getField('overview.context').value;
             var tracking_code = model.getField('overview.trackingCode').value;
             var logoutURL = model.getField('overview.logoutUrl').value;
+
+            var webappURL = model.getField('overview.webAppUrl').value;
+            var revisedURL = logoutURL.replace(webappURL,"");
                         
             var shortName = template.shortName;
 
@@ -197,7 +200,7 @@ var module = function () {
             var attributes = artifact1.attributes;
             
             //adding to database
-            addToWebApp(id,provider, name, version, contextname, tracking_code,asset, attributes['sso_singleSignOn'], attributes['sso_idpProviderUrl'], attributes['sso_saml2SsoIssuer'],logoutURL);
+            addToWebApp(id,provider, name, version, contextname, tracking_code,asset, attributes['sso_singleSignOn'], attributes['sso_idpProviderUrl'], attributes['sso_saml2SsoIssuer'],revisedURL);
 
             //Save the id data to the model
             model.setField('*.id', id);
