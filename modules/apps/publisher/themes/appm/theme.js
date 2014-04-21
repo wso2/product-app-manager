@@ -70,7 +70,10 @@ var engine = caramel.engine('handlebars', (function () {
             	
             	var out = "";
             	 for (index = 0; index < items.length; ++index) {
-            		var row = '<tr id ='+ apiName +'-'+ items[index].docName.replace(/ /g,'__')+'><td>' + items[index].docName + '</td><td>' + items[index].docType +'</td><td>'+  items[index].docLastUpdated +'</td><td id="buttonTd">';
+
+ 			var docLastUpdated = items[index].docLastUpdated;
+            		var date  = new Date(parseInt(docLastUpdated));
+            		var row = '<tr id ='+ apiName +'-'+ items[index].docName.replace(/ /g,'__')+'><td>' + items[index].docName + '</td><td>' + items[index].docType +'</td><td>'+  date.toString() +'</td><td id="buttonTd">';
             		 
             		var source = "";
             		var urlPostfix;
