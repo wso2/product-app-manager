@@ -120,7 +120,7 @@ require('/modules/store.js').exec(function (ctx) {
             asset.attributes.overview_name,
             asset.attributes.overview_version,
             authenticator.getLoggedInUser().username);
-
+    
     var apiData=apiInfoManager.getAPIDescription(asset.attributes.overview_provider,
            asset.attributes.overview_name,
            asset.attributes.overview_version);

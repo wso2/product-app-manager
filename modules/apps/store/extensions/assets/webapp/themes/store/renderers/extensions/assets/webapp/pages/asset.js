@@ -5,7 +5,6 @@ var render = function(theme, data, meta, require) {
 	var assetsByProvider=data.assetsByProvider;
     assetsByProvider['assets']=require('/helpers/rating-provider.js').ratingProvider.formatRating(data.assetsByProvider.assets);
 
-	//print(caramel.build(data));
 	theme('2-column-right', {
 		title : data.title,
 		metadata:data.metadata,

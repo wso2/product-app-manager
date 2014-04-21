@@ -51,5 +51,30 @@
 	clear:left;
 }
 
+.widget-maximized{
+border: 1px solid;
+position: fixed;
+left: 50%;
+top: 0;
+bottom: 0;
+z-index: 999;
+background: #fff;
+margin-left: -315px;
+width: 700px;
+overflow-y: auto;
+	
+}
+
+.backdrop{
+	position: fixed;
+left: 0;
+right: 0;
+bottom: 0;
+top: 0;
+background: rgba(0,0,0,.6);
+z-index: 998;
+display:none;
+}
+
 
 

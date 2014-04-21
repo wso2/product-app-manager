@@ -20,6 +20,7 @@ var resource = (function () {
      Subscribes the given application to an API with the provided details
      */
     var addSubscription = function (context) {
+
         var parameters = context.request.getAllParameters();
         var subscription = {};
         subscription['apiName'] = parameters.apiName;

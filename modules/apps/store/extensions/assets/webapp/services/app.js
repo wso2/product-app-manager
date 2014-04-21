@@ -47,8 +47,7 @@ var serviceModule = (function () {
      options.description
      */
     AppService.prototype.updateApplication = function (options) {
-        log.info('options');
-        log.info(options);
+       
         var result = this.instance.updateApplication({
             newAppName: options.newAppName,
             oldAppName: options.oldAppName,

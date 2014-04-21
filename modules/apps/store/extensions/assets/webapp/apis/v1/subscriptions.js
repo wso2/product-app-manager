@@ -20,9 +20,7 @@ var serviceModule=(function(){
 
         var apps=subsApi.getAppsWithSubs({user:username});
 
-        log.info(apps);
-
-        return apps;
+          return apps;
     };
 
     return{

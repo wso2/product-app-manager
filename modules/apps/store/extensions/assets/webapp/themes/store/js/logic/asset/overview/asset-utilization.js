@@ -33,7 +33,6 @@ $(function(){
              subscription['apiProvider']=apiDetails.overview_provider;
              subscription['appName']="DefaultApplication";
 
-             console.log(subscription);
 
              subscribeToApi(subscription);
          }
@@ -55,7 +54,6 @@ $(function(){
             subscription['apiProvider']=apiDetails.overview_provider;
             subscription['appName']="DefaultApplication";
 
-            console.log(subscription);
 
             unsubscribeToApi(subscription);
         }

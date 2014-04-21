@@ -1,106 +1,125 @@
 <div>
 
-    {{#with tabs.documentation.data}}
+	{{#with tabs.documentation.data}}
 
-    <div class='accordion' id='documentAccordion'></div>
+	<div class='accordion' id='documentAccordion'></div>
 
-    {{#if HowTo.hasContent}}
-    <!--How To Documentation -->
-    <div class='accordion-group'>
-        <div class='accordion-heading'>
-            <a class='accordion-toggle' data-toggle='collapse' data-parent='documentAccordion' href='#howToDocs'>
-                {{t "How To"}}
-            </a>
-        </div>
-        <div id='howToDocs' class='accordion-body collapse'>
-            <div class='accordion-inner'>
-                {{> documentation-listing HowTo.entries}}
-            </div>
-        </div>
-    </div>
-    {{/if}}
+	<div class="row-fluid">
+		<table class='table'>
 
-    <!-- Samples -->
-    {{#if Samples.hasContent}}
-    <div class='accordion-group'>
-        <div class='accordion-heading'>
-            <a class='accordion-toggle' data-toggle='collapse' data-parent='documentAccordion' href='#sampleDocs'>
-                {{t "Samples"}}
-            </a>
-        </div>
-        <div id='sampleDocs' class='accordion-body collapse'>
-            <div class='accordion-inner'>
-                {{> documentation-listing Samples.entries}}
-            </div>
-        </div>
-    </div>
-    {{/if}}
+			<thead>
+				<th><b>Name</b></th>
+				<th><b>Summary</b></th>
+				<th><b>Content</b></th>
+			</thead>
+			<tbody>
+				{{#if HowTo.hasContent}}
+				<tr>
+					{{#each HowTo.entries}}
+					<td>
+						{{name}}(HowTo)
+					</td>
+					<td>
+						{{summary}}
+					</td>
+					<td>
+						{{#if isFile}} 
+							<a class='icon-download'></a><a href='{{filePath}}' download>Download</a> 
+						{{/if}} 
+						{{#if isUrl}} 
+							<a class='icon-globe'></a> <a href='{{sourceUrl}}' target="_blank">View Content</a>
+						{{/if}} 
+						{{#if isInline}} 
+						
+							<a class='icon-globe' href="/store/extensions/assets/webapp/doc?{{name}}&{{../../../../asset.attributes.overview_provider}}&{{../../../../asset.attributes.overview_version}}&{{../../../../asset.attributes.overview_name}}&{{../../../../user.username}}" target="_blank">ViewDoc</a> 
+						{{/if}}
 
-    <!-- Public Forum -->
-    {{#if PublicForum.hasContent}}
-    <div class='accordion-group'>
-        <div class='accordion-heading'>
-            <a class='accordion-toggle' data-toggle='collapse' data-parent='documentAccordion' href='#publicForumDocs'>
-                {{t "Public Forums"}}
-            </a>
-        </div>
-        <div id='publicForumDocs' class='accordion-body collapse'>
-            <div class='accordion-inner'>
-                {{> documentation-listing PublicForum.entries}}
-            </div>
-        </div>
-    </div>
-    {{/if}}
+					</td>
 
-    <!-- Support Forum -->
-    {{#if SupportForum.hasContent}}
-    <div class='accordion-group'>
-        <div class='accordion-heading'>
-            <a class='accordion-toggle' data-toggle='collapse' data-parent='documentAccordion' href='#publicForumDocs'>
-                {{t "Support Forums"}}
-            </a>
-        </div>
-        <div id='publicForumDocs' class='accordion-body collapse'>
-            <div class='accordion-inner'>
-                {{> documentation-listing SupportForum.entries}}
-            </div>
-        </div>
-    </div>
-    {{/if}}
+				</tr>
+				{{/each}} 
+				{{/if}} 
+				
+				{{#if Samples.hasContent}}
+				<tr>
+					{{#each Samples.entries}}
+					<td>{{name}}(Samples)</td>
+					<td>{{summary}}</td>
+					<td>{{#if isFile}} <a class='icon-download'></a> <a
+						href='{{filePath}}' download>Download</a> {{/if}} {{#if isUrl}} <a
+						class='icon-globe'></a> <a href='{{sourceUrl}}'>View Content</a>
+						{{/if}} {{#if isInline}} <a class='icon-globe'
+						href="/store/extensions/assets/webapp/doc?{{name}}&{{../../asset.attributes.overview_provider}}&{{../../asset.attributes.overview_version}}&{{../../asset.attributes.overview_name}}&{{../../user.username}}"
+						target="_blank">ViewDoc</a> {{/if}}
 
-    <!-- API Message Format -->
-    {{#if APIMessageFormat.hasContent}}
-    <div class='accordion-group'>
-        <div class='accordion-heading'>
-            <a class='accordion-toggle' data-toggle='collapse' data-parent='documentAccordion' href='#publicForumDocs'>
-                {{t "API Message Format"}}
-            </a>
-        </div>
-        <div id='publicForumDocs' class='accordion-body collapse'>
-            <div class='accordion-inner'>
-                {{> documentation-listing APIMessageFormat.entries}}
-            </div>
-        </div>
-    </div>
-    {{/if}}
+					</td>
 
-    <!-- Other -->
-    {{#if Other.hasContent}}
-    <div class='accordion-group'>
-        <div class='accordion-heading'>
-            <a class='accordion-toggle' data-toggle='collapse' data-parent='documentAccordion' href='#publicForumDocs'>
-                {{t "Other"}}
-            </a>
-        </div>
-        <div id='publicForumDocs' class='accordion-body collapse'>
-            <div class='accordion-inner'>
-                {{> documentation-listing Other.entries}}
-            </div>
-        </div>
-    </div>
-    {{/if}}
+				</tr>
+				{{/each}} {{/if}} {{#if PublicForum.hasContent}}
+				<tr>
+					{{#each PublicForum.entries}}
+					<td>{{name}}(PublicForum)</td>
+					<td>{{summary}}</td>
+					<td>{{#if isFile}} <a class='icon-download'></a> <a
+						href='{{filePath}}' download>Download</a> {{/if}} {{#if isUrl}} <a
+						class='icon-globe'></a> <a href='{{sourceUrl}}'>View Content</a>
+						{{/if}} {{#if isInline}} <a class='icon-globe'
+						href="/store/extensions/assets/webapp/doc?{{name}}&{{../../asset.attributes.overview_provider}}&{{../../asset.attributes.overview_version}}&{{../../asset.attributes.overview_name}}&{{../../user.username}}"
+						target="_blank">ViewDoc</a> {{/if}}
 
+					</td>
 
+				</tr>
+				{{/each}} {{/if}} {{#if SupportForum.hasContent}}
+				<tr>
+					{{#each SupportForum.entries}}
+					<td>{{name}}(SupportForum)</td>
+					<td>{{summary}}</td>
+					<td>{{#if isFile}} <a class='icon-download'></a> <a
+						href='{{filePath}}' download>Download</a> {{/if}} {{#if isUrl}} <a
+						class='icon-globe'></a> <a href='{{sourceUrl}}'>View Content</a>
+						{{/if}} {{#if isInline}} <a class='icon-globe'
+						href="/store/extensions/assets/webapp/doc?{{name}}&{{../../asset.attributes.overview_provider}}&{{../../asset.attributes.overview_version}}&{{../../asset.attributes.overview_name}}&{{../../user.username}}"
+						target="_blank">ViewDoc</a> {{/if}}
 
-    {{/with}}
+					</td>
+
+				</tr>
+				{{/each}} {{/if}} {{#if APIMessageFormat.hasContent}}
+				<tr>
+					{{#each APIMessageFormat.entries}}
+					<td>{{name}}(APIMessageFormat)</td>
+					<td>{{summary}}</td>
+					<td>{{#if isFile}} <a class='icon-download'></a> <a
+						href='{{filePath}}' download>Download</a> {{/if}} {{#if isUrl}} <a
+						class='icon-globe'></a> <a href='{{sourceUrl}}'>View Content</a>
+						{{/if}} {{#if isInline}} <a class='icon-globe'
+						href="/store/extensions/assets/webapp/doc?{{name}}&{{../../asset.attributes.overview_provider}}&{{../../asset.attributes.overview_version}}&{{../../asset.attributes.overview_name}}&{{../../user.username}}"
+						target="_blank">ViewDoc</a> {{/if}}
+
+					</td>
+
+				</tr>
+				{{/each}} {{/if}} {{#if Other.hasContent}}
+				<tr>
+					{{#each Other.entries}}
+					<td>{{name}}(Other)</td>
+					<td>{{summary}}</td>
+					<td>{{#if isFile}} <a class='icon-download'></a> <a
+						href='{{filePath}}' download>Download</a> {{/if}} {{#if isUrl}} <a
+						class='icon-globe'></a> <a href='{{sourceUrl}}'>View Content</a>
+						{{/if}} {{#if isInline}} <a class='icon-globe'
+						href="/store/extensions/assets/webapp/doc?{{name}}&{{../../asset.attributes.overview_provider}}&{{../../asset.attributes.overview_version}}&{{../../asset.attributes.overview_name}}&{{../../user.username}}"
+						target="_blank">ViewDoc</a> {{/if}}
+
+					</td>
+
+				</tr>
+				{{/each}} {{/if}}
+
+			</tbody>
+		</table>
+	</div>
+	{{/with}}
+
 </div>

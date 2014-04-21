@@ -1,4 +1,5 @@
 <table class='table'>
+
     <thead>
     <th><b>Name</b></th>
     <th><b>Summary</b></th>
@@ -6,7 +7,7 @@
     </thead>
     <tbody>
     <tr>
-        {{#each .}}
+        {{#each tabs.documentation.data.HowTo.entries}}
         <td>
             {{name}}
         </td>
@@ -14,13 +15,16 @@
             {{summary}}
         </td>
         <td>
-            <!--- View Content/Download link -->
             {{#if isFile}}
-                 <a class='icon-download'></a> <a href='{{filePath}}'>Download</a>
+                 <a class='icon-download'></a> <a href='{{filePath}}' download>Download</a>
             {{/if}}
 
             {{#if isUrl}}
                 <a class='icon-globe'></a> <a href='{{sourceUrl}}'>View Content</a>
+            {{/if}}
+            
+            {{#if isInline}}
+                     <a class='icon-globe' href="/store/extensions/assets/webapp/doc?{{name}}&{{../../asset.attributes.overview_provider}}&{{../../asset.attributes.overview_version}}&{{../../asset.attributes.overview_name}}&{{../../user.username}}"  target="_blank">ViewDoc</a>
             {{/if}}
 
         </td>

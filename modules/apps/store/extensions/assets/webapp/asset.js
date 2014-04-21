@@ -31,6 +31,11 @@ var assetLinks = function (user) {
                 title:'Subscriptions',
                 url:'subscriptions',
                 path:'subscriptions.jag'
+            },
+            {
+                title:'Documentations',
+                url:'doc',
+                path:'doc.jag'
             }
         ]
     }
