@@ -26,7 +26,7 @@ try{
 		
 		
  	var apiData={};
- 	apiData.docName= parameters[2];
+ 	apiData.docName= decodeURI(parameters[2]);
  	
  	var operation = "documentation";
  	 	
