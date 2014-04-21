@@ -87,7 +87,7 @@ var engine = caramel.engine('handlebars', (function () {
             			source =  '<a href="' + items[index].filePath+  urlPostfix + '" target="_blank" download><i class="icon-check"></i> Open</a>';
 
             		}else if(items[index].sourceType == "INLINE"){
-            			source = '<a href="javascript:editInlineContent(\'' + output.artifact.id + '\',\'' + output.shortName + '\',\''+ items[index].docName + '\',\'edit\'' + ',\''+ urlPostfix + '\')"><i class="icon-edit"></i> EditContent</a>';
+            			source = '<a href="javascript:editInlineContent(\'' + output.artifact.id + '\',\'' + output.shortName + '\',\''+ items[index].docName + '\',\'edit\'' + ',\''+ urlPostfix + '\')"><i class="icon-edit"></i>EditContent</a>';
             		}
             		
             		
