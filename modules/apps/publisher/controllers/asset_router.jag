@@ -13,6 +13,8 @@
 		var EXT_PATH=config.paths.ASSET_EXT_PATH;
 		var DEFAULT_PATH=config.paths.ASSET_DEFAULT_PATH;
 		var URL=config.urls.ASSET;
+		
+		var log =  new Log();
 	
 		var MSG_404='Asset not found';	//Eror 404 message
 
@@ -22,6 +24,7 @@
 
         //This will short circuit the handling of the requests
         var passed=sm.check(session);
+        
 
         //Stop servicing the request if the check failed
         if(!passed){
@@ -47,7 +50,7 @@
 			return false;
 		}
 
-
+				
 		var matcher=new URIMatcher(request.getRequestURI());
 		
 		
@@ -73,12 +76,16 @@
 				include(path);
 				return;
 			}
+			
+						
 
 			//Set the default path
 			path=DEFAULT_PATH+DEFAULT_ROUTER_NAME;
 			
+						
 			//Default 
 			include(path);
+			
 			return;
 		}
 

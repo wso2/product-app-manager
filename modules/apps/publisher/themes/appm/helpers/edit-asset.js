@@ -25,6 +25,8 @@ var selectCategory = function(data) {
 	data.categorySelect = arr;
 	return data;
 }
+
+
 var selectCategories = function(fields) {
 	for (var i in fields) {	
 		if(fields[i].name == "overview_category"){

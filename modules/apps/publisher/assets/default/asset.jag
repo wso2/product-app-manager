@@ -11,6 +11,8 @@
  Filename:asset.js
  Created Date: 29/7/2013
  */
+include("/extensions/webapp/modules/jagg/jagg.jag");
+
 
 require('/modules/publisher.js').exec(function(ctx) {
 
@@ -33,9 +35,13 @@ var dataInjector = publisher.dataInjector;
 var DataInjectorModes = publisher.DataInjectorModes;
 var filterManager=publisher.filterManager;
 
+mod = jagg.module("documentation");
+
 var log = new Log();
 
 routeManager.register('GET', 'publisher', '/publisher/asset/{type}', function (context) {
+	
+		
 
     var shortName = (context.params.type) || '';
     var operation = 'create';
@@ -61,6 +67,8 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}', function (c
 });
 
 routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', function (context) {
+	
+		
 
     var shortName = context.params.type;
     //print(context.params);
@@ -110,6 +118,7 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
 		var tags = rxtManager.registry.tags(path);
 		var title = assetName;
 		
+	
         caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title});
     } catch (e) {
         log.debug('The asset with id ' + id + ' could not be found due to : ' + e);
@@ -118,13 +127,77 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
 
 });
 
-routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/{type}/{id}', function (context) {
+	routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', function (context) {
+		
+			
+	
+	    var shortName = context.params.type;
+	    //print(context.params);
+	    var id = context.params.id;
+	    var operation = 'documentation';
+	    var artifactManager = rxtManager.getArtifactManager(shortName);
+	   
+	    //If the id is not found it will throw a conversion exception
+	    //TODO: Return an empty artifact or null
+	    try {
+	
+	        log.debug('look for '+id);
+	
+	        var artifact = artifactManager.get(id);
+	
+	        log.debug('left');
+	
+	        //Get the template
+	        var rxtTemplate = rxtManager.findAssetTemplate(function (template) {
+	        
+	        	        	
+	            return (template.shortName == shortName) ? true : false;
+	        });
+	
+	        var model = modelManager.getModel(shortName);
+	
+	        //Customize the asset for the app
+	        dataInjector.inject(artifact, DataInjectorModes.DISPLAY);
+	
+	
+	        //Perform filtering logic on the artifact
+	        artifact=filterManager.filter(artifact,session);
+	
+	        //If there is no data after the filtering step we need to send an error
+	        if(!artifact){
+	            response.sendError(401,'You do not have viewing permissions to the requested asset');
+	            return;
+	        }
+	
+	        model.import('asset', artifact);
+	
+	        var output = model.export('form');
+			
+	        var assetName = model.get('overview.name').value;
+	        //Get the list of versions
+	        var versionList = artifactManager.getAllAssetVersions(assetName);
+			
+			var path = artifact.path;
+			var tags = rxtManager.registry.tags(path);
+			var title = assetName;
+			
+	        caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title});
+	    } catch (e) {
+	        log.debug('The asset with id ' + id + ' could not be found due to : ' + e);
+	        response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check server log.');
+	    }
+	
+	});
 
-    var shortName = context.params.type;
+routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/{type}/{id}', function (context) {
+   var shortName = context.params.type;
+
     //print(context.params);
     var id = context.params.id;
     var operation = context.params.opType;
     var artifactManager = rxtManager.getArtifactManager(shortName);
+    
+   
    
     //If the id is not found it will throw a conversion exception
     //TODO: Return an empty artifact or null
@@ -149,14 +222,27 @@ routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/
 
         //Get the list of versions
         var versionList = artifactManager.getAllAssetVersions(assetName);
+                
+        var apiData={};
+    	apiData.provider= model.get('overview.provider').value;
+   		apiData.name= model.get('overview.name').value;
+    	apiData.version= model.get('overview.version').value; 
+    	var result = mod.getAllDocumentation(apiData);
+    	
         
 		//Get tags
 		var path = artifact.path;
 		var tags = rxtManager.registry.tags(path);
 		var title = assetName;
-		
-        caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title});
-    } catch (e) {
+		if(operation == "documentation"){
+			caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title,docs:result.docs});
+						
+		}
+		else{
+			caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title});
+						
+		}
+      } catch (e) {
         log.debug('The asset with id ' + id + ' could not be found due to : ' + e);
         response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check server log.');
     }
@@ -270,7 +356,6 @@ function inspectFiles(req, params) {
     var uuid = '';
     var extension;
 
-    //log.info(storageConfig.dataSource);
 
     var storageManager = new storageModule.StorageManager({
         context: 'storage',
@@ -294,8 +379,6 @@ function inspectFiles(req, params) {
         resource['contentType'] = utility.fileio.getContentType(extension);
 
         uuid=storageManager.put(resource);
-
-        //log.info('uuid added: '+uuid);
 
         //Add a new  entry into the POST parameters containing the uuid
         params[index] = uuid;

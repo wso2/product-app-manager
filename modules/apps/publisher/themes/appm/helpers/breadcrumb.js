@@ -48,7 +48,10 @@ generateBreadcrumbJson = function(data) {
         	breadcrumbJson.breadCrumbStaticText = "Overview";
         } else if(data.op === "lifecycle"){
         	breadcrumbJson.breadCrumbStaticText = "Life cycle";
+        } else if(data.op === "documentation"){
+        	breadcrumbJson.breadCrumbStaticText = "Documentation";
         }
+        
         
     }  else if(data.op === "create"){
     	 breadcrumbJson.breadCrumbStaticText = 'Add Asset';

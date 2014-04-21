@@ -182,13 +182,10 @@ var drawSubscribedAPIsByUsers = function(response) {
 
 }
 
-var drawAPIUsageByUser = function(response) {
+	var drawAPIUsageByUser = function(response) {
 	
-	console.log(response);
-
 	var parsedResponse = JSON.parse(response);
 	
-
 
 	/* Overall Web Application Usage Graph */
 	$('#placeholder3').append(

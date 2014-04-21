@@ -11,10 +11,12 @@ var render=function(theme,data,meta,require){
 	var listPartial='view-asset';
 	//Determine what view to show
 	switch(data.op){
+	
 	case 'create':
 		listPartial='add-asset';
 		break;
 	case 'view':
+		data = require('/helpers/view-asset.js').merge(data);
 		listPartial='view-asset';
 		break;
     case 'edit':
@@ -26,6 +28,9 @@ var render=function(theme,data,meta,require){
         break;
     case 'versions':
         listPartial='versions-asset';
+        break;
+    case 'documentation':
+        listPartial='documentation';
         break;
 	default:
 		break;

@@ -1,83 +1,103 @@
-var meta={
-    use:'export',
-    type:'asset.exporter',
-    required:['model','template']
+var meta = {
+    use: 'export',
+    type: 'asset.exporter',
+    required: ['model', 'template']
 };
 
 /*
-Description: Converts the data to an asset format used by the ArtifactManager
-Filename:asset.exporter.js
-Created Dated: 11/8/2013
+ Description: Converts the data to an asset format used by the ArtifactManager
+ Filename:asset.exporter.js
+ Created Dated: 11/8/2013
  */
-var module=function(){
+var module = function () {
 
-   var log=new Log();
+    var log = new Log();
 
-   /*
-   Converts all of the fields to an array of attributes
-    */
-   function getAttributes(model){
+    /*
+     Converts all of the fields to an array of attributes
+     */
+    function getAttributes(model) {
 
-       var attributes={};
-       var tableName='';
-       var fieldName='';
+        var attributes = {};
+        var tableName = '';
+        var fieldName = '';
 
-       for each(var table in model.dataTables){
+        for each(var table
+    in
+        model.dataTables
+    )
+        {
 
-           if(table.name!='*') {
+            if (table.name != '*') {
 
-               //Store in the attributes array
-               for each(var field in table.fields){
-                    tableName=table.name;
-                    fieldName=field.name;
-                    attributes[tableName+'_'+fieldName]=field.value;
-               }
-           }
-       }
+                //Store in the attributes array
+                for each(var field
+            in
+                table.fields
+            )
+                {
+                    tableName = table.name;
+                    fieldName = field.name;
+                    //log.info('Creating attributes ' + tableName + '_' + fieldName + '' + field.value.toString().split(','));
+                    attributes[tableName + '_' + fieldName] = getValue(field);//field.value.toString().split(',');
+                    //log.info('Value assigned');
+                }
+            }
+        }
+        log.info(attributes);
+        return attributes;
+    }
 
-       return attributes;
-   }
+    var getValue=function(field){
+        var contents=field.value.split(',');
 
-   /*
-   Creates an asset structure
-    */
-   function getAsset(model){
+        if(contents.length==1){
+            return contents[0];
+        }
 
-       var asset={};
+        return contents;
+    }
 
-       var idField=model.getField('*.id');
+    /*
+     Creates an asset structure
+     */
+    function getAsset(model) {
 
-       if(idField){
-           asset['id']=idField.value;
-       }
+        var asset = {};
 
-       var nameField=model.getField('overview.name');
+        var idField = model.getField('*.id');
 
-       if(nameField){
-           asset['name']=nameField.value;
-       }
+        if (idField) {
+            asset['id'] = idField.value;
+        }
 
+        var nameField = model.getField('overview.name');
 
-      // asset['lifeCycle']=model.getField('*.lifeCycle').value;
-      // asset['lifeCycleState']=model.getField('*.lifeCycleState').value;
-
-       return asset;
-   }
-
-   return{
-       execute:function(context){
-           log.debug('Entered '+meta.type);
-
-           var model=context.model;
-           var template=context.template;
-
-           var assetObject=getAsset(model);
-           assetObject['attributes']=getAttributes(model);
+        if (nameField) {
+            asset['name'] = nameField.value;
+        }
 
 
-           log.debug('Exited: '+meta.type);
+        // asset['lifeCycle']=model.getField('*.lifeCycle').value;
+        // asset['lifeCycleState']=model.getField('*.lifeCycleState').value;
 
-           return assetObject;
-       }
-   }
+        return asset;
+    }
+
+    return{
+        execute: function (context) {
+            log.debug('Entered ' + meta.type);
+
+            var model = context.model;
+            var template = context.template;
+
+            var assetObject = getAsset(model);
+            assetObject['attributes'] = getAttributes(model);
+
+
+            log.debug('Exited: ' + meta.type);
+
+            return assetObject;
+        }
+    }
 };

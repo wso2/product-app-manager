@@ -137,6 +137,26 @@ var rxt_converter = function () {
 
     }}));
 
+    /**
+     * The function is used to extract the maxoccurs and subheadings attributes
+     * @param xmlTable The XML table element to be inspected
+     * @param tableObj The table object to be filled in
+     */
+    var getTableAttrs = function (xmlTable, tableObj) {
+        //Extract maxoccurs attribute
+        var maxOccursValue = xmlTable['@maxoccurs'].toString();
+        tableObj.maxoccurs = maxOccursValue;
+
+        //Extract sub headings
+        var subHeadings = xmlTable['subheading'];
+
+
+        for (var index = 0; index < subHeadings.heading.length(); index++) {
+            tableObj.subHeadings.addHeading(subHeadings.heading[index].toString());
+        }
+
+    };
+
     mnger.registerHandler(new Handler({ tag: 'content', fn: function (context) {
         var content = context.xmlDocument.content;
 
@@ -153,6 +173,8 @@ var rxt_converter = function () {
 
             //Handle multi-word table names
             handleMultiComponentTableNames(objTable);
+            getTableAttrs(table, objTable);
+
 
             //Go through each field in the table
             for each(var field
@@ -224,8 +246,8 @@ var rxt_converter = function () {
         casedName = parseName(name);
 
         //Check if the field has a label
-        if(field.name.label==''){
-            field.name.label=name;
+        if (field.name.label == '') {
+            field.name.label = name;
         }
 
         //log.info(field);
@@ -234,9 +256,9 @@ var rxt_converter = function () {
     }
 
     /*
-    The function converts a multi-word table name to a camel cased table name
-    If the table name is a single word then it is left unaltered
-    @table: The table whose name will be processed,the processed name will be assigned
+     The function converts a multi-word table name to a camel cased table name
+     If the table name is a single word then it is left unaltered
+     @table: The table whose name will be processed,the processed name will be assigned
      */
     function handleMultiComponentTableNames(table) {
         var name;

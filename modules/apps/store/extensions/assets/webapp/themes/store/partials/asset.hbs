@@ -7,8 +7,8 @@
     {{#attributes}}
     <div class="asset-description-header">
         <div class="row">
-            <div class="span9">
-                <div class="asset-banner">
+            <div class="span9" style="height: 375px;">
+                <div class="asset-banner" style="height: 375px;">
                     <img src="{{#if images_banner}}{{images_banner}}{{/if}}">
                 </div>
                 <div class="asset-introduction-box">
@@ -54,6 +54,12 @@
                     {{>overview .}}
                 </div>
             </div>
+            
+            <div class="tab-pane" id="tab-docs">
+                <div class="content">
+                    {{> documentation .}}
+                </div>
+            </div>
 
                     
  			<div class="tab-pane" id="tab-docs">
@@ -63,3 +69,4 @@
 
     </div>
 </div>
+

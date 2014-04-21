@@ -1,0 +1,56 @@
+<div>
+    {{#if this.isTextBox}}
+    {{#if isReadOnly}}
+    <input type="hidden" name='{{this.name}}' value='{{this.value}}'/>
+    <input id='{{this.name}}' type='text' value='{{this.value}}' class="fm-managed span10"
+           data-use-plugins="TextFieldValueExtractor,ReadOnlyField" data-ready-only="{{this.isReadOnly}}"/>
+    {{else}}
+    <input id='{{this.name}}' name='{{this.name}}' type='text' value='{{this.value}}' class="fm-managed span10"
+           data-use-plugins='RequiredField,TextFieldValueExtractor' data-ready-only='{{this.isReadOnly}}'
+           data-required='{{this.isRequired}}'/>
+    {{/if}}
+
+    {{/if}}
+    {{#if this.isDate}}
+    <input type='text' id='{{this.name}}' name='{{this.name}}' value='{{this.value}}' class='fm-managed span10'
+           data-ready-only='{{this.isReadOnly}}' data-required="{{this.isRequired}}"
+           data-use-plugins="RequiredField,DatePickerPlugin"
+           data-date-format='yyyy-mm-dd'>
+    {{/if}}
+    {{#if this.isOptions}}
+    <select id="{{this.name}}" class="selectpicker fm-managed span10" name='{{this.name}}'
+            data-use-plugins="TextFieldValueExtractor">
+        {{#each this.valueList}}
+        <option>{{this}}</option>
+        {{/each}}
+    </select>
+    {{/if}}
+    {{#if this.isTextArea}}
+    <textarea id='{{this.name}}' value='{{this.value}}' class="span10 fm-managed" name='{{this.name}}'
+              data-use-plugins="TextFieldValueExtractor">{{this.value}}</textarea>
+    {{/if}}
+    {{#if this.isFile}}
+    <div class="span8">
+        <div class="tbl-upload">
+            <div class="tbl-upload-row">
+                <div class="tbl-upload-cell">
+                    <input type="text" class="txt-filepath" disabled="true"/>
+                </div>
+                <div class="tbl-upload-cell">
+                    <button class="btn btn-upload">Browse</button>
+                    <input class='fm-managed' id='{{this.name}}' type='file' name='{{this.name}}'
+                           data-use-plugins="DefaultFileUploadPlugin,RequiredField"
+                           data-required='{{this.isRequired}}'/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {{/if}}
+    {{#if this.isOptionsText}}
+    <div id="{{this.name}}" name='{{this.name}}' class="options-text fm-managed"
+         data-add-button="Add {{this.label}}" data-selected="{{this.value}}"
+         data-options="{{this.valueList}}"
+         data-use-plugins="OptionsText"></div>
+    {{/if}}
+</div>

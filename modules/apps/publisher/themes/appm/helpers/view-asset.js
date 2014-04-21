@@ -33,7 +33,6 @@ var merge = function(data){
 
 	 
 	 for(var i in data.data.fields){
-		 log.info(data.data.fields);
 
 		 if (data.data.fields[i].name == 'oauthapis_webappConsumerKey'){
 			 data.data.fields[i].value =  sResult.split(",")[0];

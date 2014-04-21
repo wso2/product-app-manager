@@ -2,11 +2,14 @@ var getTypeObj, breadcrumbItems;
 var deploymentManagement=require('/modules/deployment/deployment.manager.js').deploymentManagementModule();
 var deploymentManager=deploymentManagement.cached();
 
+var log = new Log();
+
 breadcrumbItems = deploymentManager.getAssetData()
 
 var generateLeftNavJson = function(data, listPartial) {
 	
 	var currentTypeObj = getTypeObj(data.shortName);
+	
 	
     var leftNavItems = { leftNavLinks :
         [
@@ -32,6 +35,7 @@ var generateLeftNavJson = function(data, listPartial) {
         ]
     };
     if(data.artifact){
+
         leftNavItems = { leftNavLinks :
             [
                /*
@@ -58,6 +62,12 @@ var generateLeftNavJson = function(data, listPartial) {
                     iconClass : "icon-retweet",
                      additionalClasses : (listPartial == "lifecycle-asset" ) ? "prominent-link" : null,
                     url : "/publisher/asset/operations/lifecycle/" + data.shortName + "/" + data.artifact.id + ""
+                },
+                {
+                    name : "Documentation",
+                    iconClass : "icon-file-alt",
+                     additionalClasses : (listPartial == "documentation" ) ? "prominent-link" : null,
+                    url : "/publisher/asset/operations/documentation/" + data.shortName + "/" + data.artifact.id + ""
                 }
             ]
         };
