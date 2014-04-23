@@ -12,7 +12,9 @@ $(function () {
 
     PageFormContainer.setInstance(formManager);
 
-    $('#btn-create-asset').on('click', function () {
+    $('#btn-create-asset').on('click', function (e) {
+	e.preventDefault();
+
 
         //Perform validations
         var report = formManager.validate();
