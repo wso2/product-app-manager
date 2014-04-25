@@ -115,7 +115,6 @@ var module = function () {
 
     return{
         execute: function (context) {
-
             var utility = require('/modules/utility.js').rxt_utility();
 
             log.debug('Entered : ' + meta.name);
@@ -164,7 +163,6 @@ var module = function () {
             var rxtManager = context.rxtManager;
 
             var artifactManager = rxtManager.getArtifactManager(shortName);
-
 
             artifactManager.add(asset);
 

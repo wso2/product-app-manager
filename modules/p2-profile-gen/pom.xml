@@ -88,7 +88,9 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.webapp.mgt.server.feature:${patch.version.421}
                                 </featureArtifactDef>
-                                <featureArtifactDef>caramel:caramel.feature:${caramel.feature.version}
+                                <featureArtifactDef>org.jaggeryjs.modules:caramel.feature:${caramel.feature.version}
+                                </featureArtifactDef>
+				<featureArtifactDef>org.jaggeryjs.modules:handlebars.feature:1.0.0
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.registry.associations.dependencies.feature:${carbon.platform.version}
@@ -193,6 +195,9 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.governance.lifecycle.management.feature:${carbon.platform.version}
                                 </featureArtifactDef>
+				<featureArtifactDef>
+				    org.jaggeryjs.modules:markdown.feature:1.0.0
+                                </featureArtifactDef>
 
                             </featureArtifacts>
 
@@ -230,8 +235,12 @@
                                     <version>${patch.version.421}</version>
                                 </feature>
                                 <feature>
-                                    <id>caramel.feature.group</id>
+                                    <id>org.jaggeryjs.modules.caramel.feature.group</id>
                                     <version>${caramel.feature.version}</version>
+                                </feature>
+				<feature>
+                                    <id>org.jaggeryjs.modules.handlebars.feature.group</id>
+                                    <version>1.0.0</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.registry.core.feature.group</id>
@@ -351,7 +360,10 @@
                                     <id>org.wso2.carbon.event.feature.group</id>
                                     <version>${patch.version.421}</version>
                                 </feature>
-
+				<feature>
+                                    <id>org.jaggeryjs.modules.markdown.feature.group</id>
+                                    <version>1.0.0</version>
+                                </feature>
                             </features>
 
 

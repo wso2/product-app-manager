@@ -97,7 +97,7 @@
                                     org.wso2.carbon.webapp.mgt.server:${patch.version.421}
                                 </importFeatureDef>
                                 <importFeatureDef>
-                                    caramel:${caramel.feature.version}
+                                    org.jaggeryjs.modules.caramel:${caramel.feature.version}
                                 </importFeatureDef>
                                 <importFeatureDef>
                                     org.wso2.carbon.registry.associations.dependencies:${carbon.platform.version}
