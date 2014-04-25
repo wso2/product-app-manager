@@ -137,26 +137,6 @@ var rxt_converter = function () {
 
     }}));
 
-    /**
-     * The function is used to extract the maxoccurs and subheadings attributes
-     * @param xmlTable The XML table element to be inspected
-     * @param tableObj The table object to be filled in
-     */
-    var getTableAttrs = function (xmlTable, tableObj) {
-        //Extract maxoccurs attribute
-        var maxOccursValue = xmlTable['@maxoccurs'].toString();
-        tableObj.maxoccurs = maxOccursValue;
-
-        //Extract sub headings
-        var subHeadings = xmlTable['subheading'];
-
-
-        for (var index = 0; index < subHeadings.heading.length(); index++) {
-            tableObj.subHeadings.addHeading(subHeadings.heading[index].toString());
-        }
-
-    };
-
     mnger.registerHandler(new Handler({ tag: 'content', fn: function (context) {
         var content = context.xmlDocument.content;
 
@@ -173,8 +153,6 @@ var rxt_converter = function () {
 
             //Handle multi-word table names
             handleMultiComponentTableNames(objTable);
-            getTableAttrs(table, objTable);
-
 
             //Go through each field in the table
             for each(var field

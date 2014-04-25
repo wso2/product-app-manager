@@ -22,43 +22,24 @@ var module = function () {
         var tableName = '';
         var fieldName = '';
 
-        for each(var table
-    in
-        model.dataTables
-    )
+        for each(var table in  model.dataTables)
         {
 
             if (table.name != '*') {
 
                 //Store in the attributes array
-                for each(var field
-            in
-                table.fields
-            )
+                for each(var field  in table.fields)
                 {
                     tableName = table.name;
                     fieldName = field.name;
-                    //log.info('Creating attributes ' + tableName + '_' + fieldName + '' + field.value.toString().split(','));
-                    attributes[tableName + '_' + fieldName] = getValue(field);//field.value.toString().split(',');
-                    //log.info('Value assigned');
+                    attributes[tableName+'_'+fieldName]=field.value;
                 }
             }
         }
-        log.info(attributes);
         return attributes;
     }
 
-    var getValue=function(field){
-        var contents=field.value.split(',');
-
-        if(contents.length==1){
-            return contents[0];
-        }
-
-        return contents;
-    }
-
-    /*
+   /*
      Creates an asset structure
      */
     function getAsset(model) {

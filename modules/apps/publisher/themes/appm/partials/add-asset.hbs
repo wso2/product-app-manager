@@ -10,7 +10,7 @@
  					<div class="clearfix"></div>
  				</div>
  				<div class="widget-content">
- 					<form class="form-horizontal" id='form-asset-create' enctype="multipart/form-data"  data-use-plugins='UnboundDataCompiler'>
+ 					<form class="form-horizontal" id='form-asset-create'>
  						<fieldset>
  						<legend style="margin-bottom:0px;">Overview</legend>
  						{{{ form_render "overview_provider" data.fields }}}
@@ -25,6 +25,7 @@
                         {{{ form_render "images_banner" data.fields }}}
                         {{{ form_render "overview_logoutUrl" data.fields }}}
 
+
 						 <input type='hidden' value="" name="context" id="context_id"/>
 						 <input type='hidden' value="" name="version" id="version_id"/>
 						 <input type='hidden' value="Unlimited" name="overview_tier"/>
@@ -34,7 +35,7 @@
  						<div class="control-group">
  							<b><label class="control-label">Tags: </label></b>
  							<div class="controls">
- 								<input type='text' id='tag-container' class='fm-managed' name='tag-container' data-use-plugins="TagPlugin" data-tag-api='/publisher/api/tag/'>
+ 								<input type='text' id='tag-test' name='tags'>
  							</div>
  						</div>
 

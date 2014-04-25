@@ -27,7 +27,7 @@ var queryTranslator = function () {
                     field = schema.fields[key];
 
 
-                    if (field.name.toUpperCase() == prop.toUpperCase()) {
+                    if (field.name.toUpperCase() == prop) {
 
                         model[field.name] = result[prop];
                     }

@@ -134,7 +134,6 @@ var gadget = function (tenantId, options) {
             "overview_description": options.description,
             "overview_url": options.url,
             "overview_provider": options.provider,
-            "overview_location": options.location,
             "images_banner": options.banner,
             "images_thumbnail": options.thumbnail
         }

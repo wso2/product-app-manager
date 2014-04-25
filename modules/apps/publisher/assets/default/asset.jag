@@ -127,67 +127,7 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
 
 });
 
-	routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', function (context) {
-		
-			
 	
-	    var shortName = context.params.type;
-	    //print(context.params);
-	    var id = context.params.id;
-	    var operation = 'documentation';
-	    var artifactManager = rxtManager.getArtifactManager(shortName);
-	   
-	    //If the id is not found it will throw a conversion exception
-	    //TODO: Return an empty artifact or null
-	    try {
-	
-	        log.debug('look for '+id);
-	
-	        var artifact = artifactManager.get(id);
-	
-	        log.debug('left');
-	
-	        //Get the template
-	        var rxtTemplate = rxtManager.findAssetTemplate(function (template) {
-	        
-	        	        	
-	            return (template.shortName == shortName) ? true : false;
-	        });
-	
-	        var model = modelManager.getModel(shortName);
-	
-	        //Customize the asset for the app
-	        dataInjector.inject(artifact, DataInjectorModes.DISPLAY);
-	
-	
-	        //Perform filtering logic on the artifact
-	        artifact=filterManager.filter(artifact,session);
-	
-	        //If there is no data after the filtering step we need to send an error
-	        if(!artifact){
-	            response.sendError(401,'You do not have viewing permissions to the requested asset');
-	            return;
-	        }
-	
-	        model.import('asset', artifact);
-	
-	        var output = model.export('form');
-			
-	        var assetName = model.get('overview.name').value;
-	        //Get the list of versions
-	        var versionList = artifactManager.getAllAssetVersions(assetName);
-			
-			var path = artifact.path;
-			var tags = rxtManager.registry.tags(path);
-			var title = assetName;
-			
-	        caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title});
-	    } catch (e) {
-	        log.debug('The asset with id ' + id + ' could not be found due to : ' + e);
-	        response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check server log.');
-	    }
-	
-	});
 
 routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/{type}/{id}', function (context) {
    var shortName = context.params.type;
@@ -255,7 +195,7 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
     var model = modelManager.getModel(shortName);
     var assetCacheManager=new assetCachingModule.AssetCacheManager(session);
 
-//context.post['tag-container'] = ['tag1', 'tag2'];
+    //context.post['tag-container'] = ['tag1', 'tag2'];
 
     //Check if the type is valid
     try {
@@ -272,15 +212,14 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
 
         model.import('form.importer', context.post);
 
-
         //Perform validation on the model
 
         var report=model.validate();
 
         if((report)&&(report.failed)){
 
-            print({ok:false,message:'Validation failure',report:report});
-            return;
+          print({ok:false,message:'Validation failure',report:report});
+         return;
         }
 
 

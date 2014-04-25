@@ -138,8 +138,6 @@ var extension_parser=function(){
 		{
 			var extTable=new ext_domain.Table(table.name);
 
-            extTable=fillTableProperties(extTable,table);
-			
 			for each(var field in table.fieldsArray)
 			{
 				var extField=new ext_domain.Field();
@@ -159,20 +157,6 @@ var extension_parser=function(){
         log.debug('Finished processing template: '+rxtTemplate.shortName);
 		this.templates.push(extTemplate);
 	};
-
-    /**
-     * The function is used to fill meta data present in the table template
-     * @param table The table to be filled
-     * @param template The template to be used
-     */
-    var fillTableProperties=function(table,template){
-        table.maxoccurs=template.maxoccurs;
-        table.subHeadings=template.subHeadings.headings;
-
-
-        return table;
-
-    };
 	
 	/*
 	 * A utility function to convert an array into a comma seperated variable list

@@ -36,7 +36,7 @@ $(function() {
 		}
 	});
 
-	$('#overview_name').on('blur', function() {
+	/*$('#overview_name').on('blur', function() {
 		var $this = $(this), flag = $('.icon-check-appname'), btnCreate = $('#btn-create-asset');
 		var assetName = $this.val();
 		if (!flag.length) {
@@ -70,7 +70,7 @@ $(function() {
 			}
 		});
 
-	});
+	});*/
 
 
 	$('#btn-create-asset').on('click', function(e) {
