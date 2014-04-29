@@ -16,36 +16,33 @@ include("/extensions/webapp/modules/jagg/jagg.jag");
 
 require('/modules/publisher.js').exec(function(ctx) {
 
-var config = require('/config/publisher.json');
-var caramel = require('caramel');
-var server = require('store').server;
-var utility = require('/modules/utility.js').rxt_utility();
-var assetCachingModule=require('/modules/cache/cache.manager.js').assetCachingModule();
-var publisher = require('/modules/publisher.js').publisher(request, session);
-var storageModule = require('/modules/data/storage.js').storageModule();
-var storageConfig = require('/config/storage.json');
+    var config = require('/config/publisher.json');
+    var caramel = require('caramel');
+    var server = require('store').server;
+    var utility = require('/modules/utility.js').rxt_utility();
+    var assetCachingModule = require('/modules/cache/cache.manager.js').assetCachingModule();
+    var publisher = require('/modules/publisher.js').publisher(request, session);
+    var storageModule = require('/modules/data/storage.js').storageModule();
+    var storageConfig = require('/config/storage.json');
+    var USER_ROLE_PREFIX = 'Internal/private_';
 
-var router = require('/modules/router-g.js').router();
-var routeManager = new router.Router();
+    var router = require('/modules/router-g.js').router();
+    var routeManager = new router.Router();
 
-//var routeManager=application.get(config.app.ROUTE_MANAGER);
-var rxtManager = publisher.rxtManager;
-var modelManager = publisher.modelManager;
-var dataInjector = publisher.dataInjector;
-var DataInjectorModes = publisher.DataInjectorModes;
-var filterManager=publisher.filterManager;
+    //var routeManager=application.get(config.app.ROUTE_MANAGER);
+    var rxtManager = publisher.rxtManager;
+    var modelManager = publisher.modelManager;
+    var dataInjector = publisher.dataInjector;
+    var DataInjectorModes = publisher.DataInjectorModes;
+    var filterManager = publisher.filterManager;
 
-mod = jagg.module("documentation");
+    mod = jagg.module("documentation");
 
-var log = new Log();
-
-routeManager.register('GET', 'publisher', '/publisher/asset/{type}', function (context) {
-	
-		
+    routeManager.register('GET', 'publisher', '/publisher/asset/{type}', function(context) {
 
     var shortName = (context.params.type) || '';
     var operation = 'create';
-    var rxtTemplate = rxtManager.findAssetTemplate(function (template) {
+    var rxtTemplate = rxtManager.findAssetTemplate(function(template) {
         return (template.shortName == shortName) ? true : false;
     });
 
@@ -67,8 +64,6 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}', function (c
 });
 
 routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', function (context) {
-	
-		
 
     var shortName = context.params.type;
     //print(context.params);
@@ -137,8 +132,6 @@ routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/
     var operation = context.params.opType;
     var artifactManager = rxtManager.getArtifactManager(shortName);
     
-   
-   
     //If the id is not found it will throw a conversion exception
     //TODO: Return an empty artifact or null
     try {
@@ -174,6 +167,29 @@ routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/
 		var path = artifact.path;
 		var tags = rxtManager.registry.tags(path);
 		var title = assetName;
+		
+	
+
+		  // getting the user roles
+            var server = require('store').server,
+                um = server.userManager(server.current(session).tenantId);
+
+            var registry = new carbon.registry.Registry(server, {
+                username: server.current(session).username,
+                tenantId: server.current(session).tenantId
+            });
+
+            var overridenPermissions = null;
+
+            if(registry.properties(path)['overridden_permissions']) {
+                overridenPermissions = registry.properties(path)['overridden_permissions'][0];
+            } 
+
+            if (overridenPermissions) {
+                output.permissions = JSON.parse(overridenPermissions.replace('\\', ''));
+            }
+
+
 		if(operation == "documentation"){
 			caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title,docs:result.docs});
 						
@@ -241,7 +257,7 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
         //Add the tags
         addTags(context.post,assetId,artifactManager,reg);
 
-        print({ok:true,message:'asset added'});
+        print({ok:true,message:'asset added',id:assetId});
     }
     catch (e) {
         log.error(e);
@@ -250,6 +266,17 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
     }
 
 });
+
+ routeManager.register('POST', 'publisher', '/publisher/asset/{type}/id/{assetId}/permissions', function(context) {
+        var assetId = context.params.assetId;
+
+        var artifactManager = rxtManager.getArtifactManager(context.params.type);
+        log.info(context);
+        var permissions = context.request.getContent();
+
+
+        overridePermissions(assetId, artifactManager, permissions);
+    });
 
 /*
 The function is used to add tags to the provided asset id
@@ -280,6 +307,74 @@ function addTags(params,assetId,artifactManager,reg){
     reg.tag(path,tags);
 
 }
+
+    /*
+        The function is used to add/edit permissions to the provided asset id
+        @assetId: The id of the asset to which the tags will be applied
+        @artifactManager: An artifact manager instance
+        @permission: Requried permissions
+    */
+    function overridePermissions(assetId, artifactManager, permissions) {
+    	
+        // set a property in  the artifact indicating the permissions are overriden / remove the lifecycle
+        var artifact = artifactManager.get(assetId);
+        // artifactManager.detachLifecycle(artifact);
+
+        // remove all the current permissions from the asset
+        var um = server.userManager(server.current(session).tenantId);
+        um.clearResourceAuthorizations(artifact.path);
+
+        // But, there's an internal_everyone coming up with +GET. Let's nuke it.
+        um.denyRole('Internal/everyone', artifact.path, carbon.registry.actions.GET);
+
+        var username = server.current(session).username;
+        var currentUserRole = USER_ROLE_PREFIX + username;
+
+        // Prevent the user from making modifications to the default roles
+        // If the permissions are defined for the two roles that we're explicitly adding permissions
+        // as below, just splice them up.
+        for (var i = permissions.length - 1; i >= 0; i--) {
+            if (permissions[i].role === currentUserRole || permissions[i].role === 'admin') {
+                permissions.splice(i, 1);
+            }
+        };
+                
+        //  1. +get +edit +delete +authorize for asset_{owner}
+        permissions.push({
+            role: currentUserRole,
+            permissions: ['GET', 'PUT', 'DELETE', 'AUTHORIZE']
+        });
+        //  2. +get +edit +delete +authorize for admin TODO: 'admin' needs to come from a config
+        permissions.push({
+            role: 'admin',
+            permissions: ['GET', 'PUT', 'DELETE', 'AUTHORIZE']
+        });
+
+        // add the permissions as passed
+        permissions.forEach(function(rolePermissions) {
+            var role = rolePermissions.role;
+
+            rolePermissions.permissions.forEach(function(permission) {
+                var permission;
+
+                permission = carbon.registry.actions[permission];
+
+                um.authorizeRole(role, artifact.path, permission);
+            });
+
+        });
+
+        var registry = new carbon.registry.Registry(server, {
+            username: server.current(session).username,
+            tenantId: server.current(session).tenantId
+        });
+
+        if(registry.properties(artifact.path)['overridden_permissions']) {
+            registry.removeProperty(artifact.path, 'overridden_permissions');
+        }
+
+        registry.addProperty(artifact.path, 'overridden_permissions', JSON.stringify(permissions));
+    }
 
 /*
  The function inspects the files sent with a request.If files are found

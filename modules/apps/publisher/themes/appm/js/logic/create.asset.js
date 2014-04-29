@@ -120,7 +120,43 @@ $(function() {
 				//Check if the asset was added
 				if (result.ok) {
 					showAlert('Asset added successfully.', 'success');
-					window.location = '/publisher/assets/' + type + '/';
+				    (function setupPermissions() {
+                        var rolePermissions = [];
+                        $('.role-permission').each(function(i, tr) {
+                            var role = $(tr).attr('data-role');
+
+                            var permissions = [];
+
+                            $(tr).children('td').children(':checked').each(function(j, checkbox) {
+                                permissions.push($(checkbox).attr('data-perm'));
+                            });
+
+                            rolePermissions.push({
+                                role: role,
+                                permissions: permissions
+                            });
+                        });
+
+
+                        if (rolePermissions.length > 0) {
+                            $.ajax({
+                                url: '/publisher/asset/' + type + '/id/' + result.id + '/permissions',
+                                type: 'POST',
+                                processData: false,
+                                contentType: 'application/json',
+                                data: JSON.stringify(rolePermissions),
+                                success: function(response) {
+                                    window.location = '/publisher/assets/' + type + '/';
+                                },
+                                error: function(response) {
+                                    showAlert('Error adding permissions.', 'error');
+                                }
+                            });
+                        } else {
+                            window.location = '/publisher/assets/' + type + '/';
+                        }
+                    })();
+					//window.location = '/publisher/assets/' + type + '/';
 				} else {
 					var msg = processErrorReport(result.report);
 					showAlert(msg, 'error');
@@ -162,6 +198,42 @@ $('#form-asset-create').ajaxSubmit(options);
 						//Check if the asset was added
 						if (result.ok) {
 							showAlert('Asset added successfully.', 'success');
+  (function setupPermissions() {
+                        var rolePermissions = [];
+                        $('.role-permission').each(function(i, tr) {
+                            var role = $(tr).attr('data-role');
+
+                            var permissions = [];
+
+                            $(tr).children('td').children(':checked').each(function(j, checkbox) {
+                                permissions.push($(checkbox).attr('data-perm'));
+                            });
+
+                            rolePermissions.push({
+                                role: role,
+                                permissions: permissions
+                            });
+                        });
+
+
+                        if (rolePermissions.length > 0) {
+                            $.ajax({
+                                url: '/publisher/asset/' + type + '/id/' + result.id + '/permissions',
+                                type: 'POST',
+                                processData: false,
+                                contentType: 'application/json',
+                                data: JSON.stringify(rolePermissions),
+                                success: function(response) {
+                                    window.location = '/publisher/assets/' + type + '/';
+                                },
+                                error: function(response) {
+                                    showAlert('Error adding permissions.', 'error');
+                                }
+                            });
+                        } else {
+                            window.location = '/publisher/assets/' + type + '/';
+                        }
+                    })();
 							//window.location = '/publisher/assets/' + type + '/';
 						} else {
 							var msg = processErrorReport(result.report);
@@ -178,6 +250,20 @@ $('#form-asset-create').ajaxSubmit(options);
 		//$.post('/publisher/asset/'+type, data);
 
 	});
+
+// roles autocomplete
+    $('#roles').tokenInput('/publisher/api/lifecycle/information/meta/' + $('#meta-asset-type').val() + '/roles', {
+        theme: 'facebook',
+        preventDuplicates: true,
+        onAdd: function(role) {
+            var permission = $('<tr class="role-permission" data-role="' + role.id + '"><td>' + role.name + '</td><td><input data-perm="GET" type="checkbox" value=""></td><td><input data-perm="PUT" type="checkbox" value=""></td><td><input data-perm="DELETE" type="checkbox" value=""></td><td><input data-perm="AUTHORIZE" type="checkbox" value=""></td></tr>')
+            $('#permissionsTable > tbody').append(permission);
+        },
+        onDelete: function(role) {
+            console.log()
+            $('#permissionsTable tr[data-role="' + role.id + '"]').remove();
+        }
+    });
 
 	$('#overview_description').keyup(function() {
 		var self = $(this), length = self.val().length, left = DESC_MAX_CHARS - length, temp;
