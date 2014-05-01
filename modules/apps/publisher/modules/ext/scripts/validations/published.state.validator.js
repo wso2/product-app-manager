@@ -39,10 +39,10 @@ var validatorModule = function () {
 
 
         //Check if the state is the same
-        if (isPresent(LOCKED_STATES,state)) {
-
-            report.record('lifecycleState', 'Edit operations have been disabled in this state.');
-        }
+//        if (isPresent(LOCKED_STATES,state)) {
+//
+//            report.record('lifecycleState', 'Edit operations have been disabled in this state.');
+//        }
 
         return true;
 

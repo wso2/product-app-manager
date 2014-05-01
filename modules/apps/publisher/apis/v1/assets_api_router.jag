@@ -65,7 +65,7 @@ require('/modules/publisher.js').exec(function(ctx) {
 				}
 			}
 
-			 
+
 			for(j=0;j<users.length;j++){
 				var apps = [];
 				for(i=0;i<usage.length;i++){
@@ -82,7 +82,7 @@ require('/modules/publisher.js').exec(function(ctx) {
 				output.push(user);
 
 			}
-				
+
 			if (usage == null) {
 				obj = {
 					error:true
@@ -98,32 +98,21 @@ require('/modules/publisher.js').exec(function(ctx) {
 			print(output);
 		}else if (action == "getAPIUsageByUser") { /* Overall Web Application Usage Graph */
 			usage = appMgtProviderObj.getAPIUsageByUser("__all_providers__",startDate,endDate);
-			 
-			// usage = parse(stringify(usage));
 
-
-			var response = '[{"apiName" : "united-airline", "version" : "1.0.0", "userId" : "admin", "context" : "/united-airline", "count" : 491},{"apiName" : "united-airline", "version" : "1.0.0", "userId" : "admin", "context" : "/united-airline", "count" : 291},{"apiName" : "united-airline", "version" : "1.0.0", "userId" : "admin", "context" : "/united-airline", "count" : 191},{"apiName" : "united-airline", "version" : "1.0.0", "userId" : "admin", "context" : "/united-airline", "count" : 111},{"apiName" : "united-airline", "version" : "1.0.0", "userId" : "admin", "context" : "/united-airline", "count" : 100},{"apiName" : "united-airline", "version" : "1.0.0", "userId" : "admin", "context" : "/united-airline", "count" : 91}, {"apiName" : "united-airline", "version" : "1.0.1", "userId" : "admin", "context" : "/united-airline", "count" : 193},{"apiName" : "united-airline", "version" : "1.0.0", "userId" : "tom", "context" : "/united-airline", "count" : 41},{"apiName" : "emirates-airline", "version" : "1.0.0", "userId" : "admin", "context" : "/united-airline", "count" : 95},{"apiName" : "emirates-airline", "version" : "1.0.0", "userId" : "tom", "context" : "/united-airline", "count" : 60},{"apiName" : "emirates-airline", "version" : "1.0.0", "userId" : "jerry", "context" : "/united-airline", "count" : 60},{"apiName" : "tespapp", "version" : "1.0.0", "userId" : "xxxx", "context" : "/united-airline", "count" : 100}]';
-			var usage = parse(response);
-			 
-
-			 
+			usage = parse(stringify(usage));
+				
 			function orderByCountAscending(a, b) {
 				return b.count - a.count;
 			}
-			 
+
 			usage = usage.sort(orderByCountAscending);
-					 			 
 
 			var webapps = [];
-			 
 
 			for(x=0;x<usage.length;x++){
-				 
+					
 				var webappIndex = -1;
 				var webappVersionIndex = -1;
-				 
-
-
 
 				for(y=0;y<webapps.length;y++){
 					if(webapps[y][0] == usage[x].apiName){
@@ -144,20 +133,17 @@ require('/modules/publisher.js').exec(function(ctx) {
 					}
 				}
 
-
 				if(webappIndex == -1){
-
 					var version = [];
 					var requestCount = [];
 					requestCount.push([usage[x].userId,usage[x].count.toString()]);
 					version.push([usage[x].version,requestCount]);
 					webapps.push([usage[x].apiName,version]);
 
-					 
+
 				}else{
 
 					if(webappVersionIndex == -1){
-
 						var requestCount = [];
 						requestCount.push([usage[x].userId,usage[x].count.toString()]);
 						webapps[webappIndex][1].push([usage[x].version,requestCount]);
@@ -167,11 +153,9 @@ require('/modules/publisher.js').exec(function(ctx) {
 						webapps[webappIndex][1][webappVersionIndex][1].push([usage[x].userId,usage[x].count.toString()]);
 					}
 				}
-
-
-				 
+					
 			}
-						
+
 
 			if (usage == null) {
 				obj = {
@@ -192,58 +176,51 @@ require('/modules/publisher.js').exec(function(ctx) {
 			var apinameData = [],serviceTimeData=[],webApps = [];
 			usage = appMgtProviderObj.getProviderAPIServiceTime("__all_providers__",startDate,endDate);
 
-			 
+
 			usage = parse(stringify(usage));
-			 
+
 			function SortByName(x,y) {
 				return ((x.apiName == y.apiName) ? 0 : ((y.apiName > x.apiName) ? 1 : -1 ));
 			}
-			 
+
 			usage  = usage.sort(SortByName);
-			 
-			
 
 			for(i=0;i<usage.length;i++){
 				webApps.push([i,usage[i].apiName]);
 				apinameData.push([i,usage[i].referer]);
 				serviceTimeData.push([parseInt(usage[i].serviceTime),i]);
 			}
-			 
+
 			var webapps = [];
-			 
+
 			for(x=0;x<usage.length;x++){
 
 				var webappIndex = -1;
 				var webappVersionIndex = -1;
-
-	    
-				 
-				 
+				
 				for(y=0;y<webapps.length;y++){
 					if(webapps[y][0] == usage[x].apiName){
 							
 						webappIndex = y;
 						break;
-
-
 					}
 				}
-					
-					
+				
+			
 				if(webappIndex == -1){
-						
+
 					var page = [];
 					page.push([usage[x].referer,usage[x].serviceTime.toString()]);
 					webapps.push([usage[x].apiName,page]);
-						
+
 
 				}else{
 					webapps[webappIndex][1].push([usage[x].referer,usage[x].serviceTime.toString()]);
 
 				}
-		
+
 			}
-			 
+
 			output['webapps'] = webapps;
 			output['referer'] = apinameData;
 			output['serviceTime'] = serviceTimeData;
@@ -265,25 +242,25 @@ require('/modules/publisher.js').exec(function(ctx) {
 			print(output);
 		}else if (action == "getAPIUsageByPage") { /* Overall Web Application Usage Graph */
 			usage = appMgtProviderObj.getAPIUsageByPage("__all_providers__",startDate,endDate);
-			 
+
 			var webapps = [];
 			var webappIndex = -1;
 			var webappDetailsIndex = -1;
 
 			var totalPageCount = [];
-			 
+
 			var webappObject = {
 			};
-			 
+
 			var appPage = [];
 			var apppageCount = [];
-			 
+
 			var webappDeatails = [];
-			 
+
 			for(x=0;x<usage.length;x++){
 
 				for(y=0;y<webapps.length;y++){
-					 
+
 					if(webapps[y][1] == usage[x].apiName){
 						webappIndex = y;
 						break;
@@ -323,12 +300,12 @@ require('/modules/publisher.js').exec(function(ctx) {
 				}
 
 			}
-				
+
 			webappObject['usage'] = usage;
 			webappObject['webapp'] = webapps;
 			webappObject['totalPageCount'] = totalPageCount;
 			webappObject['webappDeatails'] = webappDeatails;
-			 
+
 
 			if (usage == null) {
 				obj = {

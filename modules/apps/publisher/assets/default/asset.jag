@@ -271,9 +271,7 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
         var assetId = context.params.assetId;
 
         var artifactManager = rxtManager.getArtifactManager(context.params.type);
-        log.info(context);
         var permissions = context.request.getContent();
-
 
         overridePermissions(assetId, artifactManager, permissions);
     });

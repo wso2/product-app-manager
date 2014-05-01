@@ -13,6 +13,17 @@ $(function() {
 	var DESC_MAX_CHARS = 995;
 
 	$('#overview_description').after('<span class="span8 ' + CHARS_REM + '"></span>');
+		
+	  // let's fill all the permissions
+    $.each($('.perm-check'), function () {
+        // var checkbox = $(checkbox);
+
+        if($(this).attr('data-permissions').indexOf($(this).attr('data-perm')) > -1) {
+            $(this).attr('checked', true);
+        } else {
+            $(this).attr('checked', false);
+        }
+    });
 
 	$('#editAssetButton').on('click', function() {
 
@@ -71,14 +82,14 @@ $(function() {
               */
               
 
-				for (var i in arr) {
-
-					if (arr[i].type == 'file' && arr[i].value == '') {
-
-						arr[i].value = $('#' + arr[i].name).val();
-
-					}
-				}
+//				for (var i in arr) {
+//
+//					if (arr[i].type == 'file' && arr[i].value == '') {
+//
+//						arr[i].value = $('#' + arr[i].name).val();
+//
+//					}
+//				}
 
 				//console.log(arr);
 
@@ -92,6 +103,37 @@ $(function() {
 					var asset = result.asset;
 					createMessage(MSG_CONTAINER, SUCCESS_CSS, 'Asset updated successfully');
 					updateFileFields(asset);
+				    (function setupPermissions() {
+                        var rolePermissions = [];
+                        $('.role-permission').each(function(i, tr) {
+                            var role = $(tr).attr('data-role');
+
+                            var permissions = [];
+
+                            $(tr).children('td').children(':checked').each(function(j, checkbox) {
+                                permissions.push($(checkbox).attr('data-perm'));
+                            });
+
+                            rolePermissions.push({
+                                role: role,
+                                permissions: permissions
+                            });
+                        });
+
+
+                        if (rolePermissions.length > 0) {
+                            $.ajax({
+                                url: '/publisher/asset/' + type + '/id/' + id + '/permissions',
+                                type: 'POST',
+                                processData: false,
+                                contentType: 'application/json',
+                                data: JSON.stringify(rolePermissions),
+                                error: function(response) {
+                                    showAlert('Error adding permissions.', 'error');
+                                }
+                            });
+                        }
+                    })();
 				} else {
 					var report = processErrorReport(result.report);
 					createMessage(MSG_CONTAINER, ERROR_CSS, report);
@@ -128,6 +170,20 @@ $(function() {
 		}
 		$('.' + CHARS_REM).text('Characters left: ' + left);
 	});
+	
+	
+	 $('#roles').tokenInput('/publisher/api/lifecycle/information/meta/' + $('#meta-asset-type').val() + '/roles', {
+	        theme: 'facebook',
+	        preventDuplicates: true,
+	        onAdd: function(role) {
+	            var permission = $('<tr class="role-permission" data-role="' + role.id + '"><td>' + role.name + '</td><td><input data-perm="GET" type="checkbox" value=""></td><td><input data-perm="PUT" type="checkbox" value=""></td><td><input data-perm="DELETE" type="checkbox" value=""></td><td><input data-perm="AUTHORIZE" type="checkbox" value=""></td></tr>')
+	            $('#permissionsTable > tbody').append(permission);
+	        },
+	        onDelete: function(role) {
+	            console.log()
+	            $('#permissionsTable tr[data-role="' + role.id + '"]').remove();
+	        }
+	    });
 
 	/*
 	 The function updates the file upload fields after recieving a response from

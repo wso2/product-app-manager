@@ -46,11 +46,7 @@ var resource = (function () {
         var uriMatcher = new URIMatcher(context.request.getRequestURI());
         var URI = '/{context}/resources/{asset}/{version}/application/{appName}';
 
-        log.info(request.getRequestURI());
-
         var isMatch=uriMatcher.match(URI);
-        log.info(stringify(uriMatcher.elements()));
-
 
         if(isMatch){
             var appName=uriMatcher.elements().appName;

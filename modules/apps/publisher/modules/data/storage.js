@@ -132,10 +132,7 @@ var storageModule = function () {
 
         //Save the resource
         resource.save();
-        
-        //log.info(file.getPath());
-        
-        //log.info(file.getName());
+
         fileName=parseFileName(file.getName());
 
         return resource.uuid+'/'+fileName;
@@ -151,7 +148,6 @@ sent from IE and other browsers
  */
 function parseFileName(url){
     var fileName=determineOS(url);
-    //log.info('file name:'+fileName);
     return fileName;
 }
 
@@ -175,7 +171,6 @@ The function obtains a windows path
 @return: The extracted file name
  */
 function obtainFromWindowsPath(path){
-	//log.info('windows path:'+fileName);
    var fileName=path[path.length-1];
    return fileName;
 }
@@ -187,7 +182,6 @@ The function is used to extract a file name from a non windows path
  */
 	function obtainFromOtherOSPath(path){
 	   var comps=path.split('/');
-	   //log.info('other os: '+comps);
 	
 	   if(comps.length<=1){
 	       return comps[FIRST_ELEMENT];

@@ -275,7 +275,6 @@ require('/modules/publisher.js').exec(function(ctx) {
 });
 
   routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/information/meta/{type}/roles', function(context) {
-    log.info(context);
     var shortName = context.params.type;
     var carbon = require('carbon');
     var realmService = carbon.server.osgiService('org.wso2.carbon.user.core.service.RealmService');
@@ -307,13 +306,10 @@ require('/modules/publisher.js').exec(function(ctx) {
     });
 
     for (var i = 0; i < criticalRoles.length; i++) {
-      log.info(allRoles.indexOf(criticalRoles[i]));
       if (allRoles.indexOf(criticalRoles[i]) > -1) {
         allRoles.splice(i, 1);
       }
     };
-
-    log.info(allRoles);
 
     // TODO: needs to go in a config
     if (relatedRoles.indexOf('Internal/everyone') === -1 && relatedRoles.indexOf('system/wso2.anonymous.role') === -1) {
