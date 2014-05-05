@@ -12,24 +12,33 @@ include('../modules/jagg/jagg.jag');
 require('/modules/store.js').exec(function (ctx) {
     var store = ctx.store;
     var recentAssets = store.recentAssets('webapp');
-
+    caramel = require('caramel');
+        
     SubscriptionService = require(getServiceDir('subscription.js')).serviceModule;
     subsApi = new SubscriptionService.SubscriptionService();
+    subsApi.init(jagg, session);       
 
     AuthService = require(getServiceDir('authentication.js')).serviceModule;
-
     authenticator = new AuthService.Authenticator();
-
     authenticator.init(jagg, session);
+    
+    var APIInformationService=require('../services/api-information.js').serviceModule;
+    var apiInfoManager=new APIInformationService.APIInformationService();
+    apiInfoManager.init(jagg,session);
 
-    subsApi.init(jagg, session);
-
-    caramel = require('caramel');
 
    var userData = authenticator.getLoggedInUser();
+   var apps = subsApi.getAppsWithSubs({user: userData.username});
 
-    var apps = subsApi.getAppsWithSubs({user: userData.username});
-
+   var subscriptions = apps[0].subscriptions;
+    
+    for(i=0;i< apps[0].subscriptions.length;i++){
+       var api=apiInfoManager.getAPIDescription( apps[0].subscriptions[i].provider, apps[0].subscriptions[i].name, apps[0].subscriptions[i].version);
+       log.info("apiData:"+api.serverURL.productionURL);
+        apps[0].subscriptions[i].productionURL = api.serverURL.productionURL;
+              
+    }
+    
 
     caramel.render({
         header: {

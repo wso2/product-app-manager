@@ -350,7 +350,7 @@ var drawAPIResponseTime = function(response) {
 
 	var data2 = [ {
 		data : parsedResponse.serviceTime,
-		color : '#FFC826',
+		color : '#5482FF',
 		bars : {
 			show : true,
 			barWidth : 0.5,

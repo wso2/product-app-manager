@@ -16,13 +16,10 @@ apiInfoManager.init(jagg,session);
 
 AppService=require(getServiceDir('app.js')).serviceModule;
 appInfoApi=new AppService.AppService();
-
 appInfoApi.init(jagg,session);
 
 AuthService=require(getServiceDir('authentication.js')).serviceModule;
-
 authenticator=new AuthService.Authenticator();
-
 authenticator.init(jagg,session);
 //var getDocs=jagg.module('documentation').getAllDocumentations;
 
