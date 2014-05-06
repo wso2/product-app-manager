@@ -128,11 +128,18 @@ $(function() {
                                 processData: false,
                                 contentType: 'application/json',
                                 data: JSON.stringify(rolePermissions),
+                                success: function(response) {
+                                    window.location = '/publisher/asset/' + type + '/'+id;
+                                },
                                 error: function(response) {
                                     showAlert('Error adding permissions.', 'error');
                                 }
                             });
+                        }else {
+                            window.location = '/publisher/asset/' + type + '/'+id;
                         }
+                        
+                        
                     })();
 				} else {
 					var report = processErrorReport(result.report);

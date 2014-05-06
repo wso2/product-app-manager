@@ -24,7 +24,7 @@ var content = APIProviderImplObj.getDocumentationContent(apiIdentifierObj,docNam
 
 var docData = {};
 docData.webappName = webappName;
-docData.docName = docName;
+docData.docName = decodeURI(docName);
 docData.docContent = content;
 
 var userData = authenticator.getLoggedInUser();
