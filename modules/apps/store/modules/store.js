@@ -336,7 +336,12 @@ Store.prototype.tags = function (type) {
         }
     } else {
         for (i = 0; i < length; i++) {
-            assetType = tags[i].split(';')[0].split('/')[3];
+        	
+            // Get asset type in registry path
+	    // Sample path :
+	    // /_system/governance/apimgt/applicationdata/provider/admin/test10/1.0.0/{type}
+	    assetType = tags[i].split(';')[0].split('/')[9];
+			
             if (assetType != undefined) {
                 if (assetType.contains(type)) {
                     tag = tags[i].split(';')[1].split(':')[1];
