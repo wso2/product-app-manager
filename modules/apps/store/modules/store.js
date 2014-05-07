@@ -8,6 +8,8 @@ var STORE_CONFIG_PATH = '/_system/config/store/configs/store.json';
 
 var TAGS_QUERY_PATH = '/_system/config/repository/components/org.wso2.carbon.registry/queries/allTags';
 
+var QUERY_PATH_TAGS_BY_TYPE_AND_LIFECYCLE = '/_system/config/repository/components/org.wso2.carbon.registry/queries/tagsByMediaTypeAndLifecycle'
+
 //TODO: read from tenant config
 var ASSETS_PAGE_SIZE = 'assetsPageSize';
 
@@ -15,6 +17,8 @@ var ASSETS_PAGE_SIZE = 'assetsPageSize';
 var COMMENTS_PAGE_SIZE = 'commentsPageSize';
 
 var SUBSCRIPTIONS_PATH = '/subscriptions';
+
+var RESOURCE_TYPE_WEBAPP = 'webapp';
 
 var log = new Log();
 
@@ -45,13 +49,30 @@ var init = function (options) {
             content: JSON.stringify(config),
             mediaType: 'application/json'
         });
-        system.put(TAGS_QUERY_PATH, {
-            content: 'SELECT RT.REG_TAG_ID FROM REG_RESOURCE_TAG RT ORDER BY RT.REG_TAG_ID',
+		system.put(TAGS_QUERY_PATH, {
+            content: 'SELECT RRT.REG_TAG_ID FROM REG_RESOURCE_TAG RRT ORDER BY RRT.REG_TAG_ID',
             mediaType: 'application/vnd.sql.query',
             properties: {
                 resultType: 'Tags'
             }
         });
+		system.put(QUERY_PATH_TAGS_BY_TYPE_AND_LIFECYCLE, {
+			content: 'SELECT RRT.REG_TAG_ID' 
+		 				+ ' FROM' 
+						+ ' REG_RESOURCE_TAG RRT, REG_TAG RT, REG_RESOURCE R, REG_RESOURCE_PROPERTY RRP, REG_PROPERTY RP'
+						+ ' WHERE'
+						+ ' RT.REG_ID = RRT.REG_TAG_ID'
+						+ ' AND R.REG_VERSION = RRT.REG_VERSION'
+						+ ' AND RP.REG_ID = RRP.REG_PROPERTY_ID'
+						+ ' AND R.REG_VERSION = RRP.REG_VERSION'
+						+ ' AND R.REG_MEDIA_TYPE LIKE ?'
+						+ ' AND RP.REG_NAME LIKE ?'
+						+ ' AND RP.REG_VALUE LIKE ?',
+			mediaType: 'application/vnd.sql.query',
+			properties: {
+				resultType: 'Tags'
+			}
+		});
         roles = config.roles;
         for (role in roles) {
             if (roles.hasOwnProperty(role)) {
@@ -321,59 +342,47 @@ Store.prototype.configs = function () {
  * @param type Asset type
  */
 Store.prototype.tags = function (type) {
-    var tag, tags, assetType, i, length, count,
-        registry = this.registry || this.servmod.anonRegistry(this.tenantId),
+    var tag, tags, assetType, i, length, count, queryParameters, 
+		registry = this.registry || this.servmod.anonRegistry(this.tenantId),
         tagz = [],
-        tz = {};
-    tags = registry.query(TAGS_QUERY_PATH);
-    length = tags.length;
-    if (type == undefined) {
-        for (i = 0; i < length; i++) {
-            tag = tags[i].split(';')[1].split(':')[1];
-            count = tz[tag];
-            count = count ? count + 1 : 1;
-            tz[tag] = count;
-        }
-    } else {
-        for (i = 0; i < length; i++) {
-        	
-            // Get asset type in registry path
-	    // Sample path :
-	    // /_system/governance/apimgt/applicationdata/provider/admin/test10/1.0.0/{type}
-	    assetType = tags[i].split(';')[0].split('/')[9];
-			
-            if (assetType != undefined) {
-                if (assetType.contains(type)) {
-                    tag = tags[i].split(';')[1].split(':')[1];
-                    count = tz[tag];
-                    count = count ? count + 1 : 1;
-                    tz[tag] = count;
-                }
-            }
-        }
-    }
+        tz = {},
+		mediaType = "%", 
+		lifeCycleStateKey = "%", 
+		lifeCycleStateValue = "%";
+
+    // NOTE : Supports only 'webapp' type as of now.
+    // If type = undefined retrieve tags without any filtering.
+	
+	if(type == RESOURCE_TYPE_WEBAPP){
+		mediaType = "application/vnd.wso2-webapp+xml", 
+		lifeCycleStateKey = "registry.lifecycle.WebAppLifeCycle.state", 
+		lifeCycleStateValue = "Published";
+	}else if(type){
+		log.warn("Retrieving tags : Type " + type +  " is not supported.");
+		return tagz;
+	}
+
+	queryParameters = {1:mediaType, 2:lifeCycleStateKey, 3:lifeCycleStateValue};
+	tags = registry.query(QUERY_PATH_TAGS_BY_TYPE_AND_LIFECYCLE, queryParameters);
+	
+	length = tags.length;
+	for (i = 0; i < length; i++) {
+		tag = tags[i].split(';')[1].split(':')[1];
+	    count = tz[tag];
+	    count = count ? count + 1 : 1;
+	    tz[tag] = count;
+	}
+
     //api setter
-    for (tag in tz) {
-        if (tz.hasOwnProperty(tag)) {
-            tagz.push({
+	for (tag in tz) {
+	    if (tz.hasOwnProperty(tag)) {
+	        tagz.push({
                 name: String(tag),
                 count: tz[tag]
             });
         }
     }
-    /* 
-     for (tag in tz) {
-     if (tz.hasOwnProperty(tag)) {
-     var result = this.assetManager(type).checkTagAssets({tag: tag });
-     if (result.length > 0) {
-     tagz.push({
-     name: String(tag),
-     count: tz[tag]
-     });
-     }
-     }
-     }
-     */
+
     return tagz;
 };
 
