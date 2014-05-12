@@ -4,6 +4,7 @@ include('/extensions/assets/webapp/modules/jagg/jagg.jag');
 var log = new Log();
 
 var storeHostObj = jagg.module("manager").getAPIStoreObj();
+var AuthService=require('../extensions/assets/webapp/services/authentication.js').serviceModule;
 
 require('/modules/store.js').exec(function (ctx) {
     var action, data, message, exists,
@@ -13,8 +14,10 @@ require('/modules/store.js').exec(function (ctx) {
             matcher = new URIMatcher(request.getRequestURI()),
             userDetails={},
             parameters;
-    ;
+  
 
+	var authenticator=new AuthService.Authenticator();
+    authenticator.init(jagg,session);
 
     if (matcher.match('/{context}/apis/user/{action}')) {
         action = matcher.elements().action;
@@ -23,15 +26,12 @@ require('/modules/store.js').exec(function (ctx) {
                 try {
                     data = request.getContent();
                     error = !user.login(data.username, data.password, session);
-                    var AuthService=require('../extensions/assets/webapp/services/authentication.js').serviceModule;
+					var tenant = ctx.tenant;
 
-                    var authenticator=new AuthService.Authenticator();
-
-                    authenticator.init(jagg,session);
                    // parameters=request.getAllParameters();
                     userDetails['username']=data.username;
                     userDetails['password']=data.password;
-                    userDetails['tenant']=null;
+					userDetails['tenantId']=tenant;
 
                     authResult=authenticator.login(userDetails);
                     if (error) {
@@ -50,6 +50,10 @@ require('/modules/store.js').exec(function (ctx) {
             case 'logout':
                 try {
                     user.logout();
+					userlogged=authenticator.getLoggedInUser();
+					if(userlogged){
+						authenticator.logout();
+					}
                 } catch (e) {
                     log.error(e);
                     error = true;
