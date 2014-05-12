@@ -323,7 +323,23 @@ function addTags(params,assetId,artifactManager,reg){
         um.clearResourceAuthorizations(artifact.path);
 
         // But, there's an internal_everyone coming up with +GET. Let's nuke it.
-        um.denyRole('Internal/everyone', artifact.path, carbon.registry.actions.GET);
+        //um.denyRole('Internal/everyone', artifact.path, carbon.registry.actions.GET);
+
+    	permissions.forEach(function(rolePermissions) {
+                    var role = rolePermissions.role;
+                    
+                    if(role != 'Internal/private_admin' && role != 'admin' ){
+                    	var x = rolePermissions;
+                    	if(rolePermissions.permissions.length>0){
+                    		um.denyRole('Internal/everyone', artifact.path, carbon.registry.actions.GET);
+                    		                    		
+                    	}
+                    	
+                    	                    	
+                    }
+      
+         });
+        
 
         var username = server.current(session).username;
         var currentUserRole = USER_ROLE_PREFIX + username;
