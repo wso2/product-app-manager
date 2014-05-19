@@ -107,7 +107,7 @@
                 <state id="Published">
                     <datamodel>
                         <data name="transitionExecution">
-                            <execution forEvent="Unpublish" class="org.wso2.jaggery.scxml.generic.GenericExecutor">
+                            <execution forEvent="Unpublish" class="org.wso2.carbon.appmgt.impl.extensions.custom.PublishWFEventExecutor">
                                 <parameter name="PERMISSION:get"
                                            value="http://www.wso2.org/projects/registry/actions/get"/>
                                 <parameter name="PERMISSION:add"
