@@ -1,0 +1,86 @@
+
+<%
+
+
+require('/modules/publisher.js').exec(function(ctx) {
+
+    var config = require('/config/publisher.json');
+    var caramel = require('caramel');
+
+    var router = require('/modules/router-g.js').router();
+    var routeManager = new router.Router();
+
+    routeManager.register('GET', 'publisher', '/publisher/api/sso/providers', function (context) {
+        var ssoConfiguratorConstants = Packages.org.wso2.carbon.appmgt.impl.idp.sso.SSOConfiguratorConstants;
+
+        var returnVal = createResponseObject(ssoConfiguratorConstants.PROVIDERS);
+
+        response.contentType = 'application/json';
+        response.status = 200;
+        response.content = returnVal;
+    });
+
+    routeManager.register('GET', 'publisher', '/publisher/api/sso/claims', function (context) {
+        var idpName = request.getParameter("idp");
+        if(idpName === null) {
+            var returnVal = createResponseObjectWithReason(null, 'Query parameter \'idp\' is missing or invalid');
+        } else {
+            var ssoConfiguratorUtil = Packages.org.wso2.carbon.appmgt.impl.idp.sso.SSOConfiguratorUtil;
+            var returnVal = createResponseObject(ssoConfiguratorUtil.getAllClaims(idpName));
+        }
+
+        response.contentType = 'application/json';
+        response.status = 200;
+        response.content = returnVal;
+    });
+
+    function createResponseObject(object) {
+        if (object !== null) {
+            return {'success': true, 'response': object};
+        } else {
+            return {'success': false, 'response': object};
+        }
+    }
+
+    function createResponseObjectWithReason(object, reason) {
+        var returnVal = createResponseObject(object);
+        returnVal.reason = reason;
+        return returnVal;
+    }
+
+    var securityModule=require('/modules/security/security.manager.js').securityManagementModule();
+
+    var sm=securityModule.cached();
+
+//This will short circuit the handling of the requests
+    var passed=sm.check(session,function(){
+        response.sendError(401);
+
+    });
+
+//Stop servicing the request if the check failed
+    if(passed){
+
+        var user=require('store').user;
+        var publisher = require('/modules/publisher.js').publisher(request, session);
+
+
+//var routeManager=application.get(config.app.ROUTE_MANAGER);
+        var rxtManager = publisher.rxtManager;
+        var modelManager = publisher.modelManager;
+        var dataInjector=publisher.dataInjector;
+        var DataInjectorModes=publisher.DataInjectorModes;
+        var filterManager=publisher.filterManager;
+        var storageModule = require('/modules/data/storage.js').storageModule();
+        var storageConfig = require('/config/storage.json');
+        var utility = require('/modules/utility.js').rxt_utility();
+        var log=new Log();
+
+
+
+        routeManager.handle(request, response);
+    }
+
+}, request, response, session);
+
+%>
