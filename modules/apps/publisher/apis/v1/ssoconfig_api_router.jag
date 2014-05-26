@@ -11,41 +11,64 @@ require('/modules/publisher.js').exec(function(ctx) {
     
     
     routeManager.register('GET', 'publisher', '/publisher/api/sso/{type}', function (context) {
-    	
-    	var shortName = context.params.type;
 
-    	if(shortName == "providers"){
-            var ssoConfiguratorConstants = Packages.org.wso2.carbon.appmgt.impl.idp.sso.SSOConfiguratorConstants;
-            var returnVal = createResponseObject(ssoConfiguratorConstants.PROVIDERS);
+        var shortName = context.params.type;
+        if(shortName == "providers"){
+            var ssoConfiguratorUtil = Packages.org.wso2.carbon.appmgt.impl.idp.sso.SSOConfiguratorUtil;
+            var providers = ssoConfiguratorUtil.getAvailableProviders();
+            var returnVal = createResponseObject(providers);
+
             print(returnVal);
-    	} else if(shortName == "claims"){
-    		var idpName = request.getParameter("idp");
-    		var version = request.getParameter("version");
-    		var returnVal;
-    		        if(idpName === null) {
-    		             returnVal = createResponseObjectWithReason(null, 'Query parameter \'idp\' is missing or invalid');
-    		        } else {
-    		            var ssoConfiguratorUtil = Packages.org.wso2.carbon.appmgt.impl.idp.sso.SSOConfiguratorUtil;
-    		            returnVal = createResponseObject(ssoConfiguratorUtil.getAllClaims(idpName,version));
-    		        }
-    		        
-    		        print(returnVal);
-    		            		        
-    	}
-   
-        });
+        }else if(shortName == "claims"){
+            var idpName = request.getParameter("idp");
+            var version = request.getParameter("version");
+            var returnVal;
+            if(idpName === null) {
+                returnVal = createResponseObjectWithReason(null, 'Query parameter \'idp\' is missing or invalid');
+            } else {
+                var ssoConfiguratorUtil = Packages.org.wso2.carbon.appmgt.impl.idp.sso.SSOConfiguratorUtil;
+                returnVal = createResponseObject(ssoConfiguratorUtil.getAllClaims(idpName,version));
+            }
+
+            print(returnVal);
+
+        }
+    });
     
     
     	routeManager.register('POST', 'publisher', '/publisher/api/sso/{type}', function (context) {
-    		
+
     	    var shortName = context.params.type;
-    	    
-    	    var config = context.request.getContent();
-   
-    	
+
+            //Create SSO Provider
+            addSSOProvider(context.post);
+
+
     	});
-    
-    
+
+    function addSSOProvider(params, assetId, artifactmanager, reg) {
+        var WebAppModel = Packages.org.wso2.carbon.appmgt.api.model.WebApp;
+        var APIIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
+        var SSOProvider = Packages.org.wso2.carbon.appmgt.api.model.SSOProvider;
+
+
+        var appId = new APIIdentifier(params.sso_idpProviderUrl, params.overview_name, params.overview_version);
+        var webApp = new WebAppModel(appId);
+        var ssoProvider = new SSOProvider();
+
+        ssoProvider.setProviderName(params.providers.split("-")[0]);
+        ssoProvider.setProviderVersion(params.providers.split("-")[1]);
+        <!--ssoProvider.setIssuerName();-->
+        <!--ssoProvider.setAssertionConsumerURL();-->
+        <!--ssoProvider.setClaims();-->
+
+        webApp.setSsoProviderDetails(ssoProvider);
+        webApp.setContext(params.overview_context);
+        webApp.setTransports(params.overview_transports);
+
+        var ssoConfigUtil = Packages.org.wso2.carbon.appmgt.impl.idp.sso.SSOConfiguratorUtil;
+        ssoConfigUtil.createSSOProvider(webApp);
+    }
     
     function createResponseObject(object) {
         if (object !== null) {
