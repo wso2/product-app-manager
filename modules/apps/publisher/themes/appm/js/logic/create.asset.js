@@ -156,7 +156,7 @@ $(function() {
                             window.location = '/publisher/assets/' + type + '/';
                         }
                     })();
-					//window.location = '/publisher/assets/' + type + '/';
+					createServiceProvider();
 				} else {
 					var msg = processErrorReport(result.report);
 					showAlert(msg, 'error');
@@ -276,7 +276,154 @@ $('#form-asset-create').ajaxSubmit(options);
 		}
 		$('.' + CHARS_REM).text('Characters left: ' + left);
 	});
+	
+	$('#autoConfig').click(function () {
+		if($('#autoConfig').is(':checked')){
+			$('#provider-table').show();
+			
+		
+			$('#logout-table').show();
+			$('#claims-table').show();
+		
+	
+			
+		}else{
+			var rows = $('table.sso tr');
+			var provider =  rows.filter('.provider-table');
+			provider.hide();
+			
+			var logout = rows.filter('.logout-table');
+			logout.hide();
+			
+			var claims = rows.filter('.claims-table');
+			claims.hide();
+		}
+	});
+	
+	$("#providers").change(function () {
+		var value = $('#providers').val();
+        loadClaims(value)
+    });
+	
+	  $.ajax({
+          url: '/publisher/api/sso/providers',
+          type: 'GET',
+          contentType: 'application/json',
+          success: function(response) {
+        	 
+        	  var providers_data = JSON.parse(response).response;
+        	  loadProviders(providers_data);
+  			
+          },
+          error: function(response) {
+              showAlert('Error adding permissions.', 'error');
+          }
+      });
+	
+	
+	function loadProviders(providers_data){
+		 for(var i=0;i<providers_data.length;i++){
+			  var x = providers_data[i];
+			  console.log(providers_data.length + "i:"+i);
+			  console.log(x);
+			  $("#providers").append($("<option></option>").val(x).text(x));
+		  }
+		 
+		 var value = $('#providers').val();
+		 loadClaims(value);
+		
+		 
+	}
+	
+	function loadClaims (provider){
+		 var sso_values = provider.split("-");
+		 $.ajax({
+             url: '/publisher/api/sso/claims?idp='+sso_values[0] +"&version="+sso_values[1],
+             type: 'GET',
+             contentType: 'application/json',
+             success: function(response) {
+           	  var claims = JSON.parse(response).response;
+           	 for(var i=0;i<claims.length;i++){
+           		 var y = claims[i];
+           		 console.log("y:"+y);
+           		 $("#claims").append($("<option></option>").val(y).text(y));
+           	 }
+     			
+             },
+             error: function(response) {
+                 showAlert('Error adding permissions.', 'error');
+             }
+         });
+	}
 
+	
+	$('#addClaims').click(function () {
+	    var propertyCount = document.getElementById("claimPropertyCounter");
+
+	    var i = propertyCount.value;
+	    var currentCount = parseInt(i);
+
+	    currentCount = currentCount + 1;
+	    propertyCount.value = currentCount;
+
+	    document.getElementById('claimTableId').style.display = '';
+	    var claimTableTBody = document.getElementById('claimTableTbody');
+
+	    var claimRow = document.createElement('tr');
+	    claimRow.setAttribute('id', 'claimRow' + i);
+
+	    var claim = document.getElementById('claims').value;
+	    var claimPropertyTD = document.createElement('td');
+	    claimPropertyTD.setAttribute('style', 'padding-left: 40px ! important; color: rgb(119, 119, 119); font-style: italic;');
+	    claimPropertyTD.innerHTML = "" + claim + "<input type='hidden' name='claimPropertyName" + i + "' id='claimPropertyName" + i + "'  value='" + claim + "'/> ";
+
+	    var claimRemoveTD = document.createElement('td');
+	    
+	    claimRemoveTD.innerHTML = '<a href="#"  onclick="removeClaim(' + i + ');return false;"><i class="icon-remove-sign"></i>  Delete</a>';
+	    claimRow.appendChild(claimPropertyTD);
+	    claimRow.appendChild(claimRemoveTD);
+
+	    claimTableTBody.appendChild(claimRow);
+	});
+	
+	
+
+	function createServiceProvider(){
+		var sso_config = {};
+		var provider_name  = $('#providers').val();
+		var logout_url = $('#overview_logoutUrl').val();
+		var claims = [];
+		var index=0;
+		while($("#claimPropertyName"+index).val() != null){
+			var claim = $("#claimPropertyName"+index).val();
+			claims[claims.length] = claim;
+			index++;
+		}
+		
+		sso_config.provider = provider_name;
+		sso_config.logout_url = logout_url;
+		sso_config.claims = claims;
+		
+		var sso = [];
+		sso.push(sso_config);
+		
+		 $.ajax({
+             url: '/publisher/api/sso/addConfig',
+             type: 'POST',
+             contentType: 'application/json',
+             data:JSON.stringify(sso),
+             success: function(response) {
+            	 console.log("Added SSO config successfully");     			
+             },
+             error: function(response) {
+                 showAlert('Error adding permissions.', 'error');
+             }
+         });
+		
+	}
+
+	
+	
 	/*
 	 The function is used to build a report message indicating the errors in the form
 	 @report: The report to be processed
@@ -339,3 +486,36 @@ $('#form-asset-create').ajaxSubmit(options);
 
 	$('.selectpicker').selectpicker();
 });
+
+
+function removeClaim(i) {
+    var propRow = document.getElementById("claimRow" + i);
+    if (propRow != undefined && propRow != null) {
+        var parentTBody = propRow.parentNode;
+        if (parentTBody != undefined && parentTBody != null) {
+            parentTBody.removeChild(propRow);
+            if (!isContainRaw(parentTBody)) {
+                var propertyTable = document.getElementById("claimTableId");
+                propertyTable.style.display = "none";
+
+            }
+        }
+    }
+}
+
+function isContainRaw(tbody) {
+    if (tbody.childNodes == null || tbody.childNodes.length == 0) {
+        return false;
+    } else {
+        for (var i = 0; i < tbody.childNodes.length; i++) {
+            var child = tbody.childNodes[i];
+            if (child != undefined && child != null) {
+                if (child.nodeName == "tr" || child.nodeName == "TR") {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
