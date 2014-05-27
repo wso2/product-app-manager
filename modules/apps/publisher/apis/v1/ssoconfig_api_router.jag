@@ -34,40 +34,39 @@ require('/modules/publisher.js').exec(function(ctx) {
 
         }
     });
-    
-    
-    	routeManager.register('POST', 'publisher', '/publisher/api/sso/{type}', function (context) {
-
-    	    var shortName = context.params.type;
-
-            //Create SSO Provider
-            addSSOProvider(context.post);
 
 
-    	});
+    routeManager.register('POST', 'publisher', '/publisher/api/sso/{type}', function (context) {
 
-    function addSSOProvider(params, assetId, artifactmanager, reg) {
+        var shortName = context.params.type;
+        //Create SSO Provider
+        addSSOProvider(context.request.getContent());
+
+
+    });
+
+    function addSSOProvider(params) {
         var WebAppModel = Packages.org.wso2.carbon.appmgt.api.model.WebApp;
         var APIIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
         var SSOProvider = Packages.org.wso2.carbon.appmgt.api.model.SSOProvider;
 
 
-        var appId = new APIIdentifier(params.sso_idpProviderUrl, params.overview_name, params.overview_version);
+        var appId = new APIIdentifier(params.sso_idpProviderUrl, params.app_name, params.app_verison);
         var webApp = new WebAppModel(appId);
         var ssoProvider = new SSOProvider();
 
-        ssoProvider.setProviderName(params.providers.split("-")[0]);
-        ssoProvider.setProviderVersion(params.providers.split("-")[1]);
-        <!--ssoProvider.setIssuerName();-->
-        <!--ssoProvider.setAssertionConsumerURL();-->
-        <!--ssoProvider.setClaims();-->
+        ssoProvider.setProviderName(params.provider.split("-")[0]);
+        ssoProvider.setProviderVersion(params.provider.split("-")[1]);
+        ssoProvider.setIssuerName(params.app_name);
+        //ssoProvider.setAssertionConsumerURL();
+        ssoProvider.setClaims(params.claims);
 
         webApp.setSsoProviderDetails(ssoProvider);
-        webApp.setContext(params.overview_context);
-        webApp.setTransports(params.overview_transports);
+        webApp.setContext(params.app_context);
+        webApp.setTransports(params.app_transport);
 
         var ssoConfigUtil = Packages.org.wso2.carbon.appmgt.impl.idp.sso.SSOConfiguratorUtil;
-        ssoConfigUtil.createSSOProvider(webApp);
+        ssoConfigUtil.createSSOProvider(webApp, false);
     }
     
     function createResponseObject(object) {
