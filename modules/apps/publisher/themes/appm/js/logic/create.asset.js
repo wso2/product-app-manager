@@ -389,37 +389,44 @@ $('#form-asset-create').ajaxSubmit(options);
 	
 
 	function createServiceProvider(){
-		var sso_config = {};
-		var provider_name  = $('#providers').val();
-		var logout_url = $('#overview_logoutUrl').val();
-		var claims = [];
-		var index=0;
-		while($("#claimPropertyName"+index).val() != null){
-			var claim = $("#claimPropertyName"+index).val();
-			claims[claims.length] = claim;
-			index++;
-		}
-		
-		sso_config.provider = provider_name;
-		sso_config.logout_url = logout_url;
-		sso_config.claims = claims;
-		
-		var sso = [];
-		sso.push(sso_config);
-		
-		 $.ajax({
-             url: '/publisher/api/sso/addConfig',
-             type: 'POST',
-             contentType: 'application/json',
-             data:JSON.stringify(sso),
-             success: function(response) {
-            	 console.log("Added SSO config successfully");     			
-             },
-             error: function(response) {
-                 showAlert('Error adding permissions.', 'error');
-             }
-         });
-		
+        var sso_config = {};
+        var provider_name  = $('#providers').val();
+        var logout_url = $('#overview_logoutUrl').val();
+        var idp_provider = $('#sso_idpProviderUrl').val();
+        var app_name = $('#overview_name').val();
+        var app_version = $('#overview_version').val();
+        var app_transport = $('#overview_transports').val();
+        var app_context = $('#overview_context').val();
+
+        var claims = [];
+        var index=0;
+        while($("#claimPropertyName"+index).val() != null){
+            var claim = $("#claimPropertyName"+index).val();
+            claims[claims.length] = claim;
+            index++;
+        }
+
+        sso_config.provider = provider_name;
+        sso_config.logout_url = logout_url;
+        sso_config.claims = claims;
+        sso_config.idp_provider = idp_provider;
+        sso_config.app_name = app_name;
+        sso_config.app_verison = app_version;
+        sso_config.app_transport = app_transport;
+        sso_config.app_context = app_context;
+
+        $.ajax({
+            url: '/publisher/api/sso/addConfig',
+            type: 'POST',
+            contentType: 'application/json',
+            data:JSON.stringify(sso_config),
+            success: function(response) {
+                console.log("Added SSO config successfully");
+            },
+            error: function(response) {
+                showAlert('Error adding permissions.', 'error');
+            }
+        });
 	}
 
 	
