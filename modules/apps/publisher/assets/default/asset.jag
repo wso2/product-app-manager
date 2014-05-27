@@ -189,7 +189,20 @@ routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/
                 output.permissions = JSON.parse(overridenPermissions.replace('\\', ''));
             }
 
-
+      if(operation == "edit" || operation == "view"){
+        	        	
+           var data = output.fields;
+           var uriTemplate = 0;
+           for(index = 0; index < data.length; index++){
+           		if(data[index].name == "uritemplate_urlPattern"+uriTemplate){
+	            	if(data[index].value == ""){
+	            		data.splice(index, 1);
+	            	}
+	            	uriTemplate++;
+	            }
+           }         	
+        }
+            
 		if(operation == "documentation"){
 			caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title,docs:result.docs});
 						
@@ -216,10 +229,10 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
     //Check if the type is valid
     try {
         //assigning default thumbnail and banner if not provided.
-        if (context.post['images_thumbnail'] == '') {
+        if (context.post['images_thumbnail'] != '') {
             context.post['images_thumbnail'] = '/publisher/config/defaults/img/thumbnail.jpg';
         }
-        if (context.post['images_banner'] == '') {
+        if (context.post['images_banner'] != '') {
             context.post['images_banner'] = '/publisher/config/defaults/img/banner.jpg';
         }
 		

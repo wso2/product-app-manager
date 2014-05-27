@@ -16,7 +16,10 @@ $( document ).ready(function() {
             resource.url_pattern = $("#url_pattern").val();
             resource.http_verb = $(this).val();
             if($(this).is(':checked')){
-                RESOURCES.push(resource);
+            	if(resource.url_pattern != ""){
+            		RESOURCES.push(resource);
+            	}
+                
             }
         })
 

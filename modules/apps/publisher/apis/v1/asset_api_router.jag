@@ -19,7 +19,9 @@ var caramel = require('caramel');
 
 var router = require('/modules/router-g.js').router();
 var routeManager = new router.Router();
+var log= new Log();
 
+var appmgtPublisher = require('appmgtpublisher');
 
 routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}', function (context) {
 
@@ -142,13 +144,17 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
     var id = context.params.id;
     var msg={};
     var artifactManager = rxtManager.getArtifactManager(shortName);
+    
+    var server  = require('store').server;
+    var username = server.current(session).username;
+    
 
-if(context.post['images_thumbnail'] instanceof Array){
-	context.post['images_thumbnail'] = context.post['images_thumbnail'][0];
-}
-if(context.post['images_banner'] instanceof Array){
-	context.post['images_banner'] = context.post['images_banner'][0];
-}
+    if(context.post['images_thumbnail'] instanceof Array){
+		context.post['images_thumbnail'] = context.post['images_thumbnail'][0];
+	}
+	if(context.post['images_banner'] instanceof Array){
+		context.post['images_banner'] = context.post['images_banner'][0];
+	}
 
     try {
         var modelA = modelManager.getModel(shortName);
@@ -198,11 +204,35 @@ if(context.post['images_banner'] instanceof Array){
         modelA.set("overview.createdtime",modelB.get("overview.createdtime").value);
         var artifact = modelA.export('asset.exporter');
 
+        var index = 0;
+		var uritemplate = "uritemplate_urlPattern" + index;
+		
+		while (uritemplate in artifact.attributes) {
+			var urlPattern = artifact.attributes['uritemplate_urlPattern'+index];
+			if(urlPattern == "null" || urlPattern == "" ){
+				var key_pattern = 'uritemplate_urlPattern'+index;
+				var key_httpVerb = 'uritemplate_httpVerb' + index;
+				var key_tier = 'uritemplate_tier'  + index;
+				var key_skipthrottle = 'uritemplate_skipthrottle'  + index;
+				
+				delete artifact.attributes[key_pattern];
+				delete artifact.attributes[key_httpVerb];
+				delete artifact.attributes[key_tier];
+				delete artifact.attributes[key_skipthrottle];
+			}
+			index++;
+			uritemplate = "uritemplate_urlPattern" + index;
+		}
+
         dataInjector.inject(artifact,DataInjectorModes.UPDATE);
 
         artifactManager.update(artifact);
 
         dataInjector.inject(artifact,DataInjectorModes.DISPLAY);
+
+		username=username+"";
+        var appMgtProviderObj = new appmgtPublisher.APIProvider(username);
+        var update = appMgtProviderObj.updateAPI(artifact);
 
         msg['ok']=true;
         msg['message']='asset updated';

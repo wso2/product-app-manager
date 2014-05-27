@@ -8,7 +8,9 @@ $( document ).ready(function() {
             resource.url_pattern = $("#url_pattern").val();
             resource.http_verb = $(this).val();
             if($(this).is(':checked')){
-                RESOURCES_1.push(resource);
+            	if(resource.url_pattern != ""){
+                    RESOURCES_1.push(resource);
+            	}
             }
         })
 
@@ -40,9 +42,7 @@ $( document ).ready(function() {
                 </tr> \
 				"
             );
-            document.getElementById(RESOURCES_1[i].throttling_tier).selected="true";
-            document.getElementById(RESOURCES_1[i].skipthrottle).selected="true";
-
+            
         }
     });
 
