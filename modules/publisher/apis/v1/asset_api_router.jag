@@ -1,0 +1,382 @@
+<%
+
+/*
+ Description: Provides CRUD support for assets
+ Note: type: shortName in the Rxt templates
+ GET  api/asset/{type} 	       	  : Provides the Rxt template
+ GET  api/asset/{type}/{id}        : Provides artifact details on the provided type
+ POST api/asset/{type}             : Creates a new asset of the given type
+ PUT  api/asset/{type}/{id}	  : Updates an asset with the given type and id
+ DELETE asset/{type}/{id} 	  : Deletes an asset with the provided type and id
+ Filename:asset.js
+ Created Date: 29/7/2013
+ */
+
+require('/modules/publisher.js').exec(function(ctx) {
+
+var config = require('/config/publisher.json');
+var caramel = require('caramel');
+
+var router = require('/modules/router-g.js').router();
+var routeManager = new router.Router();
+
+
+routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}', function (context) {
+
+    var shortName = (context.params.type) || '';
+
+    var rxtTemplate = rxtManager.findAssetTemplate(function (template) {
+        return (template.shortName == shortName) ? true : false;
+    });
+
+    if (!rxtTemplate) {
+        log.debug('The asset type: ' + shortName + ' could not be found');
+        response.sendError(404, 'Asset type not found.'); //TODO: Replace
+    }
+    else {
+        var model = modelManager.getModel(shortName);
+        //Obtain the username from the session and populate the provider field
+
+        var username=require('store').server.current(session).username;//.get('LOGGED_IN_USER');
+        model.set('overview.provider',username);
+        var output=model.export('form');
+
+        print(output);
+    }
+});
+
+routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
+
+    var shortName = context.params.type;
+
+    var id = context.params.id;
+
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+
+    //If the id is not found it will throw a conversion exception
+    try {
+
+        var artifact = artifactManager.get(id);
+
+        //Perform some filerting logic
+        artifact=filterManager.filter(artifact,session);
+
+        if(!artifact){
+            response.sendError(401,'You do not have viewing rights for this asset');
+            return;
+        }
+
+        var model = modelManager.getModel(shortName);
+
+        //Customize the resource for the current app
+        dataInjector.inject(artifact,DataInjectorModes.DISPLAY);
+
+        model.import('asset', artifact);
+
+
+        var result = model.export('form');
+
+        print(result);
+    } catch (e) {
+
+        log.debug('The asset type: ' + shortName + ' with id: ' + id + ' could not be found.The following exception was thrown: ' + e);
+        response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check the server logs.');
+    }
+
+});
+
+routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}', function (context) {
+    var shortName = context.params.type;
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+
+    //Check if the type is valid
+    try {
+
+        var model=modelManager.getModel(shortName);
+
+        //assigning default thumbnail and banner if not provided.
+        if(context.post['images_thumbnail'] == '') {
+            context.post['images_thumbnail'] = '/publisher/config/defaults/img/thumbnail.jpg';
+        }
+        if(context.post['images_banner'] == '') {
+            context.post['images_banner'] = '/publisher/config/defaults/img/banner.jpg';
+        }
+
+        model.import('form.importer',context.post);
+
+        //Perform validations on the asset
+        var report=model.validate();
+
+        //If the report indicates the model has failed validations send an error
+        if((report)&&(report.failed)){
+            print({ok:false,message:'Validation failure',report:report});
+            return;
+        }
+
+        //var assetModel = getModel(context.post);
+
+        model.save();
+
+        //var createdAsset = artifactManager.add(assetModel);
+
+        //Get the model id
+        var idField = model.get('*.id');
+
+        if (idField) {
+            print({ok: 'true', message: 'Asset created.', id: idField.value});
+        }
+        else {
+            log.debug('An asset of type: ' + shortName + ' could not be created.Probably a fault with publisher logic!');
+        }
+
+    }
+    catch (e) {
+        log.debug('An asset of type: ' + shortName + ' could not be created.The following exception was thrown: ' + e);
+        response.sendError(500, 'An asset of type: ' + shortName + ' could not be created.Please check the server logs.');
+    }
+
+});
+
+routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
+    var shortName = context.params.type;
+    var id = context.params.id;
+    var msg={};
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+
+if(context.post['images_thumbnail'] instanceof Array){
+	context.post['images_thumbnail'] = context.post['images_thumbnail'][0];
+}
+if(context.post['images_banner'] instanceof Array){
+	context.post['images_banner'] = context.post['images_banner'][0];
+}
+
+    try {
+        var modelA = modelManager.getModel(shortName);
+        var modelB = modelManager.getModel(shortName);
+
+        //Handle any files
+        inspectFiles(request,context.post);
+
+        //Get the original artifact
+        var originalArtifact = artifactManager.get(id);
+
+        modelA.import('form.importer', context.post);
+
+        //Validation requires the lifecycle state
+        modelA.set('*.lifecycleState',originalArtifact.lifecycleState);
+
+        var report=modelA.validate();
+
+        //Check if the validation check has failed
+        if((report)&&(report.failed)){
+
+            msg['ok']=false;
+            msg['report']=report;
+            print(msg);
+            log.debug(msg);
+            return;
+        }
+
+
+        modelA.set('*.id', id);
+
+        modelB.import('asset', originalArtifact);
+
+        //Checks whether two models are equal
+        var reqProps=['overview.name', 'overview.provider', 'overview.version']
+
+        var isEqual = modelManager.assertEqual(modelA, modelB,reqProps);
+
+        //If they are not equal,abort the operation
+        if (!isEqual) {
+            log.debug('trying to get fields which are different');
+            var diff=modelManager.diff(modelA,modelB,reqProps);
+            response.sendError(406, 'The name,provider and version of an asset cannot be changed.The following fields'
+                    +' were modified: '+diff);
+            return;
+        }
+        modelA.set("overview.createdtime",modelB.get("overview.createdtime").value);
+        var artifact = modelA.export('asset.exporter');
+
+        dataInjector.inject(artifact,DataInjectorModes.UPDATE);
+
+        artifactManager.update(artifact);
+
+        dataInjector.inject(artifact,DataInjectorModes.DISPLAY);
+
+        msg['ok']=true;
+        msg['message']='asset updated';
+        msg['asset']=artifact;
+        print(msg);
+
+    } catch (e) {
+        log.debug('The asset ' + id + ' could not be updated.The following exception was thrown: ' + e);
+        response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
+    }
+});
+
+/*
+ The function inspects the files sent with a request.If files are found
+ they are added to Storage and then the generated uuids are added to
+ the POST parameter object
+ @req: A request object
+ @params: The POST parameters
+ */
+function inspectFiles(req, params) {
+    var files = req.getAllFiles();
+    var fileName;
+    var file;
+    var uuid = '';
+    var extension;
+
+
+    var storageManager = new storageModule.StorageManager({
+        context: 'storage',
+        isCached: false,
+        connectionInfo: {
+            dataSource: storageConfig.dataSource
+        }
+    });
+
+
+    for (var index in files) {
+
+        file = files[index];
+
+        log.debug('file: ' + index);
+
+        //Put the file in storage and get a uuid as a reference
+        var resource = {};
+        resource['file'] = file;
+        extension = utility.fileio.getExtension(file);
+        resource['contentType'] = utility.fileio.getContentType(extension);
+
+        uuid=storageManager.put(resource);
+
+        log.debug('uuid added: '+uuid);
+
+        //Add a new  entry into the POST parameters containing the uuid
+        params[index] = uuid;
+
+    }
+}
+
+routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
+    var shortName = context.params.type;
+    var id = context.params.id;
+    var msg={};
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+
+
+    try {
+        var modelA = modelManager.getModel(shortName);
+        var modelB = modelManager.getModel(shortName);
+
+        //Get the original artifact
+        var originalArtifact = artifactManager.get(id);
+
+        modelA.import('form.importer', context.content);
+        
+        //Validation requires the lifecycle state
+        modelA.set('*.lifecycleState',originalArtifact.lifecycleState);
+
+        var report=modelA.validate();
+
+        //Check if the validation check has failed
+        if((report)&&(report.failed)){
+
+            msg['ok']=false;
+            msg['report']=report;
+            print(msg);
+            return;
+        }
+
+        modelA.set('*.id', id);
+
+        modelB.import('asset', originalArtifact);
+
+        //Checks whether two models are equal
+        var reqProps=['overview.name', 'overview.provider', 'overview.version']
+
+        var isEqual = modelManager.assertEqual(modelA, modelB,reqProps);
+
+        //If they are not equal,abort the operation
+        if (!isEqual) {
+            log.debug('trying to get fields which are different');
+            var diff=modelManager.diff(modelA,modelB,reqProps);
+            response.sendError(406, 'The name,provider and version of an asset cannot be changed.The following fields'
+            +' were modified: '+diff);
+            return;
+        }
+        modelA.set("overview.createdtime",modelB.get("overview.createdtime").value);
+        var artifact = modelA.export('asset.exporter');
+
+        log.debug('not updating'+artifact);
+        //artifactManager.update(artifact);
+
+        msg['ok']=true;
+        msg['message']='asset updated';
+        print(msg);
+
+    } catch (e) {
+        log.debug('The asset ' + id + ' could not be updated.The following exception was thrown: ' + e);
+        response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
+    }
+});
+
+
+
+routeManager.register('DELETE', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
+    var shortName = context.params.type;
+    var id = context.params.id;
+
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+
+    try {
+        artifactManager.remove(id);
+        print({ok: 'true', message: 'Asset deleted'});
+    } catch (e) {
+        log.debug('Asset ' + id + 'could not be removed.An exception was thrown: ' + e);
+        response.sendError(404, 'Asset with id: ' + id + ' could not be removed.');
+    }
+
+
+});
+
+
+var securityModule=require('/modules/security/security.manager.js').securityManagementModule();
+
+var sm=securityModule.cached();
+
+//This will short circuit the handling of the requests
+var passed=sm.check(session,function(){
+    response.sendError(401);
+
+});
+
+//Stop servicing the request if the check failed
+if(passed){
+
+    var user=require('store').user;
+    var publisher = require('/modules/publisher.js').publisher(request, session);
+
+
+//var routeManager=application.get(config.app.ROUTE_MANAGER);
+    var rxtManager = publisher.rxtManager;
+    var modelManager = publisher.modelManager;
+    var dataInjector=publisher.dataInjector;
+    var DataInjectorModes=publisher.DataInjectorModes;
+    var filterManager=publisher.filterManager;
+    var storageModule = require('/modules/data/storage.js').storageModule();
+    var storageConfig = require('/config/storage.json');
+    var utility = require('/modules/utility.js').rxt_utility();
+    var log=new Log();
+
+
+
+    routeManager.handle(request, response);
+}
+
+}, request, response, session);
+
+%>
