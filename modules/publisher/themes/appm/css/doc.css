@@ -1,0 +1,8 @@
+.table-bordered th{
+	border-bottom:solid 1px #ccc;
+}
+
+label.error{
+    color:#d10000 !important;
+    padding:5px;
+}
