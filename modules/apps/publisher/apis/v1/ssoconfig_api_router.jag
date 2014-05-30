@@ -35,6 +35,12 @@ require('/modules/publisher.js').exec(function(ctx) {
         }
     });
 
+    routeManager.register('GET', 'publisher', '/publisher/api/sso/provider/{providerName}/{version}/{appName}', function (context) {
+        var shortName = context.params.type;
+        var ssoConfiguratorUtil = Packages.org.wso2.carbon.appmgt.impl.idp.sso.SSOConfiguratorUtil;
+        returnVal = createResponseObject(ssoConfiguratorUtil.getSSOProvider(context.params.providerName,context.params.version,context.params.appName));
+        print(returnVal);
+    });
 
     routeManager.register('POST', 'publisher', '/publisher/api/sso/{type}', function (context) {
 
