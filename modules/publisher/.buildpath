@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buildpath>
+	<buildpathentry kind="src" path="apis/v1"/>
+	<buildpathentry kind="src" path="assets/default"/>
+	<buildpathentry kind="src" path="assets/uri/pages/backup"/>
+	<buildpathentry kind="src" path="controllers"/>
+	<buildpathentry kind="src" path="extensions/webapp/modules/documentation"/>
+	<buildpathentry kind="src" path="extensions/webapp/modules/jagg"/>
+	<buildpathentry kind="src" path="extensions/webapp/modules/manager"/>
+	<buildpathentry kind="src" path="extensions/webapp/modules/user"/>
+	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
+</buildpath>
