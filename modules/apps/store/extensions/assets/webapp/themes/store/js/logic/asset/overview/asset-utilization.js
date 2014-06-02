@@ -79,12 +79,20 @@ $(function(){
            success:function(response){
         	   if(JSON.parse(response).error == false){
         		   console.info('Successfully subscribed to Web app: '+subscription.apiName);
-        		   alert('Succsessfully subscribed to the '+subscription.apiName+' Web App.');
-        		   $('#btnUnsubscribe').show();
-                   $('#btnSubscribe').hide();
+        		   //alert('Succsessfully subscribed to the '+subscription.apiName+' Web App.');
+        		   
+        		   $('#messageModal').html($('#confirmation-data').html());
+        		    $('#messageModal h3.modal-title').html(('Subscription Successful'));
+        		    $('#messageModal div.modal-body').html('\n\n'+ ('Congratulations! You have successfully subscribed to the ')+'<b>"' + subscription.apiName + '</b>"');
+        		    $('#messageModal a.btn-primary').html('ok');
+        		    
+        		   
+        		    $('#messageModal').modal();
+        			$('#btnUnsubscribe').show();
+ 	                $('#btnSubscribe').hide();
+        		   
         	   }else{
               		console.info('Error occured in subscribe to web app: '+subscription.apiName);
-                   	alert('Error occured in subscribed to the '+subscription.apiName+' Web App.');
                }
            },
            error : function(response) {
@@ -103,12 +111,19 @@ $(function(){
            success:function(response){
         	   if(JSON.parse(response).error == false){
                	console.info('Successfully unsubscribed to web app: '+subscription.apiName);
-               	alert('Succsessfully unsubscribed to the '+subscription.apiName+' Web App.');
-               $('#btnUnsubscribe').hide();
-               $('#btnSubscribe').show();
+               	//alert('Succsessfully unsubscribed to the '+subscription.apiName+' Web App.');
+               	
+                $('#messageModal').html($('#confirmation-data').html());
+    		    $('#messageModal h3.modal-title').html(('Unsubscription Successful'));
+    		    $('#messageModal div.modal-body').html('\n\n'+ ('You have successfully unsubscribed to the ')+'<b>"' + subscription.apiName + '</b>"');
+    		    $('#messageModal a.btn-primary').html('ok');
+    		    
+    		   
+    		    $('#messageModal').modal();
+                $('#btnUnsubscribe').hide();
+                $('#btnSubscribe').show();
            	   }else{
            		console.info('Error occured in unsubscribe to web app: '+subscription.apiName);
-               	alert('Error occured in unsubscribed to the '+subscription.apiName+' Web App.');
            	   }
         	   
            },
