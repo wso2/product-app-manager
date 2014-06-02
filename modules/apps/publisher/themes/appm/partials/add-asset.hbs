@@ -107,70 +107,73 @@
 								</tbody>
 							</table>
 						</fieldset>
-	
+
 						<fieldset>
-							<legend style="margin-top: 20px; margin-bottom: 0px;">Single Sign On Configuration</legend>
+							<legend style="margin-top: 20px; margin-bottom: 0px;">Single
+								Sign On Configuration</legend>
 							<div class="control-group">
+
+								<label class="control-label">Logout URL</label>
+
+								<div class="controls">
+									<input type='text'  class='span8' value="{{{snoop "fields(name=overview_logoutUrl).value" data}}}" name="overview_logoutUrl" id="overview_logoutUrl" />
+								</div>
+
 								<table id="ssoTable" class="sso">
-								<tbody>
-									<tr >
-										<div class="control-group">
-											<td><label class="control-label">Auto Configuration</label></td>
-											<td>
-												<div class="controls">
-													<input type="checkbox" name="autoConfig" id="autoConfig" /> 
-												</div>
-											</td>
-										</div>
-									</tr>
-									<tr id="provider-table" style="display:none;" class="provider-table">
-								
-										<div class="control-group">
-											<td><label class="control-label">SSO Providers</label></td>
-											<td>
-												<div class="controls">
-												
-													<select name="providers" id="providers">
-													</select>
-												</div>	
-											</td>
-										</div>
-									</tr>
-	
-									<tr id="logout-table" style="display:none;" class="logout-table">
-										<div class="control-group">
-											<td><label class="control-label">Logout URL</label></td>
-											<td>
-												<div class="controls">
-													<input type='text' value="{{{snoop "fields(name=overview_logoutUrl).value" data}}}" name="overview_logoutUrl"   id="overview_logoutUrl" /></td>
-												</div>	
-										</div>
-									</tr>
-									
-									<tr  id="claims-table" style="display:none;" class="claims-table">
-										<div class="control-group">
-											<td><label class="control-label">Claims</label></td>
-											<td>
-												<div class="controls">
-													<select name="claims" id="claims">
-													</select>
-													<input id="addClaims" name="addClaims" type="button" value="Add Claim">
-												</div>
-											</td>
-										</div>
-									</tr>
-									
-									
-									
-								</tbody>
-								</table>								
+									<tbody>
+										<tr>
+											<div class="control-group">
+												<td><label class="control-label">Auto
+														Configuration</label></td>
+												<td>
+													<div class="controls">
+														<input type="checkbox" name="autoConfig" id="autoConfig" />
+													</div>
+												</td>
+											</div>
+										</tr>
+										<tr id="provider-table" style="display: none;"
+											class="provider-table">
+
+											<div class="control-group">
+												<td><label class="control-label">SSO Providers</label></td>
+												<td>
+													<div class="controls">
+
+														<select name="providers" id="providers">
+														</select>
+													</div>
+												</td>
+											</div>
+										</tr>
+
+
+										<tr id="claims-table" style="display: none;"
+											class="claims-table">
+											<div class="control-group">
+												<td><label class="control-label">Claims</label></td>
+												<td>
+													<div class="controls">
+														<select name="claims" id="claims">
+														</select> <input id="addClaims" name="addClaims" type="button"
+															value="Add Claim">
+													</div>
+												</td>
+											</div>
+										</tr>
+
+
+
+									</tbody>
+								</table>
 							</div>
-							
-						
-							  <table id="claimTableId" style="display: none;" class="table table-bordered">
-									            <tbody id="claimTableTbody">
-									            	<input type="hidden" name="claimPropertyCounter" id="claimPropertyCounter" value="0">
-									            </tbody>
+
+
+							<table id="claimTableId" style="display: none;" class="table table-bordered">
+								<tbody id="claimTableTbody">
+									<input type="hidden" name="claimPropertyCounter"
+										id="claimPropertyCounter" value="0">
+								</tbody>
 							</table>
 						</fieldset>
 

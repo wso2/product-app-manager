@@ -185,7 +185,7 @@
                 <state id="Deprecated">
                     <datamodel>
                         <data name="transitionExecution">
-                            <execution forEvent="Retire" class="org.wso2.jaggery.scxml.generic.GenericExecutor">
+                            <execution forEvent="Retire" class="org.wso2.carbon.appmgt.impl.extensions.custom.PublishWFEventExecutor">
                                 <parameter name="PERMISSION:get"
                                            value="http://www.wso2.org/projects/registry/actions/get"/>
                                 <parameter name="PERMISSION:add"

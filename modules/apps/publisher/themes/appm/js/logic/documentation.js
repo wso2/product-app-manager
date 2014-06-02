@@ -210,8 +210,8 @@ var updateDocumentation = function (rowId, docName, docType, summary, sourceType
 
 var removeDocumentation = function (provider, apiName, version, docName, docType) {
     $('#messageModal').html($('#confirmation-data').html());
-    $('#messageModal h3.modal-title').html(('confirm.delete'));
-    $('#messageModal div.modal-body').html('\n\n'+ ('confirm.deleteMsg')+'<b>"' + docName + '</b>"?');
+    $('#messageModal h3.modal-title').html(('Confirm Delete'));
+    $('#messageModal div.modal-body').html('\n\n'+ ('Are you sure you want to delete the file')+'<b>"' + docName + '</b>"?');
     $('#messageModal a.btn-primary').html('Yes');
     $('#messageModal a.btn-other').html('No');
     $('#messageModal a.btn-primary').click(function() {

@@ -282,19 +282,15 @@ $('#form-asset-create').ajaxSubmit(options);
 			$('#provider-table').show();
 			
 		
-			$('#logout-table').show();
 			$('#claims-table').show();
 		
 	
 			
-		}else{
+	}else{
 			var rows = $('table.sso tr');
 			var provider =  rows.filter('.provider-table');
 			provider.hide();
-			
-			var logout = rows.filter('.logout-table');
-			logout.hide();
-			
+									
 			var claims = rows.filter('.claims-table');
 			claims.hide();
 		}
@@ -305,7 +301,7 @@ $('#form-asset-create').ajaxSubmit(options);
         loadClaims(value)
     });
 	
-	  $.ajax({
+	$.ajax({
           url: '/publisher/api/sso/providers',
           type: 'GET',
           contentType: 'application/json',
@@ -316,9 +312,9 @@ $('#form-asset-create').ajaxSubmit(options);
   			
           },
           error: function(response) {
-              showAlert('Error adding permissions.', 'error');
+              showAlert('Error adding providers.', 'error');
           }
-      });
+    });
 	
 	
 	function loadProviders(providers_data){
@@ -351,7 +347,7 @@ $('#form-asset-create').ajaxSubmit(options);
      			
              },
              error: function(response) {
-                 showAlert('Error adding permissions.', 'error');
+                 showAlert('Error adding claims.', 'error');
              }
          });
 	}
@@ -424,7 +420,7 @@ $('#form-asset-create').ajaxSubmit(options);
                 console.log("Added SSO config successfully");
             },
             error: function(response) {
-                showAlert('Error adding permissions.', 'error');
+                showAlert('Error adding service provider.', 'error');
             }
         });
 	}
