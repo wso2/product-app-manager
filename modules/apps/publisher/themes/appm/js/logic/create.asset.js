@@ -87,32 +87,14 @@ $(function() {
 		var tracking_code_id = "AM_"+hash;
 		$('#tracking_code').val(tracking_code_id);
 		
+		 if($('#autoConfig').is(':checked')){
+				var selectedProvider = $('#providers').val();
+				$('#sso_ssoProvider').val(selectedProvider);
+		 }
 		
-	/*
-		var fields = $('#form-asset-create :input');
-			var data = {};
-			var formData = {};
-			fields.each(function() {
-				if (this.type != 'button') {
-					//console.log(this.value);
-					data[this.id] = this.value;
-					formData = fillForm(this, formData);
-				}
-			});
-	
-			//Append the tags to the form data
-			formData['tags'] = obtainTags();
-	*/
-	
-	//var tags = JSON.stringify(obtainTags());
-
 
  var options = { 
-       // target:        '#output1',   // target element(s) to be updated with server response 
-       // beforeSubmit:  showRequest,  // pre-submit callback 
-      // data : {"tags":tags},
-
-
+      
         success:       function(response) {
 
 				var result = JSON.parse(response);
@@ -156,7 +138,10 @@ $(function() {
                             window.location = '/publisher/assets/' + type + '/';
                         }
                     })();
-					createServiceProvider();
+					   if($('#autoConfig').is(':checked')){
+						 createServiceProvider();
+					}
+
 				} else {
 					var msg = processErrorReport(result.report);
 					showAlert(msg, 'error');
@@ -283,7 +268,7 @@ $('#form-asset-create').ajaxSubmit(options);
 			
 		
 			$('#claims-table').show();
-		
+
 	
 			
 	}else{
@@ -293,6 +278,8 @@ $('#form-asset-create').ajaxSubmit(options);
 									
 			var claims = rows.filter('.claims-table');
 			claims.hide();
+			removeClaimTable();
+
 		}
 	});
 	
@@ -396,11 +383,15 @@ $('#form-asset-create').ajaxSubmit(options);
 
         var claims = [];
         var index=0;
-        while($("#claimPropertyName"+index).val() != null){
-            var claim = $("#claimPropertyName"+index).val();
-            claims[claims.length] = claim;
-            index++;
-        }
+        var propertyCount = document.getElementById("claimPropertyCounter").value;
+        while(index < propertyCount){
+			var claim = $("#claimPropertyName"+index).val();
+			if(claim != null){
+				claims[claims.length] = claim;
+			}
+			index++;
+			
+		}
 
         sso_config.provider = provider_name;
         sso_config.logout_url = logout_url;
@@ -520,5 +511,27 @@ function isContainRaw(tbody) {
         }
     }
     return false;
+}
+
+
+function removeClaimTable() {
+	var  i=0;
+    var propRow = document.getElementById("claimRow" + i);
+    
+    
+    while (propRow != undefined && propRow != null) {
+        var parentTBody = propRow.parentNode;
+        if (parentTBody != undefined && parentTBody != null) {
+            parentTBody.removeChild(propRow);
+            if (!isContainRaw(parentTBody)) {
+                var propertyTable = document.getElementById("claimTableId");
+                propertyTable.style.display = "none";
+
+            }
+        }
+        
+        i++;
+        propRow = document.getElementById("claimRow" + i);
+    }
 }
 

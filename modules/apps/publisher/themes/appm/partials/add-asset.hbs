@@ -142,6 +142,8 @@
 
 														<select name="providers" id="providers">
 														</select>
+														<input type='hidden' value="" name="sso_ssoProvider" id="sso_ssoProvider"/>
+														
 													</div>
 												</td>
 											</div>
@@ -199,34 +201,22 @@
 								</thead>
 								<tbody>
 									<tr>
-										<td><input class="span12"
-											name="oauthapis_apiTokenEndpoint1" type="text"></td>
-										<td><input class="span12"
-											name="oauthapis_apiConsumerKey1" type="text"></td>
-										<td><input class="span12"
-											name="oauthapis_apiConsumerSecret1" type="text"></td>
-										<td><input class="span12" name="oauthapis_apiName1"
-											type="text"></td>
+										<td><input class="span12" name="oauthapis_apiTokenEndpoint1" type="text" value="{{{snoop "fields(name=oauthapis_apiTokenEndpoint1).value" data}}}"></td>
+										<td><input class="span12" name="oauthapis_apiConsumerKey1" type="text" value="{{{snoop "fields(name=oauthapis_apiConsumerKey1).value" data}}}"></td>
+										<td><input class="span12" name="oauthapis_apiConsumerSecret1" type="text" value="{{{snoop "fields(name=oauthapis_apiConsumerSecret1).value" data}}}"></td>
+										<td><input class="span12" name="oauthapis_apiName1" type="text" value="{{{snoop "fields(name=oauthapis_apiName1).value" data}}}"></td>
 									</tr>
 									<tr>
-										<td><input class="span12"
-											name="oauthapis_apiTokenEndpoint2" type="text"></td>
-										<td><input class="span12"
-											name="oauthapis_apiConsumerKey2" type="text"></td>
-										<td><input class="span12"
-											name="oauthapis_apiConsumerSecret2" type="text"></td>
-										<td><input class="span12" name="oauthapis_apiName2"
-											type="text"></td>
+										<td><input class="span12" name="oauthapis_apiTokenEndpoint2" type="text" value="{{{snoop "fields(name=oauthapis_apiTokenEndpoint2).value" data}}}"></td>
+										<td><input class="span12" name="oauthapis_apiConsumerKey2" type="text" value="{{{snoop "fields(name=oauthapis_apiConsumerKey2).value" data}}}"></td>
+										<td><input class="span12" name="oauthapis_apiConsumerSecret2" type="text" value="{{{snoop "fields(name=oauthapis_apiConsumerSecret2).value" data}}}"></td>
+										<td><input class="span12" name="oauthapis_apiName2" type="text" value="{{{snoop "fields(name=oauthapis_apiName2).value" data}}}"></td>
 									</tr>
 									<tr>
-										<td><input class="span12"
-											name="oauthapis_apiTokenEndpoint3" type="text"></td>
-										<td><input class="span12"
-											name="oauthapis_apiConsumerKey3" type="text"></td>
-										<td><input class="span12"
-											name="oauthapis_apiConsumerSecret3" type="text"></td>
-										<td><input class="span12" name="oauthapis_apiName3"
-											type="text"></td>
+										<td><input class="span12" name="oauthapis_apiTokenEndpoint3" type="text" value="{{{snoop "fields(name=oauthapis_apiTokenEndpoint3).value" data}}}"></td>
+										<td><input class="span12" name="oauthapis_apiConsumerKey3" type="text" value="{{{snoop "fields(name=oauthapis_apiConsumerKey3).value" data}}}"></td>
+										<td><input class="span12" name="oauthapis_apiConsumerSecret3" type="text" value="{{{snoop "fields(name=oauthapis_apiConsumerSecret3).value" data}}}"></td>
+										<td><input class="span12" name="oauthapis_apiName3" type="text" value="{{{snoop "fields(name=oauthapis_apiName3).value" data}}}"></td>
 									</tr>
 								</tbody>
 							</table>

@@ -44,14 +44,14 @@ require('/modules/publisher.js').exec(function(ctx) {
 
     routeManager.register('POST', 'publisher', '/publisher/api/sso/{type}', function (context) {
 
-        var shortName = context.params.type;
+        var type = context.params.type;
         //Create SSO Provider
-        addSSOProvider(context.request.getContent());
+        addSSOProvider(context.request.getContent(),type);
 
 
     });
 
-    function addSSOProvider(params) {
+    function addSSOProvider(params,type) {
         var WebAppModel = Packages.org.wso2.carbon.appmgt.api.model.WebApp;
         var APIIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
         var SSOProvider = Packages.org.wso2.carbon.appmgt.api.model.SSOProvider;
@@ -72,7 +72,12 @@ require('/modules/publisher.js').exec(function(ctx) {
         webApp.setTransports(params.app_transport);
 
         var ssoConfigUtil = Packages.org.wso2.carbon.appmgt.impl.idp.sso.SSOConfiguratorUtil;
-        ssoConfigUtil.createSSOProvider(webApp, false);
+        if(type == 'editConfig'){
+			ssoConfigUtil.createSSOProvider(webApp, true);
+        }else {
+        	ssoConfigUtil.createSSOProvider(webApp, false);
+        } 
+        
     }
     
     function createResponseObject(object) {
