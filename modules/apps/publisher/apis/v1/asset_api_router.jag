@@ -233,7 +233,38 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
 		username=username+"";
         var appMgtProviderObj = new appmgtPublisher.APIProvider(username);
         var update = appMgtProviderObj.updateAPI(artifact);
-
+        
+        //update OAuth APIs consumer details per given web-app
+        var attributes = artifact.attributes;
+        
+        var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
+        var apiIdentifierObj = new apiIdentifier(attributes["overview_provider"], attributes["overview_name"], attributes["overview_version"]);
+                
+        var webApp = Packages.org.wso2.carbon.appmgt.api.model.WebApp;
+        var webAppObj = new webApp(apiIdentifierObj);
+        
+        var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
+        var apiMgtDAOObj = new apiMgtDAO();
+        
+        apiMgtDAOObj.updateOAuthAPIAccessInfo(webAppObj);
+                
+        var count = 1;
+        var tokenEndpoint = attributes["oauthapis_apiTokenEndpoint" + count];
+                
+        while (tokenEndpoint != null && tokenEndpoint.length > 0) {
+                	                	
+                    webAppObj.setTokenEndpoint(attributes["oauthapis_apiTokenEndpoint" + count]);
+                    webAppObj.setApiConsumerKey(attributes["oauthapis_apiConsumerKey" + count]);
+                    webAppObj.setApiConsumerSecret(attributes["oauthapis_apiConsumerSecret" + count]);
+                    webAppObj.setApiName(attributes["oauthapis_apiName" + count]);
+                                        
+                    count++;
+                    tokenEndpoint = attributes["oauthapis_apiTokenEndpoint" + count];
+                                        
+                    //Save OAuth APIs consumer details per given web-app
+                    apiMgtDAOObj.addOAuthAPIAccessInfo(webAppObj);
+        }
+                
         msg['ok']=true;
         msg['message']='asset updated';
         msg['asset']=artifact;
