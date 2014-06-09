@@ -49,7 +49,7 @@ $(function() {
 	    });
 		
     } else {
-        $("#ssoTable").remove(); 
+    	  $("#ssoTable").remove(); 
     }
     
     
