@@ -294,8 +294,12 @@ $('#form-asset-create').ajaxSubmit(options);
           contentType: 'application/json',
           success: function(response) {
         	 
-        	  var providers_data = JSON.parse(response).response;
-        	  loadProviders(providers_data);
+        	  var providers_data = JSON.parse(response);
+              if((providers_data.success === true) && (!$.isEmptyObject(providers_data.response))) {
+            	  loadProviders(providers_data.response);
+              } else {
+                $("#ssoTable").remove();
+              }
   			
           },
           error: function(response) {
