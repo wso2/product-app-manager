@@ -37,11 +37,11 @@ $(function() {
 	          success: function(response) {
 	        	 
 	        	  var providers_data = JSON.parse(response);
-                  if((providers_data.success === true) && (!$.isEmptyObject(providers_data.response))) {
-	        	    loadSelectedProviders(providers_data.response);
-                  } else {
-                    $("#ssoTable").remove();
-	  			  }
+                  	  if((providers_data.success === true) && (!$.isEmptyObject(providers_data.response))) {
+	        	  	  loadSelectedProviders(providers_data.response);
+                  	  } else {
+                    		  $("#ssoTable").remove();
+	  		  }
 	          },
 	          error: function(response) {
 	              showAlert('Error adding providers.', 'error');
