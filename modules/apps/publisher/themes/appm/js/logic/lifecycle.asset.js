@@ -220,7 +220,7 @@ $(function() {
 				var state= statInfo.state;
 				if((state == 'Published' && subscribed && action == 'Unpublish') || (state == 'Deprecated' && subscribed && action == 'Retire')){
 					  $('#messageModal').html($('#confirmation-data').html());
-					    $('#messageModal h3.modal-title').html(('API Publisher - Error'));
+					    $('#messageModal h3.modal-title').html(('APP Publisher - Error'));
 					    $('#messageModal div.modal-body').html('\n\n'+ ('Cannot unpublish/retire the APP. Active Subscriptions Exist'));
 					    $('#messageModal a.btn-primary').html('OK');
 					    
