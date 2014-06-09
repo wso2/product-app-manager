@@ -66,6 +66,7 @@ require('/modules/publisher.js').exec(function(ctx) {
         ssoProvider.setIssuerName(params.app_name);
         //ssoProvider.setAssertionConsumerURL();
         ssoProvider.setClaims(params.claims);
+        ssoProvider.setLogoutUrl(params.logout_url);
 
         webApp.setSsoProviderDetails(ssoProvider);
         webApp.setContext(params.app_context);

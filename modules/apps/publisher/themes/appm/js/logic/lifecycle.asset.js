@@ -220,45 +220,10 @@ $(function() {
 				var state= statInfo.state;
 				if((state == 'Published' && subscribed && action == 'Unpublish') || (state == 'Deprecated' && subscribed && action == 'Retire')){
 					  $('#messageModal').html($('#confirmation-data').html());
-					    $('#messageModal h3.modal-title').html(('Confirm Unpublish - Active Subscriptions Exist'));
-					    $('#messageModal div.modal-body').html('\n\n'+ ('Are you sure to unpublish?'));
-					    $('#messageModal a.btn-primary').html('Yes');
-					    $('#messageModal a.btn-other').html('No');
-					    $('#messageModal a.btn-primary').click(function() {
-					    	$.ajax({
-								url : '/publisher/api/lifecycle/' + action + '/' + asset + '/' + id,
-								type : 'PUT',
-								success : function(response) {
-									var actionName = action.toLowerCase();
-									actionName += 'd';
-									showAlert('Asset was ' + actionName + ' successfully.', 'success');
-									$.ajax({
-										url : '/publisher/api/lifecycle/' + asset + '/' + id,
-										type : 'GET',
-										success : function(response) {
-											//Convert the response to a JSON object
-						 					$('#messageModal').modal('hide');
-											var statInfo = JSON.parse(response);
-											$('#state').html(statInfo.state);
-											$('#view-lifecyclestate').html(statInfo.state);
-											//disableActions(statInfo.actions);
-											buildCheckList(asset, id);
-											buildLCGraph();
-											buildHistory(asset, id);
-										},
-										error : function(response) {
-											$('#state').html('Error obtaining life-cycle state of asset.');
-										}
-									});
-								},
-								error : function(response) {
-									showAlert(action + ' operation failed', 'error');
-								}
-							});
-					    });
-					    $('#messageModal a.btn-other').click(function() {
-					    	console.log("Active subscriptions avilable.");
-					    });
+					    $('#messageModal h3.modal-title').html(('API Publisher - Error'));
+					    $('#messageModal div.modal-body').html('\n\n'+ ('Cannot unpublish/retire the APP. Active Subscriptions Exist'));
+					    $('#messageModal a.btn-primary').html('OK');
+					    
 					    $('#messageModal').modal();
 				}else{
 					$.ajax({
