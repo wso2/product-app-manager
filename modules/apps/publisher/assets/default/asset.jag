@@ -189,28 +189,27 @@ routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/
                 output.permissions = JSON.parse(overridenPermissions.replace('\\', ''));
             }
 
+ 	        output.fields[1]['isEditable'] = false;
+ 	        output.fields[1]['isReadOnly'] = true;
+ 
+ 	        output.fields[2]['isEditable'] = false;
+  	        output.fields[2]['isReadOnly'] = true;
+  
+  	        output.fields[3]['isEditable'] = false;
+   	        output.fields[3]['isReadOnly'] = true;
+
       	    if(operation == "edit" || operation == "view"){
         	        	
-           	var data = output.fields;
            	var uriTemplate = 0;
-           	for(index = 0; index < data.length; index++){
-           	        if(data[index].name == "uritemplate_urlPattern"+uriTemplate){
-	            	if(data[index].value == ""){
-	            		data.splice(index, 1);
-	            	}
+           	for(index = 0; index < output.fields.length; index++){
+           	        if(output.fields[index].name == "uritemplate_urlPattern"+uriTemplate){
+	            		if(output.fields[index].value == "" ||output.fields[index].value == "null"){
+	            			output.fields.splice(index, 1);
+	            		}
 	            	uriTemplate++;
-	            }
+	            	}
            	}         	
        	    }
-
-	    output.fields[1]['isEditable'] = false;
- 	    output.fields[1]['isReadOnly'] = true;
- 
- 	    output.fields[2]['isEditable'] = false;
-  	    output.fields[2]['isReadOnly'] = true;
-  
-  	    output.fields[3]['isEditable'] = false;
-   	    output.fields[3]['isReadOnly'] = true;
             
 	    if(operation == "documentation"){
 		   caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title,docs:result.docs});

@@ -265,12 +265,8 @@ $('#form-asset-create').ajaxSubmit(options);
 	$('#autoConfig').click(function () {
 		if($('#autoConfig').is(':checked')){
 			$('#provider-table').show();
-			
-		
 			$('#claims-table').show();
 
-	
-			
 	}else{
 			var rows = $('table.sso tr');
 			var provider =  rows.filter('.provider-table');
@@ -296,7 +292,7 @@ $('#form-asset-create').ajaxSubmit(options);
         	 
         	  var providers_data = JSON.parse(response);
               	  if((providers_data.success === true) && (!$.isEmptyObject(providers_data.response))) {
-			  loadProviders(providers_data.response);
+			  		loadProviders(providers_data.response);
               	  } else {
                 	  $("#ssoTable").remove();
               	  }
