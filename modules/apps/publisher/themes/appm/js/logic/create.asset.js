@@ -76,6 +76,12 @@ $(function() {
 	$('#btn-create-asset').on('click', function(e) {
 		e.preventDefault();
 		var context =  $('#overview_context').val();
+
+		if (context.charAt(0) !=  "/"){
+			context = "/" + context;
+			$('#overview_context').val(context);
+		}
+		
 		var version =  $('#overview_version').val();
 		var tracking_code = context + version;
 		 
