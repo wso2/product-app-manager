@@ -56,8 +56,17 @@ $(function() {
             }),
             success: function (data) {
                 if (!data.error) {
-                   alert('Succsessfully registered');
-         		   location.reload();  
+                  $('#messageModal').html($('#confirmation-data').html());
+	              $('#messageModal h3.modal-title').html(('APP Store - Notification'));
+		          $('#messageModal a.btn-primary').html('OK');
+		          $('#messageModal div.modal-body').html();
+		          $('#messageModal').modal();
+		          $('#modal-register').modal('hide');
+		          $('#messageModal a.btn-primary').click(function() {
+			      	$('#messageModal').modal('hide');
+			  		$('#modal-login').modal('show'); 
+		  		  });
+                
                 } else {
                 	showError(data.message);
                 }
