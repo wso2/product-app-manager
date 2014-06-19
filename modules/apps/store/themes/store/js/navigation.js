@@ -1,12 +1,12 @@
 $(function() {
 
-    var showError = function (message) {
-        var msg = message.replace(/[0-9a-z.+]+:\s/i, '');
-        $('#register-alert').html(msg).fadeIn('fast');
-        $('#btn-signin').text('Sign in').removeClass('disabled');
-    };
+	var showError = function (message) {
+		var msg = message.replace(/[0-9a-z.+]+:\s/i, '');
+		$('#register-alert').html(msg).fadeIn('fast');
+		$('#btn-signin').text('Sign in').removeClass('disabled');
+	};
 
-	var login = function() {
+    	var login = function() {
 		if (!$("#form-login").valid())
 			return;
 		$('#btn-signin').addClass('disabled').text('Signing in');
@@ -14,68 +14,55 @@ $(function() {
 		var username = $('#inp-username').val();
 		var password = $('#inp-password').val();
 
-        caramel.ajax({
-            type: 'POST',
-            url: '/apis/user/login',
-            data: JSON.stringify({
-                username: username,
-                password: password
-            }),
-            success: function (data) {
-                if (!data.error) {
-                    location.reload();
-                } else {
-                    showError(data.message);
-                }
-            },
-            contentType: 'application/json',
-            dataType: 'json'
-        });
-	};
+        	caramel.ajax({
+            		type: 'POST',
+            		url: '/apis/user/login',
+            		data: JSON.stringify({
+                	username: username,
+                	password: password
+            	}),
+            	success: function (data) {
+                	if (!data.error) {
+                    		location.reload();
+                	} else {
+                    		showError(data.message);
+                	}
+            	},
+            	contentType: 'application/json',
+            	dataType: 'json'
+        	});
+ 	};
 
 	var register = function() {
 		if (!$("#form-register").valid())
 			return;
-//		caramel.post('/apis/user/register', JSON.stringify({
-//			username : $('#inp-username-register').val(),
-//			password : $('#inp-password-register').val()
-//		}), function(data) {
-//			if (!data.error) {
-//				location.reload();
-//			} else {
-//				showError(data.message);
-//			}
-//		}, "json");
 		
 		caramel.ajax({
-            type: 'POST',
-            url: '/apis/user/register',
-            data: JSON.stringify({
-            	username : $('#inp-username-register').val(),
-   			    password : $('#inp-password-register').val()
-            }),
-            success: function (data) {
-                if (!data.error) {
-                  $('#messageModal').html($('#confirmation-data').html());
-	              $('#messageModal h3.modal-title').html(('APP Store - Notification'));
-		          $('#messageModal a.btn-primary').html('OK');
-		          $('#messageModal div.modal-body').html();
-		          $('#messageModal').modal();
-		          $('#modal-register').modal('hide');
-		          $('#messageModal a.btn-primary').click(function() {
-			      	$('#messageModal').modal('hide');
-			  		$('#modal-login').modal('show'); 
-		  		  });
-                
-                } else {
-                	showError(data.message);
-                }
-            },
-            contentType: 'application/json',
-            dataType: 'json'
-        });
-		
-		
+            		type: 'POST',
+            		url: '/apis/user/register',
+            		data: JSON.stringify({
+            		username : $('#inp-username-register').val(),
+   			password : $('#inp-password-register').val()
+            	}),
+            	success: function (data) {
+                	if (!data.error) {
+		          	$('#messageModal').html($('#confirmation-data').html());
+			      	$('#messageModal h3.modal-title').html(('APP Store - Notification'));
+				$('#messageModal a.btn-primary').html('OK');
+				$('#messageModal div.modal-body').html();
+				$('#messageModal').modal();
+				$('#modal-register').modal('hide');
+				$('#messageModal a.btn-primary').click(function() {
+					$('#messageModal').modal('hide');
+					$('#modal-login').modal('show'); 
+			  	});
+                        } else {
+                		showError(data.message);
+                	}
+            	},
+            	contentType: 'application/json',
+            	dataType: 'json'
+        	});
 	};
 
 	$('#btn-signout').live('click', function() {
@@ -94,33 +81,22 @@ $(function() {
 
 	$('#inp-username-register').change(function() {
 		var username = $(this).val();
-		console.log("rrrr:"+$('#inp-username-register').val());
-//		caramel.post('/apis/user/exists', JSON.stringify({
-//			username : $('#inp-username-register').val()
-//		}), function(data) {
-//			if (data.error || data.exists) {
-//				$('#register-alert').html(data.message).fadeIn('fast');
-//			} else {
-//				$('#register-alert').fadeOut('slow');
-//			}
-//		}, "json");
-		
 		caramel.ajax({
-            type: 'POST',
-            url: '/apis/user/exists',
-            data: JSON.stringify({
-                username: $('#inp-username-register').val()
-            }),
-            success: function (data) {
-                if (data.error || data.exists) {
-                	$('#register-alert').html(data.message).fadeIn('fast');               
-                } else {
-  				   $('#register-alert').fadeOut('slow');
-                }
-            },
-            contentType: 'application/json',
-            dataType: 'json'
-        });
+            		type: 'POST',
+            		url: '/apis/user/exists',
+            		data: JSON.stringify({
+                	username: $('#inp-username-register').val()
+            	}),
+            	success: function (data) {
+                	if (data.error || data.exists) {
+                		$('#register-alert').html(data.message).fadeIn('fast');               
+                	} else {
+  				$('#register-alert').fadeOut('slow');
+                	}
+            	},
+            	contentType: 'application/json',
+            	dataType: 'json'
+        	});
 	});
 
 	$('#btn-register-submit').click(register);
@@ -141,10 +117,10 @@ $(function() {
 		window.location = url;
 	});
 
-    $('.store-menu > li > ul > li > a').click(function(){
-        var url = $(this).attr('href');
-        window.location = url;
-    });
+    	$('.store-menu > li > ul > li > a').click(function(){
+        	var url = $(this).attr('href');
+        	window.location = url;
+    	});
 
 
 	$('.dropdown-toggle').click(function(){

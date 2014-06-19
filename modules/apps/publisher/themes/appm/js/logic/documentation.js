@@ -31,12 +31,12 @@ $(document).ready(function() {
 $('#saveDoc').click(function() {
         var sourceType = getRadioValue($('input[name=optionsRadios1]:radio:checked'));
         var docUrlDiv = $("#docUrl");
-	var fileDiv = $("#docLocation");
+	    var fileDiv = $("#docLocation");
         var apiName = $("#docAPIName").val();
         var errCondition = docUrlDiv.val() == "";
-	var isFilePathEmpty = fileDiv.val() == "";
-	var isOtherTypeNameEmpty = $('#specifyBox').val() == null || $('#specifyBox').val() == '';
-	var docType = getRadioValue($('input[name=optionsRadios]:radio:checked'));
+        var isFilePathEmpty = fileDiv.val() == "";
+        var isOtherTypeNameEmpty = $('#specifyBox').val() == null || $('#specifyBox').val() == '';
+        var docType = getRadioValue($('input[name=optionsRadios]:radio:checked'));
 
         var errorCondition = false;
         if($(this).val() != "Update"){
@@ -66,55 +66,53 @@ $('#saveDoc').click(function() {
 
         //$("#addNewDoc").validate();
        // if ($("#addNewDoc").valid()) {
-            var version = $("#docAPIVersion").val();
-            var provider = $("#docAPIProvider").val();
-            var docName = $("#docName").val();
-            var summary = $("#summary").val();            
+        var version = $("#docAPIVersion").val();
+        var provider = $("#docAPIProvider").val();
+        var docName = $("#docName").val();
+        var summary = $("#summary").val();            
 
-            var docUrl = docUrlDiv.val();
-            if (docUrl.indexOf("http") == -1) {
-                docUrl = "http://" + docUrl;
-            }
+        var docUrl = docUrlDiv.val();
+        if (docUrl.indexOf("http") == -1) {
+        	docUrl = "http://" + docUrl;
+        }
 
-            var mode = $('#newDoc .btn-primary').val();
+        var mode = $('#newDoc .btn-primary').val();
+        $('<input>').attr('type', 'hidden')
+		.attr('name', 'provider').attr('value', provider).prependTo('#addNewDoc');
 	$('<input>').attr('type', 'hidden')
-		    .attr('name', 'provider').attr('value', provider).prependTo('#addNewDoc');
+		.attr('name', 'action').attr('value', "addDocumentation").prependTo('#addNewDoc');
 	$('<input>').attr('type', 'hidden')
-		    .attr('name', 'action').attr('value', "addDocumentation").prependTo('#addNewDoc');
+		.attr('name', 'apiName').attr('value', apiName).prependTo('#addNewDoc');
 	$('<input>').attr('type', 'hidden')
-		    .attr('name', 'apiName').attr('value', apiName).prependTo('#addNewDoc');
+		.attr('name', 'version').attr('value', version).prependTo('#addNewDoc');
 	$('<input>').attr('type', 'hidden')
-		    .attr('name', 'version').attr('value', version).prependTo('#addNewDoc');
+		.attr('name', 'docName').attr('value', docName).prependTo('#addNewDoc');
 	$('<input>').attr('type', 'hidden')
-		    .attr('name', 'docName').attr('value', docName).prependTo('#addNewDoc');
+		.attr('name', 'docType').attr('value', docType).prependTo('#addNewDoc');
 	$('<input>').attr('type', 'hidden')
-		    .attr('name', 'docType').attr('value', docType).prependTo('#addNewDoc');
+		.attr('name', 'summary').attr('value', summary).prependTo('#addNewDoc');
 	$('<input>').attr('type', 'hidden')
-		    .attr('name', 'summary').attr('value', summary).prependTo('#addNewDoc');
+		.attr('name', 'sourceType').attr('value', sourceType).prependTo('#addNewDoc');
 	$('<input>').attr('type', 'hidden')
-		    .attr('name', 'sourceType').attr('value', sourceType).prependTo('#addNewDoc');
+		.attr('name', 'docUrl').attr('value', docUrl).prependTo('#addNewDoc');
 	$('<input>').attr('type', 'hidden')
-		    .attr('name', 'docUrl').attr('value', docUrl).prependTo('#addNewDoc');
-	$('<input>').attr('type', 'hidden')
-		    .attr('name', 'mode').attr('value', mode).prependTo('#addNewDoc');
+		.attr('name', 'mode').attr('value', mode).prependTo('#addNewDoc');
 	if(docType.toLowerCase()=='other'){
 	$('<input>').attr('type', 'hidden')
-		    .attr('name', 'newType').attr('value', $('#specifyBox').val()).prependTo('#addNewDoc');
+		.attr('name', 'newType').attr('value', $('#specifyBox').val()).prependTo('#addNewDoc');
 	}
 
 	$('#addNewDoc').ajaxSubmit(function (result) {
-                          if (!result.error) {
-                             // $.cookie("tab", "docsLink");
-                              clearDocs();
-                          } else {
-                              if (result.message == "AuthenticateError") {
-                                  jagg.showLogin();
-                              } else {
-                                  jagg.message({content:result.message,type:"error"});
-                              }
-                          }
-                      });
-       // }
+		if (!result.error) {
+				clearDocs();
+            	} else {
+            		if (result.message == "AuthenticateError") {
+            			jagg.showLogin();
+                	} else {
+                		jagg.message({content:result.message,type:"error"});
+                	}
+           	}
+        });
     });
 });
 
@@ -215,34 +213,28 @@ var removeDocumentation = function (provider, apiName, version, docName, docType
     $('#messageModal a.btn-primary').html('Yes');
     $('#messageModal a.btn-other').html('No');
     $('#messageModal a.btn-primary').click(function() {
-   	
-    	 $.ajax({
- 			url : '/publisher/api/doc?action=removeDocumentation',
- 			type:'POST',
- 			data :{'provider':provider,'apiName':apiName,'version':version,'docName':docName,'docType':docType},
- 			success : function(response) {
- 				 if(JSON.parse(response).error == false){
- 					 $('#messageModal').modal('hide');
-                     $('#' + apiName + '-' + docName.replace(/ /g,'__')).remove();
-                     if ($('#docTable tr').length == 1) {
-                       $('#docTable').append($('<tr><td colspan="6">'+('resultMsgs.noDocs')+'</td></tr>'));
-                       
-                     }
-                     window.location.reload();
- 				 }
- 				 else{
- 		 	          console.log("error occurred while deleting");
-
- 				 }
- 				
- 			},
- 			error : function(response) {
- 	          console.log("error occurred while deleting");
- 			}
- 			
- 		});
-    	
-        	
+	    $.ajax({
+	    	url : '/publisher/api/doc?action=removeDocumentation',
+	 		type:'POST',
+	 		data :{'provider':provider,'apiName':apiName,'version':version,'docName':docName,'docType':docType},
+	 		success : function(response) {
+	 			if(JSON.parse(response).error == false){
+	 				$('#messageModal').modal('hide');
+	                $('#' + apiName + '-' + docName.replace(/ /g,'__')).remove();
+	                if ($('#docTable tr').length == 1) {
+	                	$('#docTable').append($('<tr><td colspan="6">'+('resultMsgs.noDocs')+'</td></tr>'));
+	                }
+	                window.location.reload();
+	 				}
+	 			else{
+	 		 	     console.log("error occurred while deleting");
+	 			}
+	 		},
+	 		error : function(response) {
+	 			console.log("error occurred while deleting");
+	 		}
+	 			
+	 	});
     });
     $('#messageModal a.btn-other').click(function() {
         return;

@@ -99,20 +99,19 @@ require('/modules/publisher.js').exec(function(ctx) {
 
     var sm=securityModule.cached();
 
-//This will short circuit the handling of the requests
+	//This will short circuit the handling of the requests
     var passed=sm.check(session,function(){
         response.sendError(401);
 
     });
 
-//Stop servicing the request if the check failed
+	//Stop servicing the request if the check failed
     if(passed){
 
         var user=require('store').user;
         var publisher = require('/modules/publisher.js').publisher(request, session);
 
-
-//var routeManager=application.get(config.app.ROUTE_MANAGER);
+	//var routeManager=application.get(config.app.ROUTE_MANAGER);
         var rxtManager = publisher.rxtManager;
         var modelManager = publisher.modelManager;
         var dataInjector=publisher.dataInjector;

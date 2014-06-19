@@ -6,13 +6,13 @@
 		<input type="hidden" value="false" id="subscribed" name="subscribed">
 	{{/if}}
 	
-    {{#with apiData.serverURL}}
-    <legend>URLs:</legend>
+    	{{#with apiData.serverURL}}
+    		<legend>URLs:</legend>
 
-    <p><b>{{description}}</b></p>
-    <ul>
-        <li><a class='icon-globe' id="gatewayURL" href="{{productionURL}}" target="_blank" >&nbsp;{{productionURL}}</a></li>
-    </ul>
+	    	<p><b>{{description}}</b></p>
+	    	<ul>
+			<li><a class='icon-globe' id="gatewayURL" href="{{productionURL}}" target="_blank" >&nbsp;{{productionURL}}</a></li>
+	    	</ul>
 	{{/with}}
 
 	<div class="modal fade" id="messageModal" style="display: none"></div>

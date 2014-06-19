@@ -36,43 +36,7 @@ $(function() {
 		}
 	});
 
-	/*$('#overview_name').on('blur', function() {
-		var $this = $(this), flag = $('.icon-check-appname'), btnCreate = $('#btn-create-asset');
-		var assetName = $this.val();
-		if (!flag.length) {
-			$this.after('<i class="icon-check-appname"></i>');
-			flag = $('.icon-check-appname');
-		}
-
-		//check if the asset name available as user types in
-		$.ajax({
-			url : '/publisher/api/validations/assets/' + type + '/overview_name/' + assetName,
-			type : 'GET',
-			success : function(response) {
-
-				var result = JSON.parse(response);
-
-
-				//Check if the asset was added
-				if (result.ok) {
-					flag.removeClass().addClass('icon-ok icon-check-appname').show();
-					btnCreate.removeAttr('disabled');
-					$(".alert-error").hide();
-				} else {
-					flag.removeClass().addClass('icon-ban-circle icon-check-appname').show();
-					btnCreate.attr('disabled', 'disabled');
-				}
-
-			},
-			error : function(response) {
-				flag.removeClass().addClass('icon-ok icon-check-appname').hide();
-				showAlert('Unable to auto check Asset name availability', 'error');
-			}
-		});
-
-	});*/
-
-
+	
 	$('#btn-create-asset').on('click', function(e) {
 		e.preventDefault();
 		var context =  $('#overview_context').val();
@@ -99,53 +63,53 @@ $(function() {
 		 }
 		
 
- var options = { 
+ 	var options = { 
       
-        success:       function(response) {
+			success:       function(response) {
 
 				var result = JSON.parse(response);
 
 				//Check if the asset was added
 				if (result.ok) {
 					showAlert('Asset added successfully.', 'success');
-				    (function setupPermissions() {
-                        var rolePermissions = [];
-                        $('.role-permission').each(function(i, tr) {
-                            var role = $(tr).attr('data-role');
+				    	(function setupPermissions() {
+                        			var rolePermissions = [];
+                        			$('.role-permission').each(function(i, tr) {
+                            				var role = $(tr).attr('data-role');
 
-                            var permissions = [];
+                            				var permissions = [];
 
-                            $(tr).children('td').children(':checked').each(function(j, checkbox) {
-                                permissions.push($(checkbox).attr('data-perm'));
-                            });
+                            				$(tr).children('td').children(':checked').each(function(j, checkbox) {
+                                				permissions.push($(checkbox).attr('data-perm'));
+                            				});
 
-                            rolePermissions.push({
-                                role: role,
-                                permissions: permissions
-                            });
-                        });
+                            				rolePermissions.push({
+                                				role: role,
+                                				permissions: permissions
+                            				});
+                        			});
 
 
-                        if (rolePermissions.length > 0) {
-                            $.ajax({
-                                url: '/publisher/asset/' + type + '/id/' + result.id + '/permissions',
-                                type: 'POST',
-                                processData: false,
-                                contentType: 'application/json',
-                                data: JSON.stringify(rolePermissions),
-                                success: function(response) {
-                                    window.location = '/publisher/assets/' + type + '/';
-                                },
-                                error: function(response) {
-                                    showAlert('Error adding permissions.', 'error');
-                                }
-                            });
-                        } else {
-                            window.location = '/publisher/assets/' + type + '/';
-                        }
-                    })();
-					   if($('#autoConfig').is(':checked')){
-						 createServiceProvider();
+                        			if (rolePermissions.length > 0) {
+                            				$.ajax({
+                                				url: '/publisher/asset/' + type + '/id/' + result.id + '/permissions',
+                                				type: 'POST',
+                                				processData: false,
+                                				contentType: 'application/json',
+                                				data: JSON.stringify(rolePermissions),
+                                				success: function(response) {
+                                    					window.location = '/publisher/assets/' + type + '/';
+                                				},
+                                				error: function(response) {
+                                    					showAlert('Error adding permissions.', 'error');
+                                				}
+                            				});
+                        			} else {
+                            				window.location = '/publisher/assets/' + type + '/';
+                        			}
+                    			})();
+					if($('#autoConfig').is(':checked')){
+						createServiceProvider();
 					}
 
 				} else {
@@ -155,106 +119,40 @@ $(function() {
 
 			},  // post-submit callback 
  		
-		 error : function(response) {
-						 showAlert('Failed to add asset.', 'error');
-				 },
+			error : function(response) {
+				showAlert('Failed to add asset.', 'error');
+			},
 		 
-        // other available options: 
-        url:       '/publisher/asset/' + type,         // override for form's 'action' attribute 
-        type : 'POST'      // 'get' or 'post', override for form's 'method' attribute 
-        //dataType:  null        // 'xml', 'script', or 'json' (expected server response type) 
-        //clearForm: true        // clear all form fields after successful submit 
-        //resetForm: true        // reset the form after successful submit 
+        		// other available options: 
+        		url:       '/publisher/asset/' + type,         // override for form's 'action' attribute 
+        		type : 'POST'      // 'get' or 'post', override for form's 'method' attribute 
+        		//dataType:  null        // 'xml', 'script', or 'json' (expected server response type) 
+        		//clearForm: true        // clear all form fields after successful submit 
+        		//resetForm: true        // reset the form after successful submit 
  
-        // $.ajax options can be used here too, for example: 
-        //timeout:   3000 
-    }; 
+        		// $.ajax options can be used here too, for example: 
+        		//timeout:   3000 
+	}; 
     
     
 
-$('#form-asset-create').ajaxSubmit(options); 
-
-
-
-
-		/*
-		$.ajax({
-					url : '/publisher/asset/' + type,
-					type : 'POST',
-					data : formData,
-					success : function(response) {
+	$('#form-asset-create').ajaxSubmit(options); 
 		
-						var result = JSON.parse(response);
-		
-						//Check if the asset was added
-						if (result.ok) {
-							showAlert('Asset added successfully.', 'success');
-  (function setupPermissions() {
-                        var rolePermissions = [];
-                        $('.role-permission').each(function(i, tr) {
-                            var role = $(tr).attr('data-role');
-
-                            var permissions = [];
-
-                            $(tr).children('td').children(':checked').each(function(j, checkbox) {
-                                permissions.push($(checkbox).attr('data-perm'));
-                            });
-
-                            rolePermissions.push({
-                                role: role,
-                                permissions: permissions
-                            });
-                        });
-
-
-                        if (rolePermissions.length > 0) {
-                            $.ajax({
-                                url: '/publisher/asset/' + type + '/id/' + result.id + '/permissions',
-                                type: 'POST',
-                                processData: false,
-                                contentType: 'application/json',
-                                data: JSON.stringify(rolePermissions),
-                                success: function(response) {
-                                    window.location = '/publisher/assets/' + type + '/';
-                                },
-                                error: function(response) {
-                                    showAlert('Error adding permissions.', 'error');
-                                }
-                            });
-                        } else {
-                            window.location = '/publisher/assets/' + type + '/';
-                        }
-                    })();
-							//window.location = '/publisher/assets/' + type + '/';
-						} else {
-							var msg = processErrorReport(result.report);
-							showAlert(msg, 'error');
-						}
-		
-					},
-					error : function(response) {
-						showAlert('Failed to add asset.', 'error');
-					}
-				});*/
-		
-
-		//$.post('/publisher/asset/'+type, data);
-
 	});
 
-// roles autocomplete
-    $('#roles').tokenInput('/publisher/api/lifecycle/information/meta/' + $('#meta-asset-type').val() + '/roles', {
-        theme: 'facebook',
-        preventDuplicates: true,
-        onAdd: function(role) {
-            var permission = $('<tr class="role-permission" data-role="' + role.id + '"><td>' + role.name + '</td><td><input data-perm="GET" type="checkbox" value=""></td><td><input data-perm="PUT" type="checkbox" value=""></td><td><input data-perm="DELETE" type="checkbox" value=""></td><td><input data-perm="AUTHORIZE" type="checkbox" value=""></td></tr>')
-            $('#permissionsTable > tbody').append(permission);
-        },
-        onDelete: function(role) {
-            console.log()
-            $('#permissionsTable tr[data-role="' + role.id + '"]').remove();
-        }
-    });
+	// roles autocomplete
+    	$('#roles').tokenInput('/publisher/api/lifecycle/information/meta/' + $('#meta-asset-type').val() + '/roles', {
+        	theme: 'facebook',
+        	preventDuplicates: true,
+        	onAdd: function(role) {
+            		var permission = $('<tr class="role-permission" data-role="' + role.id + '"><td>' + role.name + '</td><td><input data-perm="GET" type="checkbox" value=""></td><td><input data-perm="PUT" type="checkbox" value=""></td><td><input data-perm="DELETE" type="checkbox" value=""></td><td><input data-perm="AUTHORIZE" type="checkbox" value=""></td></tr>')
+            		$('#permissionsTable > tbody').append(permission);
+        	},
+        	onDelete: function(role) {
+            		console.log()
+            		$('#permissionsTable tr[data-role="' + role.id + '"]').remove();
+        	}
+    	});
 
 	$('#overview_description').keyup(function() {
 		var self = $(this), length = self.val().length, left = DESC_MAX_CHARS - length, temp;
@@ -273,7 +171,7 @@ $('#form-asset-create').ajaxSubmit(options);
 			$('#provider-table').show();
 			$('#claims-table').show();
 
-	}else{
+		}else{
 			var rows = $('table.sso tr');
 			var provider =  rows.filter('.provider-table');
 			provider.hide();
@@ -287,8 +185,8 @@ $('#form-asset-create').ajaxSubmit(options);
 	
 	$("#providers").change(function () {
 		var value = $('#providers').val();
-        loadClaims(value)
-    });
+        	loadClaims(value)
+    	});
 	
 	$.ajax({
           url: '/publisher/api/sso/providers',
@@ -298,16 +196,16 @@ $('#form-asset-create').ajaxSubmit(options);
         	 
         	  var providers_data = JSON.parse(response);
               	  if((providers_data.success === true) && (!$.isEmptyObject(providers_data.response))) {
-			  		loadProviders(providers_data.response);
+			loadProviders(providers_data.response);
               	  } else {
-                	  $("#ssoTable").remove();
+			$("#ssoTable").remove();
               	  }
   			
           },
           error: function(response) {
               showAlert('Error adding providers.', 'error');
           }
-    });
+    	});
 	
 	
 	function loadProviders(providers_data){
@@ -320,29 +218,26 @@ $('#form-asset-create').ajaxSubmit(options);
 		 
 		 var value = $('#providers').val();
 		 loadClaims(value);
-		
-		 
 	}
 	
 	function loadClaims (provider){
 		 var sso_values = provider.split("-");
 		 $.ajax({
-             url: '/publisher/api/sso/claims?idp='+sso_values[0] +"&version="+sso_values[1],
-             type: 'GET',
-             contentType: 'application/json',
-             success: function(response) {
-           	  var claims = JSON.parse(response).response;
-           	 for(var i=0;i<claims.length;i++){
-           		 var y = claims[i];
-           		 console.log("y:"+y);
-           		 $("#claims").append($("<option></option>").val(y).text(y));
-           	 }
+             		url: '/publisher/api/sso/claims?idp='+sso_values[0] +"&version="+sso_values[1],
+             		type: 'GET',
+             		contentType: 'application/json',
+             		success: function(response) {
+           	  		var claims = JSON.parse(response).response;
+           	 		for(var i=0;i<claims.length;i++){
+           		 		var y = claims[i];
+           		 		$("#claims").append($("<option></option>").val(y).text(y));
+           	 		}
      			
-             },
-             error: function(response) {
-                 showAlert('Error adding claims.', 'error');
-             }
-         });
+             		},
+             		error: function(response) {
+                 		showAlert('Error adding claims.', 'error');
+             		}
+         	});
 	}
 
 	
@@ -378,48 +273,47 @@ $('#form-asset-create').ajaxSubmit(options);
 	
 
 	function createServiceProvider(){
-        var sso_config = {};
-        var provider_name  = $('#providers').val();
-        var logout_url = $('#overview_logoutUrl').val();
-        var idp_provider = $('#sso_idpProviderUrl').val();
-        var app_name = $('#overview_name').val();
-        var app_version = $('#overview_version').val();
-        var app_transport = $('#overview_transports').val();
-        var app_context = $('#overview_context').val();
+        	var sso_config = {};
+        	var provider_name  = $('#providers').val();
+        	var logout_url = $('#overview_logoutUrl').val();
+        	var idp_provider = $('#sso_idpProviderUrl').val();
+		var app_name = $('#overview_name').val();
+		var app_version = $('#overview_version').val();
+		var app_transport = $('#overview_transports').val();
+		var app_context = $('#overview_context').val();
 
-        var claims = [];
-        var index=0;
-        var propertyCount = document.getElementById("claimPropertyCounter").value;
-        while(index < propertyCount){
-			var claim = $("#claimPropertyName"+index).val();
-			if(claim != null){
-				claims[claims.length] = claim;
-			}
-			index++;
-			
+		var claims = [];
+		var index=0;
+		var propertyCount = document.getElementById("claimPropertyCounter").value;
+		while(index < propertyCount){
+				var claim = $("#claimPropertyName"+index).val();
+				if(claim != null){
+					claims[claims.length] = claim;
+				}
+				index++;
 		}
 
-        sso_config.provider = provider_name;
-        sso_config.logout_url = logout_url;
-        sso_config.claims = claims;
-        sso_config.idp_provider = idp_provider;
-        sso_config.app_name = app_name;
-        sso_config.app_verison = app_version;
-        sso_config.app_transport = app_transport;
-        sso_config.app_context = app_context;
+        	sso_config.provider = provider_name;
+        	sso_config.logout_url = logout_url;
+        	sso_config.claims = claims;
+		sso_config.idp_provider = idp_provider;
+		sso_config.app_name = app_name;
+		sso_config.app_verison = app_version;
+		sso_config.app_transport = app_transport;
+		sso_config.app_context = app_context;
 
-        $.ajax({
-            url: '/publisher/api/sso/addConfig',
-            type: 'POST',
-            contentType: 'application/json',
-            data:JSON.stringify(sso_config),
-            success: function(response) {
-                console.log("Added SSO config successfully");
-            },
-            error: function(response) {
-                showAlert('Error adding service provider.', 'error');
-            }
-        });
+        	$.ajax({
+            		url: '/publisher/api/sso/addConfig',
+            		type: 'POST',
+            		contentType: 'application/json',
+            		data:JSON.stringify(sso_config),
+            		success: function(response) {
+                		console.log("Added SSO config successfully");
+            		},
+            		error: function(response) {
+                		showAlert('Error adding service provider.', 'error');
+            		}
+        	});
 	}
 
 	
@@ -489,55 +383,54 @@ $('#form-asset-create').ajaxSubmit(options);
 
 
 function removeClaim(i) {
-    var propRow = document.getElementById("claimRow" + i);
-    if (propRow != undefined && propRow != null) {
-        var parentTBody = propRow.parentNode;
-        if (parentTBody != undefined && parentTBody != null) {
-            parentTBody.removeChild(propRow);
-            if (!isContainRaw(parentTBody)) {
-                var propertyTable = document.getElementById("claimTableId");
-                propertyTable.style.display = "none";
+	var propRow = document.getElementById("claimRow" + i);
+    	if (propRow != undefined && propRow != null) {
+        	var parentTBody = propRow.parentNode;
+        	if (parentTBody != undefined && parentTBody != null) {
+            		parentTBody.removeChild(propRow);
+            		if (!isContainRaw(parentTBody)) {
+                		var propertyTable = document.getElementById("claimTableId");
+                		propertyTable.style.display = "none";
 
-            }
-        }
-    }
+            		}
+        	}
+    	}
 }
 
 function isContainRaw(tbody) {
-    if (tbody.childNodes == null || tbody.childNodes.length == 0) {
-        return false;
-    } else {
-        for (var i = 0; i < tbody.childNodes.length; i++) {
-            var child = tbody.childNodes[i];
-            if (child != undefined && child != null) {
-                if (child.nodeName == "tr" || child.nodeName == "TR") {
-                    return true;
-                }
-            }
-        }
-    }
+    	if (tbody.childNodes == null || tbody.childNodes.length == 0) {
+        	return false;
+    	} else {
+        	for (var i = 0; i < tbody.childNodes.length; i++) {
+            		var child = tbody.childNodes[i];
+            		if (child != undefined && child != null) {
+                		if (child.nodeName == "tr" || child.nodeName == "TR") {
+                    			return true;
+                		}
+            		}
+        	}
+    	}
     return false;
 }
 
 
 function removeClaimTable() {
 	var  i=0;
-    var propRow = document.getElementById("claimRow" + i);
-    
-    
-    while (propRow != undefined && propRow != null) {
-        var parentTBody = propRow.parentNode;
-        if (parentTBody != undefined && parentTBody != null) {
-            parentTBody.removeChild(propRow);
-            if (!isContainRaw(parentTBody)) {
-                var propertyTable = document.getElementById("claimTableId");
-                propertyTable.style.display = "none";
+    	var propRow = document.getElementById("claimRow" + i);
 
-            }
-        }
+    	while (propRow != undefined && propRow != null) {
+        	var parentTBody = propRow.parentNode;
+        	if (parentTBody != undefined && parentTBody != null) {
+            		parentTBody.removeChild(propRow);
+            		if (!isContainRaw(parentTBody)) {
+                		var propertyTable = document.getElementById("claimTableId");
+                		propertyTable.style.display = "none";
+
+            		}
+        	}
         
         i++;
         propRow = document.getElementById("claimRow" + i);
-    }
+    	}
 }
 

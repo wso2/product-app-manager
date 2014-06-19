@@ -118,8 +118,8 @@ $(function() {
     
     
     function loadClaims (provider){
-		 var sso_values = provider.split("-");
-		 $.ajax({
+    	var sso_values = provider.split("-");
+    	$.ajax({
             url: '/publisher/api/sso/claims?idp='+sso_values[0] +"&version="+sso_values[1],
             type: 'GET',
             contentType: 'application/json',
@@ -153,7 +153,7 @@ $(function() {
         }
     }
     
-$('#addClaims').click(function () {
+    $('#addClaims').click(function () {
 		
 	    var propertyCount = document.getElementById("claimPropertyCounter");
 
@@ -234,46 +234,16 @@ $('#addClaims').click(function () {
 		var options = {
 
 			beforeSubmit : function(arr, $form, options) {
-				
-				//Extract the fields
-              // var fields = $('#form-asset-edit :input');
-       
-               //Create the data object which will be sent to the server
-             
-              /*
-               fields.each(function () {
-                                  
-                                              if ((this.type != 'button')&&(this.type!='reset')&&(this.type!='hidden')) {
-                                                  data[this.id] = this.value;
-                                                  formData=fillForm(this,arr);
-                                              }
-                                          });
-              */
-              
-
-//				for (var i in arr) {
-//
-//					if (arr[i].type == 'file' && arr[i].value == '') {
-//
-//						arr[i].value = $('#' + arr[i].name).val();
-//
-//					}
-//				}
-
-				//console.log(arr);
-
 
 			},
 			success : function(response) {
-
 				var result = JSON.parse(response);
-
 				if (result.ok) {
 					var asset = result.asset;
 					createMessage(MSG_CONTAINER, SUCCESS_CSS, 'Asset updated successfully');
 					updateFileFields(asset);
 				    (function setupPermissions() {
-                        var rolePermissions = [];
+				    	var rolePermissions = [];
                         $('.role-permission').each(function(i, tr) {
                             var role = $(tr).attr('data-role');
 
@@ -307,8 +277,6 @@ $('#addClaims').click(function () {
                         }else {
                             window.location = '/publisher/asset/' + type + '/'+id;
                         }
-                        
-                        
                     })();
 				    if($('#autoConfig').is(':checked')){
 						 createServiceProvider();
@@ -368,10 +336,7 @@ $('#addClaims').click(function () {
 			if($('#autoConfig').is(':checked')){
 				$('#provider-table').show();
 				$('#claims-table').show();
-			
-		
-				
-		}else{
+			}else{
 				var rows = $('table.sso tr');
 				var provider =  rows.filter('.provider-table');
 				provider.hide();
@@ -379,7 +344,6 @@ $('#addClaims').click(function () {
 				var claims = rows.filter('.claims-table');
 				claims.hide();
 				removeClaimTable();
-
 			}
 		});
 	 
@@ -540,52 +504,49 @@ $('#addClaims').click(function () {
 function removeClaim(i) {
 	    var propRow = document.getElementById("claimRow" + i);
 	    if (propRow != undefined && propRow != null) {
-		var parentTBody = propRow.parentNode;
-		if (parentTBody != undefined && parentTBody != null) {
+	    	var parentTBody = propRow.parentNode;
+	    	if (parentTBody != undefined && parentTBody != null) {
 		    parentTBody.removeChild(propRow);
-		    if (!isContainRaw(parentTBody)) {
-		        var propertyTable = document.getElementById("claimTableId");
-		        propertyTable.style.display = "none";
+		    	if (!isContainRaw(parentTBody)) {
+		    		var propertyTable = document.getElementById("claimTableId");
+		    		propertyTable.style.display = "none";
 
-		    }
-		}
+		    	}	
+	    	}
 	    }
-	}
+}
 
-	function isContainRaw(tbody) {
+function isContainRaw(tbody) {
 	    if (tbody.childNodes == null || tbody.childNodes.length == 0) {
-		return false;
+	    	return false;
 	    } else {
-		for (var i = 0; i < tbody.childNodes.length; i++) {
-		    var child = tbody.childNodes[i];
-		    if (child != undefined && child != null) {
-		        if (child.nodeName == "tr" || child.nodeName == "TR") {
-		            return true;
-		        }
-		    }
-		}
+	    	for (var i = 0; i < tbody.childNodes.length; i++) {
+			    var child = tbody.childNodes[i];
+			    if (child != undefined && child != null) {
+			        if (child.nodeName == "tr" || child.nodeName == "TR") {
+			            return true;
+			        }
+			    }
+	    	}	
 	    }
 	    return false;
-	}
+}
 	
 
-	function removeClaimTable() {
-		var  i=0;
-	    var propRow = document.getElementById("claimRow" + i);
+function removeClaimTable() {
+	var  i=0;
+	var propRow = document.getElementById("claimRow" + i);
 	    
-	    
-	    while (propRow != undefined && propRow != null) {
-	        var parentTBody = propRow.parentNode;
-	        if (parentTBody != undefined && parentTBody != null) {
-	            parentTBody.removeChild(propRow);
-	            if (!isContainRaw(parentTBody)) {
-	                var propertyTable = document.getElementById("claimTableId");
-	                propertyTable.style.display = "none";
-
-	            }
+	while (propRow != undefined && propRow != null) {
+		var parentTBody = propRow.parentNode;
+	    if (parentTBody != undefined && parentTBody != null) {
+	    	parentTBody.removeChild(propRow);
+	        if (!isContainRaw(parentTBody)) {
+	        	var propertyTable = document.getElementById("claimTableId");
+	            propertyTable.style.display = "none";
 	        }
-	        
-	        i++;
-	        propRow = document.getElementById("claimRow" + i);
-	    }
+	     }
+	     i++;
+	     propRow = document.getElementById("claimRow" + i);
 	}
+}

@@ -58,8 +58,7 @@
 
 
 						<fieldset>
-							<legend style="margin-bottom: 0px;">Web Application
-								Resources</legend>
+							<legend style="margin-bottom: 0px;">Web Application Resources</legend>
 							<div class="resource_form"
 								style="background: #BDBDBD; padding: 10px 0 1px 0;">
 								<div class="control-group">
@@ -109,12 +108,9 @@
 						</fieldset>
 
 						<fieldset>
-							<legend style="margin-top: 20px; margin-bottom: 0px;">Single
-								Sign On Configuration</legend>
+							<legend style="margin-top: 20px; margin-bottom: 0px;">Single Sign On Configuration</legend>
 							<div class="control-group">
-
 								<label class="control-label">Logout URL</label>
-
 								<div class="controls">
 									<input type='text'  class='span8' value="{{{snoop "fields(name=overview_logoutUrl).value" data}}}" name="overview_logoutUrl" id="overview_logoutUrl" />
 								</div>
@@ -123,8 +119,7 @@
 									<tbody>
 										<tr>
 											<div class="control-group">
-												<td><label class="control-label">Auto
-														Configuration</label></td>
+												<td><label class="control-label">Auto Configuration</label></td>
 												<td>
 													<div class="controls">
 														<input type="checkbox" name="autoConfig" id="autoConfig" />
@@ -150,8 +145,7 @@
 										</tr>
 
 
-										<tr id="claims-table" style="display: none;"
-											class="claims-table">
+										<tr id="claims-table" style="display: none;" class="claims-table">
 											<div class="control-group">
 												<td><label class="control-label">Claims</label></td>
 												<td>
@@ -172,17 +166,15 @@
 
 							<table id="claimTableId" style="display: none;" class="table table-bordered">
 								<tbody id="claimTableTbody">
-									<input type="hidden" name="claimPropertyCounter"
-										id="claimPropertyCounter" value="0">
+									<input type="hidden" name="claimPropertyCounter" id="claimPropertyCounter" value="0">
 								</tbody>
 							</table>
 						</fieldset>
 
 						<fieldset>
-							<input type='hidden' value="Enabled" name="sso_singleSignOn" /> <input
-								type='hidden' value="https://localhost:9444/samlsso/"
-								name="sso_idpProviderUrl" /> <input type='hidden' value=""
-								name="sso_saml2SsoIssuer" id="saml2SsoIssuer" />
+							<input type='hidden' value="Enabled" name="sso_singleSignOn" /> 
+							<input type='hidden' value="https://localhost:9444/samlsso/" name="sso_idpProviderUrl" /> 
+							<input type='hidden' value="" name="sso_saml2SsoIssuer" id="saml2SsoIssuer" />
 						</fieldset>
 
 						<fieldset>
@@ -230,11 +222,9 @@
 						{{/each}}-->
 
 						<div id="saveButtons" class="form-actions">
-							<button id="btn-create-asset" class="btn btn-primary"
-								name="addNewAssetButton">Create</button>
+							<button id="btn-create-asset" class="btn btn-primary" name="addNewAssetButton">Create</button>
 							<button class="btn" type="reset">Reset</button>
-							<input type="hidden" value="{{shortName}}" name="{{shortName}}"
-								id="meta-asset-type">
+							<input type="hidden" value="{{shortName}}" name="{{shortName}}" id="meta-asset-type">
 						</div>
 					</form>
 				</div>

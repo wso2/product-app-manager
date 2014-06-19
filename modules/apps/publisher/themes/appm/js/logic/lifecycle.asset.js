@@ -219,7 +219,7 @@ $(function() {
 				var subscribed = statInfo.subscribed;
 				var state= statInfo.state;
 				if((state == 'Published' && subscribed && action == 'Unpublish') || (state == 'Deprecated' && subscribed && action == 'Retire')){
-					  $('#messageModal').html($('#confirmation-data').html());
+					    $('#messageModal').html($('#confirmation-data').html());
 					    $('#messageModal h3.modal-title').html(('APP Publisher - Error'));
 					    $('#messageModal a.btn-primary').html('OK');
 					    var img = $('<img  src="/publisher/themes/appm/img/error.png" /> \nCannot ' + action + ' the App. Active Subscriptions Exist !</p>');
