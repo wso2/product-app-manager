@@ -68,7 +68,7 @@ require('/modules/store.js').exec(function (ctx) {
                 try {
                     data = request.getContent();
                     //user.register(data.username, data.password);
-		    storeHostObj.addUser(data.username, data.password);
+		            storeHostObj.addUser(data.username, data.password);
                 } catch (e) {
                     log.error(e);
                     error = true;

@@ -4,11 +4,11 @@ var matcher = new URIMatcher(request.getRequestURI());
 
 require('/modules/store.js').exec(function (ctx) {
     var aid,
-            server = require('store').server,
-            tenant = server.tenant(request, session),
-            tenantId = tenant.tenantId,
-            store = require('/modules/store.js').store(tenantId, session),
-            user = server.current(session);
+        server = require('store').server,
+        tenant = server.tenant(request, session),
+        tenantId = tenant.tenantId,
+        store = require('/modules/store.js').store(tenantId, session),
+        user = server.current(session);
 
     if (!user) {
         response.sendError(401, 'Unauthorized');

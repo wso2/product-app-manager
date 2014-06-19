@@ -15,9 +15,7 @@ $(function(){
     	 removeAppDetails();
    });
     
- 
-
-    var getAppDetails=function(){
+   var getAppDetails=function(){
 
          if(metadata){
              console.log('Found metadata');
@@ -32,7 +30,6 @@ $(function(){
              subscription['apiTier']=tier;
              subscription['apiProvider']=apiDetails.overview_provider;
              subscription['appName']="DefaultApplication";
-
 
              subscribeToApi(subscription);
          }
@@ -81,13 +78,13 @@ $(function(){
         		   console.info('Successfully subscribed to Web app: '+subscription.apiName);
         		   //alert('Succsessfully subscribed to the '+subscription.apiName+' Web App.');
         		   
-        		    $('#messageModal').html($('#confirmation-data').html());
-        		    $('#messageModal h3.modal-title').html(('Subscription Successful'));
-        		    $('#messageModal div.modal-body').html('\n\n'+ ('Congratulations! You have successfully subscribed to the ')+'<b>"' + subscription.apiName + '</b>"');
-        		    $('#messageModal a.btn-primary').html('ok');
+        		    $('#messageModal1').html($('#confirmation-data1').html());
+        		    $('#messageModal1 h3.modal-title').html(('Subscription Successful'));
+        		    $('#messageModal1 div.modal-body').html('\n\n'+ ('Congratulations! You have successfully subscribed to the ')+'<b>"' + subscription.apiName + '</b>"');
+        		    $('#messageModal1 a.btn-other').html('OK');
         		    
         		   
-        		    $('#messageModal').modal();
+        		    $('#messageModal1').modal();
         		    $('#btnUnsubscribe').show();
  	               	    $('#btnSubscribe').hide();
  	                    $('#subscribed').val(true);
@@ -113,12 +110,12 @@ $(function(){
                	  	console.info('Successfully unsubscribed to web app: '+subscription.apiName);
                 	//alert('Succsessfully unsubscribed to the '+subscription.apiName+' Web App.');
                	
-                    	$('#messageModal').html($('#confirmation-data').html());
-    		    	$('#messageModal h3.modal-title').html(('Unsubscription Successful'));
-    		    	$('#messageModal div.modal-body').html('\n\n'+ ('You have successfully unsubscribed to the ')+'<b>"' + subscription.apiName + '</b>"');
-    		    	$('#messageModal a.btn-primary').html('ok');
+                    	$('#messageModal1').html($('#confirmation-data1').html());
+    		    	$('#messageModal1 h3.modal-title').html(('Unsubscription Successful'));
+    		    	$('#messageModal1 div.modal-body').html('\n\n'+ ('You have successfully unsubscribed to the ')+'<b>"' + subscription.apiName + '</b>"');
+    		    	$('#messageModal1 a.btn-other').html('OK');
 
-    		    	$('#messageModal').modal();
+    		    	$('#messageModal1').modal();
                     	$('#btnUnsubscribe').hide();
                     	$('#btnSubscribe').show();
 	            	$('#subscribed').val(false);

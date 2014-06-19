@@ -25,35 +25,21 @@ require('/modules/publisher.js').exec(function(ctx) {
 
   var config = require('/config/publisher.json');
   var caramel = require('caramel');
-
-
   var router = require('/modules/router-g.js').router();
-
   var routeManager = new router.Router();
-
-
-
   var log = new Log();
 
   routeManager.register('POST', 'publisher', '/publisher/api/lifecycle/{type}/{id}', function(context) {
-
-
     var shortName = context.params.type;
     var id = context.params.id;
     var lifecycle = context.post.lifecycle;
     //var autoPromote=context.post.promote||false;    //If promote is not specified do not auto promote
-
     var invokeAction = '';
-
     //Check the config for a lifeCycleBehaviour block
     utility.isPresent(config, 'lifeCycleBehaviour', function(lifeCycleBehaviour) {
-
       utility.isPresent(lifeCycleBehaviour, lifeCycle, function(lifeCycleData) {
-
         utility.isPresent(lifeCycleData, 'onAttach', function(onAttach) {
-
           invokeAction = onAttach.action || '';
-
         });
       });
 
@@ -65,12 +51,9 @@ require('/modules/publisher.js').exec(function(ctx) {
     }
 
     var artifactManager = rxtManager.getArtifactManager(shortName);
-
     try {
       var artifact = artifactManager.get(id);
-
       artifactManager.attachLifecycle(lifecycle, artifact);
-
       //Perform the action if the user has specified an action
       if (invokeAction != '') {
         artifactManager.promoteLifecycleState(invokeAction, artifact);
@@ -94,7 +77,6 @@ require('/modules/publisher.js').exec(function(ctx) {
     var checkListItemIndex = context.params.index;
     var shortName = context.params.type;
     var id = context.params.id;
-
     var artifactManager = rxtManager.getArtifactManager(shortName);
 
     try {
@@ -112,14 +94,10 @@ require('/modules/publisher.js').exec(function(ctx) {
 
     var shortName = context.params.type;
     var id = context.params.id;
-
     var artifactManager = rxtManager.getArtifactManager(shortName);
-
     try {
       var artifact = artifactManager.get(id);
-
       artifactManager.detachLifecycle(artifact);
-
 
       var msg = {};
       msg['status'] = 'ok';
@@ -132,14 +110,13 @@ require('/modules/publisher.js').exec(function(ctx) {
 
   });
 
-  /*
-    Unticks the check list item at the given index
+/*
+  Unticks the check list item at the given index
 */
   routeManager.register('DELETE', 'publisher', '/publisher/api/lifecycle/checklistitem/{index}/{type}/{id}', function(context) {
     var checkListItemIndex = context.params.index;
     var shortName = context.params.type;
     var id = context.params.id;
-
     var artifactManager = rxtManager.getArtifactManager(shortName);
 
     try {
@@ -158,9 +135,7 @@ require('/modules/publisher.js').exec(function(ctx) {
     var action = context.params.action;
     var id = context.params.id;
     var comment = context.content.comment;
-
     var roles = context.content.roles || [];
-        
     var artifactManager = rxtManager.getArtifactManager(shortName);
     var artifact = artifactManager.get(id);
     var currentState = artifactManager.getLifecycleState(artifact).toString();
@@ -170,8 +145,8 @@ require('/modules/publisher.js').exec(function(ctx) {
     var commentNeeded = false;
 
      if ( commentNeeded) {
-      response.sendError(400, 'This change requires that you insert a comment');
-    } else {
+      	response.sendError(400, 'This change requires that you insert a comment');
+     } else {
       try {
         var artifact = artifactManager.get(id);
         var attributes = artifact.attributes;
@@ -180,9 +155,9 @@ require('/modules/publisher.js').exec(function(ctx) {
         log.info('Calling promoteLifecycleState for action : '+action);
         
         if (roles.length > 0) {
-                  roles.forEach(function(role) {
+		roles.forEach(function(role) {
                     um.authorizeRole(role, artifact.path, carbon.registry.actions.GET);
-                  });
+                });
         }
 
         artifactManager.promoteLifecycleState(action,artifact);
@@ -233,28 +208,19 @@ require('/modules/publisher.js').exec(function(ctx) {
     return lcJSON;
   }
 
-  routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/{type}/{id}', function(context) {
-
-
+		routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/{type}/{id}', function(context) {
     try {
 
         appPublishWFExecutor = org.wso2.carbon.appmgt.impl.workflow.WorkflowExecutorFactory.getInstance().getWorkflowExecutor("AM_APPLICATION_PUBLISH");
-
         var isAsynchronousFlow = appPublishWFExecutor.isAsynchronus();
-
         log.info("IS ASYNCH : " + isAsynchronousFlow);
-
         var shortName=context.params.type;
         var id=context.params.id;
-
         var artifactManager=rxtManager.getArtifactManager(shortName);
-
         var artifact=artifactManager.get(id);
         var state=artifactManager.getLifecycleState(artifact);
         var actions=artifactManager.availableActions(artifact);
-
         var lcJSON=obtainLifeCycle(shortName);
-
 
         var msg={};
         msg['status']='ok';
@@ -262,7 +228,6 @@ require('/modules/publisher.js').exec(function(ctx) {
         msg['actions']=actions;
         msg['lifecycle']=lcJSON;
         msg['asynch']=isAsynchronousFlow;
-
 
         log.debug(msg);
         print(msg);
@@ -272,56 +237,41 @@ require('/modules/publisher.js').exec(function(ctx) {
     }
 });
   
-  	routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/subscribe/{type}/{id}', function(context) {
+routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/subscribe/{type}/{id}', function(context) {
+    try {
+	var shortName=context.params.type;
+  	var id=context.params.id;
+  	var artifactManager=rxtManager.getArtifactManager(shortName);
+  	var artifact=artifactManager.get(id);
+  	var state=artifactManager.getLifecycleState(artifact);
+	var webappProvider = artifact.attributes['overview_provider'];
+  	var webappName = artifact.attributes['overview_name'];
+  	var webappVersion = artifact.attributes['overview_version'];
   	
-  	    try {
-  	  	     
-  	        var shortName=context.params.type;
-  	        var id=context.params.id;
-  	        var artifactManager=rxtManager.getArtifactManager(shortName);
-  	        var artifact=artifactManager.get(id);
+	var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
+  	var apiIdentifierObj = new apiIdentifier(webappProvider, webappName, webappVersion);
+  	       
+  	var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
+  	var apiMgtDAOObj = new apiMgtDAO();
+  	var count = apiMgtDAOObj.getAPISubscriptionCountByAPI(apiIdentifierObj);
+  	var subscribed = false;
+  	if(count > 0){
+		subscribed = true;
+  	}
   	        
-  	        var state=artifactManager.getLifecycleState(artifact);
-
-  	        var webappProvider = artifact.attributes['overview_provider'];
-  	        var webappName = artifact.attributes['overview_name'];
-  	        var webappVersion = artifact.attributes['overview_version'];
-  	                
-  	        var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
-  	        var apiIdentifierObj = new apiIdentifier(webappProvider, webappName, webappVersion);
-  	        
-  	        var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
-  	        var apiMgtDAOObj = new apiMgtDAO();
-  	        var count = apiMgtDAOObj.getAPISubscriptionCountByAPI(apiIdentifierObj);
-  	        var subscribed = false;
-  	        if(count > 0){
-  	        	subscribed = true;
-  	        }
-  	        
-  	        var msg={};
-  	        msg['subscribed'] = subscribed;
-  	        msg['state'] = state;
-  	
-  	
-  	        log.debug(msg);
-  	        print(msg);
-  	    } catch(e){
-  	        log.debug('The asset with id: '+id+' could not be found.The following exception was thrown: '+e);
-  	        response.sendError(404,'The asset with id: '+id+' could not be found.Please refere to the server log.');
-  	    }
-  	});
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-
-  routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/information/meta/{type}/roles', function(context) {
+  	var msg={};
+  	msg['subscribed'] = subscribed;
+  	msg['state'] = state;
+  	 	
+  	log.debug(msg);
+  	print(msg);
+    } catch(e){	
+	log.debug('The asset with id: '+id+' could not be found.The following exception was thrown: '+e);
+  	response.sendError(404,'The asset with id: '+id+' could not be found.Please refere to the server log.');
+    }
+});
+ 
+routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/information/meta/{type}/roles', function(context) {
     var shortName = context.params.type;
     var carbon = require('carbon');
     var realmService = carbon.server.osgiService('org.wso2.carbon.user.core.service.RealmService');
@@ -390,19 +340,16 @@ require('/modules/publisher.js').exec(function(ctx) {
     response.contentType = 'application/json';
     response.status = 200;
     response.content = matchedRoles;
-  });
+});
 
 routeManager.register('GET','publisher','/publisher/api/lifecycle/checklist/{type}/{id}',function(context){
    //log.debug('short name: '+context.params.type);
 
     try {
       log.debug('Entered check list/type/id ');
-
       var shortName = context.params.type;
       var id = context.params.id;
-
       var artifactManager = rxtManager.getArtifactManager(shortName);
-
       var artifact = artifactManager.get(id);
       var checkListItems = artifactManager.getCheckListItemNames(artifact);
       var msg = {};
@@ -415,8 +362,8 @@ routeManager.register('GET','publisher','/publisher/api/lifecycle/checklist/{typ
     }
   });
 
-  /*
-        Gets the checked or unchecked state of a check list item
+/*
+  Gets the checked or unchecked state of a check list item
 */
   routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/checklistitem/{index}/{type}/{id}', function(context) {
     try {
@@ -440,32 +387,21 @@ routeManager.register('GET','publisher','/publisher/api/lifecycle/checklist/{typ
     }
   });
 
-  routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/information/history/{type}/{id}/{version}', function(context) {
+routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/information/history/{type}/{id}/{version}', function(context) {
     try {
-
       var shortName = context.params.type;
       var id = context.params.id;
-
-
       var artifactManager = rxtManager.getArtifactManager(shortName);
       var artifact = artifactManager.get(id);
-
-
       var historyRes = artifactManager.getLifecycleHistory(artifact);
       var historyComments = require('/modules/comment.js').getLifecycleComments(artifactManager, artifact);
-
       var json = {};
 
       if (historyRes != undefined) {
-
         var xml = new XML(historyRes.content);
-
         json = utility.xml.convertE4XtoJSON(xml);
-
       }
-
-       print(json);
-
+      print(json);
    }catch(e){
        log.debug('The lifecycle history for artifact: '+id+' could not be found.The following exception was thrown: '+e);
        response.sendError(404,'The lifecycle history details could not be retrieved for artifact: '+id+'.Pleas refer to the server log.');
@@ -479,7 +415,7 @@ var sm=securityModule.cached();
 //This will short circuit the handling of the requests
 var passed=sm.check(session,function(){
     response.sendError(401);
-  });
+});
 
   //Stop servicing the request if the check failed
   if (passed) {

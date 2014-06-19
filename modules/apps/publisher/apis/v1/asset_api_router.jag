@@ -421,8 +421,7 @@ if(passed){
     var user=require('store').user;
     var publisher = require('/modules/publisher.js').publisher(request, session);
 
-
-//var routeManager=application.get(config.app.ROUTE_MANAGER);
+    //var routeManager=application.get(config.app.ROUTE_MANAGER);
     var rxtManager = publisher.rxtManager;
     var modelManager = publisher.modelManager;
     var dataInjector=publisher.dataInjector;
@@ -432,8 +431,6 @@ if(passed){
     var storageConfig = require('/config/storage.json');
     var utility = require('/modules/utility.js').rxt_utility();
     var log=new Log();
-
-
 
     routeManager.handle(request, response);
 }

@@ -14,7 +14,7 @@ include("/extensions/webapp/modules/jagg/jagg.jag");
                   message:'AuthenticateError'
               });
     } else {
-  		if (action === "addDocumentation") {
+	if (action === "addDocumentation") {
             mod = jagg.module("documentation");
             var apiData = {};
             var docData = {};
@@ -29,14 +29,12 @@ include("/extensions/webapp/modules/jagg/jagg.jag");
             docData.summary = request.getParameter("summary","UTF-8");
             docData.fileContent = request.getFile("docLocation");
             docData.content = "";
-	    	docData.otherTypeName = request.getParameter("newType");
-	
-	    	
+	    docData.otherTypeName = request.getParameter("newType");
+		    	
             if (mode == "Update") {
                 result = mod.updateDocumentation(apiData, docData);
             } else {
                 result = mod.addDocumentation(apiData, docData);
-                               
             }
 
             if (result.error == "true") {
@@ -91,7 +89,6 @@ include("/extensions/webapp/modules/jagg/jagg.jag");
                 }
             }
             print(obj);
-
         } else if (action === "removeDocumentation") {
             mod = jagg.module("documentation");
             var apiInfo = {};
@@ -113,7 +110,6 @@ include("/extensions/webapp/modules/jagg/jagg.jag");
                 }
             }
             print(obj);
-
         } else {
             print({
                       error:true,

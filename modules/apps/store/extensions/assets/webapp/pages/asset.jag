@@ -43,8 +43,6 @@ require('/modules/store.js').exec(function (ctx) {
 
     caramel = require('caramel');
 
-
-
     matcher.match('/{context}' + configs.assetsUrlPrefix + '/{type}/{aid}');
     aid = matcher.elements().aid;
     title = store.assetLinks(type).title;
@@ -74,8 +72,6 @@ require('/modules/store.js').exec(function (ctx) {
      The function obtains the assets published by the given provider
      */
     var getAssetsFromProvider = function (asset, store) {
-
-
         var assetsFromProvider = {};
         var provider = asset.attributes[ATTR_PROVIDER];
         var searchOptions = {};
@@ -84,14 +80,10 @@ require('/modules/store.js').exec(function (ctx) {
         searchOptions['attributes'] = {};
         searchOptions = obtainViewQuery(searchOptions);
         searchOptions['attributes'][ATTR_PROVIDER] = provider;
-
         paging = {start: 0, count: 10, sort: 'recent'};
-
         assetsFromProvider['overview_provider'] = provider;
         assetsFromProvider['type'] = type;
-
         assetsFromProvider['assets'] = store.search(searchOptions, paging)[asset.type] || [];
-
         return assetsFromProvider;
     }
 
@@ -125,31 +117,24 @@ require('/modules/store.js').exec(function (ctx) {
     var availableTiers=apiInfoManager.getTiers();
 
     user=authenticator.getLoggedInUser();
+    var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
+    var apiMgtDAOObj = new apiMgtDAO();
+   
+    var subscriberObj = apiMgtDAOObj.getSubscriber(user.username);
+    var result  = apiMgtDAOObj.getSubscribedAPIs(subscriberObj);
     
-   
-   var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
-   var apiMgtDAOObj = new apiMgtDAO();
-   
-   var subscriberObj = apiMgtDAOObj.getSubscriber(user.username);
-   var result  = apiMgtDAOObj.getSubscribedAPIs(subscriberObj);
-  
-    	 
-  var iterator = Iterator(result);  
-  for (var pair in iterator){
-  var sAPI = Packages.org.wso2.carbon.appmgt.api.model.SubscribedAPI;
-  sAPI = pair;
-  
-  
-  var apiID = org.wso2.carbon.appmgt.api.model.APIIdentifier;
-  apiID = sAPI.getApiId();
-  var apiName = apiID.getApiName();
-  if(apiName ==  asset.attributes['overview_name']){
-  	isSubscribed = true;
-  }
-  
-  }
-    
-   
+    var iterator = Iterator(result);  
+    for (var pair in iterator){
+	var sAPI = Packages.org.wso2.carbon.appmgt.api.model.SubscribedAPI;
+  	sAPI = pair;
+  	var apiID = org.wso2.carbon.appmgt.api.model.APIIdentifier;
+	apiID = sAPI.getApiId();
+	var apiName = apiID.getApiName();
+	if(apiName ==  asset.attributes['overview_name']){
+		isSubscribed = true;
+	}
+    }
+      
     caramel.render({
         title: 'Store | ' + type,
         user: user,

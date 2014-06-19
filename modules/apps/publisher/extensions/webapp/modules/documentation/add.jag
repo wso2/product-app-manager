@@ -3,13 +3,10 @@ var addDocumentation = function (api, doc) {
     var log = new Log(),
             provider = jagg.module("manager").getAPIProviderObj();
     try {
-    	
-        var success = provider.addDocumentation(api.provider, api.name, api.version,
-                                                doc.name, doc.type, doc.summary, doc.sourceType, doc.sourceUrl, doc.fileContent, doc.otherTypeName);
+        var success = provider.addDocumentation(api.provider, api.name, api.version,doc.name, doc.type, doc.summary, doc.sourceType, doc.sourceUrl, doc.fileContent, doc.otherTypeName);
         if (log.isDebugEnabled()) {
             log.debug("addNewDocumentation : " + doc.sourceType);
         }
-        
                 
         if (success) {
             if (doc.sourceType == "inline") {
@@ -20,7 +17,6 @@ var addDocumentation = function (api, doc) {
                     error:false
                 };
             }
-
         } else {
             return {
                 error:success

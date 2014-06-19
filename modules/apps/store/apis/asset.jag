@@ -4,11 +4,11 @@ response.addHeader("Content-Type", "application/json");
 
 require('/modules/store.js').exec(function (ctx) {
     var elems,
-            store = require('/modules/store.js').store(request, session),
-            paging = store.assetsPaging(request),
-            matcher = new URIMatcher(request.getRequestURI()),
-            query = request.getParameter('query'),
-            aid = request.getParameter('id');
+        store = require('/modules/store.js').store(request, session),
+        paging = store.assetsPaging(request),
+        matcher = new URIMatcher(request.getRequestURI()),
+        query = request.getParameter('query'),
+        aid = request.getParameter('id');
 
     var isMyAsset = false;
     if (matcher.match('/{context}/apis/myAsset')) {

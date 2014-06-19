@@ -51,10 +51,8 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 	var sort = request.getParameter("sort");
 	var type = context.params.type;
 	try {
-
 		//TODO: Check for valid asset types
 		var artifactManager = rxtManager.getArtifactManager(type);
-
 		var artifacts = artifactManager.list(DEFAULT_PAGE) || [];
 
 		// for queries
@@ -65,28 +63,16 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 			DEFAULT_PAGIN.sortBy = 'overview_'+sortby;
 			DEFAULT_PAGIN.sortOrder = sort.toUpperCase();
 			var artifacts = artifactManager.search(null,DEFAULT_PAGIN) || [];
-
 		} else {
 			//normal list for asserts			
 			var queryz = {};
 			assets = artifactManager.search(queryz, DEFAULT_PAGIN);
 			artifacts = assets;
-
 		}
-
 		dataInjector.inject(artifacts, DataInjectorModes.DISPLAY);
-
-        //Perform some filtering logic on the artifacts
-        artifacts=filterManager.filter(artifacts,session);
-
-		caramel.render({
-			op : 'list',
-			cuser : server.current(session),
-			shortName : type,
-			artifacts : artifacts,
-			query : query,
-			title : type
-		});
+        	//Perform some filtering logic on the artifacts
+        	artifacts=filterManager.filter(artifacts,session);
+		caramel.render({op : 'list',cuser : server.current(session),shortName : type,artifacts : artifacts,query : query,title : type});
 	} catch (e) {
 		response.sendError(400, "Your request is malformed");
 		log.debug(e);
@@ -104,12 +90,7 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{operation}/{type}/',
     var type = context.params.type;
     if (operation == 'statistics') {
         try {
-            caramel.render({
-                op: operation,
-                cuser: server.current(session),
-                shortName: type,
-                title: type
-            });
+            caramel.render({op: operation,cuser: server.current(session),shortName: type,title: type});
 
         } catch (e) {
             response.sendError(404, 'Asset type not found'); //TODO: Replace
