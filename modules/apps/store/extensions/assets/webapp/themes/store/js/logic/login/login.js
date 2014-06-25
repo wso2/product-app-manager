@@ -11,18 +11,25 @@ $(function(){
 
         $.ajax({
             type: 'POST',
-            url: '/store/extensions/assets/webapp/login',
-            data: {
-                username: username,
-                password: password
-            },
+            url: '/store/apis/user/login',
+            data: JSON.stringify({
+            	 username: username,
+                 password: password
+            }),
             success: function (data) {
                 if (!data.error) {
-                    location.reload();
+                    var assetId = $('#modal-login').data('value');
+                    if(assetId == "" || assetId == null){
+              		   location.reload();  
+                    }else  {
+                 	  window.location = '/store/assets/webapp/'+ assetId;
+                    }               
                 } else {
                     showError(data.message);
                 }
-            }
+            },
+            contentType: 'application/json',
+            dataType: 'json'
         });
     };
 
