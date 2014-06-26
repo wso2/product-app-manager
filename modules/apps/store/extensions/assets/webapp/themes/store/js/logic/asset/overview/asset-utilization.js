@@ -14,7 +14,11 @@ $(function(){
     $('#btnUnsubscribe').on('click',function(){
     	 removeAppDetails();
    });
-    
+
+    $('#btnEnterpriseSubscriptions').on('click',function(){
+       getEnterpriseSubscriptionDetails();
+   });
+
    var getAppDetails=function(){
 
          if(metadata){
@@ -35,6 +39,36 @@ $(function(){
          }
     };
     
+    var getEnterpriseSubscriptionDetails = function(){
+
+      if(metadata){
+             
+             //Obtain the required information
+             var subscription={};
+             var apiDetails=metadata.apiAssetData.attributes;
+
+             var ssoProviderInfo = apiDetails.sso_ssoProvider.split("-");
+
+             subscription['appName']=apiDetails.overview_name;
+             subscription['meta'] = {};
+             subscription['meta']['ssoProviderName'] = ssoProviderInfo[0];
+             subscription['meta']['ssoProviderVersion'] = ssoProviderInfo[1];
+
+             $.ajax({
+              url:'/store/resources/webapp/v1/enterprise-subscription/app',
+              type:'GET',
+              data:subscription,
+              success:function(response){
+              
+              },
+              error : function(response) {
+                alert('Error occured in subscribe');
+              }
+            });
+      }
+
+    };
+
     var removeAppDetails=function(){
 
         if(metadata){

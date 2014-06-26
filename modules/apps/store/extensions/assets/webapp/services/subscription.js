@@ -63,6 +63,15 @@ var serviceModule = (function () {
         return (result)?result.subscriptions:[];
     };
 
+
+    /*
+     Returns all available enterprises for the app.
+    */
+    Subscriber.prototype.getEnterprisesForApplication = function(options){
+        var result= this.instance.getEnterprisesForApplication(options.appName, options.ssoProviderName, options.ssoProviderVersion);
+        return result;
+    }
+
     return{
         SubscriptionService: Subscriber
     }

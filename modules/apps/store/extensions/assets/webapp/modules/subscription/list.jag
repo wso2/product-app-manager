@@ -70,4 +70,35 @@ var getAPISubscriptionsForApplication = function (username,appname) {
     }
 };
 
+/*
+    Returns IDPs for the service provider counterpart of the web app, as enterprises.
+*/
+var getEnterprisesForApplication = function(appName, ssoProviderName, ssoProviderVersion){
+
+    var enterprises;
+
+    try {
+
+        var ssoConfiguratorUtil = Packages.org.wso2.carbon.appmgt.impl.idp.sso.SSOConfiguratorUtil;
+        var identityProviders = ssoConfiguratorUtil.getIdentityProvidersInServiceProvider(ssoProviderName, ssoProviderVersion, appName);
+
+        if (log.isDebugEnabled()) {
+            log.debug("identity providers for '" + appName + "' : " + stringify(identityProviders));
+        }
+
+        return {
+            error:false,
+            enterprises:identityProviders
+        };
+    } catch (e) {
+        log.error(e.message);
+        return {
+            error:e,
+            enterprises:null
+        };
+    }
+
+
+};
+
 %>

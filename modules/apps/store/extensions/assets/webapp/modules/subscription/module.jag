@@ -22,6 +22,11 @@ jagg.module("subscription", {
     getAPISubscriptionsForApplication:function () {
         return jagg.require(jagg.getModulesDir() + "subscription/list.jag").getAPISubscriptionsForApplication.apply(this, arguments);
     },
+
+    getEnterprisesForApplication:function(){
+        return jagg.require(jagg.getModulesDir() + "subscription/list.jag").getEnterprisesForApplication.apply(this, arguments);  
+    },
+
     generateAPIKey:function () {
         return jagg.require(jagg.getModulesDir() + "subscription/key.jag").generateAPIKey.apply(this, arguments);
     },
