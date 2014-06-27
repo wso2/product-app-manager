@@ -1,19 +1,19 @@
 <%
 var login = function (username, password,tenantMode) {
-    var result, isSuperTenant, message,
-    	log = new Log(),
-        manager = jagg.module("manager"),
-        provider = manager.getAPIProviderObj();
+    var result, isSuperTenant, message,  
+            log = new Log(),
+            manager = jagg.module("manager"),
+            provider = manager.getAPIProviderObj();
     if(tenantMode != 'null' && tenantMode != '' && tenantMode != null){
-     	var userDomain=username.split("@")[1];
-     	if(tenantMode!=userDomain){
-     		return {
-             	error:true,
-            	cookie:null,
-            	message:"Authentication failed."+username.split("@")[0]+" is not from the tenant domain " + tenantMode
-        	};
-    	}
-   }
+     var userDomain=username.split("@")[1];
+     if(tenantMode!=userDomain){
+     return {
+             error:true,
+            cookie:null,
+            message:"Authentication failed."+username.split("@")[0]+" is not from the tenant domain " + tenantMode
+        };
+    }
+    }
 
     result = provider.login(username, password);
 
@@ -30,24 +30,24 @@ var login = function (username, password,tenantMode) {
             cookie:null,
             message:message
         };
-    } else{
-   	cookie = result.sessionId;
-    	isSuperTenant = result.isSuperTenant;
-    	cookie = cookie.split(';')[0];
-    	jagg.setUser({username:result.user, isSuperTenant:isSuperTenant, cookie:cookie});
+    }else{
+    cookie = result.sessionId;
+    isSuperTenant = result.isSuperTenant;
+    cookie = cookie.split(';')[0];
+    jagg.setUser({username:result.user, isSuperTenant:isSuperTenant, cookie:cookie});
 
-	var api = jagg.module("api");
-	var isCreatePermitted=api.hasCreatePermission();
-	var isManageTierPermitted=api.hasManageTierPermission();
-	var isPublishPermitted=api.hasPublishPermission();
-	jagg.setCreatePermitted(isCreatePermitted);
-	jagg.setPublishPermitted(isPublishPermitted);
-	jagg.setManageTierPermitted(isManageTierPermitted);
+    var api = jagg.module("api");
+    var isCreatePermitted=api.hasCreatePermission();
+    var isManageTierPermitted=api.hasManageTierPermission();
+    var isPublishPermitted=api.hasPublishPermission();
+    jagg.setCreatePermitted(isCreatePermitted);
+    jagg.setPublishPermitted(isPublishPermitted);
+    jagg.setManageTierPermitted(isManageTierPermitted);
 
-    	return {
-        	error:false,
-        	cookie:cookie
-    	};
+    return {
+        error:false,
+        cookie:cookie
+    };
     }
 };
 var loginWithSAMLToken = function (token) {
@@ -56,8 +56,10 @@ var loginWithSAMLToken = function (token) {
     var ssoRelyingParty = new security.SSORelyingParty(site.ssoConfiguration.issuer);
 
     var result,
-        log = new Log(),
-        manager = jagg.module("manager");
+            log = new Log(),
+            manager = jagg.module("manager");
+            
+
 
     var encodedToken = ssoRelyingParty.xmlEncode(token);
     var xhr = new XMLHttpRequest();

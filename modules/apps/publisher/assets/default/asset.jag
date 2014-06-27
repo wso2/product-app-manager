@@ -15,6 +15,8 @@ include("/extensions/webapp/modules/jagg/jagg.jag");
 
 
 require('/modules/publisher.js').exec(function(ctx) {
+	
+	
 
     var config = require('/config/publisher.json');
     var caramel = require('caramel');
@@ -65,6 +67,8 @@ require('/modules/publisher.js').exec(function(ctx) {
 
 routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', function (context) {
 
+	
+
     var shortName = context.params.type;
     //print(context.params);
     var id = context.params.id;
@@ -74,7 +78,7 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
     //If the id is not found it will throw a conversion exception
     //TODO: Return an empty artifact or null
     try {
-
+	//print('here is the id '+id);
         log.debug('look for '+id);
 
         var artifact = artifactManager.get(id);
@@ -126,7 +130,7 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
 
 routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/{type}/{id}', function (context) {
    var shortName = context.params.type;
-
+   
     //print(context.params);
     var id = context.params.id;
     var operation = context.params.opType;
@@ -158,61 +162,83 @@ routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/
                 
         var apiData={};
     	apiData.provider= model.get('overview.provider').value;
-   	apiData.name= model.get('overview.name').value;
+   		apiData.name= model.get('overview.name').value;
     	apiData.version= model.get('overview.version').value; 
     	var result = mod.getAllDocumentation(apiData);
     	
-	//Get tags
-	var path = artifact.path;
-	var tags = rxtManager.registry.tags(path);
-	var title = assetName;
+        
+		//Get tags
+		var path = artifact.path;
+		var tags = rxtManager.registry.tags(path);
+		var title = assetName;
+		
 	
-	// getting the user roles
-        var server = require('store').server,
-        um = server.userManager(server.current(session).tenantId);
 
-        var registry = new carbon.registry.Registry(server, {
-        	username: server.current(session).username,
-            tenantId: server.current(session).tenantId
-        });
+		  // getting the user roles
+            var server = require('store').server,
+                um = server.userManager(server.current(session).tenantId);
 
-        var overridenPermissions = null;
+            var registry = new carbon.registry.Registry(server, {
+                username: server.current(session).username,
+                tenantId: server.current(session).tenantId
+            });
 
-        if(registry.properties(path)['overridden_permissions']) {
-        	overridenPermissions = registry.properties(path)['overridden_permissions'][0];
-        } 
+            var overridenPermissions = null;
 
-        if (overridenPermissions) {
-        	output.permissions = JSON.parse(overridenPermissions.replace('\\', ''));
-        }
+            if(registry.properties(path)['overridden_permissions']) {
+                overridenPermissions = registry.properties(path)['overridden_permissions'][0];
+            } 
 
- 	output.fields[1]['isEditable'] = false;
- 	output.fields[1]['isReadOnly'] = true;
- 
- 	output.fields[2]['isEditable'] = false;
-  	output.fields[2]['isReadOnly'] = true;
-  
-  	output.fields[3]['isEditable'] = false;
-   	output.fields[3]['isReadOnly'] = true;
+            if (overridenPermissions) {
+                output.permissions = JSON.parse(overridenPermissions.replace('\\', ''));
+            }
 
-      	if(operation == "edit" || operation == "view"){
-       		var uriTemplate = 0;
-           	for(index = 0; index < output.fields.length; index++){
-           	        if(output.fields[index].name == "uritemplate_urlPattern"+uriTemplate){
-	            		if(output.fields[index].value == "" ||output.fields[index].value == "null"){
-	            			output.fields.splice(index, 1);
-	            		}
-	            		uriTemplate++;
-	            	}
-           	}         	
-       	}
-            
-	if(operation == "documentation"){
-		caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title,docs:result.docs});
-	}else{
-		caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title});
-	}
 
+		if(operation == "documentation"){
+			caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title,docs:result.docs});
+						
+		}
+		else if(operation=="delete")
+		{
+			var username = artifactManager.registry.username;
+				    
+				    var webappProvider = model.get('overview.provider').value;;
+				    var webappName = model.get('overview.name').value;;
+				    var webappVersion = model.get('overview.version').value;;
+				    var output = model.export('form');
+				    
+				    try {
+				    	var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
+				    	var apiIdentifierObj = new apiIdentifier(webappProvider, webappName, webappVersion);
+				       
+				        var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
+				        var apiMgtDAOObj = new apiMgtDAO();
+				        
+				        var isDeleted = apiMgtDAOObj.deleteApp(id,apiIdentifierObj,username);
+				       	if(operation == "delete"){
+				        	if(isDeleted==true)
+				        	{
+				        		//artifactManager.remove(id);
+				        		response.sendRedirect('/publisher/assets/webapp/');
+				        	
+				        	}
+				        	else {
+				        		        	        	
+				        	 	caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title});
+				        	}
+				       	}
+				     
+				    } catch (e) {
+				        log.debug('Asset id: ' + id + 'was not removed.Due to exception: ' + e);
+				        response.sendError(404, 'Asset with id: ' + id + 'was not removed.Please check the server log for more details.' +e);
+				    }
+		}
+		
+		else{
+						
+			caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title});		
+		}
+		
       } catch (e) {
         log.debug('The asset with id ' + id + ' could not be found due to : ' + e);
         response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check server log.');
@@ -221,6 +247,7 @@ routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/
 });
 
 routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (context) {
+	
     var shortName = context.params.type;
     var artifactManager = rxtManager.getArtifactManager(shortName);
     var model = modelManager.getModel(shortName);
@@ -231,10 +258,10 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
     //Check if the type is valid
     try {
         //assigning default thumbnail and banner if not provided.
-        if (context.post['images_thumbnail'] != '') {
+        if (context.post['images_thumbnail'] == '') {
             context.post['images_thumbnail'] = '/publisher/config/defaults/img/thumbnail.jpg';
         }
-        if (context.post['images_banner'] != '') {
+        if (context.post['images_banner'] == '') {
             context.post['images_banner'] = '/publisher/config/defaults/img/banner.jpg';
         }
 		
@@ -338,24 +365,7 @@ function addTags(params,assetId,artifactManager,reg){
         um.clearResourceAuthorizations(artifact.path);
 
         // But, there's an internal_everyone coming up with +GET. Let's nuke it.
-        //um.denyRole('Internal/everyone', artifact.path, carbon.registry.actions.GET);
-
-	//remove Internal/everyone role if there are roles added only.
-    	permissions.forEach(function(rolePermissions) {
-                    var role = rolePermissions.role;
-                    
-                    if(role != 'Internal/private_admin' && role != 'admin' ){
-                    	var x = rolePermissions;
-                    	if(rolePermissions.permissions.length>0){
-                    		um.denyRole('Internal/everyone', artifact.path, carbon.registry.actions.GET);
-                    		                    		
-                    	}
-                    	
-                    	                    	
-                    }
-      
-         });
-        
+        um.denyRole('Internal/everyone', artifact.path, carbon.registry.actions.GET);
 
         var username = server.current(session).username;
         var currentUserRole = USER_ROLE_PREFIX + username;
@@ -481,14 +491,66 @@ routeManager.register('DELETE', 'publisher', '/publisher/asset/{type}/{id}', fun
 
     try {
         artifactManager.remove(id);
+        
+        
+    	
 
     } catch (e) {
         log.debug('Asset id: ' + id + 'was not removed.Due to exception: ' + e);
         response.sendError(404, 'Asset with id: ' + id + 'was not removed.Please check the server log for more details.');
     }
-
-
 });
+
+
+routeManager.register('GET', 'publisher', '/publisher/asset/delete/{type}/{id}', function (context) {
+	    var shortName = context.params.type;
+	    var id = context.params.id;
+	 	var operation = 'delete';
+	 	
+	    var artifactManager = rxtManager.getArtifactManager(shortName);
+	    var artifact = artifactManager.get(id);
+	    
+	    var model = modelManager.getModel(shortName);
+	    model.import('asset', artifact);
+	    
+	    var username = artifactManager.registry.username;
+	    
+	    var webappProvider = model.get('overview.provider').value;;
+	    var webappName = model.get('overview.name').value;;
+	    var webappVersion = model.get('overview.version').value;;
+	    
+	    
+	    try {
+	    	var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
+	    	var apiIdentifierObj = new apiIdentifier(webappProvider, webappName, webappVersion);
+	       
+	        var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
+	        var apiMgtDAOObj = new apiMgtDAO();
+	        
+	        var isDeleted = apiMgtDAOObj.deleteApp(id,apiIdentifierObj,username);
+	       	if(operation == "delete"){
+	        	if(isDeleted==true)
+	        	{
+	        		artifactManager.remove(id);
+	        		response.sendRedirect('/publisher/assets/webapp/');
+	        	
+	        	}
+	        	else {
+	        		        	        	
+	        	 	caramel.render({op: operation,shortName:shortName});
+	        	
+	        	}
+	       	}
+	     
+	    } catch (e) {
+	        log.debug('Asset id: ' + id + 'was not removed.Due to exception: ' + e);
+	        response.sendError(404, 'Asset with id: ' + id + 'was not removed.Please check the server log for more details.' +e);
+	    }
+	});
+
+
+
+
 routeManager.handle(request, response);
 
 }, request, response, session);

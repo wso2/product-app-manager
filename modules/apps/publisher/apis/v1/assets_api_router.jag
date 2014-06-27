@@ -47,6 +47,7 @@ require('/modules/publisher.js').exec(function(ctx) {
 				obj = {
 					error:true
 				};
+
 			} else {
 				obj = {
 					error:false,
@@ -63,6 +64,7 @@ require('/modules/publisher.js').exec(function(ctx) {
 					users.push(usage[i].user);
 				}
 			}
+
 
 			for(j=0;j<users.length;j++){
 				var apps = [];
@@ -104,6 +106,7 @@ require('/modules/publisher.js').exec(function(ctx) {
 			}
 
 			usage = usage.sort(orderByCountAscending);
+
 			var webapps = [];
 
 			for(x=0;x<usage.length;x++){
@@ -113,14 +116,17 @@ require('/modules/publisher.js').exec(function(ctx) {
 
 				for(y=0;y<webapps.length;y++){
 					if(webapps[y][0] == usage[x].apiName){
+
 						webappIndex = y;
 						var z;
 						for(z=0;z<webapps[y][1].length;z++){
 							if(webapps[y][1][z][0] == usage[x].version){
 								webappVersionIndex = z;
+
 								break;
 							}
 						}
+							
 						if((webappVersionIndex == -1) && (z == webapps[y].length)){
 							break;
 						}
@@ -133,23 +139,29 @@ require('/modules/publisher.js').exec(function(ctx) {
 					requestCount.push([usage[x].userId,usage[x].count.toString()]);
 					version.push([usage[x].version,requestCount]);
 					webapps.push([usage[x].apiName,version]);
+
+
 				}else{
+
 					if(webappVersionIndex == -1){
 						var requestCount = [];
 						requestCount.push([usage[x].userId,usage[x].count.toString()]);
 						webapps[webappIndex][1].push([usage[x].version,requestCount]);
 					}
 					else{
+
 						webapps[webappIndex][1][webappVersionIndex][1].push([usage[x].userId,usage[x].count.toString()]);
 					}
 				}
 					
 			}
 
+
 			if (usage == null) {
 				obj = {
 					error:true
 				};
+
 			} else {
 				obj = {
 					error:false,
@@ -159,21 +171,28 @@ require('/modules/publisher.js').exec(function(ctx) {
 
 			print(webapps);
 		}else if (action == "getAPIResponseTime") { /* Overall Web Application Usage Graph */
-			var output  = {};
+			var output  = {
+			};
 			var apinameData = [],serviceTimeData=[],webApps = [];
 			usage = appMgtProviderObj.getProviderAPIServiceTime("__all_providers__",startDate,endDate);
+
+
 			usage = parse(stringify(usage));
 
 			function SortByName(x,y) {
 				return ((x.apiName == y.apiName) ? 0 : ((y.apiName > x.apiName) ? 1 : -1 ));
 			}
+
 			usage  = usage.sort(SortByName);
+
 			for(i=0;i<usage.length;i++){
 				webApps.push([i,usage[i].apiName]);
 				apinameData.push([i,usage[i].referer]);
 				serviceTimeData.push([parseInt(usage[i].serviceTime),i]);
 			}
+
 			var webapps = [];
+
 			for(x=0;x<usage.length;x++){
 
 				var webappIndex = -1;
@@ -186,19 +205,27 @@ require('/modules/publisher.js').exec(function(ctx) {
 						break;
 					}
 				}
+				
 			
 				if(webappIndex == -1){
+
 					var page = [];
 					page.push([usage[x].referer,usage[x].serviceTime.toString()]);
 					webapps.push([usage[x].apiName,page]);
+
+
 				}else{
 					webapps[webappIndex][1].push([usage[x].referer,usage[x].serviceTime.toString()]);
+
 				}
+
 			}
 
 			output['webapps'] = webapps;
 			output['referer'] = apinameData;
 			output['serviceTime'] = serviceTimeData;
+
+
 
 			if (usage == null) {
 				obj = {
@@ -219,14 +246,21 @@ require('/modules/publisher.js').exec(function(ctx) {
 			var webapps = [];
 			var webappIndex = -1;
 			var webappDetailsIndex = -1;
+
 			var totalPageCount = [];
-			var webappObject = {};
+
+			var webappObject = {
+			};
+
 			var appPage = [];
 			var apppageCount = [];
+
 			var webappDeatails = [];
 
 			for(x=0;x<usage.length;x++){
+
 				for(y=0;y<webapps.length;y++){
+
 					if(webapps[y][1] == usage[x].apiName){
 						webappIndex = y;
 						break;
@@ -241,6 +275,7 @@ require('/modules/publisher.js').exec(function(ctx) {
 					var total = totalPageCount[webappIndex][1] + usage[x].count ;
 					totalPageCount[webappIndex][1] = total;
 				}
+
 
 				for(z=0;z<webappDeatails.length;z++){
 					if(webappDeatails[z][0] == usage[x].apiName){
@@ -271,10 +306,12 @@ require('/modules/publisher.js').exec(function(ctx) {
 			webappObject['totalPageCount'] = totalPageCount;
 			webappObject['webappDeatails'] = webappDeatails;
 
+
 			if (usage == null) {
 				obj = {
 					error:true
 				};
+
 			} else {
 				obj = {
 					error:false,
@@ -287,25 +324,30 @@ require('/modules/publisher.js').exec(function(ctx) {
 
 	});
 
-	var securityModule=require('/modules/security/security.manager.js').securityManagementModule();
-	var sm=securityModule.cached();
 
-	//This will short circuit the handling of the requests
-	var passed=sm.check(session,function(){
-		response.sendError(401);
-	});
 
-	//Stop servicing the request if the check failed
-	if(passed){
-		var user = require('store').user;
-		var publisher = require('/modules/publisher.js').publisher(request, session);
-		var stats = require('/modules/statistics.js');
+		var securityModule=require('/modules/security/security.manager.js').securityManagementModule();
 
-		//var routeManager=application.get(config.app.ROUTE_MANAGER);
-		var rxtManager = publisher.rxtManager;
-		var modelManager = publisher.modelManager;
-		routeManager.handle(request, response);
-	}
+		var sm=securityModule.cached();
+
+		//This will short circuit the handling of the requests
+		var passed=sm.check(session,function(){
+			response.sendError(401);
+		});
+
+			//Stop servicing the request if the check failed
+			if(passed){
+
+				var user = require('store').user;
+				var publisher = require('/modules/publisher.js').publisher(request, session);
+				var stats = require('/modules/statistics.js');
+
+				//var routeManager=application.get(config.app.ROUTE_MANAGER);
+				var rxtManager = publisher.rxtManager;
+				var modelManager = publisher.modelManager;
+
+				routeManager.handle(request, response);
+			}
 
 }, request, response, session);
 %>

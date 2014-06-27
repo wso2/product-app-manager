@@ -22,11 +22,17 @@ var context = context || {
 
 var jagg = jagg || (function () {
     var ctx = context;
+
     var modules = {};
+
     var requirs = {};
+
     var templates = {};
+
     var initializers = {};
+
     var bloks = {};
+
     var data;
 
     var setData = function (d) {

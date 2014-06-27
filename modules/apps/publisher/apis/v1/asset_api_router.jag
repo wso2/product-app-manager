@@ -19,9 +19,7 @@ var caramel = require('caramel');
 
 var router = require('/modules/router-g.js').router();
 var routeManager = new router.Router();
-var log= new Log();
 
-var appmgtPublisher = require('appmgtpublisher');
 
 routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}', function (context) {
 
@@ -144,17 +142,13 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
     var id = context.params.id;
     var msg={};
     var artifactManager = rxtManager.getArtifactManager(shortName);
-    
-    var server  = require('store').server;
-    var username = server.current(session).username;
-    
 
-    if(context.post['images_thumbnail'] instanceof Array){
+if(context.post['images_thumbnail'] instanceof Array){
 	context.post['images_thumbnail'] = context.post['images_thumbnail'][0];
-    }
-    if(context.post['images_banner'] instanceof Array){
+}
+if(context.post['images_banner'] instanceof Array){
 	context.post['images_banner'] = context.post['images_banner'][0];
-    }
+}
 
     try {
         var modelA = modelManager.getModel(shortName);
@@ -204,67 +198,12 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
         modelA.set("overview.createdtime",modelB.get("overview.createdtime").value);
         var artifact = modelA.export('asset.exporter');
 
-        var index = 0;
-	var uritemplate = "uritemplate_urlPattern" + index;
-		
-	while (uritemplate in artifact.attributes) {
-		var urlPattern = artifact.attributes['uritemplate_urlPattern'+index];
-		if(urlPattern == "null" || urlPattern == "" ){
-			var key_pattern = 'uritemplate_urlPattern'+index;
-			var key_httpVerb = 'uritemplate_httpVerb' + index;
-			var key_tier = 'uritemplate_tier'  + index;
-			var key_skipthrottle = 'uritemplate_skipthrottle'  + index;
-				
-			delete artifact.attributes[key_pattern];
-			delete artifact.attributes[key_httpVerb];
-			delete artifact.attributes[key_tier];
-			delete artifact.attributes[key_skipthrottle];
-		}
-		index++;
-		uritemplate = "uritemplate_urlPattern" + index;
-	}
-
         dataInjector.inject(artifact,DataInjectorModes.UPDATE);
 
         artifactManager.update(artifact);
 
         dataInjector.inject(artifact,DataInjectorModes.DISPLAY);
 
-	username=username+"";
-        var appMgtProviderObj = new appmgtPublisher.APIProvider(username);
-        var update = appMgtProviderObj.updateAPI(artifact);
-        
-        //update OAuth APIs consumer details per given web-app
-        var attributes = artifact.attributes;
-        
-        var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
-        var apiIdentifierObj = new apiIdentifier(attributes["overview_provider"], attributes["overview_name"], attributes["overview_version"]);
-                
-        var webApp = Packages.org.wso2.carbon.appmgt.api.model.WebApp;
-        var webAppObj = new webApp(apiIdentifierObj);
-        
-        var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
-        var apiMgtDAOObj = new apiMgtDAO();
-        
-        apiMgtDAOObj.updateOAuthAPIAccessInfo(webAppObj);
-                
-        var count = 1;
-        var tokenEndpoint = attributes["oauthapis_apiTokenEndpoint" + count];
-                
-        while (tokenEndpoint != null && tokenEndpoint.length > 0) {
-                	                	
-                    webAppObj.setTokenEndpoint(attributes["oauthapis_apiTokenEndpoint" + count]);
-                    webAppObj.setApiConsumerKey(attributes["oauthapis_apiConsumerKey" + count]);
-                    webAppObj.setApiConsumerSecret(attributes["oauthapis_apiConsumerSecret" + count]);
-                    webAppObj.setApiName(attributes["oauthapis_apiName" + count]);
-                                        
-                    count++;
-                    tokenEndpoint = attributes["oauthapis_apiTokenEndpoint" + count];
-                                        
-                    //Save OAuth APIs consumer details per given web-app
-                    apiMgtDAOObj.addOAuthAPIAccessInfo(webAppObj);
-        }
-                
         msg['ok']=true;
         msg['message']='asset updated';
         msg['asset']=artifact;
@@ -421,7 +360,8 @@ if(passed){
     var user=require('store').user;
     var publisher = require('/modules/publisher.js').publisher(request, session);
 
-    //var routeManager=application.get(config.app.ROUTE_MANAGER);
+
+//var routeManager=application.get(config.app.ROUTE_MANAGER);
     var rxtManager = publisher.rxtManager;
     var modelManager = publisher.modelManager;
     var dataInjector=publisher.dataInjector;
@@ -431,6 +371,8 @@ if(passed){
     var storageConfig = require('/config/storage.json');
     var utility = require('/modules/utility.js').rxt_utility();
     var log=new Log();
+
+
 
     routeManager.handle(request, response);
 }
