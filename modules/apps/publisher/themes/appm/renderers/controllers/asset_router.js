@@ -6,7 +6,8 @@
 var render=function(theme,data,meta,require){
 
     var log = new Log();
-
+    
+    log.warn("Hit asset Router");
     //var _url = "/publisher/asset/"  + data.meta.shortName + "/" + data.info.id + "/edit"
 	var listPartial='view-asset';
 
@@ -32,6 +33,10 @@ var render=function(theme,data,meta,require){
         break;
     case 'documentation':
         listPartial='documentation';
+        break;
+    case 'delete':
+    	log.warn(data.op);
+        listPartial='delete-asset';
         break;
 	default:
 		break;

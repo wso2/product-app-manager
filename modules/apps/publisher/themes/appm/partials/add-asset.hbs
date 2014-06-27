@@ -1,235 +1,163 @@
-
 <div class='content-div'>
-	<div class="row-fluid">
-		<div class="span12 asset-view-container">
-			<div id='msg-container-recent-activity'></div>
-			<div class="widget wlightblue">
-				<div class="widget-head">
-					<div class="pull-left">Add Web Application</div>
-					<div class="clearfix"></div>
-				</div>
-				<div class="widget-content">
-					<form class="form-horizontal" id='form-asset-create'>
-						<fieldset>
-							<legend style="margin-bottom: 0px;">Overview</legend>
-							{{{ form_render "overview_provider" data.fields }}} 
-							{{{form_render "overview_name" data.fields }}}
-							{{{ form_render "overview_context" data.fields }}} 
-							{{{ form_render "overview_version" data.fields }}}
-							{{{ form_render "overview_transports" data.fields }}}
-							{{{ form_render "overview_webAppUrl" data.fields }}}
-							{{{ form_render "overview_description" data.fields }}} 
-							{{{ form_render "images_icon" data.fields }}} 
-							{{{ form_render "images_thumbnail" data.fields }}}
-							{{{ form_render "images_banner" data.fields }}}
-							
-							<input type='hidden' value="" name="context" id="context_id" /> 
-							<input type='hidden' value="" name="version" id="version_id" />
-							<input type='hidden' value="Unlimited" name="overview_tier" />
-							<input type='hidden' value="" name="overview_trackingCode" id="tracking_code" />
-
-							<div class="control-group">
-								<b><label class="control-label">Roles: </label></b>
-								<div class="controls">
-									<input type="text" id="roles" name="roles">
-									<table id="permissionsTable">
-										<tbody>
-											<tr>
-												<td><b>Role</b></td>
-												<td>Get</td>
-												<td>Edit</td>
-												<td>Delete</td>
-												<td>Authorize</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
+ 	<div class="row-fluid">
+ 		<div class="span12 asset-view-container" >
+ 			<div id='msg-container-recent-activity'></div>
+ 			<div class="widget wlightblue">
+ 				<div class="widget-head">
+ 					<div class="pull-left">
+ 						Add Web Application
+ 					</div>
+ 					<div class="clearfix"></div>
+ 				</div>
+ 				<div class="widget-content">
+ 					<form class="form-horizontal" id='form-asset-create'>
+ 						<fieldset>
+ 						<legend style="margin-bottom:0px;">Overview</legend>
+ 						{{{ form_render "overview_provider" data.fields }}}
+ 						{{{ form_render "overview_name" data.fields }}}
+ 						{{{ form_render "overview_context" data.fields }}}
+ 						{{{ form_render "overview_version" data.fields }}}
+ 						{{{ form_render "overview_transports" data.fields }}}
+                        {{{ form_render "overview_webAppUrl" data.fields }}}
+                        {{{ form_render "overview_description" data.fields }}}
+                        {{{ form_render "images_icon" data.fields }}}
+                        {{{ form_render "images_thumbnail" data.fields }}}
+                        {{{ form_render "images_banner" data.fields }}}
+                        {{{ form_render "overview_logoutUrl" data.fields }}}
 
 
-							<div class="control-group">
-								<b><label class="control-label">Tags: </label></b>
-								<div class="controls">
-									<input type='text' id='tag-test' name='tags'>
-								</div>
-							</div>
+						 <input type='hidden' value="" name="context" id="context_id"/>
+						 <input type='hidden' value="" name="version" id="version_id"/>
+						 <input type='hidden' value="Unlimited" name="overview_tier"/>
+						 <input type='hidden' value="" name="overview_trackingCode" id="tracking_code"/>
 
+  <div class="control-group">
+                            <b><label class="control-label">Roles: </label></b>
+                            <div class="controls">
+                                <input type="text" id="roles" name="roles">
+                                <table id="permissionsTable">
+                                    <tbody>
+                                        <tr>
+                                            <td><b>Role</b></td>
+                                            <td>Get</td>
+                                            <td>Edit</td>
+                                            <td>Delete</td>
+                                            <td>Authorize</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+ 						<div class="control-group">
+ 							<b><label class="control-label">Tags: </label></b>
+ 							<div class="controls">
+ 								<input type='text' id='tag-test' name='tags'>
+ 							</div>
+ 						</div>
+
+ 						</fieldset>
+
+
+ 						<fieldset>
+ 						<legend style="margin-bottom:0px;">Web Application Resources</legend>
+ 						<div class="resource_form" style="background:#BDBDBD; padding:10px 0 1px 0;">
+ 						<div class="control-group">
+ 							<b><label class="control-label">URL Pattern</label></b>
+ 							<div class="controls">
+ 								<div class="input-prepend">
+ 									<span class="add-on">/{context}/{version}/</span>
+ 									<input class="span2" id="url_pattern" type="text" placeholder="path/to/resource" style="width:400px">
+ 								</div>
+ 							</div>
+ 						</div>
+ 						<div class="control-group">
+ 							<b><label class="control-label">HTTP Verb</label></b>
+ 							<div class="controls">
+ 								<label class="checkbox inline"><input value="GET" class="http_verb" type="checkbox">GET</label>
+ 								<label class="checkbox inline"><input value="POST" class="http_verb" type="checkbox">POST</label>
+ 								<label class="checkbox inline"><input value="PUT" class="http_verb" type="checkbox">PUT</label>
+ 								<label class="checkbox inline"><input value="DELETE" class="http_verb" type="checkbox">DELETE</label>
+ 								<label class="checkbox inline"><input value="OPTIONS" class="http_verb" type="checkbox">OPTIONS</label>
+ 							</div>
+ 						</div>
+ 						<div class="control-group">
+ 							<div class="controls">
+ 								<button class="btn" type="button" id="add_resource">Add Resource</button>
+ 								<button class="btn" type="button" id="clear_resource">Clear</button>
+ 							</div>
+ 						</div>
+ 						</div><!-- resource form-->
+ 					    <table class="table table-striped table-bordered table-condensed table-hover" style="margin-top:10px;">
+ 							<thead>
+ 								<tr>
+ 									<th>URL Pattern</th>
+ 									<th style="width:70px">HTTP Verb</th>
+									<th style="width:150px">Throttling Tier</th>
+									<th style="width:100px">Skip Throttling</th>
+									<th style="width:55px"></th>
+				                </tr>
+							</thead>
+							<tbody id="resource_tbody">
+			                </tbody>
+    					</table>
 						</fieldset>
 
+					<fieldset>
+                        <input type='hidden' value="Enabled" name="sso_singleSignOn"/>
+                        <input type='hidden' value="https://localhost:9444/samlsso/" name="sso_idpProviderUrl"/>
+                        <input type='hidden' value="" name="sso_saml2SsoIssuer" id="saml2SsoIssuer"/>
+					</fieldset>
 
-						<fieldset>
-							<legend style="margin-bottom: 0px;">Web Application Resources</legend>
-							<div class="resource_form"
-								style="background: #BDBDBD; padding: 10px 0 1px 0;">
-								<div class="control-group">
-									<b><label class="control-label">URL Pattern</label></b>
-									<div class="controls">
-										<div class="input-prepend">
-											<span class="add-on">/{context}/{version}/</span> <input
-												class="span2" id="url_pattern" type="text"
-												placeholder="path/to/resource" style="width: 400px">
-										</div>
-									</div>
-								</div>
-								<div class="control-group">
-									<b><label class="control-label">HTTP Verb</label></b>
-									<div class="controls">
-										<label class="checkbox inline"><input value="GET" class="http_verb" type="checkbox">GET</label> 
-										<label class="checkbox inline"><input value="POST" class="http_verb" type="checkbox">POST</label> 
-										<label class="checkbox inline"><input value="PUT" class="http_verb" type="checkbox">PUT</label>
-										<label class="checkbox inline"><input value="DELETE" class="http_verb" type="checkbox">DELETE</label>
-										<label class="checkbox inline"><input value="OPTIONS" class="http_verb" type="checkbox">OPTIONS</label>
-									</div>
-								</div>
-								<div class="control-group">
-									<div class="controls">
-										<button class="btn" type="button" id="add_resource">Add
-											Resource</button>
-										<button class="btn" type="button" id="clear_resource">Clear</button>
-									</div>
-								</div>
-							</div>
-							<!-- resource form-->
-							<table
-								class="table table-striped table-bordered table-condensed table-hover"
-								style="margin-top: 10px;">
-								<thead>
-									<tr>
-										<th>URL Pattern</th>
-										<th style="width: 70px">HTTP Verb</th>
-										<th style="width: 150px">Throttling Tier</th>
-										<th style="width: 100px">Skip Throttling</th>
-										<th style="width: 55px"></th>
-									</tr>
-								</thead>
-								<tbody id="resource_tbody">
-								</tbody>
-							</table>
-						</fieldset>
-
-						<fieldset>
-							<legend style="margin-top: 20px; margin-bottom: 0px;">Single Sign On Configuration</legend>
-							<div class="control-group">
-								<label class="control-label">Logout URL</label>
-								<div class="controls">
-									<input type='text'  class='span8' value="{{{snoop "fields(name=overview_logoutUrl).value" data}}}" name="overview_logoutUrl" id="overview_logoutUrl" />
-								</div>
-
-								<table id="ssoTable" class="sso">
-									<tbody>
-										<tr>
-											<div class="control-group">
-												<td><label class="control-label">Auto Configuration</label></td>
-												<td>
-													<div class="controls">
-														<input type="checkbox" name="autoConfig" id="autoConfig" />
-													</div>
-												</td>
-											</div>
-										</tr>
-										<tr id="provider-table" style="display: none;"
-											class="provider-table">
-
-											<div class="control-group">
-												<td><label class="control-label">SSO Providers</label></td>
-												<td>
-													<div class="controls">
-
-														<select name="providers" id="providers">
-														</select>
-														<input type='hidden' value="" name="sso_ssoProvider" id="sso_ssoProvider"/>
-														
-													</div>
-												</td>
-											</div>
-										</tr>
-
-
-										<tr id="claims-table" style="display: none;" class="claims-table">
-											<div class="control-group">
-												<td><label class="control-label">Claims</label></td>
-												<td>
-													<div class="controls">
-														<select name="claims" id="claims"></select> 
-														<input id="addClaims" name="addClaims" type="button" value="Add Claim">
-													</div>
-												</td>
-											</div>
-										</tr>
-
-
-
-									</tbody>
-								</table>
-							</div>
-
-
-							<table id="claimTableId" style="display: none;" class="table table-bordered">
-								<tbody id="claimTableTbody">
-									<input type="hidden" name="claimPropertyCounter" id="claimPropertyCounter" value="0">
-								</tbody>
-							</table>
-						</fieldset>
-
-						<fieldset>
-							<input type='hidden' value="Enabled" name="sso_singleSignOn" /> 
-							<input type='hidden' value="https://localhost:9444/samlsso/" name="sso_idpProviderUrl" /> 
-							<input type='hidden' value="" name="sso_saml2SsoIssuer" id="saml2SsoIssuer" />
-						</fieldset>
-
-						<fieldset>
-							<legend style="margin-top: 20px; margin-bottom: 0px;">OAUTH Parameters</legend>
-							<table
-								class="table table-striped table-bordered table-condensed table-hover"
-								style="margin-top: 10px;">
-								<thead>
-									<tr>
-										<th>API Token Endpoint</th>
-										<th>API Consumer Key</th>
-										<th>API Consumer Secret</th>
-										<th>API Name</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td><input class="span12" name="oauthapis_apiTokenEndpoint1" type="text" value="{{{snoop "fields(name=oauthapis_apiTokenEndpoint1).value" data}}}"></td>
-										<td><input class="span12" name="oauthapis_apiConsumerKey1" type="text" value="{{{snoop "fields(name=oauthapis_apiConsumerKey1).value" data}}}"></td>
-										<td><input class="span12" name="oauthapis_apiConsumerSecret1" type="text" value="{{{snoop "fields(name=oauthapis_apiConsumerSecret1).value" data}}}"></td>
-										<td><input class="span12" name="oauthapis_apiName1" type="text" value="{{{snoop "fields(name=oauthapis_apiName1).value" data}}}"></td>
-									</tr>
-									<tr>
-										<td><input class="span12" name="oauthapis_apiTokenEndpoint2" type="text" value="{{{snoop "fields(name=oauthapis_apiTokenEndpoint2).value" data}}}"></td>
-										<td><input class="span12" name="oauthapis_apiConsumerKey2" type="text" value="{{{snoop "fields(name=oauthapis_apiConsumerKey2).value" data}}}"></td>
-										<td><input class="span12" name="oauthapis_apiConsumerSecret2" type="text" value="{{{snoop "fields(name=oauthapis_apiConsumerSecret2).value" data}}}"></td>
-										<td><input class="span12" name="oauthapis_apiName2" type="text" value="{{{snoop "fields(name=oauthapis_apiName2).value" data}}}"></td>
-									</tr>
-									<tr>
-										<td><input class="span12" name="oauthapis_apiTokenEndpoint3" type="text" value="{{{snoop "fields(name=oauthapis_apiTokenEndpoint3).value" data}}}"></td>
-										<td><input class="span12" name="oauthapis_apiConsumerKey3" type="text" value="{{{snoop "fields(name=oauthapis_apiConsumerKey3).value" data}}}"></td>
-										<td><input class="span12" name="oauthapis_apiConsumerSecret3" type="text" value="{{{snoop "fields(name=oauthapis_apiConsumerSecret3).value" data}}}"></td>
-										<td><input class="span12" name="oauthapis_apiName3" type="text" value="{{{snoop "fields(name=oauthapis_apiName3).value" data}}}"></td>
-									</tr>
-								</tbody>
-							</table>
-						</fieldset>
-
-
-
+                     <fieldset>
+					<legend style="margin-top:20px; margin-bottom:0px;">OAUTH Parameters</legend>
+					<table class="table table-striped table-bordered table-condensed table-hover" style="margin-top:10px;">
+					<thead>
+						<tr>
+							<th>API Token Endpoint</th>
+							<th>API Consumer Key</th>
+							<th>API Consumer Secret</th>
+							<th>API Name</th>
+		                		</tr>
+					</thead>
+					<tbody>
+							<tr>
+								<td><input class="span12" name="oauthapis_apiTokenEndpoint1" type="text"></td>
+								<td><input class="span12" name="oauthapis_apiConsumerKey1" type="text"></td>
+								<td><input class="span12" name="oauthapis_apiConsumerSecret1" type="text"></td>
+								<td><input class="span12" name="oauthapis_apiName1" type="text"></td>
+							</tr>
+							<tr>
+								<td><input class="span12" name="oauthapis_apiTokenEndpoint2" type="text"></td>
+								<td><input class="span12" name="oauthapis_apiConsumerKey2" type="text"></td>
+								<td><input class="span12" name="oauthapis_apiConsumerSecret2" type="text"></td>
+								<td><input class="span12" name="oauthapis_apiName2" type="text"></td>
+							</tr>
+							<tr>
+								<td><input class="span12" name="oauthapis_apiTokenEndpoint3" type="text"></td>
+								<td><input class="span12" name="oauthapis_apiConsumerKey3" type="text"></td>
+								<td><input class="span12" name="oauthapis_apiConsumerSecret3" type="text"></td>
+								<td><input class="span12" name="oauthapis_apiName3" type="text"></td>
+							</tr>
+			                </tbody>
+    					</table>
+					</fieldset>
 
 						<!--
 						{{#each data.fields}}
 
 						{{/each}}-->
 
-						<div id="saveButtons" class="form-actions">
-							<button id="btn-create-asset" class="btn btn-primary" name="addNewAssetButton">Create</button>
-							<button class="btn" type="reset">Reset</button>
-							<input type="hidden" value="{{shortName}}" name="{{shortName}}" id="meta-asset-type">
-						</div>
-					</form>
-				</div>
+                        <div id="saveButtons" class="form-actions">
+                        	<button id="btn-create-asset" class="btn btn-primary" name="addNewAssetButton">Create</button>
+                      		<button class="btn" type="reset">Reset</button>
+			                <input type="hidden" value="{{shortName}}" name="{{shortName}}" id="meta-asset-type">
+                        </div>
+                    </form>
+                </div>
 
-			</div>
-		</div>
-	</div>
+            </div>
+	    </div>
+    </div>
 </div>

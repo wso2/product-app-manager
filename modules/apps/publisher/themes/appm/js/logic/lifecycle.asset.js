@@ -150,11 +150,20 @@ $(function() {
 				var current_state = $('#state').text();
 				if (element) {
 					var paper = new Raphael('canvas', 600, 700);
-				
+					//alert(current_state);
+
+					//alert.css("position","static");
+
+					/* if(!graph.Renderer.config.canvas.canvasElement){
+
+					 graph.Renderer.config.canvas.canvasElement=element;
+
+					 graph.Renderer.initRaphael();
+					 graph.Renderer.render(graph.NMap);
+					 }       */
 					var statInfo = JSON.parse(response);
 					sugyama.init(statInfo.lifecycle, paper);
 					var isAsynch = statInfo.asynch;
-					
 					var START_X = 10;
 					var START_Y = 50;
 					var VERTEX_RADIUS = 11;
@@ -185,8 +194,6 @@ $(function() {
 						}
 						]);
 					}
-					
-				
 
 					actions = statInfo.lifecycle.configuration[0].lifecycle[0].scxml[0].state;
 					keys = sugyama.getKeys();
@@ -209,62 +216,36 @@ $(function() {
 	 @action: The action for the button
 	 */
 	function buttonClickLogic(action) {
-
 		$.ajax({
-			url : '/publisher/api/lifecycle/subscribe/' + asset + '/' + id,
-			type : 'GET',
+			url : '/publisher/api/lifecycle/' + action + '/' + asset + '/' + id,
+			type : 'PUT',
 			success : function(response) {
-				//Convert the response to a JSON object
-				var statInfo = JSON.parse(response);
-				var subscribed = statInfo.subscribed;
-				var state= statInfo.state;
-				if((state == 'Published' && subscribed && action == 'Unpublish') || (state == 'Deprecated' && subscribed && action == 'Retire')){
-					    $('#messageModal').html($('#confirmation-data').html());
-					    $('#messageModal h3.modal-title').html(('APP Publisher - Error'));
-					    $('#messageModal a.btn-primary').html('OK');
-					    var img = $('<img  src="/publisher/themes/appm/img/error.png" /> \nCannot ' + action + ' the App. Active Subscriptions Exist !</p>');
-					    $('#messageModal div.modal-body').html(img);
-					    $('#messageModal').modal();
-				}else{
-					$.ajax({
-						url : '/publisher/api/lifecycle/' + action + '/' + asset + '/' + id,
-						type : 'PUT',
-						success : function(response) {
-							var actionName = action.toLowerCase();
-							actionName += 'd';
-							showAlert('Asset was ' + actionName + ' successfully.', 'success');
-							$.ajax({
-								url : '/publisher/api/lifecycle/' + asset + '/' + id,
-								type : 'GET',
-								success : function(response) {
-									//Convert the response to a JSON object
-									var statInfo = JSON.parse(response);
+				var actionName = action.toLowerCase();
+				actionName += 'd';
+				showAlert('Asset was ' + actionName + ' successfully.', 'success');
+				$.ajax({
+					url : '/publisher/api/lifecycle/' + asset + '/' + id,
+					type : 'GET',
+					success : function(response) {
+						//Convert the response to a JSON object
+						var statInfo = JSON.parse(response);
 
-									$('#state').html(statInfo.state);
-									$('#view-lifecyclestate').html(statInfo.state);
-									//disableActions(statInfo.actions);
-									buildCheckList(asset, id);
-									buildLCGraph();
-									buildHistory(asset, id);
-								},
-								error : function(response) {
-									$('#state').html('Error obtaining life-cycle state of asset.');
-								}
-							});
-						},
-						error : function(response) {
-							showAlert(action + ' operation failed', 'error');
-						}
-					});
-				}
+						$('#state').html(statInfo.state);
+						$('#view-lifecyclestate').html(statInfo.state);
+						//disableActions(statInfo.actions);
+						buildCheckList(asset, id);
+						buildLCGraph();
+						buildHistory(asset, id);
+					},
+					error : function(response) {
+						$('#state').html('Error obtaining life-cycle state of asset.');
+					}
+				});
 			},
 			error : function(response) {
-				$('#state').html('Error obtaining subscription');
+				showAlert(action + ' operation failed', 'error');
 			}
 		});
-		
-			
-		
 	}
 
 	/*
@@ -305,7 +286,6 @@ $(function() {
 
 		window.changeState = function(className){
 			var thisState = className;
-			if(thisState != null){
 				if (isClickable(thisState)) {
 					//console.log(getAction(thisState));
 					var action = getAction(thisState);
@@ -314,7 +294,6 @@ $(function() {
 				} else {
 					showAlert('Invalid operation', 'error');
 				}
-			}
 		}
 		
 		$('circle').click(function(e) {
@@ -460,9 +439,7 @@ $(function() {
     		var alert = $('.widget-content .alert');
     		alert.removeClass().addClass('info-div alert alert-' + type).find('span').text(msg);
     		alert.delay(500).fadeIn("fast").delay(2000);
-    }
-	
-	
+    	}
 
 	function highlightTransition(state) {
 		//alert(state);
