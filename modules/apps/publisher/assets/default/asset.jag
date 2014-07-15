@@ -19,6 +19,7 @@ require('/modules/publisher.js').exec(function(ctx) {
     var config = require('/config/publisher.json');
     var caramel = require('caramel');
     var server = require('store').server;
+    var storeUser=require('store').user;
     var utility = require('/modules/utility.js').rxt_utility();
     var assetCachingModule = require('/modules/cache/cache.manager.js').assetCachingModule();
     var publisher = require('/modules/publisher.js').publisher(request, session);
@@ -55,7 +56,7 @@ require('/modules/publisher.js').exec(function(ctx) {
     else {
         //Obtain the username from the session and populate the provider field
         var username = server.current(session).username;//.get('LOGGED_IN_USER');
-        model.set('overview.provider', username);
+        model.set('overview.provider', storeUser.cleanUsername(username));
 
         var output = model.export('form');
         var title = shortName;
