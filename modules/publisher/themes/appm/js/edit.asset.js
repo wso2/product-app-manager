@@ -129,14 +129,14 @@ $(function() {
                                 contentType: 'application/json',
                                 data: JSON.stringify(rolePermissions),
                                 success: function(response) {
-                                    window.location = '/publisher/asset/' + type + '/'+id;
+                                	showModel(type,id);
                                 },
                                 error: function(response) {
                                     showAlert('Error adding permissions.', 'error');
                                 }
                             });
                         }else {
-                            window.location = '/publisher/asset/' + type + '/'+id;
+                        	showModel(type,id);
                         }
                         
                         
@@ -285,6 +285,26 @@ $(function() {
 		//Place the message
 		$(containerElement).html(infoMessage);
 	}
+	
+	var showModel=function(type,id){
+		
+		  
+    	
+		   console.info('Successfully updated Web app: ');
+		   //alert('Succsessfully subscribed to the '+subscription.apiName+' Web App.');
+		   
+		    $('#messageModal1').html($('#confirmation-data1').html());
+		    $('#messageModal1 h3.modal-title').html(('Updating Successful'));
+		    $('#messageModal1 div.modal-body').html('\n\n'+ ('Congratulations! You have successfully updated the Web App ')+ '</b>');
+		    $('#messageModal1 a.btn-other').html('OK');
+		    
+		   
+		    $('#messageModal1').modal();
+		    $("#messageModal1").on('hidden.bs.modal', function(){
+		    	window.location = '/publisher/asset/' + type + '/'+id;
+		    });
+
+};
 
 
 	$('.selectpicker').selectpicker();
