@@ -230,14 +230,7 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
 
     //Check if the type is valid
     try {
-        //assigning default thumbnail and banner if not provided.
-        if (context.post['images_thumbnail'] != '') {
-            context.post['images_thumbnail'] = '/publisher/config/defaults/img/thumbnail.jpg';
-        }
-        if (context.post['images_banner'] != '') {
-            context.post['images_banner'] = '/publisher/config/defaults/img/banner.jpg';
-        }
-		
+      		
         //Process and add any files in the request
         inspectFiles(request, context.post);
 
@@ -420,6 +413,16 @@ function inspectFiles(req, params) {
     var uuid = '';
     var extension;
 
+    //setting default img if no images given for a webapp
+    if(files == null){
+    	var files = {};
+    	var thumbnail = new File("/config/defaults/img/thumbnail.jpg");
+    	var banner = new File("/config/defaults/img/banner.jpg");
+    	log.info(":thumbnailthumbnailthumbnailthumbnailthumbnailthumbnail:"+thumbnail.getName());
+    	
+    	files["images_thumbnail"]= thumbnail;
+    	files["images_banner"]= banner;
+    }
 
     var storageManager = new storageModule.StorageManager({
         context: 'storage',
@@ -428,7 +431,6 @@ function inspectFiles(req, params) {
             dataSource: storageConfig.dataSource
         }
     });
-
 
     for (var index in files) {
 

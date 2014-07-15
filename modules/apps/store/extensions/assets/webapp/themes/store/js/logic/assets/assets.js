@@ -1,6 +1,6 @@
 $(function() {
 		
-	$("#assetsLink").on('click', function(e) {
+	$(".asset-icon").on('click', function(e) {
 		  var loggedUser = $("#assetsloggedinuser").val();
 		  if(loggedUser == "" || loggedUser == null){
 			  var assetId = $('#asset').data('id');
@@ -12,7 +12,7 @@ $(function() {
 	    	
 	});
 	
-	$("#assetDeatils").on('click', function(e) {
+	$(".asset-details").on('click', function(e) {
 		  var loggedUser = $("#assetsloggedinuser").val();
 		  if(loggedUser == "" || loggedUser == null){
 			  var assetId = $('#asset').data('id');

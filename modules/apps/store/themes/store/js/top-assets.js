@@ -20,7 +20,7 @@ $(function() {
 		location.href = link;
 	});
 	
-	$("#topAsset").on('click', function(e) {
+	$(".asset-icon").on('click', function(e) {
 		  var loggedUser = $("#loggedinuser").val();
 		  if(loggedUser == "" || loggedUser == null){
 			  var assetId = $('#slideAsset').data('id');
@@ -32,7 +32,7 @@ $(function() {
 	    	
 	});
 	
-	$("#topAssetDetails").on('click', function(e) {
+	$(".asset-details").on('click', function(e) {
 		  var loggedUser = $("#loggedinuser").val();
 		  if(loggedUser == "" || loggedUser == null){
 			  var assetId = $('#slideAsset').data('id');
