@@ -27,7 +27,7 @@
                 <state id="Created">
                     <datamodel>
                         <data name="transitionExecution">
-                            <execution forEvent="Submit" class="org.wso2.carbon.appmgt.impl.extensions.custom.PublishWFEventExecutor">
+                            <execution forEvent="Submit" class="org.wso2.carbon.appmgt.impl.extensions.custom.PublishActionEventExecutor">
                                 <parameter name="PERMISSION:get"
                                            value="http://www.wso2.org/projects/registry/actions/get"/>
                                 <parameter name="PERMISSION:add"
@@ -65,7 +65,7 @@
                 <state id="In-Review">
                     <datamodel>
                         <data name="transitionExecution">
-                            <execution forEvent="Approve" class="org.wso2.carbon.appmgt.impl.extensions.custom.PublishEventExecutor">
+                            <execution forEvent="Approve" class="org.wso2.carbon.appmgt.impl.extensions.custom.ApprovalActionEventExecutor">
                                 <parameter name="PERMISSION:get"
                                            value="http://www.wso2.org/projects/registry/actions/get"/>
                                 <parameter name="PERMISSION:add"
@@ -108,7 +108,7 @@
                 <state id="Published">
                     <datamodel>
                         <data name="transitionExecution">
-                            <execution forEvent="Unpublish" class="org.wso2.carbon.appmgt.impl.extensions.custom.PublishWFEventExecutor">
+                            <execution forEvent="Unpublish" class="org.wso2.carbon.appmgt.impl.extensions.custom.PublishActionEventExecutor">
                                 <parameter name="PERMISSION:get"
                                            value="http://www.wso2.org/projects/registry/actions/get"/>
                                 <parameter name="PERMISSION:add"
@@ -148,7 +148,7 @@
                 <state id="Unpublished">
                     <datamodel>
                         <data name="transitionExecution">
-                            <execution forEvent="Publish" class="org.wso2.carbon.appmgt.impl.extensions.custom.PublishWFEventExecutor">
+                            <execution forEvent="Publish" class="org.wso2.carbon.appmgt.impl.extensions.custom.PublishActionEventExecutor">
                                 <parameter name="PERMISSION:get"
                                            value="http://www.wso2.org/projects/registry/actions/get"/>
                                 <parameter name="PERMISSION:add"
@@ -186,7 +186,7 @@
                 <state id="Deprecated">
                     <datamodel>
                         <data name="transitionExecution">
-                            <execution forEvent="Retire" class="org.wso2.carbon.appmgt.impl.extensions.custom.PublishWFEventExecutor">
+                            <execution forEvent="Retire" class="org.wso2.carbon.appmgt.impl.extensions.custom.PublishActionEventExecutor">
                                 <parameter name="PERMISSION:get"
                                            value="http://www.wso2.org/projects/registry/actions/get"/>
                                 <parameter name="PERMISSION:add"
