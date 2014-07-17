@@ -47,14 +47,17 @@ var navigation = function (tenantId) {
 
 var header = function (tenantId, options) {
 
+    var resultClass = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
+    var result = resultClass();
+    var isSelfSignUpEnabled = result.isSelfSignUpEnabled();
 
     var user = require('store').user;
 
-   
     return {
         login: loginLinks(tenantId),
         sso: options.sso,
-        user: options.user
+        user: options.user,
+	selfSignUpEnabled: isSelfSignUpEnabled
     };
 };
 

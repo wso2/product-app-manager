@@ -61,10 +61,12 @@
 							<li>
 								<a href="#" data-toggle="modal" data-target="#modal-login">{{t "Sign in"}}</a>
 							</li>
-							<li>
-								<a id="btn-register" class="btn btn-primary" data-toggle="modal"
-								data-target="#modal-register">{{t "Register"}}</a>
-							</li>
+							{{#if selfSignUpEnabled}}
+								<li>
+									<a id="btn-register" class="btn btn-primary" data-toggle="modal"
+									data-target="#modal-register">{{t "Register"}}</a>
+								</li>
+							{{/if}}
 							{{/if}}
 
 							{{/if}}
