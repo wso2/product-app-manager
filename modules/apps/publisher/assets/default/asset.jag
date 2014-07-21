@@ -431,12 +431,7 @@ function inspectFiles(req, params) {
     	var files = {};
     	var thumbnail = new File("/config/defaults/img/thumbnail.jpg");
     	var banner = new File("/config/defaults/img/banner.jpg");
-<<<<<<< HEAD
-    	
-=======
-    	log.info(":thumbnailthumbnailthumbnailthumbnailthumbnailthumbnail:"+thumbnail.getName());
 
->>>>>>> 3a46cd4ca011ccf1c3affc862767b3cc37f1ce58
     	files["images_thumbnail"]= thumbnail;
     	files["images_banner"]= banner;
     }
