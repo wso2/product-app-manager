@@ -19,6 +19,7 @@ require('/modules/publisher.js').exec(function(ctx) {
     var config = require('/config/publisher.json');
     var caramel = require('caramel');
     var server = require('store').server;
+    var storeUser=require('store').user;
     var utility = require('/modules/utility.js').rxt_utility();
     var assetCachingModule = require('/modules/cache/cache.manager.js').assetCachingModule();
     var publisher = require('/modules/publisher.js').publisher(request, session);
@@ -55,7 +56,19 @@ require('/modules/publisher.js').exec(function(ctx) {
     else {
         //Obtain the username from the session and populate the provider field
         var username = server.current(session).username;//.get('LOGGED_IN_USER');
-        model.set('overview.provider', username);
+
+        var tenantDomain = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantDomain();
+        var tenantIdVal = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantId();
+        var provider = "";
+        if(tenantIdVal=='-1234'){
+            provider = username;
+        }else {
+            provider = username+'-AT-'+tenantDomain;
+        }
+
+        model.set('overview.provider', provider);
+
+        //model.set('overview.provider', storeUser.cleanUsername(username));
 
         var output = model.export('form');
         var title = shortName;
@@ -104,16 +117,16 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
         model.import('asset', artifact);
 
         var output = model.export('form');
-		
+
         var assetName = model.get('overview.name').value;
         //Get the list of versions
         var versionList = artifactManager.getAllAssetVersions(assetName);
-		
+
 		var path = artifact.path;
 		var tags = rxtManager.registry.tags(path);
 		var title = assetName;
-		
-	
+
+
         caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title});
     } catch (e) {
         log.debug('The asset with id ' + id + ' could not be found due to : ' + e);
@@ -122,7 +135,7 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
 
 });
 
-	
+
 
 routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/{type}/{id}', function (context) {
    var shortName = context.params.type;
@@ -131,7 +144,7 @@ routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/
     var id = context.params.id;
     var operation = context.params.opType;
     var artifactManager = rxtManager.getArtifactManager(shortName);
-    
+
     //If the id is not found it will throw a conversion exception
     //TODO: Return an empty artifact or null
     try {
@@ -155,18 +168,18 @@ routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/
 
         //Get the list of versions
         var versionList = artifactManager.getAllAssetVersions(assetName);
-                
+
         var apiData={};
     	apiData.provider= model.get('overview.provider').value;
    	apiData.name= model.get('overview.name').value;
-    	apiData.version= model.get('overview.version').value; 
+    	apiData.version= model.get('overview.version').value;
     	var result = mod.getAllDocumentation(apiData);
-    	
+
 	//Get tags
 	var path = artifact.path;
 	var tags = rxtManager.registry.tags(path);
 	var title = assetName;
-	
+
 	// getting the user roles
         var server = require('store').server,
         um = server.userManager(server.current(session).tenantId);
@@ -180,7 +193,7 @@ routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/
 
         if(registry.properties(path)['overridden_permissions']) {
         	overridenPermissions = registry.properties(path)['overridden_permissions'][0];
-        } 
+        }
 
         if (overridenPermissions) {
         	output.permissions = JSON.parse(overridenPermissions.replace('\\', ''));
@@ -188,10 +201,10 @@ routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/
 
  	output.fields[1]['isEditable'] = false;
  	output.fields[1]['isReadOnly'] = true;
- 
+
  	output.fields[2]['isEditable'] = false;
   	output.fields[2]['isReadOnly'] = true;
-  
+
   	output.fields[3]['isEditable'] = false;
    	output.fields[3]['isReadOnly'] = true;
 
@@ -204,9 +217,9 @@ routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/
 	            		}
 	            		uriTemplate++;
 	            	}
-           	}         	
+           	}
        	}
-            
+
 	if(operation == "documentation"){
 		caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title,docs:result.docs});
 	}else{
@@ -230,14 +243,7 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
 
     //Check if the type is valid
     try {
-        //assigning default thumbnail and banner if not provided.
-        if (context.post['images_thumbnail'] != '') {
-            context.post['images_thumbnail'] = '/publisher/config/defaults/img/thumbnail.jpg';
-        }
-        if (context.post['images_banner'] != '') {
-            context.post['images_banner'] = '/publisher/config/defaults/img/banner.jpg';
-        }
-		
+
         //Process and add any files in the request
         inspectFiles(request, context.post);
 
@@ -315,7 +321,7 @@ function addTags(params,assetId,artifactManager,reg){
 
     var path=asset.path;
 	tags = tags.split(',');
-	
+
     //Attach the tags
     reg.tag(path,tags);
 
@@ -328,7 +334,7 @@ function addTags(params,assetId,artifactManager,reg){
         @permission: Requried permissions
     */
     function overridePermissions(assetId, artifactManager, permissions) {
-    	
+
         // set a property in  the artifact indicating the permissions are overriden / remove the lifecycle
         var artifact = artifactManager.get(assetId);
         // artifactManager.detachLifecycle(artifact);
@@ -343,19 +349,19 @@ function addTags(params,assetId,artifactManager,reg){
 	//remove Internal/everyone role if there are roles added only.
     	permissions.forEach(function(rolePermissions) {
                     var role = rolePermissions.role;
-                    
+
                     if(role != 'Internal/private_admin' && role != 'admin' ){
                     	var x = rolePermissions;
                     	if(rolePermissions.permissions.length>0){
                     		um.denyRole('Internal/everyone', artifact.path, carbon.registry.actions.GET);
-                    		                    		
+
                     	}
-                    	
-                    	                    	
+
+
                     }
-      
+
          });
-        
+
 
         var username = server.current(session).username;
         var currentUserRole = USER_ROLE_PREFIX + username;
@@ -368,7 +374,7 @@ function addTags(params,assetId,artifactManager,reg){
                 permissions.splice(i, 1);
             }
         };
-                
+
         //  1. +get +edit +delete +authorize for asset_{owner}
         permissions.push({
             role: currentUserRole,
@@ -420,6 +426,20 @@ function inspectFiles(req, params) {
     var uuid = '';
     var extension;
 
+    //setting default img if no images given for a webapp
+    if(files == null){
+    	var files = {};
+    	var thumbnail = new File("/config/defaults/img/thumbnail.jpg");
+    	var banner = new File("/config/defaults/img/banner.jpg");
+<<<<<<< HEAD
+    	
+=======
+    	log.info(":thumbnailthumbnailthumbnailthumbnailthumbnailthumbnail:"+thumbnail.getName());
+
+>>>>>>> 3a46cd4ca011ccf1c3affc862767b3cc37f1ce58
+    	files["images_thumbnail"]= thumbnail;
+    	files["images_banner"]= banner;
+    }
 
     var storageManager = new storageModule.StorageManager({
         context: 'storage',
@@ -428,7 +448,6 @@ function inspectFiles(req, params) {
             dataSource: storageConfig.dataSource
         }
     });
-
 
     for (var index in files) {
 

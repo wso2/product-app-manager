@@ -388,8 +388,9 @@ var configureUser = function (tenantId, user) {
 
     log.debug('Starting configuringUser.');
 
+    var cleanedUsername = store.user.cleanUsername(user.username);
     //Create the permissions in the options configuration file
-    perms = buildPermissionsList(tenantId, user.username, perms, server);
+    perms = buildPermissionsList(tenantId, cleanedUsername, perms, server);
 
     //Only add the role if permissions are present
 

@@ -13,8 +13,11 @@ var user = {};
          * if the user name is coming from a secondery user store it will be second.com/user hence
          * "/" will be replaced.
          */
+		return username.replace('@', ':').replace('/', ':');
+    };
 
-        return username.replace('@', ':').replace('/', ':');
+    user.cleanUsername=function(username){
+		return cleanUsername(username);
     };
 
     user.privateRole = function (username) {

@@ -3,64 +3,50 @@
 		<div class="span12 search-bar">
 			<div class="row-fluid">
 				<div class="span9">
-					{{#itr assets}}
+				{{#itr assets}}
 					<a href="{{url "/assets/"}}{{key}}" data-toggle="dropdown" class="dropdown-toggle">
-					<li class="dropdown {{#if value.selected}} selected {{/if}}">
-						<div class="dropdown-icon-cont">
-							{{#if value.icon}}
-								<div style="background-image:url({{url ""}}{{value.icon}})"></div>
-							{{else}}
-								<i class="icon-{{key}}"></i>
-							{{/if}}
-						</div>
+						<li class="dropdown {{#if value.selected}} selected {{/if}}">
+							<div class="dropdown-icon-cont">
+								{{#if value.icon}}
+									<div style="background-image:url({{url ""}}{{value.icon}})"></div>
+								{{else}}
+									<i class="icon-{{key}}"></i>
+								{{/if}}
+							</div>
+						        <span>{{value.title}}</span>
+						
 
-						<span>{{value.title}}</span>
-						<!--
-						{{#if value.isCategorySupport}}
-						{{#if value.categories}}
-						<ul aria-labelledby="dLabel" role="menu" class="dropdown-menu">
-						{{#each value.categories}}
-						<li>
-						<a href='{{url "/assets"}}/{{../../key}}?query=category:"{{this}}"'>{{this}}</a>
-						</li>
-						{{/each}}
-						</ul>
-						{{/if}}
-						{{/if}}-->
+						</li> 
+					</a>
 
-					</li> </a>
-
-					{{/itr}}
+				{{/itr}}
 				</div>
 				<div class="span3">
 					{{>search}}
 				</div>
 
-
 				<div class="modal fade" id="messageModal" style="display: none"></div>
-				<div id="confirmation-data" style="display: none;">
-				<div class="modal-header">
-					<button class="close" data-dismiss="modal">&times;</button>
-					<h3 class="modal-title">Modal header</h3>
-				</div>
-				<div class="modal-body">
-					<table class="msg-table">
-					<tbody>
-						<tr>
-							<td class="imageCell"><i class="icon-big-info"></i></td>
-							<td><span class="messageText">User added successfully. You can now sign into the API store using the new user account.</span></td>
-						</tr>
-					</tbody>
-					</table>
-				</div>
-				<div class="modal-footer">
-					<a href="#" class="btn btn-primary">OK</a>
-				</div>
+					<div id="confirmation-data" style="display: none;">
+					<div class="modal-header">
+						<button class="close" data-dismiss="modal">&times;</button>
+						<h3 class="modal-title">Modal header</h3>
+					</div>
+					<div class="modal-body">
+						<table class="msg-table">
+						<tbody>
+							<tr>
+								<td class="imageCell"><i class="icon-big-info"></i></td>
+								<td><span class="messageText">User added successfully. You can now sign into the APP store using the new user account.</span></td>
+							</tr>
+						</tbody>
+						</table>
+					</div>
+					<div class="modal-footer">
+						<a href="#" class="btn btn-primary">OK</a>
+					</div>
 				</div>
 			</div>
-
 		</div>
-
 	</div>
 </div>
 

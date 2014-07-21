@@ -19,6 +19,42 @@ $(function() {
 		var link = $(this).find('.asset-name > a').attr('href');
 		location.href = link;
 	});
+	
+	$(".asset-icon").on('click', function(e) {
+		  var loggedUser = $("#loggedinuser").val();
+		  if(loggedUser == "" || loggedUser == null){
+			  var assetId = $('#slideAsset').data('id');
+			  $('#modal-login').data('value', assetId);
+			  $("#modal-login").modal('show');
+			  e.preventDefault();
+			  e.stopPropagation();
+		  }
+	    	
+	});
+	
+	$(".asset-details").on('click', function(e) {
+		  var loggedUser = $("#loggedinuser").val();
+		  if(loggedUser == "" || loggedUser == null){
+			  var assetId = $('#slideAsset').data('id');
+			  $('#modal-login').data('value', assetId);
+			  $("#modal-login").modal('show');
+			  e.preventDefault();
+			  e.stopPropagation();
+		  }
+	    	
+	});
+	
+	$("#btn-add-gadget").on('click', function(e) {
+		  var loggedUser = $("#loggedinuser").val();
+		  if(loggedUser == "" || loggedUser == null){
+			  var assetId = $('#slideAsset').data('id');
+			  $('#modal-login').data('value', assetId);
+			  $("#modal-login").modal('show');
+			  e.preventDefault();
+			  e.stopPropagation();
+		  }
+	    	
+	});
 
 	mouseStop();
 	applyTopAssetsSlideshow();
@@ -43,15 +79,14 @@ $(function() {
 
 	});
 
-    $("#top-asset-slideshow-ebook").carouFredSel({
-        items : 4,
-        width : "100%",
-        infinite : false,
-        auto : false,
-        circular : false,
-        pagination : "#top-asset-slideshow-pag-ebook"
-
-    });
+        $("#top-asset-slideshow-ebook").carouFredSel({
+		items : 4,
+		width : "100%",
+		infinite : false,
+		auto : false,
+		circular : false,
+		pagination : "#top-asset-slideshow-pag-ebook"
+       });
 
 });
 

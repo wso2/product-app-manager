@@ -67,25 +67,25 @@ var module = function () {
         var apiMgtDAOObj = new apiMgtDAO();
 
         var identityUtil = Packages.org.wso2.carbon.identity.core.util.IdentityUtil;
-        
+
         var index = 0;
         var attributes = asset.attributes;
         var urlPattern = attributes["uritemplate_urlPattern" + index];
-        
+
         while(urlPattern != null && trim(urlPattern).length > 0){
-        	        	
+
         		var URITemplate = Packages.org.wso2.carbon.appmgt.api.model.URITemplate;
         		var uriTemplate = new URITemplate();
-        		 
+
         		uriTemplate.setHTTPVerb(attributes["uritemplate_httpVerb" + index]);
         		uriTemplate.setAuthType(attributes["uritemplate_authType" + index]);
         		uriTemplate.setUriTemplate(attributes["uritemplate_urlPattern" + index]);
         		uriTemplate.setThrottlingTier(attributes["uritemplate_tier" + index]);
         		uriTemplate.setSkipThrottling(attributes["uritemplate_skipthrottle" + index] === "True");
         		webAppObj.getUriTemplates().add(uriTemplate);
-        		               		
+
         		index++;
-        		urlPattern = attributes["uritemplate_urlPattern" + index];        	
+        		urlPattern = attributes["uritemplate_urlPattern" + index];
         }
 
         apiMgtDAOObj.addWebApp(webAppObj);
@@ -138,12 +138,24 @@ var module = function () {
             var name = model.getField('overview.name').value;
             var version = model.getField('overview.version').value;
             var contextname = model.getField('overview.context').value;
+
+            if(contextname.charAt(0)!='/'){
+                contextname = '/'+contextname;
+            }
+
+            var tenantDomain = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantDomain();
+            var tenantIdVal = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantId();
+
+            if(tenantIdVal!='-1234'){
+                contextname = '/t/'+tenantDomain+contextname;
+            }
+
             var tracking_code = model.getField('overview.trackingCode').value;
             var logoutURL = model.getField('overview.logoutUrl').value;
 
             var webappURL = model.getField('overview.webAppUrl').value;
             var revisedURL = logoutURL.replace(webappURL,"");
-                        
+
             var shortName = template.shortName;
 
             log.debug('Artifact name: ' + name);
@@ -169,7 +181,7 @@ var module = function () {
             //name='test-gadget-7';
 
             log.debug('Finished saving asset : ' + name);
-            
+
             log.debug(asset);
 
             //The predicate object used to compare the assets
@@ -196,7 +208,7 @@ var module = function () {
 
             var artifact1 = artifactManager.get(id);
             var attributes = artifact1.attributes;
-            
+
             //adding to database
             addToWebApp(id,provider, name, version, contextname, tracking_code,asset, attributes['sso_singleSignOn'], attributes['sso_idpProviderUrl'], attributes['sso_saml2SsoIssuer'],revisedURL);
 
