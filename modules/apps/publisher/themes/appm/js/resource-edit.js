@@ -42,6 +42,8 @@ $( document ).ready(function() {
                 </tr> \
 				"
             );
+            document.getElementById(RESOURCES_1[i].throttling_tier).selected="true";
+            document.getElementById(RESOURCES_1[i].skipthrottle).selected="true";
             
         }
     });
