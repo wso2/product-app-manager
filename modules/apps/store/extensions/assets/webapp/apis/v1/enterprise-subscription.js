@@ -3,7 +3,7 @@ var resource = (function () {
     var SubscriptionService;
     var subsApi;
 
-    var log = new Log('subscription-api');
+    var log = new Log('enterprise-subscription-api');
 
     SubscriptionService = require('/extensions/assets/webapp/services/subscription.js').serviceModule;
     subsApi = new SubscriptionService.SubscriptionService();

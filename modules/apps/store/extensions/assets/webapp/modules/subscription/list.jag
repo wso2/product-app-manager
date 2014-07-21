@@ -45,6 +45,26 @@ var getAPISubscriptions = function (api, username) {
     }
 };
 
+var getAPISubscription = function (app, applicationName, subscriptionType, username) {
+    var subscription,
+            log = new Log(),
+            store = jagg.module("manager").getAPIStoreObj();
+    try {
+        subscription = store.getSubscription(app.provider, app.name, app.version, applicationName, subscriptionType, username);
+        
+        return {
+            error:false,
+            subscription:subscription
+        };
+    } catch (e) {
+        log.error(e.message);
+        return {
+            error:e,
+            subscription:null
+        };
+    }
+};
+
 var getAPISubscriptionsForApplication = function (username,appname) {
     var subscriptions,
             log = new Log(),

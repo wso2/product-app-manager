@@ -68,6 +68,11 @@ require('/modules/store.js').exec(function (ctx) {
     var DEFAULT_ASSET_VIEW_STATE = 'Published'; //Unless specified otherwise, assets are always visible when Published
     var DEFAULT_LC_ATTRIBUTE_NAME = LIFECYCLE_STATE_PROPERTY;
 
+    // Init subscription service.
+    var subscriptionServiceModule = require('/extensions/assets/webapp/services/subscription.js').serviceModule;
+    var subscriptionService = new subscriptionServiceModule.SubscriptionService();
+    subscriptionService.init(jagg, session);
+
     /*
      The function obtains the assets published by the given provider
      */
@@ -103,6 +108,86 @@ require('/modules/store.js').exec(function (ctx) {
         return options;
     }
 
+    var getSubscriptionInfo = function(asset){
+
+        // Get the enterprise subscription the individual subscription for this user for this app.    
+        var appInfo = {};
+        appInfo["name"] = asset.attributes.overview_name;
+        appInfo["version"] = asset.attributes.overview_version;
+        appInfo["provider"] = asset.attributes.overview_provider;    
+
+        var defaultApplicationName = "DefaultApplication";
+
+        var enterpriseSubscription = subscriptionService.getSubscription(appInfo, defaultApplicationName, "ENTERPRISE", authenticator.getLoggedInUser().username).subscription; 
+
+        var individualSubscription = subscriptionService.getSubscription(appInfo, defaultApplicationName, "INDIVIDUAL", authenticator.getLoggedInUser().username).subscription; 
+
+        // Get all available IDPs (enterprises)
+        var enterprises = getEnterprises();
+
+        var subscriptionInfo = {};
+
+        subscriptionInfo["enterpriseSubscription"] = enterpriseSubscription;
+        subscriptionInfo["individualSubscription"] = individualSubscription;
+        subscriptionInfo["enterprises"] = enterprises;
+        subscriptionInfo["viewData"] = getSubscriptionViewData(enterpriseSubscription, enterprises);
+
+        return subscriptionInfo;
+
+    }
+
+    var getEnterprises = function(){
+
+        var appName = asset.attributes.overview_name;
+
+        var ssoProviderInfo = asset.attributes.sso_ssoProvider.split("-");
+
+        var result = subscriptionService.getEnterprisesForApplication(
+                                    {appName:appName, ssoProviderName:ssoProviderInfo[0], ssoProviderVersion:ssoProviderInfo[1] })
+
+        return result.enterprises;    
+
+    }
+
+    // Returns HBS friendly subscription info.
+    var getSubscriptionViewData = function(enterpriseSubscription, enterprises){
+
+        var viewData = new Array();
+
+        if(!enterprises){
+            return viewData;
+        }
+
+        // Create a Set of trusted IDPs in the enterprise subscription.
+        var trustedIdpsSet = {};
+
+        if(enterpriseSubscription){
+
+            var trustedIdps = JSON.parse(enterpriseSubscription.trustedIdps);
+
+            log.warn(trustedIdps);
+
+            for(var i = 0; i < trustedIdps.length; i++){
+                trustedIdpsSet[trustedIdps[i]] = true;
+            }          
+        }
+
+        for(var i=0; i< enterprises.length; i++){
+            var viewEntry = {};
+            viewEntry["enterprise"] = enterprises[i];
+            
+           
+
+            viewEntry["subscribed"] = enterprises[i] in trustedIdpsSet;
+            
+            viewData.push(viewEntry);
+        }
+
+        return viewData;
+    }
+
+
+
     var assetsByProvider = getAssetsFromProvider(asset, store);
 
     var docs =docsManager.getAllDocumentation(asset.attributes.overview_provider,
@@ -117,23 +202,11 @@ require('/modules/store.js').exec(function (ctx) {
     var availableTiers=apiInfoManager.getTiers();
 
     user=authenticator.getLoggedInUser();
-    var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
-    var apiMgtDAOObj = new apiMgtDAO();
-   
-    var subscriberObj = apiMgtDAOObj.getSubscriber(user.username);
-    var result  = apiMgtDAOObj.getSubscribedAPIs(subscriberObj);
     
-    var iterator = Iterator(result);  
-    for (var pair in iterator){
-	var sAPI = Packages.org.wso2.carbon.appmgt.api.model.SubscribedAPI;
-  	sAPI = pair;
+    var subscriptionInfo = getSubscriptionInfo(asset);
 
-  	var apiID = org.wso2.carbon.appmgt.api.model.APIIdentifier;
-	apiID = sAPI.getApiId();
-	var apiName = apiID.getApiName();
-	if(apiName ==  asset.attributes['overview_name']){
-		isSubscribed = true;
-	}
+    if(subscriptionInfo.individualSubscription){
+        isSubscribed = true;
     }
       
     caramel.render({
@@ -158,6 +231,7 @@ require('/modules/store.js').exec(function (ctx) {
         embedURL: configs.server.http + '/gadgets/ifr?url=' + asset.attributes.overview_url,
         inDashboard: inDashboard,
         isSubscribed:isSubscribed,
+        subscriptionInfo : subscriptionInfo,
         asset: asset,
         tags: [
             {
