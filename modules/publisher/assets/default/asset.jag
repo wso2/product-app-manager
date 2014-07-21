@@ -57,7 +57,17 @@ require('/modules/publisher.js').exec(function(ctx) {
     else {
         //Obtain the username from the session and populate the provider field
         var username = server.current(session).username;//.get('LOGGED_IN_USER');
-        model.set('overview.provider', username);
+        
+        var tenantDomain = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantDomain();
+        var tenantIdVal = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantId();
+        var provider = "";
+        if(tenantIdVal=='-1234'){
+            provider = username;
+        }else {
+            provider = username+'-AT-'+tenantDomain;
+        }
+
+        model.set('overview.provider', provider);
 
         var output = model.export('form');
         var title = shortName;
