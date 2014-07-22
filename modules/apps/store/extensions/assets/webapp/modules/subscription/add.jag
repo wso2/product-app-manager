@@ -24,13 +24,13 @@ var addSubscription = function (api, tier, applicationId, username) {
     }
 };
 
-var addAPISubscription = function (api, subscriptionType, tier, applicationName, username, enterprises) {
+var addAPISubscription = function (api, tier, applicationName, username) {
     var status,
             log = new Log(),
             store = jagg.module("manager").getAPIStoreObj();
 
     try {
-        status = store.addAPISubscription(api.provider, api.name, api.version, subscriptionType, tier, applicationName, username, enterprises);
+        status = store.addAPISubscription(api.provider, api.name, api.version, tier, applicationName, username);
         if (log.isDebugEnabled()) {
             log.debug("addAPISubscription");
         }

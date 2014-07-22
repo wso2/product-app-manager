@@ -28,13 +28,6 @@ var resource = (function () {
         subscription['apiTier'] = parameters.apiTier;
         subscription['apiProvider'] = parameters.apiProvider;
         subscription['appName'] = parameters.appName;
-        subscription['subscriptionType'] = parameters.subscriptionType;
-        subscription['enterprises'] = '';
-
-        if(subscription['subscriptionType'] == 'ENTERPRISE'){
-            subscription['enterprises'] = parameters.enterprises;                     
-        }
-
         subscription['user'] = authenticator.getLoggedInUser().username;
 
         log.info('Trying to add a subscription');

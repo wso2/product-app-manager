@@ -32,7 +32,8 @@ var serviceModule = (function () {
         apiData['name'] = options.apiName;
         apiData['version'] = options.apiVersion;
         apiData['provider'] = options.apiProvider;
-        var result = this.instance.addAPISubscription(apiData, options.subscriptionType, options.apiTier, options.appName, options.user, options.enterprises);
+        var result = this.instance.addAPISubscription(apiData, options.apiTier, options.appName, options.user);
+
         return result;
     };
 
@@ -61,22 +62,6 @@ var serviceModule = (function () {
         var result= this.instance.getAPISubscriptionsForApplication(options.user,"DefaultApplication");
         return (result)?result.subscriptions:[];
     };
-
-
-    Subscriber.prototype.getSubscription = function(appInfo, appName, subscriptionType, user){
-
-        var result = this.instance.getAPISubscription(appInfo, appName, subscriptionType, user); 
-
-        return result;
-    }
-
-    /*
-     Returns all available enterprises for the app.
-    */
-    Subscriber.prototype.getEnterprisesForApplication = function(options){
-        var result= this.instance.getEnterprisesForApplication(options.appName, options.ssoProviderName, options.ssoProviderVersion);
-        return result;
-    }
 
     return{
         SubscriptionService: Subscriber
