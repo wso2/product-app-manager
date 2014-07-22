@@ -29,7 +29,6 @@ var render = function(theme, data, meta, require) {
                 type : data.type,
                 inDashboard : data.inDashboard,
                 isSubscribed:data.isSubscribed,
-                subscriptionInfo : data.subscriptionInfo,
                 embedURL : data.embedURL,
                 isSocial : data.isSocial,
                 tabs:{
