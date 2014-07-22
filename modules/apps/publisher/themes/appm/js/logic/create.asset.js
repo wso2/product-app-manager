@@ -12,7 +12,7 @@ $(function() {
 
 	var tagUrl = TAG_API_URL + tagType;
 	var THEME = 'facebook';
-	var TAG_CONTAINER = '#tag-container';
+	var TAG_CONTAINER = '#tag-test';
 	var CHARS_REM = 'chars-rem';
 	var DESC_MAX_CHARS = 995;
 
@@ -108,6 +108,33 @@ $(function() {
                             				window.location = '/publisher/assets/' + type + '/';
                         			}
                     			})();
+                     /**adding tags**/
+
+                    var data = {};
+                    var tags = [];
+                    var selectedTags;
+
+                    selectedTags = $('#tag-test').tokenInput('get');
+
+                    for (var index in selectedTags) {
+                            tags.push(selectedTags[index].name);
+                    }
+
+                    data['tags'] = tags
+                    if (selectedTags.length > 0) {
+                        $.ajax({
+                            url: TAG_API_URL +  $('#meta-asset-type').val() + '/' + result.id,
+                            type: 'PUT',
+                            data: JSON.stringify(data),
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: 'json',
+                            success: function (response) {},
+                            error: function () {
+                            showAlert('Unable to add the selected tag.', 'error');
+                            }
+                        });
+
+                    }			
 					if($('#autoConfig').is(':checked')){
 						createServiceProvider();
 					}
