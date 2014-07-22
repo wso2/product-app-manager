@@ -76,5 +76,45 @@ z-index: 998;
 display:none;
 }
 
+/* Enterprise subscription pop over styles */
+#enterpriseSubscriptions{
+    margin-top: 10px
+}
+
+#enterpriseSubscriptions .popover{
+    border: 1px solid #229a55;
+}
+
+.popover.bottom .arrow:after {
+    border-bottom-color: #229a55;
+}    
+
+#enterpriseSubscriptions .popover .popover-title{
+    display: none;
+}
+
+#enterpriseSubscriptions .popover.bottom{
+    margin-top: 15px;
+}
+
+#enterpriseSubscriptions .popover .no-enterprises{
+    font-size: 16px;
+}
+
+#enterpriseSubscriptions #enterpriseSubscriptionActions{
+    margin-top: 20px;
+    text-align: center;
+}
+
+.enterprise-entry {
+    display: block;
+    padding-left: 15px;
+    text-indent: -15px;
+}
+.enterprise-entry input {
+    margin-right: 8px;
+    position: relative;
+    top: -1px;
+}
 
 
