@@ -38,18 +38,49 @@ $(function() {
 	        	 
 	        	  var providers_data = JSON.parse(response);
                   	  if((providers_data.success === true) && (!$.isEmptyObject(providers_data.response))) {
-	        	  	  loadSelectedProviders(providers_data.response);
+                  		  loadSelectedProviders(providers_data.response);
                   	  } else {
-                    		  $("#ssoTable").remove();
-	  		  }
+                  		  $("#ssoTable").remove();
+                  	  }
 	          },
 	          error: function(response) {
 	              showAlert('Error adding providers.', 'error');
 	          }
 	    });
 		
-    } else {
-    	  $("#ssoTable").remove(); 
+    } else{
+    	$.ajax({
+	          url: '/publisher/api/sso/providers',
+	          type: 'GET',
+	          contentType: 'application/json',
+	          success: function(response) {
+	        	 
+	        	  var providers_data = JSON.parse(response);
+                	  if((providers_data.success === true) && (!$.isEmptyObject(providers_data.response))) {
+                		  loadProviders(providers_data.response);
+                	  } else {
+                		  $("#ssoTable").remove();
+                	  }
+	          },
+	          error: function(response) {
+	              showAlert('Error adding providers.', 'error');
+	          }
+	    });
+    	
+    }
+    
+    function loadProviders(providers_data){
+		 for(var i=0;i<providers_data.length;i++){
+			  var x = providers_data[i];
+			 
+			  $("#providers").append($("<option></option>").val(x).text(x));
+			  if(x == sso_provider){
+				  $("#providers").val(sso_provider);
+			  }
+		  }
+		 
+		 var value = $('#providers').val();
+		 loadClaims(value);
     }
     
     
@@ -211,10 +242,10 @@ $(function() {
 		if($('#autoConfig').is(':checked')){
 			var selectedProvider = $('#providers').val();
 			$('#sso_ssoProvider').val(selectedProvider);
-	    }else{
-	    	var selectedProvider = " ";
+	    	}else{
+	    		var selectedProvider = " ";
 			$('#sso_ssoProvider').val(selectedProvider);
-	    }
+	    	}
 		
 
 		//Create the data object which will be sent to the server
@@ -234,7 +265,6 @@ $(function() {
 		var options = {
 
 			beforeSubmit : function(arr, $form, options) {
-
 			},
 			success : function(response) {
 				var result = JSON.parse(response);
@@ -242,44 +272,44 @@ $(function() {
 					var asset = result.asset;
 					createMessage(MSG_CONTAINER, SUCCESS_CSS, 'Asset updated successfully');
 					updateFileFields(asset);
-				    (function setupPermissions() {
-				    	var rolePermissions = [];
-                        $('.role-permission').each(function(i, tr) {
-                            var role = $(tr).attr('data-role');
+				        (function setupPermissions() {
+				    		var rolePermissions = [];
+                        			$('.role-permission').each(function(i, tr) {
+                            				var role = $(tr).attr('data-role');
 
-                            var permissions = [];
+                            				var permissions = [];
 
-                            $(tr).children('td').children(':checked').each(function(j, checkbox) {
-                                permissions.push($(checkbox).attr('data-perm'));
-                            });
+                            				$(tr).children('td').children(':checked').each(function(j, checkbox) {
+                                				permissions.push($(checkbox).attr('data-perm'));
+                            				});
 
-                            rolePermissions.push({
-                                role: role,
-                                permissions: permissions
-                            });
-                        });
+                            				rolePermissions.push({
+                                				role: role,
+                                				permissions: permissions
+                            				});
+                        			});
 
 
-                        if (rolePermissions.length > 0) {
-                            $.ajax({
-                                url: '/publisher/asset/' + type + '/id/' + id + '/permissions',
-                                type: 'POST',
-                                processData: false,
-                                contentType: 'application/json',
-                                data: JSON.stringify(rolePermissions),
-                                success: function(response) {
-                                    showModel(type,id);
-                                },
-                                error: function(response) {
-                                    showAlert('Error adding permissions.', 'error');
-                                }
-                            });
-                        }else {
-                            showModel(type,id);
-                        }
-                    })();
-				    if($('#autoConfig').is(':checked')){
-						 createServiceProvider();
+                        			if (rolePermissions.length > 0) {
+                            				$.ajax({
+                                				url: '/publisher/asset/' + type + '/id/' + id + '/permissions',
+                                				type: 'POST',
+                                				processData: false,
+                                				contentType: 'application/json',
+                                				data: JSON.stringify(rolePermissions),
+                                				success: function(response) {
+                                    					showModel(type,id);
+                                				},
+                                				error: function(response) {
+                                    					showAlert('Error adding permissions.', 'error');
+                                				}
+                           			 	});
+                        			}else {
+                            				showModel(type,id);
+                        			}
+                    			})();
+				    	if($('#autoConfig').is(':checked')){
+						createServiceProvider();
 					}
 				} else {
 					var report = processErrorReport(result.report);

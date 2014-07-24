@@ -133,8 +133,7 @@ $(function() {
                             showAlert('Unable to add the selected tag.', 'error');
                             }
                         });
-
-                    }			
+                    }		
 					if($('#autoConfig').is(':checked')){
 						createServiceProvider();
 					}
