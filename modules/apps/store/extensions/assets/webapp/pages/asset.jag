@@ -110,8 +110,7 @@ require('/modules/store.js').exec(function (ctx) {
 
     var getSubscriptionInfo = function(asset){
 
-        // Get the enterprise subscription the individual subscription for this user for this app.
-        username = user.username +"";    
+        // Get the enterprise subscription the individual subscription for this user for this app.    
         var appInfo = {};
         appInfo["name"] = asset.attributes.overview_name;
         appInfo["version"] = asset.attributes.overview_version;
@@ -119,9 +118,9 @@ require('/modules/store.js').exec(function (ctx) {
 
         var defaultApplicationName = "DefaultApplication";
 
-        var enterpriseSubscription = subscriptionService.getSubscription(appInfo, defaultApplicationName, "ENTERPRISE", username).subscription; 
+        var enterpriseSubscription = subscriptionService.getSubscription(appInfo, defaultApplicationName, "ENTERPRISE", authenticator.getLoggedInUser().username).subscription; 
 
-        var individualSubscription = subscriptionService.getSubscription(appInfo, defaultApplicationName, "INDIVIDUAL", username).subscription; 
+        var individualSubscription = subscriptionService.getSubscription(appInfo, defaultApplicationName, "INDIVIDUAL", authenticator.getLoggedInUser().username).subscription; 
 
         // Get all available IDPs (enterprises)
         var enterprises = getEnterprises();
@@ -181,20 +180,22 @@ require('/modules/store.js').exec(function (ctx) {
         return viewData;
     }
 
-    var assetsByProvider = getAssetsFromProvider(asset, store);
 
-    username = user.username + "";
+
+    var assetsByProvider = getAssetsFromProvider(asset, store);
 
     var docs =docsManager.getAllDocumentation(asset.attributes.overview_provider,
             asset.attributes.overview_name,
             asset.attributes.overview_version,
-            username);
+            authenticator.getLoggedInUser().username);
     
     var apiData=apiInfoManager.getAPIDescription(asset.attributes.overview_provider,
            asset.attributes.overview_name,
            asset.attributes.overview_version);
-    var myapps=appInfoApi.getApplications(username);
+    var myapps=appInfoApi.getApplications(authenticator.getLoggedInUser().username);
     var availableTiers=apiInfoManager.getTiers();
+
+    user=authenticator.getLoggedInUser();
     
     var subscriptionInfo = getSubscriptionInfo(asset);
 
