@@ -22,7 +22,6 @@
 					<span class="asset-rating">
                             <div style="width:{{../rating.ratingPx}}px"></div>
                     </span>
-                    
                     <!--The subscription option should only be visible if the user is logged in-->
                     {{>asset-utilization ../../.}}
 
@@ -43,8 +42,14 @@
             </li>
          
              <li>
-                <a href="#tab-docs" data-toggle="tab" data-type="comments">{{t "Documentation"}}</a>
+                <a href="#tab-docs" data-toggle="tab" data-type="docs">{{t "Documentation"}}</a>
             </li>
+            
+            <li>
+		<a href="#tab-reviews" data-toggle="tab" data-type="comments">{{t "User Reviews"}}</a>
+            </li>
+            
+           
         </ul>
 
         <div class="tab-content">
@@ -59,11 +64,21 @@
                     {{> documentation .}}
                 </div>
             </div>
-
-                    
- 			<div class="tab-pane" id="tab-docs">
-                
-            </div>
+            
+            <div class="tab-pane" id="tab-reviews">
+            	{{#with asset}}
+    		{{#attributes}}
+             		<iframe name="socialIfr" id="socialIfr" src="../../../social/?target={{../../type}}:{{../id}}&user={{../../user.username}}" 
+				width="100%" height="100%" style="height: 300px;"></iframe>
+                	{{#if ../../inDashboard}
+                		<div id="comment-content" class="content"></div>
+			{{else}}
+				<div id="comment-content" class="content user-review"></div>
+			{{/if}}
+		{{/attributes}}
+    		{{/with}}	
+           </div>
+            
         </div>
         
          <div class="modal fade" id="messageModal1" style="display:none"></div>

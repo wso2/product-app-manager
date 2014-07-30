@@ -1,4 +1,5 @@
 $(function () {
+		
     var $tab = $('#tab-reviews');
     $('a').click(function(){
         var tab = $(this).data("type");
@@ -14,11 +15,10 @@ $(function () {
     var SOCIAL_PARAM_SCRIPT='script';
 
     if (isSocial) {
-        var script = document.createElement('script');
-        script.type = $(SOCIAL_CONTAINER_ID).data(SOCIAL_PARAM_SCRIPT_TYPE);
-        script.src = $(SOCIAL_CONTAINER_ID).data(SOCIAL_PARAM_SCRIPT);
-
-        document.body.appendChild(script);
+    	  var script = document.createElement('script');
+          script.type = $(SOCIAL_CONTAINER_ID).data(SOCIAL_PARAM_SCRIPT_TYPE);
+          script.src = $(SOCIAL_CONTAINER_ID).data(SOCIAL_PARAM_SCRIPT);
+          document.body.appendChild(script);
     } else {
         var comments = {
                 interval: 5 * 1000,
