@@ -120,7 +120,8 @@
 								resource.url_pattern = RESOURCES[index].value;
 								resource.http_verb = RESOURCES[index+1].value;
 								resource.throttling_tier =RESOURCES[index+2].value;
-								resource.skipthrottle = RESOURCES[index+3].value
+								resource.skipthrottle = RESOURCES[index+3].value;
+								resource.user_roles = RESOURCES[index+4].value
 								RESOURCES_1.push(resource);
 								uriTemplate++;
 							}
@@ -136,6 +137,7 @@
 										<th style="width: 70px">HTTP Verb</th>
 										<th style="width: 150px">Auth Type</th>
 										<th style="width: 100px">Throttling Tier</th>
+										<th style="width: 190px">User Roles</th>
 										<th style="width: 55px"></th>
 									</tr>
 								</thead>

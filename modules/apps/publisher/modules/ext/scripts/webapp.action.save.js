@@ -82,6 +82,7 @@ var module = function () {
         		uriTemplate.setUriTemplate(attributes["uritemplate_urlPattern" + index]);
         		uriTemplate.setThrottlingTier(attributes["uritemplate_tier" + index]);
         		uriTemplate.setSkipThrottling(attributes["uritemplate_skipthrottle" + index] === "True");
+        		uriTemplate.setUserRoles(attributes["uritemplate_userRoles" + index]);
         		webAppObj.getUriTemplates().add(uriTemplate);
 
         		index++;
@@ -175,6 +176,8 @@ var module = function () {
             var rxtManager = context.rxtManager;
 
             var artifactManager = rxtManager.getArtifactManager(shortName);
+            //log.info("iurghrthhigrt " + String(asset));
+            //log.info("Ksun >>>> " + stringify(asset));
 
             artifactManager.add(asset);
 

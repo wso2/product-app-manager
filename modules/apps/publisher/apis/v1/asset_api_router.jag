@@ -47,6 +47,62 @@ routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}', functio
     }
 });
 
+routeManager.register('POST', 'publisher', '/publisher/api/asset/delete/{type}/{id}', function (context) {
+		
+	var shortName = context.params.type;
+	var id = context.params.id;
+	var msg={};
+	var artifactManager = rxtManager.getArtifactManager(shortName);
+	var server  = require('store').server;
+	var username = server.current(session).username;
+		    
+	try {
+		  	//Get the original artifact
+			var originalArtifact = artifactManager.get(id);
+		    var params = context.request.getContent();
+		    var attributes = originalArtifact.attributes;
+		        
+		    var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
+		    //var SSOProvider = Packages.org.wso2.carbon.appmgt.api.model.SSOProvider;
+		    var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
+		    
+		    var apiIdentifierObj = new apiIdentifier(attributes["overview_provider"], attributes["overview_name"], attributes["overview_version"]);
+		    var apiMgtDAOObj = new apiMgtDAO();
+		    //var ssoProvider = new SSOProvider();
+		    //var isDeletedServiceProvder = ssoProvider.removeProvider(ssoProvider.getProvider(attributes["overview_name"]));	
+		    var isDeleted = apiMgtDAOObj.deleteApp(id,apiIdentifierObj,username);
+		        
+		    if((isDeleted==true)||(isDeletedServiceProvder==true)){ 
+		    	msg['ok']=true;
+		        msg['message']='asset delete';
+		        print(msg);
+		        
+		        try {
+		        		artifactManager.remove(id);
+	
+		        	} catch (e) {
+		        	        
+		        		log.debug('Asset ' + id + 'could not be removed.An exception was thrown: ' + e);
+		        	    response.sendError(404, 'Asset with id: ' + id + ' could not be removed.');
+		        	}      	    
+		        	
+		    }else if (isDeleted==false){
+		        msg['ok']=false;
+		        msg['message']='asset subscribed';
+		        print(msg);
+		    }else{
+		       	msg['ok']=null;
+		        msg['message']='asset error';
+		        print(msg);
+		    }
+		
+	} catch (e) {
+		log.debug('The asset ' + id + ' could not be deleted.The following exception was thrown: ' + e);
+		response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
+	}
+});
+
+
 routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
 
     var shortName = context.params.type;
@@ -139,7 +195,35 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}', functi
 
 });
 
+	routeManager.register('GET', 'publisher', '/publisher/api/asset/userRoles/{type}/{id}', function (context) {
+	
+	    var type = context.params.type;
+	    var id = context.params.id;
+	
+	    var artifactManager = rxtManager.getArtifactManager(type);
+	
+	    var artifact = artifactManager.get(id);
+	
+	    //Obtain the path of the asset
+	    var path = artifact.path;
+	
+	    //Obtain the tags
+	    var tags = rxtManager.registry.tags(path);
+	
+	    //Create a tag array
+	    var counter = 0;
+	    var tagArray = [];
+	
+	    for (var index in tags) {
+	        tagArray.push({id: counter, name: tags[index]});
+	    }
+	
+	    print(tagArray);
+	});
+
+
 routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
+	
     var shortName = context.params.type;
     var id = context.params.id;
     var msg={};
@@ -165,14 +249,13 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
 
         //Get the original artifact
         var originalArtifact = artifactManager.get(id);
-
+       
         modelA.import('form.importer', context.post);
 
         //Validation requires the lifecycle state
         modelA.set('*.lifecycleState',originalArtifact.lifecycleState);
 
         var report=modelA.validate();
-
         //Check if the validation check has failed
         if((report)&&(report.failed)){
 
@@ -187,7 +270,7 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
         modelA.set('*.id', id);
 
         modelB.import('asset', originalArtifact);
-
+       
         //Checks whether two models are equal
         var reqProps=['overview.name', 'overview.provider', 'overview.version']
 
@@ -203,10 +286,11 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
         }
         modelA.set("overview.createdtime",modelB.get("overview.createdtime").value);
         var artifact = modelA.export('asset.exporter');
+       
 
         var index = 0;
 	var uritemplate = "uritemplate_urlPattern" + index;
-		
+	
 	while (uritemplate in artifact.attributes) {
 		var urlPattern = artifact.attributes['uritemplate_urlPattern'+index];
 		if(urlPattern == "null" || urlPattern == "" ){
@@ -214,14 +298,18 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
 			var key_httpVerb = 'uritemplate_httpVerb' + index;
 			var key_tier = 'uritemplate_tier'  + index;
 			var key_skipthrottle = 'uritemplate_skipthrottle'  + index;
-				
+			var key_user_roles = 'uritemplate_userRoles' + index;
+						
+							
 			delete artifact.attributes[key_pattern];
 			delete artifact.attributes[key_httpVerb];
 			delete artifact.attributes[key_tier];
 			delete artifact.attributes[key_skipthrottle];
+			delete artifact.attributes[key_user_roles];		
 		}
 		index++;
 		uritemplate = "uritemplate_urlPattern" + index;
+		
 	}
 
         dataInjector.inject(artifact,DataInjectorModes.UPDATE);
@@ -269,8 +357,10 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
         msg['message']='asset updated';
         msg['asset']=artifact;
         print(msg);
+      
 
     } catch (e) {
+ 		log.warn(e)
         log.debug('The asset ' + id + ' could not be updated.The following exception was thrown: ' + e);
         response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
     }
