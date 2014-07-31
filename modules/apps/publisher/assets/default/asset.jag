@@ -20,6 +20,7 @@ require('/modules/publisher.js').exec(function(ctx) {
     var caramel = require('caramel');
     var server = require('store').server;
     var storeUser=require('store').user;
+    var apiProvider = jagg.module('manager').getAPIProviderObj();
     var utility = require('/modules/utility.js').rxt_utility();
     var assetCachingModule = require('/modules/cache/cache.manager.js').assetCachingModule();
     var publisher = require('/modules/publisher.js').publisher(request, session);
@@ -278,6 +279,9 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
         //Add the tags
         addTags(context.post,assetId,artifactManager,reg);
 
+        // Save external entitlement policies
+        saveExternalEntitlementPolicies(context.post);
+
         print({ok:true,message:'asset added',id:assetId});
     }
     catch (e) {
@@ -296,6 +300,27 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
 
         overridePermissions(assetId, artifactManager, permissions);
     });
+
+/**
+* Saves external entitlement policies.
+*/
+function saveExternalEntitlementPolicies(params){
+
+    var policies = parse(params['entitlementPolicies']);
+    var policiesToBeSaved = new Array();
+
+    var EntitlementPolicy = Packages.org.wso2.carbon.appmgt.api.model.entitlement.EntitlementPolicy;
+    var entitlementPolicy;
+    for(var i = 0; i < policies.length; i++){
+        entitlementPolicy  = new EntitlementPolicy();
+        entitlementPolicy.setPolicyContent(policies[i]);
+        policiesToBeSaved.push(entitlementPolicy);
+    }
+
+    apiProvider.saveEntitlementPolicies(policiesToBeSaved);
+
+}
+
 
 /*
 The function is used to add tags to the provided asset id
