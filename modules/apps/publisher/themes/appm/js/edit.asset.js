@@ -38,7 +38,8 @@ $(function() {
 	        	 
 	        	  var providers_data = JSON.parse(response);
                   	  if((providers_data.success === true) && (!$.isEmptyObject(providers_data.response))) {
-                  		  loadSelectedProviders(providers_data.response);
+                  		  
+                  		loadSelectedProviders(providers_data.response);
                   	  } else {
                   		  $("#ssoTable").remove();
                   	  }
@@ -68,7 +69,7 @@ $(function() {
 	    });
     	
     }
-    
+
     function loadProviders(providers_data){
 		 for(var i=0;i<providers_data.length;i++){
 			  var x = providers_data[i];
@@ -82,6 +83,7 @@ $(function() {
 		 var value = $('#providers').val();
 		 loadClaims(value);
     }
+    
     
     
     function loadSelectedProviders(providers_data){
@@ -348,6 +350,7 @@ $(function() {
 		$('.' + CHARS_REM).text('Characters left: ' + left);
 	});
 	
+	//auto complete Roles
 	
 	 $('#roles').tokenInput('/publisher/api/lifecycle/information/meta/' + $('#meta-asset-type').val() + '/roles', {
 	        theme: 'facebook',

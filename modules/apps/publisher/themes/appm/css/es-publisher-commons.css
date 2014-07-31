@@ -15,6 +15,9 @@
         src: url('../font/Lato-Bol-webfont.eot?#iefix') format('embedded-opentype'), url('../font/Lato-Bol-webfont.woff') format('woff'), url('../font/Lato-Bol-webfont.ttf') format('truetype'), url('../font/Lato-Bol-webfont.svg#cherokee') format('svg');
     }
 }
+.userRoles ul.token-input-list-facebook {
+    width: 200px;
+}
 body {
     font: 14px/1.531 'Lato', sans-serif;
     color: #34495E;
