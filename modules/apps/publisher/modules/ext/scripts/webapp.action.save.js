@@ -176,13 +176,9 @@ var module = function () {
             var rxtManager = context.rxtManager;
 
             var artifactManager = rxtManager.getArtifactManager(shortName);
-            //log.info("iurghrthhigrt " + String(asset));
-            //log.info("Ksun >>>> " + stringify(asset));
-
+                        
             artifactManager.add(asset);
-
-            //name='test-gadget-7';
-
+            
             log.debug('Finished saving asset : ' + name);
 
             log.debug(asset);
