@@ -68,9 +68,9 @@ var serviceModule = (function () {
         var documents;
 
         //Check if there has been exception while retrieving the documents
-        if(data.error!=false){
-            throw documents.error;
-        }
+//        if(data.error!=false){
+//            throw documents.error;
+//        }
 
         documents=data.documentations;
 

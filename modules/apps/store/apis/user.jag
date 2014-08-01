@@ -16,8 +16,8 @@ require('/modules/store.js').exec(function (ctx) {
             parameters;
   
 
-	var authenticator=new AuthService.Authenticator();
-    authenticator.init(jagg,session);
+   var authenticator=new AuthService.Authenticator();
+   authenticator.init(jagg,session);
 
     if (matcher.match('/{context}/apis/user/{action}')) {
         action = matcher.elements().action;
@@ -26,12 +26,13 @@ require('/modules/store.js').exec(function (ctx) {
                 try {
                     data = request.getContent();
                     error = !user.login(data.username, data.password, session);
-					var tenant = ctx.tenant;
+	            var tenant = ctx.tenant;
 
-                   // parameters=request.getAllParameters();
+                    //parameters=request.getAllParameters();
                     userDetails['username']=data.username;
                     userDetails['password']=data.password;
-					userDetails['tenantId']=tenant;
+		    userDetails['tenantId']=tenant;
+		    userDetails['action']="login";				
 
                     authResult=authenticator.login(userDetails);
                     if (error) {
@@ -50,10 +51,10 @@ require('/modules/store.js').exec(function (ctx) {
             case 'logout':
                 try {
                     user.logout();
-					userlogged=authenticator.getLoggedInUser();
-					if(userlogged){
-						authenticator.logout();
-					}
+		    userlogged=authenticator.getLoggedInUser();
+		    if(userlogged){
+			authenticator.logout();
+		    }
                 } catch (e) {
                     log.error(e);
                     error = true;
@@ -68,7 +69,7 @@ require('/modules/store.js').exec(function (ctx) {
                 try {
                     data = request.getContent();
                     //user.register(data.username, data.password);
-		            storeHostObj.addUser(data.username, data.password);
+		    storeHostObj.addUser(data.username, data.password);
                 } catch (e) {
                     log.error(e);
                     error = true;

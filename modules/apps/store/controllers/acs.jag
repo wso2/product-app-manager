@@ -1,4 +1,7 @@
 <%
+include('/extensions/assets/webapp/modules/jagg/jagg.jag');
+
+
 (function () {
     var log = new Log(),
             configs = require('/config/store.json'),
@@ -29,10 +32,18 @@
 
                 if (sso.client.validateSignature(samlRespObj, keyStoreProps)) {
                     var sessionObj = sso.client.decodeSAMLLoginResponse(samlRespObj, samlResponse, sessionId);
+                    var username = sessionObj.loggedInUser;                                   
 
                     if (sessionObj.sessionIndex != null || sessionObj.sessionIndex != 'undefined') {
+                    	
                         session.put("LOGGED_IN_USER", sessionObj.loggedInUser);
                         session.put("Loged", "true");
+                        
+                        username = username + "";
+                        var userDetails={};
+                        userDetails['username']=username;
+                        userDetails['action']="SSOLogin";
+                        authResult=authenticator.login(userDetails);
 
                         sso_sessions[sessionObj.sessionId] = sessionObj.sessionIndex;
 

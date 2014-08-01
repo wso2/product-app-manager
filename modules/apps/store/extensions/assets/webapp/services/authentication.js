@@ -20,20 +20,28 @@ var serviceModule = (function () {
     };
 
     Authenticator.prototype.login = function (options) {
-        var result = this.instance.login(options.username, options.password, options.tenant);
+    	if(options.action == "SSOLogin"){
+ 		var userData = {};
+                var result = this.instance.loginWithSAMLToken(options.username);
+                if (result.error) {
+                     	throw result.message;
+                }else{
+			userData['username'] = options.username;
+                	this.context.setUser(userData);
+    		}
+    	}else {
+		var result = this.instance.login(options.username, options.password, options.tenant);
+            	if (result.error) {
+			throw result.message;
+            	}else {
+                	var userData = {};
+                	userData['username'] = options.username;
+                	userData['isSuperTenant'] = result.isSuperTenant;
+                	userData['cookie'] = result.cookie;
+                	this.context.setUser(userData);
 
-        //Check if an error has occurred
-        if (result.error) {
-            throw result.message;
-        }
-        else {
-            var userData = {};
-            userData['username'] = options.username;
-            userData['isSuperTenant'] = result.isSuperTenant;
-            userData['cookie'] = result.cookie;
-            this.context.setUser(userData);
-
-        }
+            	}
+    	}
 
     };
 

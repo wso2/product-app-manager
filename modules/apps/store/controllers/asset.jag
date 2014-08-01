@@ -1,6 +1,6 @@
 <%
 var caramel;
-var DEFAULT_SOCIAL_APP_SCRIPT='https://localhost:9443/social/export-js/social.js' ;
+/**var DEFAULT_SOCIAL_APP_SCRIPT='https://localhost:9443/social/export-js/social.js' ;
 var DEFAULT_SOCIAL_APP='../../../social/';
 var DEFAULT_SOCIAL_SCRIPT_TYPE='text/javascript';
 
@@ -9,7 +9,7 @@ var DEFAULT_SOCIAL_SCRIPT_TYPE='text/javascript';
  * the iframe hosting the social component
  * @returns A JSON object which contains the social app configuration details
  */
-var getSocialAppDetails=function(){
+/*var getSocialAppDetails=function(){
     var config=require('/config/store.json').socialAppConnectionInfo||{};
 
     if(!config.hasOwnProperty('script')){
@@ -25,7 +25,7 @@ var getSocialAppDetails=function(){
     }
 
     return config;
-};
+};*/
 
 require('/modules/store.js').exec(function (ctx) {
     var asset, aid, title,
