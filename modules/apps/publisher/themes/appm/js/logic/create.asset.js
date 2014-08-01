@@ -62,6 +62,8 @@ $(function() {
 				$('#sso_ssoProvider').val(selectedProvider);
 		 }
 		
+		 // Add entitlement policies.
+		 $('#entitlementPolicies').val(JSON.stringify(entitlementPolicies));
 
  	var options = { 
       
