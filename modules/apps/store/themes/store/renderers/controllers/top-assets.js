@@ -17,7 +17,7 @@ var render = function (theme, data, meta, require) {
         body: [
             {
                 partial: 'top-assets',
-                context: require('/helpers/top-assets.js').currentPage(data.topAssets,data.sso,data.user)
+                context: require('/helpers/top-assets.js').currentPage(data.topAssets,data.sso,data.user,data.config)
             }
         ],
         right: [

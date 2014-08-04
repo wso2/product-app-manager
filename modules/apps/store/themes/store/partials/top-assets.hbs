@@ -4,6 +4,11 @@
 	<input type="hidden" value="{{user.username}}" id="loggedinuser" name="loggedinuser">
 {{/if}}
 
+	<input type="hidden" value="{{config.localIP}}" id="localIP" name="localIP">	
+	<input type="hidden" value="{{config.httpsPort}}" id="httpsPort" name="httpsPort">
+	
+
+
 {{#if popularAssets}}
 	<div id="asset-slideshow-cont">
 		<div class="html_carousel">

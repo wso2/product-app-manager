@@ -21,6 +21,10 @@ require('/modules/store.js').exec(function (ctx) {
             subscription = false;
 
     caramel = require('caramel');
+    process = require('process'),
+    localIP = "https://" + process.getProperty('server.host'),
+    httpsPort = process.getProperty('https.port');
+        
     url = '/assets/' + type + '/?' + (tag ? 'tag=' + tag + '&' : '') + (query ? 'query=' + query + '&' : '');
     paging = store.assetsPaging(request);
     mainPage = type;
@@ -127,6 +131,10 @@ require('/modules/store.js').exec(function (ctx) {
                     data: store.tags(type)
                 }
             ];
+        },
+        config:{
+			localIP : localIP,
+			httpsPort : httpsPort
         },
         assets: assets,
         paging: {

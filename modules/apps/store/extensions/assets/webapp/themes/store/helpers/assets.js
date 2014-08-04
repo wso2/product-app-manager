@@ -27,3 +27,12 @@ var resources = function (page, meta) {
     o.css.push('cstyles.css');
     return o;
 };
+
+var cp = that.currentPage;
+
+var currentPage = function (assetsx,ssox,userx, paging,config) {
+  var c = cp(assetsx,ssox,userx, paging);   
+  c.config = config;
+  return c;  
+};
+

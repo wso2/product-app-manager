@@ -6,12 +6,13 @@ var resources = function (page, meta) {
     };
 };
 
-var currentPage = function (items,sso,user) {
+var currentPage = function (items,sso,user,config) {
     var out  = {
         'assets':items.assets,
         'popularAssets': items.popularAssets,
         'sso': sso,
-        'user': user
+        'user': user,
+        'config':config
     };
     return out;
 };

@@ -5,6 +5,11 @@
 	{{else}}
 		<input type="hidden" value="{{user.username}}" id="assetsloggedinuser" name="loggedinuser">
 	{{/if}}
+	
+	<input type="hidden" value="{{config.localIP}}" id="assetsLocalIP" name="assetsLocalIP">	
+	<input type="hidden" value="{{config.httpsPort}}" id="assetshttpsPort" name="assetshttpsPort">
+	
+	
         
 	{{#if assets}}
 	{{#slice assets size="4"}}

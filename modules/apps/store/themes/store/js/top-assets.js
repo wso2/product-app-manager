@@ -23,9 +23,11 @@ $(function() {
 	$(".asset-icon").on('click', function(e) {
 		  var loggedUser = $("#loggedinuser").val();
 		  if(loggedUser == "" || loggedUser == null){
-			  var assetId = $('#slideAsset').data('id');
-			  $('#modal-login').data('value', assetId);
-			  $("#modal-login").modal('show');
+			  //var assetId = $('#slideAsset').data('id');
+			  var localIP = $("#localIP").val();
+			  var port = $("#httpsPort").val()
+			  location.href = localIP + ":" + port + "/store/login";		  
+
 			  e.preventDefault();
 			  e.stopPropagation();
 		  }
@@ -35,9 +37,11 @@ $(function() {
 	$(".asset-details").on('click', function(e) {
 		  var loggedUser = $("#loggedinuser").val();
 		  if(loggedUser == "" || loggedUser == null){
-			  var assetId = $('#slideAsset').data('id');
-			  $('#modal-login').data('value', assetId);
-			  $("#modal-login").modal('show');
+			  //var assetId = $('#slideAsset').data('id');
+			  var localIP = $("#localIP").val();
+			  var port = $("#httpsPort").val()
+			  location.href = localIP + ":" + port + "/store/login";
+			  
 			  e.preventDefault();
 			  e.stopPropagation();
 		  }

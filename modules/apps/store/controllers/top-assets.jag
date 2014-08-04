@@ -6,7 +6,7 @@ var caramel;
 
 require('/modules/store.js').exec(function (ctx) {
     var paging, count, current, loggedUser, manager, assets, length, recentDiff,
-            popularDiff, recent, popular, type,
+            popularDiff, recent, popular, type, process,
             log = ctx.log,
             query = ctx.params.query,
             tag = ctx.params.tag,
@@ -29,7 +29,10 @@ require('/modules/store.js').exec(function (ctx) {
             utility = require('/modules/util.js');
 
     caramel = require('caramel');
-
+    process = require('process'),
+    localIP = "https://" + process.getProperty('server.host'),
+    httpsPort = process.getProperty('https.port');
+    
     length = types.length;
     recent = Math.floor(recentCount / length);
     recentDiff = recentCount - recent * length;
@@ -79,6 +82,10 @@ require('/modules/store.js').exec(function (ctx) {
         topAssets: {
             assets: items,
             popularAssets: popularItems
+        },
+        config:{
+        	localIP : localIP,
+        	httpsPort : httpsPort
         },
         tags: {
             url: '/assets/' + type + '?page=1&tag=',
