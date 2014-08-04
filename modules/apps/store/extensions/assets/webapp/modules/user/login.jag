@@ -61,7 +61,7 @@ var loginWithSAMLToken = function (username) {
    
     var subscriber = store.getSubscriber(username);
     if (!subscriber) {
-        store.addSubscriber(userName);
+        store.addSubscriber(username);
         subscriber = store.getSubscriber(username);
     }
     return {
