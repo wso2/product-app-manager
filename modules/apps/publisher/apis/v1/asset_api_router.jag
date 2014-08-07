@@ -59,34 +59,35 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/delete/{type}/{
 	try {
 		  	//Get the original artifact
 			var originalArtifact = artifactManager.get(id);
-		    var params = context.request.getContent();
 		    var attributes = originalArtifact.attributes;
 		        
 		    var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
-		    //var SSOProvider = Packages.org.wso2.carbon.appmgt.api.model.SSOProvider;
 		    var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
-		    
+		    var webApp = Packages.org.wso2.carbon.appmgt.api.model.WebApp;
+		   
 		    var apiIdentifierObj = new apiIdentifier(attributes["overview_provider"], attributes["overview_name"], attributes["overview_version"]);
 		    var apiMgtDAOObj = new apiMgtDAO();
-		    //var ssoProvider = new SSOProvider();
-		    //var isDeletedServiceProvder = ssoProvider.removeProvider(ssoProvider.getProvider(attributes["overview_name"]));	
-		    var isDeleted = apiMgtDAOObj.deleteApp(id,apiIdentifierObj,username);
-		        
-		    if((isDeleted==true)||(isDeletedServiceProvder==true)){ 
+		    var webAppObj = new webApp(apiIdentifierObj);
+		    
+		    var isDeleted = apiMgtDAOObj.deleteApp(apiIdentifierObj,username,webAppObj);
+		    
+		    if(isDeleted==1){ 
 		    	msg['ok']=true;
 		        msg['message']='asset delete';
 		        print(msg);
 		        
 		        try {
 		        		artifactManager.remove(id);
-	
 		        	} catch (e) {
-		        	        
 		        		log.debug('Asset ' + id + 'could not be removed.An exception was thrown: ' + e);
 		        	    response.sendError(404, 'Asset with id: ' + id + ' could not be removed.');
 		        	}      	    
 		        	
-		    }else if (isDeleted==false){
+		    }else if (isDeleted==2){
+		        msg['ok']=true;
+		        msg['message']='asset subscribed';
+		        print(msg);
+		    }else if (isDeleted==3){
 		        msg['ok']=false;
 		        msg['message']='asset subscribed';
 		        print(msg);
