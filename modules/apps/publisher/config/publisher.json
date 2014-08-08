@@ -50,7 +50,7 @@
         "RENDERER": "/modules/router.caramel-renderer.js"
     },
     "ssoConfiguration": {
-        "enabled": false,
+        "enabled": true,
         "issuer": "publisher",
         "identityProviderURL": "%https.host%/sso/samlsso.jag",
         "keyStorePassword": "wso2carbon",
