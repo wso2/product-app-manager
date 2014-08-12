@@ -240,6 +240,9 @@ $(function() {
 		//Extract the fields
 		var fields = $('#form-asset-edit :input');
 		
+		// Add entitlement policies.
+		$('#entitlementPolicies').val(JSON.stringify(entitlementPolicies));
+
 		if($('#autoConfig').is(':checked')){
 			var selectedProvider = $('#providers').val();
 			$('#sso_ssoProvider').val(selectedProvider);

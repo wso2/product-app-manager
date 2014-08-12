@@ -299,13 +299,15 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
 			var key_tier = 'uritemplate_tier'  + index;
 			var key_skipthrottle = 'uritemplate_skipthrottle'  + index;
 			var key_user_roles = 'uritemplate_userRoles' + index;
+            var key_policy_id = 'uritemplate_entitlementPolicyId' + index;
 						
-							
 			delete artifact.attributes[key_pattern];
 			delete artifact.attributes[key_httpVerb];
 			delete artifact.attributes[key_tier];
 			delete artifact.attributes[key_skipthrottle];
-			delete artifact.attributes[key_user_roles];		
+			delete artifact.attributes[key_user_roles];
+            delete artifact.attributes[key_policy_id];
+            		
 		}
 		index++;
 		uritemplate = "uritemplate_urlPattern" + index;
@@ -352,7 +354,9 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
                     //Save OAuth APIs consumer details per given web-app
                     apiMgtDAOObj.addOAuthAPIAccessInfo(webAppObj);
         }
-                
+        
+        saveExternalEntitlementPolicies(appMgtProviderObj, context.post);
+
         msg['ok']=true;
         msg['message']='asset updated';
         msg['asset']=artifact;
@@ -365,6 +369,32 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
         response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
     }
 });
+
+/**
+* Saves external entitlement policies.
+*/
+function saveExternalEntitlementPolicies(apiProvider, params){
+
+    var policies = parse(params['entitlementPolicies']);
+    var policiesToBeSaved = new Array();
+
+    var EntitlementPolicy = Packages.org.wso2.carbon.appmgt.api.model.entitlement.EntitlementPolicy;
+    var entitlementPolicy;
+    for(var i = 0; i < policies.length; i++){
+        if(policies[i]){
+            entitlementPolicy  = new EntitlementPolicy();
+            entitlementPolicy.setPolicyId(policies[i]['id']);
+            entitlementPolicy.setPolicyContent(policies[i]['content']);
+            policiesToBeSaved.push(entitlementPolicy);    
+        }
+        
+    }
+
+    if(policiesToBeSaved.length > 0){
+        apiProvider.saveEntitlementPolicies(policiesToBeSaved);    
+    }
+
+}
 
 /*
  The function inspects the files sent with a request.If files are found

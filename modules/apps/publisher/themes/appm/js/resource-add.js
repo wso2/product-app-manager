@@ -7,8 +7,6 @@ var RESOURCES = [
     {"url_pattern":"/*", "http_verb":"OPTIONS" , "throttling_tier":"", "user_roles":"" },
 ];
 
-var entitlementPolicies = new Array();
-
 $( document ).ready(function() {
 
     $("#add_resource").click(function(){
@@ -33,8 +31,8 @@ $( document ).ready(function() {
         var i = $(this).attr("data-index");
         RESOURCES.splice(i, 1);
 
-        // Delete relevant entitlement policy
-        removeEntitlementPolicy(i);
+        // Invalidate relevant entitlement policy
+        invalidateEntitlementPolicy(i);
 
         $("#resource_tbody").trigger("draw");
     });
@@ -43,9 +41,7 @@ $( document ).ready(function() {
         $("#resource_tbody").html("");
         for(var i=0; i< RESOURCES.length; i++){
 
-          // NOTE : tab name 'resource_entitlementPolicy' has been used instead of 'uritemplate_entitlementPolicy'
-          // to avoid the field getting saved in registry
-            $("#resource_tbody").prepend(
+          $("#resource_tbody").prepend(
                 "<tr> \
                   <td><span style='color:#999'>/{context}/{version}/</span>"+ RESOURCES[i].url_pattern +" <input type='hidden' value='"+RESOURCES[i].url_pattern+"' name='uritemplate_urlPattern"+i+"'/></td> \
                   <td><strong>"+ RESOURCES[i].http_verb +"</strong><input type='hidden' value='"+RESOURCES[i].http_verb+"' name='uritemplate_httpVerb"+i+"'/></td> \
@@ -54,6 +50,8 @@ $( document ).ready(function() {
                   <td class='userRoles' style='padding:0px'><input type='text' name='uritemplate_userRoles"+i+"' id='getUserRoles"+i+"' style='width:95%;border:none;'></input></td> \
                   <td> \
                     <a data-index='"+i+"' class='add_entitlement_policy' data-toggle='modal' data-target='#entitlement-policy-editor' ><i class='icon-pencil icon-white'></i></a>&nbsp; \
+                    <a data-index='"+i+"' class='delete_entitlement_policy'><i class='icon-trash icon-white'></i></a>&nbsp; \
+                    <input type='hidden' name='uritemplate_entitlementPolicyId"+i+"'/> \
                   </td> \
                   <td> \
                   	<a data-index='"+i+"' class='delete_resource'><i class='icon-trash icon-white'></i></a>&nbsp; \
@@ -82,23 +80,16 @@ $( document ).ready(function() {
 
     $(document).on("click", ".add_entitlement_policy", function () {
       var resourceIndex = $(this).data('index');
-      $("#entitlement-policy-editor #resource-index").val(resourceIndex);
+      preparePolicyEditor(resourceIndex);
+    })
 
-      // Populate exiting content.
-      var policyContent = entitlementPolicies[resourceIndex];
-
-      if(!policyContent){
-        policyContent = "";
-      }
-
-      $('#entitlement-policy-editor #policy-content').val(policyContent);
-
+    $(document).on("click", ".delete_entitlement_policy", function () {
+      var resourceIndex = $(this).data('index');
+      deleteEntitlementPolicy(resourceIndex);
     })
 
     $(document).on("click", "#btn-policy-save", function () {
-     var policyContent = $('#entitlement-policy-editor #policy-content').val();
-     var resourceIndex = $("#entitlement-policy-editor #resource-index").val();
-     entitlementPolicies[resourceIndex] = policyContent;
+     addEntitlementPolicy(); 
      $("#entitlement-policy-editor").modal('hide');
     })    
 
@@ -106,6 +97,3 @@ $( document ).ready(function() {
 });
 
 
-function removeEntitlementPolicy(index){
-  entitlementPolicies.splice(index, 1);
-};
