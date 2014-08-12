@@ -49,24 +49,20 @@
 							</li>
 							{{else}}
 
-							{{#if sso}}
-							<li>
-								<a href="{{url "/login"}}">{{t "Sign in"}}</a>
-							</li>
-							<li>
-								<a href="{{url "/login"}}" id="btn-register"
-								class="btn btn-primary">{{t "Register"}}</a>
-							</li>
-							{{else}}
-							<li>
-								<a href="#" data-toggle="modal" data-target="#modal-login">{{t "Sign in"}}</a>
-							</li>
-							<li>
-								<a id="btn-register" class="btn btn-primary" data-toggle="modal"
-								data-target="#modal-register">{{t "Register"}}</a>
-							</li>
-							{{/if}}
-
+								{{#if sso}}
+									<li>
+										<a href="{{url "/login"}}">{{t "Sign in"}}</a>
+									</li>
+							
+								{{else}}
+									<li>
+										<a href="#" data-toggle="modal" data-target="#modal-login">{{t "Sign in"}}</a>
+									</li>
+							
+								{{/if}}
+								<li>
+									<a id="btn-register" class="btn btn-primary" data-toggle="modal" data-target="#modal-register">{{t "Register"}}</a>
+								</li>
 							{{/if}}
 
 						</ul>
