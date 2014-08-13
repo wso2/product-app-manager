@@ -313,12 +313,18 @@ function saveExternalEntitlementPolicies(params){
     var EntitlementPolicy = Packages.org.wso2.carbon.appmgt.api.model.entitlement.EntitlementPolicy;
     var entitlementPolicy;
     for(var i = 0; i < policies.length; i++){
-        entitlementPolicy  = new EntitlementPolicy();
-        entitlementPolicy.setPolicyContent(policies[i]);
-        policiesToBeSaved.push(entitlementPolicy);
+        if(policies[i]){
+            entitlementPolicy  = new EntitlementPolicy();
+            entitlementPolicy.setPolicyId(policies[i]['id']);
+            entitlementPolicy.setPolicyContent(policies[i]['content']);
+            policiesToBeSaved.push(entitlementPolicy);    
+        }
+        
     }
 
-    apiProvider.saveEntitlementPolicies(policiesToBeSaved);
+    if(policiesToBeSaved.length > 0){
+        apiProvider.saveEntitlementPolicies(policiesToBeSaved);    
+    }
 
 }
 
