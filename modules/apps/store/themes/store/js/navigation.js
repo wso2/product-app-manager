@@ -45,15 +45,15 @@ $(function() {
 		var username = $('#inp-username-register').val();
 		var password = $('#inp-password-register').val();
 		var confirmPassword = $('#inp-password-confirm').val();
-		
+
 		if(password == confirmPassword){
 			
 			caramel.ajax({
 				type: 'POST',
 				url: '/apis/user/register',
 				data: JSON.stringify({
-					username : $('#inp-username-register').val(),
-					password : $('#inp-password-register').val()
+					username : username,
+					password : password
 				}),
 				success: function (data) {
 					if (!data.error) {
