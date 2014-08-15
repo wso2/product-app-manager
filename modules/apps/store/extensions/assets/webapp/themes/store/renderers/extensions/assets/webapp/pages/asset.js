@@ -28,8 +28,9 @@ var render = function(theme, data, meta, require) {
                 asset : data.asset,
                 type : data.type,
                 inDashboard : data.inDashboard,
-                isSubscribed:data.isSubscribed,
+                isSubscribed: data.isSubscribed,
                 subscriptionInfo : data.subscriptionInfo,
+                isEnterpriseSubscriptionAllowed: data.isEnterpriseSubscriptionAllowed,
                 embedURL : data.embedURL,
                 isSocial : data.isSocial,
                 tabs:{
