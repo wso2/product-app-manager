@@ -122,6 +122,7 @@ require('/modules/store.js').exec(function (ctx) {
 
         var individualSubscription = subscriptionService.getSubscription(appInfo, defaultApplicationName, "INDIVIDUAL", authenticator.getLoggedInUser().username).subscription; 
 
+        
         // Get all available IDPs (enterprises)
         var enterprises = getEnterprises();
 
@@ -200,7 +201,14 @@ require('/modules/store.js').exec(function (ctx) {
     var subscriptionInfo = getSubscriptionInfo(asset);
 
     if(subscriptionInfo.individualSubscription){
-        isSubscribed = true;
+        if(subscriptionInfo.individualSubscription.subscriptionStatus === "UNBLOCKED"){
+        	isSubscribed = true;
+       		subscriptionInfo.individualSubscription["OnHold"] = false;        	        	
+        }else if(subscriptionInfo.individualSubscription.subscriptionStatus === "ON_HOLD"){
+        	subscriptionInfo.individualSubscription["OnHold"] = true;       	        	
+        }else{
+        	subscriptionInfo.individualSubscription["OnHold"] = false;        	        	
+        }
     }
       
     caramel.render({

@@ -46,6 +46,12 @@ var serviceModule = (function () {
 
         return result;
     };
+    
+    Subscriber.prototype.checkSubscriptionWorkflow = function () {
+
+        var result = this.instance.checkSubscriptionWorkflow();
+        return result;
+    };
 
     /*
      The function returns all applications that have subscriptions

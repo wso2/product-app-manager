@@ -9,7 +9,7 @@ $(function(){
     var TIER_FIELD='#subsAppTier';
     var API_URL='/store/resources/webapp/v1/subscription/app';
     var API_UNSUBSCRIPTION_URL='/store/resources/webapp/v1/unsubscription/app';
-
+    var API_SUBSCRIPTION_WORKFLOW = '/store/resources/webapp/v1/subscription-workflow/app';
     
     $('#btnSubscribe').on('click',function(){
 			getAppDetails();
@@ -28,7 +28,7 @@ $(function(){
 
     $('#btnUnsubscribe').on('click',function(){
     	 removeAppDetails();
-   });
+    });
 
    var getAppDetails=function(){
 
@@ -133,18 +133,18 @@ $(function(){
            data:subscription,
            success:function(response){
         	   if(JSON.parse(response).error == false){
-        		   console.info('Successfully subscribed to Web app: '+subscription.apiName);
-        		   //alert('Succsessfully subscribed to the '+subscription.apiName+' Web App.');
+        		console.info('Successfully subscribed to Web app: '+subscription.apiName);
+        		//alert('Succsessfully subscribed to the '+subscription.apiName+' Web App.');
         		   
-                // Update UI based on the subscription type.
-                if(subscription['subscriptionType'] == "INDIVIDUAL"){
-                    showIndividualSubscriptionSuccessfulMessage(subscription.apiName);
-                }else if(subscription['subscriptionType'] == "ENTERPRISE"){
-                    updateUIAfterEnterpriseSubscription(subscription);
-                }
+                	// Update UI based on the subscription type.
+                	if(subscription['subscriptionType'] == "INDIVIDUAL"){
+                    		showIndividualSubscriptionSuccessfulMessage(subscription.apiName);
+                	}else if(subscription['subscriptionType'] == "ENTERPRISE"){
+                    		updateUIAfterEnterpriseSubscription(subscription);
+                	}
         		    
-        	   }else{
-              		    console.info('Error occured in subscribe to web app: '+subscription.apiName);
+        	}else{
+     			console.info('Error occured in subscribe to web app: '+subscription.apiName);
                }
            },
            error : function(response) {
@@ -154,15 +154,42 @@ $(function(){
     };
     
     var showIndividualSubscriptionSuccessfulMessage = function(apiName){
-      $('#messageModal1').html($('#confirmation-data1').html());
-      $('#messageModal1 h3.modal-title').html(('Subscription Successful'));
-      $('#messageModal1 div.modal-body').html('\n\n'+ ('Congratulations! You have successfully subscribed to the ')+'<b>"' + apiName + '</b>"');
-      $('#messageModal1 a.btn-other').html('OK');
-      
-      $('#messageModal1').modal();
-      $('#btnUnsubscribe').show();
-      $('#btnSubscribe').hide();
-      $('#subscribed').val(true);
+    	  $.ajax({
+              url:API_SUBSCRIPTION_WORKFLOW,
+              type:'POST',
+              success:function(response){
+           	   if(JSON.parse(response).status == false){
+           		showIndividualSubscriptionMessage(false,'Subscription Approval','your request to subscribe the application is awaiting administrator approval');
+           	   }else if(JSON.parse(response).status == true){
+           		showIndividualSubscriptionMessage(true,'Subscription Successful','Congratulations! You have successfully subscribed to the ');
+           	   }else{
+        		console.info('Error occured in subscribe to web app: ');
+		   }
+              },
+              error : function(response) {
+			alert('Error occured in subscribe');
+	      }
+           });
+    	
+    
+    }
+    
+    var showIndividualSubscriptionMessage = function(status,messageTitle, messageBody){
+  	  	
+    	$('#messageModal1').html($('#confirmation-data1').html());
+    	$('#messageModal1 h3.modal-title').html((messageTitle));
+    	$('#messageModal1 div.modal-body').html('\n\n'+ (messageBody)+'.');
+    	$('#messageModal1 a.btn-other').html('OK');
+    
+    	$('#messageModal1').modal();
+    	if(status){ 
+    	  	$('#btnUnsubscribe').show();
+          	$('#btnSubscribe').hide();
+          	$('#subscribed').val(true);
+    	} else{
+		$('#btnSubscribe').attr("disabled", true); 
+    	}
+   
     }
     
     var updateUIAfterEnterpriseSubscription = function(subscription){
@@ -201,16 +228,16 @@ $(function(){
                	  	console.info('Successfully unsubscribed to web app: '+subscription.apiName);
                 	//alert('Succsessfully unsubscribed to the '+subscription.apiName+' Web App.');
                	
-              $('#messageModal1').html($('#confirmation-data1').html());
+              		$('#messageModal1').html($('#confirmation-data1').html());
     		    	$('#messageModal1 h3.modal-title').html(('Unsubscription Successful'));
     		    	$('#messageModal1 div.modal-body').html('\n\n'+ ('You have successfully unsubscribed to the ')+'<b>"' + subscription.apiName + '</b>"');
     		    	$('#messageModal1 a.btn-other').html('OK');
 
     		    	$('#messageModal1').modal();
               
-              $('#btnUnsubscribe').hide();
-              $('#btnSubscribe').show();
-	            $('#subscribed').val(false);
+              		$('#btnUnsubscribe').hide();
+              		$('#btnSubscribe').show();
+	            	$('#subscribed').val(false);
               
 		   }else{
            		console.info('Error occured in unsubscribe to web app: '+subscription.apiName);

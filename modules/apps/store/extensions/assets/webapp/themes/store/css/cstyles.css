@@ -117,4 +117,12 @@ display:none;
     top: -1px;
 }
 
+.btn-primary.disabled,
+.btn-primary[disabled] {
+  color: #333333;
+  background-color: #E3E3E3;
+  *background-color: #003bb3;
+}
+
+
 
