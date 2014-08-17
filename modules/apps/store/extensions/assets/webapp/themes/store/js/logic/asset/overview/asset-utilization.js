@@ -15,11 +15,12 @@ $(function(){
 			getAppDetails();
     });
     
+    // TODO : This code silently fails when enterprise subscriptions are not allowed. Handle it nicely.
     $('#btnEnterpriseSubscriptions').popover({
       html:true,
       placement: 'bottom',
       trigger: 'click',
-      content:$(enterpriseSubscriptionManagementPanel).html()
+      content:$('#enterpriseSubscriptionManagementPanel').html()
     });
 
     $(document).on('click', '#btnSaveEnterpriseSubscriptions', function(){

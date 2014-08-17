@@ -6,6 +6,9 @@
     "roles": {
         "Internal/store": {
             "/permission/admin/login": ["ui.execute"]
+        },
+	   "Internal/store-admin": {
+            "/permission/admin/login": ["ui.execute"]
         }
     },
     "userRoles": ["Internal/store"],

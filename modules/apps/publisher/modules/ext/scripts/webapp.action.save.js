@@ -83,6 +83,12 @@ var module = function () {
         		uriTemplate.setThrottlingTier(attributes["uritemplate_tier" + index]);
         		uriTemplate.setSkipThrottling(attributes["uritemplate_skipthrottle" + index] === "True");
         		uriTemplate.setUserRoles(attributes["uritemplate_userRoles" + index]);
+
+                var EntitlementPolicy = Packages.org.wso2.carbon.appmgt.api.model.entitlement.EntitlementPolicy;
+                var entitlementPolicy = new EntitlementPolicy();
+                entitlementPolicy.setPolicyId(attributes["uritemplate_entitlementPolicyId" + index]);
+                uriTemplate.setEntitlementPolicy(entitlementPolicy);
+
         		webAppObj.getUriTemplates().add(uriTemplate);
 
         		index++;

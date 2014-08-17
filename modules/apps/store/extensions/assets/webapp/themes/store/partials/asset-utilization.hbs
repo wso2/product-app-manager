@@ -17,10 +17,12 @@
 		
 	{{/if}}
 
-	<div id="enterpriseSubscriptions">
-		<a id="btnEnterpriseSubscriptions" href="#" class="btn btn-primary" rel="popover">Enterprise Subscriptions</a>
-	  {{>subscriptions/enterprise-subscriptions}}
-	 </div> 
+	{{#if isEnterpriseSubscriptionAllowed}}
+		<div id="enterpriseSubscriptions">
+			<a id="btnEnterpriseSubscriptions" href="#" class="btn btn-primary" rel="popover">Enterprise Subscriptions</a>
+			{{>subscriptions/enterprise-subscriptions}}
+		</div>
+	{{/if}}  
 
 </div>
 	

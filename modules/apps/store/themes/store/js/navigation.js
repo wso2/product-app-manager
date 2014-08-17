@@ -37,37 +37,113 @@ $(function() {
             		dataType: 'json'
         	});
  	};
+    var validateUsername = function(username) {
+
+        var errorMessage = "";
+        //check for username policy requirements
+        if(!username.match(/^[\S]{3,30}$/)){
+            errorMessage = "No conformance";
+            return errorMessage;
+        }else if(username == "null" && username == ''){
+            return errorMessage;
+        }
+        if (username == '') {
+            errorMessage = "Empty string";
+            return errorMessage;
+        }
+        if(username.indexOf("/") > -1){
+            errorMessage = "Domain";
+            return errorMessage;
+        }
+        return errorMessage;
+    }
+
+    var validatePassword = function(pw1, pw2) {
+        var error = "";
+
+        // check for a value in both fields.
+        if (pw1 == '' || pw2 == '') {
+            error = "Empty Password";
+            return error;
+        }
+        //check for password policy requirements
+        if (!pw1.match(/^[\S]{5,30}$/)) {
+            error = "No conformance";
+            return error;
+        }
+        //check the typed passwords mismatch
+        if (pw1 != pw2) {
+            error = "Password Mismatch";
+            return error;
+        }
+        return error;
+    }
+
+    var doValidation = function(usename, pw1, pw2) {
+        var reason = "";
+        reason = validateUsername(usename);
+        if (reason != "") {
+            if (reason == "No conformance") {
+                showError("Entered user name is not conforming to policy. Please enter a user name, which adheres to policy.")
+            } else if (reason == "Empty string") {
+                showError("Entered user name is empty. Please enter a valid user name.");
+            } else if (reason == "Domain") {
+                showError("Entered user name contains a domain. Please enter a valid user name with out a domain.");
+            }
+            return false;
+        }
+        reason = validatePassword(pw1, pw2);
+        if (reason != "") {
+            if (reason == "Empty Password") {
+                showError("Password or Password Repeat fields can not be empty.");
+            } else if (reason == "Password Mismatch") {
+                showError("Password and Password Repeat do not match. Please re-enter.");
+            } else if (reason == "No conformance") {
+                showError("Password does not meet the system requirements. Please try again.")
+            }
+            return false;
+        }
+        return true;
+    }
 
 	var register = function() {
 		if (!$("#form-register").valid())
 			return;
-		
-		caramel.ajax({
-            		type: 'POST',
-            		url: '/apis/user/register',
-            		data: JSON.stringify({
-            			username : $('#inp-username-register').val(),
-   				password : $('#inp-password-register').val()
-            		}),
-            		success: function (data) {
-		        	if (!data.error) {
-				  	$('#messageModal').html($('#confirmation-data').html());
-				      	$('#messageModal h3.modal-title').html(('APP Store - Notification'));
-					$('#messageModal a.btn-primary').html('OK');
-					$('#messageModal div.modal-body').html();
-					$('#messageModal').modal();
-					$('#modal-register').modal('hide');
-					$('#messageModal a.btn-primary').click(function() {
-					$('#messageModal').modal('hide');
-					$('#modal-login').modal('show'); 
-				  	});
-		                } else {
-		        		showError(data.message);
-		        	}
-            		},
-            		contentType: 'application/json',
-            		dataType: 'json'
-        	});
+
+		var username = $('#inp-username-register').val();
+		var password = $('#inp-password-register').val();
+		var confirmPassword = $('#inp-password-confirm').val();
+
+        if(!doValidation(username,password,confirmPassword))
+            return;
+
+        caramel.ajax({
+            type: 'POST',
+            url: '/apis/user/register',
+            data: JSON.stringify({
+                username : username,
+                password : password
+            }),
+            success: function (data) {
+                if (!data.error) {
+                    $('#messageModal').html($('#confirmation-data').html());
+                    $('#messageModal h3.modal-title').html(('APP Store - Notification'));
+                    $('#messageModal a.btn-primary').html('OK');
+                    $('#messageModal div.modal-body').html();
+                    $('#messageModal').modal();
+                    $('#modal-register').modal('hide');
+                    $('#messageModal a.btn-primary').click(function() {
+                        $('#messageModal').modal('hide');
+                        $('#modal-login').modal('show');
+                    });
+                } else {
+                    showError(data.message);
+                }
+            },
+            contentType: 'application/json',
+            dataType: 'json'
+        });
+
 	};
 
 	$('#btn-signout').live('click', function() {

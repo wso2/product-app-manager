@@ -121,7 +121,8 @@
 								resource.http_verb = RESOURCES[index+1].value;
 								resource.throttling_tier =RESOURCES[index+2].value;
 								resource.skipthrottle = RESOURCES[index+3].value;
-								resource.user_roles = RESOURCES[index+4].value
+								resource.user_roles = RESOURCES[index+4].value;
+								resource.entitlement_policy_id = RESOURCES[index+5].value
 								RESOURCES_1.push(resource);
 								uriTemplate++;
 							}
@@ -134,10 +135,11 @@
 								<thead>
 									<tr>
 										<th>URL Pattern</th>
-										<th style="width: 70px">HTTP Verb</th>
-										<th style="width: 150px">Auth Type</th>
-										<th style="width: 100px">Throttling Tier</th>
+										<th style="width: 60px;">HTTP Verb</th>
+										<th style="width: 80px;">Throttling Tier</th>
+										<th style="width: 70px;">Skip Throttling</th>
 										<th style="width: 190px">User Roles</th>
+										<th style="width: 50px;">Access Policy</th>
 										<th style="width: 55px"></th>
 									</tr>
 								</thead>
@@ -145,6 +147,10 @@
 
 								</tbody>
 							</table>
+						</fieldset>
+
+						<fieldset>
+							<input type='hidden' id="entitlementPolicies" name="entitlementPolicies" /> 
 						</fieldset>
 
 						<fieldset>
@@ -271,6 +277,8 @@
 
 		</div>
 	</div>
+
+	{{> entitlement-policy-editor}}
 
 	<div class="modal fade" id="messageModal1" style="display:none"></div>
         <div id="confirmation-data1" style="display:none;">

@@ -181,6 +181,24 @@ require('/modules/store.js').exec(function (ctx) {
         return viewData;
     }
 
+    function isStoreAdmin(){
+        return hasUserRole("Internal/store-admin");
+    }
+
+    function hasUserRole(userRoleName){
+        
+        var userManager = require('store').server.userManager(user.tenantId);
+        var roles = userManager.getRoleListOfUser(user.username);
+        var hasRole = false;
+
+        for(var i=0; i < roles.length; i++){
+            if(roles[i] == userRoleName){
+                hasRole = true;
+                break;
+            }
+        }
+        return hasRole;
+    }
 
 
     var assetsByProvider = getAssetsFromProvider(asset, store);
@@ -199,6 +217,8 @@ require('/modules/store.js').exec(function (ctx) {
     user=authenticator.getLoggedInUser();
     
     var subscriptionInfo = getSubscriptionInfo(asset);
+
+    var isStoreAdmin = isStoreAdmin();
 
     if(subscriptionInfo.individualSubscription){
         if(subscriptionInfo.individualSubscription.subscriptionStatus === "UNBLOCKED"){
@@ -234,6 +254,7 @@ require('/modules/store.js').exec(function (ctx) {
         inDashboard: inDashboard,
         isSubscribed:isSubscribed,
         subscriptionInfo : subscriptionInfo,
+        isEnterpriseSubscriptionAllowed: isStoreAdmin,
         asset: asset,
         tags: [
             {
