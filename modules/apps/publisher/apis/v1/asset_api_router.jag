@@ -12,11 +12,13 @@
  Created Date: 29/7/2013
  */
 
+include("/extensions/webapp/modules/jagg/jagg.jag");
+
 require('/modules/publisher.js').exec(function(ctx) {
 
 var config = require('/config/publisher.json');
 var caramel = require('caramel');
-
+var apiProvider = jagg.module('manager').getAPIProviderObj();
 var router = require('/modules/router-g.js').router();
 var routeManager = new router.Router();
 var log= new Log();
@@ -320,9 +322,7 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
 
         dataInjector.inject(artifact,DataInjectorModes.DISPLAY);
 
-	username=username+"";
-        var appMgtProviderObj = new appmgtPublisher.APIProvider(username);
-        var update = appMgtProviderObj.updateAPI(artifact);
+	    var update = apiProvider.updateAPI(artifact);
         
         //update OAuth APIs consumer details per given web-app
         var attributes = artifact.attributes;
@@ -355,7 +355,7 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
                     apiMgtDAOObj.addOAuthAPIAccessInfo(webAppObj);
         }
         
-        saveExternalEntitlementPolicies(appMgtProviderObj, context.post);
+        saveExternalEntitlementPolicies(context.post);
 
         msg['ok']=true;
         msg['message']='asset updated';
@@ -373,7 +373,7 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
 /**
 * Saves external entitlement policies.
 */
-function saveExternalEntitlementPolicies(apiProvider, params){
+function saveExternalEntitlementPolicies(params){
 
     var policies = parse(params['entitlementPolicies']);
     var policiesToBeSaved = new Array();
