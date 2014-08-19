@@ -43,9 +43,7 @@
             <li>
                 <a href="#tab-docs" data-toggle="tab" data-type="docs">{{t "Documentation"}}</a>
             </li>
-	    <li>
-		<a href="#tab-reviews" data-toggle="tab" data-type="comments">{{t "User Reviews"}}</a>
-            </li>          
+	            
         </ul>
 
         <div class="tab-content">
@@ -59,22 +57,7 @@
                 <div class="content">
                     {{> documentation .}}
                 </div>
-            </div>
-            
-              <div class="tab-pane" id="tab-reviews">
-               	{{#with asset}}
-    	       	{{#attributes}}
-             	  	<iframe name="socialIfr" id="socialIfr"
-                                src="../../../social/?target={{../../type}}:{{../id}}&user={{../../user.username}}"
-                                width="100%" height="100%" style="height: 300px;"></iframe>
-                  	{{#if ../../inDashboard}}
-                       		<div id="comment-content" class="content"></div>
-			{{else}}
-				<div id="comment-content" class="content user-review"></div>
-			{{/if}}
-	      	{{/attributes}}
-    		{{/with}}	
-           </div>
+            </div>         
             
         </div>
         
