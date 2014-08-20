@@ -11,6 +11,7 @@ include('../modules/jagg/jagg.jag');
 
 require('/modules/store.js').exec(function (ctx) {
 	var store = ctx.store;
+	var sso = ctx.sso;
 	var recentAssets = store.recentAssets('webapp');
 	caramel = require('caramel');
 
@@ -41,8 +42,10 @@ require('/modules/store.js').exec(function (ctx) {
 
 	caramel.render({
 		header: {
-			user: userData
+			user: userData,
+			sso: sso
 		},
+		sso: sso,
 		appsWithSubs: apps,
 		metadata: {
 			appsWithSubs: apps
