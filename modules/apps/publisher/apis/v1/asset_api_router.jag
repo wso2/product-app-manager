@@ -409,6 +409,25 @@ function inspectFiles(req, params) {
     var file;
     var uuid = '';
     var extension;
+    var extension;
+    var thumbnail;
+    var banner;
+            
+    //setting default img if no images given for a webapp
+    if(files == null){
+	var files = {};
+        var thumbnail = new File("/config/defaults/img/thumbnail.jpg");
+        var banner = new File("/config/defaults/img/banner.jpg");
+    
+        files["images_thumbnail"]= thumbnail;
+        files["images_banner"]= banner;
+    }else if(files.images_thumbnail == null){
+        thumbnail = new File("/config/defaults/img/thumbnail.jpg");
+        files["images_thumbnail"]= thumbnail;
+    }else if(files.images_banner == null){
+        var banner = new File("/config/defaults/img/banner.jpg");
+        files["images_banner"]= banner;
+    }
 
 
     var storageManager = new storageModule.StorageManager({
