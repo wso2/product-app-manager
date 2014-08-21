@@ -26,34 +26,12 @@
 			                <input type='hidden' value="{{{snoop "fields(name=overview_trackingCode).value" data}}}" name="overview_trackingCode" id="overview_trackingCode"/>
 							<input type='hidden' value="{{{snoop "fields(name=sso_ssoProvider).value" data}}}" name="sso_ssoProvider" id="sso_ssoProvider"/>
 							
-							
-						<div class="control-group">
-                            <b><label class="control-label">Roles: </label></b>
-                            <div class="controls">
-                                <input type="text" id="roles" name="roles">
-                                <table id="permissionsTable">
-                                    <tbody>
-                                        <tr>
-                                            <td><b>Role</b></td>
-                                            <td>Get</td>
-                                            <td>Edit</td>
-                                            <td>Delete</td>
-                                            <td>Authorize</td>
-                                        </tr>
-                                        {{#each data.permissions}}
-                                        <tr class="role-permission" data-role="{{this.role}}">
-                                            <td>{{this.role}}</td>
-                                            <td><input class="perm-check" data-perm="GET" type="checkbox" data-permissions="{{this.permissions}}"></td>
-                                            <td><input class="perm-check" data-perm="PUT" type="checkbox" data-permissions="{{this.permissions}}"></td>
-                                            <td><input class="perm-check" data-perm="DELETE" type="checkbox" data-permissions="{{this.permissions}}"></td>
-                                            <td><input class="perm-check" data-perm="AUTHORIZE" type="checkbox" data-permissions="{{this.permissions}}"></td>
-                                        </tr>
-                                        {{/each}}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
+							<div class="control-group">
+	                            <b><label class="control-label">Visibility: </label></b>
+	                            <div class="controls">
+	                                <input type="text" id="roles" name="roles" data-roles="{{data.visibleRoles}}">
+	                            </div>
+	                        </div>
 
 							<div class="control-group">
 								<b><label class="control-label">Tags: </label></b>
@@ -63,8 +41,6 @@
 							</div>
 
 						</fieldset>
-
-
 
 						<fieldset>
 							<legend style="margin-bottom: 0px;">Web Application
