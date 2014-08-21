@@ -121,16 +121,6 @@ var fields = function () {
             "field_name": "version",
             "field_label": "Version",
             "search": false
-        },
-        {
-            "field_name": "category",
-            "field_label": "Category",
-            "search": false
-        },
-        {
-            "field_name": "description",
-            "field_label": "Description",
-            "search": false
         }
     ];
 };

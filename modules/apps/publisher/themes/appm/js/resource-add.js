@@ -55,8 +55,6 @@ $( document ).ready(function() {
                   </td> \
                   <td> \
                   	<a data-index='"+i+"' class='delete_resource'><i class='icon-trash icon-white'></i></a>&nbsp; \
-                  	<a data-index='"+i+"' class='moveup_resource'><i class='icon-arrow-up icon-white'></i></a>&nbsp; \
-                  	<a data-index='"+i+"' class='movedown_resource'><i class='icon-arrow-down icon-white'></i></a>&nbsp; \
                   </td> \
                 </tr> \
 				"

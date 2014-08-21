@@ -11,8 +11,13 @@ include('../modules/jagg/jagg.jag');
 
 require('/modules/store.js').exec(function (ctx) {
 	var store = ctx.store;
+	var sso = ctx.sso;
+	tenantId = ctx.tenantId;
+	site = ctx.site;
 	var recentAssets = store.recentAssets('webapp');
 	caramel = require('caramel');
+	search = require('/modules/search.js');
+		
 
 	SubscriptionService = require(getServiceDir('subscription.js')).serviceModule;
 	subsApi = new SubscriptionService.SubscriptionService();
@@ -41,8 +46,16 @@ require('/modules/store.js').exec(function (ctx) {
 
 	caramel.render({
 		header: {
-			user: userData
+			user: userData,
+			sso: sso
 		},
+		navigation: site.navigation(tenantId),
+		search: {
+		            search: {title: type},
+		            isTopAssets: false,
+		            searchFields: search.fields()
+		},
+		sso: sso,
 		appsWithSubs: apps,
 		metadata: {
 			appsWithSubs: apps

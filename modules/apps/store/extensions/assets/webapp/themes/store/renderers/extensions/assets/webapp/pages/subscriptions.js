@@ -11,7 +11,7 @@ var render = function (theme, data, meta, require) {
             },
             {
                 partial: 'navigation',
-                context: {}
+				context: require('/helpers/navigation.js').currentPage(data.navigation, data.type, data.search)
             }
         ] ,
         body:[
