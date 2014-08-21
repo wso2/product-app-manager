@@ -17,6 +17,7 @@ require('/modules/store.js').exec(function (ctx) {
             tenantId = ctx.tenantId,
             configs = ctx.configs,
             site = ctx.site,
+            search = require('/modules/search.js'),
             subscriptions = {},
             subscription = false;
 
@@ -41,7 +42,7 @@ require('/modules/store.js').exec(function (ctx) {
             }
         }
     }
-
+    
     if (tag) {
         subPage = '/ Tag: "' + tag + '"';
         assets = store.tagged(type, tag, paging);
@@ -120,7 +121,7 @@ require('/modules/store.js').exec(function (ctx) {
             mainPage: mainPage,
             subPage: subPage,
             isTopAssets: false,
-            searchFields: rxtAttributes
+            searchFields: search.fields()
         },
         type: type,
         selectedCategory: selectedCategory,

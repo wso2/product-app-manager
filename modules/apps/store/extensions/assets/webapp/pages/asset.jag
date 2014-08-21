@@ -40,7 +40,8 @@ require('/modules/store.js').exec(function (ctx) {
             inDashboard = false,
             isSubscribed = false;
             utility = require('/modules/util.js');
-
+            search = require('/modules/search.js');
+                        
     caramel = require('caramel');
 
     matcher.match('/{context}' + configs.assetsUrlPrefix + '/{type}/{aid}');
@@ -245,7 +246,7 @@ require('/modules/store.js').exec(function (ctx) {
         search: {
             search: {title: type},
             isTopAssets: false,
-            searchFields: rxtAttributes
+            searchFields: search.fields()
         },
         isSocial: configs.socialCommentsEnable,
         
