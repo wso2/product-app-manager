@@ -185,6 +185,22 @@ $(function() {
         }
     }
     
+    function populateVisibleRoles(){
+		
+		var visibilityComponent = $('#roles');
+		var visibleRoles = visibilityComponent.data('roles');
+
+	 	if(visibleRoles){
+	 		visibleRoles = visibleRoles.split(",");
+
+	 		for(var i = 0; i < visibleRoles.length; i++){
+	 			var role = visibleRoles[i];
+	 			visibilityComponent.tokenInput("add", {id: role, name: role});
+	 		}
+	 	}
+
+	}
+
     $('#addClaims').click(function () {
 		
 	    var propertyCount = document.getElementById("claimPropertyCounter");
@@ -272,47 +288,45 @@ $(function() {
 			},
 			success : function(response) {
 				var result = JSON.parse(response);
+				
 				if (result.ok) {
 					var asset = result.asset;
 					createMessage(MSG_CONTAINER, SUCCESS_CSS, 'Asset updated successfully');
 					updateFileFields(asset);
-				        (function setupPermissions() {
-				    		var rolePermissions = [];
-                        			$('.role-permission').each(function(i, tr) {
-                            				var role = $(tr).attr('data-role');
+				        
+			        (function setupPermissions() {
+			    		var rolePermissions = [];
 
-                            				var permissions = [];
+			    		var readPermission = new Array();
+            			readPermission.push("GET");
 
-                            				$(tr).children('td').children(':checked').each(function(j, checkbox) {
-                                				permissions.push($(checkbox).attr('data-perm'));
-                            				});
+                    			// Get roles from the UI
+            			var rolesInUI = $('#roles').tokenInput("get");	
 
-                            				rolePermissions.push({
-                                				role: role,
-                                				permissions: permissions
-                            				});
-                        			});
+            			for(var i = 0; i < rolesInUI.length; i++){
+            				rolePermissions.push({
+                    				role: rolesInUI[i].id,
+                    				permissions: readPermission
+                			});
+            			}
 
+            			$.ajax({
+            				url: '/publisher/asset/' + type + '/id/' + id + '/permissions',
+            				type: 'POST',
+            				processData: false,
+            				contentType: 'application/json',
+            				data: JSON.stringify(rolePermissions),
+            				success: function(response) {
+                					showModel(type,id);
+            				},
+            				error: function(response) {
+                					showAlert('Error adding permissions.', 'error');
+            				}
+               			 });
 
-                        			if (rolePermissions.length > 0) {
-                            				$.ajax({
-                                				url: '/publisher/asset/' + type + '/id/' + id + '/permissions',
-                                				type: 'POST',
-                                				processData: false,
-                                				contentType: 'application/json',
-                                				data: JSON.stringify(rolePermissions),
-                                				success: function(response) {
-                                    					showModel(type,id);
-                                				},
-                                				error: function(response) {
-                                    					showAlert('Error adding permissions.', 'error');
-                                				}
-                           			 	});
-                        			}else {
-                            				showModel(type,id);
-                        			}
-                    			})();
-				    	if($('#autoConfig').is(':checked')){
+        			})();
+
+			    	if($('#autoConfig').is(':checked')){
 						createServiceProvider();
 					}
 				} else {
@@ -352,20 +366,12 @@ $(function() {
 		$('.' + CHARS_REM).text('Characters left: ' + left);
 	});
 	
-	//auto complete Roles
-	
-	 $('#roles').tokenInput('/publisher/api/lifecycle/information/meta/' + $('#meta-asset-type').val() + '/roles', {
-	        theme: 'facebook',
-	        preventDuplicates: true,
-	        onAdd: function(role) {
-	            var permission = $('<tr class="role-permission" data-role="' + role.id + '"><td>' + role.name + '</td><td><input data-perm="GET" type="checkbox" value=""></td><td><input data-perm="PUT" type="checkbox" value=""></td><td><input data-perm="DELETE" type="checkbox" value=""></td><td><input data-perm="AUTHORIZE" type="checkbox" value=""></td></tr>')
-	            $('#permissionsTable > tbody').append(permission);
-	        },
-	        onDelete: function(role) {
-	            console.log()
-	            $('#permissionsTable tr[data-role="' + role.id + '"]').remove();
-	        }
-	    });
+	// Visibility roles.
+	$('#roles').tokenInput('/publisher/api/lifecycle/information/meta/' + $('#meta-asset-type').val() + '/roles', {
+		theme: 'facebook',
+        preventDuplicates: true,
+        hintText: "Type in a user role"
+ 	});
 
 	 $('#autoConfig').click(function () {
 			if($('#autoConfig').is(':checked')){
@@ -384,10 +390,12 @@ $(function() {
 	 
 	 $("#providers").change(function () {
 			var value = $('#providers').val();
-	        loadClaims(value)
+	        loadClaims(value);
 	 });
-	
 
+	// Populate 'Visibility' component with existing roles.	
+ 	populateVisibleRoles();
+	 
 	/*
 	 The function updates the file upload fields after recieving a response from
 	 the server
