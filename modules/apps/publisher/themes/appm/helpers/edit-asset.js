@@ -41,14 +41,27 @@ var selectCategory = function(data) {
 */
 var extractVisibleRoles = function(data){
 
-	// Filters out system roles from in the list.
+	// Function :: Filters out system roles from in the list.
 	var isExcludedRole = function(role){
 
-		var excludedRoles = ["admin", "Internal/private_admin"];
+		// Function :: Checks whether the given role is an internal one.
+		var isInternalRole = function(role){
+			var internalRolePrefix = "Internal/";
+			return role.indexOf(internalRolePrefix) == 0;
+		}
+
+		// Exclude if the role is an internal one.
+		if(isInternalRole(role)){
+			log.debug("Excluding role '" + role + "' from visible roles list. Reason : Role is an internal role");
+			return true;
+		}
+
+		// Or else check against the exclude list.
+		var excludedRolesList = ["admin", "subscriber", "publisher"];
 	
-		for(var i = 0; i < excludedRoles.length; i++){
-			if(role == excludedRoles[i]){
-				log.debug("Excluding role : " + role + " from visible roles list.")
+		for(var i = 0; i < excludedRolesList.length; i++){
+			if(role == excludedRolesList[i]){
+				log.debug("Excluding role '" + role + "' from visible roles list. Reason : Role is in the exclude list ==> " + JSON.stringify(excludedRolesList))
 				return true;
 			}
 		}
@@ -57,7 +70,7 @@ var extractVisibleRoles = function(data){
 
 	}
 
-	// Checks whether the given permissions array has GET permission. We only deal with GET permission.
+	// Function :: Checks whether the given permissions array has GET permission. We only deal with GET permission.
 	var hasGetPermission = function(permissions){
 
 		for(var i = 0; i < permissions.length; i++){
