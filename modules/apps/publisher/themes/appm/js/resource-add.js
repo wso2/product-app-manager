@@ -78,7 +78,7 @@ $( document ).ready(function() {
 
     $(document).on("click", ".add_entitlement_policy", function () {
       var resourceIndex = $(this).data('index');
-      preparePolicyEditor(resourceIndex);
+      preparePolicyEditorInAddMode(resourceIndex);
     })
 
     $(document).on("click", ".delete_entitlement_policy", function () {
