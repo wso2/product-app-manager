@@ -14,7 +14,27 @@ function invalidateEntitlementPolicy(resourceIndex){
     entitlementPolicies.splice(resourceIndex, 1);
 };
 
-function preparePolicyEditor(resourceIndex){
+function preparePolicyEditorInAddMode(resourceIndex){
+
+    $("#entitlement-policy-editor #resource-index").val(resourceIndex);
+
+      // Populate exiting content.
+      var policy = entitlementPolicies[resourceIndex];
+
+      var policyContent = "";
+      if(policy){
+        policyContent = policy["content"];
+
+        if(!policyContent){
+          policyContent = "";
+        }
+      }
+
+      $('#entitlement-policy-editor #policy-content').val(policyContent);
+
+}
+
+function preparePolicyEditorInEditMode(resourceIndex){
 
     $("#entitlement-policy-editor #resource-index").val(resourceIndex);
 
@@ -31,13 +51,7 @@ function preparePolicyEditor(resourceIndex){
         setPolicyContent(policyContent);
     }else{
         var policyId = getPolicyId(resourceIndex);
-        var policyContent = fetchPolicyContent(policyId);
-        if(policyContent != null){
-            var policy = new Object();
-            policy["id"] = policyId;
-            policy["content"] = policyContent;
-            entitlementPolicies[resourceIndex] = policy;
-        }
+        fetchPolicyContent(policyId, resourceIndex);
     }
 }
 
@@ -84,7 +98,7 @@ function createGuid()
     });
 }
 
-function fetchPolicyContent(policyId){
+function fetchPolicyContent(policyId, resourceIndex){
 
     $.ajax({
         url: '/publisher/api/entitlement/policy/'+policyId
@@ -93,9 +107,15 @@ function fetchPolicyContent(policyId){
         contentType: 'application/json',
         data:"cookie=test",
         success: function(response) {
-            if(response != null){
-                setPolicyContent(response)
+            var policyContent = "";
+            if(response != "null"){
+                policyContent = response;
+                var policy = new Object();
+                policy["id"] = policyId;
+                policy["content"] = response;
+                entitlementPolicies[resourceIndex] = policy;
             }
+             setPolicyContent(policyContent);
         },
         error: function(response) {
             showAlert('Error occured while fetching entitlement policy content', 'error');
