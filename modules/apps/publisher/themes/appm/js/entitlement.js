@@ -123,6 +123,101 @@ function fetchPolicyContent(policyId, resourceIndex){
     });
 }
 
+
+function validatePolicyPartial(policyPartial, onSuccess, onError){
+
+    $.ajax({
+        url: '/publisher/api/entitlement/policy/validate',
+        type: 'POST',
+        contentType: 'application/x-www-form-urlencoded',
+        data:{"policyPartial":policyPartial},
+        success: onSuccess,
+        error: onError
+    });
+}
+
+function savePolicyPartial(){
+
+    var policyPartial = $('#entitlement-policy-editor #policy-content').val();
+    var policyPartialName = $('#entitlement-policy-editor #policy-name').val();
+
+
+    if(editedpolicyPartialId == 0){ //add
+
+        $.ajax({
+            url: '/publisher/api/entitlement/policy',
+            type: 'POST',
+            contentType: 'application/x-www-form-urlencoded',
+            data:{"policyPartialName":policyPartialName,"policyPartial":policyPartial},
+            success: function(data){
+                var returnedId = JSON.parse(data).response.id;
+                editedpolicyPartialId = returnedId;
+                policyPartialsArray.push({id: returnedId, policyPartialName: policyPartialName, policyPartial: policyPartial });
+                updatePolicyPartial()
+            },
+            error: function(){}
+        });
+
+
+    }else{ // update
+
+
+        $.ajax({
+            url: '/publisher/api/entitlement/policy',
+            type: 'PUT',
+            contentType: 'application/json',
+            dataType: 'json',
+            data:{"id": editedpolicyPartialId, "policyPartialName":policyPartialName,"policyPartial":policyPartial},
+            success: function(data){
+                var returnedId = JSON.parse(data).response.id;
+                editedpolicyPartialId = returnedId;
+
+                $.each(policyPartialsArray, function( index, obj ) {
+                        if(obj.id == editedpolicyPartialId){
+                            policyPartialsArray[index].policyPartialName = policyPartialName;
+                            policyPartialsArray[index].policyPartial = policyPartial;
+                            updatePolicyPartial();
+                            return false;
+                        }
+                });
+
+
+
+            },
+            error: function(){}
+        });
+
+
+    }
+
+
+
+}
+
 function setPolicyContent(policyContent){
     $('#entitlement-policy-editor #policy-content').val(policyContent);
 }
+
+
+function updatePolicyPartial(){
+    $('#policyPartialsTable tbody').html("");
+    $(".policy-partial-dropdown").html("");
+    $.each(policyPartialsArray, function( index, obj ) {
+      $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td>Action</td></tr>');
+
+        $(".policy-partial-dropdown").append("<li><a><input data-partial-id='" + obj.id + "' type='checkbox'>" + obj.policyPartialName + "</a></li>");
+
+    });
+
+
+}
+
+
+$(document).on("click", "#btn-add-xacml-policy", function () {
+
+    editedpolicyPartialId = 0;
+    $('#entitlement-policy-editor #policy-content').val("");
+    $('#entitlement-policy-editor #policy-name').val("");
+
+});
+

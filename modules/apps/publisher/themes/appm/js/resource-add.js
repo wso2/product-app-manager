@@ -41,6 +41,8 @@ $( document ).ready(function() {
         $("#resource_tbody").html("");
         for(var i=0; i< RESOURCES.length; i++){
 
+
+
           $("#resource_tbody").prepend(
                 "<tr> \
                   <td><span style='color:#999'>/{context}/{version}/</span>"+ RESOURCES[i].url_pattern +" <input type='hidden' value='"+RESOURCES[i].url_pattern+"' name='uritemplate_urlPattern"+i+"'/></td> \
@@ -49,6 +51,17 @@ $( document ).ready(function() {
                   <td style='padding:0px'><select name='uritemplate_skipthrottle"+i+"' class='selectpicker' id='' style='width:100%;border:none;'><option value='False'>False</option><option value='True'>True</option></select></td> \
                   <td class='userRoles' style='padding:0px'><input type='text' name='uritemplate_userRoles"+i+"' id='getUserRoles"+i+"' style='width:95%;border:none;'></input></td> \
                   <td> \
+                    \
+                    <ul class='nav navbar-nav navbar-right'>\
+                <li class='dropdown'> \
+                    <a href='#' data-toggle='dropdown' class='dropdown-toggle'>Add <b class='caret'></b></a>\
+                    <ul class='dropdown-menu policy-partial-dropdown' style='z-index: 10000'>\
+                    \
+                    </ul>\
+                </li>\
+                </ul> \
+                    \
+                    \
                     <input type='text' name='uritemplate_entitlementPolicyPartialMappings"+i+"'value='[{\"entitlementPolicyPartialId\":2, \"effect\":\"Permit\"}, {\"entitlementPolicyPartialId\":3, \"effect\":\"Deny\"}]'/> \
                   </td> \
                   <td> \
@@ -85,6 +98,15 @@ $( document ).ready(function() {
     })
 
     $("#resource_tbody").trigger("draw");
+
+
+    $(document).on("click", ".add-policy-partial", function () {
+       alert("Hi");
+    })
+
+
+
+
 });
 
 
