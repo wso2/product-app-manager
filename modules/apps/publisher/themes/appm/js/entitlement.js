@@ -208,7 +208,8 @@ function savePolicyPartial(){
         $.ajax({
             url: '/publisher/api/entitlement/policy',
             type: 'PUT',
-            contentType: 'application/x-www-form-urlencoded',
+            contentType: 'application/json',
+            dataType: 'json',
             data:{"id": editedpolicyPartialId, "policyPartialName":policyPartialName,"policyPartial":policyPartial},
             success: function(data){
                 var returnedId = JSON.parse(data).response.id;
@@ -218,12 +219,13 @@ function savePolicyPartial(){
                         if(obj.id == editedpolicyPartialId){
                             policyPartialsArray[index].policyPartialName = policyPartialName;
                             policyPartialsArray[index].policyPartial = policyPartial;
+                            updatePolicyPartial();
                             return false;
                         }
                 });
 
 
-                updatePolicyPartial()
+
             },
             error: function(){}
         });
@@ -242,9 +244,15 @@ function setPolicyContent(policyContent){
 
 function updatePolicyPartial(){
     $('#policyPartialsTable tbody').html("");
+    $(".policy-partial-dropdown").html("");
     $.each(policyPartialsArray, function( index, obj ) {
       $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td>Action</td></tr>');
+
+        $(".policy-partial-dropdown").append("<li><a><input data-partial-id='" + obj.id + "' type='checkbox'>" + obj.policyPartialName + "</a></li>");
+
     });
+
+
 }
 
 
