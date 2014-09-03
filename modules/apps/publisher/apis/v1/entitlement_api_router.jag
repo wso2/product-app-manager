@@ -30,6 +30,15 @@ require('/modules/publisher.js').exec(function(ctx) {
         print(createResponseObject(response));
     });
 
+    routeManager.register('PUT', 'publisher', '/publisher/api/entitlement/policy', function (context) {
+        log.info("******************************************************************************************************")
+        log.info(context);
+     
+
+        
+  
+    });
+
     /**
      * Returns external entitlement policy for the given policy id.
      */
@@ -49,6 +58,13 @@ require('/modules/publisher.js').exec(function(ctx) {
     */
     function saveEntitlementPolicyPartial(policyPartialName,policyPartial){
         return apiProvider.saveEntitlementPolicyPartial(policyPartialName, policyPartial);
+    }
+
+    /**
+    * Saves the given policy content
+    */
+    function updateEntitlementPolicyPartial(policyPartialId,policyPartialName,policyPartial){
+        return apiProvider.updateEntitlementPolicyPartial(policyPartialId,policyPartialName, policyPartial);
     }
 
     function createResponseObject(object) {
