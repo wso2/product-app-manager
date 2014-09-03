@@ -210,7 +210,7 @@ function savePolicyPartial(){
             type: 'PUT',
             contentType: 'application/json',
             dataType: 'json',
-            data:{"id": editedpolicyPartialId, "policyPartialName":policyPartialName,"policyPartial":policyPartial},
+            data:JSON.stringify({"id": editedpolicyPartialId, "policyPartialName":policyPartialName,"policyPartial":policyPartial}),
             success: function(data){
                 var returnedId = JSON.parse(data).response.id;
                 editedpolicyPartialId = returnedId;
