@@ -1,0 +1,63 @@
+<%
+var caramel;
+(function () {
+    caramel = require('caramel');
+    var log = new Log('social.activityBrowser');
+    var user = request.getParameter('user');
+    var userModule = require('/modules/user.js');
+    var logged = userModule.current(session);
+
+    var isUserInList = function (lists, username) {
+        if (lists) {
+            for (var j = 0; j < lists.length; j++) {
+                var like = lists[j];
+                if (like.id == username) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+
+    if (user && !logged) {
+        include('login.jag');
+    }
+
+    logged = userModule.current(session);
+    var carbon = require('carbon');
+    var social = carbon.server.osgiService('org.wso2.carbon.social.service.SocialActivityService');
+    var target = request.getParameter('target');
+    var obj, reviewsJSON;
+    if (target) {
+        try {
+            var tenantDomain = logged ? logged.tenantDomain : "carbon.super";
+            obj = JSON.parse(String(social.getSocialObjectJson(target, tenantDomain, "POPULAR")));
+            reviewsJSON = obj.attachments;
+        } catch (e) {
+            log.error(e);
+        }
+        var username = logged ? String(logged.username) + '@' + logged.tenantDomain : "anonymous";
+
+
+        if (reviewsJSON) {
+            for (var i = 0; i < reviewsJSON.length; i++) {
+                var review = reviewsJSON[i];
+                review.iLike = isUserInList(review.likes && review.likes.items, username);
+                review.iDislike = isUserInList(review.dislikes && review.dislikes.items, username);
+            }
+        }
+
+        caramel.render({
+            isLogged: Boolean(logged),
+            input_param: {
+                user: username
+            },
+            stream: {reviews: reviewsJSON, id: target, user: username}
+        });
+    } else {
+        print('please use the target URL parameter as the asset id, eg: http://localhost:9763/social/?target=33530252-rer-w345325');
+    }
+})();
+%>
+
+

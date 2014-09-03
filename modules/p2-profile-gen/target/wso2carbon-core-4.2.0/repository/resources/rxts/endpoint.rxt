@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<artifactType type="application/vnd.wso2-endpoint+xml" shortName="endpoint" singularLabel="Endpoint"
+              pluralLabel="Endpoints" hasNamespace="false" iconSet="2">
+    <storagePath>/mediation/mediationdata/endpoint/@{overview_name}/@{overview_version}/endpoint</storagePath>
+    <nameAttribute>overview_name</nameAttribute>
+    <ui>
+        <list>
+            <column name="Name">
+                <data type="path" value="overview_name" href="@{storagePath}"/>
+            </column>
+            <column name="Version">
+                <data type="path" value="overview_version" href="@{storagePath}"/>
+            </column>
+        </list>
+    </ui>
+    <content>
+        <table name="Overview">
+            <field type="text" required="true">
+                <name>Name</name>
+            </field>
+            <field type="text" required="true">
+                <name>Version</name>
+            </field>
+            <field type="text" required="true">
+                <name>Address</name>
+            </field>
+        </table>
+    </content>
+</artifactType>
+
+
+

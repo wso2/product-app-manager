@@ -1,0 +1,117 @@
+<%
+/*
+ Description: The controller is used to serve files that are stored in the StorageManager
+ Filename: storage_router.jag
+ Created Date: 26/9/2013
+ */
+
+
+/*var driverManagement = require('/modules/data/driver.manager.js').driverManager();
+
+ var driverManager = new driverManagement.DriverManager();
+
+ var driver = driverManager.get('default');
+
+ driver.connect({
+ username: 'sa',
+ password: '',
+ connectionString: 'jdbc:h2:~/test'
+ });
+
+
+ driver.instance.query('SELECT * FROM resource;');
+
+ driver.disconnect();
+
+ driver.connect({
+ username: 'sa',
+ password: '',
+ connectionString: 'jdbc:h2:~/test'
+ });
+
+ driver.instance.query('INSERT INTO resource (uuid,tenantId,content,contentType,contentLength) VALUES (?,?,?,?,?);',
+ 'a','b',(new File('/tests/banner.png')).getStream(),1,456772);
+
+ driver.disconnect();  */
+
+/*
+ Constant variables used to designate Header parameters
+ */
+var HEADER_CONTENT_TYPE = 'Content-Type';
+var HEADER_CONTENT_LENGTH = 'Content-Length';
+
+var ERROR_NOT_FOUND='The requested resource was not found.';
+
+var log=new Log('storage.router');
+
+var storageModule = require('/modules/data/storage.js').storageModule();
+
+var storageManager = new storageModule.StorageManager({
+    context: 'storage',
+    isCached:false,
+    connectionInfo: {
+        dataSource:'JAGH2'
+    }
+});
+
+var value = {};
+
+//value['tenantId'] = 'super1';
+//value['path'] = '/tests/out2.png';
+//value['contentType'] = 'image/png';
+//value['fileName']='out2.png';
+//var id=storageManager.put(value);
+//var url=storageModule.constructStorageUrl('storage','5f5db9a3-b3fe-49a8-9c5b-c3df9c2f1c53');
+//log.debug('url:'+url);
+
+//Get the resource in storage from the uuid or uuid/filename
+//var result=storageManager.get('5f5db9a3-b3fe-49a8-9c5b-c3df9c2f1c53');
+
+//Obtain the tenantId and the uuid from the url
+var uriMatcher=new URIMatcher(request.getRequestURI());
+
+var isMatch=uriMatcher.match('/{context}/storage/{uuid}/{fileName}');
+
+//Handle the request only if the url matches
+if(isMatch){
+    var matchedElements=uriMatcher.elements();
+
+    //log.debug(matchedElements['context']);
+    //log.debug(matchedElements['fileName']);
+    //log.debug(matchedElements['uuid']);
+
+    handleResourceRequest(matchedElements);
+}
+else{
+    response.sendError(404,ERROR_NOT_FOUND);
+}
+
+/*
+The function services the requests for a resource by using the matched elements
+@matchedElements: A list of elements extracted from the url
+ */
+function handleResourceRequest(matchedElements){
+    var key=matchedElements['uuid'];
+
+    var storedValue = storageManager.get(key);
+
+    //Check if a value was returned from storage
+    if(!storedValue){
+        response.sendError(404,ERROR_NOT_FOUND);
+    }
+    else{
+
+        //Get the image details
+        var contentType = storedValue.contentType;
+        var contentLength = storedValue.contentLength;
+
+        //Create the headers
+        response.addHeader(HEADER_CONTENT_TYPE, contentType);
+        response.addHeader(HEADER_CONTENT_LENGTH, contentLength + '');
+
+        //Send the file stream
+        print(storedValue.content);
+    }
+}
+
+%>

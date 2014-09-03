@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.jaggeryjs.modules.handlebars" label="handlebars Module - Feature" provider-name="%providerName" version="1.0.0">
+  <description>handlebars Module</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+</feature>

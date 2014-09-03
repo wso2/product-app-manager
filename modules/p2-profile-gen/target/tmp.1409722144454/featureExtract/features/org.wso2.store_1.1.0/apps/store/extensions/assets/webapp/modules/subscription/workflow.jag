@@ -1,0 +1,20 @@
+<%
+var checkSubscriptionWorkflow = function () {
+	try {
+	appPublishWFExecutor = org.wso2.carbon.appmgt.impl.workflow.WorkflowExecutorFactory.getInstance().getWorkflowExecutor("AM_SUBSCRIPTION_CREATION");
+	var isAsynchronousFlow = appPublishWFExecutor.isAsynchronus();
+	return {
+	            error:false,
+	            status:isAsynchronousFlow
+	        };
+	}catch(e){
+		log.error(e.message);
+		return {
+		            error:e,
+		            message:e.message
+		        };
+        }
+
+   
+};
+%>

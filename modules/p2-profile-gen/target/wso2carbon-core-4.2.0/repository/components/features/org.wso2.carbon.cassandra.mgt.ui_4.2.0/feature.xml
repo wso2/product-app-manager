@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.cassandra.mgt.ui" label="WSO2 Carbon - Cassandra Server Management UI Feature" provider-name="%providerName" version="4.2.0">
+  <description>This feature contains the bundles required for managing the Cassandra through UI</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="org.wso2.carbon.cassandra.mgt.stub" unpack="false" version="4.2.0"/>
+  <plugin id="org.wso2.carbon.cassandra.mgt.ui" unpack="false" version="4.2.0"/>
+  <require>
+    <import match="equivalent" plugin="org.wso2.carbon.ui.menu.tools" version="4.2.0"/>
+    <import feature="org.wso2.carbon.core.ui" match="equivalent" version="4.2.0"/>
+  </require>
+</feature>

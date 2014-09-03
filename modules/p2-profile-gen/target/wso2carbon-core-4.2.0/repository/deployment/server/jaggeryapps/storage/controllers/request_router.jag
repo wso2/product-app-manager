@@ -1,0 +1,120 @@
+<%
+var rg=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+var isMatch='5f5db9a3-b3fe-49a8-9c5b-c3df9c2f1c53'.match(rg);
+
+print(isMatch);
+//print("this is the request router");
+/*var log = new Log('request.router');
+
+log.debug(request.getContentLength());
+log.debug(request.getContentType());
+log.debug(request.getParameter('file'));
+
+var params=request.getAllParameters('UTF-8');
+log.debug(params);
+for(var index in params){
+    log.debug('key:'+index);
+}
+
+var file=request.getFile('file');
+log.debug(file.getName());
+file.saveAs('/tests/ico.png'); */
+//log.debug(request.getContent().getStream());
+
+//Read a file
+/*var input=new File('/tests/banner.png');
+var output=new File('/tests/out2.png');
+
+input.open('r');
+output.open('w');
+
+var str=input.getStream();
+//var temp=str.read();
+
+output.write(input.getStream());
+output.close();
+input.close();*/
+
+
+/*var bundler = require('/modules/bundler.js').bundle_logic();
+var modelManagement = require('/modules/data/model.manager.js').modelManager();
+var driverManagement=require('/modules/data/driver.manager.js').driverManager();
+
+var driverManager=new driverManagement.DriverManager();
+
+var driver=driverManager.get('default');
+
+driver.connect({
+    username:'sa',
+    password:'',
+    connectionString:'jdbc:h2:~/test'
+});
+
+var mm = new modelManagement.ModelManager({driver:driver});
+
+var resource=mm.get('Resource');
+
+var testFile=new File('/tests/banner.png');
+testFile.open('r');
+var content=testFile.getStream();
+
+
+resource.uuid=9008;
+resource.content=content;
+resource.tenantId=-1234;
+
+//print(content);
+resource.save();
+
+driver.disconnect();   */
+
+//var PreparedStatement=java.sql.PreparedStatement;
+
+//var ps=new PreparedStatement();
+//var ps=new javasSql.PreparedStatement();
+
+
+
+/*var bundleManager = new bundler.BundleManager({
+    path: '/schemas/'
+});
+
+var root = bundleManager.getRoot();
+
+root.each(function (instance) {
+    log.debug(instance.getName());
+
+    //Load the schema
+    var schema = require('/schemas/' + instance.getName()).schema();
+
+    mm.register(schema);
+});
+
+var permission = mm.get('Permission');
+
+log.debug(stringify(permission.uuid)); */
+
+
+/*function template(string) {
+
+    //Check the number of arguments passed in
+    if (arguments.length < 2) {
+        return;
+    }
+    var temp=string;
+
+    for (var index = 1; (index < arguments.length); index++) {
+        temp = temp.replace('{' + index + '}', arguments[index]);
+    }
+
+    return temp;
+}
+
+var result = template('name={1},height={2}', 'apple', 'bee');
+
+log.debug(result);*/
+
+ //permission.find({uuid:'13456788',bucket:'app1'});
+
+%>

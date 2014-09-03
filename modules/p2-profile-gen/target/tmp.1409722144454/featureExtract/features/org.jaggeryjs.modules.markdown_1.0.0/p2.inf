@@ -1,0 +1,5 @@
+instructions.configure = \
+org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/../../../modules); \
+org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/../../../modules/markdown); \
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.jaggeryjs.modules.markdown_1.0.0/module/,target:${installFolder}/../../../modules/markdown,overwrite:true);\
+

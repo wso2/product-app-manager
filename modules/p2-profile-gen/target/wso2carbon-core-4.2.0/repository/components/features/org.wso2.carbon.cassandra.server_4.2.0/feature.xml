@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.cassandra.server" label="WSO2 Carbon - Cassandra Server Feature" provider-name="%providerName" version="4.2.0">
+  <description>This feature contains the bundles required for Cassandra server</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="libthrift" unpack="false" version="0.7.0.wso2v2"/>
+  <plugin id="snappy-java" unpack="false" version="1.0.4.1_wso2v1"/>
+  <plugin id="org.wso2.carbon.cassandra.sharedkey" unpack="false" version="4.2.0"/>
+  <plugin id="com.ning.compress-lzf" unpack="false" version="0.8.4"/>
+  <plugin id="antlr" unpack="false" version="3.2.0.wso2v1"/>
+  <plugin id="high-scale-lib" unpack="false" version="1.1.2.wso2v1"/>
+  <plugin id="snakeyaml" unpack="false" version="1.6.0.wso2v1"/>
+  <plugin id="json-simple" unpack="false" version="1.1.0.wso2v1"/>
+  <plugin id="metrics-core" unpack="false" version="2.0.3.wso2v1"/>
+  <plugin id="jackson-mapper-asl" unpack="false" version="1.9.2"/>
+  <plugin id="jackson-core-asl" unpack="false" version="1.9.2"/>
+  <plugin id="org.wso2.carbon.cassandra.server" unpack="false" version="4.2.0"/>
+  <plugin id="guava" unpack="false" version="12.0.0.wso2v1"/>
+  <plugin id="perf4j" unpack="false" version="0.9.12.wso2v1"/>
+  <plugin id="slf4j.api" unpack="false" version="1.6.1"/>
+  <plugin id="com.googlecode.concurrentlinkedhashmap.lru" unpack="false" version="1.3.0"/>
+  <plugin id="avro" unpack="false" version="1.4.0.fixeswso2v1"/>
+  <plugin id="apache-cassandra" unpack="false" version="1.1.3.wso2v5"/>
+  <plugin id="jamm" unpack="false" version="0.2.5.wso2v2"/>
+  <plugin id="jug" unpack="false" version="2.0.0.wso2v1"/>
+  <plugin id="slf4j.log4j12" unpack="false" version="1.6.1"/>
+  <plugin id="antlr-runtime" unpack="false" version="3.2.0.wso2v1"/>
+  <plugin id="snaptree" unpack="false" version="0.1.0.wso2v1"/>
+  <plugin id="org.wso2.carbon.identity.authentication" unpack="false" version="4.2.0"/>
+  <require>
+    <import feature="org.wso2.carbon.core.server" match="equivalent" version="4.2.0"/>
+  </require>
+</feature>

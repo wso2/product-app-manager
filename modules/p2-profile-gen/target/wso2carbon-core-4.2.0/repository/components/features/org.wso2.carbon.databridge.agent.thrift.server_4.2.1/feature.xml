@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.databridge.agent.thrift.server" label="WSO2 Carbon - Data Bridge - Thrift Agent Server Feature" provider-name="%providerName" version="4.2.1">
+  <description>Server feature of the Data Bridge Thrift Agent</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="httpcore" unpack="false" version="4.3.0.wso2v1"/>
+  <plugin id="commons-pool" unpack="false" version="1.5.6.wso2v1"/>
+  <plugin id="httpclient" unpack="false" version="4.2.5.wso2v1"/>
+  <plugin id="org.wso2.carbon.databridge.agent.thrift" unpack="false" version="4.2.1"/>
+  <require>
+    <import feature="org.wso2.carbon.databridge.commons.server" match="equivalent" version="4.2.0"/>
+    <import feature="org.wso2.carbon.databridge.commons.thrift.server" match="equivalent" version="4.2.0"/>
+    <import feature="org.wso2.carbon.core.server" match="equivalent" version="4.2.0"/>
+  </require>
+</feature>

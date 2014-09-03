@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<artifactType type="application/vnd.wso2-proxy+xml" shortName="proxy" singularLabel="Proxy" pluralLabel="Proxies"
+              hasNamespace="false" iconSet="22">
+    <storagePath>/mediation/mediationdata/proxy/@{overview_name}/@{overview_version}/proxy</storagePath>
+    <nameAttribute>overview_name</nameAttribute>
+    <ui>
+        <list>
+            <column name="Name">
+                <data type="path" value="overview_name" href="@{storagePath}"/>
+            </column>
+            <column name="Version">
+                <data type="path" value="overview_version" href="@{storagePath}"/>
+            </column>
+        </list>
+    </ui>
+    <content>
+        <table name="Overview">
+            <field type="text" required="true">
+                <name>Name</name>
+            </field>
+            <field type="text" required="true">
+                <name>Version</name>
+            </field>
+            <field type="text" required="true">
+                <name>Transports</name>
+            </field>
+            <field type="options">
+                <name>StartOnLoad</name>
+                <values>
+                    <value>false</value>
+                    <value>true</value>
+                </values>
+            </field>
+            <field type="options">
+                <name>Trace</name>
+                <values>
+                    <value>Enabled</value>
+                    <value>Disabled</value>
+                </values>
+            </field>
+            <field type="text-area">
+                <name>PinnedServers</name>
+            </field>
+            <field type="text" url="true">
+                <name>ServiceGroup</name>
+            </field>
+
+            <field type="text" url="true">
+                <name>InSequence</name>
+            </field>
+            <field type="text">
+                <name>OutSequence</name>
+            </field>
+            <field type="text">
+                <name>FaultSequence</name>
+            </field>
+            <field type="text">
+                <name>Endpoint</name>
+            </field>
+            <field type="text">
+                <name>PublishWSDL</name>
+            </field>
+            <field type="text">
+                <name>EnableAddressing</name>
+            </field>
+            <field type="options">
+                <name>EnableSec</name>
+                <values>
+                    <value>false</value>
+                    <value>true</value>
+                </values>
+            </field>
+            <field type="options">
+                <name>EnableRM</name>
+                <values>
+                    <value>false</value>
+                    <value>true</value>
+                </values>
+            </field>
+        </table>
+    </content>
+
+</artifactType>
+

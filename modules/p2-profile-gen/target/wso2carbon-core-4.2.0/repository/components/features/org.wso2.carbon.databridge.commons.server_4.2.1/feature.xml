@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.databridge.commons.server" label="WSO2 Carbon - Data Bridge - Commons Server Feature" provider-name="%providerName" version="4.2.1">
+  <description>This feature contains the bundles required for the core engine of the data bridge</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="org.wso2.carbon.databridge.commons" unpack="false" version="4.2.1"/>
+  <plugin id="com.google.gson" unpack="false" version="2.1"/>
+  <plugin id="json" unpack="false" version="2.0.0.wso2v1"/>
+  <require>
+    <import feature="org.wso2.carbon.core.server" match="equivalent" version="4.2.0"/>
+  </require>
+</feature>

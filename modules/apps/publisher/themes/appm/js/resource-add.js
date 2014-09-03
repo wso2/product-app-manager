@@ -49,9 +49,7 @@ $( document ).ready(function() {
                   <td style='padding:0px'><select name='uritemplate_skipthrottle"+i+"' class='selectpicker' id='' style='width:100%;border:none;'><option value='False'>False</option><option value='True'>True</option></select></td> \
                   <td class='userRoles' style='padding:0px'><input type='text' name='uritemplate_userRoles"+i+"' id='getUserRoles"+i+"' style='width:95%;border:none;'></input></td> \
                   <td> \
-                    <a data-index='"+i+"' class='add_entitlement_policy' data-toggle='modal' data-target='#entitlement-policy-editor' ><i class='icon-pencil icon-white'></i></a>&nbsp; \
-                    <a data-index='"+i+"' class='delete_entitlement_policy'><i class='icon-trash icon-white'></i></a>&nbsp; \
-                    <input type='hidden' name='uritemplate_entitlementPolicyId"+i+"'/> \
+                    <input type='text' name='uritemplate_entitlementPolicyPartialMappings"+i+"'value='[{\"entitlementPolicyPartialId\":2, \"effect\":\"Permit\"}, {\"entitlementPolicyPartialId\":3, \"effect\":\"Deny\"}]'/> \
                   </td> \
                   <td> \
                   	<a data-index='"+i+"' class='delete_resource'><i class='icon-trash icon-white'></i></a>&nbsp; \
@@ -78,18 +76,13 @@ $( document ).ready(function() {
 
     $(document).on("click", ".add_entitlement_policy", function () {
       var resourceIndex = $(this).data('index');
-      preparePolicyEditorInAddMode(resourceIndex);
+      preparePolicyEditor(resourceIndex);
     })
 
     $(document).on("click", ".delete_entitlement_policy", function () {
       var resourceIndex = $(this).data('index');
       deleteEntitlementPolicy(resourceIndex);
     })
-
-    $(document).on("click", "#btn-policy-save", function () {
-     addEntitlementPolicy(); 
-     $("#entitlement-policy-editor").modal('hide');
-    })    
 
     $("#resource_tbody").trigger("draw");
 });

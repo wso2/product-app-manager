@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.stratos.common.server" label="WSO2 Stratos - Common Core Feature" provider-name="%providerName" version="2.2.1">
+  <description>This feature contains the core bundles required for Back-end servlet functionality</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="kaptcha" unpack="false" version="2.3.0.wso2v1"/>
+  <plugin id="org.wso2.carbon.tenant.mgt" unpack="false" version="2.2.0"/>
+  <plugin id="org.wso2.carbon.redirector.servlet" unpack="false" version="2.2.1"/>
+  <plugin id="org.wso2.carbon.sample.installer" unpack="false" version="2.2.1"/>
+  <plugin id="json" unpack="false" version="2.0.0.wso2v1"/>
+  <plugin id="org.wso2.carbon.keystore.mgt" unpack="false" version="2.2.1"/>
+  <plugin id="org.wso2.carbon.captcha.mgt" unpack="false" version="4.2.0"/>
+  <plugin id="org.wso2.carbon.stratos.common" unpack="false" version="2.2.0"/>
+  <plugin id="org.wso2.carbon.theme.mgt" unpack="false" version="2.2.0"/>
+  <plugin id="org.wso2.carbon.tenant.dispatcher" unpack="false" version="2.2.0"/>
+  <plugin id="org.wso2.carbon.stratos.landing.page.deployer" unpack="false" version="2.2.0"/>
+  <plugin id="org.wso2.carbon.tenant.mgt.core" unpack="false" version="2.2.0"/>
+  <require>
+    <import match="equivalent" plugin="rampart-policy" version="1.6.1.wso2v10"/>
+    <import match="equivalent" plugin="rampart-core" version="1.6.1.wso2v10"/>
+    <import match="equivalent" plugin="org.wso2.carbon.application.upload" version="4.2.0"/>
+    <import match="equivalent" plugin="rampart-trust" version="1.6.1.wso2v10"/>
+    <import feature="org.wso2.carbon.registry.core.server" match="equivalent" version="4.2.0"/>
+    <import feature="org.wso2.carbon.identity.authenticator.saml2.sso.server" match="equivalent" version="4.2.0"/>
+    <import feature="org.wso2.carbon.core.server" match="equivalent" version="4.2.0"/>
+  </require>
+</feature>

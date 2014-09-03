@@ -84,10 +84,20 @@ var module = function () {
         		uriTemplate.setSkipThrottling(attributes["uritemplate_skipthrottle" + index] === "True");
         		uriTemplate.setUserRoles(attributes["uritemplate_userRoles" + index]);
 
-                var EntitlementPolicy = Packages.org.wso2.carbon.appmgt.api.model.entitlement.EntitlementPolicy;
-                var entitlementPolicy = new EntitlementPolicy();
-                entitlementPolicy.setPolicyId(attributes["uritemplate_entitlementPolicyId" + index]);
-                uriTemplate.setEntitlementPolicy(entitlementPolicy);
+                // Set policy partial ids.
+                var policyPartialMappings = attributes["uritemplate_entitlementPolicyPartialMappings" + index];
+
+                if(policyPartialMappings){
+                    policyPartialMappings = JSON.parse(policyPartialMappings);
+                    log.warn(policyPartialMappings);
+                    for(var i = 0; i < policyPartialMappings.length; i++){
+                        var EntitlementPolicyPartialMapping = Packages.org.wso2.carbon.appmgt.api.model.entitlement.EntitlementPolicyPartialMapping;
+                        var mapping = new EntitlementPolicyPartialMapping();
+                        mapping.setEntitlementPolicyPartialId(policyPartialMappings[i]["entitlementPolicyPartialId"]);
+                        mapping.setEffect(policyPartialMappings[i]["effect"]);
+                        uriTemplate.addEntitlementPolicyPartialMapping(mapping);
+                    }
+                }
 
         		webAppObj.getUriTemplates().add(uriTemplate);
 

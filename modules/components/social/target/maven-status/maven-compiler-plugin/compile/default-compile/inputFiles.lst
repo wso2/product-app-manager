@@ -1,0 +1,16 @@
+/home/dilan/Dilan/APPMGR/GIT/Carbon/appmgr/app-manager/modules/components/social/src/main/java/org/wso2/carbon/social/Cache.java
+/home/dilan/Dilan/APPMGR/GIT/Carbon/appmgr/app-manager/modules/components/social/src/main/java/org/wso2/carbon/social/ActivitySummarizer.java
+/home/dilan/Dilan/APPMGR/GIT/Carbon/appmgr/app-manager/modules/components/social/src/main/java/org/wso2/carbon/social/SortOrder.java
+/home/dilan/Dilan/APPMGR/GIT/Carbon/appmgr/app-manager/modules/components/social/src/main/java/org/wso2/carbon/social/JSONUtil.java
+/home/dilan/Dilan/APPMGR/GIT/Carbon/appmgr/app-manager/modules/components/social/src/main/java/org/wso2/carbon/social/internal/SocialComponent.java
+/home/dilan/Dilan/APPMGR/GIT/Carbon/appmgr/app-manager/modules/components/social/src/main/java/org/wso2/carbon/social/SocialActivityServiceImpl.java
+/home/dilan/Dilan/APPMGR/GIT/Carbon/appmgr/app-manager/modules/components/social/src/main/java/org/wso2/carbon/social/summarizer/DefaultSummarizer.java
+/home/dilan/Dilan/APPMGR/GIT/Carbon/appmgr/app-manager/modules/components/social/src/main/java/org/wso2/carbon/social/Constants.java
+/home/dilan/Dilan/APPMGR/GIT/Carbon/appmgr/app-manager/modules/components/social/src/main/java/org/wso2/carbon/social/summarizer/LikeSummarizer.java
+/home/dilan/Dilan/APPMGR/GIT/Carbon/appmgr/app-manager/modules/components/social/src/main/java/org/wso2/carbon/social/ActivityPublisher.java
+/home/dilan/Dilan/APPMGR/GIT/Carbon/appmgr/app-manager/modules/components/social/src/main/java/org/wso2/carbon/social/summarizer/Summarizer.java
+/home/dilan/Dilan/APPMGR/GIT/Carbon/appmgr/app-manager/modules/components/social/src/main/java/org/wso2/carbon/social/summarizer/SummarizerFactory.java
+/home/dilan/Dilan/APPMGR/GIT/Carbon/appmgr/app-manager/modules/components/social/src/main/java/org/wso2/carbon/social/summarizer/ReviewSummarizer.java
+/home/dilan/Dilan/APPMGR/GIT/Carbon/appmgr/app-manager/modules/components/social/src/main/java/org/wso2/carbon/social/service/SocialActivityService.java
+/home/dilan/Dilan/APPMGR/GIT/Carbon/appmgr/app-manager/modules/components/social/src/main/java/org/wso2/carbon/social/Activity.java
+/home/dilan/Dilan/APPMGR/GIT/Carbon/appmgr/app-manager/modules/components/social/src/main/java/org/wso2/carbon/social/ActivityBrowser.java

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.cassandra.dataaccess" label="WSO2 Carbon - Cassandra Data Access Feature" provider-name="%providerName" version="4.2.0">
+  <description>This feature contains the bundles required for accessing the Cassandra</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="hector-core" unpack="false" version="1.1.0.wso2v1"/>
+  <plugin id="org.wso2.carbon.cassandra.dataaccess" unpack="false" version="4.2.0"/>
+  <require>
+    <import feature="org.wso2.carbon.core.server" match="equivalent" version="4.2.0"/>
+  </require>
+</feature>

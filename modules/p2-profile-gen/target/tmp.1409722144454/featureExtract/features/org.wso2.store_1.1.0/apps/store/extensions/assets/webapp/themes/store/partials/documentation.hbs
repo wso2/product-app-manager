@@ -1,0 +1,125 @@
+<div>
+
+	{{#with tabs.documentation.data}}
+
+	<div class='accordion' id='documentAccordion'></div>
+
+	<div class="row-fluid">
+		<table class='table'>
+
+			<thead>
+				<th><b>Name</b></th>
+				<th><b>Summary</b></th>
+				<th><b>Content</b></th>
+			</thead>
+			<tbody>
+				{{#if HowTo.hasContent}}
+				<tr>
+					{{#each HowTo.entries}}
+					<td>
+						{{name}}(HowTo)
+					</td>
+					<td>
+						{{summary}}
+					</td>
+					<td>
+						{{#if isFile}} 
+							<a class='icon-download'></a><a href='{{filePath}}' download>Download</a> 
+						{{/if}} 
+						{{#if isUrl}} 
+							<a class='icon-globe'></a> <a href='{{sourceUrl}}' target="_blank">View</a>
+						{{/if}} 
+						{{#if isInline}} 
+						
+							<a class='icon-globe' href="/store/extensions/assets/webapp/doc?{{name}}&{{../../../../asset.attributes.overview_provider}}&{{../../../../asset.attributes.overview_version}}&{{../../../../asset.attributes.overview_name}}&{{../../../../user.username}}" target="_blank">View</a> 
+						{{/if}}
+
+					</td>
+
+				</tr>
+				{{/each}} 
+				{{/if}} 
+				
+				{{#if Samples.hasContent}}
+				<tr>
+					{{#each Samples.entries}}
+					<td>{{name}}(Samples)</td>
+					<td>{{summary}}</td>
+					<td>{{#if isFile}} <a class='icon-download'></a> <a
+						href='{{filePath}}' download>Download</a> {{/if}} {{#if isUrl}} <a
+						class='icon-globe'></a> <a href='{{sourceUrl}}'>View Content</a>
+						{{/if}} {{#if isInline}} <a class='icon-globe'
+						href="/store/extensions/assets/webapp/doc?{{name}}&{{../../asset.attributes.overview_provider}}&{{../../asset.attributes.overview_version}}&{{../../asset.attributes.overview_name}}&{{../../user.username}}"
+						target="_blank">ViewDoc</a> {{/if}}
+
+					</td>
+
+				</tr>
+				{{/each}} {{/if}} {{#if PublicForum.hasContent}}
+				<tr>
+					{{#each PublicForum.entries}}
+					<td>{{name}}(PublicForum)</td>
+					<td>{{summary}}</td>
+					<td>{{#if isFile}} <a class='icon-download'></a> <a
+						href='{{filePath}}' download>Download</a> {{/if}} {{#if isUrl}} <a
+						class='icon-globe'></a> <a href='{{sourceUrl}}'>View Content</a>
+						{{/if}} {{#if isInline}} <a class='icon-globe'
+						href="/store/extensions/assets/webapp/doc?{{name}}&{{../../asset.attributes.overview_provider}}&{{../../asset.attributes.overview_version}}&{{../../asset.attributes.overview_name}}&{{../../user.username}}"
+						target="_blank">ViewDoc</a> {{/if}}
+
+					</td>
+
+				</tr>
+				{{/each}} {{/if}} {{#if SupportForum.hasContent}}
+				<tr>
+					{{#each SupportForum.entries}}
+					<td>{{name}}(SupportForum)</td>
+					<td>{{summary}}</td>
+					<td>{{#if isFile}} <a class='icon-download'></a> <a
+						href='{{filePath}}' download>Download</a> {{/if}} {{#if isUrl}} <a
+						class='icon-globe'></a> <a href='{{sourceUrl}}'>View Content</a>
+						{{/if}} {{#if isInline}} <a class='icon-globe'
+						href="/store/extensions/assets/webapp/doc?{{name}}&{{../../asset.attributes.overview_provider}}&{{../../asset.attributes.overview_version}}&{{../../asset.attributes.overview_name}}&{{../../user.username}}"
+						target="_blank">ViewDoc</a> {{/if}}
+
+					</td>
+
+				</tr>
+				{{/each}} {{/if}} {{#if APIMessageFormat.hasContent}}
+				<tr>
+					{{#each APIMessageFormat.entries}}
+					<td>{{name}}(APIMessageFormat)</td>
+					<td>{{summary}}</td>
+					<td>{{#if isFile}} <a class='icon-download'></a> <a
+						href='{{filePath}}' download>Download</a> {{/if}} {{#if isUrl}} <a
+						class='icon-globe'></a> <a href='{{sourceUrl}}'>View Content</a>
+						{{/if}} {{#if isInline}} <a class='icon-globe'
+						href="/store/extensions/assets/webapp/doc?{{name}}&{{../../asset.attributes.overview_provider}}&{{../../asset.attributes.overview_version}}&{{../../asset.attributes.overview_name}}&{{../../user.username}}"
+						target="_blank">ViewDoc</a> {{/if}}
+
+					</td>
+
+				</tr>
+				{{/each}} {{/if}} {{#if Other.hasContent}}
+				<tr>
+					{{#each Other.entries}}
+					<td>{{name}}(Other)</td>
+					<td>{{summary}}</td>
+					<td>{{#if isFile}} <a class='icon-download'></a> <a
+						href='{{filePath}}' download>Download</a> {{/if}} {{#if isUrl}} <a
+						class='icon-globe'></a> <a href='{{sourceUrl}}'>View Content</a>
+						{{/if}} {{#if isInline}} <a class='icon-globe'
+						href="/store/extensions/assets/webapp/doc?{{name}}&{{../../asset.attributes.overview_provider}}&{{../../asset.attributes.overview_version}}&{{../../asset.attributes.overview_name}}&{{../../user.username}}"
+						target="_blank">ViewDoc</a> {{/if}}
+
+					</td>
+
+				</tr>
+				{{/each}} {{/if}}
+
+			</tbody>
+		</table>
+	</div>
+	{{/with}}
+
+</div>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.registry.ws" label="WSO2 Carbon - Registry WS API Feature" provider-name="%providerName" version="4.2.0">
+  <description>This contains the core bundles required by Registry Web Service API. The Registry WS-API
+        can be used by remote clients to communicate with the WSO2 Carbon-based Server's embedded
+        registry.</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="org.wso2.carbon.registry.ws.stub" unpack="false" version="4.2.0"/>
+  <plugin id="org.wso2.carbon.registry.ws.api" unpack="false" version="4.2.0"/>
+  <plugin id="org.wso2.carbon.registry.ws.client" unpack="false" version="4.2.0"/>
+  <require>
+    <import feature="org.wso2.carbon.registry.core.server" match="equivalent" version="4.2.0"/>
+  </require>
+</feature>

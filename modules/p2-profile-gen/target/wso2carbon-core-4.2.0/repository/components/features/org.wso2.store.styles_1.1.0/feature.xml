@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.store.styles" label="WSO2 Enterprise Store Styles Feature" provider-name="%providerName" version="1.1.0">
+  <description>WSO2 Enterprise Store</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="org.wso2.store.admin.styles" unpack="false" version="1.0.0"/>
+</feature>

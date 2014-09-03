@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.registry.contentsearch.server" label="WSO2 Carbon - Registry Content Search Server Feature" provider-name="%providerName" version="4.2.1">
+  <description>This feature contains the bundles required for Back-end Registry Content Search functionality</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="org.wso2.carbon.registry.indexing" unpack="false" version="4.2.1"/>
+  <plugin id="solr" unpack="false" version="1.4.1.wso2v1"/>
+  <require>
+    <import feature="org.wso2.carbon.registry.core.server" match="equivalent" version="4.2.0"/>
+  </require>
+</feature>

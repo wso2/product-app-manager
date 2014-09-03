@@ -1,0 +1,5 @@
+instructions.configure = \
+org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/../../../modules); \
+org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/../../../modules/caramel); \
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.jaggeryjs.modules.caramel_1.0.1/module/,target:${installFolder}/../../../modules/caramel,overwrite:true);\
+

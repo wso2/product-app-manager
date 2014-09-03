@@ -1,0 +1,4 @@
+instructions.configure = \
+org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/../../../modules); \
+org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/../../../modules/handlebars); \
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.jaggeryjs.modules.handlebars_1.0.0/module/,target:${installFolder}/../../../modules/handlebars,overwrite:true);\

@@ -1,0 +1,13 @@
+instructions.configure = \
+org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/../../deployment/server/jaggeryapps); \
+org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/../../../modules); \
+org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/../../../repository); \
+org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/../../../dbscripts); \
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.store_1.1.0/apps/,target:${installFolder}/../../deployment/server/jaggeryapps,overwrite:false);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.store_1.1.0/jaggery-modules/,target:${installFolder}/../../../modules,overwrite:false);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.store_1.1.0/distribution/src/dbscripts/,target:${installFolder}/../../../dbscripts,overwrite:false);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.store_1.1.0/distribution/src/repository/,target:${installFolder}/../../../repository,overwrite:true);\
+org.eclipse.equinox.p2.touchpoint.natives.remove(path:${installFolder}/../features/org.wso2.store_1.1.0/apps);\
+org.eclipse.equinox.p2.touchpoint.natives.remove(path:${installFolder}/../features/org.wso2.store_1.1.0/jaggery-modules);\
+org.eclipse.equinox.p2.touchpoint.natives.remove(path:${installFolder}/../features/org.wso2.store_1.1.0/distribution);\
+org.eclipse.equinox.p2.touchpoint.natives.remove(path:${installFolder}/../features/org.wso2.store_1.1.0/dbscripts);\

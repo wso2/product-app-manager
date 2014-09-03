@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.databridge.cassandra" label="WSO2 Carbon - Data Bridge - All Cassandra Features Aggregator Feature" provider-name="%providerName" version="4.2.0">
+  <description>The aggregator feature containing all Cassandra Features of data bridge</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <require>
+    <import feature="org.wso2.carbon.core" match="equivalent" version="4.2.0"/>
+  </require>
+  <includes id="org.wso2.carbon.databridge.streamdefn.cassandra.server" optional="false" version="4.2.0"/>
+  <includes id="org.wso2.carbon.databridge.datasink.cassandra.server" optional="false" version="4.2.0"/>
+</feature>

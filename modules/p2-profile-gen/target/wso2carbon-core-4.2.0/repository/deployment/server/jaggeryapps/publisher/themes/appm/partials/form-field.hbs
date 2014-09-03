@@ -1,0 +1,53 @@
+<div class="control-group">
+    <b><label class="control-label">{{field.label}}:</label></b>
+							<div class="controls">
+								
+								{{#if field.isOptions}}							
+                                    <select id="{{field.name}}" class="span8 selectpicker" name='{{field.name}}'>
+                                    {{#each field.valueList}}
+                                        <option {{#if field.value}}selected{{/if}}>{{.}}</option>
+                                    {{/each}}
+                                    </select>
+                                {{else}}
+                                	{{#if field.isTextArea}}
+                                    	<textarea id='{{field.name}}' class="span8" name='{{field.name}}'>{{field.value}}</textarea>
+                               		{{/if}}
+                                    {{#if field.isTextBox}}
+                                     
+	                                    {{#if field.isReadOnly}}
+	                                		<input type="hidden" name='{{field.name}}' value='{{field.value}}'/>
+	                                		<input id='{{field.name}}'  type='text'  class="span8" value='{{field.value}}' {{#unless isEditable}} disabled="true" {{/unless}} {{#if field.isRequired}} required{{/if}}/>
+	                                	{{else}}
+	                                		<input id='{{field.name}}' name='{{field.name}}' type='text' value='{{field.value}}'  class="span8" {{#if field.isReadOnly}} disabled="true" {{/if}} {{#if field.isRequired}} required{{/if}}/>
+	                                {{/if}}
+                                		
+                                	{{/if}}
+                                    {{#if field.isFile}}
+
+                                       <div class="span8">
+                                                                       		<div class="tbl-upload">
+                                                                       			<div class="tbl-upload-row">
+                                                                       				<div class="tbl-upload-cell">
+                                                                       					 <input type="text" class="txt-filepath" disabled="true" name='{{field.name}}' value='{{field.value}}'/>
+                                                                       					  <input type="hidden" value="{{field.value}}" name='{{field.name}}'>
+                                                                       				</div>
+                                                                       				<div class="tbl-upload-cell">
+                                                                       					<button class="btn btn-upload">Browse</button>
+                                                                          					<input id='{{field.name}}' type='file' name='{{field.name}}'/>
+                                                                       				</div>
+                                                                       			</div>
+                                                                       		</div>
+
+                                                                       	</div>
+                                    {{/if}}
+                                {{/if}}
+
+                                {{#if field.isOptionsText}}
+                                    <div id="{{field.name}}" name='{{field.name}}' class="options-text" data-add-button="Add {{field.label}}" data-selected="{{field.value}}" data-options="{{field.valueList}}" ></div>
+                                {{/if}}
+                               
+                                {{#if field.isRequired}}
+								<span class="label-required">*</span>
+								{{/if}}
+							</div>
+						</div>

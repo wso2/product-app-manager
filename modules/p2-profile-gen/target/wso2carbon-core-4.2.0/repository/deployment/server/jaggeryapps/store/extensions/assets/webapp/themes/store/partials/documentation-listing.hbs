@@ -1,0 +1,36 @@
+<table class='table'>
+
+    <thead>
+    <th><b>Name</b></th>
+    <th><b>Summary</b></th>
+    <th><b>Content</b></th>
+    </thead>
+    <tbody>
+    <tr>
+        {{#each tabs.documentation.data.HowTo.entries}}
+        <td>
+            {{name}}
+        </td>
+        <td>
+            {{summary}}
+        </td>
+        <td>
+            {{#if isFile}}
+                 <a class='icon-download'></a> <a href='{{filePath}}' download>Download</a>
+            {{/if}}
+
+            {{#if isUrl}}
+                <a class='icon-globe'></a> <a href='{{sourceUrl}}'>View Content</a>
+            {{/if}}
+            
+            {{#if isInline}}
+                     <a class='icon-globe' href="/store/extensions/assets/webapp/doc?{{name}}&{{../../asset.attributes.overview_provider}}&{{../../asset.attributes.overview_version}}&{{../../asset.attributes.overview_name}}&{{../../user.username}}"  target="_blank">ViewDoc</a>
+            {{/if}}
+
+        </td>
+
+    </tr>
+    {{/each}}
+    </tbody>
+
+</table>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.governance.lifecycle.management.ui" label="WSO2 Carbon - Governance Lifecycle Management UI Feature" provider-name="%providerName" version="4.2.0">
+  <description>This feature contains the bundles required for Front-end Governance Lifecycle Management functionality</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="org.wso2.carbon.governance.custom.lifecycles.checklist.ui" unpack="false" version="4.2.0"/>
+  <plugin id="org.wso2.carbon.governance.lcm.ui" unpack="false" version="4.2.0"/>
+  <plugin id="org.wso2.carbon.governance.custom.lifecycles.history.ui" unpack="false" version="4.2.0"/>
+  <plugin id="org.wso2.carbon.governance.lcm.stub" unpack="false" version="4.2.0"/>
+  <plugin id="org.wso2.carbon.governance.custom.lifecycles.checklist.stub" unpack="false" version="4.2.0"/>
+  <require>
+    <import feature="org.wso2.carbon.registry.community.features.ui" match="equivalent" version="4.2.0"/>
+    <import feature="org.wso2.carbon.registry.extensions.ui" match="equivalent" version="4.2.0"/>
+    <import feature="org.wso2.carbon.registry.core.ui" match="equivalent" version="4.2.0"/>
+  </require>
+</feature>

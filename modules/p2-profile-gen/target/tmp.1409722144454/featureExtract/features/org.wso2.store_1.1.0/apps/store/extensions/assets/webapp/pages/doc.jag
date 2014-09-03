@@ -1,0 +1,48 @@
+<%
+
+include('../modules/jagg/jagg.jag');
+
+var parameters = request.getQueryString().split("&");
+
+AuthService = require(getServiceDir('authentication.js')).serviceModule;
+authenticator = new AuthService.Authenticator();
+authenticator.init(jagg, session);
+
+var docName = parameters[0];
+var webappProvider = parameters[1];
+var webappName = parameters[3];
+var webappVersion = parameters[2];
+var username = parameters[4];
+
+var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
+var apiIdentifierObj = new apiIdentifier(webappProvider, webappName, webappVersion);
+
+var APIProviderImpl = Packages.org.wso2.carbon.appmgt.impl.APIProviderImpl;
+var APIProviderImplObj = new APIProviderImpl(username);
+
+var content = APIProviderImplObj.getDocumentationContent(apiIdentifierObj,docName);
+
+var docData = {};
+docData.webappName = webappName;
+docData.docName = decodeURI(docName);
+docData.docContent = content;
+
+var userData = authenticator.getLoggedInUser();
+
+
+caramel.render({
+		header: {
+	            user: userData
+	    },
+        data:docData
+       
+    });
+
+
+function getServiceDir(serviceName) {
+	return '../services/' + serviceName;
+}
+	
+
+
+%>

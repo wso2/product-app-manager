@@ -77,18 +77,13 @@ $( document ).ready(function() {
 
     $(document).on("click", ".add_entitlement_policy", function () {
       var resourceIndex = $(this).data('index');
-      preparePolicyEditorInEditMode(resourceIndex);
+      preparePolicyEditor(resourceIndex);
     })
 
     $(document).on("click", ".delete_entitlement_policy", function () {
       var resourceIndex = $(this).data('index');
       deleteEntitlementPolicy(resourceIndex);
     })
-
-    $(document).on("click", "#btn-policy-save", function () {
-     addEntitlementPolicy(); 
-     $("#entitlement-policy-editor").modal('hide');
-    })   
 
     $("#resource_tbody").trigger("draw");
 });

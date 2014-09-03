@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.jaggeryjs.modules.caramel" label="caramel Module - Feature" provider-name="%providerName" version="1.0.1">
+  <description>Caramel Module</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <require>
+    <import feature="org.jaggeryjs.modules.handlebars" match="equivalent" version="1.0.0"/>
+    <import feature="org.jaggeryjs.modules.markdown" match="equivalent" version="1.0.0"/>
+  </require>
+</feature>

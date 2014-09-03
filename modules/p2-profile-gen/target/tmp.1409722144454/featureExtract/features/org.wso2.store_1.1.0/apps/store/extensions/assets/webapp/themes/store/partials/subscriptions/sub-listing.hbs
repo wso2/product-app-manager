@@ -1,0 +1,21 @@
+<!--
+Subscription listing page
+-->
+
+<h4>Subscribed Web Applications</h4>
+<div class="row-fluid">{{#each subscriptions}}
+    <div class="span3 asset">
+    	<a href="{{productionURL}}" target="_blank">
+        <div class="asset-icon">
+           
+               <img class="web-asset-img" src="/store/storage/webapp/{{uuid}}/{{thumbnail}}">
+        </div>
+        <div class="asset-details">
+            <div class="asset-name">
+                {{name}} -  {{version}}
+               
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</div>

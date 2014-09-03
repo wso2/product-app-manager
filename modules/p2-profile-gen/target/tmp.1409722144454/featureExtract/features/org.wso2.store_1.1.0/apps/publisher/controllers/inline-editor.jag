@@ -1,0 +1,44 @@
+<%
+
+include("/extensions/webapp/modules/jagg/jagg.jag");
+var server = require('store').server;
+var  cuser = server.current(session);
+
+
+var publisher = require('/modules/publisher.js').publisher(request, session);
+var rxtManager = publisher.rxtManager;
+var modelManager = publisher.modelManager;
+
+var parameters = request.getQueryString().split("&");
+var shortName = parameters[0];
+
+var artifactManager = rxtManager.getArtifactManager(shortName);
+
+var log = new Log();
+ 
+try{
+	
+	var artifact = artifactManager.get(parameters[1]);
+	var model = modelManager.getModel(shortName);
+	var output = model.export('form');
+	var assetName = model.get('overview.name').value;
+	var versionList = artifactManager.getAllAssetVersions(assetName);
+		
+		
+ 	var apiData={};
+ 	apiData.docName= decodeURI(parameters[2]);
+ 	
+ 	var operation = "documentation";
+ 	 	
+ 	caramel.render({op:operation,cuser:cuser,data: apiData,artifact:artifact,shortName:shortName,versions: versionList});
+ 	 	
+}catch (e) {
+        log.debug('The asset with id ' + parameters[1] + ' could not be found due to : ' + e);
+        response.sendError(404, 'Asset with id ' + parameters[1] + ' could not be found.Please check server log.');
+}
+
+
+
+
+%>
+

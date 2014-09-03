@@ -1,0 +1,94 @@
+<%
+// print('this is the default api router');
+
+var log = new Log('api.router');
+
+var dataInjectorModule=require('/modules/data/data.injector.js').dataInjectorModule();
+
+var dataInjector=new dataInjectorModule.DataInjector();
+
+var artifact={
+
+    attributes:{
+        'images_banner':'a',
+        'images_thumbnail':'b'
+    }
+};
+
+var list=[{a:1,attributes:{
+    images_banner:'6f839c20-299c-11e3-8224-0800200c9a66/apple.png'
+}},{id:2, attributes:{
+    images_thumbnail:'7767d184-bb41-4dc7-b9ed-2bf64c62596f/banner.png',
+    images_banner:'/tests/banner.png'
+}}];
+
+var storageModule = require('/modules/data/storage.js').storageModule();
+
+var storageManager = new storageModule.StorageManager({
+    context: 'storage',
+    isCached:false,
+    connectionInfo: {
+        dataSource:'JAGH2'
+    }
+});
+
+
+dataInjector.addToContext('storageManager',storageManager);
+
+dataInjector.inject(list,dataInjectorModule.Modes.DISPLAY);
+
+//log.debug('content type: '+request.getContentType());
+//log.debug('content length: '+request.getContentLength());
+//log.debug('content: '+request.getContent());
+//log.debug(request.getParameter('file'));
+
+/* var UUID=java.util.UUID;
+
+ var result=UUID.randomUUID();
+
+ print('result:'+result);        */
+
+/*var contents=request.getAllParameters('UTF-8');
+
+ log.debug('content is'+contents[0]);*/
+
+//var db=new Database('JAGH2');
+
+//var selectQuery='SELECT content FROM resource;';
+
+//var result=db.query(selectQuery);
+//log.debug(result.length);
+
+/* var db=new Database('jdbc:h2:~/test','sa','');
+
+ var file=new File('/tests/banner.png');
+
+ file.open('r');
+
+ //var insertQuery='INSERT INTO resource (uuid,tenantId,content) VALUES (?,?,?)';
+
+ //db.query(insertQuery,'a','b',file.getStream());
+
+ var selectQuery='SELECT content FROM resource;';
+
+ var result=db.query(selectQuery);
+
+ log.debug(result.length);
+ var temp;
+
+ for(var row in result){
+
+ for(var index in result[row]){
+ temp=result[row];
+ }
+ }
+
+ log.debug(temp[index]);
+ response.addHeader('Content-Type','image/png');
+ log.debug('length of original file: '+file.getLength());
+ response.addHeader('Content-Length',file.getLength()+'');
+
+ print(temp[index]);*/
+
+
+%>

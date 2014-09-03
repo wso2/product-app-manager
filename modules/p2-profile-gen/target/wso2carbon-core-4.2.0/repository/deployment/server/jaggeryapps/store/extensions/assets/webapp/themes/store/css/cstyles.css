@@ -1,0 +1,128 @@
+.icon-ebook:before {
+    content: "\F15C";
+}
+
+
+.web-asset-banner{
+    border-bottom: 1px solid #ECF0F1;
+    height: 335px;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    width: 580px;
+}
+
+.web-asset-introduction-box{
+    border-bottom: 1px solid #ECF0F1;
+    border-left: 1px solid #ECF0F1;
+    bottom: 0;
+    left: 565px;
+    padding: 20px;
+    position: absolute;
+    right: -20px;
+    top: 0;
+}
+
+.botton-mar-5{
+	margin-bottom:5px;
+}
+
+.botton-mar-8{
+	margin-bottom:8px;
+}
+
+.web-asset-description-header {
+    background: none repeat scroll 0 0 #FFFFFF;
+}
+
+.web-asset-description-header .row > div{
+	height: 336px;
+	position: relative;
+}
+.web-asset-description-header .row > div{
+	height: 336px;
+	position: relative;
+}
+.web-asset-img{
+	float:left;
+	margin:0 10px 10px 0;
+}
+.web-asset-clear{
+	clear:left;
+}
+
+.widget-maximized{
+border: 1px solid;
+position: fixed;
+left: 50%;
+top: 0;
+bottom: 0;
+z-index: 999;
+background: #fff;
+margin-left: -315px;
+width: 700px;
+overflow-y: auto;
+	
+}
+
+.backdrop{
+	position: fixed;
+left: 0;
+right: 0;
+bottom: 0;
+top: 0;
+background: rgba(0,0,0,.6);
+z-index: 998;
+display:none;
+}
+
+/* Subscription pop over styles */
+#enterpriseSubscriptions{
+    margin-top: 10px
+}
+
+#enterpriseSubscriptions .popover{
+    border: 1px solid #229a55;
+}
+
+.popover.bottom .arrow:after {
+    border-bottom-color: #229a55;
+}    
+
+#enterpriseSubscriptions .popover .popover-title{
+    display: none;
+}
+
+#enterpriseSubscriptions .popover.bottom{
+    margin-top: 15px;
+}
+
+#enterpriseSubscriptions .popover .no-enterprises{
+    font-size: 16px;
+}
+
+#enterpriseSubscriptions #enterpriseSubscriptionActions{
+    margin-top: 20px;
+    text-align: center;
+}
+
+.enterprise-entry {
+    display: block;
+    padding-left: 15px;
+    text-indent: -15px;
+}
+.enterprise-entry input {
+    margin-right: 8px;
+    position: relative;
+    top: -1px;
+}
+
+.btn-primary.disabled,
+.btn-primary[disabled] {
+  color: #333333;
+  background-color: #E3E3E3;
+  *background-color: #003bb3;
+}
+
+
+

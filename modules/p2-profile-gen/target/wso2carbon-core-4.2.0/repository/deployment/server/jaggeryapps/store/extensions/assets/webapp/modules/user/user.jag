@@ -1,0 +1,9 @@
+<%
+var getUser = function () {
+    return session.get("logged.user");
+};
+
+var setUser = function (user) {
+    session.put("logged.user", user);
+};
+%>

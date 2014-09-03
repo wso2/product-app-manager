@@ -1,25 +1,55 @@
 <%
 
+include("/extensions/webapp/modules/jagg/jagg.jag");
 
 require('/modules/publisher.js').exec(function(ctx) {
 
     var config = require('/config/publisher.json');
     var caramel = require('caramel');
-
+    var apiProvider = jagg.module('manager').getAPIProviderObj();
     var router = require('/modules/router-g.js').router();
     var routeManager = new router.Router();
-    var appmgtPublisher = require('appmgtpublisher');
     var log= new Log();
 
     routeManager.register('GET', 'publisher', '/publisher/api/entitlement/{type}/{id}', function (context) {
-        var server  = require('store').server;
-        var username = server.current(session).username;
-        username=username+"";
-        var appMgtProviderObj = new appmgtPublisher.APIProvider(username);
-        var policyContent = getEntitlementPolicyContent(appMgtProviderObj, context.params.id);
-        var log = new Log();
+        var policyContent = getEntitlementPolicyContent(context.params.id);
         print(policyContent);
     });
+
+    routeManager.register('POST', 'publisher', '/publisher/api/entitlement/policy/validate', function (context) {
+        
+        var validationResult = validateEntitlementPolicyPartial(context.post.policyPartial);
+        var validationResultJson = {"isValid" : validationResult.isValid()};
+        print(createResponseObject(validationResultJson));
+    });
+
+    routeManager.register('POST', 'publisher', '/publisher/api/entitlement/policy', function (context) {
+        
+        var partialId = saveEntitlementPolicyPartial(context.post.policyPartial);
+        var response = {"id" : partialId};
+        print(createResponseObject(response));
+    });
+
+    /**
+     * Returns external entitlement policy for the given policy id.
+     */
+    function getEntitlementPolicyContent(policyId){
+        return apiProvider.getEntitlementPolicyContent(policyId);
+    }
+
+    /**
+    * Validates the given policy content
+    */
+    function validateEntitlementPolicyPartial(policyContent){
+        return apiProvider.validateEntitlementPolicyPartial(policyContent);
+    }
+
+    /**
+    * Saves the given policy content
+    */
+    function saveEntitlementPolicyPartial(policyPartial){
+        return apiProvider.saveEntitlementPolicyPartial(policyPartial);
+    }
 
     function createResponseObject(object) {
         if (object !== null) {
@@ -29,14 +59,8 @@ require('/modules/publisher.js').exec(function(ctx) {
         }
     }
 
-    /**
-     * Saves external entitlement policies.
-     */
-    function getEntitlementPolicyContent(apiProvider, id){
 
-        var EntitlementPolicy = Packages.org.wso2.carbon.appmgt.api.model.entitlement.EntitlementPolicy;
-        return apiProvider.getEntitlementPolicyContent(id);
-    }
+    
 
     var securityModule=require('/modules/security/security.manager.js').securityManagementModule();
 

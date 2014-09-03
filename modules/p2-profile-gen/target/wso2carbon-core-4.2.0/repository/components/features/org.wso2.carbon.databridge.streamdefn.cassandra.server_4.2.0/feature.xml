@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.databridge.streamdefn.cassandra.server" label="WSO2 Carbon - Data Bridge - Cassandra Defn Storage Server Feature" provider-name="%providerName" version="4.2.0">
+  <description>This feature contains the bundles required for the Cassandra Stream Defn Store the data bridge</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="org.wso2.carbon.databridge.streamdefn.cassandra" unpack="false" version="4.2.0"/>
+  <plugin id="org.wso2.carbon.databridge.persistence.cassandra" unpack="false" version="4.2.0"/>
+  <require>
+    <import feature="org.wso2.carbon.databridge.core.server" match="equivalent" version="4.2.0"/>
+    <import feature="org.wso2.carbon.cassandra.dataaccess" match="equivalent" version="4.2.0"/>
+    <import feature="org.wso2.carbon.core.server" match="equivalent" version="4.2.0"/>
+  </require>
+</feature>

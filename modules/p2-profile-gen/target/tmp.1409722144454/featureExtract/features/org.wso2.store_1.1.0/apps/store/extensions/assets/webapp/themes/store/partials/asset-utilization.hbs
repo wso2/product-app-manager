@@ -1,0 +1,29 @@
+{{#if user}}
+
+<input type="hidden" value="Unlimited" id="subsAppTier" name="subsAppTier">
+
+<div id="subscriptionActions">
+	{{#if isSubscribed}}
+		<a href="#" class="btn btn-primary" id='btnUnsubscribe'>{{t "Unsubscribe Me"}}</a>
+		<a href="#" class="btn btn-primary" id='btnSubscribe' style="display:none">{{t "Subscribe Me"}}</a>
+	 {{else}}
+		{{#if subscriptionInfo.individualSubscription.OnHold}}
+			<a href="#" class="btn btn-disabled" id='btnSubscribe' disabled='disabled'>{{t "Subscribe Me"}}</a>
+			<a href="#" class="btn btn-primary" id='btnUnsubscribe' style="display:none">{{t "Unsubscribe Me"}}</a>
+		{{else}}
+			<a href="#" class="btn btn-primary" id='btnSubscribe'>{{t "Subscribe Me"}}</a>
+			<a href="#" class="btn btn-primary" id='btnUnsubscribe' style="display:none">{{t "Unsubscribe Me"}}</a>
+		{{/if}}
+		
+	{{/if}}
+
+	{{#if isEnterpriseSubscriptionAllowed}}
+		<div id="enterpriseSubscriptions">
+			<a id="btnEnterpriseSubscriptions" href="#" class="btn btn-primary" rel="popover">Enterprise Subscriptions</a>
+			{{>subscriptions/enterprise-subscriptions}}
+		</div>
+	{{/if}}  
+
+</div>
+	
+{{/if}}

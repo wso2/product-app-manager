@@ -1,0 +1,103 @@
+<%
+var caramel;
+/**var DEFAULT_SOCIAL_APP_SCRIPT='https://localhost:9443/social/export-js/social.js' ;
+var DEFAULT_SOCIAL_APP='../../../social/';
+var DEFAULT_SOCIAL_SCRIPT_TYPE='text/javascript';
+
+/**
+ * The function is used to create the social app configuration object that will be used to populate
+ * the iframe hosting the social component
+ * @returns A JSON object which contains the social app configuration details
+ */
+/*var getSocialAppDetails=function(){
+    var config=require('/config/store.json').socialAppConnectionInfo||{};
+
+    if(!config.hasOwnProperty('script')){
+               config['script']=DEFAULT_SOCIAL_APP_SCRIPT;
+    }
+
+    if(!config.hasOwnProperty('scriptType')){
+         config['scriptType']=DEFAULT_SOCIAL_SCRIPT_TYPE;
+    }
+
+    if(!config.hasOwnProperty('socialAppUrl')){
+        config['socialApp']=DEFAULT_SOCIAL_APP;
+    }
+
+    return config;
+};*/
+
+require('/modules/store.js').exec(function (ctx) {
+    var asset, aid, title,
+            log = ctx.log,
+            sso = ctx.sso,
+            store = ctx.store,
+            user = ctx.user,
+            tenantId = ctx.tenantId,
+            configs = ctx.configs,
+            site = ctx.site,
+            matcher = ctx.matcher,
+            inDashboard = false,
+            utility = require('/modules/util.js');
+
+    caramel = require('caramel');
+
+    matcher.match('/{context}' + configs.assetsUrlPrefix + '/{type}/{aid}');
+    aid = matcher.elements().aid;
+    title = store.assetLinks(type).title;
+    try {
+        asset = store.asset(type, aid);
+    } catch (e) {
+        response.sendError(404, 'Requested page cannot be found');
+        return;
+    }
+
+    //check asset LC state
+    if(configs.lifeCycleBehaviour.visibleIn.indexOf(String(asset.lifecycleState), 0) < 0){
+        response.sendError(404, 'Requested page cannot be found');
+        return;
+    }
+
+    if (store.isuserasset(aid, type)) {
+        inDashboard = true;
+    }
+
+    var rxtAttributes = utility.getRXTAttributes(tenantId, type);
+
+
+
+    caramel.render({
+        title: 'Store | ' + type,
+        user: user,
+        sso: sso,
+
+        header: site.header(tenantId, {
+            sso: sso,
+            user: user
+        }),
+
+        navigation: site.navigation(tenantId),
+        search: {
+            search: {title: type},
+            isTopAssets: false,
+            searchFields: rxtAttributes
+        },
+        isSocial: configs.socialCommentsEnable,
+
+        type: type,
+        embedURL: configs.server.http + '/gadgets/ifr?url=' + asset.attributes.overview_url,
+        inDashboard: inDashboard,
+        asset: asset,
+        tags: [
+            {
+                url: '/assets/' + type + '/?page=1&tag=',
+                data: store.tags(type)
+            }
+        ],
+        myAssets: { user: user, type: type, title: title },
+        recentAssets: store.recentAssets(type),
+        moreAssetsFromProvider:store.assetsFromProvider(asset,type),
+        socialAppDetails:getSocialAppDetails()
+    });
+}, request, response, session);
+%>

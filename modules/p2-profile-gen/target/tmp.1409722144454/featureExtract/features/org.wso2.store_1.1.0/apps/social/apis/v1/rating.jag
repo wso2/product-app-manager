@@ -1,0 +1,30 @@
+<%
+var matcher = new URIMatcher(request.getRequestURI());
+
+(function () {
+	//TODO remove DB con !
+    	var databridge = require('/modules/databridge.js'),
+	db = new Database("jdbc:cassandra://localhost:9160/STORE_KS?version=2.0.0","admin","admin",{"driverClassName":"org.apache.cassandra.cql.jdbc.CassandraDriver"}),
+	aid,parent,rate;
+
+	//TODO check for authenticated user !
+
+    // get the current rating for give asset
+    if (matcher.match('/{context}/api/rating/')) {
+	aid = request.getParameter('id');
+	var result = db.query("SELECT * FROM org_wso2_store WHERE asset="+aid);
+	print(result);
+        return;
+    }
+
+    // update rating of a given asset
+    if (matcher.match('/{context}/api/rating/rate')) {
+	aid = request.getParameter('id');
+	parent = false;
+	rate = request.getParameter('rate');
+	databridge.initPublisher(aid,rate,parent);
+        return;
+    }
+    response.sendError(404, 'API Endpoint Not Found');
+})();
+%>

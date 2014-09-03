@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.event" label="WSO2 Carbon - Event Feature" provider-name="%providerName" version="4.2.1">
+  <description>Event service feature</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <require>
+    <import feature="org.wso2.carbon.registry.core" match="equivalent" version="4.2.1"/>
+    <import feature="org.wso2.carbon.core" match="equivalent" version="4.2.0"/>
+  </require>
+  <includes id="org.wso2.carbon.event.server" optional="false" version="4.2.1"/>
+  <includes id="org.wso2.carbon.event.common" optional="false" version="4.2.0"/>
+  <includes id="org.wso2.carbon.event.ui" optional="false" version="4.2.0"/>
+</feature>

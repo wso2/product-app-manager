@@ -1,0 +1,89 @@
+<%
+
+var API_FOLDER = 'apis/';
+var MANIFEST_FILE = 'manifest.json';
+var INIT_FILE='init.jag';
+var URL_PATTERN = "/{context}/resources/{asset}/{version}/{resource}/{any}";
+var EXTENSION_DIR = '/extensions/assets/';
+var requestMethod;
+var matcher;
+var log=new Log('restfulapis');
+
+var executeMethod=function(methodType,script,request,response,session){
+    var context={request:request,response:response,session:session};
+    var output={};
+    switch(methodType){
+        case 'GET':
+            output=script.get(context);
+            break;
+        case 'POST':
+            log.info('calling post method');
+            output=script.post(context);
+            break;
+        case 'PUT':
+            output=script.put(context);
+            break;
+        case 'DELETE':
+            output=script.delete(context);
+            break;
+        default:
+            break;
+    }
+    print(output);
+};
+
+matcher = new URIMatcher(request.getRequestURI());
+
+//Determine the request type
+requestMethod = request.getMethod();
+
+
+//Determine the type of asset
+isMatch = matcher.match(URL_PATTERN);
+
+if (!isMatch) {
+    print("{ status:error}");
+
+}
+else {
+    var assetType = matcher.elements().asset;
+
+    var assetVersion = matcher.elements().version;
+
+    //Check if the asset has defined a rest api
+    var apiPathToCheck = EXTENSION_DIR + assetType + '/' + API_FOLDER + assetVersion + '/';
+
+    var apiDir = new File(apiPathToCheck);
+
+    //Check if the API directory exists
+    if (apiDir.isExists()) {
+
+        var resource = matcher.elements().resource;
+
+        //Check if the resource exists
+        var resourcePath = apiPathToCheck + resource + '.js';
+
+        var resourceScript = new File(resourcePath);
+
+        //Check if a init jag file exists
+        var initJAGFilePath=apiPathToCheck+ INIT_FILE;
+
+        var initFile=new File(initJAGFilePath);
+
+        if(initFile.isExists()){
+            include(initJAGFilePath);
+        }
+
+        //Check if the resource exists
+        if (resourceScript.isExists()) {
+
+            //Load the resource module
+            var script=require(resourcePath);
+
+            executeMethod(requestMethod,script.resource,request,response,session);
+        }
+    }
+}
+
+
+%>

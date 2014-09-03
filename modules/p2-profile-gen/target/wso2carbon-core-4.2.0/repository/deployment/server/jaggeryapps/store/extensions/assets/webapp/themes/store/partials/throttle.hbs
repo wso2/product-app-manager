@@ -1,0 +1,28 @@
+{{#with apiData}}
+<table class='table'>
+	<thead>
+		<th>{{t "URL Prefix"}}</th>
+		<th>{{t "URL Pattern"}}</th>
+		<th>{{t "Http Verb"}}</th>
+		<th>{{t "Throttling Limit"}}</th>
+	</thead>
+	<tbody>
+		{{#each uriTemplates}}
+		<tr>
+			<td>{{../context}}/{{../version}}</td>
+			<td>{{context}}</td>
+			<td>{{#each methodDetails}}
+				<p>
+					<span class='badge badge-success'>{{methodName}}</span>
+				</p> {{/each}}
+			</td>
+			<td>{{#each methodDetails}}
+				<p>
+					<span class='badge badge-success'>{{details.tier}}</span>
+				</p> {{/each}}
+			</td>
+		</tr>
+		{{/each}}
+	</tbody>
+</table>
+{{/with}}

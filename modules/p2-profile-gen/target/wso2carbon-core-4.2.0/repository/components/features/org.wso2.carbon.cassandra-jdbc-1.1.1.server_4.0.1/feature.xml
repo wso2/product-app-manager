@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.cassandra-jdbc-1.1.1.server" label="Cassandra-JDBC-1.1.1 server Feature" provider-name="%providerName" version="4.0.1">
+  <description>This feature contains the bundles required for Cassandra-jdbc driver version 1.1.1</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="cassandra-jdbc" unpack="false" version="1.1.1.wso2v1"/>
+</feature>

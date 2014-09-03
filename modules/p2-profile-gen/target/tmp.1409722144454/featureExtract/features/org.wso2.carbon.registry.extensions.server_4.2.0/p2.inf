@@ -1,0 +1,19 @@
+instructions.configure = \
+org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/../../resources/rxts);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.carbon.registry.extensions.server_4.2.0/rxts/api.rxt,target:${installFolder}/../../resources/rxts/api.rxt,overwrite:true);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.carbon.registry.extensions.server_4.2.0/rxts/endpoint.rxt,target:${installFolder}/../../resources/rxts/endpoint.rxt,overwrite:true);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.carbon.registry.extensions.server_4.2.0/rxts/policy.rxt,target:${installFolder}/../../resources/rxts/policy.rxt,overwrite:true);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.carbon.registry.extensions.server_4.2.0/rxts/proxy.rxt,target:${installFolder}/../../resources/rxts/proxy.rxt,overwrite:true);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.carbon.registry.extensions.server_4.2.0/rxts/schema.rxt,target:${installFolder}/../../resources/rxts/schema.rxt,overwrite:true);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.carbon.registry.extensions.server_4.2.0/rxts/sequence.rxt,target:${installFolder}/../../resources/rxts/sequence.rxt,overwrite:true);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.carbon.registry.extensions.server_4.2.0/rxts/service.rxt,target:${installFolder}/../../resources/rxts/service.rxt,overwrite:true);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.carbon.registry.extensions.server_4.2.0/rxts/uri.rxt,target:${installFolder}/../../resources/rxts/uri.rxt,overwrite:true);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.carbon.registry.extensions.server_4.2.0/rxts/wadl.rxt,target:${installFolder}/../../resources/rxts/wadl.rxt,overwrite:true);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.carbon.registry.extensions.server_4.2.0/rxts/wsdl.rxt,target:${installFolder}/../../resources/rxts/wsdl.rxt,overwrite:true);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.carbon.registry.extensions.server_4.2.0/rxt.xsd,target:${installFolder}/../../resources/rxt.xsd,overwrite:true);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.carbon.registry.extensions.server_4.2.0/service-ui-config.xsd,target:${installFolder}/../../resources/service-ui-config.xsd,overwrite:true);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.carbon.registry.extensions.server_4.2.0/services-config.xml,target:${installFolder}/../../resources/services-config.xml,overwrite:true);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.carbon.registry.extensions.server_4.2.0/services-config.xsd,target:${installFolder}/../../resources/services-config.xsd,overwrite:true);\
+
+properties.0.name=org.wso2.carbon.p2.category.type
+properties.0.value=server

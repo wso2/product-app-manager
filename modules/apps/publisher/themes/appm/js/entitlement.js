@@ -1,5 +1,66 @@
 var entitlementPolicies = new Array();
 
+// UI events
+$(document).on("click", "#btn-policy-save", function () {
+
+    var policyContent = $('#entitlement-policy-editor #policy-content').val();
+    validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation, 
+                                                            displayValidationRequestException);
+     
+})
+
+$(document).on("click", "#btn-policy-partial-validate", function () {
+
+    var policyContent = $('#entitlement-policy-editor #policy-content').val();
+    validatePolicyPartial(policyContent, function(){}, function(){});
+     
+})
+
+$(document).on("click", "#btn-policy-save-and-close", function () {
+    
+    $('#entitlement-policy-editor #save-and-close').val("YES");
+    var policyContent = $('#entitlement-policy-editor #policy-content').val();
+    validatePolicyContent(policyContent, continueAddingEntitlementPolicyAfterValidation, 
+                                                            displayValidationRequestException);
+     
+})
+
+function continueAddingEntitlementPolicyPartialAfterValidation(response){
+
+    var response = JSON.parse(response);
+
+    if(response.success){
+        response = response.response; // Abusing the name response :-P
+
+        if(response.isValid){
+            savePolicyPartial();
+
+            if(shouldCloseAfterSave()){
+                $("#entitlement-policy-editor").modal('hide');    
+            } 
+            
+            return;        
+        }else{
+            var validationErrorMessage = "Policy is not valid."
+            $('#entitlement-policy-editor #notification-text').text(validationErrorMessage);
+        }
+
+    }else{
+        var failureMessage = "Could not complete validation."
+        $('#entitlement-policy-editor #notification-text').text(failureMessage);
+    }
+
+    
+}
+
+function shouldCloseAfterSave(){
+    return $('#entitlement-policy-editor #save-and-close').val() == "YES";
+}
+
+function displayValidationRequestException(){
+    showAlert('Error occured while validating the policy', 'error');
+}
+
 function deleteEntitlementPolicy (resourceIndex) {
 
     // Clear policy id hidden field.
@@ -14,27 +75,7 @@ function invalidateEntitlementPolicy(resourceIndex){
     entitlementPolicies.splice(resourceIndex, 1);
 };
 
-function preparePolicyEditorInAddMode(resourceIndex){
-
-    $("#entitlement-policy-editor #resource-index").val(resourceIndex);
-
-      // Populate exiting content.
-      var policy = entitlementPolicies[resourceIndex];
-
-      var policyContent = "";
-      if(policy){
-        policyContent = policy["content"];
-
-        if(!policyContent){
-          policyContent = "";
-        }
-      }
-
-      $('#entitlement-policy-editor #policy-content').val(policyContent);
-
-}
-
-function preparePolicyEditorInEditMode(resourceIndex){
+function preparePolicyEditor(resourceIndex){
 
     $("#entitlement-policy-editor #resource-index").val(resourceIndex);
 
@@ -51,7 +92,13 @@ function preparePolicyEditorInEditMode(resourceIndex){
         setPolicyContent(policyContent);
     }else{
         var policyId = getPolicyId(resourceIndex);
-        fetchPolicyContent(policyId, resourceIndex);
+        var policyContent = fetchPolicyContent(policyId);
+        if(policyContent != null){
+            var policy = new Object();
+            policy["id"] = policyId;
+            policy["content"] = policyContent;
+            entitlementPolicies[resourceIndex] = policy;
+        }
     }
 }
 
@@ -98,28 +145,47 @@ function createGuid()
     });
 }
 
-function fetchPolicyContent(policyId, resourceIndex){
+function fetchPolicyContent(policyId){
 
     $.ajax({
-        url: '/publisher/api/entitlement/policy/'+policyId
-        ,
+        url: '/publisher/api/entitlement/policy/'+policyId,
         type: 'GET',
         contentType: 'application/json',
         data:"cookie=test",
         success: function(response) {
-            var policyContent = "";
-            if(response != "null"){
-                policyContent = response;
-                var policy = new Object();
-                policy["id"] = policyId;
-                policy["content"] = response;
-                entitlementPolicies[resourceIndex] = policy;
+            if(response != null){
+                setPolicyContent(response)
             }
-             setPolicyContent(policyContent);
         },
         error: function(response) {
             showAlert('Error occured while fetching entitlement policy content', 'error');
         }
+    });
+}
+
+function validatePolicyPartial(policyPartial, onSuccess, onError){
+
+    $.ajax({
+        url: '/publisher/api/entitlement/policy/validate',
+        type: 'POST',
+        contentType: 'application/x-www-form-urlencoded',
+        data:{"policyPartial":policyPartial},
+        success: onSuccess,
+        error: onError
+    });
+}
+
+function savePolicyPartial(){
+
+    var policyPartial = $('#entitlement-policy-editor #policy-content').val();
+
+    $.ajax({
+        url: '/publisher/api/entitlement/policy',
+        type: 'POST',
+        contentType: 'application/x-www-form-urlencoded',
+        data:{"policyPartial":policyPartial},
+        success: function(){},
+        error: function(){}
     });
 }
 

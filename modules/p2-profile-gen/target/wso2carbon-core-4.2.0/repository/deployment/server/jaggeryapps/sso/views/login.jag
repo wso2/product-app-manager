@@ -1,0 +1,186 @@
+<%
+var e = request.getParameter('authFailure');
+%>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Sign in or Register | WSO2 Enterprise Store</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="views/css/bootstrap.min.css" rel="stylesheet">
+    <link href="views/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="views/css/styles.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="views/css/font-awesome.min.css">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="js/respond.min.js"></script>
+    <link rel="stylesheet" href="css/ie.css" type="text/css">
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="http://wso2.com/files/favicon.ico" type="image/x-icon" />
+
+  </head>
+
+  <body>
+
+    <div class="container">
+    	<div class="row">
+    		<div class="span8 offset2">
+    			<div class="row">
+					<div class="span8 form-header">
+						<img src="views/img/logo-banner.png">
+					</div>
+				</div>
+				<div id="form-cont" class="row">
+					<div class="span8">
+						<div class="form-signin row-fluid">
+							<div class="span12">
+								<div class="row-fluid">
+									<div class="span6">
+										<form id="loginForm" action="/admin/commonauth" method="POST" >
+									        <h2 class="form-signin-heading">Sign in</h2>
+									        <% if(e){ %>
+									            <div class="alert alert-error">Username or password is invalid</div>
+									        <%
+
+                                            }%>
+									        <div class="control"><label>Username</label><input id="username" name="username" type="text" class="input-block-level"></div>
+									        <div class="control"><label>Password</label><input id="password" name="password" type="password" class="input-block-level"></div>
+									        <label class="checkbox lblRemember">
+									          <input type="checkbox" value="remember-me"> Remember me
+									        </label>
+									        <input type="hidden" name="sessionDataKey"  value="<%=request.getParameter("sessionDataKey")%>">
+									        <button class="btn btn-large pull-right" type="submit">Sign in</button>
+								    	</form>
+									</div>
+
+									<div class="span6">
+										<form id="registerForm">
+									        <h2 class="form-signin-heading">Register</h2>
+									         <div id="regFormError" class="alert alert-error" style="display:none"></div>
+                                             <div id="regFormSuc" class="alert alert-success" style="display:none"></div>
+
+									        <div class="control"><label>Username</label><input id="reg-username" name="reg-username" type="text" class="input-block-level required usrName"></div>
+									        <div class="control">
+									        	<label>Password</label>
+									        	<input id="reg-password" name="reg-password" type="password" class="input-block-level required">
+									        </div>
+									        <div class="control">
+							        			<label>Confirm password</label>
+									        	<input id="reg-password2" name="password2" type="password" class="input-block-level required" equalTo="#reg-password">
+									        </div>
+									        <div>
+									        	<input id="reg-action" name="action" type="hidden" value="register">
+									        </div>
+									        <button id="registrationSubmit" class="btn btn-large btn-primary pull-right" type="button">Register</button>
+								    	</form>
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+			      	</div>
+				</div>
+
+
+
+
+    		</div>
+    		<div class="row row-footer span8 offset2 sso-footer">
+
+						<div class="footer row-fluid">
+							<div class="span12">
+								<div class="row-fluid">
+									<div class="span6">
+										<span> &copy; 2013 WSO2 Inc. All Rights Reserved. </span>
+									</div>
+									<div class="span6 pull-right">
+										<ul>
+											<li>
+												<a href="/publisher"><i class="icon-check-sign"></i> Publisher</a>
+											</li>
+											<li>
+												<a href="/store"><i class="icon-th-large"></i> Store</a>
+											</li>
+											<li>
+												<a href="http://docs.wso2.org/display/ES100/WSO2+Enterprise+Store" target="_blank"><i class="icon-book"></i> Docs</a>
+											</li>
+											<li>
+												<a target="_blank" href="http://www.wso2.com" id="logo-wso2"></a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+				</div>
+    	</div>
+
+
+
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="views/js/jquery-1.8.3.min.js"></script>
+    <script src="views/js/bootstrap.min.js"></script>
+    <script src="views/js/jquery.validate.js"></script>
+  	<script type="text/javascript">
+		$(function(){
+			function register(){
+				if (!$('#registerForm').valid()) {
+					return;
+				}
+
+            $.post('/sso/register', $( "#registerForm" ).serialize(), function(data){
+                if(JSON.parse(data).error == 'false'){
+                        $('#regFormError').hide();
+                        $('#regFormSuc').show();
+                        $('#regFormSuc').text(JSON.parse(data).msg);
+
+                        //submitting the login form
+                        $('#username').val($('#reg-username').val());
+                        $('#password').val($('#reg-password').val());
+                        $('#loginForm').submit();
+
+                }else{
+                        $('#regFormSuc').hide();
+                        $('#regFormError').show();
+                        $('#regFormError').text(JSON.parse(data).msg);
+                    }
+                });
+			}
+			$("#registrationSubmit").bind('click', register);
+			
+			$('#registerForm input').bind('keypress',function(e){
+				if(e.which == 13){
+					register();
+				}
+			});
+
+			jQuery.validator.addMethod("usrName", function(value, element) {
+				return this.optional(element) || /^[a-zA-Z0-9\-]*$/.test(value);
+			}, "Only alphanumeric characters and '-' allowed");
+		});
+
+	</script>
+  </body>
+</html>
+
+

@@ -1,0 +1,126 @@
+<%
+var getAllSubscriptions = function (username) {
+    var applications,
+            log = new Log(),
+            store = jagg.module("manager").getAPIStoreObj();
+
+    try {
+        applications = store.getAllSubscriptions(username);
+        if (log.isDebugEnabled()) {
+            log.debug("getAllSubscriptions : " + stringify(applications));
+        }
+        return {
+            error:false,
+            applications:applications
+        };
+    } catch (e) {
+        log.error(e.message);
+        return {
+            error:e,
+            applications:null
+        };
+    }
+};
+
+var getAPISubscriptions = function (api, username) {
+    var subscriptions,
+            log = new Log(),
+            store = jagg.module("manager").getAPIStoreObj();
+
+    try {
+        subscriptions = store.getSubscriptions(api.provider, api.name, api.version, username);
+        if (log.isDebugEnabled()) {
+            log.debug("getSubscriptions : " + stringify(subscriptions));
+        }
+        return {
+            error:false,
+            subscriptions:subscriptions
+        };
+    } catch (e) {
+        log.error(e.message);
+        return {
+            error:e,
+            subscriptions:null
+        };
+    }
+};
+
+var getAPISubscription = function (app, applicationName, subscriptionType, username) {
+    var subscription,
+            log = new Log(),
+            store = jagg.module("manager").getAPIStoreObj();
+    try {
+        subscription = store.getSubscription(app.provider, app.name, app.version, applicationName, subscriptionType, username);
+        if (log.isDebugEnabled()) {
+            log.debug("getSubscription : " + stringify(subscription));
+        }
+        return {
+            error:false,
+            subscription:subscription
+        };
+    } catch (e) {
+        log.error(e.message);
+        return {
+            error:e,
+            subscription:null
+        };
+    }
+};
+
+var getAPISubscriptionsForApplication = function (username,appname) {
+    var subscriptions,
+            log = new Log(),
+            store = jagg.module("manager").getAPIStoreObj();
+
+    try {
+
+        subscriptions = store.getSubscriptionsByApplication(appname, username);
+        if (log.isDebugEnabled()) {
+            log.debug("getSubscriptions : " + stringify(subscriptions));
+        }
+
+        return {
+            error:false,
+            subscriptions:subscriptions
+        };
+    } catch (e) {
+        log.error(e.message);
+        return {
+            error:e,
+            subscriptions:null
+        };
+    }
+};
+
+/*
+    Returns IDPs for the service provider counterpart of the web app, as enterprises.
+*/
+var getEnterprisesForApplication = function(appName, ssoProviderName, ssoProviderVersion){
+
+    var enterprises;
+
+    try {
+
+        var ssoConfiguratorUtil = Packages.org.wso2.carbon.appmgt.impl.idp.sso.SSOConfiguratorUtil;
+        var identityProviders = ssoConfiguratorUtil.getIdentityProvidersInServiceProvider(ssoProviderName, ssoProviderVersion, appName);
+
+        if (log.isDebugEnabled()) {
+            log.debug("identity providers for '" + appName + "' : " + stringify(identityProviders));
+        }
+
+        return {
+            error:false,
+            enterprises:identityProviders
+        };
+    } catch (e) {
+        log.error(e.message);
+        return {
+            error:e,
+            enterprises:null
+        };
+    }
+
+
+};
+
+%>

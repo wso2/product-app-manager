@@ -1,0 +1,74 @@
+<%
+
+var caramel;
+var SubscriptionService;
+var subsApi;
+var AuthService;
+var authenticator;
+var log = new Log('subscriptions');
+
+include('../modules/jagg/jagg.jag');
+
+require('/modules/store.js').exec(function (ctx) {
+	var store = ctx.store;
+	var sso = ctx.sso;
+	tenantId = ctx.tenantId;
+	site = ctx.site;
+	var recentAssets = store.recentAssets('webapp');
+	caramel = require('caramel');
+	search = require('/modules/search.js');
+		
+
+	SubscriptionService = require(getServiceDir('subscription.js')).serviceModule;
+	subsApi = new SubscriptionService.SubscriptionService();
+	subsApi.init(jagg, session);
+
+	AuthService = require(getServiceDir('authentication.js')).serviceModule;
+	authenticator = new AuthService.Authenticator();
+	authenticator.init(jagg, session);
+
+	var APIInformationService=require('../services/api-information.js').serviceModule;
+	var apiInfoManager=new APIInformationService.APIInformationService();
+	apiInfoManager.init(jagg,session);
+
+	var subscriptions = [];
+	var userData = authenticator.getLoggedInUser();
+	var apps = subsApi.getAppsWithSubs({user: userData.username});
+		
+	if(apps.length >0){
+		subscriptions = apps[0].subscriptions;
+		for(i=0;i< apps[0].subscriptions.length;i++){
+			var api=apiInfoManager.getAPIDescription( apps[0].subscriptions[i].provider, apps[0].subscriptions[i].name, apps[0].subscriptions[i].version);
+			apps[0].subscriptions[i].productionURL = api.serverURL.productionURL;
+		}
+
+	}
+
+	caramel.render({
+		header: {
+			user: userData,
+			sso: sso
+		},
+		navigation: site.navigation(tenantId),
+		search: {
+		            search: {title: type},
+		            isTopAssets: false,
+		            searchFields: search.fields()
+		},
+		sso: sso,
+		appsWithSubs: apps,
+		metadata: {
+			appsWithSubs: apps
+		},
+		recentAssets:recentAssets
+	}, request, response, session);
+
+}, request, response, session);
+
+
+function getServiceDir(serviceName) {
+	return '../services/' + serviceName;
+}
+
+	%>
+

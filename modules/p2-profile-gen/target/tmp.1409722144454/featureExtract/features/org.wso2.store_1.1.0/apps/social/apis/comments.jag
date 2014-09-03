@@ -1,0 +1,28 @@
+<%
+response.addHeader("Content-Type", "application/json");
+
+(function () {
+    var userModule = require('/modules/user.js');
+    var logged = userModule.current(session);
+    if (logged) {
+        var carbon = require('carbon');
+        var social = carbon.server.osgiService('org.wso2.carbon.social.service.SocialActivityService');
+        //Read the social.json file
+        var config=require('/configs/social.json');
+        social.configPublisher(config.dataPublisherConnectionInfo);
+        var username = String(logged.username) + '@' + logged.tenantDomain;
+        var activity = JSON.parse(request.getParameter('activity'));
+        activity.actor = {"id": username, "objectType": "person" };
+        var id = social.publish(activity);
+
+        var result = {
+            success: Boolean(id),
+            id: id
+        };
+
+        print(result);
+    } else {
+        response.sendError(401);
+    }
+})();
+%>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.user.mgt" label="User Management Feature" provider-name="%providerName" version="4.2.1">
+  <description>This feature contains the bundles required for user management aggregated functionality</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <includes id="org.wso2.carbon.user.mgt.server" optional="false" version="4.2.1"/>
+  <includes id="org.wso2.carbon.user.mgt.ui" optional="false" version="4.2.1"/>
+</feature>

@@ -1,0 +1,29 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1409721221807
+Build-Jdk: 1.7.0_60
+Built-By: dilan
+Bundle-Description: WSO2 Enterprise Store
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.wso2.store.sso.common
+Bundle-SymbolicName: org.wso2.store.sso.common
+Bundle-Version: 1.1.0
+Created-By: Apache Maven Bundle Plugin
+DynamicImport-Package: *
+Export-Package: org.wso2.store.sso.common.builders;uses:="org.opensaml.s
+ aml2.core";version="1.1.0",org.wso2.store.sso.common.constants;version=
+ "1.1.0",org.wso2.store.sso.common.util;uses:="javax.crypto,javax.xml.na
+ mespace,org.opensaml.saml2.core,org.opensaml.xml,org.opensaml.xml.secur
+ ity.credential,org.opensaml.xml.security.x509";version="1.1.0"
+Import-Package: javax.crypto,javax.xml.namespace,javax.xml.parsers,org.a
+ pache.commons.logging,org.joda.time;version="[2.4,3)",org.opensaml;vers
+ ion="[2.4,3)",org.opensaml.common;version="[2.4,3)",org.opensaml.saml2.
+ core;version="[2.4,3)",org.opensaml.saml2.core.impl;version="[2.4,3)",o
+ rg.opensaml.xml;version="[2.4,3)",org.opensaml.xml.io;version="[2.4,3)"
+ ,org.opensaml.xml.security.credential;version="[2.4,3)",org.opensaml.xm
+ l.security.x509;version="[2.4,3)",org.opensaml.xml.signature;version="[
+ 2.4,3)",org.opensaml.xml.util;version="[2.4,3)",org.w3c.dom,org.w3c.dom
+ .bootstrap,org.w3c.dom.ls,org.wso2.carbon.core.util;version="[4.2,5)",o
+ rg.wso2.carbon.utils.multitenancy;version="[4.2,5)"
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.5))"
+Tool: Bnd-2.3.0.201405100607

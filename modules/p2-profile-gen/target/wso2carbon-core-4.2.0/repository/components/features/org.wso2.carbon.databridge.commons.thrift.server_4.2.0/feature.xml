@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.databridge.commons.thrift.server" label="WSO2 Carbon - Data Bridge - Thrift Commons Server Feature" provider-name="%providerName" version="4.2.0">
+  <description>Platform Parent pom hold the properties, plugins which are required to build carbon components, carbon features and products</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="libthrift" unpack="false" version="0.7.0.wso2v2"/>
+  <plugin id="org.wso2.carbon.databridge.commons.thrift" unpack="false" version="4.2.0"/>
+  <plugin id="slf4j.api" unpack="false" version="1.6.1"/>
+  <plugin id="slf4j.log4j12" unpack="false" version="1.6.1"/>
+  <require>
+    <import feature="org.wso2.carbon.databridge.commons.server" match="equivalent" version="4.2.0"/>
+    <import feature="org.wso2.carbon.core.server" match="equivalent" version="4.2.0"/>
+  </require>
+</feature>
