@@ -17,7 +17,7 @@ include("/extensions/webapp/modules/jagg/jagg.jag");
 require('/modules/publisher.js').exec(function(ctx) {
 
     var config = require('/config/publisher.json');
-    var caramel = require('caramel');
+    caramel = require('caramel');
     var server = require('store').server;
     var storeUser=require('store').user;
     var apiProvider = jagg.module('manager').getAPIProviderObj();
@@ -281,11 +281,7 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
         addTags(context.post,assetId,artifactManager,reg);
 
         // Save external entitlement policies
-        var webappId={};
-        webappId.provider= model.get('overview.provider').value;
-        webappId.name= model.get('overview.name').value;
-        webappId.version= model.get('overview.version').value;
-        generateEntitlementPolicies(webappId);
+        saveExternalEntitlementPolicies(context.post);
 
         print({ok:true,message:'asset added',id:assetId});
     }
@@ -307,10 +303,29 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
     });
 
 /**
-* Generates entitlement policies.
+* Saves external entitlement policies.
 */
-function generateEntitlementPolicies(webappId){
-    apiProvider.generateEntitlementPolicies(webappId);    
+function saveExternalEntitlementPolicies(params){
+
+    var policies = parse(params['entitlementPolicies']);
+    var policiesToBeSaved = new Array();
+
+    var EntitlementPolicy = Packages.org.wso2.carbon.appmgt.api.model.entitlement.EntitlementPolicy;
+    var entitlementPolicy;
+    for(var i = 0; i < policies.length; i++){
+        if(policies[i]){
+            entitlementPolicy  = new EntitlementPolicy();
+            entitlementPolicy.setPolicyId(policies[i]['id']);
+            entitlementPolicy.setPolicyContent(policies[i]['content']);
+            policiesToBeSaved.push(entitlementPolicy);    
+        }
+        
+    }
+
+    if(policiesToBeSaved.length > 0){
+        apiProvider.saveEntitlementPolicies(policiesToBeSaved);    
+    }
+
 }
 
 
