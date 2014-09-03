@@ -195,7 +195,7 @@ function savePolicyPartial(){
             success: function(data){
                 var returnedId = JSON.parse(data).response.id;
                 editedpolicyPartialId = returnedId;
-                policyPartialsArray.push({id: returnedId, name: policyPartialName });
+                policyPartialsArray.push({id: returnedId, policyPartialName: policyPartialName, policyPartial: policyPartial });
                 updatePolicyPartial()
             },
             error: function(){}
@@ -203,6 +203,30 @@ function savePolicyPartial(){
 
 
     }else{ // update
+
+
+        $.ajax({
+            url: '/publisher/api/entitlement/policy',
+            type: 'PUT',
+            contentType: 'application/x-www-form-urlencoded',
+            data:{"id": editedpolicyPartialId, "policyPartialName":policyPartialName,"policyPartial":policyPartial},
+            success: function(data){
+                var returnedId = JSON.parse(data).response.id;
+                editedpolicyPartialId = returnedId;
+
+                $.each(policyPartialsArray, function( index, obj ) {
+                        if(obj.id == editedpolicyPartialId){
+                            policyPartialsArray[index].policyPartialName = policyPartialName;
+                            policyPartialsArray[index].policyPartial = policyPartial;
+                            return false;
+                        }
+                });
+
+
+                updatePolicyPartial()
+            },
+            error: function(){}
+        });
 
 
     }
@@ -219,8 +243,7 @@ function setPolicyContent(policyContent){
 function updatePolicyPartial(){
     $('#policyPartialsTable tbody').html("");
     $.each(policyPartialsArray, function( index, obj ) {
-        //alert( index + ": " + value );
-        $('#policyPartialsTable tbody').append('<tr><td>' + obj.name + '</td><td>Action</td></tr>');
+      $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td>Action</td></tr>');
     });
 }
 
