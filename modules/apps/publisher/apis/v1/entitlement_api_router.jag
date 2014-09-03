@@ -31,9 +31,7 @@ require('/modules/publisher.js').exec(function(ctx) {
     });
 
     routeManager.register('PUT', 'publisher', '/publisher/api/entitlement/policy', function (context) {
-        log.info("******************************************************************************************************")
-        log.info(context);
-     
+        updateEntitlementPolicyPartial(context.content.id,context.content.policyPartialName,context.content.policyPartial);
     });
 
     /**
