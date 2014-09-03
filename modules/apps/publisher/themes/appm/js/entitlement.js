@@ -178,12 +178,13 @@ function validatePolicyPartial(policyPartial, onSuccess, onError){
 function savePolicyPartial(){
 
     var policyPartial = $('#entitlement-policy-editor #policy-content').val();
+    var policyPartialName = "SampleName";
 
     $.ajax({
         url: '/publisher/api/entitlement/policy',
         type: 'POST',
         contentType: 'application/x-www-form-urlencoded',
-        data:{"policyPartial":policyPartial},
+        data:{"policyPartialName":policyPartialName,"policyPartial":policyPartial},
         success: function(){},
         error: function(){}
     });

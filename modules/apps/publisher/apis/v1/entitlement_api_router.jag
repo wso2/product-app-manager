@@ -25,7 +25,7 @@ require('/modules/publisher.js').exec(function(ctx) {
 
     routeManager.register('POST', 'publisher', '/publisher/api/entitlement/policy', function (context) {
         
-        var partialId = saveEntitlementPolicyPartial(context.post.policyPartial);
+        var partialId = saveEntitlementPolicyPartial(context.post.policyPartialName,context.post.policyPartial);
         var response = {"id" : partialId};
         print(createResponseObject(response));
     });
@@ -47,8 +47,8 @@ require('/modules/publisher.js').exec(function(ctx) {
     /**
     * Saves the given policy content
     */
-    function saveEntitlementPolicyPartial(policyPartial){
-        return apiProvider.saveEntitlementPolicyPartial(policyPartial);
+    function saveEntitlementPolicyPartial(policyPartialName,policyPartial){
+        return apiProvider.saveEntitlementPolicyPartial(policyPartialName, policyPartial);
     }
 
     function createResponseObject(object) {
