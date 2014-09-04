@@ -183,8 +183,6 @@ function savePolicyPartial(){
     var policyPartial = $('#entitlement-policy-editor #policy-content').val();
     var policyPartialName = $('#entitlement-policy-editor #policy-name').val();
 
-    deleteEntitlementPolicyPartial(30);
-
     if(editedpolicyPartialId == 0){ //add
 
         $.ajax({
@@ -274,6 +272,24 @@ function deleteEntitlementPolicyPartial(policyPartialId){
 
     $.ajax({
         url: '/publisher/api/entitlement/policy/partial/delete/'+policyPartialId,
+        type: 'DELETE',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function(response) {
+
+            showAlert(response)
+           
+        },
+        error: function(response) {
+            showAlert('Error occured while fetching entitlement policy content', 'error');
+        }
+    });
+}
+
+function deleteApplicationPolicyPartialMapping(applicationId,policyPartialId){
+
+    $.ajax({
+        url: '/publisher/api/entitlement/policy/app/partial/'+applicationId+'/'+policyPartialId,
         type: 'DELETE',
         contentType: 'application/json',
         dataType: 'json',
