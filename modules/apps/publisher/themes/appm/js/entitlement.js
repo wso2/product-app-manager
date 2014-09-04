@@ -182,55 +182,76 @@ function savePolicyPartial(){
 
     var policyPartial = $('#entitlement-policy-editor #policy-content').val();
     var policyPartialName = $('#entitlement-policy-editor #policy-name').val();
-
-
-    if(editedpolicyPartialId == 0){ //add
-
-        $.ajax({
-            url: '/publisher/api/entitlement/policy',
-            type: 'POST',
-            contentType: 'application/x-www-form-urlencoded',
-            data:{"policyPartialName":policyPartialName,"policyPartial":policyPartial},
-            success: function(data){
-                var returnedId = JSON.parse(data).response.id;
-                editedpolicyPartialId = returnedId;
-                policyPartialsArray.push({id: returnedId, policyPartialName: policyPartialName, policyPartial: policyPartial });
-                updatePolicyPartial()
-            },
-            error: function(){}
-        });
-
-
-    }else{ // update
-
-
-        $.ajax({
-            url: '/publisher/api/entitlement/policy',
-            type: 'PUT',
-            contentType: 'application/json',
-            dataType: 'json',
-            data:JSON.stringify({"id": editedpolicyPartialId, "policyPartialName":policyPartialName,"policyPartial":policyPartial}),
-            success: function(data){
-                var returnedId = JSON.parse(data).response.id;
-                editedpolicyPartialId = returnedId;
-
-                $.each(policyPartialsArray, function( index, obj ) {
-                        if(obj.id == editedpolicyPartialId){
-                            policyPartialsArray[index].policyPartialName = policyPartialName;
-                            policyPartialsArray[index].policyPartial = policyPartial;
-                            updatePolicyPartial();
-                            return false;
-                        }
-                });
+    getEntitlementPolicyPartial(13);
 
 
 
-            },
-            error: function(){}
-        });
 
-    }
 
+
+    // if(editedpolicyPartialId == 0){ //add
+
+    //     $.ajax({
+    //         url: '/publisher/api/entitlement/policy/partial/save',
+    //         type: 'POST',
+    //         contentType: 'application/x-www-form-urlencoded',
+    //         data:{"policyPartialName":policyPartialName,"policyPartial":policyPartial},
+    //         success: function(data){
+    //             var returnedId = JSON.parse(data).response.id;
+    //             editedpolicyPartialId = returnedId;
+    //             policyPartialsArray.push({id: returnedId, policyPartialName: policyPartialName, policyPartial: policyPartial });
+    //             updatePolicyPartial()
+    //         },
+    //         error: function(){}
+    //     });
+
+
+    // }else{ // update
+
+
+    //     $.ajax({
+    //         url: '/publisher/api/entitlement/policy/partial/update',
+    //         type: 'PUT',
+    //         contentType: 'application/json',
+    //         dataType: 'json',
+    //         data:JSON.stringify({"id": editedpolicyPartialId, "policyPartialName":policyPartialName,"policyPartial":policyPartial}),
+    //         success: function(data){
+    //             var returnedId = JSON.parse(data).response.id;
+    //             editedpolicyPartialId = returnedId;
+
+    //             $.each(policyPartialsArray, function( index, obj ) {
+    //                     if(obj.id == editedpolicyPartialId){
+    //                         policyPartialsArray[index].policyPartialName = policyPartialName;
+    //                         policyPartialsArray[index].policyPartial = policyPartial;
+    //                         updatePolicyPartial();
+    //                         return false;
+    //                     }
+    //             });
+
+    //         },
+    //         error: function(){}
+    //     });
+
+    // }
+
+}
+
+function getEntitlementPolicyPartial(policyPartialId){
+
+    $.ajax({
+        url: '/publisher/api/entitlement/policy/partial/getContent/'+policyPartialId,
+        type: 'GET',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function(response) {
+
+            showAlert(response)
+           
+        },
+        error: function(response) {
+            showAlert('Error occured while fetching entitlement policy content', 'error');
+        }
+    });
 
 
 }

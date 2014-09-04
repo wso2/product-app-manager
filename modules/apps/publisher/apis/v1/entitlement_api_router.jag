@@ -34,11 +34,10 @@ require('/modules/publisher.js').exec(function(ctx) {
         updateEntitlementPolicyPartial(context.content.id,context.content.policyPartialName,context.content.policyPartial);
     });
 
-    routeManager.register('GET', 'publisher', '/publisher/api/entitlement/policy/partial/getContent/{partialId}', function (context) {
-        log.info(context.params.partialId);
+    routeManager.register('GET', 'publisher', '/publisher/api/entitlement/policy/partial/getContent/{policyPartial}', function (context) {
         var partialContent = getEntitlementPolicyPartial(context.params.policyPartial);
-       /log.info(partialContent)
-     
+        var response = {"policyPartialName":partialContent[0],"policyPartialContent":partialContent[1]};
+        print(response);
     });
 
     /**
