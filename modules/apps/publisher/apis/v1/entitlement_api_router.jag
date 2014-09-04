@@ -40,6 +40,11 @@ require('/modules/publisher.js').exec(function(ctx) {
         print(response);
     });
 
+    routeManager.register('GET', 'publisher', '/publisher/api/entitlement/policy/partials/{applicationId}', function (context) {
+        var partialList = getApplicationPolicyPartialList(context.params.applicationId);
+        print(partialList);
+    });
+
     /**
      * Returns external entitlement policy for the given policy id.
      */

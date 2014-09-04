@@ -182,7 +182,7 @@ function savePolicyPartial(){
 
     var policyPartial = $('#entitlement-policy-editor #policy-content').val();
     var policyPartialName = $('#entitlement-policy-editor #policy-name').val();
-    getEntitlementPolicyPartial(13);
+   
 
 
 
@@ -240,6 +240,26 @@ function getEntitlementPolicyPartial(policyPartialId){
 
     $.ajax({
         url: '/publisher/api/entitlement/policy/partial/getContent/'+policyPartialId,
+        type: 'GET',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function(response) {
+
+            showAlert(response)
+           
+        },
+        error: function(response) {
+            showAlert('Error occured while fetching entitlement policy content', 'error');
+        }
+    });
+
+
+}
+
+function getApplicationPolicyPartialList(applicationId){
+
+    $.ajax({
+        url: '/publisher/api/entitlement/policy/partials/'+applicationId,
         type: 'GET',
         contentType: 'application/json',
         dataType: 'json',
