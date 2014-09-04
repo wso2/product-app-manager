@@ -155,7 +155,6 @@ function fetchPolicyContent(policyId){
         url: '/publisher/api/entitlement/policy/'+policyId,
         type: 'GET',
         contentType: 'application/json',
-        data:"cookie=test",
         success: function(response) {
             if(response != null){
                 setPolicyContent(response)
@@ -207,6 +206,37 @@ function savePolicyPartial(){
 
         $.ajax({
             url: '/publisher/api/entitlement/policy',
+            type: 'PUT',
+            contentType: 'application/json',
+            dataType: 'json',
+            data:JSON.stringify({"id": editedpolicyPartialId, "policyPartialName":policyPartialName,"policyPartial":policyPartial}),
+            success: function(data){
+                var returnedId = JSON.parse(data).response.id;
+                editedpolicyPartialId = returnedId;
+
+                $.each(policyPartialsArray, function( index, obj ) {
+                        if(obj.id == editedpolicyPartialId){
+                            policyPartialsArray[index].policyPartialName = policyPartialName;
+                            policyPartialsArray[index].policyPartial = policyPartial;
+                            updatePolicyPartial();
+                            return false;
+                        }
+                });
+
+
+
+            },
+            error: function(){}
+        });
+
+
+
+
+    }else{ // update
+
+
+        $.ajax({
+            url: '/publisher/api/entitlement/policy/partial/update',
             type: 'PUT',
             contentType: 'application/json',
             dataType: 'json',

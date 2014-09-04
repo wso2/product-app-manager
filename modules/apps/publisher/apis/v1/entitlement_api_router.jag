@@ -23,15 +23,22 @@ require('/modules/publisher.js').exec(function(ctx) {
         print(createResponseObject(validationResultJson));
     });
 
-    routeManager.register('POST', 'publisher', '/publisher/api/entitlement/policy', function (context) {
+    routeManager.register('POST', 'publisher', '/publisher/api/entitlement/policy/partial/save', function (context) {
         
         var partialId = saveEntitlementPolicyPartial(context.post.policyPartialName,context.post.policyPartial);
         var response = {"id" : partialId};
         print(createResponseObject(response));
     });
 
-    routeManager.register('PUT', 'publisher', '/publisher/api/entitlement/policy', function (context) {
+    routeManager.register('PUT', 'publisher', '/publisher/api/entitlement/policy/partial/update', function (context) {
         updateEntitlementPolicyPartial(context.content.id,context.content.policyPartialName,context.content.policyPartial);
+    });
+
+    routeManager.register('GET', 'publisher', '/publisher/api/entitlement/policy/partial/getContent/{partialId}', function (context) {
+        log.info(context.params.partialId);
+        var partialContent = getEntitlementPolicyPartial(context.params.policyPartial);
+       /log.info(partialContent)
+     
     });
 
     /**
@@ -61,6 +68,11 @@ require('/modules/publisher.js').exec(function(ctx) {
     function updateEntitlementPolicyPartial(policyPartialId,policyPartialName,policyPartial){
         return apiProvider.updateEntitlementPolicyPartial(policyPartialId,policyPartialName, policyPartial);
     }
+
+
+
+
+
     /**
     * Get the given policy partial Content
     */
