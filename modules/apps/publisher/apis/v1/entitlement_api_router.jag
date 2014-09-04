@@ -42,6 +42,7 @@ require('/modules/publisher.js').exec(function(ctx) {
 
     routeManager.register('GET', 'publisher', '/publisher/api/entitlement/policy/partials/{applicationId}', function (context) {
         var partialList = getApplicationPolicyPartialList(context.params.applicationId);
+        log.info(partialList);
         print(partialList);
     });
 
@@ -73,10 +74,6 @@ require('/modules/publisher.js').exec(function(ctx) {
         return apiProvider.updateEntitlementPolicyPartial(policyPartialId,policyPartialName, policyPartial);
     }
 
-
-
-
-
     /**
     * Get the given policy partial Content
     */
@@ -90,6 +87,8 @@ require('/modules/publisher.js').exec(function(ctx) {
     function getApplicationPolicyPartialList(applicationId){
        return apiProvider.getApplicationPolicyPartialList(applicationId);
     }
+
+    
 
     /**
     * Delete the given policy partial
