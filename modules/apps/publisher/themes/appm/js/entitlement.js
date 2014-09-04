@@ -279,7 +279,7 @@ function updatePolicyPartial(){
     $('#policyPartialsTable tbody').html("");
     $(".policy-partial-dropdown").html("");
     $.each(policyPartialsArray, function( index, obj ) {
-      $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td>Action</td></tr>');
+      $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td><a data-target="#entitlement-policy-editor" data-toggle="modal" data-policy-id="'+ obj.id +'" class="policy-edit-button"><i class="icon-edit"></i></a></td></tr>');
 
         $(".policy-partial-dropdown").append("<li><a><input data-partial-id='" + obj.id + "' type='checkbox'>" + obj.policyPartialName + "</a></li>");
 
@@ -294,5 +294,25 @@ $(document).on("click", "#btn-add-xacml-policy", function () {
     editedpolicyPartialId = 0;
     $('#entitlement-policy-editor #policy-content').val("");
     $('#entitlement-policy-editor #policy-name').val("");
+
+});
+
+
+$(document).on("click", ".policy-edit-button", function () {
+
+    var policyId = $(this).data( "policyId");
+    $('#entitlement-policy-editor #policy-content').val("");
+    $('#entitlement-policy-editor #policy-name').val("");
+
+    $.each(policyPartialsArray, function( index, obj ) {
+       if(obj.id == policyId){
+           $('#entitlement-policy-editor #policy-content').val(obj.policyPartial);
+           $('#entitlement-policy-editor #policy-name').val(obj.policyPartialName);
+       }
+
+    });
+s
+    editedpolicyPartialId = policyId;
+
 
 });
