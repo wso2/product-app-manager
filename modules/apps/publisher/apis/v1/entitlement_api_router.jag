@@ -56,11 +56,41 @@ require('/modules/publisher.js').exec(function(ctx) {
     }
 
     /**
-    * Saves the given policy content
+    * Update the given policy content
     */
     function updateEntitlementPolicyPartial(policyPartialId,policyPartialName,policyPartial){
         return apiProvider.updateEntitlementPolicyPartial(policyPartialId,policyPartialName, policyPartial);
     }
+    /**
+    * Get the given policy partial Content
+    */
+    function getEntitlementPolicyPartial(policyPartialId){
+       return apiProvider.getEntitlementPolicyPartial(policyPartialId);
+    }
+
+    /**
+    * Get the list of policy partials of a given application
+    */
+    function getApplicationPolicyPartialList(applicationId){
+       return apiProvider.getApplicationPolicyPartialList(applicationId);
+    }
+
+    /**
+    * Delete the given policy partial
+    */
+    function deleteEntitlementPolicyPartial(policyPartialId){
+       return apiProvider.deleteEntitlementPolicyPartial(policyPartialId);
+    }
+
+    /**
+    * Delete the application-policy partial mapping
+    */
+    function deleteApplicationPolicyPartialMapping(applicationId,policyPartialId){
+       return apiProvider.deleteApplicationPolicyPartialMapping(applicationId,policyPartialId);
+    }
+
+    
+
 
     function createResponseObject(object) {
         if (object !== null) {
