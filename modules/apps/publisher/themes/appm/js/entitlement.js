@@ -180,7 +180,6 @@ function validatePolicyPartial(policyPartial, onSuccess, onError){
 
 function savePolicyPartial(){
 
-saveApplicationPolicyPartialMapping("dwdwd",list);
     var policyPartial = $('#entitlement-policy-editor #policy-content').val();
     var policyPartialName = $('#entitlement-policy-editor #policy-name').val();
 
@@ -328,7 +327,7 @@ function updatePolicyPartial(){
     $.each(policyPartialsArray, function( index, obj ) {
       $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td><a data-target="#entitlement-policy-editor" data-toggle="modal" data-policy-id="'+ obj.id +'" class="policy-edit-button"><i class="icon-edit"></i></a></td></tr>');
 
-        $(".policy-partial-dropdown").append("<li><a><input data-partial-id='" + obj.id + "' type='checkbox'>" + obj.policyPartialName + "</a></li>");
+        $(".policy-partial-dropdown").append("<li><a><input class='policy-allow-cb' data-policy-id='" + obj.id + "' type='checkbox'><input class='policy-deny-cb' data-policy-id='" + obj.id + "' type='checkbox'>" + obj.policyPartialName + "</a></li>");
 
     });
 
@@ -358,8 +357,47 @@ $(document).on("click", ".policy-edit-button", function () {
        }
 
     });
-s
+
     editedpolicyPartialId = policyId;
 
 
 });
+
+
+$(document).on("click", ".policy-deny-cb", function () {
+
+    $(this).siblings( ".policy-allow-cb" ).prop('checked', false);
+    policyId = $(this).data( "policyId");
+    resourcesId = $(this).parent().parent().parent().data("resourceId");
+    updatePolcyparialForresource(resourcesId);
+
+});
+
+
+$(document).on("click", ".policy-allow-cb", function () {
+    $(this).siblings( ".policy-deny-cb" ).prop('checked', false);
+    policyId = $(this).data( "policyId");
+    resourcesId = $(this).parent().parent().parent().data( "resourceId");
+    updatePolcyparialForresource(resourcesId);
+});
+
+
+function updatePolcyparialForresource(resourcesId){
+
+    var policyArray = [];
+
+    $('#dropdown_entitlementPolicyPartialMappings'+ resourcesId +' li').each(function(i, li) {
+            if($(this).children('a').children('.policy-allow-cb').prop('checked')){
+                policyArray.push({"entitlementPolicyPartialId":$(this).children('a').children('.policy-allow-cb').data( "policyId"), "effect":"Permit"});
+            }
+
+            if($(this).children('a').children('.policy-deny-cb').prop('checked')){
+                policyArray.push({"entitlementPolicyPartialId":$(this).children('a').children('.policy-deny-cb').data( "policyId"), "effect":"Deny"});
+            }
+
+    });
+
+
+    $('#uritemplate_entitlementPolicyPartialMappings'+ resourcesId).val(JSON.stringify(policyArray));
+
+}
