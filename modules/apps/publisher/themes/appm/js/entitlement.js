@@ -218,7 +218,7 @@ function savePolicyPartial(){
 
 
         $.each(policyPartialsArray, function( index, obj ) {
-            if(obj.id == editedpolicyPartialId){
+            if(obj!= null && obj.id == editedpolicyPartialId){
                 policyPartialsArray[index].policyPartialName = policyPartialName;
                 policyPartialsArray[index].policyPartial = policyPartial;
 
@@ -344,7 +344,7 @@ $(document).on("click", ".policy-edit-button", function () {
     $('#entitlement-policy-editor #policy-name').val("");
 
     $.each(policyPartialsArray, function( index, obj ) {
-       if(obj.id == policyId){
+       if(obj!= null && obj.id == policyId){
            $('#entitlement-policy-editor #policy-content').val(obj.policyPartial);
            $('#entitlement-policy-editor #policy-name').val(obj.policyPartialName);
        }
