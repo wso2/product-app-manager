@@ -55,14 +55,14 @@ $( document ).ready(function() {
                     <ul class='nav navbar-nav navbar-right'>\
                 <li class='dropdown'> \
                     <a href='#' data-toggle='dropdown' class='dropdown-toggle'>Add <b class='caret'></b></a>\
-                    <ul class='dropdown-menu policy-partial-dropdown' style='z-index: 10000'>\
+                    <ul  id='dropdown_entitlementPolicyPartialMappings"+i+"' class='dropdown-menu policy-partial-dropdown' data-resource-id='"+ i +"' style='z-index: 10000'>\
                     \
                     </ul>\
                 </li>\
                 </ul> \
                     \
                     \
-                    <input type='text' name='uritemplate_entitlementPolicyPartialMappings"+i+"'value='[{\"entitlementPolicyPartialId\":2, \"effect\":\"Permit\"}, {\"entitlementPolicyPartialId\":3, \"effect\":\"Deny\"}]'/> \
+                    <input type='text' id='uritemplate_entitlementPolicyPartialMappings"+i+"'  name='uritemplate_entitlementPolicyPartialMappings"+i+"'value=''/> \
                   </td> \
                   <td> \
                   	<a data-index='"+i+"' class='delete_resource'><i class='icon-trash icon-white'></i></a>&nbsp; \
