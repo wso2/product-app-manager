@@ -313,9 +313,13 @@ function updatePolicyPartial(){
     $('#policyPartialsTable tbody').html("");
     $(".policy-partial-dropdown").html("");
     $.each(policyPartialsArray, function( index, obj ) {
-      $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td><a data-target="#entitlement-policy-editor" data-toggle="modal" data-policy-id="'+ obj.id +'" class="policy-edit-button"><i class="icon-edit"></i></a></td></tr>');
+       if(obj != null){
 
-        $(".policy-partial-dropdown").append("<li><a><input class='policy-allow-cb' data-policy-id='" + obj.id + "' type='checkbox'><input class='policy-deny-cb' data-policy-id='" + obj.id + "' type='checkbox'>" + obj.policyPartialName + "</a></li>");
+           $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td><a data-target="#entitlement-policy-editor" data-toggle="modal" data-policy-id="'+ obj.id +'" class="policy-edit-button"><i class="icon-edit"></i></a><a data-policy-id="'+ obj.id +'" class="policy-delete-button"><i class="icon-remove"></i></a></td></tr>');
+           $(".policy-partial-dropdown").append("<li><a><input class='policy-allow-cb' data-policy-id='" + obj.id + "' type='checkbox'><input class='policy-deny-cb' data-policy-id='" + obj.id + "' type='checkbox'>" + obj.policyPartialName + "</a></li>");
+
+
+       }
 
     });
 
@@ -347,6 +351,25 @@ $(document).on("click", ".policy-edit-button", function () {
     });
 
     editedpolicyPartialId = policyId;
+
+
+});
+
+
+
+$(document).on("click", ".policy-delete-button", function () {
+
+    var policyId = $(this).data( "policyId");
+
+    $.each(policyPartialsArray, function( index, obj ) {
+        if(obj!= null & obj.id == policyId){s
+            delete policyPartialsArray[index];
+            updatePolicyPartial();
+            return;
+        }
+
+ });
+
 
 
 });
