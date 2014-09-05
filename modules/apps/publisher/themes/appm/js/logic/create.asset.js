@@ -308,6 +308,7 @@ $(function() {
 		var app_version = $('#overview_version').val();
 		var app_transport = $('#overview_transports').val();
 		var app_context = $('#overview_context').val();
+		var app_provider = $('#overview_provider').val();
 
 		var claims = [];
 		var index=0;
@@ -328,6 +329,7 @@ $(function() {
 		sso_config.app_verison = app_version;
 		sso_config.app_transport = app_transport;
 		sso_config.app_context = app_context;
+		sso_config.app_provider = app_provider;
 
         	$.ajax({
             		url: '/publisher/api/sso/addConfig',
