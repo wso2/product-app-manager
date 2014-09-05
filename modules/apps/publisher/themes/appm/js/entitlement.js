@@ -362,7 +362,7 @@ $(document).on("click", ".policy-delete-button", function () {
     var policyId = $(this).data( "policyId");
 
     $.each(policyPartialsArray, function( index, obj ) {
-        if(obj!= null & obj.id == policyId){
+        if(obj!= null && obj.id == policyId){
             delete policyPartialsArray[index];
             updatePolicyPartial();
             return;
