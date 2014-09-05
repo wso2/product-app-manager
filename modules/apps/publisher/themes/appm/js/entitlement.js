@@ -327,8 +327,9 @@ function updatePolicyPartial(){
     $(".policy-partial-dropdown").html("");
     $.each(policyPartialsArray, function( index, obj ) {
        if(obj != null){
-           $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td><a data-target="#entitlement-policy-editor" data-toggle="modal" data-policy-id="'+ obj.id +'" class="policy-edit-button"><i class="icon-edit"></i></a><a data-policy-id="'+ obj.id +'" class="policy-delete-button"><i class="icon-trash"></i></a></td></tr>');
-           $(".policy-partial-dropdown").append("<li><a><input class='policy-allow-cb' data-policy-id='" + obj.id + "' type='checkbox'><input class='policy-deny-cb' data-policy-id='" + obj.id + "' type='checkbox'>" + obj.policyPartialName + "</a></li>");
+           $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td><a data-target="#entitlement-policy-editor" data-toggle="modal" data-policy-id="'+ obj.id +'" class="policy-edit-button"><i class="icon-edit"></i></a><a  data-policy-name="'+ obj.policyPartialName +'"  data-policy-id="'+ obj.id +'" class="policy-delete-button"><i class="icon-trash"></i></a></td></tr>');
+           $(".policy-partial-dropdown").append("<li><a><input class='policy-allow-cb' data-policy-id='" + obj.id + "' type='checkbox'><input class='policy-deny-cb' data-policy-id='" + obj.id + "'  type='checkbox'>" + obj.policyPartialName + "</a></li>");
+
 
        }
 
@@ -373,16 +374,25 @@ $(document).on("click", ".policy-edit-button", function () {
 
 $(document).on("click", ".policy-delete-button", function () {
 
-    var policyId = $(this).data( "policyId");
+    var policyName = $(this).data( "policyName");
 
-    $.each(policyPartialsArray, function( index, obj ) {
-        if(obj!= null && obj.id == policyId){
-            delete policyPartialsArray[index];
-            updatePolicyPartial();
-            return;
-        }
+    var conf = confirm("Are you sure you want to delete the policy "+ policyName +"?");
+    if (conf == true) {
+        var policyId = $(this).data( "policyId");
 
- });
+
+
+        $.each(policyPartialsArray, function( index, obj ) {
+            if(obj!= null && obj.id == policyId){
+                delete policyPartialsArray[index];
+                updatePolicyPartial();
+                return;
+            }
+
+        });
+    }
+
+
 
 
 
