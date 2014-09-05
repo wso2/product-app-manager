@@ -352,6 +352,7 @@ $(document).on("click", "#btn-add-xacml-policy", function () {
     editedpolicyPartialId = 0;
     $('#entitlement-policy-editor #policy-content').val("");
     $('#entitlement-policy-editor #policy-name').val("");
+    $('#entitlement-policy-editor #notification-text').text("");
 
 });
 
@@ -361,6 +362,7 @@ $(document).on("click", ".policy-edit-button", function () {
     var policyId = $(this).data( "policyId");
     $('#entitlement-policy-editor #policy-content').val("");
     $('#entitlement-policy-editor #policy-name').val("");
+    $('#entitlement-policy-editor #notification-text').text("");
 
     $.each(policyPartialsArray, function( index, obj ) {
        if(obj!= null && obj.id == policyId){
