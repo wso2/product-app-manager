@@ -28,13 +28,22 @@ $( document ).ready(function() {
     });
 
     $("#resource_tbody").delegate(".delete_resource","click", function(){
-        var i = $(this).attr("data-index");
-        RESOURCES.splice(i, 1);
 
-        // Invalidate relevant entitlement policy
-        invalidateEntitlementPolicy(i);
 
-        $("#resource_tbody").trigger("draw");
+        var conf = confirm("Are you sure you want to delete the selected resource?");
+        if (conf == true) {
+            var i = $(this).attr("data-index");
+            RESOURCES.splice(i, 1);
+
+            // Invalidate relevant entitlement policy
+            invalidateEntitlementPolicy(i);
+
+            $("#resource_tbody").trigger("draw");
+        }
+
+
+
+
     });
 
     $("#resource_tbody").on("draw", function(){

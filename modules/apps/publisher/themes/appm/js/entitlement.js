@@ -11,6 +11,7 @@ $(document).on("click", "#btn-policy-save", function () {
     validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation,
                                                             displayValidationRequestException);
 
+
 })
 
 $(document).on("click", "#btn-policy-partial-validate", function () {
