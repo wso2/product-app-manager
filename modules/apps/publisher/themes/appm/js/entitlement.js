@@ -210,20 +210,21 @@ function savePolicyPartial(){
             dataType: 'json',
             data:JSON.stringify({"id": editedpolicyPartialId, "policyPartialName":policyPartialName,"policyPartial":policyPartial}),
             success: function(data){
-                var returnedId = JSON.parse(data).response.id;
-                editedpolicyPartialId = returnedId;
-
-                $.each(policyPartialsArray, function( index, obj ) {
-                        if(obj.id == editedpolicyPartialId){
-                            policyPartialsArray[index].policyPartialName = policyPartialName;
-                            policyPartialsArray[index].policyPartial = policyPartial;
-                            updatePolicyPartial();
-                            return false;
-                        }
-                });
-
             },
-            error: function(){}
+            error: function(){
+
+            }
+        });
+
+
+        $.each(policyPartialsArray, function( index, obj ) {
+            if(obj.id == editedpolicyPartialId){
+                policyPartialsArray[index].policyPartialName = policyPartialName;
+                policyPartialsArray[index].policyPartial = policyPartial;
+
+                updatePolicyPartial();
+                return false;
+            }
         });
 
     }
@@ -315,7 +316,7 @@ function updatePolicyPartial(){
     $.each(policyPartialsArray, function( index, obj ) {
        if(obj != null){
 
-           $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td><a data-target="#entitlement-policy-editor" data-toggle="modal" data-policy-id="'+ obj.id +'" class="policy-edit-button"><i class="icon-edit"></i></a><a data-policy-id="'+ obj.id +'" class="policy-delete-button"><i class="icon-remove"></i></a></td></tr>');
+           $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td><a data-target="#entitlement-policy-editor" data-toggle="modal" data-policy-id="'+ obj.id +'" class="policy-edit-button"><i class="icon-edit"></i></a><a data-policy-id="'+ obj.id +'" class="policy-delete-button"><i class="icon-trash"></i></a></td></tr>');
            $(".policy-partial-dropdown").append("<li><a><input class='policy-allow-cb' data-policy-id='" + obj.id + "' type='checkbox'><input class='policy-deny-cb' data-policy-id='" + obj.id + "' type='checkbox'>" + obj.policyPartialName + "</a></li>");
 
 
@@ -348,7 +349,7 @@ $(document).on("click", ".policy-edit-button", function () {
            $('#entitlement-policy-editor #policy-name').val(obj.policyPartialName);
        }
 
-    });
+    })
 
     editedpolicyPartialId = policyId;
 
