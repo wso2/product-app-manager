@@ -57,8 +57,8 @@ $(function() {
 		$('#tracking_code').val(tracking_code_id);
 		
 		 if($('#autoConfig').is(':checked')){
-				var selectedProvider = $('#providers').val();
-				$('#sso_ssoProvider').val(selectedProvider);
+			var selectedProvider = $('#providers').val();
+			$('#sso_ssoProvider').val(selectedProvider);
 		 }
 		
 		 // Add entitlement policies.
@@ -76,69 +76,68 @@ $(function() {
 					
 					showAlert('Asset added successfully.', 'success');
 				    
-				    (function setupPermissions() {
+				    	(function setupPermissions() {
 
-                    	var rolePermissions = [];
+                    				var rolePermissions = [];
                         			
-            			// 'GET' permission to be applied to the selected roles.
-            			var readPermission = new Array();
-            			readPermission.push("GET");
+			    			// 'GET' permission to be applied to the selected roles.
+			    			var readPermission = new Array();
+			    			readPermission.push("GET");
 
-            			// Get roles from the UI
-            			var rolesInUI = $('#roles').tokenInput("get");	
+			    			// Get roles from the UI
+			    			var rolesInUI = $('#roles').tokenInput("get");	
 
-            			for(var i = 0; i < rolesInUI.length; i++){
-            				rolePermissions.push({
-                    				role: rolesInUI[i].id,
-                    				permissions: readPermission
-                			});
-            			}
+			    			for(var i = 0; i < rolesInUI.length; i++){
+			    				rolePermissions.push({
+				    				role: rolesInUI[i].id,
+				    				permissions: readPermission
+							});
+			    			}
 
-            			if (rolePermissions.length > 0) {
-	        				$.ajax({
-	            				url: '/publisher/asset/' + type + '/id/' + result.id + '/permissions',
-	            				type: 'POST',
-	            				processData: false,
-	            				contentType: 'application/json',
-	            				data: JSON.stringify(rolePermissions),
-	            				success: function(response) {
-	                					window.location = '/publisher/assets/' + type + '/';
-	            				},
-	            				error: function(response) {
-	                					showAlert('Error adding permissions.', 'error');
-	            				}
-	        				});
-            			} else {
-        					window.location = '/publisher/assets/' + type + '/';
-            			}
-                    })();
+			    			if (rolePermissions.length > 0) {
+							$.ajax({
+				    				url: '/publisher/asset/' + type + '/id/' + result.id + '/permissions',
+				    				type: 'POST',
+				    				processData: false,
+				    				contentType: 'application/json',
+				    				data: JSON.stringify(rolePermissions),
+				    				success: function(response) {
+									window.location = '/publisher/assets/' + type + '/';
+				    				},
+				    				error: function(response) {
+									showAlert('Error adding permissions.', 'error');
+				    				}
+								});
+			    			} else {
+								window.location = '/publisher/assets/' + type + '/';
+			    			}
+                    			})();
                     
-                     /**adding tags**/
+					/**adding tags**/
 
-                    var data = {};
-                    var tags = [];
-                    var selectedTags;
+					var data = {};
+					var tags = [];
+					var selectedTags;
+				        selectedTags = $('#tag-test').tokenInput('get');
 
-                    selectedTags = $('#tag-test').tokenInput('get');
+					for (var index in selectedTags) {
+						tags.push(selectedTags[index].name);
+					}
 
-                    for (var index in selectedTags) {
-                        tags.push(selectedTags[index].name);
-                    }
-
-                    data['tags'] = tags
-                    if (selectedTags.length > 0) {
-                        $.ajax({
-                            url: TAG_API_URL +  $('#meta-asset-type').val() + '/' + result.id,
-                            type: 'PUT',
-                            data: JSON.stringify(data),
-                            contentType: 'application/json; charset=utf-8',
-                            dataType: 'json',
-                            success: function (response) {},
-                            error: function () {
-                            showAlert('Unable to add the selected tag.', 'error');
-                            }
-                        });
-                    }		
+                    			data['tags'] = tags
+                    			if (selectedTags.length > 0) {
+                        			$.ajax({
+                            				url: TAG_API_URL +  $('#meta-asset-type').val() + '/' + result.id,
+                            				type: 'PUT',
+                            				data: JSON.stringify(data),
+                            				contentType: 'application/json; charset=utf-8',
+                            				dataType: 'json',
+                            				success: function (response) {},
+                            					error: function () {
+                            					showAlert('Unable to add the selected tag.', 'error');
+                            				}
+                        			});
+                    			}		
 					
 					if($('#autoConfig').is(':checked')){
 						createServiceProvider();
@@ -155,8 +154,8 @@ $(function() {
 				showAlert('Failed to add asset.', 'error');
 			},
 		 
-        	url: '/publisher/asset/' + type, 
-        	type : 'POST'
+        		url: '/publisher/asset/' + type, 
+        		type : 'POST'
         	
 		}; 
     
@@ -188,7 +187,8 @@ $(function() {
 		if($('#autoConfig').is(':checked')){
 			$('#provider-table').show();
 			$('#claims-table').show();
-
+			var roleClaim = "http://wso2.org/claims/role";
+			addToClaimsTable(roleClaim,false);
 		}else{
 			var rows = $('table.sso tr');
 			var provider =  rows.filter('.provider-table');
@@ -260,33 +260,42 @@ $(function() {
 
 	
 	$('#addClaims').click(function () {
-	    var propertyCount = document.getElementById("claimPropertyCounter");
-
-	    var i = propertyCount.value;
-	    var currentCount = parseInt(i);
-
-	    currentCount = currentCount + 1;
-	    propertyCount.value = currentCount;
-
-	    document.getElementById('claimTableId').style.display = '';
-	    var claimTableTBody = document.getElementById('claimTableTbody');
-
-	    var claimRow = document.createElement('tr');
-	    claimRow.setAttribute('id', 'claimRow' + i);
-
-	    var claim = document.getElementById('claims').value;
-	    var claimPropertyTD = document.createElement('td');
-	    claimPropertyTD.setAttribute('style', 'padding-left: 40px ! important; color: rgb(119, 119, 119); font-style: italic;');
-	    claimPropertyTD.innerHTML = "" + claim + "<input type='hidden' name='claimPropertyName" + i + "' id='claimPropertyName" + i + "'  value='" + claim + "'/> ";
-
-	    var claimRemoveTD = document.createElement('td');
-	    
-	    claimRemoveTD.innerHTML = '<a href="#"  onclick="removeClaim(' + i + ');return false;"><i class="icon-remove-sign"></i>  Delete</a>';
-	    claimRow.appendChild(claimPropertyTD);
-	    claimRow.appendChild(claimRemoveTD);
-
-	    claimTableTBody.appendChild(claimRow);
+		var claim  = $("#claims").val();
+		addToClaimsTable(claim,true);
 	});
+	
+	function addToClaimsTable(claim,clickable){
+		var propertyCount = $('#claimPropertyCounter');
+
+	    	var i = propertyCount.val(); 
+	    	var currentCount = parseInt(i);
+
+	    	currentCount = currentCount + 1;
+	    	propertyCount.val(currentCount);
+
+	    	$('#claimTableId').hide();
+	    	if(clickable){
+	    		$('#claimTableTbody').append($('<tr id="claimRow' + i +'" class="claimRow">'+
+		    		'<td style="padding-left: 40px ! important; color: rgb(119, 119, 119); font-style: italic;">'+
+		    		claim + '<input type="hidden" name="claimPropertyName' + i + '" id="claimPropertyName' + i + '"  value="' + claim + '"/> '+
+		    		'</td>'+
+		    		'<td>'+
+		    		'<a href="#"  onclick="removeClaim(' + i + ');return false;"><i class="icon-remove-sign"></i>  Delete</a>' +
+		    		'</td>'+
+		    		'</tr>'));
+		}else{
+			$('#claimTableTbody').append($('<tr id="claimRow' + i +'" class="claimRow">'+
+		    		'<td style="padding-left: 40px ! important; color: rgb(119, 119, 119); font-style: italic;">'+
+		    		claim + '<input type="hidden" name="claimPropertyName' + i + '" id="claimPropertyName' + i + '"  value="' + claim + '"/> '+
+		    		'</td>'+
+		    		'<td>'+
+		    		'<a href="#" style="pointer-events: none; cursor: default;color:#C4C4C4"  onclick="removeClaim(' + i + ');return false;"><i class="icon-remove-sign"></i>  Delete</a>' +
+		    		'</td>'+
+		    		'</tr>'));
+		}
+	    
+	    	$('#claimTableTbody').parent().show();
+	}
 	
 	
 
@@ -433,22 +442,8 @@ function isContainRaw(tbody) {
 
 
 function removeClaimTable() {
-	var  i=0;
-    	var propRow = document.getElementById("claimRow" + i);
-
-    	while (propRow != undefined && propRow != null) {
-        	var parentTBody = propRow.parentNode;
-        	if (parentTBody != undefined && parentTBody != null) {
-            		parentTBody.removeChild(propRow);
-            		if (!isContainRaw(parentTBody)) {
-                		var propertyTable = document.getElementById("claimTableId");
-                		propertyTable.style.display = "none";
-
-            		}
-        	}
-        
-        i++;
-        propRow = document.getElementById("claimRow" + i);
-    	}
+	$('.claimRow').remove();
+	$('#claimTableId').hide();
+	$('#claimPropertyCounter').val(0);
 }
 
