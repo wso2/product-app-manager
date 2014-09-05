@@ -224,6 +224,7 @@ var module = function () {
             var artifact1 = artifactManager.get(id);
             var attributes = artifact1.attributes;
 
+           // log.info(">>>>>>>>>>>>>>>>>>>>>>>>>" + stringify(attributes));
             //adding to database
             addToWebApp(id,provider, name, version, contextname, tracking_code,asset, attributes['sso_singleSignOn'], attributes['sso_idpProviderUrl'], attributes['sso_saml2SsoIssuer'],revisedURL);
 
