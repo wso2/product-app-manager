@@ -4,6 +4,9 @@ var policyPartialsArray = new Array();
 
 var editedpolicyPartialId = 0;
 
+
+
+
 // UI events
 $(document).on("click", "#btn-policy-save", function () {
 
@@ -17,7 +20,7 @@ $(document).on("click", "#btn-policy-save", function () {
 $(document).on("click", "#btn-policy-partial-validate", function () {
 
     var policyContent = $('#entitlement-policy-editor #policy-content').val();
-    validatePolicyPartial(policyContent, function(){}, function(){});
+    validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation, function(){});
 
 })
 
@@ -39,6 +42,9 @@ function continueAddingEntitlementPolicyPartialAfterValidation(response){
 
         if(response.isValid){
             savePolicyPartial();
+
+            var validationErrorMessage = "Policy is valid."
+            $('#entitlement-policy-editor #notification-text').text(validationErrorMessage);
 
             if(shouldCloseAfterSave()){
                 $("#entitlement-policy-editor").modal('hide');
