@@ -180,6 +180,7 @@ function validatePolicyPartial(policyPartial, onSuccess, onError){
 
 function savePolicyPartial(){
 
+saveApplicationPolicyPartialMapping("dwdwd",list);
     var policyPartial = $('#entitlement-policy-editor #policy-content').val();
     var policyPartialName = $('#entitlement-policy-editor #policy-name').val();
 
@@ -199,9 +200,7 @@ function savePolicyPartial(){
             error: function(){}
         });
 
-
     }else{ // update
-
 
         $.ajax({
             url: '/publisher/api/entitlement/policy/partial/update',
@@ -302,6 +301,20 @@ function deleteApplicationPolicyPartialMapping(applicationId,policyPartialId){
             showAlert('Error occured while fetching entitlement policy content', 'error');
         }
     });
+}
+
+function saveApplicationPolicyPartialMapping(applicationId, partialIdList){
+
+    $.ajax({
+            url: '/publisher/api/entitlement/partials',
+            type: 'POST',
+            contentType: 'application/x-www-form-urlencoded',
+            data:{"applicationId":applicationId,"partialIdList":partialIdList},
+            success: function(data){
+             
+            },
+            error: function(){}
+        });
 }
 
 function setPolicyContent(policyContent){

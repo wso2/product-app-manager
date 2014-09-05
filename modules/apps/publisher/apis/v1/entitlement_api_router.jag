@@ -53,6 +53,11 @@ require('/modules/publisher.js').exec(function(ctx) {
         deleteApplicationPolicyPartialMapping(context.params.applicationId, context.params.partialId);
     });
 
+     routeManager.register('POST', 'publisher', '/publisher/api/entitlement/partials', function (context) {
+        log.info(context);
+        print("tyteyfeftwyet")
+    });
+
     /**
      * Returns external entitlement policy for the given policy id.
      */
@@ -99,6 +104,10 @@ require('/modules/publisher.js').exec(function(ctx) {
     */
     function deleteEntitlementPolicyPartial(policyPartialId){
        apiProvider.deleteEntitlementPolicyPartial(policyPartialId);
+    }
+
+    function saveApplicationPolicyPartialMapping(applicationId,partialIdList){
+
     }
 
     /**
