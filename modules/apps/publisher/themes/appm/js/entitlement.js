@@ -344,7 +344,7 @@ function updatePolicyPartial(){
 
     });
 
-    $('#policyPartialIds').val(JSON.stringify(policyPartialIndexArray));
+    $('#uritemplate_policyPartialIds').val(JSON.stringify(policyPartialIndexArray));
 
 
 }
