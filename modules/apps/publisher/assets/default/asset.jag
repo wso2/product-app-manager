@@ -17,7 +17,7 @@ include("/extensions/webapp/modules/jagg/jagg.jag");
 require('/modules/publisher.js').exec(function(ctx) {
 
     var config = require('/config/publisher.json');
-    var caramel = require('caramel');
+    caramel = require('caramel');
     var server = require('store').server;
     var storeUser=require('store').user;
     var apiProvider = jagg.module('manager').getAPIProviderObj();

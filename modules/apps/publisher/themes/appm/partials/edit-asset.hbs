@@ -41,6 +41,32 @@
 
 						</fieldset>
 
+
+
+                        <fieldset>
+                            <legend style="margin-bottom: 0px;">XACML Policies</legend>
+                        </fieldset>
+
+                        <div class="row" style="padding-left: 50px; padding-top: 20px">
+                            <button id="btn-add-xacml-policy" class="btn btn-primary" data-toggle='modal' data-target='#entitlement-policy-editor'>Add New Policy</button>
+                        </div>
+
+                        <input type='hidden' value="[]" name="uritemplate_policyPartialIds" id="uritemplate_policyPartialIds" />
+                        <table class="table" id="policyPartialsTable">
+                            <thead>
+                            <tr>
+                                <th>Policy Name</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+
+
+
+
 						<fieldset>
 							<legend style="margin-bottom: 0px;">Web Application
 								Resources</legend>
