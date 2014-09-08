@@ -3,11 +3,11 @@
 /*
  Description: Provides CRUD support for assets
  Note: type: shortName in the Rxt templates
- GET  api/asset/{type} 	       	  : Provides the Rxt template
+ GET  api/asset/{type}            : Provides the Rxt template
  GET  api/asset/{type}/{id}        : Provides artifact details on the provided type
  POST api/asset/{type}             : Creates a new asset of the given type
- PUT  api/asset/{type}/{id}	  : Updates an asset with the given type and id
- DELETE asset/{type}/{id} 	  : Deletes an asset with the provided type and id
+ PUT  api/asset/{type}/{id}   : Updates an asset with the given type and id
+ DELETE asset/{type}/{id}     : Deletes an asset with the provided type and id
  Filename:asset.js
  Created Date: 29/7/2013
  */
@@ -17,7 +17,7 @@ include("/extensions/webapp/modules/jagg/jagg.jag");
 require('/modules/publisher.js').exec(function(ctx) {
 
     var config = require('/config/publisher.json');
-    caramel = require('caramel');
+    var caramel = require('caramel');
     var server = require('store').server;
     var storeUser=require('store').user;
     var apiProvider = jagg.module('manager').getAPIProviderObj();
@@ -124,9 +124,9 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
         //Get the list of versions
         var versionList = artifactManager.getAllAssetVersions(assetName);
 
-		var path = artifact.path;
-		var tags = rxtManager.registry.tags(path);
-		var title = assetName;
+        var path = artifact.path;
+        var tags = rxtManager.registry.tags(path);
+        var title = assetName;
 
 
         caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title});
@@ -172,61 +172,61 @@ routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/
         var versionList = artifactManager.getAllAssetVersions(assetName);
 
         var apiData={};
-    	apiData.provider= model.get('overview.provider').value;
-   	apiData.name= model.get('overview.name').value;
-    	apiData.version= model.get('overview.version').value;
-    	var result = mod.getAllDocumentation(apiData);
+        apiData.provider= model.get('overview.provider').value;
+    apiData.name= model.get('overview.name').value;
+        apiData.version= model.get('overview.version').value;
+        var result = mod.getAllDocumentation(apiData);
 
-	//Get tags
-	var path = artifact.path;
-	var tags = rxtManager.registry.tags(path);
-	var title = assetName;
+    //Get tags
+    var path = artifact.path;
+    var tags = rxtManager.registry.tags(path);
+    var title = assetName;
 
-	// getting the user roles
+    // getting the user roles
         var server = require('store').server,
         um = server.userManager(server.current(session).tenantId);
 
         var registry = new carbon.registry.Registry(server, {
-        	username: server.current(session).username,
+            username: server.current(session).username,
             tenantId: server.current(session).tenantId
         });
 
         var overridenPermissions = null;
 
         if(registry.properties(path)['overridden_permissions']) {
-        	overridenPermissions = registry.properties(path)['overridden_permissions'][0];
+            overridenPermissions = registry.properties(path)['overridden_permissions'][0];
         }
 
         if (overridenPermissions) {
-        	output.permissions = JSON.parse(overridenPermissions.replace('\\', ''));
+            output.permissions = JSON.parse(overridenPermissions.replace('\\', ''));
         }
 
- 	output.fields[1]['isEditable'] = false;
- 	output.fields[1]['isReadOnly'] = true;
+    output.fields[1]['isEditable'] = false;
+    output.fields[1]['isReadOnly'] = true;
 
- 	output.fields[2]['isEditable'] = false;
-  	output.fields[2]['isReadOnly'] = true;
+    output.fields[2]['isEditable'] = false;
+    output.fields[2]['isReadOnly'] = true;
 
-  	output.fields[3]['isEditable'] = false;
-   	output.fields[3]['isReadOnly'] = true;
+    output.fields[3]['isEditable'] = false;
+    output.fields[3]['isReadOnly'] = true;
 
-      	if(operation == "edit" || operation == "view"){
-       		var uriTemplate = 0;
-           	for(index = 0; index < output.fields.length; index++){
-           	        if(output.fields[index].name == "uritemplate_urlPattern"+uriTemplate){
-	            		if(output.fields[index].value == "" ||output.fields[index].value == "null"){
-	            			output.fields.splice(index, 1);
-	            		}
-	            		uriTemplate++;
-	            	}
-           	}
-       	}
+        if(operation == "edit" || operation == "view"){
+            var uriTemplate = 0;
+            for(index = 0; index < output.fields.length; index++){
+                    if(output.fields[index].name == "uritemplate_urlPattern"+uriTemplate){
+                        if(output.fields[index].value == "" ||output.fields[index].value == "null"){
+                            output.fields.splice(index, 1);
+                        }
+                        uriTemplate++;
+                    }
+            }
+        }
 
-	if(operation == "documentation"){
-		caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title,docs:result.docs});
-	}else{
-		caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title});
-	}
+    if(operation == "documentation"){
+        caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title,docs:result.docs});
+    }else{
+        caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title});
+    }
 
       } catch (e) {
         log.debug('The asset with id ' + id + ' could not be found due to : ' + e);
@@ -281,7 +281,11 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
         addTags(context.post,assetId,artifactManager,reg);
 
         // Save external entitlement policies
-        saveExternalEntitlementPolicies(context.post);
+        var webappId={};
+        webappId.provider= model.get('overview.provider').value;
+        webappId.name= model.get('overview.name').value;
+        webappId.version= model.get('overview.version').value;
+        generateEntitlementPolicies(webappId);
 
         print({ok:true,message:'asset added',id:assetId});
     }
@@ -303,29 +307,10 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
     });
 
 /**
-* Saves external entitlement policies.
+* Generates entitlement policies.
 */
-function saveExternalEntitlementPolicies(params){
-
-    var policies = parse(params['entitlementPolicies']);
-    var policiesToBeSaved = new Array();
-
-    var EntitlementPolicy = Packages.org.wso2.carbon.appmgt.api.model.entitlement.EntitlementPolicy;
-    var entitlementPolicy;
-    for(var i = 0; i < policies.length; i++){
-        if(policies[i]){
-            entitlementPolicy  = new EntitlementPolicy();
-            entitlementPolicy.setPolicyId(policies[i]['id']);
-            entitlementPolicy.setPolicyContent(policies[i]['content']);
-            policiesToBeSaved.push(entitlementPolicy);    
-        }
-        
-    }
-
-    if(policiesToBeSaved.length > 0){
-        apiProvider.saveEntitlementPolicies(policiesToBeSaved);    
-    }
-
+function generateEntitlementPolicies(webappId){
+    apiProvider.generateEntitlementPolicies(webappId);    
 }
 
 
@@ -340,7 +325,7 @@ function addTags(params,assetId,artifactManager,reg){
 
     //Obtain the tags parameter
    // var tags=params['tags']||[];
-	 var tags=params['tag-container']||[];
+     var tags=params['tag-container']||[];
 
     //Only proceed if there are any tags
     if(tags.length==0){
@@ -352,7 +337,7 @@ function addTags(params,assetId,artifactManager,reg){
     var asset=artifactManager.get(assetId);
 
     var path=asset.path;
-	tags = tags.split(',');
+    tags = tags.split(',');
 
     //Attach the tags
     reg.tag(path,tags);
@@ -378,16 +363,16 @@ function addTags(params,assetId,artifactManager,reg){
         // But, there's an internal_everyone coming up with +GET. Let's nuke it.
         //um.denyRole('Internal/everyone', artifact.path, carbon.registry.actions.GET);
 
-	//remove Internal/everyone role if there are roles added only.
-    	permissions.forEach(function(rolePermissions) {
+    //remove Internal/everyone role if there are roles added only.
+        permissions.forEach(function(rolePermissions) {
                     var role = rolePermissions.role;
 
                     if(role != 'Internal/private_admin' && role != 'admin' ){
-                    	var x = rolePermissions;
-                    	if(rolePermissions.permissions.length>0){
-                    		um.denyRole('Internal/everyone', artifact.path, carbon.registry.actions.GET);
+                        var x = rolePermissions;
+                        if(rolePermissions.permissions.length>0){
+                            um.denyRole('Internal/everyone', artifact.path, carbon.registry.actions.GET);
 
-                    	}
+                        }
 
 
                     }
@@ -462,18 +447,18 @@ function inspectFiles(req, params) {
 
     //setting default img if no images given for a webapp
     if(files == null){
-    	var files = {};
-    	var thumbnail = new File("/config/defaults/img/thumbnail.jpg");
-    	var banner = new File("/config/defaults/img/banner.jpg");
+        var files = {};
+        var thumbnail = new File("/config/defaults/img/thumbnail.jpg");
+        var banner = new File("/config/defaults/img/banner.jpg");
 
-    	files["images_thumbnail"]= thumbnail;
-    	files["images_banner"]= banner;
+        files["images_thumbnail"]= thumbnail;
+        files["images_banner"]= banner;
     }else if(files.images_thumbnail == null){
-    	thumbnail = new File("/config/defaults/img/thumbnail.jpg");
-    	files["images_thumbnail"]= thumbnail;
+        thumbnail = new File("/config/defaults/img/thumbnail.jpg");
+        files["images_thumbnail"]= thumbnail;
     }else if(files.images_banner == null){
-    	var banner = new File("/config/defaults/img/banner.jpg");
-    	files["images_banner"]= banner;
+        var banner = new File("/config/defaults/img/banner.jpg");
+        files["images_banner"]= banner;
     }
 
     var storageManager = new storageModule.StorageManager({
