@@ -189,6 +189,7 @@ function savePolicyPartial(){
 
     var policyPartial = $('#entitlement-policy-editor #policy-content').val();
     var policyPartialName = $('#entitlement-policy-editor #policy-name').val();
+    getApplicationPolicyPartialList(43);
 
     if(editedpolicyPartialId == 0){ //add
 
@@ -259,7 +260,7 @@ function getEntitlementPolicyPartial(policyPartialId){
 function getApplicationPolicyPartialList(applicationId){
 
     $.ajax({
-        url: '/publisher/api/entitlement/policy/partials/'+applicationId,
+        url: '/publisher/api/entitlement/policy/partialList/'+applicationId,
         type: 'GET',
         contentType: 'application/json',
         dataType: 'json',
