@@ -11,10 +11,6 @@ require('/modules/publisher.js').exec(function(ctx) {
     var routeManager = new router.Router();
     var log= new Log();
 
-    routeManager.register('GET', 'publisher', '/publisher/api/entitlement/{type}/{id}', function (context) {
-        var policyContent = getEntitlementPolicyContent(context.params.id);
-        print(policyContent);
-    });
 
     routeManager.register('POST', 'publisher', '/publisher/api/entitlement/policy/validate', function (context) {
         
@@ -43,6 +39,11 @@ require('/modules/publisher.js').exec(function(ctx) {
     routeManager.register('GET', 'publisher', '/publisher/api/entitlement/policy/partialList/{applicationId}', function (context) {
         var partialList = getApplicationPolicyPartialList(context.params.applicationId);
         print(partialList);
+    });
+
+    routeManager.register('GET', 'publisher', '/publisher/api/entitlement/webapp/{id}', function (context) {
+        var webappId = getWebAppId(context.params.id);
+        print(webappId);
     });
 
     routeManager.register('DELETE', 'publisher', '/publisher/api/entitlement/policy/partial/delete/{policyPartial}', function (context) {
@@ -93,6 +94,14 @@ require('/modules/publisher.js').exec(function(ctx) {
     function getEntitlementPolicyPartial(policyPartialId){
        return apiProvider.getEntitlementPolicyPartial(policyPartialId);
     }
+
+    /**
+    * Get the given webapp id
+    */
+    function getWebAppId(uuid){
+       return apiProvider.getWebAppId(uuid);
+    }
+
 
     /**
     * Get the list of policy partials of a given application
