@@ -337,7 +337,7 @@ function updatePolicyPartial(){
     $.each(policyPartialsArray, function( index, obj ) {
        if(obj != null){
            $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td><a data-target="#entitlement-policy-editor" data-toggle="modal" data-policy-id="'+ obj.id +'" class="policy-edit-button"><i class="icon-edit"></i></a><a  data-policy-name="'+ obj.policyPartialName +'"  data-policy-id="'+ obj.id +'" class="policy-delete-button"><i class="icon-trash"></i></a></td></tr>');
-           $(".policy-partial-dropdown").append("<li><a><input class='policy-allow-cb' data-policy-id='" + obj.id + "' type='checkbox'><input class='policy-deny-cb' data-policy-id='" + obj.id + "'  type='checkbox'>" + obj.policyPartialName + "</a></li>");
+           $(".policy-partial-dropdown").append("<li><a><input class='policy-allow-cb policy-allow-cb"+ obj.id +"' data-policy-id='" + obj.id + "' type='checkbox'><input class='policy-deny-cb policy-deny-cb"+ obj.id +"' data-policy-id='" + obj.id + "'  type='checkbox'>" + obj.policyPartialName + "</a></li>");
            policyPartialIndexArray.push(obj.id);
 
        }

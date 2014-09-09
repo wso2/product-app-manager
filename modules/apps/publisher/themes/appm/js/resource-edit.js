@@ -25,20 +25,24 @@ $( document ).ready(function() {
                     updatePolicyPartial();
 
 
+                    for(var i=0; i< RESOURCES_1.length; i++){
+                        var resourcePolicies = JSON.parse(getValidatedEntitlementPolicyId(i));
+
+                        for(var j=0; j< resourcePolicies.length; j++){
+
+                            if(resourcePolicies[j].effect == "Permit"){
+                              $('#dropdown_entitlementPolicyPartialMappings' + i + " .policy-allow-cb" + resourcePolicies[j].entitlementPolicyPartialId).prop('checked', true);
+                            }else if (resourcePolicies[j].effect == "Deny"){
+                               $('#dropdown_entitlementPolicyPartialMappings' + i + " .policy-deny-cb" + resourcePolicies[j].entitlementPolicyPartialId).prop('checked', true);
+                            }
+                        }
+
+                    }
+
+
                 },
                 error: function(){}
             });
-
-
-
-
-
-
-            policyPartialsArray =[];
-            for (var i = 0; i < data.length; i++) {
-
-                policyPartialsArray.push({id: data[i].partialId, policyPartialName: data[i].partialName})
-            }
 
         },
         error: function(){}
@@ -99,7 +103,7 @@ $( document ).ready(function() {
                 </li>\
                 </ul> \
                     \
-                    <input type='text' id='uritemplate_entitlementPolicyPartialMappings"+i+"' name='uritemplate_entitlementPolicyId"+i+"' value='"+ getValidatedEntitlementPolicyId(i) + "'/> \
+                    <input type='hidden' id='uritemplate_entitlementPolicyPartialMappings"+i+"' name='uritemplate_entitlementPolicyId"+i+"' value='"+ getValidatedEntitlementPolicyId(i) + "'/> \
                   </td> \
                   <td> \
                   	<a data-index='"+i+"' class='delete_resource'><i class='icon-trash icon-white'></i></a>&nbsp; \
@@ -107,6 +111,8 @@ $( document ).ready(function() {
                 </tr> \
 				"
             );
+
+
 
             // roles autocomplete   
             $('#getUserRoles'+i).tokenInput('/publisher/api/lifecycle/information/meta/' + $('#meta-asset-type').val() + '/roles', {
