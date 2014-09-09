@@ -189,7 +189,7 @@ function savePolicyPartial(){
 
     var policyPartial = $('#entitlement-policy-editor #policy-content').val();
     var policyPartialName = $('#entitlement-policy-editor #policy-name').val();
-    getApplicationPolicyPartialList(43);
+
 
     if(editedpolicyPartialId == 0){ //add
 
@@ -448,3 +448,5 @@ function updatePolcyparialForresource(resourcesId){
     $('#uritemplate_entitlementPolicyPartialMappings'+ resourcesId).val(JSON.stringify(policyArray));
 
 }
+
+

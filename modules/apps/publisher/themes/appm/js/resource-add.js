@@ -71,7 +71,7 @@ $( document ).ready(function() {
                 </ul> \
                     \
                     \
-                    <input type='hidden' id='uritemplate_entitlementPolicyPartialMappings"+i+"'  name='uritemplate_entitlementPolicyPartialMappings"+i+"'value='[]'/> \
+                    <input type='text' id='uritemplate_entitlementPolicyPartialMappings"+i+"'  name='uritemplate_entitlementPolicyPartialMappings"+i+"'value='[]'/> \
                   </td> \
                   <td> \
                   	<a data-index='"+i+"' class='delete_resource'><i class='icon-trash icon-white'></i></a>&nbsp; \
@@ -79,6 +79,8 @@ $( document ).ready(function() {
                 </tr> \
 				"
             );
+
+            updatePolicyPartial();
             
          // roles autocomplete
  
