@@ -64,7 +64,7 @@ $( document ).ready(function() {
                     <ul class='nav navbar-nav navbar-right'>\
                 <li class='dropdown'> \
                     <a href='#' data-toggle='dropdown' class='dropdown-toggle'>Add <b class='caret'></b></a>\
-                    <ul  id='dropdown_entitlementPolicyPartialMappings"+i+"' class='dropdown-menu policy-partial-dropdown' data-resource-id='"+ i +"' style='z-index: 10000'>\
+                    <ul  id='dropdown_entitlementPolicyPartialMappings"+i+"' class='dropdown-menu policy-partial-dropdown' data-resource-id='"+ i +"' style='z-index: 9999999;'>\
                     \
                     </ul>\
                 </li>\

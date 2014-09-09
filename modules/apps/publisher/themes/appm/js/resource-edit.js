@@ -112,7 +112,7 @@ $( document ).ready(function() {
 				"
             );
 
-            updatePolicyPartial();
+
 
             // roles autocomplete   
             $('#getUserRoles'+i).tokenInput('/publisher/api/lifecycle/information/meta/' + $('#meta-asset-type').val() + '/roles', {
