@@ -1,6 +1,6 @@
 var entitlementPolicies = new Array();
 
-var policyPartialsArray = new Array();
+policyPartialsArray = new Array();
 
 var editedpolicyPartialId = 0;
 

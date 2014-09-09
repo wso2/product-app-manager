@@ -1,6 +1,21 @@
 
 $( document ).ready(function() {
 
+   var uuid = $("#uuid").val();
+
+    $.ajax({
+        url: '/publisher/api/entitlement/webapp/' + uuid,
+        type: 'GET',
+        contentType: 'application/json',
+        success: function(data){
+           policyPartialsArray = [{"id":289,"policyPartialName":"abc","policyPartial":" <Condition>\n<Apply FunctionId=\"urn:oasis:names:tc:xacml:1.0:function:string-equal\">\n<Apply FunctionId=\"urn:oasis:names:tc:xacml:1.0:function:string-one-and-only\">\n<AttributeDesignator AttributeId=\"group\" Category=\"urn:oasis:names:tc:xacml:3.0:example-group\" DataType=\"http://www.w3.org/2001/XMLSchema#string\" MustBePresent=\"true\"></AttributeDesignator>\n</Apply>\n<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">admin_emps</AttributeValue>\n</Apply>\n</Condition>"},{"id":291,"policyPartialName":"efg","policyPartial":" <Condition>\n<Apply FunctionId=\"urn:oasis:names:tc:xacml:1.0:function:string-equal\">\n<Apply FunctionId=\"urn:oasis:names:tc:xacml:1.0:function:string-one-and-only\">\n<AttributeDesignator AttributeId=\"group\" Category=\"urn:oasis:names:tc:xacml:3.0:example-group\" DataType=\"http://www.w3.org/2001/XMLSchema#string\" MustBePresent=\"true\"></AttributeDesignator>\n</Apply>\n<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">admin_emps</AttributeValue>\n</Apply>\n</Condition>"},{"id":307,"policyPartialName":"pqr","policyPartial":" <Condition>\n<Apply FunctionId=\"urn:oasis:names:tc:xacml:1.0:function:string-equal\">\n<Apply FunctionId=\"urn:oasis:names:tc:xacml:1.0:function:string-one-and-only\">\n<AttributeDesignator AttributeId=\"group\" Category=\"urn:oasis:names:tc:xacml:3.0:example-group\" DataType=\"http://www.w3.org/2001/XMLSchema#string\" MustBePresent=\"true\"></AttributeDesignator>\n</Apply>\n<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">admin_emps</AttributeValue>\n</Apply>\n</Condition>"}];
+           updatePolicyPartial();
+
+        },
+        error: function(){}
+    });
+
+
     $("#add_resource").click(function(){
 
         $(".http_verb").each(function(){
@@ -95,6 +110,10 @@ $( document ).ready(function() {
     })
 
     $("#resource_tbody").trigger("draw");
+
+
+
+
 });
 
 // NOTE : This function is used as a workaround for a bug in registry model import and export.

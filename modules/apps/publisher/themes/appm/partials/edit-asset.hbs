@@ -21,6 +21,8 @@
 							{{{ form_render "overview_description" data.fields }}}
 						    {{{ form_render "images_thumbnail" data.fields}}}
 							{{{ form_render "images_banner" data.fields }}}
+
+                            <input type='hidden' id="uuid" value="{{data.info.id}}"/>
 							
 			                <input type='hidden' value="{{{snoop "fields(name=overview_trackingCode).value" data}}}" name="overview_trackingCode" id="overview_trackingCode"/>
 							<input type='hidden' value="{{{snoop "fields(name=sso_ssoProvider).value" data}}}" name="sso_ssoProvider" id="sso_ssoProvider"/>
