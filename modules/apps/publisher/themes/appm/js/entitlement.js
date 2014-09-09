@@ -342,7 +342,7 @@ function updatePolicyPartial(){
                <tr> \
                    <td><small>Permit</small></td> \
                    <td><small>Deny</small></td> \
-                   <td rowspan='2'>" + obj.policyPartialName + "</td> \
+                   <td rowspan='2' style='background-color: #ffffff'>" + obj.policyPartialName + "</td> \
                </tr> \
                <tr> \
                <td><input class='policy-allow-cb policy-allow-cb"+ obj.id +"' data-policy-id='" + obj.id + "' type='checkbox'></td> \
