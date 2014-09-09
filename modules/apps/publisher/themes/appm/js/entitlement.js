@@ -338,7 +338,7 @@ function updatePolicyPartial(){
        if(obj != null){
            $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td><a data-target="#entitlement-policy-editor" data-toggle="modal" data-policy-id="'+ obj.id +'" class="policy-edit-button"><i class="icon-edit"></i></a> &nbsp;<a  data-policy-name="'+ obj.policyPartialName +'"  data-policy-id="'+ obj.id +'" class="policy-delete-button"><i class="icon-trash"></i></a></td></tr>');
            $(".policy-partial-dropdown").append("<li> \
-               <table style='z-index: 9999999;'> \
+               <table> \
                <tr> \
                    <td><small>Permit</small></td> \
                    <td><small>Deny</small></td> \
