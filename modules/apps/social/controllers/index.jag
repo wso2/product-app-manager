@@ -25,7 +25,7 @@ var caramel;
 
     logged = userModule.current(session);
     var carbon = require('carbon');
-    var social = carbon.server.osgiService('org.wso2.carbon.social.service.SocialActivityService');
+    var social = carbon.server.osgiService('org.wso2.carbon.social.core.service.SocialActivityService');
     var target = request.getParameter('target');
     var obj, reviewsJSON;
     if (target) {
