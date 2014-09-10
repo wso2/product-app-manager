@@ -21,6 +21,8 @@
 							{{{ form_render "overview_description" data.fields }}}
 						    {{{ form_render "images_thumbnail" data.fields}}}
 							{{{ form_render "images_banner" data.fields }}}
+
+                            <input type='hidden' id="uuid" value="{{data.info.id}}"/>
 							
 			                <input type='hidden' value="{{{snoop "fields(name=overview_trackingCode).value" data}}}" name="overview_trackingCode" id="overview_trackingCode"/>
 							<input type='hidden' value="{{{snoop "fields(name=sso_ssoProvider).value" data}}}" name="sso_ssoProvider" id="sso_ssoProvider"/>
@@ -41,8 +43,38 @@
 
 						</fieldset>
 
+
+
+                        <fieldset>
+                            <legend style="margin-bottom: 0px;">XACML Policies</legend>
+
+                        </fieldset>
+
+
+
+
+                        <div class="row pull-right" style="padding-bottom: 20px; padding-top: 20px">
+                            <button id="btn-add-xacml-policy" class="btn btn-primary" data-toggle='modal' data-target='#entitlement-policy-editor'>Add New Policy</button>
+                        </div>
+
+                        <input type='hidden' value="[]" name="uritemplate_policyPartialIds" id="uritemplate_policyPartialIds" />
+                        <table class="table table-striped" id="policyPartialsTable">
+                            <thead>
+                            <tr>
+                                <th>Policy Name</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+
+
+
+
 						<fieldset>
-							<legend style="margin-bottom: 0px;">Web Application
+							<legend style="padding-top: 40px;">Web Application
 								Resources</legend>
 							<div class="resource_form"
 								style="background: #EEE; padding: 10px 0 1px 0;">

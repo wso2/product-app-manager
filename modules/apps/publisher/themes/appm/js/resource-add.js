@@ -28,18 +28,29 @@ $( document ).ready(function() {
     });
 
     $("#resource_tbody").delegate(".delete_resource","click", function(){
-        var i = $(this).attr("data-index");
-        RESOURCES.splice(i, 1);
 
-        // Invalidate relevant entitlement policy
-        invalidateEntitlementPolicy(i);
 
-        $("#resource_tbody").trigger("draw");
+        var conf = confirm("Are you sure you want to delete the selected resource?");
+        if (conf == true) {
+            var i = $(this).attr("data-index");
+            RESOURCES.splice(i, 1);
+
+            // Invalidate relevant entitlement policy
+            invalidateEntitlementPolicy(i);
+
+            $("#resource_tbody").trigger("draw");
+        }
+
+
+
+
     });
 
     $("#resource_tbody").on("draw", function(){
         $("#resource_tbody").html("");
         for(var i=0; i< RESOURCES.length; i++){
+
+
 
           $("#resource_tbody").prepend(
                 "<tr> \
@@ -49,9 +60,18 @@ $( document ).ready(function() {
                   <td style='padding:0px'><select name='uritemplate_skipthrottle"+i+"' class='selectpicker' id='' style='width:100%;border:none;'><option value='False'>False</option><option value='True'>True</option></select></td> \
                   <td class='userRoles' style='padding:0px'><input type='text' name='uritemplate_userRoles"+i+"' id='getUserRoles"+i+"' style='width:95%;border:none;'></input></td> \
                   <td> \
-                    <a data-index='"+i+"' class='add_entitlement_policy' data-toggle='modal' data-target='#entitlement-policy-editor' ><i class='icon-pencil icon-white'></i></a>&nbsp; \
-                    <a data-index='"+i+"' class='delete_entitlement_policy'><i class='icon-trash icon-white'></i></a>&nbsp; \
-                    <input type='hidden' name='uritemplate_entitlementPolicyId"+i+"'/> \
+                    \
+                    <ul class='nav navbar-nav navbar-right'>\
+                <li class='dropdown'> \
+                    <a href='#' data-toggle='dropdown' class='dropdown-toggle'>Add <b class='caret'></b></a>\
+                    <ul  id='dropdown_entitlementPolicyPartialMappings"+i+"' class='dropdown-menu policy-partial-dropdown' data-resource-id='"+ i +"' style='z-index: 9999999;'>\
+                    \
+                    </ul>\
+                </li>\
+                </ul> \
+                    \
+                    \
+                    <input type='hidden' id='uritemplate_entitlementPolicyPartialMappings"+i+"'  name='uritemplate_entitlementPolicyPartialMappings"+i+"'value='[]'/> \
                   </td> \
                   <td> \
                   	<a data-index='"+i+"' class='delete_resource'><i class='icon-trash icon-white'></i></a>&nbsp; \
@@ -59,6 +79,8 @@ $( document ).ready(function() {
                 </tr> \
 				"
             );
+
+            updatePolicyPartial();
             
          // roles autocomplete
  
@@ -78,7 +100,7 @@ $( document ).ready(function() {
 
     $(document).on("click", ".add_entitlement_policy", function () {
       var resourceIndex = $(this).data('index');
-      preparePolicyEditorInAddMode(resourceIndex);
+      preparePolicyEditor(resourceIndex);
     })
 
     $(document).on("click", ".delete_entitlement_policy", function () {
@@ -86,12 +108,16 @@ $( document ).ready(function() {
       deleteEntitlementPolicy(resourceIndex);
     })
 
-    $(document).on("click", "#btn-policy-save", function () {
-     addEntitlementPolicy(); 
-     $("#entitlement-policy-editor").modal('hide');
-    })    
-
     $("#resource_tbody").trigger("draw");
+
+
+    $(document).on("click", ".add-policy-partial", function () {
+       alert("Hi");
+    })
+
+
+
+
 });
 
 

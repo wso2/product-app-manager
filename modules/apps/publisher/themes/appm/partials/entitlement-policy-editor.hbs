@@ -5,12 +5,21 @@
     </div>
     <div class="modal-body" style="height:500px;max-height:none">
         <input id="resource-index" type="hidden"/>
+        <input id="save-and-close" type="hidden"/>
+
+        Name: <input id="policy-name" type="text"/>
+
         <div id="policy-content-container">
             <textarea id="policy-content" style="width:100%;height:100%"></textarea>
         </div>
     </div>
+    <div>
+        <label id="notification-text"/>
+    </div>
     <div class="modal-footer">
+        <a id="btn-policy-partial-validate" class="btn btn-primary">Validate</a>
+        <a id="btn-policy-save" class="btn btn-primary">Save</a>
+        <a id="btn-policy-save" class="btn btn-primary"  data-dismiss="modal">Save & Close</a>
         <a class="btn" data-dismiss="modal">Close</a>
-        <a id="btn-policy-save" class="btn btn-primary">Save policy</a>
     </div>
 </div>
