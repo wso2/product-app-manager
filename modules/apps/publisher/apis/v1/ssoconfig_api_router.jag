@@ -55,15 +55,24 @@ require('/modules/publisher.js').exec(function(ctx) {
         var WebAppModel = Packages.org.wso2.carbon.appmgt.api.model.WebApp;
         var APIIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
         var SSOProvider = Packages.org.wso2.carbon.appmgt.api.model.SSOProvider;
-
-
+	
         var appId = new APIIdentifier(params.sso_idpProviderUrl, params.app_name, params.app_verison);
         var webApp = new WebAppModel(appId);
         var ssoProvider = new SSOProvider();
 
+	var app_provider = params.app_provider;
+	var result = null;
+	if (app_provider != null && app_provider.indexOf("-AT-") != -1) {
+		result = app_provider.split("-AT-");	
+	}
+
         ssoProvider.setProviderName(params.provider.split("-")[0]);
         ssoProvider.setProviderVersion(params.provider.split("-")[1]);
-        ssoProvider.setIssuerName(params.app_name);
+        if (result != null ) {
+	    ssoProvider.setIssuerName(params.app_name + "-" + result[1]);
+	} else {
+	    ssoProvider.setIssuerName(params.app_name);
+	}
         //ssoProvider.setAssertionConsumerURL();
         ssoProvider.setClaims(params.claims);
         ssoProvider.setLogoutUrl(params.logout_url);

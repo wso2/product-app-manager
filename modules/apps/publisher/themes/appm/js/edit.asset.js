@@ -29,75 +29,69 @@ $(function() {
     if(sso_provider != " "){
     	$('#autoConfig').prop('checked', true);
     	$('#provider-table').show();
-		$('#claims-table').show();
-		$.ajax({
-	          url: '/publisher/api/sso/providers',
-	          type: 'GET',
-	          contentType: 'application/json',
-	          success: function(response) {
-	        	 
-	        	  var providers_data = JSON.parse(response);
-                  	  if((providers_data.success === true) && (!$.isEmptyObject(providers_data.response))) {
- 				  loadSelectedProviders(providers_data.response);
-                  	  } else {
-                  		  $("#ssoTable").remove();
-                  	  }
-	          },
-	          error: function(response) {
-	              showAlert('Error adding providers.', 'error');
-	          }
-	    });
+	$('#claims-table').show();
+	$.ajax({
+		url: '/publisher/api/sso/providers',
+	        type: 'GET',
+	        contentType: 'application/json',
+	        success: function(response) {
+			var providers_data = JSON.parse(response);
+                  	if((providers_data.success === true) && (!$.isEmptyObject(providers_data.response))) {
+ 				loadSelectedProviders(providers_data.response);
+                  	} else {
+				$("#ssoTable").remove();
+                  	}
+		},
+	        error: function(response) {
+	        	showAlert('Error adding providers.', 'error');
+	        }
+	});
 		
     } else{
-    	$.ajax({
-	          url: '/publisher/api/sso/providers',
-	          type: 'GET',
-	          contentType: 'application/json',
-	          success: function(response) {
-	        	 
-	        	  var providers_data = JSON.parse(response);
-                	  if((providers_data.success === true) && (!$.isEmptyObject(providers_data.response))) {
-                		  loadProviders(providers_data.response);
-                	  } else {
-                		  $("#ssoTable").remove();
-                	  }
-	          },
-	          error: function(response) {
-	              showAlert('Error adding providers.', 'error');
-	          }
-	    });
+	$.ajax({
+		url: '/publisher/api/sso/providers',
+	        type: 'GET',
+	        contentType: 'application/json',
+	        success: function(response) {
+	      		var providers_data = JSON.parse(response);
+                	if((providers_data.success === true) && (!$.isEmptyObject(providers_data.response))) {
+				loadProviders(providers_data.response);
+                	} else {
+				$("#ssoTable").remove();
+                	}
+		},
+	        error: function(response) {
+			showAlert('Error adding providers.', 'error');
+	        }
+	});
     	
     }
 
     function loadProviders(providers_data){
-		 for(var i=0;i<providers_data.length;i++){
-			  var x = providers_data[i];
-			 
-			  $("#providers").append($("<option></option>").val(x).text(x));
-			  if(x == sso_provider){
-				  $("#providers").val(sso_provider);
-			  }
-		  }
-		 
-		 var value = $('#providers').val();
-		 loadClaims(value);
+	for(var i=0;i<providers_data.length;i++){
+		var x = providers_data[i];
+		$("#providers").append($("<option></option>").val(x).text(x));
+		if(x == sso_provider){
+			$("#providers").val(sso_provider);
+		}
+	}
+	var value = $('#providers').val();
+	loadClaims(value);
     }
     
     
     
     function loadSelectedProviders(providers_data){
-		 for(var i=0;i<providers_data.length;i++){
-			  var x = providers_data[i];
-			 
-			  $("#providers").append($("<option></option>").val(x).text(x));
-			  if(x == sso_provider){
-				  $("#providers").val(sso_provider);
-			  }
-		  }
-		 loadClaims(sso_provider);
-		 loadSelectedClaims(sso_provider);
-		 
+	for(var i=0;i<providers_data.length;i++){
+		var x = providers_data[i];
+		$("#providers").append($("<option></option>").val(x).text(x));
+		if(x == sso_provider){
+			$("#providers").val(sso_provider);
+		}
 	}
+	loadClaims(sso_provider);
+	loadSelectedClaims(sso_provider);
+     }
     
     function loadSelectedClaims(selectedProvider){
     	var y = selectedProvider.split("-");
@@ -111,33 +105,14 @@ $(function() {
 	        	  var provider_data = JSON.parse(response).response;
 	        	  var selected_claims = provider_data.claims;
 	        	  for(n=0;n<selected_claims.length;n++){
-	        		  var propertyCount = document.getElementById("claimPropertyCounter");
-
-	        		    var i = propertyCount.value;
-	        		    var currentCount = parseInt(i);
-
-	        		    currentCount = currentCount + 1;
-	        		    propertyCount.value = currentCount;
-
-	        		    document.getElementById('claimTableId').style.display = '';
-	        		    var claimTableTBody = document.getElementById('claimTableTbody');
-
-	        		    var claimRow = document.createElement('tr');
-	        		    claimRow.setAttribute('id', 'claimRow' + i);
-
-	        		    //var claim = document.getElementById('claims').value;
-	        		    var claim = selected_claims[n];
-	        		    var claimPropertyTD = document.createElement('td');
-	        		    claimPropertyTD.setAttribute('style', 'padding-left: 40px ! important; color: rgb(119, 119, 119); font-style: italic;');
-	        		    claimPropertyTD.innerHTML = "" + claim + "<input type='hidden' name='claimPropertyName" + i + "' id='claimPropertyName" + i + "'  value='" + claim + "'/> ";
-
-	        		    var claimRemoveTD = document.createElement('td');
-	        		    
-	        		    claimRemoveTD.innerHTML = '<a href="#"  onclick="removeClaim(' + i + ');return false;"><i class="icon-remove-sign"></i>  Delete</a>';
-	        		    claimRow.appendChild(claimPropertyTD);
-	        		    claimRow.appendChild(claimRemoveTD);
-
-	        		    claimTableTBody.appendChild(claimRow);
+	        		  var claim = selected_claims[n];
+	        		  if(claim == "http://wso2.org/claims/role"){
+	        			  addToClaimsTable(claim,false);  
+	        		  }else{
+	        			  addToClaimsTable(claim,true);  
+	        		  }
+	        		  
+	        		  
 	        	  }
 	  			
 	          },
@@ -202,34 +177,41 @@ $(function() {
 	}
 
     $('#addClaims').click(function () {
-		
-	    var propertyCount = document.getElementById("claimPropertyCounter");
+    	var claim  = $("#claims").val();
+	addToClaimsTable(claim,true);
+    });
+    
+    function addToClaimsTable(claim,clickable){
+    	var propertyCount = $('#claimPropertyCounter');
 
-	    var i = propertyCount.value;
-	    var currentCount = parseInt(i);
+	var i = propertyCount.val(); 
+	var currentCount = parseInt(i);
 
-	    currentCount = currentCount + 1;
-	    propertyCount.value = currentCount;
+	currentCount = currentCount + 1;
+	propertyCount.val(currentCount);
 
-	    document.getElementById('claimTableId').style.display = '';
-	    var claimTableTBody = document.getElementById('claimTableTbody');
-
-	    var claimRow = document.createElement('tr');
-	    claimRow.setAttribute('id', 'claimRow' + i);
-
-	    var claim = document.getElementById('claims').value;
-	    var claimPropertyTD = document.createElement('td');
-	    claimPropertyTD.setAttribute('style', 'padding-left: 40px ! important; color: rgb(119, 119, 119); font-style: italic;');
-	    claimPropertyTD.innerHTML = "" + claim + "<input type='hidden' name='claimPropertyName" + i + "' id='claimPropertyName" + i + "'  value='" + claim + "'/> ";
-
-	    var claimRemoveTD = document.createElement('td');
-	    
-	    claimRemoveTD.innerHTML = '<a href="#"  onclick="removeClaim(' + i + ');return false;"><i class="icon-remove-sign"></i>  Delete</a>';
-	    claimRow.appendChild(claimPropertyTD);
-	    claimRow.appendChild(claimRemoveTD);
-
-	    claimTableTBody.appendChild(claimRow);
-	});
+	$('#claimTableId').hide();
+	if(clickable){
+		$('#claimTableTbody').append($('<tr id="claimRow' + i +'" class="claimRow">'+
+	    		'<td style="padding-left: 40px ! important; color: rgb(119, 119, 119); font-style: italic;">'+
+	    		claim + '<input type="hidden" name="claimPropertyName' + i + '" id="claimPropertyName' + i + '"  value="' + claim + '"/> '+
+	    		'</td>'+
+	    		'<td>'+
+	    		'<a href="#"  onclick="removeClaim(' + i + ');return false;"><i class="icon-remove-sign"></i>  Delete</a>' +
+	    		'</td>'+
+	    		'</tr>'));
+	}else{
+		$('#claimTableTbody').append($('<tr id="claimRow' + i +'" class="claimRow">'+
+	    		'<td style="padding-left: 40px ! important; color: rgb(119, 119, 119); font-style: italic;">'+
+	    		claim + '<input type="hidden" name="claimPropertyName' + i + '" id="claimPropertyName' + i + '"  value="' + claim + '"/> '+
+	    		'</td>'+
+	    		'<td>'+
+	    		'<a href="#" style="pointer-events: none; cursor: default;color:#C4C4C4"  onclick="removeClaim(' + i + ');return false;"><i class="icon-remove-sign"></i>  Delete</a>' +
+	    		'</td>'+
+	    		'</tr>'));
+	}
+	$('#claimTableTbody').parent().show();
+    }
 	
     
 
@@ -374,22 +356,24 @@ $(function() {
  	});
 
 	 $('#autoConfig').click(function () {
-			if($('#autoConfig').is(':checked')){
-				$('#provider-table').show();
-				$('#claims-table').show();
-			}else{
-				var rows = $('table.sso tr');
-				var provider =  rows.filter('.provider-table');
-				provider.hide();
+		if($('#autoConfig').is(':checked')){
+			$('#provider-table').show();
+			$('#claims-table').show();
+			var roleClaim = "http://wso2.org/claims/role";
+			addToClaimsTable(roleClaim,false);
+		}else{
+			var rows = $('table.sso tr');
+			var provider =  rows.filter('.provider-table');
+			provider.hide();
 										
-				var claims = rows.filter('.claims-table');
-				claims.hide();
-				removeClaimTable();
-			}
-		});
+			var claims = rows.filter('.claims-table');
+			claims.hide();
+			removeClaimTable();
+		}
+	});
 	 
 	 $("#providers").change(function () {
-			var value = $('#providers').val();
+		var value = $('#providers').val();
 	        loadClaims(value);
 	 });
 
@@ -460,18 +444,18 @@ $(function() {
 	
 	
 	function createServiceProvider(){
-        var sso_config = {};
-        var provider_name  = $('#providers').val();
-        var logout_url = $('#overview_logoutUrl').val();
-        var idp_provider = $('#sso_idpProviderUrl').val();
-        var app_name = $('#overview_name').val();
-        var app_version = $('#overview_version').val();
-        var app_transport = $('#overview_transports').val();
-        var app_context = $('#overview_context').val();
+        	var sso_config = {};
+        	var provider_name  = $('#providers').val();
+        	var logout_url = $('#overview_logoutUrl').val();
+        	var idp_provider = $('#sso_idpProviderUrl').val();
+        	var app_name = $('#overview_name').val();
+        	var app_version = $('#overview_version').val();
+        	var app_transport = $('#overview_transports').val();
+        	var app_context = $('#overview_context').val();
 
-        var claims = [];
-        var index=0;
-        var propertyCount = document.getElementById("claimPropertyCounter").value;
+        	var claims = [];
+        	var index=0;
+        	var propertyCount = document.getElementById("claimPropertyCounter").value;
 		while(index < propertyCount){
 			var claim = $("#claimPropertyName"+index).val();
 			if(claim != null){
@@ -481,14 +465,14 @@ $(function() {
 			
 		}
 
-        sso_config.provider = provider_name;
-        sso_config.logout_url = logout_url;
-        sso_config.claims = claims;
-        sso_config.idp_provider = idp_provider;
-        sso_config.app_name = app_name;
-        sso_config.app_verison = app_version;
-        sso_config.app_transport = app_transport;
-        sso_config.app_context = app_context;
+		sso_config.provider = provider_name;
+		sso_config.logout_url = logout_url;
+		sso_config.claims = claims;
+		sso_config.idp_provider = idp_provider;
+		sso_config.app_name = app_name;
+		sso_config.app_verison = app_version;
+		sso_config.app_transport = app_transport;
+		sso_config.app_context = app_context;
 
         $.ajax({
             url: '/publisher/api/sso/editConfig',
@@ -543,7 +527,7 @@ $(function() {
 		//alert('Succsessfully subscribed to the '+subscription.apiName+' Web App.');
 		$('#messageModal1').html($('#confirmation-data1').html());
 		$('#messageModal1 h3.modal-title').html(('Updating Successful'));
-		$('#messageModal1 div.modal-body').html('\n\n'+ ('Congratulations! You have 			successfully updated the Web App ')+ '</b>');
+		$('#messageModal1 div.modal-body').html('\n\n'+ ('Congratulations! You have successfully updated the Web App ')+ '</b>');
 		$('#messageModal1 a.btn-other').html('OK');
 		$('#messageModal1').modal();
 		$("#messageModal1").on('hidden.bs.modal', function(){
@@ -592,19 +576,7 @@ function isContainRaw(tbody) {
 	
 
 function removeClaimTable() {
-	var  i=0;
-	var propRow = document.getElementById("claimRow" + i);
-	    
-	while (propRow != undefined && propRow != null) {
-		var parentTBody = propRow.parentNode;
-	    if (parentTBody != undefined && parentTBody != null) {
-	    	parentTBody.removeChild(propRow);
-	        if (!isContainRaw(parentTBody)) {
-	        	var propertyTable = document.getElementById("claimTableId");
-	            propertyTable.style.display = "none";
-	        }
-	     }
-	     i++;
-	     propRow = document.getElementById("claimRow" + i);
-	}
+	$('.claimRow').remove();
+	$('#claimTableId').hide();
+	$('#claimPropertyCounter').val(0);
 }

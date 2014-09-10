@@ -233,7 +233,6 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
     
     var server  = require('store').server;
     var username = server.current(session).username;
-    
 
     if(context.post['images_thumbnail'] instanceof Array){
 	context.post['images_thumbnail'] = context.post['images_thumbnail'][0];
@@ -248,10 +247,16 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
 
         //Handle any files
         inspectFiles(request,context.post);
-
-        //Get the original artifact
         var originalArtifact = artifactManager.get(id);
-       
+                
+        //Get the original artifact
+        if(context.post["images_thumbnail"] == ""){
+        	context.post["images_thumbnail"] = originalArtifact.attributes["images_thumbnail"];
+        }
+    	if(context.post["images_banner"] == ""){
+        	context.post["images_banner"] = originalArtifact.attributes["images_banner"];
+        }
+                  
         modelA.import('form.importer', context.post);
 
         //Validation requires the lifecycle state
@@ -409,26 +414,8 @@ function inspectFiles(req, params) {
     var file;
     var uuid = '';
     var extension;
-    var extension;
     var thumbnail;
     var banner;
-            
-    //setting default img if no images given for a webapp
-    if(files == null){
-	var files = {};
-        var thumbnail = new File("/config/defaults/img/thumbnail.jpg");
-        var banner = new File("/config/defaults/img/banner.jpg");
-    
-        files["images_thumbnail"]= thumbnail;
-        files["images_banner"]= banner;
-    }else if(files.images_thumbnail == null){
-        thumbnail = new File("/config/defaults/img/thumbnail.jpg");
-        files["images_thumbnail"]= thumbnail;
-    }else if(files.images_banner == null){
-        var banner = new File("/config/defaults/img/banner.jpg");
-        files["images_banner"]= banner;
-    }
-
 
     var storageManager = new storageModule.StorageManager({
         context: 'storage',
