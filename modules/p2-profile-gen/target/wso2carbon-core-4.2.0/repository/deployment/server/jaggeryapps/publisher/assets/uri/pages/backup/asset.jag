@@ -1,3 +1,0 @@
-<%
-	print('This is a custom uri asset router. Unfortunately it does nothing!');
-%>

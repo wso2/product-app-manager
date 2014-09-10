@@ -1,3 +1,0 @@
-<artifactType type="application/wadl+xml" fileExtension="wadl" shortName="wadl" singularLabel="WADL" pluralLabel="WADLs" hasNamespace="false" iconSet="12">
-    <content href="../generic/wadl_view_ajaxprocessor.jsp?hideStandardView=true"/>
-</artifactType>

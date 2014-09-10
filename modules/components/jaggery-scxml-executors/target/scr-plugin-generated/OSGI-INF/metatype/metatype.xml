@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><metatype:MetaData xmlns:metatype="http://www.osgi.org/xmlns/metatype/v1.0.0" localization="OSGI-INF/metatype/metatype">
-    <OCD id="jaggery.scxml.realmservicecomponent" name="%jaggery.scxml.realmservicecomponent.name" description="%jaggery.scxml.realmservicecomponent.description"/>
-    <Designate pid="jaggery.scxml.realmservicecomponent">
-        <Object ocdref="jaggery.scxml.realmservicecomponent"/>
-    </Designate>
-</metatype:MetaData>
