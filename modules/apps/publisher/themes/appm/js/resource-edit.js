@@ -94,15 +94,13 @@ $( document ).ready(function() {
                    <td class='userRoles' style='padding:0px'><input  type='text' name='uritemplate_userRoles"+i+"' id='getUserRoles"+i+"' style='width:95%;border:none;'></input></td> \
                   <td> \
                      \
-                    <ul class='nav navbar-nav navbar-right'>\
-                <li class='dropdown'> \
-                    <a href='#' data-toggle='dropdown' class='dropdown-toggle'>Add <b class='caret'></b></a>\
-                    <div><ul  id='dropdown_entitlementPolicyPartialMappings"+i+"' class='dropdown-menu policy-partial-dropdown' data-resource-id='"+ i +"' style='z-index: 10000'>\
+                <div class='dropdown'> \
+                    <a href='#' data-toggle='dropdown' class='dropdown-toggle'>Add<b class='caret'></b></a>\
+                    <div><ul  id='dropdown_entitlementPolicyPartialMappings"+i+"' class='dropdown-menu policy-partial-dropdown' data-resource-id='"+ i +"' style='margin: 0px;'>\
                     \
                     </ul></div>\
-                </li>\
-                </ul> \
-                    \
+                </div>\
+               \
                     <input type='hidden' id='uritemplate_entitlementPolicyPartialMappings"+i+"' name='uritemplate_entitlementPolicyId"+i+"' value='"+ getValidatedEntitlementPolicyId(i) + "'/> \
                   </td> \
                   <td> \
