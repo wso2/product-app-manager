@@ -51,18 +51,18 @@ include('/extensions/assets/webapp/modules/jagg/jagg.jag');
                         authResult=authenticator.login(userDetails);
 
                         sso_sessions[sessionObj.sessionId] = sessionObj.sessionIndex;
-
-                        var user = require('store').user;
-
-                        if (user.loginWithSAML(sessionObj.loggedInUser)) {
-                            log.debug('user is set :::' + sessionObj.loggedInUser);
-                            response.sendRedirect(relayState);
-                        } else {
-                            session.invalidate();
-                            log.warn('User '+sessionObj.loggedInUser+' does not have permission to access the publisher application.Make sure the user has the publisher role.');
-                            response.sendError(401,'You do not have permission to login to this application.Please contact your administrator and request permission.');
-                        }
-
+                        
+                        var role = require('/modules/role.js').checkeRole(username, session);
+                        if(role){
+                        	var user = require('store').user;
+							log.debug('user is set :::' + sessionObj.loggedInUser);
+                        	response.sendRedirect(relayState);
+						
+                        }else{
+                        	log.warn('User '+sessionObj.loggedInUser+' does not have permission to access the publisher application.Make sure the user has the publisher role.');
+                        	response.sendError(401,'You do not have permission to login to this application.Please contact your administrator and request permission.');
+                        	                        	
+                        }                        
                     }
                 }
             }

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+.background{
+	background-color: #999;
+	margin: 0px;
+}
+
+
+.header-back {
+    background: url("/store/extensions/assets/webapp/themes/store/img/repeat.jpg") repeat-x scroll left top transparent;
+    height: 85px;
+}
+
+.logo {
+    height: 27px;
+    width: 171px;
+    padding-left: 200px;
+    padding-top: 30px;
+}
+
+.main-login-container {
+    background-color: #ccc;
+    box-shadow: 7px 7px 5px 0 rgba(50, 50, 50, 0.75);
+    margin-bottom: 20px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 20px;
+    height: 300px;
+    width: 1000px;
+    padding: 20px;
+}
+
+</style>
+ <link rel="stylesheet" type="text/css" href="styles.css">
+ 
+ <script type="text/javascript">
+
+ function onButtonLogoutClick(){
+	 window.location.assign("/store/logout");
+ }
+
+ </script>
+ 
+</head>
+<body class="background">
+
+<div class="header-back">
+		<div class="logo">
+			<img src="/store/extensions/assets/webapp/themes/store/img/appm_logo.png">
+		</div>
+</div>
+
+<div class="main-login-container">
+	<button style="float:right" onclick="onButtonLogoutClick()">Logout</button>
+	<h2>No Privileges to login</h2>
+	<div class="message">You do not have permission to login to this application.Please contact your administrator and request permission.</div>
+</div>
+
+
+</body>
+</html>

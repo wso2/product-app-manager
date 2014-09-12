@@ -11,7 +11,7 @@
             "/permission/admin/login": ["ui.execute"]
         }
     },
-    "userRoles": ["Internal/store","subscriber"],
+    "userRoles": ["subscriber"],
     "permissions": {
         "login": {
             "/permission/admin/login": ["ui.execute"]
