@@ -287,6 +287,9 @@ require('/modules/publisher.js').exec(function(ctx) {
 
 	});
 
+
+
+
 	var securityModule=require('/modules/security/security.manager.js').securityManagementModule();
 	var sm=securityModule.cached();
 
