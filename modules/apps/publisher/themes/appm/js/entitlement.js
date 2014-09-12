@@ -348,7 +348,7 @@ function updatePolicyPartial(){
                <td><input class='policy-allow-cb policy-allow-cb"+ obj.id +"' data-policy-id='" + obj.id + "' type='checkbox'></td> \
                <td><input class='policy-deny-cb policy-deny-cb"+ obj.id +"' data-policy-id='" + obj.id + "'  type='checkbox'></td> \
                 </tr> \
-               </table>");
+               </table></li>");
 
            policyPartialIndexArray.push(obj.id);
 
