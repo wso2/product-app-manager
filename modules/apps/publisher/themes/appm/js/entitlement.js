@@ -15,6 +15,7 @@ $(document).on("click", "#btn-policy-save", function () {
     var policyName = $('#entitlement-policy-editor #policy-name').val();
 
     if(policyContent == "" || policyName == ""){
+        alert("fields cannot be blank");
         return;
     }
     validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation,
@@ -39,6 +40,7 @@ $(document).on("click", "#btn-policy-save-and-close", function () {
     var policyName = $('#entitlement-policy-editor #policy-name').val();
 
     if(policyContent == "" || policyName == ""){
+        alert("fields cannot be blank");
         return;
     }
     validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation,
