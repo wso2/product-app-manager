@@ -4,32 +4,47 @@ policyPartialsArray = new Array();
 
 var editedpolicyPartialId = 0;
 
-
+var saveAndClose = false;
 
 
 // UI events
 $(document).on("click", "#btn-policy-save", function () {
 
+    saveAndClose = false;
     var policyContent = $('#entitlement-policy-editor #policy-content').val();
+    var policyName = $('#entitlement-policy-editor #policy-name').val();
+
+    if(policyContent == "" || policyName == ""){
+        return;
+    }
     validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation,
                                                             displayValidationRequestException);
 
 
-})
+});
 
 $(document).on("click", "#btn-policy-partial-validate", function () {
 
     var policyContent = $('#entitlement-policy-editor #policy-content').val();
     validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation, function(){});
+    saveAndClose = false;
 
 })
 
 $(document).on("click", "#btn-policy-save-and-close", function () {
 
-    $('#entitlement-policy-editor #save-and-close').val("YES");
+   // $('#entitlement-policy-editor #save-and-close').val("YES");
+    saveAndClose = true;
     var policyContent = $('#entitlement-policy-editor #policy-content').val();
-    validatePolicyContent(policyContent, continueAddingEntitlementPolicyAfterValidation,
-                                                            displayValidationRequestException);
+    var policyName = $('#entitlement-policy-editor #policy-name').val();
+
+    if(policyContent == "" || policyName == ""){
+        return;
+    }
+    validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation,
+        displayValidationRequestException);
+
+    $("#entitlement-policy-editor").modal('hide');
 
 })
 
@@ -46,8 +61,9 @@ function continueAddingEntitlementPolicyPartialAfterValidation(response){
             var validationErrorMessage = "Policy is valid."
             $('#entitlement-policy-editor #notification-text').text(validationErrorMessage);
 
-            if(shouldCloseAfterSave()){
+            if(saveAndClose){
                 $("#entitlement-policy-editor").modal('hide');
+               // alert("hi");
             }
 
             return;

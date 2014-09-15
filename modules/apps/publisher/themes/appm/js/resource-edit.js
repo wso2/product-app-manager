@@ -147,7 +147,7 @@ $( document ).ready(function() {
 
     $(document).on("click", "#btn-policy-save", function () {
         addEntitlementPolicy();
-        $("#entitlement-policy-editor").modal('hide');
+       // $("#entitlement-policy-editor").modal('hide');
     })
 
     $("#resource_tbody").trigger("draw");
