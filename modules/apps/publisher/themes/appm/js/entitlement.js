@@ -7,11 +7,60 @@ var editedpolicyPartialId = 0;
 var saveAndClose = false;
 
 
+
+
+
+
+var tags =[];
+
+function completeAfter(cm, pred) {
+    var cur = cm.getCursor();
+    if (!pred || pred()) setTimeout(function() {
+        if (!cm.state.completionActive)
+            cm.showHint({completeSingle: false});
+    }, 100);
+    return CodeMirror.Pass;
+}
+
+function completeIfAfterLt(cm) {
+    return completeAfter(cm, function() {
+        var cur = cm.getCursor();
+        return cm.getRange(CodeMirror.Pos(cur.line, cur.ch - 1), cur) == "<";
+    });
+}
+
+function completeIfInTag(cm) {
+    return completeAfter(cm, function() {
+        var tok = cm.getTokenAt(cm.getCursor());
+        if (tok.type == "string" && (!/['"]/.test(tok.string.charAt(tok.string.length - 1)) || tok.string.length == 1)) return false;
+        var inner = CodeMirror.innerMode(cm.getMode(), tok.state).state;
+        return inner.tagName;
+    });
+}
+
+var editor = CodeMirror.fromTextArea(document.getElementById("policy-content"), {
+    mode: "xml",
+    lineNumbers: true,
+    extraKeys: {
+        "'<'": completeAfter,
+        "'/'": completeIfAfterLt,
+        "' '": completeIfInTag,
+        "'='": completeIfInTag,
+        "Ctrl-Space": "autocomplete"
+    },
+    hintOptions: {schemaInfo: tags}
+});
+
+
+
+
+
 // UI events
 $(document).on("click", "#btn-policy-save", function () {
 
     saveAndClose = false;
-    var policyContent = $('#entitlement-policy-editor #policy-content').val();
+    var policyContent = editor.getValue();
+
     var policyName = $('#entitlement-policy-editor #policy-name').val();
 
     if(policyContent == "" || policyName == ""){
@@ -27,14 +76,14 @@ $(document).on("click", "#btn-policy-save", function () {
 $(document).on("click", "#btn-policy-partial-validate", function () {
 
 
-    var policyContent = $('#entitlement-policy-editor #policy-content').val();
+    var policyContent = editor.getValue();
     var policyName = $('#entitlement-policy-editor #policy-name').val();
 
     if(policyContent == "" || policyName == ""){
         alert("fields cannot be blank");
         return;
     }
-    
+
     validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation, function(){});
     saveAndClose = false;
 
@@ -44,7 +93,7 @@ $(document).on("click", "#btn-policy-save-and-close", function () {
 
    // $('#entitlement-policy-editor #save-and-close').val("YES");
     saveAndClose = true;
-    var policyContent = $('#entitlement-policy-editor #policy-content').val();
+    var policyContent = editor.getValue();
     var policyName = $('#entitlement-policy-editor #policy-name').val();
 
     if(policyContent == "" || policyName == ""){
@@ -55,8 +104,14 @@ $(document).on("click", "#btn-policy-save-and-close", function () {
         displayValidationRequestException);
 
     $("#entitlement-policy-editor").modal('hide');
+    //editor.setValue("");
 
-})
+});
+
+
+$(document).on("click", ".mclose-button", function () {
+    editor.setValue("");
+});
 
 function continueAddingEntitlementPolicyPartialAfterValidation(response){
 
@@ -141,7 +196,7 @@ function preparePolicyEditor(resourceIndex){
 
 function addEntitlementPolicy(){
 
-    var policyContent = $('#entitlement-policy-editor #policy-content').val();
+    var policyContent = editor.getValue(); //$('#entitlement-policy-editor #policy-content').val();
     var resourceIndex = $("#entitlement-policy-editor #resource-index").val();
 
     // Set policy Id. TODO : Optimize for policy edit.
@@ -213,7 +268,8 @@ function validatePolicyPartial(policyPartial, onSuccess, onError){
 
 function savePolicyPartial(){
 
-    var policyPartial = $('#entitlement-policy-editor #policy-content').val();
+    var policyPartial = editor.getValue(); //$('#entitlement-policy-editor #policy-content').val();
+   // alert(policyPartial);
     var policyPartialName = $('#entitlement-policy-editor #policy-name').val();
 
 
@@ -352,7 +408,8 @@ function saveApplicationPolicyPartialMapping(applicationId, partialIdList){
 }
 
 function setPolicyContent(policyContent){
-    $('#entitlement-policy-editor #policy-content').val(policyContent);
+    editor.setValue(policyContent);
+    //$('#entitlement-policy-editor #policy-content').val(policyContent);
 }
 
 
@@ -392,7 +449,8 @@ function updatePolicyPartial(){
 $(document).on("click", "#btn-add-xacml-policy", function () {
 
     editedpolicyPartialId = 0;
-    $('#entitlement-policy-editor #policy-content').val("");
+    //$('#entitlement-policy-editor #policy-content').val("");
+    editor.setValue("");
     $('#entitlement-policy-editor #policy-name').val("");
     $('#entitlement-policy-editor #notification-text').text("");
 
@@ -402,14 +460,17 @@ $(document).on("click", "#btn-add-xacml-policy", function () {
 $(document).on("click", ".policy-edit-button", function () {
 
     var policyId = $(this).data( "policyId");
-    $('#entitlement-policy-editor #policy-content').val("");
+    //$('#entitlement-policy-editor #policy-content').val("");
+    editor.setValue("");
     $('#entitlement-policy-editor #policy-name').val("");
     $('#entitlement-policy-editor #notification-text').text("");
 
     $.each(policyPartialsArray, function( index, obj ) {
        if(obj!= null && obj.id == policyId){
-           $('#entitlement-policy-editor #policy-content').val(obj.policyPartial);
+          // $('#entitlement-policy-editor #policy-content').val(obj.policyPartial);
            $('#entitlement-policy-editor #policy-name').val(obj.policyPartialName);
+           editor.setValue(obj.policyPartial);
+
        }
 
 
@@ -489,3 +550,8 @@ function updatePolcyparialForresource(resourcesId){
 }
 
 
+
+
+$('#entitlement-policy-editor').on('shown', function() {
+    editor.refresh()
+});
