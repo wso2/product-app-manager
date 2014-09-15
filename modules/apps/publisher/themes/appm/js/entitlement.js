@@ -26,7 +26,15 @@ $(document).on("click", "#btn-policy-save", function () {
 
 $(document).on("click", "#btn-policy-partial-validate", function () {
 
+
     var policyContent = $('#entitlement-policy-editor #policy-content').val();
+    var policyName = $('#entitlement-policy-editor #policy-name').val();
+
+    if(policyContent == "" || policyName == ""){
+        alert("fields cannot be blank");
+        return;
+    }
+    
     validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation, function(){});
     saveAndClose = false;
 
