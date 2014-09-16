@@ -20,6 +20,10 @@
                                     <div class="controls">
                                         <input type="text" id="inputVersion">
                                         <input type="hidden" id="inputId" value="{{data.info.id}}">
+                                        <input type="hidden" id="inputOldVersion" value="{{data.info.version}}">
+                                        <input type="hidden" id="inputName" value="{{{snoop "fields(name=overview_name).value" this.data}}}">
+                                        <input type="hidden" id="inputProvider" value="{{{snoop "fields(name=overview_provider).value" this.data}}}">
+
                                     </div>
                                 </div>
 

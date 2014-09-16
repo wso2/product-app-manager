@@ -504,10 +504,6 @@ $(document).on("click", ".policy-delete-button", function () {
         });
     }
 
-
-
-
-
 });
 
 $(document).on("click", ".policy-deny-cb", function () {
