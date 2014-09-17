@@ -2,9 +2,7 @@
 include("/extensions/webapp/modules/jagg/jagg.jag");
 
 (function () {
-		
-	
-    var log = new Log(),
+	    var log = new Log(),
             configs = require('/config/publisher.js').config(),
             samlResponse = request.getParameter('SAMLResponse'),
             sessionId = session.getId(),
@@ -25,9 +23,6 @@ include("/extensions/webapp/modules/jagg/jagg.jag");
         sso_sessions = application.get('sso_sessions');
     }
     
-    
-         
-
     if (samlResponse != null) {
         samlRespObj = sso.client.getSamlObject(samlResponse);
         if (!sso.client.isLogoutResponse(samlRespObj)) {
@@ -38,33 +33,34 @@ include("/extensions/webapp/modules/jagg/jagg.jag");
                 if (sso.client.validateSignature(samlRespObj, keyStoreProps)) {
                 	            	
                 	var sessionObj = sso.client.decodeSAMLLoginResponse(samlRespObj, samlResponse, sessionId);
+			if (sessionObj.sessionIndex != null || sessionObj.sessionIndex != 'undefined') {
+                    		jagg.setUser({username:sessionObj.loggedInUser});
+                    	 	session.put("LOGGED_IN_USER", sessionObj.loggedInUser);
+                        	session.put("Loged", "true");
 
-                    if (sessionObj.sessionIndex != null || sessionObj.sessionIndex != 'undefined') {
-                    	jagg.setUser({username:sessionObj.loggedInUser});
-                    	                    	
-                        session.put("LOGGED_IN_USER", sessionObj.loggedInUser);
-                        session.put("Loged", "true");
+                        	//sso_sessions[sessionObj.sessionIndex] = sessionObj.sessionId;
 
-                        //sso_sessions[sessionObj.sessionIndex] = sessionObj.sessionId;
+                        	log.debug("session index :: " + sessionObj.sessionIndex);
+                        	log.debug("session :: " + sessionObj.sessionId);
+				log.debug("real session :: " + session.getId());
 
-                        log.debug("session index :: " + sessionObj.sessionIndex);
-                        log.debug("session :: " + sessionObj.sessionId);
+				//sso_sessions[sso_sessions[sessionObj.sessionIndex] = sessionObj.sessionId] = sessionObj.sessionIndex;
+				sso_sessions[sessionObj.sessionId] = sessionObj.sessionIndex;
+                        	username = username + "";
+                        	var username = sessionObj.loggedInUser;
+                       		var role = require('/modules/role.js').checkeRole(username, session);
+                        
+                        	if(role){
+                        		var user = require('store').user;
+					log.debug('user is set :::' + sessionObj.loggedInUser);
+					response.sendRedirect('/publisher');
+							
+                        	} else {
+					log.warn('User '+sessionObj.loggedInUser+' does not have permission to access the publisher application.Make sure the user has the publisher role.');
+					response.sendError(401,'You do not have permission to login to this application.Please contact your administrator and request permission.');
+                        	}
 
-                        log.debug("real session :: " + session.getId());
-
-
-                        //sso_sessions[sso_sessions[sessionObj.sessionIndex] = sessionObj.sessionId] = sessionObj.sessionIndex;
-
-                        sso_sessions[sessionObj.sessionId] = sessionObj.sessionIndex;
-
-                        var user = require('store').user;
-
-                        if (user.loginWithSAML(sessionObj.loggedInUser)) {
-                            log.debug('user is set :::' + sessionObj.loggedInUser);
-                            response.sendRedirect('/publisher');
-                        }
-
-                    }
+                   	}
                 }
             }
 
@@ -78,15 +74,10 @@ include("/extensions/webapp/modules/jagg/jagg.jag");
     if (samlRequest != null) {
         var index = sso.client.decodeSAMLLogoutRequest(sso.client.getSamlObject(samlRequest));
         log.debug('BACKEND LOGOUT RECIEVED FROM STORE THE INDEX IS ######' + index);
-
         var jSessionId = application.get('sso_sessions')[index];
-
         delete application.get('sso_sessions')[index];
-
-
-        log.debug('portal Session Id :::' + jSessionId);
-
-        session.invalidate();
+	log.debug('portal Session Id :::' + jSessionId);
+	session.invalidate();
     }
 }());
 %>
