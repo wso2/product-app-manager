@@ -15,27 +15,40 @@ $('.btn-primary').on('click', function(e) {
 
 		var id = $(this).attr('data-app-id');
 
-		$.ajax({
-            url: '/publisher/api/asset/delete/' + type + '/' + id,
-            type: 'POST',
-            contentType: 'application/json',
-            success: function(response) {
-            	var result = JSON.parse(response);
-				if (result.ok) {
-					showDeleteModel("Successfully deleted the Asset","Delete Successfull",type);			
-				} else if(result.ok==false){
-					showDeleteModel("Asset is already subscribed","Asset Subscribed",type);
-				}else{
-					showDeleteModel("Asset is not successfully deleted","Delete Failed",type);
-				}
-            },
-            error: function(response) {
-            	showDeleteModel("Asset is not successfully deleted","Delete Failed",type);
-            }
-        });
 
-		e.preventDefault();
-		e.stopPropagation();
+
+
+
+            e.preventDefault();
+            e.stopPropagation();
+
+
+
+             var confirmDel = confirm("Are you sure you want to delete this app?");
+            if (confirmDel == true)
+            {
+                $.ajax({
+                    url: '/publisher/api/asset/delete/' + type + '/' + id,
+                    type: 'POST',
+                    contentType: 'application/json',
+                    success: function(response) {
+                        var result = JSON.parse(response);
+                        if (result.ok) {
+                            showDeleteModel("Successfully deleted the Asset","Delete Successfull",type);
+                        } else if(result.ok==false){
+                            showDeleteModel("Asset is already subscribed","Asset Subscribed",type);
+                        }else{
+                            showDeleteModel("Asset is not successfully deleted","Delete Failed",type);
+                        }
+                    },
+                    error: function(response) {
+                        showDeleteModel("Asset is not successfully deleted","Delete Failed",type);
+                    }
+                });
+            }
+
+
+
 	});
 
 	var showDeleteModel=function(msg,head,type){
