@@ -32,7 +32,7 @@ var appmgtPublisher = require('appmgtpublisher');
 
         var server  = require('store').server;
         var username = server.current(session).username;
-        log.info("Copy Asset Called >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + context.post.provider);
+
        var appMgtProviderObj = new appmgtPublisher.APIProvider(stringify(username));
         appMgtProviderObj.createNewAPIVersion(context.post.provider, context.post.appName, context.post.oldVersion, context.post.newVersion);
         print({});

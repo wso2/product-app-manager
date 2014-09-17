@@ -93,7 +93,7 @@ var init = function (options) {
 
     event.on('login', function (tenantId, user, session) {
         configureUser(tenantId, user);
-       // log.info("Logged In :>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + stringify(user) + "    : " + stringify(session));
+
     });
 };
 
