@@ -417,6 +417,9 @@ function updatePolicyPartial(){
     $('#policyPartialsTable tbody').html("");
     $(".policy-partial-dropdown").html("");
     var policyPartialIndexArray = [];
+
+
+
     $.each(policyPartialsArray, function( index, obj ) {
        if(obj != null){
            $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td><a data-target="#entitlement-policy-editor" data-toggle="modal" data-policy-id="'+ obj.id +'" class="policy-edit-button"><i class="icon-edit"></i></a> &nbsp;<a  data-policy-name="'+ obj.policyPartialName +'"  data-policy-id="'+ obj.id +'" class="policy-delete-button"><i class="icon-trash"></i></a></td></tr>');
@@ -439,6 +442,12 @@ function updatePolicyPartial(){
 
 
     });
+
+    if(policyPartialsArray == null || policyPartialsArray[0] == null || policyPartialsArray.length == 0 ){
+        $(".dropdown").hide();
+    }else{
+        $(".dropdown").show()
+    }
 
     $('#uritemplate_policyPartialIds').val(JSON.stringify(policyPartialIndexArray));
 
@@ -502,6 +511,8 @@ $(document).on("click", ".policy-delete-button", function () {
             }
 
         });
+
+        updatePolicyPartial();
     }
 
 });
