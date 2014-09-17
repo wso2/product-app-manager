@@ -25,6 +25,21 @@ var log= new Log();
 
 var appmgtPublisher = require('appmgtpublisher');
 
+
+
+
+ routeManager.register('POST', 'publisher', '/publisher/api/asset/copy/{id}', function (context) {
+
+        var server  = require('store').server;
+        var username = server.current(session).username;
+
+       var appMgtProviderObj = new appmgtPublisher.APIProvider(stringify(username));
+        appMgtProviderObj.createNewAPIVersion(context.post.provider, context.post.appName, context.post.oldVersion, context.post.newVersion);
+        print({});
+
+ });
+
+
 routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}', function (context) {
 
     var shortName = (context.params.type) || '';
@@ -530,6 +545,7 @@ routeManager.register('DELETE', 'publisher', '/publisher/api/asset/{type}/{id}',
 
 
 });
+
 
 
 var securityModule=require('/modules/security/security.manager.js').securityManagementModule();

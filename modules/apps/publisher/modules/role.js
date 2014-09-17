@@ -12,14 +12,22 @@ var checkeRole = function (username, session) {
 	}
 	opts = user.configs(usr.tenantId);
 	role = opts.userRoles;
-	  
   	var server=require('store').server;
   	um = server.userManager(usr.tenantId);
   	usr = um.getUser(usr.username);
   	usr.tenantDomain = carbon.server.tenantDomain({tenantId: usr.tenantId});
 
   	event.emit('login', usr.tenantId, usr, session);
+    if(usr.hasRoles(['admin'])){
+
+        if (!usr.hasRoles([role[0]])) {
+            usr.addRoles([role[0]]);
+        }
+
+        return true;
+    }
   	if (!usr.hasRoles([role[0]])) {
+            session.invalidate();
       		return false;
   	}
   	return true;

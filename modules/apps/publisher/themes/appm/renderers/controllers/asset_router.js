@@ -33,6 +33,9 @@ var render=function(theme,data,meta,require){
     case 'documentation':
         listPartial='documentation';
         break;
+    case 'copyapp':
+            listPartial='copy-app';
+            break;
 	default:
 		break;
 	}
