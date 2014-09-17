@@ -49,12 +49,12 @@ include("/extensions/webapp/modules/jagg/jagg.jag");
                         	username = username + "";
                         	var username = sessionObj.loggedInUser;
                        		var role = require('/modules/role.js').checkeRole(username, session);
-                        
+
                         	if(role){
                         		var user = require('store').user;
 					log.debug('user is set :::' + sessionObj.loggedInUser);
 					response.sendRedirect('/publisher');
-							
+
                         	} else {
 					log.warn('User '+sessionObj.loggedInUser+' does not have permission to access the publisher application.Make sure the user has the publisher role.');
 					response.sendError(401,'You do not have permission to login to this application.Please contact your administrator and request permission.');
