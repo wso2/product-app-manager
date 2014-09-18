@@ -7,7 +7,7 @@ $( "#btnCopyApp" ).click(function() {
 
 
     $.ajax({
-        url: '/publisher/api/asset/copy/'+ assetId,
+        url: '/publisher/api/asset/web/copy/'+ assetId,
         type: 'POST',
         contentType: 'application/x-www-form-urlencoded',
         data: {newVersion: newVersion, oldVersion: oldVersion, provider: provider, "appName": appName },
