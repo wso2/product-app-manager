@@ -10,13 +10,23 @@ var render=function(theme,data,meta,require){
 	switch(data.op){
 	case 'create':
 		listPartial='add-asset';
+		if(data.data.meta.shortName=='mobileapp'){
+			//log.info('Special rendering case for mobileapp-using add-mobilepp.hbs');
+			listPartial='add-mobileapp';
+		}	
+		
 		break;
 	case 'view':
 		listPartial='view-asset';
 		break;
     case 'edit':
         listPartial='edit-asset';
+        if(data.data.meta.shortName=='mobileapp'){
+			//log.info('Special rendering case for mobileapp-using edit-mobilepp.hbs');
+			listPartial='edit-mobileapp';
+		}
         data = require('/helpers/edit-asset.js').selectCategory(data);
+        data = require('/helpers/edit-asset.js').screenshots(data);
         break;
     case 'lifecycle':
         listPartial='lifecycle-asset';
