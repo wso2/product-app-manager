@@ -4,7 +4,8 @@
 
     "import": [
         "/modules/ext/scripts/rxt.importer.js",
-        "/modules/ext/scripts/form.exporter.js"],
+        "/modules/ext/scripts/form.exporter.js",
+      "/modules/ext/scripts/mobile.action.save.js"],
 
     "fieldPropertyRules": [
         "overview.name:order=1",

@@ -13,7 +13,7 @@ var render=function(theme,data,meta,require){
 		if(data.data.meta.shortName=='mobileapp'){
 			//log.info('Special rendering case for mobileapp-using add-mobilepp.hbs');
 			listPartial='add-mobileapp';
-		}	
+		}
 		
 		break;
 	case 'view':
@@ -27,6 +27,7 @@ var render=function(theme,data,meta,require){
 		}
         data = require('/helpers/edit-asset.js').selectCategory(data);
         data = require('/helpers/edit-asset.js').screenshots(data);
+
         break;
     case 'lifecycle':
         listPartial='lifecycle-asset';

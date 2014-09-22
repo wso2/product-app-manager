@@ -766,7 +766,7 @@ td.asset-listing-btn {
 }
 .content-div .form-horizontal {
     border-radius: 6px 6px 6px 6px;
-    padding: 1px 10px 0;
+    padding: 30px 10px 0;
 }
 .form-actions {
     background-color: #FFFFFF;
@@ -904,8 +904,6 @@ span.title {
     background: none repeat scroll 0 0 #FFFFFF;
     margin-bottom: 20px;
     margin-top: 10px;
-    overflow: hidden;
-    padding-bottom: 32px;
 }
 .widget .widget-head {
     background-color: #F5F5F5;
@@ -1187,8 +1185,6 @@ circle:hover {
     background: none repeat scroll 0 0 #CCCCCC;
     content: "";
     height: 1px;
-    left: -30px;
-    padding-left: 30px;
     position: absolute;
     width: 100%;
 }
@@ -1268,4 +1264,89 @@ color:#229A55;
     position: absolute;
     top: 0;
 }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.btn-danger {
+    background: none repeat scroll 0 0 #DA4F49;
+    color: #FFFFFF;
+    text-shadow: none;
+}
+
+.btn-orange {
+    background: none repeat scroll 0 0 #FAA732;
+    color: #FFFFFF;
+    text-shadow: none;
+}
+
+.btn-blue {
+    background: none repeat scroll 0 0 #49AFCD;
+    color: #FFFFFF;
+    text-shadow: none;
+}
+
+.btn-blue:hover,
+.btn-blue:focus,
+.btn-blue:active,
+.btn-blue.active,
+.btn-blue.disabled,
+.btn-blue[disabled] {
+  color: #FFFFFF;
+  background-color: #49AFCD;
+  *background-color: #49AFCD;
+}
+
+.btn-danger:hover,
+.btn-danger:focus,
+.btn-danger:active,
+.btn-danger.active,
+.btn-danger.disabled,
+.btn-danger[disabled] {
+  color: #FFFFFF;
+  background-color: #DA4F49;
+  *background-color: #DA4F49;
+}
+
+.text-green {
+    color: #74B749;
+}
+.text-orange {
+    color: #ED6D49;
+}
+.text-blue {
+    color: #0DAED3;
+}
+.text-yellow {
+    color: #FFB400;
+}
+.text-red {
+    color: #F63131;
 }
