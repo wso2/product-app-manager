@@ -327,7 +327,7 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}', functi
 
 });
 
-	routeManager.register('GET', 'publisher', '/publisher/api/asset/userRoles/{type}/{id}', function (context) {
+routeManager.register('GET', 'publisher', '/publisher/api/asset/userRoles/{type}/{id}', function (context) {
 
 
 
