@@ -447,7 +447,7 @@ function updatePolicyPartial(){
 
         $('.uritemplate_entitlementPolicyPartialMappings_text').each(function(i, obj) {
             var values = JSON.parse($(this).val());
-           
+
             for (var j = 0; j < values.length; j++){
                 if(values[j].effect == "Permit"){
                     $('#dropdown_entitlementPolicyPartialMappings' + (uriTemplates - i - 1) + " .policy-allow-cb" + values[j].entitlementPolicyPartialId).prop('checked', true);
