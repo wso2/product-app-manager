@@ -34,6 +34,7 @@ var render=function(theme,data,meta,require){
         listPartial='documentation';
         break;
     case 'copyapp':
+            data = require('/helpers/copy-app.js').processData(data);
             listPartial='copy-app';
             break;
 	default:
