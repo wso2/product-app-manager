@@ -344,6 +344,8 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
         dataInjector.inject(artifact,DataInjectorModes.DISPLAY);
 
 	    var update = apiProvider.updateAPI(artifact);
+        //Update entitlement policies of the web application
+        updateEntitlementPolicies(attributes["overview_provider"], attributes["overview_name"], attributes["overview_version"]);
         
         //update OAuth APIs consumer details per given web-app
         var attributes = artifact.attributes;
@@ -416,6 +418,21 @@ function saveExternalEntitlementPolicies(params){
     }
 
 }
+
+/**
+* Update entitlement policies.
+*/
+function updateEntitlementPolicies(overviewProvider,overviewName,overviewVersion){
+
+     // Save external entitlement policies
+        var webappId={};
+        webappId.provider= overviewProvider;
+        webappId.name= overviewName;
+        webappId.version= overviewVersion;
+        log.info(webappId)
+       apiProvider.generateEntitlementPolicies(webappId); 
+}
+
 
 /*
  The function inspects the files sent with a request.If files are found
