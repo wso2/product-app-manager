@@ -25,7 +25,8 @@ var render = function (theme, data, meta, require) {
             },
             {
                 partial: 'assets',
-                context: assets.currentPage(data.assets,data.sso,data.user, data.paging, data.devices)
+                context: assets.currentPage(data.assets,data.sso,data.user, data.paging, data.devices, data.config)
+
             }/*,
             {
                 partial: 'pagination',

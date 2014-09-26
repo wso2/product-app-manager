@@ -21,13 +21,14 @@ var resources = function (page, meta) {
     return o;
 };
 
-var currentPage = function (assetsx,ssox,userx, paging, devicesx) {    
+var currentPage = function (assetsx,ssox,userx, paging, devicesx, configx) {
     
     var outx  = {
         'assets': assetsx,
         'sso': ssox,
         'user': userx,
-        'devices': devicesx
+        'devices': devicesx,
+        'config': configx
     };
     return outx;
 };

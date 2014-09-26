@@ -43,6 +43,7 @@ var emm = (function () {
         constructor: module,
         install: function(payload, device){
 			var url =  configs.emm.api+'/devices/'+device+'/AppInstall';
+                        log.info("PAYLOAD >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + stringify(payload));
 			var result = jsonPost(url, payload);
 		},
 		installWebClip: function(payload, device){

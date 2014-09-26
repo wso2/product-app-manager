@@ -17,14 +17,15 @@ $(".device-image").each(function(index) {
 	
 	var srcImage = $(this).attr("src");	
 	if (!urlExists(srcImage)) {
-		$(this).attr("src", "/emm/assets/wso2mobile/img/models/none.png");
+		$(this).attr("src", "/store/extensions/assets/mobileapp/resources/models/none.png");
 	}
 });
 
 $(".device-image-modal").each(function(index) {	
-	var srcImage = $(this).attr("src");	
+	var srcImage = $(this).attr("src");
+
 	if (!urlExists(srcImage)) {
-		$(this).attr("src", "/emm/assets/wso2mobile/img/models/none.png");
+		$(this).attr("src", "/store/extensions/assets/mobileapp/resources/models/none.png");
 	}
 });
 
@@ -34,6 +35,7 @@ $(".device-image-modal").each(function(index) {
 
 
 function urlExists(url){
+
     var http = new XMLHttpRequest();
     http.open('HEAD', url, false);
     http.send();

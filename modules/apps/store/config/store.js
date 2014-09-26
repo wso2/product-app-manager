@@ -6,6 +6,8 @@ var config;
             config = require('/config/store.json'),
             process = require('process'),
             localIP = process.getProperty('server.host'),
+            ipAdd = process.getProperty('carbon.local.ip');
+
             httpPort = process.getProperty('http.port'),
             httpsPort = process.getProperty('https.port');
 
@@ -14,7 +16,16 @@ var config;
                 return value.replace('%https.host%', 'https://' + localIP + ':' + httpsPort);
             } else if ((typeof value === 'string') && value.indexOf('%http.host%') > -1) {
                 return value.replace('%http.host%', 'http://' + localIP + ':' + httpPort);
+            }else if ((typeof value === 'string') && value.indexOf('%https.ip%') > -1) {
+                return value.replace('%https.ip%', 'https://' + ipAdd + ':' + httpsPort);
+            }else if ((typeof value === 'string') && value.indexOf('%http.ip%') > -1) {
+                return value.replace('%http.ip%', 'http://' + ipAdd + ':' + httpPort);
             }
+
+
+
+
+
             return  value;
         });
         return config;

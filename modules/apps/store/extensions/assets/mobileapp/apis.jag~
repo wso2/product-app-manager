@@ -89,7 +89,7 @@ router.post('apps/devices/{deviceid}/uninstall', function(ctx){
 	emmServer.uninstall({identity: install_asset}, ctx.deviceid);
 });
 var buildInstallParam = function(asset){
-	var installParam = configs.mam.archieve_location_android +asset.attributes.overview_url;
+	var installParam = "http://10.100.5.6:9764/publisher"+asset.attributes.overview_url;
 	if (asset.attributes.overview_platform.toUpperCase() == 'IOS'){
 		installParam = configs.mam.archieve_location_ios+"/emm/api/apps/install/ios/"+asset.id+"?tenantDomain="+getTenantDomainFromID(getTenantID());;
 	}
