@@ -28,7 +28,7 @@ var appmgtPublisher = require('appmgtpublisher');
 
 
 
- routeManager.register('POST', 'publisher', '/publisher/api/asset/copy/{id}', function (context) {
+ routeManager.register('POST', 'publisher', '/publisher/api/asset/copy/{type}/{id}', function (context) {
 
         var server  = require('store').server;
         var username = server.current(session).username;
