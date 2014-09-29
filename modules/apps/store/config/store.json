@@ -24,7 +24,7 @@
     },
     
     "emm": {
-        "api": "https://localhost:9443/emm/api"
+        "api": "https://10.10.10.148:9443/emm/api"
     },
     "mam":{
         "archieve_location_ios": "%https.ip%",

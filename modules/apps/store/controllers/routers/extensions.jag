@@ -65,12 +65,18 @@ var type;
 
             if(type === "mobileapp"){
                 path = pages + 'subscriptions.jag';
+
+                if (suffix === 'process') {
+                    path = pages + 'process.jag';
+                    path = new File(path).isExists() ? path : '/controllers/process.jag';
+                }
             }
+
 
             request.getMappedPath = mapper(path);
 
 
-
+            log.info("PATH >>>>>>>>>>>>>>>>>>>>>" + path);
             include(path);
             return;
         }

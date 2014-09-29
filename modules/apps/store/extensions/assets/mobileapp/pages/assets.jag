@@ -102,9 +102,11 @@ require('/modules/store.js').exec(function (ctx) {
     if(user!=null){
         var emm = require('/modules/emm.js').emm;
         var emmServer = new emm();
+
         try{
             var result = emmServer.getDevices(user.username+"@"+user.tenantDomain);
             devices = parse(result);
+
         }catch(e){
             log.debug(e);
         }
