@@ -23,10 +23,9 @@
         "keyStoreName": "/repository/resources/security/wso2carbon.jks"
     },
     
-    "emm": {
-        "api": "https://10.10.10.148:9443/emm/api"
-    },
-    "mam":{
+    "mobile": {
+        "is_catalog" : true,
+        "api": "https://<IP>:<PORT>/emm/api",
         "archieve_location_ios": "%https.ip%",
         "archieve_location_android": "%http.ip%"
     }	

@@ -148,7 +148,7 @@ require('/modules/store.js').exec(function (ctx) {
         sorting: {
             url: url + 'sort='
         },
-        config : configs.emm,
+        config : configs.mobile,
         myAssets : { user:user, type: type, title: title, subscriptions: subscriptions[type], subscription : subscription},
         recentAssets: store.recentAssets(type)
 

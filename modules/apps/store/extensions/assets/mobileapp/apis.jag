@@ -89,9 +89,9 @@ router.post('apps/devices/{deviceid}/uninstall', function(ctx){
 	emmServer.uninstall({identity: install_asset}, ctx.deviceid);
 });
 var buildInstallParam = function(asset){
-	var installParam = configs.mam.archieve_location_android +asset.attributes.overview_url;
+	var installParam = configs.mobile.archieve_location_android +asset.attributes.overview_url;
 	if (asset.attributes.overview_platform.toUpperCase() == 'IOS'){
-		installParam = configs.emm.api+"/apps/install/ios/"+asset.id+"?tenantDomain="+getTenantDomainFromID(getTenantID());;
+		installParam = configs.mobile.api+"/apps/install/ios/"+asset.id+"?tenantDomain="+getTenantDomainFromID(getTenantID());;
 	}
 	if(asset.attributes.overview_type == "Market"){
 		installParam = asset.attributes.overview_packagename;

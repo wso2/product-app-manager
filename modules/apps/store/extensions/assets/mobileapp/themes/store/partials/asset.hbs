@@ -2,6 +2,7 @@
     var isSocial = ('{{isSocial}}' == 'true');
 </script>
 <div class="asset-description">
+
     {{#with asset}}
         {{#attributes}}
             <div class="asset-description-header">
@@ -36,7 +37,9 @@
                         {{/if}}
 
                     </span>
-                          {{>asset-utilization ../../.}}
+                           {{#unless ../../config.is_catalog}}
+                                {{>asset-utilization ../../../.}}
+                           {{/unless}}
                          </div>
 
                     </div>

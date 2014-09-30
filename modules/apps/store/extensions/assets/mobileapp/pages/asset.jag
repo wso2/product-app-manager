@@ -65,6 +65,7 @@ require('/modules/store.js').exec(function (ctx) {
         embedURL: configs.server.http + '/gadgets/ifr?url=' + asset.attributes.overview_url,
         inDashboard: inDashboard,
         asset: asset,
+        config : configs.mobile,
         tags: [
             {
                 url: '/assets/' + type + '/?page=1&tag=',

@@ -1,5 +1,7 @@
-var render = function (theme, data, meta, require) {	
-	
+var render = function (theme, data, meta, require) {
+
+
+    data.header.config = data.config;
 	
 		
     var assets = require('/helpers/assets.js');

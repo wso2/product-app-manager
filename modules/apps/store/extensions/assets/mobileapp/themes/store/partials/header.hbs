@@ -33,8 +33,10 @@
 
 							{{#if user}}
 							<li class="nav-separator">
-								<a href="{{url "/extensions/assets/mobileapp/subscriptions"}}"><i
-								class="icon-mobile-phone store-topnav-bookmark"></i> {{t "My Apps"}}</a>
+                                {{#unless config.is_catalog}}
+                                    <a href="{{url "/extensions/assets/mobileapp/subscriptions"}}"><i
+                                    class="icon-mobile-phone store-topnav-bookmark"></i> {{t "My Apps"}}</a>
+                                {{/unless}}
 							</li>
 							<li>
 
