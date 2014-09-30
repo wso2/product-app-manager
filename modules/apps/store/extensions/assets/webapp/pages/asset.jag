@@ -141,11 +141,15 @@ require('/modules/store.js').exec(function (ctx) {
     var getEnterprises = function(){
 
         var appName = asset.attributes.overview_name;
+        var appVersion = asset.attributes.overview_version;
+
+        //Generate unique appName using application name and application verison
+        var uniqueAppName = appName + "-" +appVersion;
 
         var ssoProviderInfo = asset.attributes.sso_ssoProvider.split("-");
 
         var result = subscriptionService.getEnterprisesForApplication(
-                                    {appName:appName, ssoProviderName:ssoProviderInfo[0], ssoProviderVersion:ssoProviderInfo[1] })
+                                    {appName:uniqueAppName, ssoProviderName:ssoProviderInfo[0], ssoProviderVersion:ssoProviderInfo[1] })
 
         return result.enterprises;    
 

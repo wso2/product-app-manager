@@ -217,7 +217,7 @@ routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/
     output.fields[3]['isEditable'] = false;
     output.fields[3]['isReadOnly'] = true;
 
-        if(operation == "edit" || operation == "view"){
+        if(operation == "edit" || operation == "view" || operation == "copyapp"){
             var uriTemplate = 0;
             for(index = 0; index < output.fields.length; index++){
                     if(output.fields[index].name == "uritemplate_urlPattern"+uriTemplate){

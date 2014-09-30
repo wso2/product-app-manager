@@ -69,9 +69,9 @@ require('/modules/publisher.js').exec(function(ctx) {
         ssoProvider.setProviderName(params.provider.split("-")[0]);
         ssoProvider.setProviderVersion(params.provider.split("-")[1]);
         if (result != null ) {
-	    ssoProvider.setIssuerName(params.app_name + "-" + result[1]);
+	    ssoProvider.setIssuerName(params.app_name + "-" + result[1] + "-" + params.app_verison);
 	} else {
-	    ssoProvider.setIssuerName(params.app_name);
+	    ssoProvider.setIssuerName(params.app_name + "-" + params.app_verison);
 	}
         //ssoProvider.setAssertionConsumerURL();
         ssoProvider.setClaims(params.claims);
