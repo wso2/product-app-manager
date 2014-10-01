@@ -44,6 +44,7 @@ var type;
         type = elements.type;
         suffix = elements.suffix;
         pages = store.ASSETS_EXT_PATH + type + '/pages/';
+
         if (suffix) {
             links = mod.store(request, session).assetLinks(type).links;
             length = links.length;
@@ -60,7 +61,22 @@ var type;
                 path = pages + 'process.jag';
                 path = new File(path).isExists() ? path : '/controllers/process.jag';
             }
+
+
+            if(type === "mobileapp"){
+                path = pages + 'subscriptions.jag';
+
+                if (suffix === 'process') {
+                    path = pages + 'process.jag';
+                    path = new File(path).isExists() ? path : '/controllers/process.jag';
+                }
+            }
+
+
             request.getMappedPath = mapper(path);
+
+
+            log.info("PATH >>>>>>>>>>>>>>>>>>>>>" + path);
             include(path);
             return;
         }

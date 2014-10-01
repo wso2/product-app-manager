@@ -1,0 +1,23 @@
+<div class="row">
+    <div class="span3">
+        <h4><i class="icon-time"></i>{{t "More "}}{{type}}{{t " from "}}{{overview_provider}}</h4>
+        {{#each assets}}
+        <div class="row-fluid recently-added">
+            <div class="span3">
+                <a href="{{url "/assets"}}/{{../type}}/{{id}}"><img src="{{#if attributes.images_thumbnail}}{{attributes.images_thumbnail}}{{/if}}"></a>
+            </div>
+            <div class="span9">
+
+                <strong><a href="{{url "/assets"}}/{{../type}}/{{id}}">{{attributes.overview_name}}</a></strong>
+                            <span class="star-rating">
+                            	<div class="asset-rating">
+                                    <!--<div class="asset-rating-{{../rating}}star"></div>-->
+                                    <div style="width:{{ratingPx}}px"></div>
+                                </div>
+                            </span>
+            </div>
+        </div>
+        {{/each}}
+        <hr/>
+    </div>
+</div>

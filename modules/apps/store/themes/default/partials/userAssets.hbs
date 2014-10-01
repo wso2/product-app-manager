@@ -1,0 +1,66 @@
+<div id="myasset-container" class="row">
+	<div class="span9">
+		{{#if userAssets}}
+		{{#itr userAssets}}
+		<h3 class="asset-title-separator asset-type-{{key}}">{{cap key}}s</span><div class="pagination own-asset-slideshow-pag" id="own-asset-slideshow-pag-{{key}}"></div><a class="link-view-all" href="{{url "/subscriptions/"}}{{key}}"><small>View all</small></a></h3>
+		<div class="top-asset-slideshow-cont">
+		<div class="html_carousel">
+		<div id="asset-in-{{key}}">
+		
+			{{#each value}}
+			{{#attributes}}
+			<!--div class="row-fluid"-->
+			<div class="store-my-item">
+			
+				<div class="store-my-item-thumbnail">
+					{{#if ../isPublished}}
+						<a href="{{url "/assets/"}}{{../../../key}}/{{../../id}}"><img src="{{images_thumbnail}}"></a>
+					{{else}}
+						<img src="{{images_thumbnail}}">
+					{{/if}}
+					
+				</div>
+				<div class="store-my-item-info">
+					<a class="asset-title" href="{{url "/assets/"}}{{../../key}}/{{../id}}">
+						<strong>{{overview_name}}</strong>
+					</a>
+					{{#if ../isPublished}}
+						<small class="bookmark-assert-provider">by {{overview_provider}}</small>
+						<div class="btn-group">
+							<a class="btn btn-mini" data-toggle="tooltip" title="{{t "View"}} {{../../type}}" href="{{url "/assets/"}}{{../../type}}/{{../../id}}">
+							<i class="icon-eye-open"></i>
+							</a>
+							<a class="btn btn-popover btn-mini {{../../type}}" data-content='&lt;iframe src="{{../../../../URL}}/gadgets/ifr?url={{overview_url}}"&gt;&lt;/iframe&gt;' data-toggle="popover" data-placement="top" title="{{t "Embed this"}} {{../../type}}">
+								<i class="icon-angle-left"></i> <i class="icon-angle-right"></i>
+							</a>
+							<a class="btn btn-mini asset-remove-btn" type="{{../../type}}" data-aid="{{../../id}}" data-toggle="tooltip" title="{{t "Remove"}} {{../../type}}">
+								<i class="icon-remove"></i>
+							</a>
+						</div> 
+					{{else}}  
+						<small class="bookmark-assert-provider">by {{overview_provider}}</small>
+						<span class="label label-unavailable">Currently Unavailable</span>
+					{{/if}}
+					
+				</div>
+			
+			</div>
+			<!--/div-->
+			{{/attributes}}
+			{{/each}}
+		</div></div></div>
+		<hr>
+		{{/itr}}
+		{{else}}
+		<div id="no-data-my-items" class="no-data">
+			<i class="icon-inbox"></i>
+			<p>
+            {{t "You still haven't any bookmarks from the Store."}}
+			</p>
+			<p>
+				<a href="{{url "/assets/gadget/"}}" class="btn btn-primary">{{t "Bookmark now"}}</a>
+			</p>
+		</div>
+		{{/if}}
+	</div>
+</div>

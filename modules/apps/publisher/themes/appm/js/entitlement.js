@@ -422,6 +422,7 @@ function updatePolicyPartial(){
 
     $.each(policyPartialsArray, function( index, obj ) {
        if(obj != null){
+
            $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td><a data-target="#entitlement-policy-editor" data-toggle="modal" data-policy-id="'+ obj.id +'" class="policy-edit-button"><i class="icon-edit"></i></a> &nbsp;<a  data-policy-name="'+ obj.policyPartialName +'"  data-policy-id="'+ obj.id +'" class="policy-delete-button"><i class="icon-trash"></i></a></td></tr>');
            $(".policy-partial-dropdown").append("<li> \
                <table> \
@@ -439,6 +440,23 @@ function updatePolicyPartial(){
            policyPartialIndexArray.push(obj.id);
 
        }
+
+        var uriTemplates = $('.uritemplate_entitlementPolicyPartialMappings_text').length
+
+
+
+        $('.uritemplate_entitlementPolicyPartialMappings_text').each(function(i, obj) {
+            var values = JSON.parse($(this).val());
+
+            for (var j = 0; j < values.length; j++){
+                if(values[j].effect == "Permit"){
+                    $('#dropdown_entitlementPolicyPartialMappings' + (uriTemplates - i - 1) + " .policy-allow-cb" + values[j].entitlementPolicyPartialId).prop('checked', true);
+                }else if (values[j].effect == "Deny"){
+                    $('#dropdown_entitlementPolicyPartialMappings' + (uriTemplates - i - 1) + " .policy-deny-cb" + values[j].entitlementPolicyPartialId).prop('checked', true);
+                }
+            }
+        });
+
 
 
     });

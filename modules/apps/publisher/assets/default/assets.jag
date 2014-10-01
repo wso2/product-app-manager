@@ -14,7 +14,7 @@ require('/modules/publisher.js').exec(function(ctx) {
 
 var router = require('/modules/router-g.js').router();
 var config = require('/config/publisher.json');
-var caramel = require('caramel');
+ caramel = require('caramel');
 var server = require('store').server;
 var publisher = require('/modules/publisher.js').publisher(request, session);
 
@@ -72,7 +72,7 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 		dataInjector.inject(artifacts, DataInjectorModes.DISPLAY);
         	//Perform some filtering logic on the artifacts
         	artifacts=filterManager.filter(artifacts,session);
-		caramel.render({op : 'list',cuser : server.current(session),shortName : type,artifacts : artifacts,query : query,title : type});
+		caramel.render({op : 'list',cuser : server.current(session), roles : server.current(session).getRoles(),shortName : type,artifacts : artifacts,query : query,title : type});
 	} catch (e) {
 		response.sendError(400, "Your request is malformed");
 		log.debug(e);

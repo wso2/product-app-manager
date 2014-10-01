@@ -21,7 +21,7 @@
     "accessible": [
         {
             "context": "/_system/governance",
-            "collections": ["webapps"],
+            "collections": ["webapps", "mobileapps"],
             "actions": ["http://www.wso2.org/projects/registry/actions/get",
                 "http://www.wso2.org/projects/registry/actions/add",
                 "http://www.wso2.org/projects/registry/actions/delete",
