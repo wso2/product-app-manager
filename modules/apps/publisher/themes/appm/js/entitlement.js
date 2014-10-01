@@ -84,8 +84,9 @@ $(document).on("click", "#btn-policy-partial-validate", function () {
         return;
     }
 
-    validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation, function(){});
     saveAndClose = false;
+    validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation, function(){});
+
 
 })
 
@@ -100,10 +101,13 @@ $(document).on("click", "#btn-policy-save-and-close", function () {
         alert("fields cannot be blank");
         return;
     }
+
+    saveAndClose = true;
     validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation,
         displayValidationRequestException);
 
-    $("#entitlement-policy-editor").modal('hide');
+
+   // $("#entitlement-policy-editor").modal('hide');
     //editor.setValue("");
 
 });
@@ -580,4 +584,13 @@ function updatePolcyparialForresource(resourcesId){
 
 $('#entitlement-policy-editor').on('shown', function() {
     editor.refresh()
+});
+
+
+
+$(document).on("click", ".btn-reset", function () {
+
+    policyPartialsArray = new Array();
+    updatePolicyPartial();
+
 });
