@@ -74,24 +74,6 @@ var injector = function () {
 
                 uuid=getUUID(url);
 
-				var artifactManager=rxtManager.getArtifactManager(object.type);
-
-		        var artifact=artifactManager.get(object.id);
-			var actions=[];
-			//Check if the the artifact exists
-			if((artifact.lifecycle!=undefined)&&(artifact.lifecycleState!=undefined)){
-			    try{
-                               log.info('lifcycle: '+artifact.lifecycle);
-		               actions=artifactManager.availableActions(artifact);
-			    }catch(e){
-				log.info(e);
-			    }
-			}
-			else{
-				log.warn('Not returning actions of asset as it does not have a lifecycle.Make sure that it has a lifecycle.Artifact: '+stringify(artifact));
-			}
-				
-		        object['lifecycleAvailableActions'] = actions;
                 //Check if it is a valid uuid and create a new url
                 if((uuid)&&(utility.isValidUuid(uuid))){
                     log.debug('creating a new url for '+url);

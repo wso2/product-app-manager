@@ -72,8 +72,10 @@ $(function() {
     function loadSelectedClaims(selectedProvider) {
         var y = selectedProvider.split("-");
         var appName = $("#overview_name").val();
+        var appVersion = $("#oldversion").val();
+        var uniqueAppName = appName+"-"+appVersion;
         $.ajax({
-            url: '/publisher/api/sso/provider/' + y[0] + '/' + y[1] + '/' + appName,
+            url: '/publisher/api/sso/provider/' + y[0] + '/' + y[1] + '/' + uniqueAppName,
             type: 'GET',
             contentType: 'application/json',
             success: function(response) {
