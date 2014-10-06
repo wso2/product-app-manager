@@ -101,7 +101,7 @@ $( document ).ready(function() {
                     </ul></div>\
                 </div>\
                \
-                 <input type='hidden' class='uritemplate_entitlementPolicyPartialMappings_text' id='uritemplate_entitlementPolicyPartialMappings"+i+"' name='uritemplate_entitlementPolicyId"+i+"' value='"+ getValidatedEntitlementPolicyId(i) + "'/> \
+                 <input type='hidden' class='uritemplate_entitlementPolicyPartialMappings_text' id='uritemplate_entitlementPolicyPartialMappings"+i+"' name='uritemplate_entitlementPolicyPartialMappings"+i+"' value='"+ getValidatedEntitlementPolicyId(i) + "'/> \
 \
                   </td> \
                    \

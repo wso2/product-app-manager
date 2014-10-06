@@ -454,8 +454,9 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
         dataInjector.inject(artifact,DataInjectorModes.UPDATE);
 
         artifactManager.update(artifact);
+        log.info(stringify(artifact))
 
-        dataInjector.inject(artifact,DataInjectorModes.DISPLAY);
+        //dataInjector.inject(artifact,DataInjectorModes.DISPLAY);
 
 	    var update = apiProvider.updateAPI(artifact);
 
@@ -534,18 +535,17 @@ function saveExternalEntitlementPolicies(params){
 
 }
 
-/**
-* Update entitlement policies.
-*/
+    /**
+     * Update entitlement policies.
+     */
 function updateEntitlementPolicies(overviewProvider,overviewName,overviewVersion){
 
-     // Save external entitlement policies
+        // Save external entitlement policies
         var webappId={};
         webappId.provider= overviewProvider;
         webappId.name= overviewName;
         webappId.version= overviewVersion;
-        log.info(webappId)
-       apiProvider.generateEntitlementPolicies(webappId); 
+        apiProvider.generateEntitlementPolicies(webappId);
 }
 
 

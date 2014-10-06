@@ -61,6 +61,10 @@ var injector = function () {
         var uuid;
         var field;
 
+        if(!object){
+            return false;
+        }
+
         //Go through all of the targeted fields
         for(var index in fields){
 
