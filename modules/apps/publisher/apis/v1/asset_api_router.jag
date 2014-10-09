@@ -539,13 +539,12 @@ function saveExternalEntitlementPolicies(params){
 */
 function updateEntitlementPolicies(overviewProvider,overviewName,overviewVersion){
 
-     // Save external entitlement policies
-        var webappId={};
-        webappId.provider= overviewProvider;
-        webappId.name= overviewName;
-        webappId.version= overviewVersion;
-        log.info(webappId)
-       apiProvider.generateEntitlementPolicies(webappId); 
+    // Save external entitlement policies
+    var webappId={};
+    webappId.provider= overviewProvider;
+    webappId.name= overviewName;
+    webappId.version= overviewVersion;
+    apiProvider.generateEntitlementPolicies(webappId);
 }
 
 
