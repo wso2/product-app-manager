@@ -36,6 +36,48 @@ $(function() {
 		}
 	});
 
+
+
+    $('#overview_context').on('blur', function() {
+        var $this = $(this), flag = $('.icon-check-appname'), btnCreate = $('#btn-create-asset');
+        var context = $this.val();
+
+        if (!flag.length) {
+            $this.after('<i class="icon-check-appname"></i>');
+            flag = $('.icon-check-appname');
+        }
+
+        //check if the asset name available as user types in
+        $.ajax({
+            url : '/publisher/api/validations/assets/' + type + '/overview_context/' + context,
+            type : 'GET',
+            success : function(response) {
+
+                //Check if the context already exists
+                if (response == 'true') {
+
+                    flag.removeClass().addClass('icon-ban-circle icon-check-appname').show();
+                    btnCreate.attr('disabled', 'disabled');
+                    showAlert("Duplicate context value.", 'error');
+                } else {
+
+                    flag.removeClass().addClass('icon-ok icon-check-appname').show();
+                    btnCreate.removeAttr('disabled');
+                    $(".alert-error");
+                }
+
+            },
+            error : function(response) {
+                flag.removeClass().addClass('icon-ok icon-check-appname').hide();
+                showAlert('Unable to auto check Asset name availability', 'error');
+            }
+        });
+
+    });
+
+
+
+
 	$('#btn-create-asset').on('click', function(e) {
 		e.preventDefault();
 		var context =  $('#overview_context').val();
