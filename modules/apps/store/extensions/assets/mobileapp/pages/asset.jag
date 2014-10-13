@@ -32,16 +32,21 @@ require('/modules/store.js').exec(function (ctx) {
 
     var rxtAttributes = utility.getRXTAttributes(tenantId, type);
     var devices = [];
-    if(user!=null){
-        var emm = require('/modules/emm.js').emm;
-        var emmServer = new emm();
-        try{
-            var result = emmServer.getDevices(user.username+"@"+user.tenantDomain);
-            devices = parse(result);
-        }catch(e){
-            log.debug(e);
+    if(!configs.mobile.is_catalog){
+
+        if(user!=null){
+            var emm = require('/modules/emm.js').emm;
+            var emmServer = new emm();
+            try{
+                var result = emmServer.getDevices(user.username+"@"+user.tenantDomain);
+                devices = parse(result);
+            }catch(e){
+                log.debug(e);
+            }
         }
+
     }
+
 
     caramel.render({
         title: 'Store | ' + type,
