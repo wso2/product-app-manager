@@ -182,23 +182,11 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/delete/{type}/{
 		    
 		    var isDeleted = apiMgtDAOObj.deleteApp(apiIdentifierObj,username,webAppObj);
 		    
-		    if(isDeleted==1){ 
+		    if(isDeleted==true){
 		    	msg['ok']=true;
 		        msg['message']='asset delete';
 		        print(msg);
-		        
-		        try {
-		        		artifactManager.remove(id);
-		        	} catch (e) {
-		        		log.debug('Asset ' + id + 'could not be removed.An exception was thrown: ' + e);
-		        	    response.sendError(404, 'Asset with id: ' + id + ' could not be removed.');
-		        	}      	    
-		        	
-		    }else if (isDeleted==2){
-		        msg['ok']=true;
-		        msg['message']='asset subscribed';
-		        print(msg);
-		    }else if (isDeleted==3){
+		    }else if (isDeleted==false){
 		        msg['ok']=false;
 		        msg['message']='asset subscribed';
 		        print(msg);
