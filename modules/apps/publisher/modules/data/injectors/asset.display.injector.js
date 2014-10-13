@@ -40,7 +40,7 @@ var injector = function () {
             return true;
         }
 
-        log.debug('object'+stringify(object)+' is not handled');
+        //log.debug('object'+stringify(object)+' is not handled');
 
         return false;
     }
@@ -84,7 +84,7 @@ var injector = function () {
                         log.info('lifcycle: '+artifact.lifecycle);
                         actions=artifactManager.availableActions(artifact);
                     }catch(e){
-                        log.info(e);
+                        log.error(e);
                     }
                 }
                 else{
