@@ -337,7 +337,6 @@ function generateEntitlementPolicies(webappId){
 * Check whether the application already exists
 */
 function isWebappExists(webappName,provider,version){
-
     return apiProvider.isWebappExists(webappName,provider,version);
 }
 
