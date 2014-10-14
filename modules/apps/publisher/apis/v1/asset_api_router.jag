@@ -175,30 +175,30 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/delete/{type}/{
 		    var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
 		    var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
 		    var webApp = Packages.org.wso2.carbon.appmgt.api.model.WebApp;
+
+            var ssoProvider = Packages.org.wso2.carbon.appmgt.api.model.SSOProvider;
+            //Create SSOProvider Object
+            var ssoProviderObj = new ssoProvider();
 		   
 		    var apiIdentifierObj = new apiIdentifier(attributes["overview_provider"], attributes["overview_name"], attributes["overview_version"]);
-		    var apiMgtDAOObj = new apiMgtDAO();
+            if(attributes["sso_ssoProvider"] != " "){
+                ssoProviderObj.setProviderName(attributes["sso_ssoProvider"].split("-")[0]);
+                ssoProviderObj.setProviderVersion(attributes["sso_ssoProvider"].split("-")[1]);
+                ssoProviderObj.setIssuerName(attributes["overview_name"]+"-"+attributes["overview_version"]);
+            }else{
+                ssoProviderObj = null;
+            }
+
+            var apiMgtDAOObj = new apiMgtDAO();
 		    var webAppObj = new webApp(apiIdentifierObj);
 		    
-		    var isDeleted = apiMgtDAOObj.deleteApp(apiIdentifierObj,username,webAppObj);
+		    var isDeleted = apiMgtDAOObj.deleteApp(apiIdentifierObj,username,ssoProviderObj);
 		    
-		    if(isDeleted==1){ 
+		    if(isDeleted==true){
 		    	msg['ok']=true;
 		        msg['message']='asset delete';
 		        print(msg);
-		        
-		        try {
-		        		artifactManager.remove(id);
-		        	} catch (e) {
-		        		log.debug('Asset ' + id + 'could not be removed.An exception was thrown: ' + e);
-		        	    response.sendError(404, 'Asset with id: ' + id + ' could not be removed.');
-		        	}      	    
-		        	
-		    }else if (isDeleted==2){
-		        msg['ok']=true;
-		        msg['message']='asset subscribed';
-		        print(msg);
-		    }else if (isDeleted==3){
+		    }else if (isDeleted==false){
 		        msg['ok']=false;
 		        msg['message']='asset subscribed';
 		        print(msg);
