@@ -85,10 +85,20 @@ var saveFile = function(file){
             return "";
         }
         var uid= makeid();
-        var file_name = mam_config.filePreciseLocation+uid+file_n;
-        file.close();
-        file.saveAs(file_name);
-        return "/publisher"+file_name;
+        var file_name = Packages.java.lang.System.getProperty("carbon.home") + mam_config.filePreciseLocation+uid+file_n;
+
+        var fileTemp=new File( 'file://' + file_name);
+        try{
+            fileTemp.open('w');
+            fileTemp.write(file.getStream());
+        }catch(e){
+            print(e);
+        } finally{
+            fileTemp.close();
+        }
+
+        return "/publisher"+ mam_config.fileAPILocation + uid + file_n;
+
     }
     return "";
 }
