@@ -81,7 +81,7 @@ var injector = function () {
                 //Check if the the artifact exists
                 if((artifact.lifecycle!=undefined)&&(artifact.lifecycleState!=undefined)){
                     try{
-                        log.info('lifcycle: '+artifact.lifecycle);
+                      //  log.info('lifcycle: '+artifact.lifecycle);
                         actions=artifactManager.availableActions(artifact);
                     }catch(e){
                         log.error(e);

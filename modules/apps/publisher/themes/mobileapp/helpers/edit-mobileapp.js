@@ -1,6 +1,5 @@
 var resources = function(page, meta) {
 	var log = new Log('edit-asset');
-	log.info('resource called test>>>>>>>>>>>>');
 	
 	return {
 		js : ['/mobileapp/edit.mobileapp.js', '/logic/asset.tag.edit.js', 'bootstrap-select.min.js','options.text.js'],
