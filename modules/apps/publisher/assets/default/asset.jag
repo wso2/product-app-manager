@@ -269,6 +269,19 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
          return;
         }
 
+        var name = model.get('overview.name').value;
+        var provider = model.get('overview.provider').value;
+        var version = model.get('overview.version').value;
+
+        //Check whether duplicate webapp exists
+        var isexists = isWebappExists(name, provider, version);
+
+        //If exists, return an error message
+        if(isexists == true){
+            print({ok:false,isexists:true, msg:'Error occurred while adding the WebApp. A duplicate WebApp already exists for ' +
+                    name + "-" + version});
+            return;
+        }
 
         //log.debug(context.post);
 
@@ -317,9 +330,15 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
 * Generates entitlement policies.
 */
 function generateEntitlementPolicies(webappId){
-    apiProvider.generateEntitlementPolicies(webappId);    
+    apiProvider.generateEntitlementPolicies(webappId);
 }
 
+/**
+* Check whether the application already exists
+*/
+function isWebappExists(webappName,provider,version){
+    return apiProvider.isWebappExists(webappName,provider,version);
+}
 
 /*
 The function is used to add tags to the provided asset id

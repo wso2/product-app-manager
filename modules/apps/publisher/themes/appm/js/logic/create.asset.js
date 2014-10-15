@@ -86,8 +86,10 @@ $(function() {
 			context = "/" + context;
 			$('#overview_context').val(context);
 		}
-		
+
+        var name =  $('#overview_name').val()
 		var version =  $('#overview_version').val();
+
 		var tracking_code = context + version;
 		 
 		 var hash = 5381;
@@ -186,8 +188,13 @@ $(function() {
 					}
 
 				} else {
-					var msg = processErrorReport(result.report);
-					showAlert(msg, 'error');
+                    if(result.isexists){
+                        showAlert(result.msg, 'error');
+
+                    }else {
+                        var msg = processErrorReport(result.report);
+                        showAlert(msg, 'error');
+                    }
 				}
 
 			},  // post-submit callback 
