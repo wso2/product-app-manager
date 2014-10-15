@@ -24,7 +24,7 @@
     },
     
     "mobile": {
-        "is_catalog" : true,
+        "is_catalog" : false,
         "api": "https://localhost:9443/emm/api",
         "archieve_location_ios": "%https.ip%",
         "archieve_location_android": "%http.ip%"
