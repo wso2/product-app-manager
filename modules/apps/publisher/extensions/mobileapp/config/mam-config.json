@@ -1,5 +1,6 @@
 {
-	'filePreciseLocation': "/extensions/mobileapp/upload/",
+	"filePreciseLocation": "/repository/resources/mobileapps/",
+    "fileAPILocation": "/api/mobileapp/getfile/",
 	"email": {
 	    "smtp":"smtp.gmail.com",
         "port":"25",

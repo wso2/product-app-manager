@@ -31,9 +31,19 @@
 				return "";
 			}
 			var uid= makeid();
-			var file_name = mam_config.filePreciseLocation+uid+file_n;
-			file.saveAs(file_name);
-			return file_name;
+			var file_name = Packages.java.lang.System.getProperty("carbon.home") + mam_config.filePreciseLocation+uid+file_n;
+
+            var fileTemp=new File( 'file://' + file_name);
+            try{
+                fileTemp.open('w');
+                fileTemp.write(file.getStream());
+            }catch(e){
+                print(e);
+            } finally{
+                fileTemp.close();
+            }
+
+			return uid+file_n;
 		}
 		return "";
 	}
@@ -59,14 +69,18 @@
 		//return error
 		response.sendError(500);
 	}else{
-		meta.path = saveFile(file);
+        var fileName =  saveFile(file);
+		meta.path = "/publisher"+ mam_config.fileAPILocation + fileName;
+
 		//add leading '/' if missing
  		meta.path = meta.path.charAt(0) === '/' ? meta.path : '/'+meta.path;
-		meta.path = '/publisher' +meta.path;
+		//meta.path = '/publisher' +meta.path;
 		var ext = getExtension(file);
 		if(ext=="ipa" || ext =="apk"){
 			var zipFileReading = new Packages.org.wso2.mobile.utils.utilities.ZipFileReading();
-			var path = Packages.java.lang.System.getProperty("carbon.home")+"/repository/deployment/server/jaggeryapps"+meta.path;
+
+			var path =  Packages.java.lang.System.getProperty("carbon.home") + mam_config.filePreciseLocation + fileName;
+            log.info("META PATH: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + path);
 			try{
 				if(ext=="ipa"){
 					var d = zipFileReading.readiOSManifestFile(path, getFileOnly(file));

@@ -15,7 +15,13 @@ require('/modules/store.js').exec(function (ctx) {
             utility = require('/modules/util.js');
 
 
-    var devices = [];
+    if(configs.mobile.is_catalog) {
+        response.sendRedirect(404);
+        return;
+    }
+
+
+        var devices = [];
     if(user!=null){
         var emm = require('/modules/emm.js').emm;
         var emmServer = new emm();

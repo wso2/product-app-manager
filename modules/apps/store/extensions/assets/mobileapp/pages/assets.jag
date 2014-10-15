@@ -99,18 +99,23 @@ require('/modules/store.js').exec(function (ctx) {
     }
     var rxtAttributes = require('/modules/util.js').getRXTAttributes(tenantId, type);
     var devices = [];
-    if(user!=null){
-        var emm = require('/modules/emm.js').emm;
-        var emmServer = new emm();
+    if(!configs.mobile.is_catalog){
 
-        try{
-            var result = emmServer.getDevices(user.username+"@"+user.tenantDomain);
-            devices = parse(result);
+        if(user!=null){
+            var emm = require('/modules/emm.js').emm;
+            var emmServer = new emm();
 
-        }catch(e){
-            log.debug(e);
+            try{
+                var result = emmServer.getDevices(user.username+"@"+user.tenantDomain);
+                devices = parse(result);
+
+            }catch(e){
+                log.debug(e);
+            }
         }
+
     }
+
 
     caramel.render({
         title: 'Store | Assets',

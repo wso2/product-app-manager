@@ -59,7 +59,7 @@
 
                                 <parameter name="STATE_RULE1:Approved"
                                            value="Internal/private_{asset_author}:+get,+add,-delete,+authorize"/>
-                                <parameter name="STATE_RULE2:Approved" value="Internal/reviewer:-add,-delete,-authorize"/>
+                                <parameter name="STATE_RULE2:Approved" value="Internal/reviewer:+add,+delete,+authorize"/>
                                 <parameter name="STATE_RULE3:Approved" value="Internal/everyone:-add,-delete,-authorize"/>
                             </execution>
                             <execution forEvent="Reject" class="org.wso2.jaggery.scxml.generic.GenericExecutor">
@@ -73,7 +73,7 @@
 
                                 <parameter name="STATE_RULE1:Rejected"
                                            value="Internal/private_{asset_author}:+add,+delete,+authorize"/>
-                                <parameter name="STATE_RULE2:Rejected" value="Internal/reviewer:-add,-delete,-authorize"/>
+                                <parameter name="STATE_RULE2:Rejected" value="Internal/reviewer:+add,+delete,+authorize"/>
                                 <parameter name="STATE_RULE3:Rejected" value="Internal/everyone:-add,-delete,-authorize"/>
                             </execution>
                         </data>
@@ -234,3 +234,4 @@
         </lifecycle>
     </configuration>
 </aspect>
+

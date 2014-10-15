@@ -7,7 +7,17 @@ var RESOURCES = [
     {"url_pattern":"/*", "http_verb":"OPTIONS" , "throttling_tier":"", "user_roles":"" },
 ];
 
+
+
+
 $( document ).ready(function() {
+
+    //fixed chrome issue with file paths
+    $('input[type=file]').on('change', function(e) {
+        var filename = $(e.currentTarget).val().replace(/^.*\\/, "");
+        $(this).parent().parent().find('.txt-filepath').val(filename);
+    });
+
 
     $("#add_resource").click(function(){
 
@@ -26,6 +36,9 @@ $( document ).ready(function() {
 
         $("#resource_tbody").trigger("draw");
     });
+
+
+
 
     $("#resource_tbody").delegate(".delete_resource","click", function(){
 

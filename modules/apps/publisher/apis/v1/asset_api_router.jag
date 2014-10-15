@@ -85,10 +85,20 @@ var saveFile = function(file){
             return "";
         }
         var uid= makeid();
-        var file_name = mam_config.filePreciseLocation+uid+file_n;
-        file.close();
-        file.saveAs(file_name);
-        return "/publisher"+file_name;
+        var file_name = Packages.java.lang.System.getProperty("carbon.home") + mam_config.filePreciseLocation+uid+file_n;
+
+        var fileTemp=new File( 'file://' + file_name);
+        try{
+            fileTemp.open('w');
+            fileTemp.write(file.getStream());
+        }catch(e){
+            print(e);
+        } finally{
+            fileTemp.close();
+        }
+
+        return "/publisher"+ mam_config.fileAPILocation + uid + file_n;
+
     }
     return "";
 }
@@ -455,7 +465,7 @@ routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', f
 
         artifactManager.update(artifact);
 
-        dataInjector.inject(artifact,DataInjectorModes.DISPLAY);
+       // dataInjector.inject(artifact,DataInjectorModes.DISPLAY);
 
 	    var update = apiProvider.updateAPI(artifact);
 
@@ -784,6 +794,10 @@ function addNewMobileApp(context, rxtManager){
                     print({"ok" : false, "message" : "Validation failure", "report" : {"failed" : true, "name" : ["File uploaded is not supported by iOS"]}})
                     return;
                 }
+
+                if(validateAppIdentifier({"overview_packagename": meta.package, "overview_version":version},meta.package)){
+                    return;
+                }
             }
             if(!meta.weburl){
                 model.set('overview.url', meta.path);
@@ -828,21 +842,28 @@ function addNewMobileApp(context, rxtManager){
 
         //var assetModel = getModel(context.post);
 
-        model.save();
+        try{
+            model.save();
+            //var createdAsset = artifactManager.add(assetModel);
 
-        //var createdAsset = artifactManager.add(assetModel);
+            log.debug('finished saving');
 
-        log.debug('finished saving');
+            //Get the model id
+            var idField = model.get('*.id');
 
-        //Get the model id
-        var idField = model.get('*.id');
+            log.debug('obtained idField');
 
-        log.debug('obtained idField');
+            var asset=model.export('asset.exporter');
+            var assetCachingModule=require('/modules/cache/cache.manager.js').assetCachingModule();
+            var assetCacheManager=new assetCachingModule.AssetCacheManager(session);
 
-        var asset=model.export('asset.exporter');
-        var assetCachingModule=require('/modules/cache/cache.manager.js').assetCachingModule();
-        var assetCacheManager=new assetCachingModule.AssetCacheManager(session);
-        assetCacheManager.add(asset,shortName);
+            assetCacheManager.add(asset,shortName);
+        }catch(e){
+            if(e.javaException.getClass().getName()=="org.wso2.carbon.governance.api.exception.GovernanceException"){
+                print({ok:false,message:'Validation failure',report: {"failed" : true, "name" : ["App name already exists"]}});
+                return;
+            }
+        }
 
         if (idField) {
             print({ok: 'true', message: 'Asset created.', id: idField.value});

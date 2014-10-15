@@ -2,6 +2,14 @@
 $( document ).ready(function() {
 
 
+   //fixed chrome issue with file paths
+    $('input[type=file]').on('change', function(e) {
+        var filename = $(e.currentTarget).val().replace(/^.*\\/, "");
+        $(this).parent().parent().find('.txt-filepath').val(filename);
+    });
+
+
+
     var uuid = $("#uuid").val();
 
     $.ajax({

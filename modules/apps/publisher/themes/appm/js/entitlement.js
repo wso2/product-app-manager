@@ -67,8 +67,7 @@ $(document).on("click", "#btn-policy-save", function () {
         alert("fields cannot be blank");
         return;
     }
-    validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation,
-                                                            displayValidationRequestException);
+    validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation, displayValidationRequestException);
 
 
 });
@@ -84,8 +83,9 @@ $(document).on("click", "#btn-policy-partial-validate", function () {
         return;
     }
 
-    validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation, function(){});
     saveAndClose = false;
+    validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation, function(){});
+
 
 })
 
@@ -100,10 +100,13 @@ $(document).on("click", "#btn-policy-save-and-close", function () {
         alert("fields cannot be blank");
         return;
     }
+
+    saveAndClose = true;
     validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation,
         displayValidationRequestException);
 
-    $("#entitlement-policy-editor").modal('hide');
+
+   // $("#entitlement-policy-editor").modal('hide');
     //editor.setValue("");
 
 });
@@ -447,15 +450,18 @@ function updatePolicyPartial(){
 
         $('.uritemplate_entitlementPolicyPartialMappings_text').each(function(i, obj) {
             var values = JSON.parse($(this).val());
+
             if(values) {
                 for (var j = 0; j < values.length; j++) {
                     if (values[j].effect == "Permit") {
                         $('#dropdown_entitlementPolicyPartialMappings' + (uriTemplates - i - 1) + " .policy-allow-cb" + values[j].entitlementPolicyPartialId).prop('checked', true);
                     } else if (values[j].effect == "Deny") {
+
                         $('#dropdown_entitlementPolicyPartialMappings' + (uriTemplates - i - 1) + " .policy-deny-cb" + values[j].entitlementPolicyPartialId).prop('checked', true);
                     }
                 }
             }
+
         });
 
 
@@ -581,4 +587,13 @@ function updatePolcyparialForresource(resourcesId){
 
 $('#entitlement-policy-editor').on('shown', function() {
     editor.refresh()
+});
+
+
+
+$(document).on("click", ".btn-reset", function () {
+
+    policyPartialsArray = new Array();
+    updatePolicyPartial();
+
 });
