@@ -40,10 +40,27 @@ $( ".tab-button" ).click(function() {
 });
 
 $( ".btn-view-app" ).click(function(e) {
-    
-    
-   // alert($(this).data("id"));
-    var url = window.location.protocol + "//" + window.location.host + $(this).data("url");
+
+
+    // alert($(this).data("id"));
+    //alert($(this).data("category") );
+    if($(this).data("category") === "webapp"){
+        var url =$(this).data("url");
+    }else {
+        if ($(this).data("url") == 'undefined') {
+            if ($(this).data("category") === "android") {
+                var url = "https://play.google.com/store/apps/details?id=" + $(this).data("package");
+            } else if ($(this).data("category") === "ios") {
+                {
+                    var url = "https://itunes.apple.com/en/app/id" + $(this).data("appid");
+                }
+
+            }
+
+        }else{
+            var url = window.location.protocol + "//" + window.location.host + $(this).data("url");
+        }
+    }
 	$("#appModalAppURL").attr("href", url);
     $("#appModalAppURL").html(url);
     updateQRCode(url);
