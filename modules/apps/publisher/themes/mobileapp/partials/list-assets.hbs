@@ -51,10 +51,13 @@
                 &nbsp;
                 {{#if ../this.isReviwer}}
                 <button  class="btn btn-view-app" data-url="{{../this.attributes.overview_url}}"   data-id="{{../this.id}}" ><i class="icon-download"></i> App</button>
-                {{/if}} 
+                {{/if}}
+                {{#if ../this.isAdmin}}
+                    <button  class="btn btn-view-app" data-url="{{../this.attributes.overview_url}}"   data-id="{{../this.id}}" ><i class="icon-download"></i> App</button>
+                {{/if}}
 
 
-                </td>
+        </td>
         <td>
             <img src="/publisher/themes/mobileapp/img/mobileapps/{{this.attributes.overview_platform}}.png">
         </td>
