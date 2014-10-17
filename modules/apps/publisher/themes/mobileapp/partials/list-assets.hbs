@@ -28,6 +28,7 @@
         <table class="table table-striped list-asset-table">
             <thead>
                 <th colspan="2"><a href="?sortby=name&sort=asc">Name <i class="icon-caret-down"></i></a></th>
+                {{#if ../this.isReviwer}}><th></th>{{/if}} {{#if ../this.isAdmin}}<th></th>{{/if}}
                 <th><a href="?sortby=os&sort=asc">Platform</i></a></th>                
         <th><a href="?sortby=type&sort=asc">Type<i class="icon-caret-down"></i></a></th>
         <th><a href="?sortby=owner&sort=asc">Owner <i class="icon-caret-down"></i></a></th>   
@@ -49,15 +50,24 @@
                     {{this.attributes.overview_name}}
                 </a>
                 &nbsp;
-                {{#if ../this.isReviwer}}
-                <button  class="btn btn-view-app" data-url="{{../this.attributes.overview_url}}"  data-appid="{{../this.attributes.overview_appid}}" data-type="{{../this.attributes.overview_type}}"  data-package="{{../this.attributes.overview_packagename}}" data-category="{{../this.attributes.overview_category}}"  data-id="{{../this.id}}" ><i class="icon-download"></i></button>
-                {{/if}}
-                {{#if ../this.isAdmin}}
-                    <button  class="btn btn-view-app" data-url="{{../this.attributes.overview_url}}"  data-appid="{{../this.attributes.overview_appid}}"  data-type="{{../this.attributes.overview_type}}"  data-package="{{../this.attributes.overview_packagename}}"  data-category="{{../this.attributes.overview_category}}"   data-id="{{../this.id}}" ><i class="icon-download"></i></button>
-                {{/if}}
+
 
 
         </td>
+
+
+        {{#if ../this.isReviwer}}
+            <td>
+            <button  class="btn btn-view-app" data-url="{{../this.attributes.overview_url}}"  data-appid="{{../this.attributes.overview_appid}}" data-type="{{../this.attributes.overview_type}}"  data-package="{{../this.attributes.overview_packagename}}" data-category="{{../this.attributes.overview_category}}"  data-id="{{../this.id}}" ><i class="icon-download"></i></button>
+            </td>
+        {{/if}}
+        {{#if ../this.isAdmin}}
+            <td>
+            <button  class="btn btn-view-app" data-url="{{../this.attributes.overview_url}}"  data-appid="{{../this.attributes.overview_appid}}"  data-type="{{../this.attributes.overview_type}}"  data-package="{{../this.attributes.overview_packagename}}"  data-category="{{../this.attributes.overview_category}}"   data-id="{{../this.id}}" ><i class="icon-download"></i></button>
+            </td>
+        {{/if}}
+
+
         <td>
             <img src="/publisher/themes/mobileapp/img/mobileapps/{{this.attributes.overview_platform}}.png">
         </td>
