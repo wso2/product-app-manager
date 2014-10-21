@@ -1,6 +1,6 @@
 <%
 
-
+include("/extensions/webapp/modules/jagg/jagg.jag");
 require('/modules/publisher.js').exec(function(ctx) {
 
     var config = require('/config/publisher.json');
@@ -62,7 +62,10 @@ require('/modules/publisher.js').exec(function(ctx) {
 
 	var app_provider = params.app_provider;
 	var result = null;
-	if (app_provider != null && app_provider.indexOf("-AT-") != -1) {
+	var store = jagg.module("manager").getAPIStoreObj();
+    var isEmailLoginEnabled = store.isEnableEmailUsername();
+    
+	if (!isEmailLoginEnabled && app_provider != null && app_provider.indexOf("-AT-") != -1) {
 		result = app_provider.split("-AT-");	
 	}
 
