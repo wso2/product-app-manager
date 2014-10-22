@@ -868,7 +868,6 @@ input.inp-ribbon[type="text"]:focus {
     text-shadow: 1px 2px 2px #BBBBBB;
 }
 textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
-    border-radius: 0;
 }
 .ribbon .btn {
     border-radius: 0;
