@@ -134,10 +134,11 @@ require('/modules/publisher.js').exec(function(ctx) {
     var shortName = context.params.type;
 
 
-     if(shortName === "mobileapp"){
+    // if(shortName === "mobileapp"){
+        //this is applicable to webapp lifecycle also
          mobileAppsLifeCycleChange(context, rxtManager);
          return;
-     }
+     //}
 
     var action = context.params.action;
     var id = context.params.id;
