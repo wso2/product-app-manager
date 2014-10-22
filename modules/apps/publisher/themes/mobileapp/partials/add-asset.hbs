@@ -31,7 +31,7 @@
                     </div>
                 </form-->
     <div class="row-fluid">
-        <div class="span12 asset-view-container">
+        <div class="col-md-12 asset-view-container">
             <div class="widget wlightblue">
                 <div class="widget-head">
                     <div class="pull-left">Add {{data.meta.singularLabel}}</div>
@@ -49,24 +49,24 @@
                                 {{#if this.isTextBox}}
                                 	{{#if isReadOnly}}
                                 		<input type="hidden" name='{{this.name}}' value='{{this.value}}'/>
-                                		<input id='{{this.name}}' type='text' value='{{this.value}}'  class="span8" {{#if isReadOnly}} disabled="true" {{/if}} {{#if this.isRequired}} required{{/if}}/>
+                                		<input id='{{this.name}}' type='text' value='{{this.value}}'  class="col-md-8" {{#if isReadOnly}} disabled="true" {{/if}} {{#if this.isRequired}} required{{/if}}/>
                                 	{{else}}
-                                		<input id='{{this.name}}' name='{{this.name}}' type='text' value='{{this.value}}'  class="span8" {{#if isReadOnly}} disabled="true" {{/if}} {{#if this.isRequired}} required{{/if}}/>
+                                		<input id='{{this.name}}' name='{{this.name}}' type='text' value='{{this.value}}'  class="col-md-8" {{#if isReadOnly}} disabled="true" {{/if}} {{#if this.isRequired}} required{{/if}}/>
                                 	{{/if}}
                                     
                                 {{/if}}
                                 {{#if this.isOptions}}
-                                    <select id="{{this.name}}"  class="span8 selectpicker" name='{{this.name}}'>
+                                    <select id="{{this.name}}"  class="col-md-8 selectpicker" name='{{this.name}}'>
                                     {{#each this.valueList}}
                                         <option>{{this}}</option>
                                     {{/each}}
                                     </select>
                                 {{/if}}
                                 {{#if this.isTextArea}}
-                                    <textarea id='{{this.name}}' value='{{this.value}}' class="span8" name='{{this.name}}'></textarea>
+                                    <textarea id='{{this.name}}' value='{{this.value}}' class="col-md-8" name='{{this.name}}'></textarea>
                                 {{/if}}
                                 {{#if this.isFile}}
-                                	<div class="span8">
+                                	<div class="col-md-8">
                                 		<div class="tbl-upload">
                                 			<div class="tbl-upload-row">
                                 				<div class="tbl-upload-cell">

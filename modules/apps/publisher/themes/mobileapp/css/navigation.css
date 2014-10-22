@@ -69,7 +69,6 @@ hr.emboss {
 .nav .dropdown-toggle .caret {
     border-bottom-color: #CCCCCC;
     border-top-color: #CCCCCC;
-    margin-top: 13px !important;
 }
 
 .nav .dropdown-toggle:hover .caret {
@@ -89,11 +88,11 @@ hr.emboss {
     padding-bottom: 10px;
 }
 
-.navbar .brand {
-    background: url("../img/logo4.png") no-repeat top left;
+.navbar > .container .navbar-brand {
+    background: url("../img/appm_logo.png") no-repeat top left;
     color: #FFFFFF;
-    height: 27px;
-    margin: 9px 0 0;
+    height: 39px;
+    margin: 9px 0 0 0;
     padding: 0;
     width: 187px;
 }
@@ -110,8 +109,8 @@ hr.emboss {
 
 .navbar .nav > li > a {
     text-shadow: none;
-    font-weight: bold;
-    color: #34495E;
+    color: #fff;
+    padding: 19px 15px 18px;
 }
 .navbar .nav > li > a.btn {
     padding: 5px 10px;
@@ -126,7 +125,7 @@ hr.emboss {
     color: #ffffff;
 }
 .navbar .nav > li > a:hover, .navbar .nav > li > a:focus {
-    color: #647E9A;
+    color: #efefef;
 }
 /*
  .navbar .nav > li > a.dropdown-toggle{
@@ -161,7 +160,10 @@ hr.emboss {
 .navbar-inner .container-fluid {
     padding: 0 10px;
 }
-
+.navbar-inverse .navbar-nav > li.active > a{
+    background: #000;
+    color:#ccc;
+}
 .dropdown-menu, .dropdown-submenu > .dropdown-menu {
     border-radius: 0;
     background: #ffffff;
@@ -186,8 +188,6 @@ hr.emboss {
     line-height: 30px;
 }
 .dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a {
-    background: #229a55;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#0016a085,endColorstr=#0016a085);
 }
 
 .navbar .nav > li > .dropdown-menu:after, .navbar .nav > li > .dropdown-menu:before {

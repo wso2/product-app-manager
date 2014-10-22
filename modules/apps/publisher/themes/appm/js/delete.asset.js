@@ -6,7 +6,7 @@
 
 $(function(){
 
-$('.btn-primary').on('click', function(e) {
+$('table.list-asset-table .btn-primary').on('click', function(e) {
 		
 		var data = {};
 

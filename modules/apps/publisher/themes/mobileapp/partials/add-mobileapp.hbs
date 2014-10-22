@@ -8,7 +8,7 @@
 	</div>
 	
 	<div class="row-fluid well-small" id="app-upload-progress-done" style="display: none; padding-left: 44px">	  
-		    <div class="alert alert-info container span11">
+		    <div class="alert alert-info container col-md-11">
 		    <button type="button" class="close" data-dismiss="alert">&times;</button>
 		    <h4>App is uploaded successfully!</h4>
 		    	Please enter application details below. 
@@ -34,7 +34,7 @@
 			<div class="control-group">
 				<label class="control-label" for="txtName">Title <span style="color:#FF0000">*</span></label>
 				<div class="controls">
-					<input class="field span6" type="text" name="name" id="txtName" title="Enter the full name of the app">								
+					<input class="field col-md-6" type="text" name="name" id="txtName" title="Enter the full name of the app">
 				</div>
 			</div>
 			<!--
@@ -48,7 +48,7 @@
 			<div class="control-group">
 				<label class="control-label" for="txtDescription">Description  <span style="color:#FF0000">*</span></label>
 				<div class="controls">
-					<textarea class="field span6" id="txtDescription"
+					<textarea class="field col-md-6" id="txtDescription"
 										name="description" rows="6" style="width:90%" title="Enter description of the app. less than 1000 words." > </textarea>
 				</div>
 			</div>
@@ -57,7 +57,7 @@
 				<label class="control-label" for="txtRecentChanges">Recent
 					Changes</label>
 				<div class="controls">
-					<textarea class="field span6" id="txtRecentChanges"
+					<textarea class="field col-md-6" id="txtRecentChanges"
 										name="recentChanges" rows="6" style="width:90%" title="Enter recent changes you have done to the app. less than 500 words."> </textarea>
 				</div>
 			</div>
@@ -68,7 +68,7 @@
 			<div id="control-packagename"	class="control-group">
 									<label class="control-label" for="txtName">Version <span style="color:#FF0000">*</span></label>
 									<div class="controls">
-										<input class="field span6" style="width: 110px" type="text" name="version"
+										<input class="field col-md-6" style="width: 110px" type="text" name="version"
 										id="txtVersion">
 									</div>
 			</div>
@@ -207,10 +207,10 @@
 
 			<div class="control-group row-fluid">
 				<div class="controls">
-					<div class="span3">
+					<div class="col-md-3">
 						Platform:
 					</div>
-					<div class="span3">
+					<div class="col-md-3">
 						<select id="txtOS"  class="dropdownimage">
 							<option value="android" data-image="/publisher/themes/mobileapp/img/mobileapps/android.png" >Android</option>
 							<option value="ios" data-image="/publisher/themes/mobileapp/img/mobileapps/ios.png">iOS</option>
@@ -224,10 +224,10 @@
 			
 			<div class="control-group row-fluid" id="market-type-block">				
 				<div class="controls">				
-					<div class="span3">
+					<div class="col-md-3">
 						Store Type:
 					</div>
-					<div class="span3">
+					<div class="col-md-3">
 						<select id="txtMarket" >
 							<option value="Enterprise">Enterprise</option>
 							<option value="Market">Public</option>
@@ -250,7 +250,7 @@
 					<div id="app-upload-block" class="row-fluid" style=" margin-top: 10px">
 						<div class="fileupload fileupload-new" data-provides="fileupload" id="file-upload-block">
 						<div class="input-append">
-							<div class="uneditable-input span3">
+							<div class="uneditable-input col-md-3">
 								<i class="icon-file fileupload-exists"></i><span
 								class="fileupload-preview"></span>
 							</div>
@@ -271,7 +271,7 @@
 								<div id="control-packagename"	class="control-group">
 									<label class="control-label" id="txtNameLabel" for="txtName">Package Name <span style="color:#FF0000">*</span></label>
 									<div class="controls">
-										<input class="field span6" style="width: 450px" type="text" name="packagename"
+										<input class="field col-md-6" style="width: 450px" type="text" name="packagename"
 										id="txtPackagename">
 									</div>
 								</div>

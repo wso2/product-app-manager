@@ -45,28 +45,32 @@
     {{css}}
 </head>
 <body>
+
+<!-- Part 1: Wrap all page content here -->
+<div id="wrap">
     {{ include header}}
-<div class="container-assets container">
-    <div class="ribbon-cont">
-        <div class="row-fluid ribbon">
+    <!-- Begin page content -->
+
+    <div class="container-assets container">
+
             {{include ribbon}}
-        </div>
+            {{include heading}}
+            <div class="row">
+                <div class="col-md-12">
+                    {{include listassets}}
+                </div>
+            </div>
+
     </div>
-   <div class="content-area-cont">
-				<div class="row-fluid content-area">					
-					<div class="span12">
-						{{include listassets}}
-					</div>
-				</div>				
-			</div>
-</div>
-<div class="container-footer container">
-	<div class="content-area-cont">
-                {{>footer}}
- 
-     </div>
+
+    <div id="push"></div>
 </div>
 
+<div id="footer">
+    <div class="container">
+        {{>footer}}
+    </div>
+</div>
 <script src="{{url "/themes/mobileapp/js/jquery-1.10.2.min.js"}}"></script>
 <script src="{{url "/themes/mobileapp/js/jquery.form.min.js"}}"></script>
 <script src="{{url "/themes/mobileapp/js/bootstrap.min.js"}}"></script>
