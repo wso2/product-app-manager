@@ -204,22 +204,22 @@ $(document).ready(function(){
 				
 					 	
 				noty({
-					 		text: '<strong>Validation Failed!</strong> <br />' + validationErrors,
-						    template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
-						    layout: "center",
-						    modal: true,
-						    timeout: 2000,
-						    type: "error",
-					buttons : [{
-						
-						addClass : 'btn',
-						text : 'Ok',
-						onClick : function($noty) {
-							location.reload(); 
-							
-						}
-						
-					}]
+                    text: '<strong>Validation Failed!</strong> <br />' + validationErrors,
+                    template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
+                    layout: "center",
+                    modal: true,
+                    timeout: 2000,
+                    type: "error",
+                    buttons : [{
+
+                        addClass : 'btn',
+                        text : 'Ok',
+                        onClick : function($noty) {
+                            location.reload();
+
+                        }
+
+                    }]
 				});
 					 	
 					 	
@@ -246,7 +246,7 @@ $(document).ready(function(){
 
 	});
 
-	$("#modal-upload-app").modal('show');
+	//$("#modal-upload-app").modal('show');
 
 });
 

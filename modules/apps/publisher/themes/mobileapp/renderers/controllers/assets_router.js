@@ -130,7 +130,7 @@ var render = function (theme, data, meta, require) {
         ribbon: [
             {
                 partial: 'ribbon',
-                context: require('/helpers/breadcrumb.js').generateBreadcrumbJson(data)
+                context: {active:listPartial,isNotReviwer:data.isNotReviwer}
             }
         ],
         leftnav: [

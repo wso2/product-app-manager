@@ -12,33 +12,33 @@ var render=function(theme,data,meta,require){
 
 	//Determine what view to show
 	switch(data.op){
-	
-	case 'create':
-		listPartial='add-asset';
-		break;
-	case 'view':
-		data = require('/helpers/view-asset.js').merge(data);
-		listPartial='view-asset';
-		break;
-    case 'edit':
-        data = require('/helpers/edit-asset.js').processData(data);
-        listPartial='edit-asset';
-        break;
-    case 'lifecycle':
-        listPartial='lifecycle-asset';
-        break;
-    case 'versions':
-        listPartial='versions-asset';
-        break;
-    case 'documentation':
-        listPartial='documentation';
-        break;
-    case 'copyapp':
-            data = require('/helpers/copy-app.js').processData(data);
-            listPartial='copy-app';
+        case 'create':
+            listPartial='add-asset';
             break;
-	default:
-		break;
+        case 'view':
+            data = require('/helpers/view-asset.js').merge(data);
+            data = require('/helpers/view-asset.js').splitData(data);
+            listPartial='view-asset';
+            break;
+        case 'edit':
+            data = require('/helpers/edit-asset.js').processData(data);
+            listPartial='edit-asset';
+            break;
+        case 'lifecycle':
+            listPartial='lifecycle-asset';
+            break;
+        case 'versions':
+            listPartial='versions-asset';
+            break;
+        case 'documentation':
+            listPartial='documentation';
+            break;
+        case 'copyapp':
+                data = require('/helpers/copy-app.js').processData(data);
+                listPartial='copy-app';
+                break;
+        default:
+            break;
 	}
 	theme('single-col-fluid', {
         title: data.title,
@@ -51,7 +51,7 @@ var render=function(theme,data,meta,require){
         ribbon: [
             {
                 partial: 'ribbon',
-		        context:require('/helpers/breadcrumb.js').generateBreadcrumbJson(data)
+                context: {active:listPartial}
             }
         ],
         leftnav: [
@@ -64,6 +64,12 @@ var render=function(theme,data,meta,require){
             {
                 partial:listPartial,
 		        context: data
+            }
+        ],
+        heading: [
+            {
+                partial:'heading',
+                context: {title:data.name.value,menuItems:require('/helpers/left-nav.js').generateLeftNavJson(data, listPartial)}
             }
         ]
     });

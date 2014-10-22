@@ -27,7 +27,6 @@ var render=function(theme,data,meta,require){
 		}
         data = require('/helpers/edit-asset.js').selectCategory(data);
         data = require('/helpers/edit-asset.js').screenshots(data);
-
         break;
     case 'lifecycle':
         listPartial='lifecycle-asset';
@@ -38,6 +37,9 @@ var render=function(theme,data,meta,require){
 	default:
 		break;
 	}
+    data = require('/helpers/view-asset.js').splitData(data);
+
+    log.info(data.op);
 	theme('single-col-fluid', {
         title: data.title,
      	header: [
@@ -49,7 +51,7 @@ var render=function(theme,data,meta,require){
         ribbon: [
             {
                 partial: 'ribbon',
-		        context:require('/helpers/breadcrumb.js').generateBreadcrumbJson(data)
+		        context:{active:listPartial}
             }
         ],
         leftnav: [
@@ -62,6 +64,12 @@ var render=function(theme,data,meta,require){
             {
                 partial:listPartial,
 		        context: data
+            }
+        ],
+        heading: [
+            {
+                partial:'heading',
+                context: {title:data.name.value,menuItems:require('/helpers/left-nav.js').generateLeftNavJson(data, listPartial)}
             }
         ]
     });
