@@ -134,6 +134,7 @@ $(function() {
                 if (!data.error) {
                     var messageText = null;
 
+                    //If userSignUp workflow is enabled
                     if(data.showWorkflowMsg){
                         messageText = "User account awaiting Administrator approval.";
 

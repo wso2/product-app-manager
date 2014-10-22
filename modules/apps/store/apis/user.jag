@@ -55,6 +55,7 @@ require('/modules/store.js').exec(function (ctx) {
                     }
 
                     if (error) {
+                        //If user does not have subscriber permission, return error message
                         if(!isPermitted){
                             message = 'Insufficient Privileges.';
                         }else{
@@ -95,6 +96,8 @@ require('/modules/store.js').exec(function (ctx) {
                     //user.register(data.username, data.password);
                     storeHostObj.addUser(data.username, data.password);
                     var isSubscriberRolePresent = storeHostObj.checkIfSubscriberRoleAttached(data.username);
+
+                    //Check Whether the user has subscriber privileges to login
                     if(isSubscriberRolePresent.error){
                         showWorkflowTip = true;
                     }
