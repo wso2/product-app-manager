@@ -7,7 +7,7 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
 var AuthService=require('../extensions/assets/webapp/services/authentication.js').serviceModule;
 
 require('/modules/store.js').exec(function (ctx) {
-    var action, data, message, exists,
+    var action, data, message, exists, showWorkflowTip,
             error = false,
             log = new Log(),
             user = require('store').user,
@@ -24,25 +24,49 @@ require('/modules/store.js').exec(function (ctx) {
         switch (action) {
             case 'login':
                 try {
+                    var isPermitted =true;
                     data = request.getContent();
-                    error = !user.login(data.username, data.password, session);
-	            var tenant = ctx.tenant;
+                    var isUserExists = storeHostObj.isUserExists(data.username);
+                    if(isUserExists){
+                        var isSubscriberRoleAttached = storeHostObj.checkIfSubscriberRoleAttached(data.username);
 
-                    //parameters=request.getAllParameters();
-                    userDetails['username']=data.username;
-                    userDetails['password']=data.password;
-		    userDetails['tenantId']=tenant;
-		    userDetails['action']="login";				
+                        //Check Whether the user has subscriber Privileges
+                        if(!isSubscriberRoleAttached.error){
+                            log.debug('Authenticating User : '+data.username);
 
-                    authResult=authenticator.login(userDetails);
+                            error = !user.login(data.username, data.password, session);
+
+                            var tenant = ctx.tenant;
+                            //parameters=request.getAllParameters();
+                            userDetails['username']=data.username;
+                            userDetails['password']=data.password;
+                            userDetails['tenantId']=tenant;
+                            userDetails['action']="login";
+                            authResult=authenticator.login(userDetails);
+
+                        }else{
+
+                            error=true;
+                            isPermitted = false;
+                        }
+
+                    }else{
+                        error=true;
+                    }
+
                     if (error) {
-                        message = 'Invalid username or password.';
+                        if(!isPermitted){
+                            message = 'Insufficient Privileges.';
+                        }else{
+                            message = 'Invalid username or password.';
+                        }
                     }
                 } catch (e) {
                     log.error(e);
                     error = true;
-                    message = e.message;
+                    message = e;
                 }
+                  
                 print({
                     error: error,
                     message: message
@@ -69,15 +93,23 @@ require('/modules/store.js').exec(function (ctx) {
                 try {
                     data = request.getContent();
                     //user.register(data.username, data.password);
-		    storeHostObj.addUser(data.username, data.password);
+                    storeHostObj.addUser(data.username, data.password);
+                    var isSubscriberRolePresent = storeHostObj.checkIfSubscriberRoleAttached(data.username);
+                    if(isSubscriberRolePresent.error){
+                        showWorkflowTip = true;
+                    }
+
                 } catch (e) {
                     log.error(e);
                     error = true;
                     message = e.message;
+                    showWorkflowMsg = showWorkflowTip;
                 }
+
                 print({
                     error: error,
-                    message: message
+                    message: message,
+                    showWorkflowMsg:showWorkflowTip
                 });
                 return;
             case 'exists':
