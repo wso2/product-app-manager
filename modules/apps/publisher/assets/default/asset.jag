@@ -68,9 +68,9 @@ require('/modules/publisher.js').exec(function(ctx) {
             provider = username+'-AT-'+tenantDomain;
         }
 
-        model.set('overview.provider', provider);
+        //model.set('overview.provider', provider);
 
-        //model.set('overview.provider', storeUser.cleanUsername(username));
+        model.set('overview.provider', storeUser.cleanUsername(username));
 
         var output = model.export('form');
         var title = shortName;

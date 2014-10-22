@@ -65,12 +65,6 @@ var render=function(theme,data,meta,require){
                 partial:listPartial,
 		        context: data
             }
-        ],
-        heading: [
-            {
-                partial:'heading',
-                context: {title:data.name.value,menuItems:require('/helpers/left-nav.js').generateLeftNavJson(data, listPartial)}
-            }
         ]
     });
 };

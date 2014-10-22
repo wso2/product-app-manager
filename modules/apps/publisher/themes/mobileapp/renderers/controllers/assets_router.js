@@ -8,13 +8,20 @@ var render = function (theme, data, meta, require) {
 
 	data.isNotReviwer = true;
     data.isReviwer = false;
+    data.isAdmin = false;
 
    for(var k = 0; k < data.roles.length; k++){
 		if(data.roles[k] == "Internal/reviewer"){
 					data.isNotReviwer = false;
                     data.isReviwer = true;
 		}
+
+       if(data.roles[k] == "admin"){
+           data.isAdmin = true;
+       }
+
 	}
+
 
 
 	var lifecycleColors = {"Demote": "btn-blue", "Re-Submit": "btn-blue", "Submit": "btn-blue", "Publish": "btn-blue", "Unpublish": "btn-blue", "Deprecate": "btn-danger", "Retire": "btn-danger", "Approve": "btn-blue", "Reject": "btn-danger"};
