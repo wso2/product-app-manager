@@ -62,7 +62,6 @@ var emit = function (event) {
     var group = events(event),
         log = new Log(),
         args = Array.prototype.slice.call(arguments, 1);
-    log.debug('Emitting event : 9999999999999' + event);
     group.forEach(function (fn) {
         try {
             fn.apply(this, args);
