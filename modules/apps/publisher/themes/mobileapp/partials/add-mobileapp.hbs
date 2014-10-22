@@ -283,6 +283,131 @@
 
 
 
+<div id="modal-upload-app" class="modal  fade" data-backdrop="static" data-keyboard="false">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+
+
+	<div class="modal-header">		
+		<h4>Add Mobile App</h4>
+	</div>
+	<div class="modal-body" id="modal-upload-progress" style="display: none">
+		Uploading
+			<div class="progress progress-striped active">
+		    	<div class="bar" style="width: 75%;"></div>
+		    </div>
+	</div>	
+	
+	<div class="modal-body" id="modal-upload-data">
+		<form class="pull-left">
+
+			<div class="control-group row-fluid">
+				<div class="controls">
+					<div class="col-md-3">
+						Platform:
+					</div>
+					<div class="col-md-3">
+						<select id="txtOS"  class="dropdownimage">
+							<option value="android" data-image="/publisher/themes/mobileapp/img/mobileapps/android.png" >Android</option>
+							<option value="ios" data-image="/publisher/themes/mobileapp/img/mobileapps/ios.png">iOS</option>
+							<option value="webapp" data-image="/publisher/themes/mobileapp/img/mobileapps/webapp.png">Web App</option>
+						</select>
+					</div>
+
+				</div>
+			</div>
+			
+			
+			<div class="control-group row-fluid" id="market-type-block">				
+				<div class="controls">				
+					<div class="col-md-3">
+						Store Type:
+					</div>
+					<div class="col-md-3">
+						<select id="txtMarket" >
+							<option value="Enterprise">Enterprise</option>
+							<option value="Market">Public</option>
+							
+						</select>
+					</div>
+					
+					
+				</div>
+			</div>
+			
+		
+
+			<div class="control-group row-fluid well" style="width:490px" >
+				
+				
+
+				<div class="row-fluid" >
+
+					<div id="app-upload-block" class="row-fluid" style=" margin-top: 10px">
+						<div class="fileupload fileupload-new" data-provides="fileupload" id="file-upload-block">
+						<div class="input-append">
+							<div class="uneditable-input col-md-3">
+								<i class="icon-file fileupload-exists"></i><span
+								class="fileupload-preview"></span>
+							</div>
+							<span class="btn btn-file" style="width: 180px; height: 20px"><span
+								class="fileupload-new" id="file-upload-text"><i class="icon-plus-sign"></i>  SELECT .APK FILE</span><span
+								class="fileupload-exists"><i class="icon-edit"> </i></span>
+								<input
+								id="txtAppUpload" type="file" name="file"
+								data-url="/publisher/api/mobileapp/upload">
+							</span><a href="#"
+							class="btn fileupload-exists" data-dismiss="fileupload"><i
+							class="icon-remove"></i></a>
+						</div>
+					</div>
+					
+						
+						<div id="package-select-block" class="row-fluid" style="display: none;">
+								<div id="control-packagename"	class="control-group">
+									<label class="control-label" id="txtNameLabel" for="txtName">Package Name <span style="color:#FF0000">*</span></label>
+									<div class="controls">
+										<input class="field col-md-6" style="width: 450px" type="text" name="packagename"
+										id="txtPackagename">
+									</div>
+								</div>
+								
+								
+						</div>
+					</div>	
+					
+					
+					<div id="control-webapp" style="display: none;"
+			class="control-group">
+				<label class="control-label" for="txtName">Web App URL <span style="color:#FF0000">*</span></label>
+				
+				<div class="controls">
+					<input class="field" style="width: 450px" type="text" name="url"
+					id="txtWebapp">
+					<div style="font-size: xx-small">Please enter a valid url</div>
+				</div>
+			</div>
+
+				</div>
+
+				
+
+			</div>
+
+		</form>
+	</div>
+	<div class="modal-footer">
+		<a href="/publisher/assets/mobileapp/" class="btn">Close</a>
+		<a href="#" id="btn-app-upload" class="btn btn-primary"
+		aria-hidden="true" id="btn-app-upload">Next</a>
+	</div>
+
+ </div>
+</div>
+
+</div>
 
 
 

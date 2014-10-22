@@ -200,7 +200,7 @@ $(document).ready(function(){
 						 $("#modal-upload-progress").css("display", "none");
 	               		
 	               		
-					 	//window.location.replace("/publisher/assets/mobileapp/");
+					 	window.location.replace("/publisher/assets/mobileapp/");
 				
 					 	
 				noty({

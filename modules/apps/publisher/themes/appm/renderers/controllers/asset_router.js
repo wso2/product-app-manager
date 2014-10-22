@@ -17,7 +17,6 @@ var render=function(theme,data,meta,require){
             break;
         case 'view':
             data = require('/helpers/view-asset.js').merge(data);
-            data = require('/helpers/view-asset.js').splitData(data);
             listPartial='view-asset';
             break;
         case 'edit':
@@ -40,6 +39,7 @@ var render=function(theme,data,meta,require){
         default:
             break;
 	}
+    data = require('/helpers/view-asset.js').splitData(data);
 	theme('single-col-fluid', {
         title: data.title,
      	header: [
@@ -64,6 +64,12 @@ var render=function(theme,data,meta,require){
             {
                 partial:listPartial,
 		        context: data
+            }
+        ],
+        heading: [
+            {
+                partial: 'heading',
+                context: {title: data.name.value, menuItems: require('/helpers/left-nav.js').generateLeftNavJson(data, listPartial)}
             }
         ]
     });
