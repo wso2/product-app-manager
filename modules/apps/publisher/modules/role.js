@@ -26,7 +26,10 @@ var checkeRole = function (username, session) {
 
         return true;
     }
-  	if (!usr.hasRoles([role[0]])) {
+
+
+
+  	if (!( usr.hasRoles(["Internal/publisher"]) || usr.hasRoles(["Internal/creator"]) || usr.hasRoles(["Internal/reviewer"])      ) ) {
             session.invalidate();
       		return false;
   	}

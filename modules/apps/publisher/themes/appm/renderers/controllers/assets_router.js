@@ -21,7 +21,7 @@ var render = function (theme, data, meta, require) {
 
                 for(var k = 0; k < data.roles.length; k++){
                     //	print(data.roles[k]);
-                    if(data.roles[k] == "admin"){
+                    if(data.roles[k] == "admin" || data.roles[k] == "Internal/publisher"){
                         if(name == "Approve"){
                             lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
                         }
@@ -55,40 +55,6 @@ var render = function (theme, data, meta, require) {
 
                         break;
                     }
-
-                    if(data.roles[k] == "Internal/reviewer"){
-                        data.isNotReviwer = false;
-                        data.isReviwer = true;
-                        if(name == "Approve"){
-                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                        }
-                        if(name == "Reject"){
-                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                        }
-                    }
-
-                    if(data.roles[k] == "Internal/publisher"){
-                        if(name == "Publish"){
-                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                        }
-                        if(name == "Submit"){
-                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                        }
-                        if(name == "Re-Submit"){
-                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                        }
-                        if(name == "Unpublish"){
-                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                        }
-                        if(name == "Depreicate"){
-                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                        }
-                        if(name == "Retire"){
-                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                        }
-                    }
-
-
 
                 }
 
