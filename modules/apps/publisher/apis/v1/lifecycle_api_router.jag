@@ -133,8 +133,8 @@ require('/modules/publisher.js').exec(function(ctx) {
   routeManager.register('PUT', 'publisher', '/publisher/api/lifecycle/{action}/{type}/{id}', function(context) {
     var shortName = context.params.type;
 
-
      if(shortName === "mobileapp"){
+
          mobileAppsLifeCycleChange(context, rxtManager);
          return;
      }
@@ -439,14 +439,6 @@ var passed=sm.check(session,function(){
   }
 
 }, request, response, session);
-
-
-
-
-
-
-
-
 
 
 
