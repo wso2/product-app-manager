@@ -7,10 +7,7 @@ var action = $(this).data("action");
 
 	jQuery.ajax({
 		url : '/publisher/api/lifecycle/'+ action +'/webapp/' + app,
-		type : "PUT",
-		async : "false",		
-		contentType : "application/json",
-     	dataType : "json"			
+		type : "PUT"
 	});
 	
 	$( document ).ajaxComplete(function() {
