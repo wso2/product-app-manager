@@ -6,6 +6,7 @@
 var render=function(theme,data,meta,require){
     //var _url = "/publisher/asset/"  + data.meta.shortName + "/" + data.info.id + "/edit"
 	var listPartial='view-asset';
+    var pageHeading = "";
 	//Determine what view to show
 	switch(data.op){
 	case 'create':
@@ -14,7 +15,7 @@ var render=function(theme,data,meta,require){
 			//log.info('Special rendering case for mobileapp-using add-mobilepp.hbs');
 			listPartial='add-mobileapp';
 		}
-		
+        pageHeading = "Create New Mobile App";
 		break;
 	case 'view':
 		listPartial='view-asset';
@@ -38,8 +39,9 @@ var render=function(theme,data,meta,require){
 		break;
 	}
     data = require('/helpers/view-asset.js').splitData(data);
-
-    log.info(data.op);
+    if(pageHeading == "") {
+        pageHeading = data.name.value;
+    }
 	theme('single-col-fluid', {
         title: data.title,
      	header: [
@@ -69,7 +71,7 @@ var render=function(theme,data,meta,require){
         heading: [
             {
                 partial:'heading',
-                context: {title:data.name.value,menuItems:require('/helpers/left-nav.js').generateLeftNavJson(data, listPartial)}
+                context: {title:pageHeading,menuItems:require('/helpers/left-nav.js').generateLeftNavJson(data, listPartial)}
             }
         ]
     });
