@@ -6,7 +6,7 @@
 
 $(function(){
 
-$('.btn-primary').on('click', function(e) {
+$('.btn-delete').on('click', function(e) {
 		
 		var data = {};
 

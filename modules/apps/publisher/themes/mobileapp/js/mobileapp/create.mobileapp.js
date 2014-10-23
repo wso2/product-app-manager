@@ -222,14 +222,6 @@ $(document).ready(function(){
 					}]
 				});
 					 	
-					 	
-					 	
-					 	
-					 	
-					 	
-					 	
-					 	
-					 	
 	               	}else{
 	               		$('#appmeta').val(JSON.stringify(data));
 						$("#app-upload-progress-done").css("display", "block");
