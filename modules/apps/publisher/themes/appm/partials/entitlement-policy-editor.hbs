@@ -1,24 +1,30 @@
-<div id="entitlement-policy-editor" style="width: 900px; margin-left: -450px;" class="modal fade" role="dialog"
-     aria-hidden="true">
+<!-- Modal -->
+<div id="entitlement-policy-editor" class="modal fade" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close mclose-button" data-dismiss="modal"
-                        aria-hidden="true">&times;</button>
+                <button type="button" class="close mclose-button" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h3>Entitlement Policy Editor</h3>
             </div>
-            <div class="modal-body" style="height:auto;">
+            <div class="modal-body">
                 <input id="resource-index" type="hidden"/>
                 <input id="save-and-close" type="hidden"/>
-
-                Name: <input id="policy-name" type="text"/>
-
-                <div id="policy-content-container">
-                    <textarea id="policy-content" style="width:100%;height:100%;border: 1px solid #eee;"></textarea>
+                <div class="alert alert-danger alert-dismissible" role="alert" id="notification-text">
+                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <span id="notification-text-data">Better check yourself, you're not looking too good.</span>
                 </div>
-            </div>
-            <div>
-                <label id="notification-text"/>
+
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input id="policy-name" type="text" class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label>Policy:</label>
+                    <div id="policy-content-container">
+                        <textarea id="policy-content" style="width:100%;height:100%;border: 1px solid #eee;" class="form-control"></textarea>
+                    </div>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <a id="btn-policy-partial-validate" class="btn btn-primary">Validate</a>
@@ -26,9 +32,12 @@
                 <a id="btn-policy-save-and-close" class="btn btn-primary">Save & Close</a>
                 <a class="btn mclose-button" data-dismiss="modal">Close</a>
             </div>
+
         </div>
     </div>
 </div>
+
+
 
 <style>
 

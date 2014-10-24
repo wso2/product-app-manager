@@ -19,7 +19,7 @@ var generateLeftNavJson = function(data, listPartial) {
                            url : "/publisher/assets/" + data.shortName + "/"
                        },*/
            
-            {
+         /*   {
                 name : "Add " + data.shortName + "",
                 iconClass : "icon-plus-sign-alt",
                 additionalClasses : (listPartial == "add-asset" ) ? "active" : null,
@@ -30,7 +30,7 @@ var generateLeftNavJson = function(data, listPartial) {
                 iconClass: "icon-dashboard",
                 additionalClasses : (listPartial == "statistics" ) ? "active" : null,
                 url: "/publisher/assets/statistics/" + data.shortName + "/"
-            }
+            }*/
         ]
     };
     if(data.artifact){

@@ -39,7 +39,15 @@ var render=function(theme,data,meta,require){
         default:
             break;
 	}
-    data = require('/helpers/view-asset.js').splitData(data);
+    if(data.op != "edit"){
+        data = require('/helpers/view-asset.js').splitData(data);
+    }else{
+        data.name = {};
+        data.name.value = "Edit Web Application - CSS3 Generator";
+    }
+    log.info("***********");
+    log.info(data);
+    log.info("***********");
 	theme('single-col-fluid', {
         title: data.title,
      	header: [

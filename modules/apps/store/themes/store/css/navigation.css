@@ -90,18 +90,18 @@ hr.emboss {
 }
 
 .navbar .brand {
-    background: url("../img/logo.png") no-repeat top left;
+    background: url("../img/app-store-logo.png") no-repeat top left;
     color: #FFFFFF;
-    height: 27px;
-    margin: 9px 0 0;
+    height: 40px;
+    margin: 7px 0 0;
     padding: 0;
-    width: 171px;
+    width: 180px;
 }
 
 .navbar .nav > li > a {
+    color: #fff;
+    padding: 11px 15px 13px;
     text-shadow: none;
-    font-weight: bold;
-    color: #34495E;
 }
 .navbar .nav > li > a.btn {
     padding: 5px 10px;
@@ -116,7 +116,11 @@ hr.emboss {
     color: #ffffff;
 }
 .navbar .nav > li > a:hover, .navbar .nav > li > a:focus {
-    color: #647E9A;
+    color: #efefef;
+}
+.navbar .nav > li.active > a {
+    background: #000;
+    color: #ccc;
 }
 /*
  .navbar .nav > li > a.dropdown-toggle{
@@ -131,7 +135,7 @@ hr.emboss {
     color: #FFFFFF;
 }
 .navbar .nav-separator {
-    border-right: 1px solid #ccc;
+    border-right: 1px solid #444;
 }
 .navbar-inverse .navbar-inner {
     background: #2C3238;
@@ -177,8 +181,8 @@ hr.emboss {
     line-height: 30px;
 }
 .dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a {
-    background: #229a55;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#0016a085,endColorstr=#0016a085);
+    background: transparent;
+    color: #444;
 }
 
 .navbar .nav > li > .dropdown-menu:after, .navbar .nav > li > .dropdown-menu:before {
