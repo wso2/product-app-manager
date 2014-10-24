@@ -851,14 +851,10 @@ input.inp-ribbon[type="text"]:focus {
     width: 500px;
 }
 #search-button {
-    border-left: 1px solid #CCCCCC;
     color: #585858;
     font-size: 12px;
     opacity: 1;
-    padding-left: 7px;
-    position: absolute;
-    right: 8px;
-    top: 2px;
+    padding:5px;
     transition: opacity 0.4s ease 0s;
     cursor: pointer;
 }
@@ -868,7 +864,6 @@ input.inp-ribbon[type="text"]:focus {
     text-shadow: 1px 2px 2px #BBBBBB;
 }
 textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
-    border-radius: 0;
 }
 .ribbon .btn {
     border-radius: 0;
@@ -1470,3 +1465,75 @@ h2.first-h2{
 .space-top-20{
     margin-top: 20px;
 }
+#modal-upload-data .form-group{
+    padding-bottom: 20px;
+}
+/* Wizard styles */
+.nav-pills.nav-wizard{
+    margin-bottom: 20px;
+}
+.nav-pills.nav-wizard > li {
+    position: relative;
+    overflow: visible;
+    border-right: 15px solid #fff;
+    border-left: 15px solid #fff;
+}
+.nav-pills.nav-wizard > li:first-child {
+    border-left: 0;
+}
+.nav-pills.nav-wizard > li:first-child a {
+    border-radius: 5px 0 0 5px;
+}
+.nav-pills.nav-wizard > li:last-child {
+    border-right: 0;
+}
+.nav-pills.nav-wizard > li:last-child a {
+    border-radius: 0;
+}
+.nav-pills.nav-wizard > li a {
+    border-radius: 0;
+    background-color: #eee;
+    height: 39px;
+}
+.nav-pills.nav-wizard > li .nav-arrow {
+    position: absolute;
+    top: 0px;
+    right: -20px;
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    border-width: 20px 0 20px 20px;
+    border-color: transparent transparent transparent #eee;
+    z-index: 150;
+}
+.nav-pills.nav-wizard > li .nav-wedge {
+    position: absolute;
+    top: 0px;
+    left: -20px;
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    border-width: 20px 0 20px 20px;
+    border-color: #eee #eee #eee transparent;
+    z-index: 150;
+}
+.nav-pills.nav-wizard > li:hover .nav-arrow {
+    border-color: transparent transparent transparent #aaa;
+}
+.nav-pills.nav-wizard > li:hover .nav-wedge {
+    border-color: #aaa #aaa #aaa transparent;
+}
+.nav-pills.nav-wizard > li:hover a {
+    background-color: #aaa;
+    color: #fff;
+}
+.nav-pills.nav-wizard > li.active .nav-arrow {
+    border-color: transparent transparent transparent #428bca;
+}
+.nav-pills.nav-wizard > li.active .nav-wedge {
+    border-color: #428bca #428bca #428bca transparent;
+}
+.nav-pills.nav-wizard > li.active a {
+    background-color: #428bca;
+}
+
