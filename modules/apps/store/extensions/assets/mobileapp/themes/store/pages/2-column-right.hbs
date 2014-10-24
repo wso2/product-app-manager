@@ -41,20 +41,24 @@
 </head>
 
 <body>
-{{include header}}
-{{include navigation}}  
-<div id="container-assets" class="container">
+<!-- Part 1: Wrap all page content here -->
+<div id="wrap">
 
-    <div class="row">
-        <div class="span12">
-          
-            {{include body}}
-        </div>       
+    {{include header}}
+    {{include navigation}}
+    <div id="container-assets" class="container">
+
+        <div class="row">
+            <div class="span12">
+                {{include body}}
+            </div>
+        </div>
 
     </div>
-    {{>footer}}
+
+    <div id="push"></div>
 </div>
-<!-- /container -->
+{{>footer}}
 
 <!-- Le javascript
 ================================================== -->

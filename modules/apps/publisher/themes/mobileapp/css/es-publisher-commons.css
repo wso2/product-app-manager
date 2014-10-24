@@ -84,6 +84,7 @@ textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[ty
 }
 .btn {
     background: none;
+    font-size: 12px;
 }
 .top-nav-container {
     height: 60px;

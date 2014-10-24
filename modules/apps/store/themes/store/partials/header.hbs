@@ -48,7 +48,12 @@
 
 							</li>
 							{{else}}
-
+                                    <li class="nav-separator">
+                                        <a href="{{url "/assets/webapp"}}"><i class="icon-globe icon store-topnav-bookmark"></i> {{t "Web Applications"}}</a>
+                                    </li>
+                                    <li class="nav-separator">
+                                        <a href="{{url "/assets/mobileapp"}}"><i class="icon-mobile-phone store-topnav-bookmark"></i> {{t "Mobile Applications"}}</a>
+                                    </li>
 								{{#if sso}}
 									<li>
 										<a href="{{url "/login"}}">{{t "Sign in"}}</a>
