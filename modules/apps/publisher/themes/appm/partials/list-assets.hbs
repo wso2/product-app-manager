@@ -1,3 +1,4 @@
+
 <div class="asset-being-added">
 </div>
 
@@ -9,8 +10,8 @@
                 <th colspan="2"><a href="?sortby=name&sort=asc">Name <i class="icon-caret-down"></i></a></th>
                 <th><a href="?sortby=version&sort=asc">Version <i class="icon-caret-down"></i></a></th>
                 <th><a href="?sortby=owner&sort=asc">Owner <i class="icon-caret-down"></i></a></th>
-                <th><a href="#">Status</i></a></th>
                 <th><a href="?sortby=createdtime&sort=desc">Created <i class="icon-caret-down"></i></a></th>
+                <th><a href="#">Status</i></a></th>
                 <th></th>
                 </thead>
                 <tbody>
@@ -32,13 +33,22 @@
                         {{this.attributes.overview_provider}}
                         </td>
                         <td>
-                        <span class="lifecycle-state"><small><i class="icon-circle lc-state-{{this.lifecycleState}}"></i> {{this.lifecycleState}}</small></span>
-                        </td>
-                        <td>
                         <small>{{this.attributes.overview_createdtime}}</small>
                         </td>
+                        <td>
+                            <span class="lifecycle-state"><small><i class="icon-circle lc-state-{{this.lifecycleState}}"></i> {{this.lifecycleState}}</small></span>
+                        </td>
                          <td>
-                        <input type="button" value="Delete" class="btn btn-primary"
+
+
+
+                             {{#this.lifecycleAvailableActions}}
+                                 <a  data-action="{{name}}" data-app="{{../this.id}}" class="btn {{style}} btn-action" name="addNewAssetButton">{{name}}</a>
+                             {{/this.lifecycleAvailableActions}}
+
+
+
+                             <input type="button" value="Delete" class="btn btn-danger btn-delete"
 								name="deleteAsset"  data-app-id={{this.id}} />
 						<input
 								type="hidden" value="{{../shortName}}" name="{{../shortName}}"

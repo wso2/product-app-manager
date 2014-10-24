@@ -239,6 +239,7 @@ $(document).ready(function(){
 
     //$("#modal-upload-app").modal('show');
 
+
 });
 
 $('#btn-app-upload').click(function () {

@@ -111,7 +111,37 @@ var rxt_management=function(){
         return new carbon.registry.ArtifactManager(userRegistry,type);
 		//GovernanceUtils.loadGovernanceArtifacts(this.registry.registry); //TODO: Can we do this only once?
 		//return new carbon.registry.ArtifactManager(this.registry,type);
-	} 
+	}
+
+
+
+    RxtManager.prototype.getSystemArtifactManager=function(type,session){
+        log.info('###Getting ArtifactManager with System Reg###');
+        log.info('Getting server ');
+        var server=require('store').server;
+        log.info('Getting user');
+        var user=server.current(session);
+        log.info('Obtained user registry');
+        var tenantId=user.tenantId;
+        log.info('Tenant Id '+tenantId);
+
+        var sysRegistry=server.systemRegistry(tenantId);
+        log.info('Obtained system registry');
+
+        log.info('Loading governance artifats');
+        GovernanceUtils.loadGovernanceArtifacts(sysRegistry.registry);
+
+        log.info('Building artifact manager');
+
+        var am=new carbon.registry.ArtifactManager(sysRegistry,type);
+        log.info('###Finished obtaining the ArtifactManager###');
+        return am;
+    };
+
+
+
+
+
 
 	return {
 		RxtManager:RxtManager
