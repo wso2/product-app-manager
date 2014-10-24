@@ -57,12 +57,12 @@ var generateLeftNavJson = function(data, listPartial) {
                      additionalClasses : (listPartial == "edit-asset" ) ? "prominent-link" : null,
                     url : "/publisher/asset/operations/edit/" + data.shortName + "/" + data.artifact.id + ""
                 },
-                {
-                    name : "Life Cycle",
-                    iconClass : "icon-retweet",
-                     additionalClasses : (listPartial == "lifecycle-asset" ) ? "prominent-link" : null,
-                    url : "/publisher/asset/operations/lifecycle/" + data.shortName + "/" + data.artifact.id + ""
-                },
+//                {
+//                    name : "Life Cycle",
+//                    iconClass : "icon-retweet",
+//                     additionalClasses : (listPartial == "lifecycle-asset" ) ? "prominent-link" : null,
+//                    url : "/publisher/asset/operations/lifecycle/" + data.shortName + "/" + data.artifact.id + ""
+//                },
                 {
                     name : "Documentation",
                     iconClass : "icon-file-alt",
