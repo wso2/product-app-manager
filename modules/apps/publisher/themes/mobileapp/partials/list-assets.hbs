@@ -24,6 +24,11 @@
 
 -->
 
+
+<div class="asset-being-added">
+</div>
+
+
     {{#if artifacts}}
     <div class="row-fluid">
         <table class="table table-striped list-asset-table">
@@ -156,19 +161,22 @@
 </style>
 
 
-<div id="appModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-<h4 id="myModalLabel"><i class="icon-download"></i> App</h4>
-</div>
-<div class="modal-body">
- <div class="row offset1">
- Download URL : <a href="" id="appModalAppURL">Download/ View</a>   
-<br>
-     <div id="qrcode" style="width:200px"></div>
-     
-     
-</div>
-</div>
+<div id="appModal" class="modal  fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+            <h4 id="myModalLabel"><i class="icon-download"></i> App</h4>
+            </div>
+            <div class="modal-body">
+             <div class="row offset1">
+             Download URL : <a href="" id="appModalAppURL">Download/ View</a>
+            <br>
+                 <div id="qrcode" style="width:200px"></div>
 
+
+            </div>
+            </div>
+    </div>
+    </div>
 </div>

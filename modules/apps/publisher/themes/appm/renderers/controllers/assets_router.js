@@ -9,7 +9,7 @@ var render = function (theme, data, meta, require) {
 
 
 
-    var lifecycleColors = {"Create": "btn-green", "Demote": "btn-blue", "Re-Submit": "btn-blue", "Submit": "btn-blue", "Publish": "btn-blue", "Unpublish": "btn-blue", "Deprecate": "btn-orange", "Retire": "btn-orange", "Approve": "btn-blue", "Reject": "btn-orange"};
+    var lifecycleColors = {"Create": "btn-green", "Demote": "btn-blue", "Re-Submit": "btn-blue", "Submit": "btn-blue", "Publish": "btn-blue", "Unpublish": "btn-orange", "Deprecate": "btn-danger", "Retire": "btn-danger", "Approve": "btn-blue", "Reject": "btn-orange"};
 
 
     if(data.artifacts){
@@ -88,7 +88,7 @@ var render = function (theme, data, meta, require) {
             break;
     }
     //var addAssetUrl = "/publisher/asset/" + data.meta.shortName +"";
-    theme('one-col', {
+    theme('single-col-fluid', {
         title: data.title,
         header: [
             {
