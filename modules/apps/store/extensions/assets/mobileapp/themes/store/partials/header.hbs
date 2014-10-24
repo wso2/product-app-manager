@@ -30,7 +30,12 @@
 						</ul>-->
 
 						<ul class="nav menu pull-right">
-
+                            <li class="nav-separator">
+                                <a href="{{url "/assets/mobileapp"}}"><i class="icon-mobile-phone store-topnav-bookmark"></i> {{t "Mobile Apps"}}</a>
+                            </li>
+                            <li class="nav-separator">
+                                <a href="{{url "/assets/webapp"}}"><i class="icon-cog store-topnav-bookmark"></i> {{t "WebApps"}}</a>
+                            </li>
 							{{#if user}}
 							<li class="nav-separator">
                                 {{#unless config.is_catalog}}

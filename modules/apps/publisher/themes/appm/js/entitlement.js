@@ -12,7 +12,13 @@ var saveAndClose = false;
 
 
 var tags =[];
-
+function showEntitlementError(text){
+    $('#notification-text').show();
+    $('#notification-text-data').html(text);
+}
+function hideEntitlementError() {
+    $('#notification-text').hide();
+}
 function completeAfter(cm, pred) {
     var cur = cm.getCursor();
     if (!pred || pred()) setTimeout(function() {
@@ -64,7 +70,7 @@ $(document).on("click", "#btn-policy-save", function () {
     var policyName = $('#entitlement-policy-editor #policy-name').val();
 
     if(policyContent == "" || policyName == ""){
-        alert("fields cannot be blank");
+        showEntitlementError("fields cannot be blank");
         return;
     }
     validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation, displayValidationRequestException);
@@ -79,7 +85,7 @@ $(document).on("click", "#btn-policy-partial-validate", function () {
     var policyName = $('#entitlement-policy-editor #policy-name').val();
 
     if(policyContent == "" || policyName == ""){
-        alert("fields cannot be blank");
+        showEntitlementError("fields cannot be blank");
         return;
     }
 
@@ -97,7 +103,7 @@ $(document).on("click", "#btn-policy-save-and-close", function () {
     var policyName = $('#entitlement-policy-editor #policy-name').val();
 
     if(policyContent == "" || policyName == ""){
-        alert("fields cannot be blank");
+        showEntitlementError("fields cannot be blank");
         return;
     }
 
@@ -126,8 +132,8 @@ function continueAddingEntitlementPolicyPartialAfterValidation(response){
         if(response.isValid){
             savePolicyPartial();
 
-            var validationErrorMessage = "Policy is valid."
-            $('#entitlement-policy-editor #notification-text').text(validationErrorMessage);
+            showEntitlementError("Policy is valid.");
+
 
             if(saveAndClose){
                 $("#entitlement-policy-editor").modal('hide');
@@ -136,13 +142,11 @@ function continueAddingEntitlementPolicyPartialAfterValidation(response){
 
             return;
         }else{
-            var validationErrorMessage = "Policy is not valid."
-            $('#entitlement-policy-editor #notification-text').text(validationErrorMessage);
+            showEntitlementError("Policy is not valid.");
         }
 
     }else{
-        var failureMessage = "Could not complete validation."
-        $('#entitlement-policy-editor #notification-text').text(failureMessage);
+        showEntitlementError("Could not complete validation.");
     }
 
 
@@ -485,8 +489,9 @@ $(document).on("click", "#btn-add-xacml-policy", function () {
     editedpolicyPartialId = 0;
     //$('#entitlement-policy-editor #policy-content').val("");
     editor.setValue("");
+
     $('#entitlement-policy-editor #policy-name').val("");
-    $('#entitlement-policy-editor #notification-text').text("");
+    hideEntitlementError();
 
 });
 
@@ -497,7 +502,8 @@ $(document).on("click", ".policy-edit-button", function () {
     //$('#entitlement-policy-editor #policy-content').val("");
     editor.setValue("");
     $('#entitlement-policy-editor #policy-name').val("");
-    $('#entitlement-policy-editor #notification-text').text("");
+    hideEntitlementError();
+
 
     $.each(policyPartialsArray, function( index, obj ) {
        if(obj!= null && obj.id == policyId){
