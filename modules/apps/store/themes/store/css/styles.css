@@ -671,8 +671,8 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     padding-top: 7px;
     margin-left: 21px !important;
     padding-left: 20px;
-    border-left: 1px solid #ecf0f1;
-    background: none repeat scroll 0 0 #F7F9F9;
+    border: 1px solid #ecf0f1;
+    border-radius: 7px;
     outline: none;
     min-height:420px;
 }
@@ -1111,7 +1111,7 @@ div.rating-cancel, div.star-rating {
 }
 
 .assets-container {
-    margin-top: 24px;
+    margin-bottom: 24px;
 }
 #asset-slideshow-next {
     background: url('../img/asset_slideshow_controls_left.png') no-repeat 11% center;
@@ -1454,3 +1454,9 @@ ol.linenums li {
     }
 }
 */
+.powered-by-logo {
+    background: url("../img/poweredby.png") no-repeat scroll left top transparent;
+    display: block;
+    height: 20px;
+    width: 231px;
+}
