@@ -5,18 +5,18 @@
                 <div class="panel-body">
 
                     <ul class="item-meta clearfix">
-                        {{#each meta}}
+                        {{#each newViewData.meta}}
                         <li><b>{{label}}</b>: {{value}}</li>
                         {{/each}}
                     </ul>
 
                     <div class="space-right-20 pull-left">
-                        {{#each images}}
+                        {{#each newViewData.images}}
                         {{#ifCond value "!=" "null"}}{{#ifCond name "==" "images_thumbnail"}}<img src="{{value}}" class="pull-left app-stand-alone-icon"  />{{/ifCond}}{{/ifCond}}
                         {{/each}}
                     </div>
                     <div class="pull-left main-data-container">
-                        {{#each main}}
+                        {{#each newViewData.main}}
                         <div>
                             <label><b>{{label}}</b></label>
                             <br />
@@ -32,9 +32,9 @@
             <h2>Description</h2>
 
             <div class="truncated-para">
-                {{description.value}}
+                {{newViewData.description.value}}
             </div>
-            {{#if isMoreInfo}}<button class="btn btn-default space-bottom-20">More info</button>{{/if}}
+            {{#if newViewData.isMoreInfo}}<button class="btn btn-default space-bottom-20">More info</button>{{/if}}
 
         </div>
     </div>

@@ -48,9 +48,9 @@ require('/modules/publisher.js').exec(function(ctx) {
         return (template.shortName == shortName) ? true : false;
     });
 
-    
+
     var model = modelManager.getModel(shortName);
-    
+
     if (!rxtTemplate) {
         log.debug('The requested asset type: ' + shortName + ' was not found');
         response.sendError(404, 'Asset type not found'); //TODO: Replace
@@ -257,7 +257,7 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
         inspectFiles(request, context.post);
 
         model.import('form.importer', context.post);
-        
+
 
         //Perform validation on the model
 
@@ -318,6 +318,10 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
 });
 
  routeManager.register('POST', 'publisher', '/publisher/asset/{type}/id/{assetId}/permissions', function(context) {
+
+     log.info("((((((((((((((((((((");
+     log.info(context);
+     log.info(")))))))))))))))))))");
         var assetId = context.params.assetId;
 
         var artifactManager = rxtManager.getArtifactManager(context.params.type);

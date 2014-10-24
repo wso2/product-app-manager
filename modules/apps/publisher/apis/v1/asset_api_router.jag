@@ -863,7 +863,6 @@ require('/modules/publisher.js').exec(function(ctx) {
 
         }
         catch (e) {
-            log.info(e);
             log.debug(e);
             log.debug('An asset of type: ' + shortName + ' could not be created.The following exception was thrown: ' + e);
             response.sendError(500, 'An asset of type: ' + shortName + ' could not be created.Please check the server logs.');

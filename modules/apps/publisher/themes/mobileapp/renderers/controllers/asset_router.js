@@ -6,7 +6,7 @@
 var render=function(theme,data,meta,require){
     //var _url = "/publisher/asset/"  + data.meta.shortName + "/" + data.info.id + "/edit"
 	var listPartial='view-asset';
-    var pageHeading = "";
+    var heading = "";
 	//Determine what view to show
 	switch(data.op){
 	case 'create':
@@ -15,10 +15,12 @@ var render=function(theme,data,meta,require){
 			//log.info('Special rendering case for mobileapp-using add-mobilepp.hbs');
 			listPartial='add-mobileapp';
 		}
-        pageHeading = "Create New Mobile App";
+        heading = "Create New Mobile App";
 		break;
 	case 'view':
 		listPartial='view-asset';
+        data = require('/helpers/splitter.js').splitData(data);
+        heading = data.newViewData.name.value;
 		break;
     case 'edit':
         listPartial='edit-asset';
@@ -28,20 +30,25 @@ var render=function(theme,data,meta,require){
 		}
         data = require('/helpers/edit-asset.js').selectCategory(data);
         data = require('/helpers/edit-asset.js').screenshots(data);
+
+        data = require('/helpers/splitter.js').splitData(data);
+        heading = data.newViewData.name.value;
         break;
     case 'lifecycle':
         listPartial='lifecycle-asset';
+        heading = "Lifecycle";
         break;
     case 'versions':
         listPartial='versions-asset';
+        heading = "Versions";
         break;
 	default:
 		break;
 	}
-    data = require('/helpers/view-asset.js').splitData(data);
-    if(pageHeading == "") {
-        pageHeading = data.name.value;
-    }
+
+    var breadCrumbData = require('/helpers/breadcrumb.js').generateBreadcrumbJson(data);
+    breadCrumbData.activeRibbonElement = listPartial;
+
 	theme('single-col-fluid', {
         title: data.title,
      	header: [
@@ -53,7 +60,7 @@ var render=function(theme,data,meta,require){
         ribbon: [
             {
                 partial: 'ribbon',
-		        context:{active:listPartial}
+		        context:breadCrumbData
             }
         ],
         leftnav: [
@@ -71,7 +78,7 @@ var render=function(theme,data,meta,require){
         heading: [
             {
                 partial:'heading',
-                context: {title:pageHeading,menuItems:require('/helpers/left-nav.js').generateLeftNavJson(data, listPartial)}
+                context: {title:heading,menuItems:require('/helpers/left-nav.js').generateLeftNavJson(data, listPartial)}
             }
         ]
     });

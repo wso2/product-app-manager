@@ -68,11 +68,6 @@ var render = function (theme, data, meta, require) {
 
     }
 
-
-
-
-
-
     var listPartial = 'list-assets';
 
 //Determine what view to show
@@ -87,8 +82,12 @@ var render = function (theme, data, meta, require) {
         default:
             break;
     }
+
+
+    var breadCrumbData = require('/helpers/breadcrumb.js').generateBreadcrumbJson(data);
+    breadCrumbData.activeRibbonElement = listPartial;
     //var addAssetUrl = "/publisher/asset/" + data.meta.shortName +"";
-    theme('one-col', {
+    theme('single-col-fluid', {
         title: data.title,
         header: [
             {
@@ -99,7 +98,7 @@ var render = function (theme, data, meta, require) {
         ribbon: [
             {
                 partial: 'ribbon',
-                context: {active:listPartial}
+                context: breadCrumbData
             }
         ],
         leftnav: [
