@@ -88,7 +88,7 @@ var render = function (theme, data, meta, require) {
             break;
     }
     //var addAssetUrl = "/publisher/asset/" + data.meta.shortName +"";
-    theme('one-col', {
+    theme('single-col-fluid', {
         title: data.title,
         header: [
             {
