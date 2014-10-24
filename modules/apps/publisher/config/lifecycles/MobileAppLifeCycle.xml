@@ -99,7 +99,7 @@
                                            value="Internal/reviewer:-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE3:Published"
                                            value="Internal/everyone:-add,-delete,-authorize"/>
-																					<parameter name="STATE_RULE3:Published" value="system/wso2.anonymous.role:+get" />
+								<parameter name="STATE_RULE3:Published" value="system/wso2.anonymous.role:+get" />
                             </execution>
                         </data>
                     </datamodel>

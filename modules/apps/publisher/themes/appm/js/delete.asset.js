@@ -7,7 +7,7 @@
 $(function(){
 
 $('.btn-delete').on('click', function(e) {
-		
+
 		var data = {};
 
 		//The type of asset

@@ -6,6 +6,7 @@
 var render=function(theme,data,meta,require){
     //var _url = "/publisher/asset/"  + data.meta.shortName + "/" + data.info.id + "/edit"
 	var listPartial='view-asset';
+    var pageHeading = "";
 	//Determine what view to show
 	switch(data.op){
 	case 'create':
@@ -14,7 +15,7 @@ var render=function(theme,data,meta,require){
 			//log.info('Special rendering case for mobileapp-using add-mobilepp.hbs');
 			listPartial='add-mobileapp';
 		}
-		
+        pageHeading = "Create New Mobile App";
 		break;
 	case 'view':
 		listPartial='view-asset';
@@ -27,7 +28,6 @@ var render=function(theme,data,meta,require){
 		}
         data = require('/helpers/edit-asset.js').selectCategory(data);
         data = require('/helpers/edit-asset.js').screenshots(data);
-
         break;
     case 'lifecycle':
         listPartial='lifecycle-asset';
@@ -38,6 +38,10 @@ var render=function(theme,data,meta,require){
 	default:
 		break;
 	}
+    data = require('/helpers/view-asset.js').splitData(data);
+    if(pageHeading == "") {
+        pageHeading = data.name.value;
+    }
 	theme('single-col-fluid', {
         title: data.title,
      	header: [
@@ -49,7 +53,7 @@ var render=function(theme,data,meta,require){
         ribbon: [
             {
                 partial: 'ribbon',
-		        context:require('/helpers/breadcrumb.js').generateBreadcrumbJson(data)
+		        context:{active:listPartial}
             }
         ],
         leftnav: [
@@ -62,6 +66,12 @@ var render=function(theme,data,meta,require){
             {
                 partial:listPartial,
 		        context: data
+            }
+        ],
+        heading: [
+            {
+                partial:'heading',
+                context: {title:pageHeading,menuItems:require('/helpers/left-nav.js').generateLeftNavJson(data, listPartial)}
             }
         ]
     });

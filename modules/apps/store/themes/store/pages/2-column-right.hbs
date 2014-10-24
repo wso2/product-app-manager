@@ -40,22 +40,37 @@
 </head>
 
 <body>
-{{include header}}
-{{include navigation}}  
-<div id="container-assets" class="container">
 
-    <div class="row">
-        <div class="span9 store-left">
-          
-            {{include body}}
-        </div>
-        <div class="span3 store-right">
-            {{include right}}
+<!-- Part 1: Wrap all page content here -->
+<div id="wrap">
+
+    {{include header}}
+    {{include navigation}}
+    <div id="container-assets" class="container">
+
+        <div class="row">
+            <div class="span9 store-left">
+
+                {{include body}}
+            </div>
+            <div class="span3 store-right">
+                {{include right}}
+            </div>
+
         </div>
 
     </div>
-    {{>footer}}
+
+    <div id="push"></div>
 </div>
+{{>footer}}
+
+
+
+
+
+
+
 <!-- /container -->
 
 <!-- Le javascript

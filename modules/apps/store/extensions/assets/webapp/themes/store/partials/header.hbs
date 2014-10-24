@@ -6,15 +6,19 @@
                     			<div class="container">
                         			<a class="brand" href="{{url "/assets/webapp"}}"></a>
                         			<ul class="nav menu pull-right">
+                                            <li class="nav-separator">
+                                                <a href="{{url "/assets/webapp"}}"><i class="icon-cog store-topnav-bookmark"></i> {{t "Web Applications"}}</a>
+                                            </li>
                             				<li class="nav-separator">
-                                				<a href="{{url "/assets/webapp"}}"><i class="icon-cog store-topnav-bookmark"></i> {{t "WebApps"}}</a>
+                                				<a href="{{url "/assets/mobileapp"}}"><i class="icon-mobile-phone store-topnav-bookmark"></i> {{t "Mobile Applications"}}</a>
                             				</li>
+
                             				{{#if user}}
                             					<li class="nav-separator">
                                 					<a href="{{url "/extensions/assets/webapp/subscriptions"}}"><i class="icon-tags store-topnav-bookmark"></i> {{t "My Subscriptions"}}</a>
                             					</li>
                             					<li>
-									<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i> {{user.username}} <b class="caret"></b></a>
+									                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i> {{user.username}} <b class="caret"></b></a>
                                 					<ul class="dropdown-menu dropdown-account" role="menu" aria-labelledby="dLabel">
 		                            					<li>
 			                                				{{#if sso}}
@@ -27,18 +31,18 @@
 
                             					</li>
 							{{else}}
-	                            				{{#if sso}}
-							    		<li>
-										<a href="{{url "/login"}}">{{t "Sign in"}}</a>
-							    		</li>
+                                {{#if sso}}
+                                    <li>
+                                    <a href="{{url "/login"}}">{{t "Sign in"}}</a>
+                                    </li>
 									
-                            					{{else}}
+                                {{else}}
 									<li>
 										<a href="#" data-toggle="modal" data-target="#modal-login">{{t "Sign in"}}</a>
 									</li>
 									
-                            					{{/if}}
-                            						<li>
+                                {{/if}}
+                                    <li>
 										<a id="btn-register" class="btn btn-primary" data-toggle="modal" data-target="#modal-register">{{t "Register"}}</a>
 									</li>
 							{{/if}}

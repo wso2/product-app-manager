@@ -10,28 +10,27 @@ var generateLeftNavJson = function(data, listPartial) {
 	
 	var currentTypeObj = getTypeObj(data.shortName);
 	
-	
     var leftNavItems = { leftNavLinks :
         [
            /*
             {
                            name : "Browse All",
-                           additionalClasses : "prominent-link",
+                           additionalClasses : "active",
                            url : "/publisher/assets/" + data.shortName + "/"
                        },*/
            
-            {
+         /*   {
                 name : "Add " + data.shortName + "",
                 iconClass : "icon-plus-sign-alt",
-                additionalClasses : (listPartial == "add-asset" ) ? "prominent-link" : null,
+                additionalClasses : (listPartial == "add-asset" ) ? "active" : null,
                 url : "/publisher/asset/" + data.shortName + ""
             },
             {
                 name: "Statistics",
                 iconClass: "icon-dashboard",
-                additionalClasses : (listPartial == "statistics" ) ? "prominent-link" : null,
+                additionalClasses : (listPartial == "statistics" ) ? "active" : null,
                 url: "/publisher/assets/statistics/" + data.shortName + "/"
-            }
+            }*/
         ]
     };
     if(data.artifact){
@@ -41,22 +40,23 @@ var generateLeftNavJson = function(data, listPartial) {
                /*
                 {
                                    name : "Browse All",
-                                   additionalClasses : "prominent-link",
+                                   additionalClasses : "active",
                                    url : "/publisher/assets/" + data.shortName + "/"
                                },*/
                
                 {
                     name : "Overview",
                     iconClass : "icon-list-alt",
-                    additionalClasses : (listPartial == "view-asset" ) ? "prominent-link" : null,
+                    additionalClasses : (listPartial == "view-asset" ) ? "active" : null,
                     url : "/publisher/asset/operations/view/" + data.shortName + "/" + data.artifact.id + ""
                 },
                 {
                     name : "Edit",
                     iconClass : "icon-edit",
-                     additionalClasses : (listPartial == "edit-asset" ) ? "prominent-link" : null,
+                     additionalClasses : (listPartial == "edit-asset" ) ? "active" : null,
                     url : "/publisher/asset/operations/edit/" + data.shortName + "/" + data.artifact.id + ""
                 },
+
 //                {
 //                    name : "Life Cycle",
 //                    iconClass : "icon-retweet",
@@ -66,13 +66,13 @@ var generateLeftNavJson = function(data, listPartial) {
                 {
                     name : "Documentation",
                     iconClass : "icon-file-alt",
-                     additionalClasses : (listPartial == "documentation" ) ? "prominent-link" : null,
+                     additionalClasses : (listPartial == "documentation" ) ? "active" : null,
                     url : "/publisher/asset/operations/documentation/" + data.shortName + "/" + data.artifact.id + ""
                 },
                 {
                     name : "Copy",
                     iconClass : "icon-file",
-                    additionalClasses : (listPartial == "copy-app" ) ? "prominent-link" : null,
+                    additionalClasses : (listPartial == "copy-app" ) ? "active" : null,
                     url : "/publisher/asset/operations/copyapp/" + data.shortName + "/" + data.artifact.id + ""
                 }
             ]

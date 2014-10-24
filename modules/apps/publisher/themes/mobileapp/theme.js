@@ -28,40 +28,75 @@ var engine = caramel.engine('handlebars', (function () {
 
             partials(new File(theme.resolve('partials')));
 
-                       
-Handlebars.registerHelper('compare', function(lvalue, rvalue, options) {
 
-    if (arguments.length < 3)
-        throw new Error("Handlerbars Helper 'compare' needs 2 parameters");
+            Handlebars.registerHelper('compare', function (lvalue, rvalue, options) {
 
-    operator = options.hash.operator || "==";
+                if (arguments.length < 3)
+                    throw new Error("Handlerbars Helper 'compare' needs 2 parameters");
 
-    var operators = {
-        '==':       function(l,r) { return l == r; },
-        '===':      function(l,r) { return l === r; },
-        '!=':       function(l,r) { return l != r; },
-        '<':        function(l,r) { return l < r; },
-        '>':        function(l,r) { return l > r; },
-        '<=':       function(l,r) { return l <= r; },
-        '>=':       function(l,r) { return l >= r; },
-        'typeof':   function(l,r) { return typeof l == r; }
-    }
+                operator = options.hash.operator || "==";
 
-    if (!operators[operator])
-        throw new Error("Handlerbars Helper 'compare' doesn't know the operator "+operator);
+                var operators = {
+                    '==': function (l, r) {
+                        return l == r;
+                    },
+                    '===': function (l, r) {
+                        return l === r;
+                    },
+                    '!=': function (l, r) {
+                        return l != r;
+                    },
+                    '<': function (l, r) {
+                        return l < r;
+                    },
+                    '>': function (l, r) {
+                        return l > r;
+                    },
+                    '<=': function (l, r) {
+                        return l <= r;
+                    },
+                    '>=': function (l, r) {
+                        return l >= r;
+                    },
+                    'typeof': function (l, r) {
+                        return typeof l == r;
+                    }
+                }
 
-    var result = operators[operator](lvalue,rvalue);
+                if (!operators[operator])
+                    throw new Error("Handlerbars Helper 'compare' doesn't know the operator " + operator);
 
-    if( result ) {
-        return options.fn(this);
-    } else {
-        return options.inverse(this);
-    }
+                var result = operators[operator](lvalue, rvalue);
 
-});
+                if (result) {
+                    return options.fn(this);
+                } else {
+                    return options.inverse(this);
+                }
 
-            
-            
-        },
+            });
+            Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
+
+                switch (operator) {
+                    case '==':
+                        return (v1 == v2) ? options.fn(this) : options.inverse(this);
+                    case '!=':
+                        return (v1 != v2) ? options.fn(this) : options.inverse(this);
+                    case '===':
+                        return (v1 === v2) ? options.fn(this) : options.inverse(this);
+                    case '<':
+                        return (v1 < v2) ? options.fn(this) : options.inverse(this);
+                    case '<=':
+                        return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+                    case '>':
+                        return (v1 > v2) ? options.fn(this) : options.inverse(this);
+                    case '>=':
+                        return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+                    default:
+                        return options.inverse(this);
+                }
+            });
+
+        }
     };
 }()));

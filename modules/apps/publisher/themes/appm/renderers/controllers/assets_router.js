@@ -74,6 +74,7 @@ var render = function (theme, data, meta, require) {
 
 
     var listPartial = 'list-assets';
+
 //Determine what view to show
     switch (data.op) {
         case 'list':
@@ -98,7 +99,7 @@ var render = function (theme, data, meta, require) {
         ribbon: [
             {
                 partial: 'ribbon',
-                context: require('/helpers/breadcrumb.js').generateBreadcrumbJson(data)
+                context: {active:listPartial}
             }
         ],
         leftnav: [
