@@ -24,7 +24,7 @@ var render = function (theme, data, meta, require) {
 
 
 
-	var lifecycleColors = {"Demote": "btn-blue", "Re-Submit": "btn-blue", "Submit": "btn-blue", "Publish": "btn-blue", "Unpublish": "btn-blue", "Deprecate": "btn-danger", "Retire": "btn-danger", "Approve": "btn-blue", "Reject": "btn-danger"};
+	var lifecycleColors = {"Demote": "btn-blue", "Re-Submit": "btn-blue", "Submit": "btn-blue", "Publish": "btn-blue", "Unpublish": "btn-orange", "Deprecate": "btn-danger", "Retire": "btn-danger", "Approve": "btn-blue", "Reject": "btn-danger"};
 	if(data.artifacts){
 
 		for(var i = 0; i < data.artifacts.length; i++){
