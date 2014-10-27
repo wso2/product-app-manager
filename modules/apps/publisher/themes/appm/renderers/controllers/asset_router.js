@@ -10,6 +10,7 @@ var render=function(theme,data,meta,require){
     //var _url = "/publisher/asset/"  + data.meta.shortName + "/" + data.info.id + "/edit"
     var listPartial='view-asset';
     var heading = "";
+    var newViewData;
     //Determine what view to show
     switch(data.op){
 
@@ -61,38 +62,40 @@ var render=function(theme,data,meta,require){
     }
 
 
+        theme('single-col-fluid', {
+            title: data.title,
+            header: [
+                {
+                    partial: 'header',
+                    context: data
+                }
+            ],
+            ribbon: [
+                {
+                    partial: 'ribbon',
+                    context: {active:listPartial}
+                }
+            ],
+            leftnav: [
+                {
+                    partial: 'left-nav',
+                    context: require('/helpers/left-nav.js').generateLeftNavJson(data, listPartial)
+                }
+            ],
+            listassets: [
+                {
+                    partial:listPartial,
+                    context: data
+                }
+            ],
+            heading: [
+                {
+                    partial: 'heading',
+                    context: {title:heading, menuItems: require('/helpers/left-nav.js').generateLeftNavJson(data, listPartial)}
+                }
+            ]
+        });
 
-    theme('single-col-fluid', {
-        title: data.title,
-        header: [
-            {
-                partial: 'header',
-                context: data
-            }
-        ],
-        ribbon: [
-            {
-                partial: 'ribbon',
-                context: {active:listPartial}
-            }
-        ],
-        leftnav: [
-            {
-                partial: 'left-nav',
-                context: require('/helpers/left-nav.js').generateLeftNavJson(data, listPartial)
-            }
-        ],
-        listassets: [
-            {
-                partial:listPartial,
-                context: data
-            }
-        ],
-        heading: [
-            {
-                partial: 'heading',
-                context: {title:heading, menuItems: require('/helpers/left-nav.js').generateLeftNavJson(data, listPartial)}
-            }
-        ]
-    });
+
+
 };

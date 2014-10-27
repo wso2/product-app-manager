@@ -5,7 +5,17 @@ var resources=function(page,meta){
     };
 
 };
+function endsWith(suffix,str) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
+}
+function isEmpty(obj) {
+    for(var prop in obj) {
+        if(obj.hasOwnProperty(prop))
+            return false;
+    }
 
+    return true;
+}
 var splitData = function(copyOfData){
     var dataPart = copyOfData.data.fields;
     var overview_name;
@@ -49,17 +59,7 @@ var splitData = function(copyOfData){
             oauthapis.push(dataPart[i]);
         }
     }
-    String.prototype.endsWith = function(suffix) {
-        return this.indexOf(suffix, this.length - suffix.length) !== -1;
-    };
-    function isEmpty(obj) {
-        for(var prop in obj) {
-            if(obj.hasOwnProperty(prop))
-                return false;
-        }
 
-        return true;
-    }
     var alreadyGot = [];
     var uriTemplateSorted = [];
     for(i=0;i<uriTemplate.length;i++){
@@ -70,7 +70,7 @@ var splitData = function(copyOfData){
             alreadyGot.push(numberInAction);
             for(var j=0;j<uriTemplate.length;j++){
 
-                if(uriTemplate[j].name.endsWith(numberInAction)){
+                if(endsWith(numberInAction,uriTemplate[j].name)){
                     var secondNamePart = uriTemplate[j].name.split(numberInAction)[0];
                     if(secondNamePart == "uritemplate_urlPattern"){
                         patternEntry.urlPattern = uriTemplate[j].value;

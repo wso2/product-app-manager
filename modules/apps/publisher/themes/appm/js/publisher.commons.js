@@ -228,7 +228,6 @@ $(document).ready(function() {
 	}
 
 	function search() {
-        debugger;
 		var searchAssetString = $('#inp_searchAsset').val();
 		var searchPrefix = $('#search-prefix').val();
 

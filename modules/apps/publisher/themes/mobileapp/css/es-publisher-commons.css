@@ -1499,7 +1499,7 @@ h2.first-h2{
 .nav-pills.nav-wizard > li .nav-arrow {
     position: absolute;
     top: 0px;
-    right: -20px;
+    right: -19px;
     width: 0px;
     height: 0px;
     border-style: solid;
@@ -1510,7 +1510,7 @@ h2.first-h2{
 .nav-pills.nav-wizard > li .nav-wedge {
     position: absolute;
     top: 0px;
-    left: -20px;
+    left: -19px;
     width: 0px;
     height: 0px;
     border-style: solid;
