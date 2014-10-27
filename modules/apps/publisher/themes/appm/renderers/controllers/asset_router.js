@@ -9,40 +9,58 @@ var render=function(theme,data,meta,require){
 
     //var _url = "/publisher/asset/"  + data.meta.shortName + "/" + data.info.id + "/edit"
     var listPartial='view-asset';
-
+    var heading = "";
     //Determine what view to show
     switch(data.op){
 
         case 'create':
             listPartial='add-asset';
+            heading = "Create New Web Application";
             break;
         case 'view':
             data = require('/helpers/view-asset.js').merge(data);
             listPartial='view-asset';
+            var copyOfData = parse(stringify(data));
+            data.newViewData =  require('/helpers/splitter.js').splitData(copyOfData);
+            heading = data.newViewData.name.value;
             break;
         case 'edit':
             data = require('/helpers/edit-asset.js').processData(data);
             listPartial='edit-asset';
+            var copyOfData = parse(stringify(data));
+            data.newViewData =  require('/helpers/splitter.js').splitData(copyOfData);
+            heading = data.newViewData.name.value + " - Edit";
             break;
         case 'lifecycle':
             listPartial='lifecycle-asset';
+            var copyOfData = parse(stringify(data));
+            data.newViewData =  require('/helpers/splitter.js').splitData(copyOfData);
+            heading = data.newViewData.name.value + " - Lifecycle";
             break;
         case 'versions':
             listPartial='versions-asset';
+            var copyOfData = parse(stringify(data));
+            data.newViewData =  require('/helpers/splitter.js').splitData(copyOfData);
+            heading = data.newViewData.name.value + " - Versions";
             break;
         case 'documentation':
             listPartial='documentation';
+            var copyOfData = parse(stringify(data));
+            data.newViewData =  require('/helpers/splitter.js').splitData(copyOfData);
+            heading = data.newViewData.name.value + " - Documentation";
             break;
         case 'copyapp':
             data = require('/helpers/copy-app.js').processData(data);
             listPartial='copy-app';
+            var copyOfData = parse(stringify(data));
+            data.newViewData =  require('/helpers/splitter.js').splitData(copyOfData);
+            heading = data.newViewData.name.value + " - Copy";
             break;
         default:
             break;
     }
 
-    var copyOfData = parse(stringify(data));
-    data.newViewData =  require('/helpers/splitter.js').splitData(copyOfData);
+
 
     theme('single-col-fluid', {
         title: data.title,
@@ -73,7 +91,7 @@ var render=function(theme,data,meta,require){
         heading: [
             {
                 partial: 'heading',
-                context: {title: "", menuItems: require('/helpers/left-nav.js').generateLeftNavJson(data, listPartial)}
+                context: {title:heading, menuItems: require('/helpers/left-nav.js').generateLeftNavJson(data, listPartial)}
             }
         ]
     });
