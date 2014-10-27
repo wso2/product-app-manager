@@ -40,6 +40,10 @@ var render=function(theme,data,meta,require){
         default:
             break;
     }
+
+    var copyOfData = parse(stringify(data));
+    data.newViewData =  require('/helpers/splitter.js').splitData(copyOfData);
+
     theme('single-col-fluid', {
         title: data.title,
         header: [

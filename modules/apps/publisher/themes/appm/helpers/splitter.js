@@ -6,9 +6,8 @@ var resources=function(page,meta){
 
 };
 
-var splitData = function(data){
-    var log = new Log();
-    var dataPart = data.data.fields;
+var splitData = function(copyOfData){
+    var dataPart = copyOfData.data.fields;
     var overview_name;
     var overview_meta = [];
     var overview_main = [];
@@ -18,6 +17,7 @@ var splitData = function(data){
     var sso = [];
     var oauthapis =[];
     var isMoreInfo = false;
+
 
     for(var i=0;i<dataPart.length;i++) {
         if (dataPart[i].name == "overview_name") {
@@ -105,9 +105,8 @@ var splitData = function(data){
     newViewData.oauthapis=oauthapis;
     newViewData.isMoreInfo=isMoreInfo;
 
-    data.newViewData = newViewData;
 
-    return data;
+    return newViewData;
 };
 
 
