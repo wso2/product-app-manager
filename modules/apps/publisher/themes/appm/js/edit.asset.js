@@ -294,20 +294,22 @@ $(function() {
                 			});
             			}
 
-            			$.ajax({
-            				url: '/publisher/asset/' + type + '/id/' + id + '/permissions',
-            				type: 'POST',
-            				processData: false,
-            				contentType: 'application/json',
-            				data: JSON.stringify(rolePermissions),
-            				success: function(response) {
-                					showModel(type,id);
-            				},
-            				error: function(response) {
-                					showAlert('Error adding permissions.', 'error');
-            				}
-               			 });
-
+                        if (rolePermissions.length > 0) {
+                            $.ajax({
+                                url: '/publisher/asset/' + type + '/id/' + id + '/permissions',
+                                type: 'POST',
+                                processData: false,
+                                contentType: 'application/json',
+                                data: JSON.stringify(rolePermissions),
+                                success: function (response) {
+                                    showModel(type, id);
+                                },
+                                error: function (response) {
+                                    showAlert('Error adding permissions.', 'error');
+                                }
+                            });
+                        }
+	            			
         			})();
 
 			    	if($('#autoConfig').is(':checked')){
@@ -575,10 +577,10 @@ function isContainRaw(tbody) {
 	    }
 	    return false;
 }
-	
+
 
 function removeClaimTable() {
-	$('.claimRow').remove();
-	$('#claimTableId').hide();
-	$('#claimPropertyCounter').val(0);
+    $('.claimRow').remove();
+    $('#claimTableId').hide();
+    $('#claimPropertyCounter').val(0);
 }

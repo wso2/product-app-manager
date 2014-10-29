@@ -34,11 +34,14 @@ $( document ).ready(function() {
             }
         })
 
+        resetResource();
         $("#resource_tbody").trigger("draw");
     });
 
 
-
+    $("#clear_resource").click(function(){
+        resetResource();
+    });
 
     $("#resource_tbody").delegate(".delete_resource","click", function(){
 
@@ -133,4 +136,9 @@ $( document ).ready(function() {
 
 });
 
-
+function resetResource() {
+    $("#url_pattern").val("");
+    $(".http_verb").each(function(){
+           this.checked = false;
+    })
+}
