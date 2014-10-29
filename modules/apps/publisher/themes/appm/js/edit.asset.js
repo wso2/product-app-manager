@@ -294,21 +294,21 @@ $(function() {
                 			});
             			}
 
-                        if (rolePermissions.length > 0) {
-                            $.ajax({
-                                url: '/publisher/asset/' + type + '/id/' + id + '/permissions',
-                                type: 'POST',
-                                processData: false,
-                                contentType: 'application/json',
-                                data: JSON.stringify(rolePermissions),
-                                success: function (response) {
-                                    showModel(type, id);
-                                },
-                                error: function (response) {
-                                    showAlert('Error adding permissions.', 'error');
-                                }
-                            });
-                        }
+                        	if (rolePermissions.length > 0) {
+                            		$.ajax({
+                                		url: '/publisher/asset/' + type + '/id/' + id + '/permissions',
+                                		type: 'POST',
+                                		processData: false,
+                                		contentType: 'application/json',
+                                		data: JSON.stringify(rolePermissions),
+                                		success: function (response) {
+                                   			 showModel(type, id);
+                               			 },
+                               			error: function (response) {
+                                   			 showAlert('Error adding permissions.', 'error');
+                                		}
+                            		});
+                        	}
 	            			
         			})();
 
