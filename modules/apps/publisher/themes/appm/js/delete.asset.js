@@ -6,8 +6,8 @@
 
 $(function(){
 
-$('.btn-primary').on('click', function(e) {
-		
+$('.btn-delete').on('click', function(e) {
+
 		var data = {};
 
 		//The type of asset
@@ -15,18 +15,11 @@ $('.btn-primary').on('click', function(e) {
 
 		var id = $(this).attr('data-app-id');
 
-
-
-
-
             e.preventDefault();
             e.stopPropagation();
 
-
-
              var confirmDel = confirm("Are you sure you want to delete this app?");
-            if (confirmDel == true)
-            {
+            if (confirmDel == true) {
                 $.ajax({
                     url: '/publisher/api/asset/delete/' + type + '/' + id,
                     type: 'POST',
@@ -46,8 +39,6 @@ $('.btn-primary').on('click', function(e) {
                     }
                 });
             }
-
-
 
 	});
 

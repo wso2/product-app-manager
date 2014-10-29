@@ -13,6 +13,8 @@
 	margin: 20px 0;
 	text-align: center;
 	padding-top: 125px;
+	padding-bottom: 125px;
+    background: #efefef;
 }
 .store-bookmark-icon{
     	color: #FFED00;

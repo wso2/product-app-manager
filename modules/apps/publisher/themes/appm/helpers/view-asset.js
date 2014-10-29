@@ -18,8 +18,6 @@ var format = function(data){
 	return data;
 }
 
-
-
 var merge = function(data){
 	
      var log =  new Log();
@@ -40,9 +38,7 @@ var merge = function(data){
 			 data.data.fields[i].value = sResult.split(",")[1];
 
 	 }
-
 	 return data;
-}
-
+};
 
 

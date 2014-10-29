@@ -6,6 +6,12 @@ $(function() {
 		$('#btn-signin').text('Sign in').removeClass('disabled');
 	};
 
+    var showLoginError = function (message) {
+        var msg = message.replace(/[0-9a-z.+]+:\s/i, '');
+        $('#login-alert').html(msg).fadeIn('fast');
+        $('#btn-signin').text('Sign in').removeClass('disabled');
+    };
+
     	var login = function() {
 		if (!$("#form-login").valid())
 			return;
@@ -30,7 +36,7 @@ $(function() {
                  	  			window.location = '/store/assets/webapp/'+ assetId;
                     			}
                 		} else {
-                    			showError(data.message);
+                            showLoginError(data.message);
                 		}
             		},
             		contentType: 'application/json',
@@ -126,16 +132,29 @@ $(function() {
             }),
             success: function (data) {
                 if (!data.error) {
+                    var messageText = null;
+
+                    //If userSignUp workflow is enabled
+                    if(data.showWorkflowMsg){
+                        messageText = "User account awaiting Administrator approval.";
+
+                    }else{
+                        messageText = "User added successfully. You can now sign into the APP store using the new user account.";
+                    }
+
                     $('#messageModal').html($('#confirmation-data').html());
                     $('#messageModal h3.modal-title').html(('APP Store - Notification'));
+                    $('#messageModal .messageText').html(messageText);
                     $('#messageModal a.btn-primary').html('OK');
                     $('#messageModal div.modal-body').html();
                     $('#messageModal').modal();
                     $('#modal-register').modal('hide');
-                    $('#messageModal a.btn-primary').click(function() {
+                    $('#messageModal a.btn-primary').click(function () {
                         $('#messageModal').modal('hide');
                         $('#modal-login').modal('show');
                     });
+
+
                 } else {
                     showError(data.message);
                 }

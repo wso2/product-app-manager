@@ -3,7 +3,7 @@ var meta = {
     purpose: 'save',
     type: 'form',
     source: 'default',
-    applyTo: '*',
+    applyTo: 'webapp',
     required: ['model', 'template'],
     name: 'webapp.action.save'
 };
@@ -194,9 +194,9 @@ var module = function () {
             var rxtManager = context.rxtManager;
 
             var artifactManager = rxtManager.getArtifactManager(shortName);
-                        
+
             artifactManager.add(asset);
-            
+
             log.debug('Finished saving asset : ' + name);
 
             log.debug(asset);

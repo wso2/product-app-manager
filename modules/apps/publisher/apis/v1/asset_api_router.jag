@@ -16,568 +16,1037 @@ include("/extensions/webapp/modules/jagg/jagg.jag");
 
 require('/modules/publisher.js').exec(function(ctx) {
 
-var config = require('/config/publisher.json');
-var caramel = require('caramel');
-var apiProvider = jagg.module('manager').getAPIProviderObj();
-var router = require('/modules/router-g.js').router();
-var routeManager = new router.Router();
-var log= new Log();
+    var config = require('/config/publisher.json');
+    var caramel = require('caramel');
+    var apiProvider = jagg.module('manager').getAPIProviderObj();
+    var router = require('/modules/router-g.js').router();
+    var routeManager = new router.Router();
+    var log= new Log();
 
-var appmgtPublisher = require('appmgtpublisher');
-
-
+    var appmgtPublisher = require('appmgtpublisher');
 
 
- routeManager.register('POST', 'publisher', '/publisher/api/asset/copy/{type}/{id}', function (context) {
+
+
+
+
+    /****************************MOBILE*******************************************/
+
+
+    var config = require('/config/publisher.json');
+    var mam_config = require('/extensions/mobileapp/config/mam-config.json');
+    var caramel = require('caramel');
+    var server = require('store').server;
+    var router = require('/modules/router-g.js').router();
+    var routeManager = new router.Router();
+    var utility=require('/modules/utility.js').rxt_utility();
+
+
+    var checkNonSpecial = function(value){
+        var non_special_regex = /^[A-Za-z][A-Za-z0-9\s-]*$/;
+        return non_special_regex.test(value);
+    }
+
+
+
+
+    var makeid= function(){
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for( var i=0; i < 5; i++ )
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return text;
+    }
+
+    var getExtensionText = function(extension){
+        var index = extension.lastIndexOf('.');
+        var ext = index < extension.length ? extension.substring(index + 1) : '';
+        return ext;
+    }
+
+    var getExtension = function(file){
+        var path = file.getName();
+        var index = path.lastIndexOf('.');
+        var ext = index < path.length ? path.substring(index + 1) : '';
+        return ext;
+    }
+    var getFileOnly = function(file){
+        var path = file.getName();
+        var index = path.lastIndexOf('.');
+        var name = index < path.length ? path.substring(0,index) : '';
+        return name;
+    }
+    var saveFile = function(file){
+        if(file!=undefined){
+            var file_n= file.getName()
+            if(file_n==""){
+                return "";
+            }
+            var uid= makeid();
+            var file_name = Packages.java.lang.System.getProperty("carbon.home") + mam_config.filePreciseLocation+uid+file_n;
+
+            var fileTemp=new File( 'file://' + file_name);
+            try{
+                fileTemp.open('w');
+                fileTemp.write(file.getStream());
+            }catch(e){
+                print(e);
+            } finally{
+                fileTemp.close();
+            }
+
+            return "/publisher"+ mam_config.fileAPILocation + uid + file_n;
+
+        }
+        return "";
+    }
+
+
+
+    var getBundleID = function(appid){
+        try{
+            var result =  get('https://itunes.apple.com/lookup?id='+appid).data;
+            if(result!=null){
+                log.debug(result);
+                result = parse(result);
+                if(result.resultCount==1){
+                    var appinfo =  result.results[0];
+                    var bundleId = appinfo.bundleId;
+                    return bundleId;
+                }
+            }
+        }catch(e){
+            return null;
+        }
+    }
+
+    var validateAppIdentifier = function(attributes, display_attribute){
+        var artifactManager = rxtManager.getArtifactManager('mobileapp');
+
+        var predicate={}
+        predicate['attributes']=attributes;
+
+        //Perform a search for an asset with the provided name
+        var matches=artifactManager.find(function(asset){
+            var equal=utility.assertEqualCaseSensitive(asset,predicate);
+            return equal;
+        },null);
+
+        if(matches.length>0){
+            print({"ok" : false, "message" : "Validation failure", "report" : {"failed" : true, "name" : ["App with identifer "+display_attribute+" and version "+attributes.overview_version+" already exists"]}})
+            return true;
+        }
+    }
+
+
+    /**************************END_MOBILE*****************************************/
+
+
+    routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}', function (context) {
+
+        var shortName = (context.params.type) || '';
+
+        var rxtTemplate = rxtManager.findAssetTemplate(function (template) {
+            return (template.shortName == shortName) ? true : false;
+        });
+
+        if (!rxtTemplate) {
+            log.debug('The asset type: ' + shortName + ' could not be found');
+            response.sendError(404, 'Asset type not found.'); //TODO: Replace
+        }
+        else {
+            var model = modelManager.getModel(shortName);
+            //Obtain the username from the session and populate the provider field
+
+            var username=require('store').server.current(session).username;//.get('LOGGED_IN_USER');
+            model.set('overview.provider',username);
+            var output=model.export('form');
+
+            print(output);
+        }
+    });
+
+    routeManager.register('POST', 'publisher', '/publisher/api/asset/delete/{type}/{id}', function (context) {
+
+        var shortName = context.params.type;
+        var id = context.params.id;
+        var msg={};
+        var artifactManager = rxtManager.getArtifactManager(shortName);
+        var server  = require('store').server;
+        var username = server.current(session).username;
+
+        try {
+            //Get the original artifact
+            var originalArtifact = artifactManager.get(id);
+            var attributes = originalArtifact.attributes;
+
+            var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
+            var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
+            var webApp = Packages.org.wso2.carbon.appmgt.api.model.WebApp;
+
+            var ssoProvider = Packages.org.wso2.carbon.appmgt.api.model.SSOProvider;
+            //Create SSOProvider Object
+            var ssoProviderObj = new ssoProvider();
+
+            var apiIdentifierObj = new apiIdentifier(attributes["overview_provider"], attributes["overview_name"], attributes["overview_version"]);
+            if(attributes["sso_ssoProvider"] != " "){
+                ssoProviderObj.setProviderName(attributes["sso_ssoProvider"].split("-")[0]);
+                ssoProviderObj.setProviderVersion(attributes["sso_ssoProvider"].split("-")[1]);
+                ssoProviderObj.setIssuerName(attributes["overview_name"]+"-"+attributes["overview_version"]);
+            }else{
+                ssoProviderObj = null;
+            }
+
+            var apiMgtDAOObj = new apiMgtDAO();
+            var webAppObj = new webApp(apiIdentifierObj);
+
+            var isDeleted = apiMgtDAOObj.deleteApp(apiIdentifierObj,username,ssoProviderObj);
+
+            if(isDeleted==true){
+                msg['ok']=true;
+                msg['message']='asset delete';
+                print(msg);
+            }else if (isDeleted==false){
+                msg['ok']=false;
+                msg['message']='asset subscribed';
+                print(msg);
+            }else{
+                msg['ok']=null;
+                msg['message']='asset error';
+                print(msg);
+            }
+
+        } catch (e) {
+            log.debug('The asset ' + id + ' could not be deleted.The following exception was thrown: ' + e);
+            response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
+        }
+    });
+
+
+    routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
+
+        var shortName = context.params.type;
+
+        var id = context.params.id;
+
+        var artifactManager = rxtManager.getArtifactManager(shortName);
+
+        //If the id is not found it will throw a conversion exception
+        try {
+
+            var artifact = artifactManager.get(id);
+
+            //Perform some filerting logic
+            artifact=filterManager.filter(artifact,session);
+
+            if(!artifact){
+                response.sendError(401,'You do not have viewing rights for this asset');
+                return;
+            }
+
+            var model = modelManager.getModel(shortName);
+
+            //Customize the resource for the current app
+            dataInjector.inject(artifact,DataInjectorModes.DISPLAY);
+
+            model.import('asset', artifact);
+
+
+            var result = model.export('form');
+
+            print(result);
+        } catch (e) {
+
+            log.debug('The asset type: ' + shortName + ' with id: ' + id + ' could not be found.The following exception was thrown: ' + e);
+            response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check the server logs.');
+        }
+
+    });
+
+    routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}', function (context) {
+        var shortName = context.params.type;
+        var artifactManager = rxtManager.getArtifactManager(shortName);
+
+        //check for mobile
+        if(shortName === "mobileapp"){
+            addNewMobileApp(context, rxtManager);
+            return;
+        }
+
+
+        //Check if the type is valid
+        try {
+
+            var model=modelManager.getModel(shortName);
+
+            //assigning default thumbnail and banner if not provided.
+            if(context.post['images_thumbnail'] == '') {
+                context.post['images_thumbnail'] = '/publisher/config/defaults/img/thumbnail.jpg';
+            }
+            if(context.post['images_banner'] == '') {
+                context.post['images_banner'] = '/publisher/config/defaults/img/banner.jpg';
+            }
+
+            model.import('form.importer',context.post);
+
+            //Perform validations on the asset
+            var report=model.validate();
+
+            //If the report indicates the model has failed validations send an error
+            if((report)&&(report.failed)){
+                print({ok:false,message:'Validation failure',report:report});
+                return;
+            }
+
+            //var assetModel = getModel(context.post);
+
+            model.save();
+
+            //var createdAsset = artifactManager.add(assetModel);
+
+            //Get the model id
+            var idField = model.get('*.id');
+
+            if (idField) {
+                print({ok: 'true', message: 'Asset created.', id: idField.value});
+            }
+            else {
+                log.debug('An asset of type: ' + shortName + ' could not be created.Probably a fault with publisher logic!');
+            }
+
+        }
+        catch (e) {
+            log.debug('An asset of type: ' + shortName + ' could not be created.The following exception was thrown: ' + e);
+            response.sendError(500, 'An asset of type: ' + shortName + ' could not be created.Please check the server logs.');
+        }
+
+    });
+
+    routeManager.register('GET', 'publisher', '/publisher/api/asset/userRoles/{type}/{id}', function (context) {
+
+
+
+
+        var type = context.params.type;
+        var id = context.params.id;
+
+        var artifactManager = rxtManager.getArtifactManager(type);
+
+        var artifact = artifactManager.get(id);
+
+        //Obtain the path of the asset
+        var path = artifact.path;
+
+        //Obtain the tags
+        var tags = rxtManager.registry.tags(path);
+
+        //Create a tag array
+        var counter = 0;
+        var tagArray = [];
+
+        for (var index in tags) {
+            tagArray.push({id: counter, name: tags[index]});
+        }
+
+        print(tagArray);
+    });
+
+
+    routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
+
+
+
+        var shortName = context.params.type;
+
+        if(shortName === "mobileapp"){
+
+            editMobileApp(context, rxtManager);
+            return;
+        }
+
+
+        var id = context.params.id;
+        var msg={};
+        var artifactManager = rxtManager.getArtifactManager(shortName);
 
         var server  = require('store').server;
         var username = server.current(session).username;
 
-       var appMgtProviderObj = new appmgtPublisher.APIProvider(stringify(username));
-        appMgtProviderObj.createNewAPIVersion(context.post.provider, context.post.appName, context.post.oldVersion, context.post.newVersion);
-        print({});
+        if(context.post['images_thumbnail'] instanceof Array){
+            context.post['images_thumbnail'] = context.post['images_thumbnail'][0];
+        }
+        if(context.post['images_banner'] instanceof Array){
+            context.post['images_banner'] = context.post['images_banner'][0];
+        }
 
- });
+        try {
+            var modelA = modelManager.getModel(shortName);
+            var modelB = modelManager.getModel(shortName);
+
+            //Handle any files
+            inspectFiles(request,context.post);
+            var originalArtifact = artifactManager.get(id);
+
+            //Get the original artifact
+            if(context.post["images_thumbnail"] == ""){
+                context.post["images_thumbnail"] = originalArtifact.attributes["images_thumbnail"];
+            }
+            if(context.post["images_banner"] == ""){
+                context.post["images_banner"] = originalArtifact.attributes["images_banner"];
+            }
+
+            modelA.import('form.importer', context.post);
+
+            //Validation requires the lifecycle state
+            modelA.set('*.lifecycleState',originalArtifact.lifecycleState);
+
+            var report=modelA.validate();
+            //Check if the validation check has failed
+            if((report)&&(report.failed)){
+
+                msg['ok']=false;
+                msg['report']=report;
+                print(msg);
+                log.debug(msg);
+                return;
+            }
 
 
-routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}', function (context) {
+            modelA.set('*.id', id);
 
-    var shortName = (context.params.type) || '';
+            modelB.import('asset', originalArtifact);
 
-    var rxtTemplate = rxtManager.findAssetTemplate(function (template) {
-        return (template.shortName == shortName) ? true : false;
+            //Checks whether two models are equal
+            var reqProps=['overview.name', 'overview.provider', 'overview.version']
+
+            var isEqual = modelManager.assertEqual(modelA, modelB,reqProps);
+
+            //If they are not equal,abort the operation
+            if (!isEqual) {
+                log.debug('trying to get fields which are different');
+                var diff=modelManager.diff(modelA,modelB,reqProps);
+                response.sendError(406, 'The name,provider and version of an asset cannot be changed.The following fields'
+                        +' were modified: '+diff);
+                return;
+            }
+            modelA.set("overview.createdtime",modelB.get("overview.createdtime").value);
+            var artifact = modelA.export('asset.exporter');
+
+
+            var index = 0;
+            var uritemplate = "uritemplate_urlPattern" + index;
+
+            while (uritemplate in artifact.attributes) {
+                var urlPattern = artifact.attributes['uritemplate_urlPattern'+index];
+                if(urlPattern == "null" || urlPattern == "" ){
+                    var key_pattern = 'uritemplate_urlPattern'+index;
+                    var key_httpVerb = 'uritemplate_httpVerb' + index;
+                    var key_tier = 'uritemplate_tier'  + index;
+                    var key_skipthrottle = 'uritemplate_skipthrottle'  + index;
+                    var key_user_roles = 'uritemplate_userRoles' + index;
+                    var key_policy_id = 'uritemplate_entitlementPolicyId' + index;
+
+                    delete artifact.attributes[key_pattern];
+                    delete artifact.attributes[key_httpVerb];
+                    delete artifact.attributes[key_tier];
+                    delete artifact.attributes[key_skipthrottle];
+                    delete artifact.attributes[key_user_roles];
+                    delete artifact.attributes[key_policy_id];
+
+                }
+                index++;
+                uritemplate = "uritemplate_urlPattern" + index;
+
+            }
+
+            dataInjector.inject(artifact,DataInjectorModes.UPDATE);
+
+            artifactManager.update(artifact);
+
+            // dataInjector.inject(artifact,DataInjectorModes.DISPLAY);
+
+            var update = apiProvider.updateAPI(artifact);
+
+            var attributes = artifact.attributes;
+
+            //Update entitlement policies of the web application
+            updateEntitlementPolicies(attributes["overview_provider"], attributes["overview_name"], attributes["overview_version"]);
+
+            //update OAuth APIs consumer details per given web-app
+            var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
+            var apiIdentifierObj = new apiIdentifier(attributes["overview_provider"], attributes["overview_name"], attributes["overview_version"]);
+
+            var webApp = Packages.org.wso2.carbon.appmgt.api.model.WebApp;
+            var webAppObj = new webApp(apiIdentifierObj);
+
+            var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
+            var apiMgtDAOObj = new apiMgtDAO();
+
+            apiMgtDAOObj.updateOAuthAPIAccessInfo(webAppObj);
+
+            var count = 1;
+            var tokenEndpoint = attributes["oauthapis_apiTokenEndpoint" + count];
+
+            while (tokenEndpoint != null && tokenEndpoint.length > 0) {
+
+                webAppObj.setTokenEndpoint(attributes["oauthapis_apiTokenEndpoint" + count]);
+                webAppObj.setApiConsumerKey(attributes["oauthapis_apiConsumerKey" + count]);
+                webAppObj.setApiConsumerSecret(attributes["oauthapis_apiConsumerSecret" + count]);
+                webAppObj.setApiName(attributes["oauthapis_apiName" + count]);
+
+                count++;
+                tokenEndpoint = attributes["oauthapis_apiTokenEndpoint" + count];
+
+                //Save OAuth APIs consumer details per given web-app
+                apiMgtDAOObj.addOAuthAPIAccessInfo(webAppObj);
+            }
+
+            saveExternalEntitlementPolicies(context.post);
+
+            msg['ok']=true;
+            msg['message']='asset updated';
+            msg['asset']=artifact;
+            print(msg);
+
+
+        } catch (e) {
+            log.warn(e)
+            log.debug('The asset ' + id + ' could not be updated.The following exception was thrown: ' + e);
+            response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
+        }
     });
 
-    if (!rxtTemplate) {
-        log.debug('The asset type: ' + shortName + ' could not be found');
-        response.sendError(404, 'Asset type not found.'); //TODO: Replace
-    }
-    else {
-        var model = modelManager.getModel(shortName);
-        //Obtain the username from the session and populate the provider field
+    /**
+     * Saves external entitlement policies.
+     */
+    function saveExternalEntitlementPolicies(params){
 
-        var username=require('store').server.current(session).username;//.get('LOGGED_IN_USER');
-        model.set('overview.provider',username);
-        var output=model.export('form');
+        var policies = parse(params['entitlementPolicies']);
+        var policiesToBeSaved = new Array();
 
-        print(output);
-    }
-});
+        var EntitlementPolicy = Packages.org.wso2.carbon.appmgt.api.model.entitlement.EntitlementPolicy;
+        var entitlementPolicy;
+        for(var i = 0; i < policies.length; i++){
+            if(policies[i]){
+                entitlementPolicy  = new EntitlementPolicy();
+                entitlementPolicy.setPolicyId(policies[i]['id']);
+                entitlementPolicy.setPolicyContent(policies[i]['content']);
+                policiesToBeSaved.push(entitlementPolicy);
+            }
 
-routeManager.register('POST', 'publisher', '/publisher/api/asset/delete/{type}/{id}', function (context) {
-		
-	var shortName = context.params.type;
-	var id = context.params.id;
-	var msg={};
-	var artifactManager = rxtManager.getArtifactManager(shortName);
-	var server  = require('store').server;
-	var username = server.current(session).username;
-		    
-	try {
-		  	//Get the original artifact
-			var originalArtifact = artifactManager.get(id);
-		    var attributes = originalArtifact.attributes;
-		        
-		    var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
-		    var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
-		    var webApp = Packages.org.wso2.carbon.appmgt.api.model.WebApp;
-		   
-		    var apiIdentifierObj = new apiIdentifier(attributes["overview_provider"], attributes["overview_name"], attributes["overview_version"]);
-		    var apiMgtDAOObj = new apiMgtDAO();
-		    var webAppObj = new webApp(apiIdentifierObj);
-		    
-		    var isDeleted = apiMgtDAOObj.deleteApp(apiIdentifierObj,username,webAppObj);
-		    
-		    if(isDeleted==1){ 
-		    	msg['ok']=true;
-		        msg['message']='asset delete';
-		        print(msg);
-		        
-		        try {
-		        		artifactManager.remove(id);
-		        	} catch (e) {
-		        		log.debug('Asset ' + id + 'could not be removed.An exception was thrown: ' + e);
-		        	    response.sendError(404, 'Asset with id: ' + id + ' could not be removed.');
-		        	}      	    
-		        	
-		    }else if (isDeleted==2){
-		        msg['ok']=true;
-		        msg['message']='asset subscribed';
-		        print(msg);
-		    }else if (isDeleted==3){
-		        msg['ok']=false;
-		        msg['message']='asset subscribed';
-		        print(msg);
-		    }else{
-		       	msg['ok']=null;
-		        msg['message']='asset error';
-		        print(msg);
-		    }
-		
-	} catch (e) {
-		log.debug('The asset ' + id + ' could not be deleted.The following exception was thrown: ' + e);
-		response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
-	}
-});
-
-
-routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
-
-    var shortName = context.params.type;
-
-    var id = context.params.id;
-
-    var artifactManager = rxtManager.getArtifactManager(shortName);
-
-    //If the id is not found it will throw a conversion exception
-    try {
-
-        var artifact = artifactManager.get(id);
-
-        //Perform some filerting logic
-        artifact=filterManager.filter(artifact,session);
-
-        if(!artifact){
-            response.sendError(401,'You do not have viewing rights for this asset');
-            return;
         }
 
-        var model = modelManager.getModel(shortName);
-
-        //Customize the resource for the current app
-        dataInjector.inject(artifact,DataInjectorModes.DISPLAY);
-
-        model.import('asset', artifact);
-
-
-        var result = model.export('form');
-
-        print(result);
-    } catch (e) {
-
-        log.debug('The asset type: ' + shortName + ' with id: ' + id + ' could not be found.The following exception was thrown: ' + e);
-        response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check the server logs.');
-    }
-
-});
-
-routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}', function (context) {
-    var shortName = context.params.type;
-    var artifactManager = rxtManager.getArtifactManager(shortName);
-
-    //Check if the type is valid
-    try {
-
-        var model=modelManager.getModel(shortName);
-
-        //assigning default thumbnail and banner if not provided.
-        if(context.post['images_thumbnail'] == '') {
-            context.post['images_thumbnail'] = '/publisher/config/defaults/img/thumbnail.jpg';
-        }
-        if(context.post['images_banner'] == '') {
-            context.post['images_banner'] = '/publisher/config/defaults/img/banner.jpg';
-        }
-
-        model.import('form.importer',context.post);
-
-        //Perform validations on the asset
-        var report=model.validate();
-
-        //If the report indicates the model has failed validations send an error
-        if((report)&&(report.failed)){
-            print({ok:false,message:'Validation failure',report:report});
-            return;
-        }
-
-        //var assetModel = getModel(context.post);
-
-        model.save();
-
-        //var createdAsset = artifactManager.add(assetModel);
-
-        //Get the model id
-        var idField = model.get('*.id');
-
-        if (idField) {
-            print({ok: 'true', message: 'Asset created.', id: idField.value});
-        }
-        else {
-            log.debug('An asset of type: ' + shortName + ' could not be created.Probably a fault with publisher logic!');
+        if(policiesToBeSaved.length > 0){
+            apiProvider.saveEntitlementPolicies(policiesToBeSaved);
         }
 
     }
-    catch (e) {
-        log.debug('An asset of type: ' + shortName + ' could not be created.The following exception was thrown: ' + e);
-        response.sendError(500, 'An asset of type: ' + shortName + ' could not be created.Please check the server logs.');
+
+    /**
+     * Update entitlement policies.
+     */
+    function updateEntitlementPolicies(overviewProvider,overviewName,overviewVersion){
+
+        // Save external entitlement policies
+        var webappId={};
+        webappId.provider= overviewProvider;
+        webappId.name= overviewName;
+        webappId.version= overviewVersion;
+        apiProvider.generateEntitlementPolicies(webappId);
     }
 
-});
 
-	routeManager.register('GET', 'publisher', '/publisher/api/asset/userRoles/{type}/{id}', function (context) {
-	
-	    var type = context.params.type;
-	    var id = context.params.id;
-	
-	    var artifactManager = rxtManager.getArtifactManager(type);
-	
-	    var artifact = artifactManager.get(id);
-	
-	    //Obtain the path of the asset
-	    var path = artifact.path;
-	
-	    //Obtain the tags
-	    var tags = rxtManager.registry.tags(path);
-	
-	    //Create a tag array
-	    var counter = 0;
-	    var tagArray = [];
-	
-	    for (var index in tags) {
-	        tagArray.push({id: counter, name: tags[index]});
-	    }
-	
-	    print(tagArray);
-	});
+    /*
+     The function inspects the files sent with a request.If files are found
+     they are added to Storage and then the generated uuids are added to
+     the POST parameter object
+     @req: A request object
+     @params: The POST parameters
+     */
+    function inspectFiles(req, params) {
+        var files = req.getAllFiles();
+        var fileName;
+        var file;
+        var uuid = '';
+        var extension;
+        var thumbnail;
+        var banner;
+
+        var storageManager = new storageModule.StorageManager({
+            context: 'storage',
+            isCached: false,
+            connectionInfo: {
+                dataSource: storageConfig.dataSource
+            }
+        });
 
 
-routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
-	
-    var shortName = context.params.type;
-    var id = context.params.id;
-    var msg={};
-    var artifactManager = rxtManager.getArtifactManager(shortName);
-    
-    var server  = require('store').server;
-    var username = server.current(session).username;
+        for (var index in files) {
 
-    if(context.post['images_thumbnail'] instanceof Array){
-	context.post['images_thumbnail'] = context.post['images_thumbnail'][0];
-    }
-    if(context.post['images_banner'] instanceof Array){
-	context.post['images_banner'] = context.post['images_banner'][0];
-    }
+            file = files[index];
 
-    try {
-        var modelA = modelManager.getModel(shortName);
-        var modelB = modelManager.getModel(shortName);
+            log.debug('file: ' + index);
 
-        //Handle any files
-        inspectFiles(request,context.post);
-        var originalArtifact = artifactManager.get(id);
-                
-        //Get the original artifact
-        if(context.post["images_thumbnail"] == ""){
-        	context.post["images_thumbnail"] = originalArtifact.attributes["images_thumbnail"];
+            //Put the file in storage and get a uuid as a reference
+            var resource = {};
+            resource['file'] = file;
+            extension = utility.fileio.getExtension(file);
+            resource['contentType'] = utility.fileio.getContentType(extension);
+
+            uuid=storageManager.put(resource);
+
+            log.debug('uuid added: '+uuid);
+
+            //Add a new  entry into the POST parameters containing the uuid
+            params[index] = uuid;
+
         }
-    	if(context.post["images_banner"] == ""){
-        	context.post["images_banner"] = originalArtifact.attributes["images_banner"];
-        }
-                  
-        modelA.import('form.importer', context.post);
+    }
 
-        //Validation requires the lifecycle state
-        modelA.set('*.lifecycleState',originalArtifact.lifecycleState);
+    routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
+        var shortName = context.params.type;
+        var id = context.params.id;
+        var msg={};
+        var artifactManager = rxtManager.getArtifactManager(shortName);
 
-        var report=modelA.validate();
-        //Check if the validation check has failed
-        if((report)&&(report.failed)){
 
-            msg['ok']=false;
-            msg['report']=report;
+        try {
+            var modelA = modelManager.getModel(shortName);
+            var modelB = modelManager.getModel(shortName);
+
+            //Get the original artifact
+            var originalArtifact = artifactManager.get(id);
+
+            modelA.import('form.importer', context.content);
+
+            //Validation requires the lifecycle state
+            modelA.set('*.lifecycleState',originalArtifact.lifecycleState);
+
+            var report=modelA.validate();
+
+            //Check if the validation check has failed
+            if((report)&&(report.failed)){
+
+                msg['ok']=false;
+                msg['report']=report;
+                print(msg);
+                return;
+            }
+
+            modelA.set('*.id', id);
+
+            modelB.import('asset', originalArtifact);
+
+            //Checks whether two models are equal
+            var reqProps=['overview.name', 'overview.provider', 'overview.version']
+
+            var isEqual = modelManager.assertEqual(modelA, modelB,reqProps);
+
+            //If they are not equal,abort the operation
+            if (!isEqual) {
+                log.debug('trying to get fields which are different');
+                var diff=modelManager.diff(modelA,modelB,reqProps);
+                response.sendError(406, 'The name,provider and version of an asset cannot be changed.The following fields'
+                        +' were modified: '+diff);
+                return;
+            }
+            modelA.set("overview.createdtime",modelB.get("overview.createdtime").value);
+            var artifact = modelA.export('asset.exporter');
+
+            log.debug('not updating'+artifact);
+            //artifactManager.update(artifact);
+
+            msg['ok']=true;
+            msg['message']='asset updated';
             print(msg);
-            log.debug(msg);
-            return;
-        }
 
-
-        modelA.set('*.id', id);
-
-        modelB.import('asset', originalArtifact);
-       
-        //Checks whether two models are equal
-        var reqProps=['overview.name', 'overview.provider', 'overview.version']
-
-        var isEqual = modelManager.assertEqual(modelA, modelB,reqProps);
-
-        //If they are not equal,abort the operation
-        if (!isEqual) {
-            log.debug('trying to get fields which are different');
-            var diff=modelManager.diff(modelA,modelB,reqProps);
-            response.sendError(406, 'The name,provider and version of an asset cannot be changed.The following fields'
-                    +' were modified: '+diff);
-            return;
-        }
-        modelA.set("overview.createdtime",modelB.get("overview.createdtime").value);
-        var artifact = modelA.export('asset.exporter');
-       
-
-        var index = 0;
-	var uritemplate = "uritemplate_urlPattern" + index;
-	
-	while (uritemplate in artifact.attributes) {
-		var urlPattern = artifact.attributes['uritemplate_urlPattern'+index];
-		if(urlPattern == "null" || urlPattern == "" ){
-			var key_pattern = 'uritemplate_urlPattern'+index;
-			var key_httpVerb = 'uritemplate_httpVerb' + index;
-			var key_tier = 'uritemplate_tier'  + index;
-			var key_skipthrottle = 'uritemplate_skipthrottle'  + index;
-			var key_user_roles = 'uritemplate_userRoles' + index;
-            var key_policy_id = 'uritemplate_entitlementPolicyId' + index;
-						
-			delete artifact.attributes[key_pattern];
-			delete artifact.attributes[key_httpVerb];
-			delete artifact.attributes[key_tier];
-			delete artifact.attributes[key_skipthrottle];
-			delete artifact.attributes[key_user_roles];
-            delete artifact.attributes[key_policy_id];
-            		
-		}
-		index++;
-		uritemplate = "uritemplate_urlPattern" + index;
-		
-	}
-
-        dataInjector.inject(artifact,DataInjectorModes.UPDATE);
-
-        artifactManager.update(artifact);
-
-        dataInjector.inject(artifact,DataInjectorModes.DISPLAY);
-
-	    var update = apiProvider.updateAPI(artifact);
-        
-        //update OAuth APIs consumer details per given web-app
-        var attributes = artifact.attributes;
-        
-        var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
-        var apiIdentifierObj = new apiIdentifier(attributes["overview_provider"], attributes["overview_name"], attributes["overview_version"]);
-                
-        var webApp = Packages.org.wso2.carbon.appmgt.api.model.WebApp;
-        var webAppObj = new webApp(apiIdentifierObj);
-        
-        var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
-        var apiMgtDAOObj = new apiMgtDAO();
-        
-        apiMgtDAOObj.updateOAuthAPIAccessInfo(webAppObj);
-                
-        var count = 1;
-        var tokenEndpoint = attributes["oauthapis_apiTokenEndpoint" + count];
-                
-        while (tokenEndpoint != null && tokenEndpoint.length > 0) {
-                	                	
-                    webAppObj.setTokenEndpoint(attributes["oauthapis_apiTokenEndpoint" + count]);
-                    webAppObj.setApiConsumerKey(attributes["oauthapis_apiConsumerKey" + count]);
-                    webAppObj.setApiConsumerSecret(attributes["oauthapis_apiConsumerSecret" + count]);
-                    webAppObj.setApiName(attributes["oauthapis_apiName" + count]);
-                                        
-                    count++;
-                    tokenEndpoint = attributes["oauthapis_apiTokenEndpoint" + count];
-                                        
-                    //Save OAuth APIs consumer details per given web-app
-                    apiMgtDAOObj.addOAuthAPIAccessInfo(webAppObj);
-        }
-        
-        saveExternalEntitlementPolicies(context.post);
-
-        msg['ok']=true;
-        msg['message']='asset updated';
-        msg['asset']=artifact;
-        print(msg);
-      
-
-    } catch (e) {
- 		log.warn(e)
-        log.debug('The asset ' + id + ' could not be updated.The following exception was thrown: ' + e);
-        response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
-    }
-});
-
-/**
-* Saves external entitlement policies.
-*/
-function saveExternalEntitlementPolicies(params){
-
-    var policies = parse(params['entitlementPolicies']);
-    var policiesToBeSaved = new Array();
-
-    var EntitlementPolicy = Packages.org.wso2.carbon.appmgt.api.model.entitlement.EntitlementPolicy;
-    var entitlementPolicy;
-    for(var i = 0; i < policies.length; i++){
-        if(policies[i]){
-            entitlementPolicy  = new EntitlementPolicy();
-            entitlementPolicy.setPolicyId(policies[i]['id']);
-            entitlementPolicy.setPolicyContent(policies[i]['content']);
-            policiesToBeSaved.push(entitlementPolicy);    
-        }
-        
-    }
-
-    if(policiesToBeSaved.length > 0){
-        apiProvider.saveEntitlementPolicies(policiesToBeSaved);    
-    }
-
-}
-
-/*
- The function inspects the files sent with a request.If files are found
- they are added to Storage and then the generated uuids are added to
- the POST parameter object
- @req: A request object
- @params: The POST parameters
- */
-function inspectFiles(req, params) {
-    var files = req.getAllFiles();
-    var fileName;
-    var file;
-    var uuid = '';
-    var extension;
-    var thumbnail;
-    var banner;
-
-    var storageManager = new storageModule.StorageManager({
-        context: 'storage',
-        isCached: false,
-        connectionInfo: {
-            dataSource: storageConfig.dataSource
+        } catch (e) {
+            log.debug('The asset ' + id + ' could not be updated.The following exception was thrown: ' + e);
+            response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
         }
     });
 
 
-    for (var index in files) {
 
-        file = files[index];
+    routeManager.register('DELETE', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
+        var shortName = context.params.type;
+        var id = context.params.id;
 
-        log.debug('file: ' + index);
+        var artifactManager = rxtManager.getArtifactManager(shortName);
 
-        //Put the file in storage and get a uuid as a reference
-        var resource = {};
-        resource['file'] = file;
-        extension = utility.fileio.getExtension(file);
-        resource['contentType'] = utility.fileio.getContentType(extension);
+        try {
+            artifactManager.remove(id);
+            print({ok: 'true', message: 'Asset deleted'});
+        } catch (e) {
+            log.debug('Asset ' + id + 'could not be removed.An exception was thrown: ' + e);
+            response.sendError(404, 'Asset with id: ' + id + ' could not be removed.');
+        }
 
-        uuid=storageManager.put(resource);
 
-        log.debug('uuid added: '+uuid);
+    });
 
-        //Add a new  entry into the POST parameters containing the uuid
-        params[index] = uuid;
+
+
+
+
+
+
+
+
+
+
+
+    /**************** MOBILE APP *********************************************************/
+
+
+    function addNewMobileApp(context, rxtManager){
+
+
+        var shortName = context.params.type;
+
+
+        var artifactManager = rxtManager.getArtifactManager(shortName);
+
+
+
+
+        //Check if the type is valid
+        try {
+
+            var model=modelManager.getModel(shortName);
+
+            //assigning default thumbnail and banner if not provided.
+            if(context.post['images_thumbnail'] == '') {
+                context.post['images_thumbnail'] = '/publisher/config/defaults/img/thumbnail.jpg';
+            }
+            if(context.post['images_banner'] == '') {
+                context.post['images_banner'] = '/publisher/config/defaults/img/banner.jpg';
+            }
+
+            if(shortName !="mobileapp"){
+                model.import('form.importer',context.post);
+            }
+
+            if(shortName =="mobileapp"){
+                var username= server.current(session).username.replace('@', ':');
+                var ctx = context.post;
+                log.debug(ctx);
+                var files = request.getAllFiles();
+                var banner = files['bannerFile'];
+                banner = saveFile(banner);
+
+                var icon = files['iconFile'];
+                icon = saveFile(icon);
+
+                var screenshot1 = files['screenshot1File'];
+                screenshot1 = saveFile(screenshot1);
+
+                var screenshot2 = files['screenshot2File'];
+                screenshot2 = saveFile(screenshot2);
+
+                var screenshot3 = files['screenshot3File'];
+                screenshot3 = saveFile(screenshot3);
+
+                var screenshots = screenshot1+","+screenshot2+","+screenshot3;
+                log.debug(screenshots);
+
+                if(screenshots==",,"){
+                    print({"ok" : false, "message" : "Validation failure", "report" : {"failed" : true, "name" : ["Screenshots not added"]}})
+                    return;
+                }
+                var meta = ctx['appmeta'];
+                log.debug(stringify(meta));
+                if(meta == undefined || meta==""){
+                    log.debug("Application meta data was not found");
+                    response.sendError(500, 'Application meta data was not found');
+                    return;
+                }
+                meta = parse(unescape(meta));
+                var version = ctx.version;
+                model.set('overview.bundleversion', version);
+                model.set('overview.packagename', meta.package);
+                if(ctx.markettype!='Enterprise' && ctx.platform.toUpperCase()=="IOS"){
+                    var bundleId = getBundleID(meta.package);
+                    if(bundleId==null){
+                        print({"ok" : false, "message" : "Validation failure", "report" : {"failed" : true, "name" : ["App ID is invalid"]}})
+                        return;
+                    }else{
+                        if(validateAppIdentifier({"overview_appid": meta.package, "overview_version":version},meta.package)){
+                            return;
+                        }
+                        model.set('overview.packagename', bundleId);
+                        model.set('overview.appid', meta.package);
+                    }
+                }else if(ctx.platform.toUpperCase()=="ANDROID"){
+                    if(ctx.markettype=='Enterprise' ){
+                        if(getExtensionText(meta.path)!="apk"){
+                            print({"ok" : false, "message" : "Validation failure", "report" : {"failed" : true, "name" : ["File uploaded is not supported by Android"]}})
+                            return;
+                        }
+                    }
+                    if(validateAppIdentifier({"overview_packagename": meta.package, "overview_version":version}, meta.package)){
+                        return;
+                    }
+                }else if(ctx.platform.toUpperCase()=="IOS" && ctx.markettype!='Market'){
+                    if(getExtensionText(meta.path)!="ipa"){
+                        print({"ok" : false, "message" : "Validation failure", "report" : {"failed" : true, "name" : ["File uploaded is not supported by iOS"]}})
+                        return;
+                    }
+                }
+                if(!meta.weburl){
+                    model.set('overview.url', meta.path);
+                }else{
+
+                    if(url_reg(meta.weburl)){
+                        if(validateAppIdentifier({"overview_url": meta.weburl, "overview_version":version},meta.weburl)){
+                            return;
+                        }
+                        model.set('overview.url', meta.weburl);
+                    }else{
+                        print({"ok" : false, "message" : "Validation failure", "report" : {"failed" : true, "name" : ["Invalid weburl"]}})
+                        return;
+                    }
+                }
+                model.set('overview.version', version);
+                if(!checkNonSpecial(ctx.name)){
+                    print({"ok" : false, "message" : "Validation failure", "report" : {"failed" : true, "name" : ["Special characters found in name"]}})
+                    return;
+                }
+                model.set('overview.name',ctx.name);
+                model.set('overview.category',ctx.platform);
+                model.set('overview.platform',ctx.platform);
+                model.set('overview.provider', username);
+                model.set('overview.description',ctx.description);
+                model.set('overview.type',ctx.markettype);
+                model.set('overview.recentchanges',ctx.recentChanges);
+                model.set('images.thumbnail',icon);
+                model.set('images.banner',banner);
+                model.set('images.screenshots',screenshots);
+
+            }
+
+            //Perform validations on the asset
+            var report=model.validate();
+
+            //If the report indicates the model has failed validations send an error
+            if((report)&&(report.failed)){
+                print({ok:false,message:'Validation failure',report:report});
+                return;
+            }
+
+            //var assetModel = getModel(context.post);
+
+            model.save();
+
+            //var createdAsset = artifactManager.add(assetModel);
+
+            log.debug('finished saving');
+
+            //Get the model id
+            var idField = model.get('*.id');
+
+            log.debug('obtained idField');
+
+            var asset=model.export('asset.exporter');
+            var assetCachingModule=require('/modules/cache/cache.manager.js').assetCachingModule();
+            var assetCacheManager=new assetCachingModule.AssetCacheManager(session);
+            assetCacheManager.add(asset,shortName);
+
+            if (idField) {
+                print({ok: 'true', message: 'Asset created.', id: idField.value});
+            }
+            else {
+                log.debug('An asset of type: ' + shortName + ' could not be created.Probably a fault with publisher logic!');
+            }
+
+        }
+        catch (e) {
+            log.debug(e);
+            log.debug('An asset of type: ' + shortName + ' could not be created.The following exception was thrown: ' + e);
+            response.sendError(500, 'An asset of type: ' + shortName + ' could not be created.Please check the server logs.');
+        }
+
+
+
 
     }
-}
-
-routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
-    var shortName = context.params.type;
-    var id = context.params.id;
-    var msg={};
-    var artifactManager = rxtManager.getArtifactManager(shortName);
 
 
-    try {
-        var modelA = modelManager.getModel(shortName);
-        var modelB = modelManager.getModel(shortName);
+    function editMobileApp(context, rxtManager){
 
-        //Get the original artifact
-        var originalArtifact = artifactManager.get(id);
+        var shortName = context.params.type;
+        var id = context.params.id;
+        var msg={};
+        var artifactManager = rxtManager.getArtifactManager(shortName);
 
-        modelA.import('form.importer', context.content);
-        
-        //Validation requires the lifecycle state
-        modelA.set('*.lifecycleState',originalArtifact.lifecycleState);
+        if(context.post['images_thumbnail'] instanceof Array){
+            context.post['images_thumbnail'] = context.post['images_thumbnail'][0];
+        }
+        if(context.post['images_banner'] instanceof Array){
+            context.post['images_banner'] = context.post['images_banner'][0];
+        }
 
-        var report=modelA.validate();
+        try {
+            var modelA = modelManager.getModel(shortName);
+            var modelB = modelManager.getModel(shortName);
 
-        //Check if the validation check has failed
-        if((report)&&(report.failed)){
+            //Handle any files
+            inspectFiles(request,context.post);
 
-            msg['ok']=false;
-            msg['report']=report;
+            //Get the original artifact
+            var originalArtifact = artifactManager.get(id);
+
+
+            //Validation requires the lifecycle state
+            modelA.set('*.lifecycleState', originalArtifact.lifecycleState);
+
+
+            if(shortName != "mobileapp"){
+                modelA.import('form.importer',context.post);
+            }
+
+            if(shortName =="mobileapp"){
+                modelA.import('asset', originalArtifact);
+                var username= server.current(session).username.replace('@', ':');
+                var ctx = context.post;
+                var files = request.getAllFiles();
+                var banner = files['bannerFile'];
+                if(banner){
+                    banner = saveFile(banner);
+                    modelA.set('images.banner',banner);
+                }
+                var icon = files['iconFile'];
+                if(icon){
+                    icon = saveFile(icon);
+                    modelA.set('images.thumbnail',icon);
+                }
+
+                var screenshot1 = files['screenshot1File'];
+                screenshot1 = saveFile(screenshot1);
+
+                var screenshot2 = files['screenshot2File'];
+                screenshot2 = saveFile(screenshot2);
+
+                var screenshot3 = files['screenshot3File'];
+                screenshot3 = saveFile(screenshot3);
+
+                var screenshots = screenshot1+","+screenshot2+","+screenshot3;
+
+                if(screenshots!=",,"){
+                    modelA.set('images.screenshots',screenshots);
+                }
+                if(!checkNonSpecial(ctx.name)){
+                    print({"ok" : false, "message" : "Validation failure", "report" : {"failed" : true, "name" : ["Special characters found in name"]}});
+                    return;
+                }
+                modelA.set('overview.name',originalArtifact.attributes.overview_name);
+                modelA.set('overview.version', originalArtifact.attributes.overview_version);
+                modelA.set('overview.description',ctx.description);
+                modelA.set('overview.recentchanges',ctx.recentChanges);
+                modelA.set('overview.provider', originalArtifact.attributes.overview_provider);
+            }
+            var report=modelA.validate();
+
+            //Check if the validation check has failed
+            if((report)&&(report.failed)){
+                msg['ok']=false;
+                msg['report']=report;
+                print(msg);
+                log.debug(msg);
+                return;
+            }
+
+
+            modelA.set('*.id', id);
+
+            modelB.import('asset', originalArtifact);
+
+            //Checks whether two models are equal
+            var reqProps=['overview.name', 'overview.provider', 'overview.version']
+
+            var isEqual = modelManager.assertEqual(modelA, modelB,reqProps);
+
+            //If they are not equal,abort the operation
+            if (!isEqual) {
+                log.debug('trying to get fields which are different');
+                var diff=modelManager.diff(modelA,modelB,reqProps);
+                response.sendError(406, 'The name,provider and version of an asset cannot be changed.The following fields'
+                        +' were modified: '+diff);
+                return;
+            }
+            modelA.set("overview.createdtime",modelB.get("overview.createdtime").value);
+            var artifact = modelA.export('asset.exporter');
+
+            dataInjector.inject(artifact,DataInjectorModes.UPDATE);
+
+            artifactManager.update(artifact);
+
+            // dataInjector.inject(artifact,DataInjectorModes.DISPLAY);
+
+            msg['ok']=true;
+            msg['message']='asset updated';
+            msg['asset']=artifact;
             print(msg);
-            return;
+
+        } catch (e) {
+            log.debug(e);
+            print({"ok" : false, "message" : "Permission denied", "report" : {"failed" : true, "name" : ["You are not allowed to edit at this stage"]}});
+            log.debug('The asset ' + id + ' could not be updated.The following exception was thrown: ' + e);
+            // response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
         }
 
-        modelA.set('*.id', id);
-
-        modelB.import('asset', originalArtifact);
-
-        //Checks whether two models are equal
-        var reqProps=['overview.name', 'overview.provider', 'overview.version']
-
-        var isEqual = modelManager.assertEqual(modelA, modelB,reqProps);
-
-        //If they are not equal,abort the operation
-        if (!isEqual) {
-            log.debug('trying to get fields which are different');
-            var diff=modelManager.diff(modelA,modelB,reqProps);
-            response.sendError(406, 'The name,provider and version of an asset cannot be changed.The following fields'
-            +' were modified: '+diff);
-            return;
-        }
-        modelA.set("overview.createdtime",modelB.get("overview.createdtime").value);
-        var artifact = modelA.export('asset.exporter');
-
-        log.debug('not updating'+artifact);
-        //artifactManager.update(artifact);
-
-        msg['ok']=true;
-        msg['message']='asset updated';
-        print(msg);
-
-    } catch (e) {
-        log.debug('The asset ' + id + ' could not be updated.The following exception was thrown: ' + e);
-        response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
-    }
-});
-
-
-
-routeManager.register('DELETE', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
-    var shortName = context.params.type;
-    var id = context.params.id;
-
-    var artifactManager = rxtManager.getArtifactManager(shortName);
-
-    try {
-        artifactManager.remove(id);
-        print({ok: 'true', message: 'Asset deleted'});
-    } catch (e) {
-        log.debug('Asset ' + id + 'could not be removed.An exception was thrown: ' + e);
-        response.sendError(404, 'Asset with id: ' + id + ' could not be removed.');
     }
 
 
-});
+
+    /******************************END_MOBILE***************************************************/
 
 
 
-var securityModule=require('/modules/security/security.manager.js').securityManagementModule();
 
-var sm=securityModule.cached();
+    var securityModule=require('/modules/security/security.manager.js').securityManagementModule();
+
+    var sm=securityModule.cached();
 
 //This will short circuit the handling of the requests
-var passed=sm.check(session,function(){
-    response.sendError(401);
+    var passed=sm.check(session,function(){
+        response.sendError(401);
 
-});
+    });
 
 //Stop servicing the request if the check failed
-if(passed){
+    if(passed){
 
-    var user=require('store').user;
-    var publisher = require('/modules/publisher.js').publisher(request, session);
+        var user=require('store').user;
+        var publisher = require('/modules/publisher.js').publisher(request, session);
 
-    //var routeManager=application.get(config.app.ROUTE_MANAGER);
-    var rxtManager = publisher.rxtManager;
-    var modelManager = publisher.modelManager;
-    var dataInjector=publisher.dataInjector;
-    var DataInjectorModes=publisher.DataInjectorModes;
-    var filterManager=publisher.filterManager;
-    var storageModule = require('/modules/data/storage.js').storageModule();
-    var storageConfig = require('/config/storage.json');
-    var utility = require('/modules/utility.js').rxt_utility();
-    var log=new Log();
+        //var routeManager=application.get(config.app.ROUTE_MANAGER);
+        var rxtManager = publisher.rxtManager;
+        var modelManager = publisher.modelManager;
+        var dataInjector=publisher.dataInjector;
+        var DataInjectorModes=publisher.DataInjectorModes;
+        var filterManager=publisher.filterManager;
+        var storageModule = require('/modules/data/storage.js').storageModule();
+        var storageConfig = require('/config/storage.json');
+        var utility = require('/modules/utility.js').rxt_utility();
+        var log=new Log();
 
-    routeManager.handle(request, response);
-}
+        routeManager.handle(request, response);
+    }
 
 }, request, response, session);
+
+
+
+
+
+
+function url_reg(){
+    return /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(url_reg.arguments[0]);
+}
+
+
 
 %>

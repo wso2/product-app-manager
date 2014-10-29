@@ -132,6 +132,13 @@ require('/modules/publisher.js').exec(function(ctx) {
 
   routeManager.register('PUT', 'publisher', '/publisher/api/lifecycle/{action}/{type}/{id}', function(context) {
     var shortName = context.params.type;
+
+     if(shortName === "mobileapp"){
+
+         mobileAppsLifeCycleChange(context, rxtManager);
+         return;
+     }
+
     var action = context.params.action;
     var id = context.params.id;
     var comment = context.content.comment;
@@ -432,5 +439,57 @@ var passed=sm.check(session,function(){
   }
 
 }, request, response, session);
+
+
+
+
+/**********************************************MOBILE**************************************************/
+
+
+
+function mobileAppsLifeCycleChange(context, rxtManager){
+
+
+    var log = new Log();
+
+
+    var shortName = context.params.type;
+    var action = context.params.action;
+    var id = context.params.id;
+
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+
+    try {
+        var artifact = artifactManager.get(id);
+        log.debug('Calling promoteLifecycleState for action : '+action);
+        artifactManager.promoteLifecycleState(action,artifact);
+        var msg={};
+        msg['status']='ok';
+        print(msg);
+    }
+    catch (e) {
+        log.debug('The asset with id: '+id+' could not be found.The following exception was thrown: '+e);
+        response.sendError(404,'The asset with id: '+id+' could not be found.Please refer to the server log.');
+    }
+
+
+
+
+}
+
+
+
+
+
+/**********************************************END_MOBILE**************************************************/
+
+
+
+
+
+
+
+
+
 
 %>

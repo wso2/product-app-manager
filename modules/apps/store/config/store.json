@@ -21,5 +21,12 @@
         "responseSigningEnabled": "true",
         "storeAcs" : "%https.host%/store/acs",
         "keyStoreName": "/repository/resources/security/wso2carbon.jks"
-    }
+    },
+    
+    "mobile": {
+        "is_catalog" : true,
+        "api": "https://localhost:9443/emm/api",
+        "archieve_location_ios": "%https.ip%",
+        "archieve_location_android": "%http.ip%"
+    }	
 }

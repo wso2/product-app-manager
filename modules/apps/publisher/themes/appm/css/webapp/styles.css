@@ -1,0 +1,86 @@
+
+.btn-danger {
+    background: none repeat scroll 0 0 #DA4F49;
+    color: #FFFFFF;
+    text-shadow: none;
+}
+
+.btn-orange {
+    background: none repeat scroll 0 0 #FAA732;
+    color: #FFFFFF;
+    text-shadow: none;
+}
+
+.btn-blue {
+    background: none repeat scroll 0 0 #49AFCD;
+    color: #FFFFFF;
+    text-shadow: none;
+}
+
+.btn-green {
+    background: none repeat scroll 0 0 #27ae60;
+    color: #FFFFFF;
+    text-shadow: none;
+}
+
+.btn-blue:hover,
+.btn-blue:focus,
+.btn-blue:active,
+.btn-blue.active,
+.btn-blue.disabled,
+.btn-blue[disabled] {
+    color: #FFFFFF;
+    background-color: #49AFCD;
+    *background-color: #49AFCD;
+}
+
+.btn-orange:hover,
+.btn-orange:focus,
+.btn-orange:active,
+.btn-orange.active,
+.btn-orange.disabled,
+.btn-orange[disabled] {
+    color: #FFFFFF;
+    background-color: #FAA732;
+    *background-color: #FAA732;
+}
+
+
+.btn-green:hover,
+.btn-green:focus,
+.btn-green:active,
+.btn-green.active,
+.btn-green.disabled,
+.btn-green[disabled] {
+    color: #FFFFFF;
+    background-color: #27ae60;
+    *background-color: #27ae60;
+}
+
+
+.btn-danger:hover,
+.btn-danger:focus,
+.btn-danger:active,
+.btn-danger.active,
+.btn-danger.disabled,
+.btn-danger[disabled] {
+    color: #FFFFFF;
+    background-color: #DA4F49;
+    *background-color: #DA4F49;
+}
+
+.text-green {
+    color: #74B749;
+}
+.text-orange {
+    color: #ED6D49;
+}
+.text-blue {
+    color: #0DAED3;
+}
+.text-yellow {
+    color: #FFB400;
+}
+.text-red {
+    color: #F63131;
+}

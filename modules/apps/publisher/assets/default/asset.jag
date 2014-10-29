@@ -48,9 +48,9 @@ require('/modules/publisher.js').exec(function(ctx) {
         return (template.shortName == shortName) ? true : false;
     });
 
-    
+
     var model = modelManager.getModel(shortName);
-    
+
     if (!rxtTemplate) {
         log.debug('The requested asset type: ' + shortName + ' was not found');
         response.sendError(404, 'Asset type not found'); //TODO: Replace
@@ -68,9 +68,9 @@ require('/modules/publisher.js').exec(function(ctx) {
             provider = username+'-AT-'+tenantDomain;
         }
 
-        model.set('overview.provider', provider);
+        //model.set('overview.provider', provider);
 
-        //model.set('overview.provider', storeUser.cleanUsername(username));
+        model.set('overview.provider', storeUser.cleanUsername(username));
 
         var output = model.export('form');
         var title = shortName;
@@ -141,6 +141,13 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
 
 routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/{type}/{id}', function (context) {
    var shortName = context.params.type;
+
+
+
+    if(shortName === "mobileapp"){
+        editMobileApp(context, rxtManager, modelManager, dataInjector, DataInjectorModes);
+        return;
+    }
 
     //print(context.params);
     var id = context.params.id;
@@ -250,7 +257,7 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
         inspectFiles(request, context.post);
 
         model.import('form.importer', context.post);
-        
+
 
         //Perform validation on the model
 
@@ -262,6 +269,19 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
          return;
         }
 
+        var name = model.get('overview.name').value;
+        var provider = model.get('overview.provider').value;
+        var version = model.get('overview.version').value;
+
+        //Check whether duplicate webapp exists
+        var isexists = isWebappExists(name, provider, version);
+
+        //If exists, return an error message
+        if(isexists == true){
+            print({ok:false,isexists:true, msg:'Error occurred while adding the WebApp. A duplicate WebApp already exists for ' +
+                    name + "-" + version});
+            return;
+        }
 
         //log.debug(context.post);
 
@@ -298,6 +318,10 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
 });
 
  routeManager.register('POST', 'publisher', '/publisher/asset/{type}/id/{assetId}/permissions', function(context) {
+
+     log.info("((((((((((((((((((((");
+     log.info(context);
+     log.info(")))))))))))))))))))");
         var assetId = context.params.assetId;
 
         var artifactManager = rxtManager.getArtifactManager(context.params.type);
@@ -310,9 +334,15 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
 * Generates entitlement policies.
 */
 function generateEntitlementPolicies(webappId){
-    apiProvider.generateEntitlementPolicies(webappId);    
+    apiProvider.generateEntitlementPolicies(webappId);
 }
 
+/**
+* Check whether the application already exists
+*/
+function isWebappExists(webappName,provider,version){
+    return apiProvider.isWebappExists(webappName,provider,version);
+}
 
 /*
 The function is used to add tags to the provided asset id
@@ -531,5 +561,65 @@ routeManager.register('DELETE', 'publisher', '/publisher/asset/{type}/{id}', fun
 routeManager.handle(request, response);
 
 }, request, response, session);
+
+
+
+
+/*************************************************MOBILEAPP*******************************************************/
+
+
+
+function editMobileApp(context, rxtManager, modelManager, dataInjector, DataInjectorModes){
+
+    var server = require('store').server;
+
+    var shortName = context.params.type;
+    //print(context.params);
+    var id = context.params.id;
+    var operation = context.params.opType;
+    var artifactManager = rxtManager.getArtifactManager(shortName);
+
+    //If the id is not found it will throw a conversion exception
+    //TODO: Return an empty artifact or null
+    try {
+        var artifact = artifactManager.get(id);
+
+        //Get the template
+        var rxtTemplate = rxtManager.findAssetTemplate(function (template) {
+            return (template.shortName == shortName) ? true : false;
+        });
+
+        var model = modelManager.getModel(shortName);
+
+        //Customize the asset for the app
+        dataInjector.inject(artifact, DataInjectorModes.DISPLAY);
+
+        model.import('asset', artifact);
+
+        var output = model.export('form');
+
+        var assetName = model.get('overview.name').value;
+
+        //Get the list of versions
+        var versionList = artifactManager.getAllAssetVersions(assetName);
+
+        //Get tags
+        var path = artifact.path;
+        var tags = rxtManager.registry.tags(path);
+        var title = assetName;
+
+        caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title});
+    } catch (e) {
+        log.info(e);
+        log.debug('The asset with id ' + id + ' could not be found due to : ' + e);
+        response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check server log.');
+    }
+
+
+}
+
+
+
+
 
 %>

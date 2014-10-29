@@ -1,6 +1,7 @@
 <%
 include('/extensions/assets/webapp/modules/jagg/jagg.jag');
 
+var storeHostObj = jagg.module("manager").getAPIStoreObj();
 
 (function () {
     var log = new Log(),
@@ -49,14 +50,20 @@ include('/extensions/assets/webapp/modules/jagg/jagg.jag');
                         userDetails['username']=username;
                         userDetails['action']="SSOLogin";
                         authResult=authenticator.login(userDetails);
-
                         sso_sessions[sessionObj.sessionId] = sessionObj.sessionIndex;
-                        
-                        var role = require('/modules/role.js').checkeRole(username, session);
+
+                        var isSubscriberRoleAttached = storeHostObj.checkIfSubscriberRoleAttached(username);
+                        var role=null;
+
+                        if(!isSubscriberRoleAttached.error) {
+                            role = require('/modules/role.js').checkeRole(username, session);
+                        }
                         if(role){
                         	var user = require('store').user;
-				log.debug('user is set :::' + sessionObj.loggedInUser);
+                            log.debug('user is set :::' + sessionObj.loggedInUser);
+
                         	response.sendRedirect(relayState);
+
 						
                         } else {
                         	log.warn('User '+sessionObj.loggedInUser+' does not have permission to access the publisher application.Make sure the user has the publisher role.');

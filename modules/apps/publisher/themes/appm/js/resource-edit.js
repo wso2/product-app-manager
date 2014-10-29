@@ -2,6 +2,14 @@
 $( document ).ready(function() {
 
 
+   //fixed chrome issue with file paths
+    $('input[type=file]').on('change', function(e) {
+        var filename = $(e.currentTarget).val().replace(/^.*\\/, "");
+        $(this).parent().parent().find('.txt-filepath').val(filename);
+    });
+
+
+
     var uuid = $("#uuid").val();
 
     $.ajax({
@@ -101,7 +109,8 @@ $( document ).ready(function() {
                     </ul></div>\
                 </div>\
                \
-                    <input type='hidden' id='uritemplate_entitlementPolicyPartialMappings"+i+"' name='uritemplate_entitlementPolicyId"+i+"' value='"+ getValidatedEntitlementPolicyId(i) + "'/> \
+                 <input type='hidden' class='uritemplate_entitlementPolicyPartialMappings_text' id='uritemplate_entitlementPolicyPartialMappings"+i+"' name='uritemplate_entitlementPolicyPartialMappings"+i+"' value='"+ getValidatedEntitlementPolicyId(i) + "'/> \
+\
                   </td> \
                    \
                    <td class='userRoles' style='padding:0px'><input  type='text' name='uritemplate_userRoles"+i+"' id='getUserRoles"+i+"' style='width:95%;border:none;'></input></td> \
@@ -112,9 +121,6 @@ $( document ).ready(function() {
                 </tr> \
 				"
             );
-
-
-
             // roles autocomplete   
             $('#getUserRoles'+i).tokenInput('/publisher/api/lifecycle/information/meta/' + $('#meta-asset-type').val() + '/roles', {
                 theme: 'facebook',

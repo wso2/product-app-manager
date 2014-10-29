@@ -126,6 +126,7 @@ var extension_management = function () {
      @actionName: The name of the action to invoke
      */
     Model.prototype.invokeActionMap = function (actionMap, actionName) {
+        var l=new Log();
 
         //Process all the default actions
         var defaultAction = actionMap['default'];

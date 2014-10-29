@@ -56,7 +56,14 @@ caramel.configs({
     negotiation: true,
     themer: function () {
         //TODO: Hardcoded theme
-        return 'appm';
+        var reqURL = request.getRequestURI();
+        if(reqURL.indexOf("/webapp") >  -1){
+            return 'appm';
+        }else if (reqURL.indexOf("/mobileapp") > -1){
+            return 'mobileapp';
+        }
+
+
     }
 
 });

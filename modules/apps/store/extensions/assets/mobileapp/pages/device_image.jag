@@ -1,0 +1,13 @@
+<%
+
+var path = "https://localhost:9444/store/extensions/assets/mobileapp/resources/models/GT-I9300.png";
+var res=get(path);
+var xhr = new XMLHttpRequest();
+xhr.open('GET', path, false);
+xhr.send();
+response.addHeader('Content-Type','image/png');
+//response.addHeader('Content-Length',res.data.getLength());
+print(xhr.responseText);
+
+
+%>

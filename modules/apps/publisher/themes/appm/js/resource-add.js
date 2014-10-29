@@ -7,7 +7,17 @@ var RESOURCES = [
     {"url_pattern":"/*", "http_verb":"OPTIONS" , "throttling_tier":"", "user_roles":"" },
 ];
 
+
+
+
 $( document ).ready(function() {
+
+    //fixed chrome issue with file paths
+    $('input[type=file]').on('change', function(e) {
+        var filename = $(e.currentTarget).val().replace(/^.*\\/, "");
+        $(this).parent().parent().find('.txt-filepath').val(filename);
+    });
+
 
     $("#add_resource").click(function(){
 
@@ -27,6 +37,7 @@ $( document ).ready(function() {
         resetResource();
         $("#resource_tbody").trigger("draw");
     });
+
 
     $("#clear_resource").click(function(){
         resetResource();
@@ -74,7 +85,7 @@ $( document ).ready(function() {
                 </div>\
                   \
                     \
-                    <input type='hidden' id='uritemplate_entitlementPolicyPartialMappings"+i+"'  name='uritemplate_entitlementPolicyPartialMappings"+i+"'value='[]'/> \
+                    <input type='hidden' class='uritemplate_entitlementPolicyPartialMappings_text' id='uritemplate_entitlementPolicyPartialMappings"+i+"'  name='uritemplate_entitlementPolicyPartialMappings"+i+"'value='[]'/> \
                   </td> \
                   \
                   <td class='userRoles' style='padding:0px'><input type='text' name='uritemplate_userRoles"+i+"' id='getUserRoles"+i+"' style='width:95%;border:none;'></input></td> \

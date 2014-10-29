@@ -11,7 +11,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Bootstrap -->
     <link href="{{url "/themes/appm/css/bootstrap.min.css"}}" rel="stylesheet" media="screen">
-    <link href="{{url "/themes/appm/css/bootstrap-responsive.min.css"}}" rel="stylesheet">
     <!-- fontawesome -->
     <link rel="stylesheet" href="{{url "/themes/appm/css/font-awesome.min.css"}}">
    
@@ -26,7 +25,7 @@
     <link href="{{url "/themes/appm/css/appm-publisher.css"}}" rel="stylesheet" media="screen">
     <link href="{{url "/themes/appm/css/navigation.css"}}" rel="stylesheet" media="screen">
     <link class="jsbin" href="{{url "/themes/appm/css/jquery-ui.min.css"}}" rel="stylesheet" type="text/css">
-    
+
     <script src="{{url "/themes/appm/js/modernizr.custom.js"}}"></script>
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if IE]>
@@ -38,43 +37,49 @@
     {{css}}
 </head>
 <body>
-    {{ include header}}
-<div class="container-assets container">
-    <div class="ribbon-cont">
-        <div class="row-fluid ribbon">
-            {{include ribbon}}
+
+
+
+    <!-- Part 1: Wrap all page content here -->
+    <div id="wrap">
+        {{ include header}}
+        <!-- Begin page content -->
+
+        <div class="container-assets container">
+
+            <div class="content-area-cont">
+                {{include ribbon}}
+                {{include heading}}
+                <div class="row content-area">
+                    <div class="col-md-12 publisher-right">
+                        {{include listassets}}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="push"></div>
+    </div>
+
+    <div id="footer">
+        <div class="container">
+            {{>footer}}
         </div>
     </div>
-    <div class="content-area-cont">
-        <div class="row-fluid content-area">
-            <div class="span3 publisher-left">
-                {{include leftnav}}
-            </div>
-            <div class="span9 publisher-right">
-                {{include listassets}}
-            </div>
-        </div>
-       
-    </div>
-</div>
-<div class="container-footer container">
-	<div class="content-area-cont">
-                {{>footer}}
- 
-     </div>
-</div>
-<script src="{{url "/themes/appm/js/jquery-1.10.2.min.js"}}"></script>
-<script src="{{url "/themes/appm/js/jquery.form.min.js"}}"></script>
-<script src="{{url "/themes/appm/js/bootstrap.min.js"}}"></script>
-<script src="{{url "/themes/appm/js/publisher.commons.js"}}"></script>
-<script src="{{url "/themes/appm/js/lc.processor.js"}}"></script>
-<script src="{{url "/themes/appm/js/sugyama.js"}}"></script>
-<script src="{{url "/themes/appm/js/raphael-min.js"}}"></script>
-<script src="{{url "/themes/appm/js/graph.js"}}"></script>
-<script src="{{url "/themes/appm/js/token.input/jquery.tokeninput.js"}}"></script>
-<script class="jsbin" src="{{url "/themes/appm/js/jquery-ui.js"}}"></script>
-<!-- <script type="text/javascript" src="{{url "/themes/appm/js/jquery.dialogextend.js"}}"></script> -->
-<script src="{{url "/themes/appm/js/handlebars-1.1.2.js"}}"></script>
+
+    <script src="{{url "/themes/appm/js/jquery-1.10.2.min.js"}}"></script>
+    <script src="{{url "/themes/appm/js/jquery.form.min.js"}}"></script>
+    <script src="{{url "/themes/appm/js/bootstrap.min.js"}}"></script>
+    <script src="{{url "/themes/appm/js/publisher.commons.js"}}"></script>
+    <script src="{{url "/themes/appm/js/lc.processor.js"}}"></script>
+    <script src="{{url "/themes/appm/js/sugyama.js"}}"></script>
+    <script src="{{url "/themes/appm/js/raphael-min.js"}}"></script>
+    <script src="{{url "/themes/appm/js/graph.js"}}"></script>
+    <script src="{{url "/themes/appm/js/token.input/jquery.tokeninput.js"}}"></script>
+    <script class="jsbin" src="{{url "/themes/appm/js/jquery-ui.js"}}"></script>
+    <!-- <script type="text/javascript" src="{{url "/themes/appm/js/jquery.dialogextend.js"}}"></script> -->
+    <script src="{{url "/themes/appm/js/handlebars-1.1.2.js"}}"></script>
     {{js}}
     {{code}}
 </body>

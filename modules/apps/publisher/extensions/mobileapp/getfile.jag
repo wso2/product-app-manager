@@ -1,0 +1,51 @@
+<%
+
+var mam_config = require('config/mam-config.json');
+
+var matcher = new URIMatcher(request.getRequestURI());
+matcher.match('/{context}/api/mobileapp/getfile/{filename}');
+var fileName = matcher.elements().filename;
+
+var path = Packages.java.lang.System.getProperty("carbon.home") + mam_config.filePreciseLocation + fileName;
+
+var mime = "application/octet-stream"
+
+var ext = (/[.]/.exec(fileName)) ? /[^.]+$/.exec(fileName) : undefined;
+ext = ext[0].toLowerCase();
+
+switch(ext){
+
+    case "png"  :
+        mime = "image/png"
+        break;
+    case "jpg"  :
+        mime = "image/jpg"
+        break;
+    case "jpeg"  :
+        mime = "image/jpeg"
+        break;
+    case "apk":
+    case "ipa":
+        break;
+}
+
+
+try{
+
+    var file = new File("file://" + path);
+    if(file.isExists()){
+        response.addHeader('Content-Type', mime);
+        file.open("r");
+        print(file.getStream());
+        file.close();
+    }else{
+        response.sendError(400);
+    }
+
+}catch(e){
+    response.sendError(400);
+}
+
+
+
+%>

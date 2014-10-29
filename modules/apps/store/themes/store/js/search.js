@@ -132,6 +132,7 @@ $(function () {
                 url: url,
                 success: function (data, status, xhr) {
                     //TODO: Integrate a new History.js library to fix this
+
                     if ($.browser.msie == true && $.browser.version < 10) {
                         renderAssets(data);
                     } else {

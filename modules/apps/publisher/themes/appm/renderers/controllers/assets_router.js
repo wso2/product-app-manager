@@ -5,7 +5,71 @@
  */
 
 var render = function (theme, data, meta, require) {
+
+
+
+
+    var lifecycleColors = {"Create": "btn-green", "Demote": "btn-blue", "Re-Submit": "btn-blue", "Submit": "btn-blue", "Publish": "btn-blue", "Unpublish": "btn-orange", "Deprecate": "btn-danger", "Retire": "btn-danger", "Approve": "btn-blue", "Reject": "btn-orange"};
+
+
+    if(data.artifacts){
+
+        for(var i = 0; i < data.artifacts.length; i++){
+            var lifecycleAvailableActionsButtons = new Array();
+            for(var j = 0; j < data.artifacts[i].lifecycleAvailableActions.length; j++){
+                var name = data.artifacts[i].lifecycleAvailableActions[j];
+
+                for(var k = 0; k < data.roles.length; k++){
+                    //	print(data.roles[k]);
+                    if(data.roles[k] == "admin" || data.roles[k] == "Internal/publisher"){
+                        if(name == "Approve"){
+                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                        }
+                        if(name == "Reject"){
+                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                        }
+                        if(name == "Publish"){
+                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                        }
+                        if(name == "Submit"){
+                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                        }
+                        if(name == "Create"){
+                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                        }
+                        if(name == "Deprecate"){
+                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                        }
+                        if(name == "Re-Submit"){
+                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                        }
+                        if(name == "Unpublish"){
+                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                        }
+                        if(name == "Depreicate"){
+                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                        }
+                        if(name == "Retire"){
+                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                        }
+
+                        break;
+                    }
+
+                }
+
+
+            }
+
+            data.artifacts[i].lifecycleAvailableActions = lifecycleAvailableActionsButtons;
+        }
+
+
+
+    }
+
     var listPartial = 'list-assets';
+
 //Determine what view to show
     switch (data.op) {
         case 'list':
@@ -18,6 +82,10 @@ var render = function (theme, data, meta, require) {
         default:
             break;
     }
+
+
+    var breadCrumbData = require('/helpers/breadcrumb.js').generateBreadcrumbJson(data);
+    breadCrumbData.activeRibbonElement = listPartial;
     //var addAssetUrl = "/publisher/asset/" + data.meta.shortName +"";
     theme('single-col-fluid', {
         title: data.title,
@@ -30,7 +98,7 @@ var render = function (theme, data, meta, require) {
         ribbon: [
             {
                 partial: 'ribbon',
-                context: require('/helpers/breadcrumb.js').generateBreadcrumbJson(data)
+                context: breadCrumbData
             }
         ],
         leftnav: [

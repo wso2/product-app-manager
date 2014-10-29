@@ -15,7 +15,6 @@ var injector = function () {
     var modes = dataInjectModule.Modes;
     var config=require('/config/storage.json');
     var process=require('process');
-
     /*
      The modes in which the handler should be executed
      @return: The operation mode in which the handler should be executed
@@ -41,7 +40,7 @@ var injector = function () {
             return true;
         }
 
-        log.debug('object'+stringify(object)+' is not handled');
+        //log.debug('object'+stringify(object)+' is not handled');
 
         return false;
     }
@@ -53,7 +52,8 @@ var injector = function () {
      @return: True, if handled successfully,else false
      */
     function handle(context) {
-
+        var publisher = require('/modules/publisher.js').publisher(request, session);
+        var rxtManager = publisher.rxtManager;
         var object=context.object||{};
         var config=context.config;
         var fields=config.storeFields;
@@ -74,6 +74,24 @@ var injector = function () {
 
                 uuid=getUUID(url);
 
+                var artifactManager=rxtManager.getArtifactManager(object.type);
+
+                var artifact=artifactManager.get(object.id);
+                var actions=[];
+                //Check if the the artifact exists
+                if((artifact.lifecycle!=undefined)&&(artifact.lifecycleState!=undefined)){
+                    try{
+                      //  log.info('lifcycle: '+artifact.lifecycle);
+                        actions=artifactManager.availableActions(artifact);
+                    }catch(e){
+                        log.error(e);
+                    }
+                }
+                else{
+                    log.warn('Not returning actions of asset as it does not have a lifecycle.Make sure that it has a lifecycle.Artifact: '+stringify(artifact));
+                }
+
+                object['lifecycleAvailableActions'] = actions;
                 //Check if it is a valid uuid and create a new url
                 if((uuid)&&(utility.isValidUuid(uuid))){
                     log.debug('creating a new url for '+url);
@@ -89,9 +107,9 @@ var injector = function () {
     }
 
     /*
-    The function obtains the UUID from a value
-    @value: A string containing a UUID
-    @return: A UUID if one is present else null
+     The function obtains the UUID from a value
+     @value: A string containing a UUID
+     @return: A UUID if one is present else null
      */
     function getUUID(value){
 
@@ -113,11 +131,11 @@ var injector = function () {
     }
 
     /*
-    The function builds a url based on the provided pattern
-    @uuid: The uuid of the resource to which the url should point
-    @config: The config object used to store the context
-    @object: The object containing an id
-    @return: A url for the provided uuid for the current context
+     The function builds a url based on the provided pattern
+     @uuid: The uuid of the resource to which the url should point
+     @config: The config object used to store the context
+     @object: The object containing an id
+     @return: A url for the provided uuid for the current context
      */
     function getUrl(uuid,config,object){
 
@@ -149,4 +167,3 @@ var injector = function () {
         handle: handle
     };
 };
-

@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-md-12">
+    <h1>
+        {{title}}
+        <ul class="nav nav-pills pull-right secondary-pills">
+            {{#each menuItems.leftNavLinks}}
+            <li class="{{this.additionalClasses}}">
+                <a href="{{this.url}}">
+                    {{#if this.iconClass}}
+                    <i class="{{this.iconClass}}"></i>
+                    {{/if}}
+                    {{this.name}}
+                </a>
+            </li>
+
+            {{/each}}
+        </ul>
+
+    </h1>
+    </div>
+</div>

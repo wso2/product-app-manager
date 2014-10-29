@@ -244,7 +244,7 @@ var removeDocumentation = function (provider, apiName, version, docName, docType
 
 var editInlineContent = function (artifactID, type, docName, mode,tenantDomain) {
    
-    window.open("/publisher/doc/inline?" + type + "&" + artifactID + "&" + docName + "&" +  mode+ "&" +tenantDomain);
+	window.open("/publisher/webapp/doc/inline?" + type + "&" + artifactID + "&" + docName + "&" +  mode+ "&" +tenantDomain);
 
 };
 
