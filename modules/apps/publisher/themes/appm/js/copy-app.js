@@ -3,12 +3,9 @@ $(function() {
 
     var type = $('#meta-asset-type').val();
     var TAG_API_URL = '/publisher/api/tag/';
-    var tagType = $('#meta-asset-type').val() + 's';
-    var tagUrl = TAG_API_URL + tagType;
-    var THEME = 'facebook';
     var TAG_CONTAINER = '#tag-test';
     var CHARS_REM = 'chars-rem';
-    var DESC_MAX_CHARS = 995;
+
 
 
     $('#overview_description').after('<span class="span8 ' + CHARS_REM + '"></span>');
@@ -197,7 +194,6 @@ $(function() {
                             data: JSON.stringify(data),
                             contentType: 'application/json; charset=utf-8',
                             dataType: 'json',
-                            success: function(response) {},
                             error: function() {
                                 showAlert('Unable to add the selected tag.', 'error');
                             }
@@ -363,7 +359,6 @@ $(function() {
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(sso_config),
-            success: function(response) {},
             error: function(response) {
                 showAlert('Error adding service provider.', 'error');
             }
