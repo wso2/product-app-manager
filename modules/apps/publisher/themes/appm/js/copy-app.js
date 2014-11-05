@@ -403,28 +403,6 @@ $(function() {
         return formData;
     }
 
-    /*
-     The function is used to obtain tags selected by the user
-     @returns: An array containing the tags selected by the user
-     */
-    function obtainTags() {
-
-        var tagArray = [];
-
-        try {
-            var tags = $(TAG_CONTAINER).tokenInput('get');
-
-            for (var index in tags) {
-                tagArray.push(tags[index].name);
-            }
-
-            return tagArray;
-        } catch (e) {
-            return tagArray;
-        }
-
-    }
-
 
     $('.selectpicker').selectpicker();
 });
