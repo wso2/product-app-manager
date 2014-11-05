@@ -3,12 +3,9 @@ $(function() {
 
     var type = $('#meta-asset-type').val();
     var TAG_API_URL = '/publisher/api/tag/';
-    var tagType = $('#meta-asset-type').val() + 's';
-    var tagUrl = TAG_API_URL + tagType;
-    var THEME = 'facebook';
     var TAG_CONTAINER = '#tag-test';
     var CHARS_REM = 'chars-rem';
-    var DESC_MAX_CHARS = 995;
+
 
 
     $('#overview_description').after('<span class="span8 ' + CHARS_REM + '"></span>');
@@ -197,7 +194,6 @@ $(function() {
                             data: JSON.stringify(data),
                             contentType: 'application/json; charset=utf-8',
                             dataType: 'json',
-                            success: function(response) {},
                             error: function() {
                                 showAlert('Unable to add the selected tag.', 'error');
                             }
@@ -266,8 +262,6 @@ $(function() {
     function loadProviders(providers_data) {
         for (var i = 0; i < providers_data.length; i++) {
             var x = providers_data[i];
-            console.log(providers_data.length + "i:" + i);
-            console.log(x);
             $("#providers").append($("<option></option>").val(x).text(x));
         }
 
@@ -295,7 +289,37 @@ $(function() {
         });
     }
 
+    function addToClaimsTable(claim,clickable){
+        var propertyCount = $('#claimPropertyCounter');
 
+        var i = propertyCount.val();
+        var currentCount = parseInt(i);
+
+        currentCount = currentCount + 1;
+        propertyCount.val(currentCount);
+
+        $('#claimTableId').hide();
+        if(clickable){
+            $('#claimTableTbody').append($('<tr id="claimRow' + i +'" class="claimRow">'+
+                '<td style="padding-left: 40px ! important; color: rgb(119, 119, 119); font-style: italic;">'+
+                claim + '<input type="hidden" name="claimPropertyName' + i + '" id="claimPropertyName' + i + '"  value="' + claim + '"/> '+
+                '</td>'+
+                '<td>'+
+                '<a href="#"  onclick="removeClaim(' + i + ');return false;"><i class="icon-remove-sign"></i>  Delete</a>' +
+                '</td>'+
+                '</tr>'));
+        }else{
+            $('#claimTableTbody').append($('<tr id="claimRow' + i +'" class="claimRow">'+
+                '<td style="padding-left: 40px ! important; color: rgb(119, 119, 119); font-style: italic;">'+
+                claim + '<input type="hidden" name="claimPropertyName' + i + '" id="claimPropertyName' + i + '"  value="' + claim + '"/> '+
+                '</td>'+
+                '<td>'+
+                '<a href="#" style="pointer-events: none; cursor: default;color:#C4C4C4"  onclick="removeClaim(' + i + ');return false;"><i class="icon-remove-sign"></i>  Delete</a>' +
+                '</td>'+
+                '</tr>'));
+        }
+        $('#claimTableTbody').parent().show();
+    }
 
 
     function createServiceProvider() {
@@ -335,9 +359,6 @@ $(function() {
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(sso_config),
-            success: function(response) {
-                console.log("Added SSO config successfully");
-            },
             error: function(response) {
                 showAlert('Error adding service provider.', 'error');
             }
@@ -374,35 +395,12 @@ $(function() {
         var fieldType = field.type;
 
         if (fieldType == 'file') {
-            console.log('added ' + field.id + ' file.');
             formData[field.id] = field.files[0];
         } else {
             formData[field.id] = field.value;
         }
 
         return formData;
-    }
-
-    /*
-     The function is used to obtain tags selected by the user
-     @returns: An array containing the tags selected by the user
-     */
-    function obtainTags() {
-
-        var tagArray = [];
-
-        try {
-            var tags = $(TAG_CONTAINER).tokenInput('get');
-
-            for (var index in tags) {
-                tagArray.push(tags[index].name);
-            }
-
-            return tagArray;
-        } catch (e) {
-            return tagArray;
-        }
-
     }
 
 
