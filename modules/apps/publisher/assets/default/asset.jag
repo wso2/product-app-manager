@@ -63,14 +63,14 @@ require('/modules/publisher.js').exec(function(ctx) {
         var tenantIdVal = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantId();
         var provider = "";
         if(tenantIdVal=='-1234'){
-            provider = username;
+            provider = storeUser.cleanUsername(username);
         }else {
-            provider = username+'-AT-'+tenantDomain;
+            provider = storeUser.cleanUsername(username)+'-AT-'+tenantDomain;
         }
 
-        //model.set('overview.provider', provider);
+        model.set('overview.provider', provider);
 
-        model.set('overview.provider', storeUser.cleanUsername(username));
+        //model.set('overview.provider', storeUser.cleanUsername(username));
 
         var output = model.export('form');
         var title = shortName;
