@@ -8,7 +8,27 @@ $( document ).ready(function() {
         $(this).parent().parent().find('.txt-filepath').val(filename);
     });
 
+    // Get shared partials
+    $.ajax({
+        url: '/publisher/api/entitlement/get/shared/policy/partial/list',
+        type: 'GET',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (data) {
+            for (var i = 0; i < data.length; i++) {
+                policyPartialsArray.push({
+                    id: data[i].partialId,
+                    policyPartialName: data[i].partialName,
+                    policyPartial: data[i].partialContent,
+                    isShared: data[i].isShared,
+                    author: data[i].author
+                });
+            }
 
+        },
+        error: function () {
+        }
+    });
 
     var uuid = $("#uuid").val();
 
@@ -18,17 +38,28 @@ $( document ).ready(function() {
         contentType: 'application/json',
         success: function(id){
 
-
+            //get partials of web app
             $.ajax({
                 url: '/publisher/api/entitlement/policy/partialList/' + id,
                 type: 'GET',
                 contentType: 'application/json',
                 dataType: 'json',
                 success: function(data){
-                    policyPartialsArray = [];
 
                     for (var i = 0; i < data.length; i++) {
-                        policyPartialsArray.push({id: data[i].partialId, policyPartialName: data[i].partialName, policyPartial : data[i].partialContent})
+                        var obj = {
+                            id: data[i].partialId,
+                            policyPartialName: data[i].partialName,
+                            policyPartial: data[i].partialContent,
+                            isShared: data[i].isShared,
+                            author: data[i].author
+                        };
+                        // avoid duplicating shared partials
+                        if (!obj.isShared) {
+                            policyPartialsArray.push(obj);
+                        }
+
+
                     }
                     updatePolicyPartial();
 
