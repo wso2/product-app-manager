@@ -18,6 +18,29 @@ $( document ).ready(function() {
         $(this).parent().parent().find('.txt-filepath').val(filename);
     });
 
+    // get the Shared entitlement partials
+    $.ajax({
+        url: '/publisher/api/entitlement/get/shared/policy/partial/list',
+        type: 'GET',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (data) {
+
+            for (var i = 0; i < data.length; i++) {
+                policyPartialsArray.push({
+                    id: data[i].partialId,
+                    policyPartialName: data[i].partialName,
+                    policyPartial: data[i].partialContent,
+                    isShared: data[i].isShared,
+                    author: data[i].author
+                })
+            }
+            updatePolicyPartial();
+
+        },
+        error: function () {
+        }
+    });
 
     $("#add_resource").click(function(){
 
@@ -30,7 +53,7 @@ $( document ).ready(function() {
             	if(resource.url_pattern != ""){
             		RESOURCES.push(resource);
             	}
-                
+
             }
         })
 
@@ -94,18 +117,18 @@ $( document ).ready(function() {
             );
 
             updatePolicyPartial();
-            
+
          // roles autocomplete
- 
+
             $('#getUserRoles'+i).tokenInput('/publisher/api/lifecycle/information/meta/' + $('#meta-asset-type').val() + '/roles', {
               	theme: 'facebook',
               	preventDuplicates: true,
               	onAdd: function(role) {
-                  		
+
               	},
               	onDelete: function(role) {
                   		console.log()
-                  		
+
               	}
           	});
         }
