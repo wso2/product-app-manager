@@ -236,8 +236,8 @@ $(function() {
 		if($('#autoConfig').is(':checked')){
 			$('#provider-table').show();
 			$('#claims-table').show();
-			var roleClaim = "http://wso2.org/claims/role";
-			addToClaimsTable(roleClaim,false);
+			//var roleClaim = "http://wso2.org/claims/role";
+			//addToClaimsTable(roleClaim,false);
 		}else{
 			var rows = $('table.sso tr');
 			var provider =  rows.filter('.provider-table');
@@ -285,6 +285,9 @@ $(function() {
 		 
 		 var value = $('#providers').val();
 		 loadClaims(value);
+
+        var roleClaim = "http://wso2.org/claims/role";
+        addToClaimsTable(roleClaim,false);
 	}
 	
 	function loadClaims (provider){

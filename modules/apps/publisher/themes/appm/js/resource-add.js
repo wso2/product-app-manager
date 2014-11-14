@@ -87,7 +87,7 @@ $( document ).ready(function() {
                   \
                   <td class='userRoles' style='padding:0px'><input type='text' name='uritemplate_userRoles"+i+"' id='getUserRoles"+i+"' style='width:95%;border:none;'></input></td> \
                   <td> \
-                  	<a data-index='"+i+"' class='delete_resource'><i class='icon-trash icon-white'></i></a>&nbsp; \
+                  	<a data-index='"+i+"' class='delete_resource'><i class='icon-remove-sign'></i>  Delete</a>&nbsp; \
                   </td> \
                 </tr> \
 				"
