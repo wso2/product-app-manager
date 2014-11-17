@@ -35,3 +35,13 @@ h2.exp_col i {
 .table-input td input {
     padding:5px;
 }
+
+.border-ovrd {
+    border-radius: 0px;
+}
+
+.add-on {
+    padding-top:5px;
+    padding-left:5px;
+    display:inline-block;
+}

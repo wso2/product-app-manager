@@ -1538,3 +1538,28 @@ h2.first-h2{
     background-color: #428bca;
 }
 
+
+.standard-drop {
+    padding:5px;
+}
+
+.t-w-130 {
+    width:130px;
+    border-radius: 0px;
+}
+
+.form-group {
+    margin-bottom:30px;
+}
+
+.empty-spacer {
+    height:50px;
+    clear:both;
+}
+
+.border-ovrd {
+    border-radius: 0px;
+}
+
+
+
