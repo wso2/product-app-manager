@@ -13,21 +13,21 @@ require('/modules/publisher.js').exec(function(ctx) {
 
 
     routeManager.register('POST', 'publisher', '/publisher/api/entitlement/policy/validate', function (context) {
-        
+
         var validationResult = validateEntitlementPolicyPartial(context.post.policyPartial);
         var validationResultJson = {"isValid" : validationResult.isValid()};
         print(createResponseObject(validationResultJson));
     });
 
     routeManager.register('POST', 'publisher', '/publisher/api/entitlement/policy/partial/save', function (context) {
-        
-        var partialId = saveEntitlementPolicyPartial(context.post.policyPartialName,context.post.policyPartial);
-        var response = {"id" : partialId};
+        var partialId = saveEntitlementPolicyPartial(context.post.policyPartialName, context.post.policyPartial, context.post.isSharedPartial);
+        var response = {"id": partialId};
         print(createResponseObject(response));
     });
 
     routeManager.register('PUT', 'publisher', '/publisher/api/entitlement/policy/partial/update', function (context) {
-        updateEntitlementPolicyPartial(context.content.id,context.content.policyPartialName,context.content.policyPartial);
+        var isSuccess = updateEntitlementPolicyPartial(context.content.id, context.content.policyPartial, context.content.isSharedPartial);
+        print(isSuccess);
     });
 
     routeManager.register('GET', 'publisher', '/publisher/api/entitlement/policy/partial/getContent/{policyPartial}', function (context) {
@@ -41,13 +41,25 @@ require('/modules/publisher.js').exec(function(ctx) {
         print(partialList);
     });
 
+    routeManager.register('GET', 'publisher', '/publisher/api/entitlement/get/shared/policy/partial/list', function (context) {
+        var partialList = getSharedPolicyPartialList();
+        print(partialList);
+    });
+
+    routeManager.register('GET', 'publisher', '/publisher/api/entitlement/get/apps/associated/to/policy/{policyPartialId}', function (context) {
+        var appsNameList = getAssociatedAppsNameList(context.params.policyPartialId);
+        log.info(stringify(appsNameList))
+        print(appsNameList);
+    });
+
     routeManager.register('GET', 'publisher', '/publisher/api/entitlement/webapp/{id}', function (context) {
         var webappId = getWebAppId(context.params.id);
         print(webappId);
     });
 
-    routeManager.register('DELETE', 'publisher', '/publisher/api/entitlement/policy/partial/delete/{policyPartial}', function (context) {
-        deleteEntitlementPolicyPartial(context.params.policyPartial);
+    routeManager.register('DELETE', 'publisher', '/publisher/api/entitlement/policy/partial/{policyPartial}', function (context) {
+        var isSuccess = deleteEntitlementPolicyPartial(context.params.policyPartial);
+        print(isSuccess);
     });
 
     routeManager.register('DELETE', 'publisher', '/publisher/api/entitlement/policy/app/partial/{applicationId}/{partialId}', function (context) {
@@ -56,8 +68,8 @@ require('/modules/publisher.js').exec(function(ctx) {
 
      routeManager.register('POST', 'publisher', '/publisher/api/entitlement/partials', function (context) {
 
-       saveApplicationPolicyPartialMapping(context.post.applicationId,context.post['partialIdList[]']);   
-        
+       saveApplicationPolicyPartialMapping(context.post.applicationId,context.post['partialIdList[]']);
+
     });
 
     /**
@@ -75,17 +87,17 @@ require('/modules/publisher.js').exec(function(ctx) {
     }
 
     /**
-    * Saves the given policy content
-    */
-    function saveEntitlementPolicyPartial(policyPartialName,policyPartial){
-        return apiProvider.saveEntitlementPolicyPartial(policyPartialName, policyPartial);
+     * Saves the given policy content
+     */
+    function saveEntitlementPolicyPartial(policyPartialName, policyPartial, isSharedPartial) {
+        return apiProvider.saveEntitlementPolicyPartial(policyPartialName, policyPartial, isSharedPartial);
     }
 
     /**
-    * Update the given policy content
-    */
-    function updateEntitlementPolicyPartial(policyPartialId,policyPartialName,policyPartial){
-        return apiProvider.updateEntitlementPolicyPartial(policyPartialId,policyPartialName, policyPartial);
+     * Update the given policy content
+     */
+    function updateEntitlementPolicyPartial(policyPartialId, policyPartial, isSharedPartial) {
+        return apiProvider.updateEntitlementPolicyPartial(policyPartialId, policyPartial, isSharedPartial);
     }
 
     /**
@@ -107,13 +119,25 @@ require('/modules/publisher.js').exec(function(ctx) {
     * Get the list of policy partials of a given application
     */
     function getApplicationPolicyPartialList(applicationId){
-       return apiProvider.getApplicationPolicyPartialList(applicationId);
+        return apiProvider.getApplicationPolicyPartialList(applicationId);
+    }
+
+    /**
+     * Get the list of Shared policy partials
+     */
+    function getSharedPolicyPartialList() {
+        return apiProvider.getSharedPolicyPartialList();
+    }
+
+
+    function getAssociatedAppsNameList(policyPartialId) {
+        return apiProvider.getAssociatedAppsNameList(policyPartialId);
     }
     /**
     * Delete the given policy partial
     */
     function deleteEntitlementPolicyPartial(policyPartialId){
-       apiProvider.deleteEntitlementPolicyPartial(policyPartialId);
+        return apiProvider.deleteEntitlementPolicyPartial(policyPartialId);
     }
 
     function saveApplicationPolicyPartialMapping(applicationId,partialIdList){
@@ -137,7 +161,7 @@ require('/modules/publisher.js').exec(function(ctx) {
     }
 
 
-    
+
 
     var securityModule=require('/modules/security/security.manager.js').securityManagementModule();
 
