@@ -237,4 +237,11 @@ $(document).ready(function() {
 		}
 	}
 
+    /* expand collapse container */
+    $("h2.exp_col").click(function() {
+        $(this).find("i").toggleClass("icon-chevron-sign-down");
+        var c = $(this).next();
+        $(c).slideToggle();
+    });
+
 });

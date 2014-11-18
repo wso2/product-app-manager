@@ -14,3 +14,43 @@
 	padding: 0;   
 }
 
+/* expand-collapsible panel */
+.wr-section {
+    margin-bottom:30px;
+}
+
+h2.exp_col i {
+    margin-right:5px;
+
+}
+
+#claimTableId {
+    margin-top:10px;
+}
+
+.resource-table select {
+    padding:5px;
+}
+
+.table-input td input, .extr-padd5 {
+    padding:5px;
+}
+
+.border-ovrd {
+    border-radius: 0px;
+}
+
+.add-on {
+    padding-top:5px;
+    padding-left:5px;
+    display:inline-block;
+}
+
+.ovrd-padd {
+    padding:0px !important;
+}
+
+.tbl-upload {
+    border:0px solid #fff;
+}
+
