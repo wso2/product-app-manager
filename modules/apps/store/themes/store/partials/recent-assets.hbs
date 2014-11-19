@@ -1,14 +1,14 @@
 <div class="row">
-    <div class="col-md-3">
+    <div class="span3">
            <h4><i class="icon-time"></i>{{t "Recently Added"}}</h4>
         {{#slice . count="20" size="20"}}
             {{#each .}}
                 <div class="row recently-added">
                     {{#attributes}}
-                        <div class="col-md-3 recent-asset-icon">
+                        <div class="span3 recent-asset-icon">
                             <a href="{{url "/assets"}}/{{../type}}/{{../id}}"><img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}"></a>
                         </div>
-                        <div class="col-md-9 recent-asset-details">
+                        <div class="span9 recent-asset-details">
                             <strong><a href="{{url "/assets"}}/{{../type}}/{{../id}}">{{overview_name}}</a></strong>
                             <small>by <a href="#">{{overview_provider}}</a></small>
                             <span class="star-rating">
