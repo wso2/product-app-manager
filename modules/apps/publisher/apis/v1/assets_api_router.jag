@@ -32,9 +32,13 @@ require('/modules/publisher.js').exec(function(ctx) {
 		date.setMonth(date.getMonth() + 1);
 		endDate = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate();
 
-		var artifactManager = rxtManager.getArtifactManager(type);
-		var model = modelManager.getModel(type);
-		var artifact ;
+        if (date.getMonth().toString().length < 2) {
+            endDate = date.getFullYear() + '-' + '0' + date.getMonth() + '-' + date.getDate();
+        } else {
+            endDate = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+        }
+
+
 
 		var usage = [];
 		var obj, result;
@@ -249,22 +253,45 @@ require('/modules/publisher.js').exec(function(ctx) {
 					}
 				}
 
-				if(webappDetailsIndex == -1){
-					var referer =[];
-					var pageCount = [];
-					var index = webappDeatails.length;
-					referer.push([index, usage[x].referer]);
-					pageCount.push([usage[x].count,index]);
-					webappDeatails.push([usage[x].apiName,referer,pageCount]);
-				}
-				else{
-					var index = webappDeatails[webappDetailsIndex][1].length;
+                if (webappDetailsIndex == -1) {
 
-					webappDeatails[webappDetailsIndex][1].push([index,usage[x].referer]);
-					webappDeatails[webappDetailsIndex][2].push([usage[x].count,index]);
-				}
+                    var referer = [];
+                    var pageCount = [];
+                    var index = 0;
+                    referer.push([index, usage[x].referer]);
+                    pageCount.push([usage[x].count, index]);
+                    webappDeatails.push([usage[x].apiName, referer, pageCount]);
 
-			}
+                } else {
+                    //if same webpage is accessed by different users sum the count
+                    var isReferExist = false;
+                    var referer = webappDeatails[webappDetailsIndex][1];
+                    for (i = 0; i < referer.length; i++) {
+                        if (usage[x].referer == referer[i][1]) {
+                            var index = referer[i][0];
+                            var pageCount = webappDeatails[webappDetailsIndex][2];
+                            for (j = 0; j < pageCount.length; j++) {
+                                if (index == pageCount[j][1]) {
+                                    pageCount[j][0] = pageCount[j][0] + usage[x].count;
+                                    isReferExist = true;
+                                    break;
+                                }
+                            }
+                            break;
+
+                        }
+                    }
+                    // same app but different page
+                    if (!isReferExist) {
+                        var index = webappDeatails[webappDetailsIndex][1].length;
+                        webappDeatails[webappDetailsIndex][1].push([index, usage[x].referer]);
+                        webappDeatails[webappDetailsIndex][2].push([usage[x].count, index]);
+                    }
+
+                }
+                webappIndex = -1;
+                webappDetailsIndex = -1;
+            }
 
 			webappObject['usage'] = usage;
 			webappObject['webapp'] = webapps;
@@ -300,15 +327,9 @@ require('/modules/publisher.js').exec(function(ctx) {
 
 	//Stop servicing the request if the check failed
 	if(passed){
-		var user = require('store').user;
-		var publisher = require('/modules/publisher.js').publisher(request, session);
-		var stats = require('/modules/statistics.js');
-
-		//var routeManager=application.get(config.app.ROUTE_MANAGER);
-		var rxtManager = publisher.rxtManager;
-		var modelManager = publisher.modelManager;
 		routeManager.handle(request, response);
 	}
 
 }, request, response, session);
 %>
+
