@@ -90,7 +90,7 @@ $(document).on("click", "#btn-policy-partial-validate", function () {
     }
 
     saveAndClose = false;
-    validatePolicyPartial(policyContent, validationResult, displayValidationRequestException);
+    validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation, function(){});
 
 
 })
@@ -121,27 +121,6 @@ $(document).on("click", "#btn-policy-save-and-close", function () {
 $(document).on("click", ".mclose-button", function () {
     editor.setValue("");
 });
-
-function validationResult(response) {
-    var response = JSON.parse(response);
-
-    if (response.success) {
-        response = response.response;
-
-        if (response.isValid) {
-
-            showEntitlementError("Policy is valid.");
-
-
-        } else {
-            showEntitlementError("Policy is not valid.");
-        }
-
-    } else {
-        showEntitlementError("Could not complete validation.");
-    }
-
-}
 
 function continueAddingEntitlementPolicyPartialAfterValidation(response){
 
@@ -294,126 +273,57 @@ function validatePolicyPartial(policyPartial, onSuccess, onError){
     });
 }
 
-function savePolicyPartial() {
+function savePolicyPartial(){
 
-    var policyPartial = editor.getValue();
+    var policyPartial = editor.getValue(); //$('#entitlement-policy-editor #policy-content').val();
+   // alert(policyPartial);
     var policyPartialName = $('#entitlement-policy-editor #policy-name').val();
-    var provider = $('#overview_provider').val();
-    var isSharedPartial = false;
-    if ($('#shared-partial').is(':checked')) {
-        isSharedPartial = true;
-    }
 
-    if (editedpolicyPartialId == 0) { //add
+
+    if(editedpolicyPartialId == 0){ //add
 
         $.ajax({
             url: '/publisher/api/entitlement/policy/partial/save',
             type: 'POST',
             contentType: 'application/x-www-form-urlencoded',
-            data: {
-                "policyPartialName": policyPartialName,
-                "policyPartial": policyPartial,
-                "isSharedPartial": isSharedPartial
-            },
-            success: function (data) {
+            data:{"policyPartialName":policyPartialName,"policyPartial":policyPartial},
+            success: function(data){
                 var returnedId = JSON.parse(data).response.id;
                 editedpolicyPartialId = returnedId;
-                policyPartialsArray.push({
-                    id: returnedId,
-                    policyPartialName: policyPartialName,
-                    policyPartial: policyPartial,
-                    isShared: isSharedPartial,
-                    author: provider
-                });
+                policyPartialsArray.push({id: returnedId, policyPartialName: policyPartialName, policyPartial: policyPartial });
                 updatePolicyPartial()
             },
-            error: function () {
+            error: function(){}
+        });
+
+    }else{ // update
+
+        $.ajax({
+            url: '/publisher/api/entitlement/policy/partial/update',
+            type: 'PUT',
+            contentType: 'application/json',
+            dataType: 'json',
+            data:JSON.stringify({"id": editedpolicyPartialId, "policyPartialName":policyPartialName,"policyPartial":policyPartial}),
+            success: function(data){
+            },
+            error: function(){
+
             }
         });
 
-    } else { // update
 
-        var policyPartialObj;
+        $.each(policyPartialsArray, function( index, obj ) {
+            if(obj!= null && obj.id == editedpolicyPartialId){
+                policyPartialsArray[index].policyPartialName = policyPartialName;
+                policyPartialsArray[index].policyPartial = policyPartial;
 
-        $.each(policyPartialsArray, function (index, obj) {
-            if (obj != null && obj.id == editedpolicyPartialId) {
-                policyPartialObj = obj;
-                return false; // break
+                updatePolicyPartial();
+                return false;
             }
-
         });
-
-        if (policyPartialObj.isShared) {
-            $.ajax({
-                async: false,
-                url: '/publisher/api/entitlement/get/apps/associated/to/policy/' + editedpolicyPartialId,
-                type: 'GET',
-                contentType: 'application/json',
-                dataType: 'json',
-                success: function (response) {
-
-                    var apps = "";
-                    if (response.length != 0) {
-
-                        for (var i = 0; i < response.length; i++) {
-                            var j = i + 1;
-                            apps = apps + j + ". " + response[i].appName + "\n";
-
-                        }
-
-                        var msg = "policy " + policyPartialName + " is used in following apps\n\n" +
-                            apps +
-                            "\nAre you sure you want to modify the policy " + policyPartialName + "?";
-
-                        var conf = confirm(msg);
-                        if (conf == true) {
-                            updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, policyPartial, isSharedPartial);
-                        }
-                    }
-
-                },
-                error: function (response) {
-                }
-            });
-
-        } else {
-            updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, policyPartial, isSharedPartial);
-        }
-
 
     }
 
-
-}
-
-function updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, policyPartial, isSharedPartial) {
-    $.ajax({
-        url: '/publisher/api/entitlement/policy/partial/update',
-        type: 'PUT',
-        contentType: 'application/json',
-        dataType: 'json',
-        data: JSON.stringify({
-            "id": editedpolicyPartialId,
-            "policyPartial": policyPartial,
-            "isSharedPartial": isSharedPartial
-        }),
-        success: function (data) {
-            if (JSON.parse(data)) {
-                $.each(policyPartialsArray, function (index, obj) {
-                    if (obj != null && obj.id == editedpolicyPartialId) {
-                        policyPartialsArray[index].policyPartialName = policyPartialName;
-                        policyPartialsArray[index].policyPartial = policyPartial;
-                        policyPartialsArray[index].isShared = isSharedPartial;
-                        updatePolicyPartial();
-                    }
-                });
-            } else {
-                alert("Couldn't modify .This partial is being used by web apps ");
-            }
-        },
-        error: function () {
-        }
-    });
 }
 
 function getEntitlementPolicyPartial(policyPartialId){
@@ -426,7 +336,7 @@ function getEntitlementPolicyPartial(policyPartialId){
         success: function(response) {
 
             showAlert(response)
-
+           
         },
         error: function(response) {
             showAlert('Error occured while fetching entitlement policy content', 'error');
@@ -446,7 +356,7 @@ function getApplicationPolicyPartialList(applicationId){
         success: function(response) {
 
             showAlert(response)
-
+           
         },
         error: function(response) {
             showAlert('Error occured while fetching entitlement policy content', 'error');
@@ -464,7 +374,7 @@ function deleteEntitlementPolicyPartial(policyPartialId){
         success: function(response) {
 
             showAlert(response)
-
+           
         },
         error: function(response) {
             showAlert('Error occured while fetching entitlement policy content', 'error');
@@ -482,7 +392,7 @@ function deleteApplicationPolicyPartialMapping(applicationId,policyPartialId){
         success: function(response) {
 
             showAlert(response)
-
+           
         },
         error: function(response) {
             showAlert('Error occured while fetching entitlement policy content', 'error');
@@ -498,7 +408,7 @@ function saveApplicationPolicyPartialMapping(applicationId, partialIdList){
             contentType: 'application/x-www-form-urlencoded',
             data:{"applicationId":applicationId,"partialIdList":partialIdList},
             success: function(data){
-
+             
             },
             error: function(){}
         });
@@ -510,26 +420,18 @@ function setPolicyContent(policyContent){
 }
 
 
-function updatePolicyPartial() {
+function updatePolicyPartial(){
     $('#policyPartialsTable tbody').html("");
     $(".policy-partial-dropdown").html("");
     var policyPartialIndexArray = [];
-    var provider = $('#overview_provider').val();
 
 
-    $.each(policyPartialsArray, function (index, obj) {
-        if (obj != null) {
 
-            if (obj.isShared) {
-                if (provider == obj.author) {
-                    $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td>YES</td><td>' + obj.author + '</td><td><a data-target="#entitlement-policy-editor" data-toggle="modal" data-policy-id="' + obj.id + '" class="policy-edit-button"><i class="icon-edit"></i></a> &nbsp;<a  data-policy-name="' + obj.policyPartialName + '"  data-policy-id="' + obj.id + '" class="policy-delete-button"><i class="icon-trash"></i></a></td></tr>');
-                } else {
-                    $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td>YES</td><td>' + obj.author + '</td><td><a data-target="#entitlement-policy-editor" data-toggle="modal" data-policy-id="' + obj.id + '" class="policy-edit-button"><i class="icon-info-sign"></i></td></tr>');
-                }
-            } else {
-                $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td>NO</td><td>' + obj.author + '</td><td><a data-target="#entitlement-policy-editor" data-toggle="modal" data-policy-id="' + obj.id + '" class="policy-edit-button"><i class="icon-edit"></i></a> &nbsp;<a  data-policy-name="' + obj.policyPartialName + '"  data-policy-id="' + obj.id + '" class="policy-delete-button"><i class="icon-trash"></i></a></td></tr>');
-            }
-            $(".policy-partial-dropdown").append("<li> \
+    $.each(policyPartialsArray, function( index, obj ) {
+       if(obj != null){
+
+           $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td><a data-target="#entitlement-policy-editor" data-toggle="modal" data-policy-id="'+ obj.id +'" class="policy-edit-button"><i class="icon-edit"></i></a> &nbsp;<a  data-policy-name="'+ obj.policyPartialName +'"  data-policy-id="'+ obj.id +'" class="policy-delete-button"><i class="icon-trash"></i></a></td></tr>');
+           $(".policy-partial-dropdown").append("<li> \
                <table> \
                <tr> \
                    <td><small>Permit</small></td> \
@@ -544,7 +446,7 @@ function updatePolicyPartial() {
 
            policyPartialIndexArray.push(obj.id);
 
-        }
+       }
 
         var uriTemplates = $('.uritemplate_entitlementPolicyPartialMappings_text').length
 
@@ -567,6 +469,7 @@ function updatePolicyPartial() {
         });
 
 
+
     });
 
     if(policyPartialsArray == null || policyPartialsArray[0] == null || policyPartialsArray.length == 0 ){
@@ -583,48 +486,59 @@ function updatePolicyPartial() {
 
 $(document).on("click", "#btn-add-xacml-policy", function () {
 
-    editedpolicyPartialId = 0;
-    editor.setValue("");
+    //editedpolicyPartialId = 0;
+
+    $('#entitlement-policy-editor #policy-content').val("");
+   // editor.setValue("dhdfh");
+   getXacmlPolicyTemplate();
 
     $('#entitlement-policy-editor #policy-name').val("");
-    $('#entitlement-policy-editor #policy-name').prop("readonly",false);
-    $('#entitlement-policy-editor .modal-footer #shared-partial').selected(false);
-    $('#entitlement-policy-editor .modal-footer').show();
     hideEntitlementError();
 
 });
 
+function getXacmlPolicyTemplate(){
+
+    $.ajax({
+        url: '/publisher/api/test',
+        type: 'GET',
+
+        dataType: "text",
+        success: function(response) {
+            if(response != null){
+             editor.setValue(response);
+                 $('#entitlement-policy-editor #policy-content').val(response);
+            }
+        },
+        error: function(response) {
+            showAlert('Error occured while fetching entitlement policy content', 'error');
+        }
+    });
+}
+
+
+
+
+
 
 $(document).on("click", ".policy-edit-button", function () {
-    var provider = $('#overview_provider').val();
-    var policyId = $(this).data("policyId");
+
+    var policyId = $(this).data( "policyId");
+    //$('#entitlement-policy-editor #policy-content').val("");
     editor.setValue("");
     $('#entitlement-policy-editor #policy-name').val("");
     hideEntitlementError();
 
 
-    $.each(policyPartialsArray, function (index, obj) {
-        if (obj != null && obj.id == policyId) {
-            $('#entitlement-policy-editor #policy-name').val(obj.policyPartialName);
-            $('#entitlement-policy-editor #policy-name').prop("readonly", true);
+    $.each(policyPartialsArray, function( index, obj ) {
+       if(obj!= null && obj.id == policyId){
+          // $('#entitlement-policy-editor #policy-content').val(obj.policyPartial);
+           $('#entitlement-policy-editor #policy-name').val(obj.policyPartialName);
+           editor.setValue(obj.policyPartial);
 
-            editor.setValue(obj.policyPartial);
+       }
 
-            if (obj.isShared) { // Shared partial
-                if (obj.isShared && provider != obj.author) {
-                    //hide the buttons if not author
-                    $('#entitlement-policy-editor .modal-footer').hide();
-                } else {
-                    //select the check box and show the buttons for author of partial
-                    $('#entitlement-policy-editor .modal-footer #shared-partial').selected(true);
-                    $('#entitlement-policy-editor .modal-footer').show();
-                }
-            } else { // private partial
-                //uncheck the checkbox
-                $('#entitlement-policy-editor .modal-footer #shared-partial').selected(false);
-                $('#entitlement-policy-editor .modal-footer').show();
-            }
-        }
+
     });
 
 
@@ -634,90 +548,31 @@ $(document).on("click", ".policy-edit-button", function () {
 });
 
 
+
 $(document).on("click", ".policy-delete-button", function () {
 
-    var policyName = $(this).data("policyName");
-    var policyId = $(this).data("policyId");
-    var policyPartial;
-    var arrayIndex;
-    var conf;
-    $.each(policyPartialsArray, function (index, obj) {
-        if (obj != null && obj.id == policyId) {
-            policyPartial = obj;
-            arrayIndex = index;
-            return false; // break
-        }
+    var policyName = $(this).data( "policyName");
 
-    });
-
-    if (policyPartial.isShared) {
-        $.ajax({
-            async: false,
-            url: '/publisher/api/entitlement/get/apps/associated/to/policy/' + policyId,
-            type: 'GET',
-            contentType: 'application/json',
-            dataType: 'json',
-            success: function (response) {
-
-                var apps = "";
-                if (response.length != 0) {
-
-                    for (var i = 0; i < response.length; i++) {
-                        var j = i + 1;
-                        apps = apps + j + ". " + response[i].appName + "\n";
-
-                    }
-                    var msg = "policy " + policyName + " is used in following apps\n\n" +
-                        apps +
-                        "\nAre you sure you want to delete the policy " + policyName + "?";
-                    conf = confirm(msg);
-
-
-                } else {
-                    conf = confirm("Are you sure you want to delete the policy " + policyName + "?");
-                }
-
-            },
-            error: function (response) {
-
-            }
-        });
-
-    } else {
-        conf = confirm("Are you sure you want to delete the policy " + policyName + "?");
-    }
-
+    var conf = confirm("Are you sure you want to delete the policy "+ policyName +"?");
     if (conf == true) {
-
-        $.ajax({
-
-            url: '/publisher/api/entitlement/policy/partial/' + policyId,
-            type: 'DELETE',
-            contentType: 'application/json',
-            dataType: 'json',
-            success: function (response) {
-
-                var success = JSON.parse(response);
-                if (success) {
-                    delete policyPartialsArray[arrayIndex];
-                    updatePolicyPartial();
+        var policyId = $(this).data( "policyId");
 
 
-                } else {
-                    alert("Couldn't delete the partial.This partial is being used by web apps  ");
-                }
+       deleteEntitlementPolicyPartial(policyId);
 
-            },
-            error: function (response) {
-                showAlert('Error occured while fetching entitlement policy content', 'error');
+        $.each(policyPartialsArray, function( index, obj ) {
+            if(obj!= null && obj.id == policyId){
+                delete policyPartialsArray[index];
+                updatePolicyPartial();
+                return;
             }
+
         });
 
+        updatePolicyPartial();
     }
 
 });
-
-
 
 $(document).on("click", ".policy-deny-cb", function () {
 
@@ -761,8 +616,8 @@ function updatePolcyparialForresource(resourcesId){
 
 
 
-$('#entitlement-policy-editor').on('shown.bs.modal', function() {
-    editor.refresh();
+$('#entitlement-policy-editor').on('shown', function() {
+    editor.refresh()
 });
 
 
