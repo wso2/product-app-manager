@@ -109,14 +109,13 @@ $(function() {
         }
 
         var version = $('#overview_version').val();
-        var tracking_code = context + version;
 
-        var hash = 5381;
-        for (i = 0; i < tracking_code.length; i++) {
-            char = tracking_code.charCodeAt(i);
-            hash = ((hash << 5) + hash) + char; /* hash * 33 + c */
-        }
-        var tracking_code_id = "AM_" + hash;
+        // random number between 0 to 1 e.g-0.5838903994299471
+        var randomNum = Math.random();
+        var code =randomNum.toString();
+        code = code.replace("0.","");
+        var tracking_code_id = "AM_"+code;
+
         $('#tracking_code').val(tracking_code_id);
 
         if ($('#autoConfig').is(':checked')) {
