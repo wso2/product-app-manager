@@ -99,17 +99,17 @@ function drawGraphs() {
     });
 
     $('.btn-maximize').on('click', function() {
-        $(this).parents('.widget').toggleClass('widget-maximized');
+        $(this).parents('.widget').addClass('widget-maximized');
         $('.backdrop').show();
     });
 
     $('.btn-minimize').on('click', function() {
-        $(this).parents('.widget').toggleClass('widget-maximized');
+        $(this).parents('.widget').removeClass('widget-maximized');
         $('.backdrop').hide();
     });
 
     $('.btn-remove').on('click', function() {
-        $(this).parents('.widget').toggleClass('graph-maximized');
+        $(this).parents('.widget').removeClass('graph-maximized');
         $('.backdrop').hide();
     });
 
@@ -247,7 +247,7 @@ var drawSubscribedAPIsByUsers = function(response) {
 		}
 		userParsedResponse = parsedResponse;
 
-		statement = '<tr><td rowspan='+ count + '><a id="link" href="#" onclick="$(this).parents(\'.widget\').toggleClass(\'graph-maximized\');$(\'.backdrop\').show();maximizeTable('+  i+ ');">' + parsedResponse[i][0] + '</td>' + statement;
+		statement = '<tr><td rowspan='+ count + '><a id="link" href="#" onclick="$(this).parents(\'.widget\').addClass(\'graph-maximized\');$(\'.backdrop\').show();maximizeTable('+  i+ ');">' + parsedResponse[i][0] + '</td>' + statement;
 		tableStatement = tableStatement + statement;
 		
 
@@ -386,7 +386,7 @@ var drawAPIResponseTime = function(response) {
 			min : 0,
 			max : max,
             axisLabelUseCanvas :false,
-            axisLabel: "Response Time(MS)"
+            axisLabel: "<b>Response Time(MS)</b>"
 
 		}
 
@@ -429,7 +429,7 @@ var drawAPIUsageByPage = function(response) {
 		},
 		xaxis : {
             axisLabelUseCanvas :false,
-			axisLabel : "Web Apps",
+			axisLabel : "<b>Web Apps</b>",
 			tickLength : 0,
 			ticks : ticks
 		},
@@ -447,7 +447,7 @@ var drawAPIUsageByPage = function(response) {
 
     $("#placeholder51").bind("plotclick", function (event, pos, item) {
         if (item != null) {
-            $(this).parents('.widget').toggleClass('graph-maximized');
+            $(this).parents('.widget').addClass('graph-maximized');
             $('.backdrop').show();
 
             var x = item.datapoint[0];
@@ -494,7 +494,7 @@ var drawAPIUsageByPage = function(response) {
                 },
                 xaxis: {
                     axisLabelUseCanvas: false,
-                    axisLabel: "Total Request Count",
+                    axisLabel: "<b>Total Request Count</b>",
                     reserveSpace: true,
                     labelWidth: 150,
                     min: 0,
