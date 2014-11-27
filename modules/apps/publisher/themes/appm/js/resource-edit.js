@@ -90,10 +90,6 @@ $( document ).ready(function() {
 
 
     $("#add_resource").click(function(){
-
-
-
-
         $(".http_verb").each(function(){
             var resource = {};
             resource.url_pattern = $("#url_pattern").val();
@@ -106,8 +102,12 @@ $( document ).ready(function() {
             }
         })
 
+        resetResource();
         $("#resource_tbody").trigger("draw");
-        console.log(RESOURCES_1);
+    });
+
+    $("#clear_resource").click(function(){
+        resetResource();
     });
 
     $("#resource_tbody").delegate(".delete_resource","click", function(){
@@ -159,7 +159,7 @@ $( document ).ready(function() {
                 tokenDelimiter: ',',
                 preventDuplicates: true
             });
-            if(RESOURCES_1[i].user_roles.indexOf(',')>-1){
+            if(RESOURCES_1[i].user_roles !== undefined && RESOURCES_1[i].user_roles.indexOf(',')>-1){
                 var res = RESOURCES_1[i].user_roles.split(",");
                 for(var j=0; j< res.length; ++j){
                     $('#getUserRoles'+i).tokenInput("add", {id:res[j] , name:res[j]});
@@ -169,9 +169,11 @@ $( document ).ready(function() {
             else{
                 $('#getUserRoles'+i).tokenInput("add", {id:RESOURCES_1[i].user_roles , name: RESOURCES_1[i].user_roles});
             }
-
-            document.getElementById(RESOURCES_1[i].throttling_tier).selected="true";
-            document.getElementById(RESOURCES_1[i].skipthrottle).selected="true";
+            if (RESOURCES_1[i].throttling_tier !== undefined) {
+                document.getElementById(RESOURCES_1[i].throttling_tier).selected="true";            }
+            if(RESOURCES_1[i].skipthrottle !== undefined) {
+                document.getElementById(RESOURCES_1[i].skipthrottle).selected="true";
+            }
         }
     });
 
@@ -204,4 +206,12 @@ function getValidatedEntitlementPolicyId(resourceIndex){
     }else{
         return "";
     }
+}
+
+
+function resetResource() {
+    $("#url_pattern").val("");
+    $(".http_verb").each(function(){
+           this.checked = false;
+    })
 }
