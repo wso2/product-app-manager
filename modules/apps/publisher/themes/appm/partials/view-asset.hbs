@@ -55,14 +55,16 @@
                     </thead>
                     <tbody>
                         {{#each newViewData.uriTemplate}}
-                        <tr>
-                            <td>{{urlPattern}}</td>
-                            <td>{{httpVerb}}</td>
-                            <td>{{tire}}</td>
-                            <td>{{skip}}</td>
-                            <td>{{policy}}</td>
-                            <td>{{roles}}</td>
-                        </tr>
+                            {{#compare urlPattern "null" operator="!="}}
+                            <tr>
+                                <td>{{urlPattern}}</td>
+                                <td>{{httpVerb}}</td>
+                                <td>{{tire}}</td>
+                                <td>{{skip}}</td>
+                                <td>{{policy}}</td>
+                                <td>{{roles}}</td>
+                            </tr>
+                            {{/compare}}
                         {{/each}}
                     </tbody>
                 </table>
