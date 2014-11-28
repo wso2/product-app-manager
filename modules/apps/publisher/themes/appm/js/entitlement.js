@@ -517,6 +517,16 @@ function updatePolicyPartial() {
     var provider = $('#overview_provider').val();
 
 
+    $(".policy-partial-dropdown").append("\
+               <li><table> \
+               <tr> \
+               <th  style='padding-left:10px; width:80px'>Policy</th> \
+               <th  style='padding-left:10px; width:50px'>Permit</th> \
+               <th  style='padding-left:10px; width:50px'>Deny</th> \
+               </tr> \
+              ");
+
+
     $.each(policyPartialsArray, function (index, obj) {
         if (obj != null) {
 
@@ -529,16 +539,11 @@ function updatePolicyPartial() {
             } else {
                 $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td>NO</td><td>' + obj.author + '</td><td><a data-target="#entitlement-policy-editor" data-toggle="modal" data-policy-id="' + obj.id + '" class="policy-edit-button"><i class="icon-edit"></i></a> &nbsp;<a  data-policy-name="' + obj.policyPartialName + '"  data-policy-id="' + obj.id + '" class="policy-delete-button"><i class="icon-trash"></i></a></td></tr>');
             }
-            $(".policy-partial-dropdown").append("<li> \
-               <table> \
-               <tr> \
-                   <td><small>Permit</small></td> \
-                   <td><small>Deny</small></td> \
-                   <td rowspan='2' style='background-color: #ffffff'>" + obj.policyPartialName + "</td> \
-               </tr> \
-               <tr> \
-               <td><input class='policy-allow-cb policy-allow-cb"+ obj.id +"' data-policy-id='" + obj.id + "' type='checkbox'></td> \
-               <td><input class='policy-deny-cb policy-deny-cb"+ obj.id +"' data-policy-id='" + obj.id + "'  type='checkbox'></td> \
+            $(".policy-partial-dropdown").append("\
+               <tr style='padding-bottom: 20px'> \
+               <td style='padding-left:10px; width:80px'>" + obj.policyPartialName + "</td> \
+               <td style='padding-left: 30px;'><input class='policy-allow-cb policy-allow-cb"+ obj.id +"' data-policy-id='" + obj.id + "' type='checkbox'></td> \
+               <td style='padding-left: 30px;'> <input class='policy-deny-cb policy-deny-cb"+ obj.id +"' data-policy-id='" + obj.id + "'  type='checkbox'></td> \
                 </tr> \
                </table></li>");
 

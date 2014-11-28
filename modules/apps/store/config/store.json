@@ -9,9 +9,11 @@
         "https": "%https.host%/admin",
         "http": "%http.host%"
     },
+
     "lifeCycleBehaviour":{
         "visibleIn":["Published"]
     },
+
     "ssoConfiguration": {
         "enabled": true,
         "issuer": "store",
