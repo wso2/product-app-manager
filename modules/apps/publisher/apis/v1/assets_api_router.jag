@@ -1,36 +1,34 @@
 <%
 
-require('/modules/publisher.js').exec(function(ctx) {
+require('/modules/publisher.js').exec(function (ctx) {
 
-	var config = require('/config/publisher.json');
-	var caramel = require('caramel');
+    var config = require('/config/publisher.json');
+    var caramel = require('caramel');
 
-	var router = require('/modules/router-g.js').router();
-	var routeManager = new router.Router();
+    var router = require('/modules/router-g.js').router();
+    var routeManager = new router.Router();
 
-	var appmgtPublisher = require('appmgtpublisher');
+    var appmgtPublisher = require('appmgtpublisher');
 
-	var log = new Log();
+    var log = new Log();
 
-	routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{type}/{action}/', function (context) {
-		var type = context.params.type;
-		var action = context.params.action;
+    routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{type}/{action}/', function (context) {
+        var action = context.params.action;
 
-		var server  = require('store').server;
-		var username = server.current(session).username;
-		var tenantId = server.current(session).tenantId;
-		var startDate = context.post.startDate;
-		var endDate = context.post.endDate;
+        var server = require('store').server;
+        var username = server.current(session).username;
+        var startDate = context.post.startDate;
+        var endDate = context.post.endDate;
 
-		var appMgtProviderObj = new appmgtPublisher.APIProvider(stringify(username));
+        var appMgtProviderObj = new appmgtPublisher.APIProvider(stringify(username));
 
 
-		//manipulate endDate to overcome date-picker issue
-		var date = new Date(Date.parse(endDate.replace(/-/g,"/")));
-		date.setDate(date.getDate() + 1);
-		// The getMonth() method returns the month (from 0 to 11) for the specified date
-		date.setMonth(date.getMonth() + 1);
-		endDate = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate();
+        //manipulate endDate to overcome date-picker issue
+        var date = new Date(Date.parse(endDate.replace(/-/g, "/")));
+        date.setDate(date.getDate() + 1);
+        // The getMonth() method returns the month (from 0 to 11) for the specified date
+        date.setMonth(date.getMonth() + 1);
+        endDate = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
 
         if (date.getMonth().toString().length < 2) {
             endDate = date.getFullYear() + '-' + '0' + date.getMonth() + '-' + date.getDate();
@@ -39,219 +37,173 @@ require('/modules/publisher.js').exec(function(ctx) {
         }
 
 
+        var usage = [];
 
-		var usage = [];
-		var obj, result;
+        /* Web Application Last Access Time Graph */
+        if (action == "getSubscriberCountByAPIs") {
+            usage = appMgtProviderObj.getSubscriberCountByAPIs("__all_providers__", startDate, endDate);
 
-		/* Web Application Last Access Time Graph */
-		if (action == "getSubscriberCountByAPIs") {
-			//output = stats.getHotAssetStats(startDate,endDate,tenantId);
-			usage = appMgtProviderObj.getSubscriberCountByAPIs("__all_providers__",startDate,endDate);
-			if (usage == null) {
-				obj = {
-					error:true
-				};
-			} else {
-				obj = {
-					error:false,
-					usage:usage
-				};
-			}
-			print(usage);
-		} else  if (action == "getSubscribedAPIsByUsers") { /* Overall Web Application Usage Graph */
-			usage = appMgtProviderObj.getSubscribedAPIsByUsers("__all_providers__",startDate,endDate);
-			var output = [];
-			var users = [];
-			for(i=0;i<usage.length;i++){
-				if(users.indexOf(usage[i].user) == -1){
-					users.push(usage[i].user);
-				}
-			}
+            print(usage);
 
-			for(j=0;j<users.length;j++){
-				var apps = [];
-				for(i=0;i<usage.length;i++){
-					if(usage[i].user == users[j])
-					{
-						apps.push(usage[i].apiName);
-					}
-				}
+        } else if (action == "getSubscribedAPIsByUsers") { /* Overall Web Application Usage Graph */
+            usage = appMgtProviderObj.getSubscribedAPIsByUsers("__all_providers__", startDate, endDate);
+            var output = [];
+            var users = [];
+            for (i = 0; i < usage.length; i++) {
+                if (users.indexOf(usage[i].user) == -1) {
+                    users.push(usage[i].user);
+                }
+            }
 
-				var user = {
-				};
-				user['user'] = 	users[j];
-				user['apps'] = apps;
-				output.push(user);
+            for (j = 0; j < users.length; j++) {
+                var apps = [];
+                for (i = 0; i < usage.length; i++) {
+                    if (usage[i].user == users[j]) {
+                        apps.push(usage[i].apiName);
+                    }
+                }
 
-			}
+                var user = {
+                };
+                user['user'] = users[j];
+                user['apps'] = apps;
+                output.push(user);
 
-			if (usage == null) {
-				obj = {
-					error:true
-				};
+            }
 
-			} else {
-				obj = {
-					error:false,
-					output:output
-				};
-			}
+            print(output);
 
-			print(output);
-		}else if (action == "getAPIUsageByUser") { /* Overall Web Application Usage Graph */
-			usage = appMgtProviderObj.getAPIUsageByUser("__all_providers__",startDate,endDate);
+        } else if (action == "getAPIUsageByUser") { /* Overall Web Application Usage Graph */
+            usage = appMgtProviderObj.getAPIUsageByUser("__all_providers__", startDate, endDate);
 
-			usage = parse(stringify(usage));
-				
-			function orderByCountAscending(a, b) {
-				return b.count - a.count;
-			}
+            usage = parse(stringify(usage));
 
-			usage = usage.sort(orderByCountAscending);
-			var webapps = [];
+            function orderByCountAscending(a, b) {
+                return b.count - a.count;
+            }
 
-			for(x=0;x<usage.length;x++){
-					
-				var webappIndex = -1;
-				var webappVersionIndex = -1;
+            usage = usage.sort(orderByCountAscending);
+            var webapps = [];
 
-				for(y=0;y<webapps.length;y++){
-					if(webapps[y][0] == usage[x].apiName){
-						webappIndex = y;
-						var z;
-						for(z=0;z<webapps[y][1].length;z++){
-							if(webapps[y][1][z][0] == usage[x].version){
-								webappVersionIndex = z;
-								break;
-							}
-						}
-						if((webappVersionIndex == -1) && (z == webapps[y].length)){
-							break;
-						}
-					}
-				}
+            for (x = 0; x < usage.length; x++) {
 
-				if(webappIndex == -1){
-					var version = [];
-					var requestCount = [];
-					requestCount.push([usage[x].userId,usage[x].count.toString()]);
-					version.push([usage[x].version,requestCount]);
-					webapps.push([usage[x].apiName,version]);
-				}else{
-					if(webappVersionIndex == -1){
-						var requestCount = [];
-						requestCount.push([usage[x].userId,usage[x].count.toString()]);
-						webapps[webappIndex][1].push([usage[x].version,requestCount]);
-					}
-					else{
-						webapps[webappIndex][1][webappVersionIndex][1].push([usage[x].userId,usage[x].count.toString()]);
-					}
-				}
-					
-			}
+                var webappIndex = -1;
+                var webappVersionIndex = -1;
 
-			if (usage == null) {
-				obj = {
-					error:true
-				};
-			} else {
-				obj = {
-					error:false,
-					webapps:webapps
-				};
-			}
+                for (y = 0; y < webapps.length; y++) {
+                    if (webapps[y][0] == usage[x].apiName) {
+                        webappIndex = y;
+                        var z;
+                        for (z = 0; z < webapps[y][1].length; z++) {
+                            if (webapps[y][1][z][0] == usage[x].version) {
+                                webappVersionIndex = z;
+                                break;
+                            }
+                        }
+                        if ((webappVersionIndex == -1) && (z == webapps[y].length)) {
+                            break;
+                        }
+                    }
+                }
 
-			print(webapps);
-		}else if (action == "getAPIResponseTime") { /* Overall Web Application Usage Graph */
-			var output  = {};
-			var apinameData = [],serviceTimeData=[],webApps = [];
-			usage = appMgtProviderObj.getProviderAPIServiceTime("__all_providers__",startDate,endDate);
-			usage = parse(stringify(usage));
+                if (webappIndex == -1) {
+                    var version = [];
+                    var requestCount = [];
+                    requestCount.push([usage[x].userId, usage[x].count.toString()]);
+                    version.push([usage[x].version, requestCount]);
+                    webapps.push([usage[x].apiName, version]);
+                } else {
+                    if (webappVersionIndex == -1) {
+                        var requestCount = [];
+                        requestCount.push([usage[x].userId, usage[x].count.toString()]);
+                        webapps[webappIndex][1].push([usage[x].version, requestCount]);
+                    }
+                    else {
+                        webapps[webappIndex][1][webappVersionIndex][1].push([usage[x].userId, usage[x].count.toString()]);
+                    }
+                }
 
-			function SortByName(x,y) {
-				return ((x.apiName == y.apiName) ? 0 : ((y.apiName > x.apiName) ? 1 : -1 ));
-			}
-			usage  = usage.sort(SortByName);
-			for(i=0;i<usage.length;i++){
-				webApps.push([i,usage[i].apiName]);
-				apinameData.push([i,usage[i].referer]);
-				serviceTimeData.push([parseInt(usage[i].serviceTime),i]);
-			}
-			var webapps = [];
-			for(x=0;x<usage.length;x++){
+            }
 
-				var webappIndex = -1;
-				var webappVersionIndex = -1;
-				
-				for(y=0;y<webapps.length;y++){
-					if(webapps[y][0] == usage[x].apiName){
-							
-						webappIndex = y;
-						break;
-					}
-				}
-			
-				if(webappIndex == -1){
-					var page = [];
-					page.push([usage[x].referer,usage[x].serviceTime.toString()]);
-					webapps.push([usage[x].apiName,page]);
-				}else{
-					webapps[webappIndex][1].push([usage[x].referer,usage[x].serviceTime.toString()]);
-				}
-			}
+            print(webapps);
 
-			output['webapps'] = webapps;
-			output['referer'] = apinameData;
-			output['serviceTime'] = serviceTimeData;
+        } else if (action == "getAPIResponseTime") { /* Overall Web Application Usage Graph */
+            var output = {};
+            var apinameData = [], serviceTimeData = [], webApps = [];
+            usage = appMgtProviderObj.getProviderAPIServiceTime("__all_providers__", startDate, endDate);
+            usage = parse(stringify(usage));
 
-			if (usage == null) {
-				obj = {
-					error:true
-				};
+            function sortByName(x, y) {
+                return ((x.apiName == y.apiName) ? 0 : ((y.apiName > x.apiName) ? 1 : -1 ));
+            }
 
-			} else {
-				obj = {
-					error:false,
-					output:output
-				};
-			}
+            usage = usage.sort(sortByName);
+            for (i = 0; i < usage.length; i++) {
+                webApps.push([i, usage[i].apiName]);
+                apinameData.push([i, usage[i].referer]);
+                serviceTimeData.push([parseInt(usage[i].serviceTime), i]);
+            }
+            var webapps = [];
+            for (x = 0; x < usage.length; x++) {
 
-			print(output);
-		}else if (action == "getAPIUsageByPage") { /* Overall Web Application Usage Graph */
-			usage = appMgtProviderObj.getAPIUsageByPage("__all_providers__",startDate,endDate);
+                var webappIndex = -1;
+                var webappVersionIndex = -1;
 
-			var webapps = [];
-			var webappIndex = -1;
-			var webappDetailsIndex = -1;
-			var totalPageCount = [];
-			var webappObject = {};
-			var appPage = [];
-			var apppageCount = [];
-			var webappDeatails = [];
+                for (y = 0; y < webapps.length; y++) {
+                    if (webapps[y][0] == usage[x].apiName) {
 
-			for(x=0;x<usage.length;x++){
-				for(y=0;y<webapps.length;y++){
-					if(webapps[y][1] == usage[x].apiName){
-						webappIndex = y;
-						break;
-					}
-				}
+                        webappIndex = y;
+                        break;
+                    }
+                }
 
-				if(webappIndex == -1){
-					var index = webapps.length;
-					webapps.push([index,usage[x].apiName]);
-					totalPageCount.push([index,usage[x].count]);
-				}else {
-					var total = totalPageCount[webappIndex][1] + usage[x].count ;
-					totalPageCount[webappIndex][1] = total;
-				}
+                if (webappIndex == -1) {
+                    var page = [];
+                    page.push([usage[x].referer, usage[x].serviceTime.toString()]);
+                    webapps.push([usage[x].apiName, page]);
+                } else {
+                    webapps[webappIndex][1].push([usage[x].referer, usage[x].serviceTime.toString()]);
+                }
+            }
 
-				for(z=0;z<webappDeatails.length;z++){
-					if(webappDeatails[z][0] == usage[x].apiName){
-						webappDetailsIndex = z;
-						break;
-					}
-				}
+            output['webapps'] = webapps;
+            output['referer'] = apinameData;
+            output['serviceTime'] = serviceTimeData;
+
+            print(output);
+
+        } else if (action == "getAPIUsageByPage") { /* Overall Web Application Usage Graph */
+            usage = appMgtProviderObj.getAPIUsageByPage("__all_providers__", startDate, endDate);
+
+            var webapps = [];
+            var webappIndex = -1;
+            var webappDetailsIndex = -1;
+            var totalPageCount = [];
+            var webappDeatails = [];
+
+            for (x = 0; x < usage.length; x++) {
+                for (y = 0; y < webapps.length; y++) {
+                    if (webapps[y][1] == usage[x].apiName) {
+                        webappIndex = y;
+                        break;
+                    }
+                }
+
+                if (webappIndex == -1) {
+                    var index = webapps.length;
+                    webapps.push([index, usage[x].apiName]);
+                    totalPageCount.push([index, usage[x].count]);
+                } else {
+                    var total = totalPageCount[webappIndex][1] + usage[x].count;
+                    totalPageCount[webappIndex][1] = total;
+                }
+
+                for (z = 0; z < webappDeatails.length; z++) {
+                    if (webappDeatails[z][0] == usage[x].apiName) {
+                        webappDetailsIndex = z;
+                        break;
+                    }
+                }
 
                 if (webappDetailsIndex == -1) {
 
@@ -293,42 +245,29 @@ require('/modules/publisher.js').exec(function(ctx) {
                 webappDetailsIndex = -1;
             }
 
-			webappObject['usage'] = usage;
-			webappObject['webapp'] = webapps;
-			webappObject['totalPageCount'] = totalPageCount;
-			webappObject['webappDeatails'] = webappDeatails;
+            webappObject['usage'] = usage;
+            webappObject['webapp'] = webapps;
+            webappObject['totalPageCount'] = totalPageCount;
+            webappObject['webappDeatails'] = webappDeatails;
 
-			if (usage == null) {
-				obj = {
-					error:true
-				};
-			} else {
-				obj = {
-					error:false,
-					webappObject:webappObject
-				};
-			}
+            print(webappObject);
+        }
 
-			print(webappObject);
-		}
-
-	});
+    });
 
 
+    var securityModule = require('/modules/security/security.manager.js').securityManagementModule();
+    var sm = securityModule.cached();
 
+    //This will short circuit the handling of the requests
+    var passed = sm.check(session, function () {
+        response.sendError(401);
+    });
 
-	var securityModule=require('/modules/security/security.manager.js').securityManagementModule();
-	var sm=securityModule.cached();
-
-	//This will short circuit the handling of the requests
-	var passed=sm.check(session,function(){
-		response.sendError(401);
-	});
-
-	//Stop servicing the request if the check failed
-	if(passed){
-		routeManager.handle(request, response);
-	}
+    //Stop servicing the request if the check failed
+    if (passed) {
+        routeManager.handle(request, response);
+    }
 
 }, request, response, session);
 %>

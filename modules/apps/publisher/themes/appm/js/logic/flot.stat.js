@@ -183,7 +183,7 @@ var drawSubscribedAPIsByUsers = function(response) {
 	/* Overall Web Application Usage Graph */
 	$('#placeholder2').append(
 			$('<table class="table graphTable" id="webAppTable2">' + '<tr>'
-					+ '<th>Users</th>' + '<th>Web Apps</th>' + '</tr>'
+					+ '<th>User</th>' + '<th>Web Apps</th>' + '</tr>'
 					+ '</table>'));
 	for ( var i = 0; i < parsedResponse.length; i++) {
 		var apps = parsedResponse[i].apps;
@@ -386,7 +386,7 @@ var drawAPIResponseTime = function(response) {
 			min : 0,
 			max : max,
             axisLabelUseCanvas :false,
-            axisLabel: "<b>Response Time(MS)</b>"
+            axisLabel: "<b>Response Time(ms)</b>"
 
 		}
 
@@ -484,7 +484,7 @@ var drawAPIUsageByPage = function(response) {
                 series: {
                     bars: {
                         show: true,
-                        horizontal: true,
+                        horizontal: true
 
                     }
                 },
@@ -503,7 +503,7 @@ var drawAPIUsageByPage = function(response) {
                 yaxis: {
                     ticks: ticks,
                     tickLength: 0,
-                    axisLabel: "Accessed Page",
+                    axisLabel: "Accessed Page"
 
                 }
 
