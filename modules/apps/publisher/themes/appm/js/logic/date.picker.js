@@ -10,9 +10,9 @@ $('#datepicker-calendar').DatePicker({
     onChange: function (dates, el) {
         // update the range display
         $('#date-range-field span').text(
-            convertDate(dates[0]) +' to ' +  convertDate(dates[1])
-                );
-        onDateSelected(convertDate(dates[0]),convertDate(dates[1]));
+                convertDate(dates[0]) + ' to ' + convertDate(dates[1])
+        );
+        onDateSelected();
     }
 });
 
@@ -47,4 +47,11 @@ $('html').click(function () {
 $('#datepicker-calendar').click(function (event) {
     event.stopPropagation();
 });
+
+function convertDate(date) {
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    return date.getFullYear() + '-' + (('' + month).length < 2 ? '0' : '')
+        + month + '-' + (('' + day).length < 2 ? '0' : '') + day;
+}
 
