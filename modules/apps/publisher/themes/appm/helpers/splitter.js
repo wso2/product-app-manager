@@ -63,14 +63,13 @@ var splitData = function(copyOfData){
     var alreadyGot = [];
     var uriTemplateSorted = [];
     for(i=0;i<uriTemplate.length;i++){
-        var numberInAction = parseInt(uriTemplate[i].name.split("uritemplate_urlPattern")[1]);
-
+        var numberInAction = parseInt(uriTemplate[i].name.match(/\d+$/)[0]);
         if(alreadyGot.indexOf(numberInAction) == -1 ){
             var patternEntry = {};
             alreadyGot.push(numberInAction);
             for(var j=0;j<uriTemplate.length;j++){
 
-                if(endsWith(numberInAction,uriTemplate[j].name)){
+                if(numberInAction == parseInt(uriTemplate[j].name.match(/\d+$/)[0])){
                     var secondNamePart = uriTemplate[j].name.split(numberInAction)[0];
                     if(secondNamePart == "uritemplate_urlPattern"){
                         patternEntry.urlPattern = uriTemplate[j].value;

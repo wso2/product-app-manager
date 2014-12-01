@@ -22,8 +22,6 @@ var render = function (theme, data, meta, require) {
 
 	}
 
-
-
 	var lifecycleColors = {"Demote": "btn-blue", "Re-Submit": "btn-blue", "Submit": "btn-blue", "Publish": "btn-blue", "Unpublish": "btn-orange", "Deprecate": "btn-danger", "Retire": "btn-danger", "Approve": "btn-blue", "Reject": "btn-danger"};
 	if(data.artifacts){
 
@@ -94,9 +92,6 @@ var render = function (theme, data, meta, require) {
 						lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
 					}
 				}
-
-
-
 			}
 
 

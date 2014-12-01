@@ -17,6 +17,8 @@ var config;
             }
             return  value;
         });
+
         return config;
     };
+
 })();

@@ -1,114 +1,119 @@
-$(function() {
-	var url = window.location.pathname;
-
-	var comps = url.split('/');
-	var type = comps[comps.length - 2];
-	var operation = comps[comps.length - 3];
-	var action = 'getSubscriberCountByAPIs';
-
-	var dateRange = $('#date-range-field span').text();
-	var from = dateRange.split('to')[0];
-	var to = dateRange.split('to')[1];
-	
-	var userParsedResponse;
-
-	$.ajax({
-		/* Web Application Last Access Time Graph */
-		url : '/publisher/api/assets/' + operation + '/' + type + '/' + action
-				+ '/',
-		type : 'POST',
-		data : {
-			'startDate' : from,
-			'endDate' : to
-		},
-		success : function(response) {
-			drawSubscriberCountByAPIs(response);
-		},
-		error : function(response) {
-			alert('Error occured at statistics graph rendering');
-		}
-	});
-
-	$.ajax({
-		url : '/publisher/api/assets/' + operation + '/' + type
-				+ '/getSubscribedAPIsByUsers/',
-		type : 'POST',
-		data : {
-			'startDate' : from,
-			'endDate' : to
-		},
-		success : function(response) {
-			drawSubscribedAPIsByUsers(response);
-		},
-		error : function(response) {
-			alert('Error occured at statistics graph rendering');
-		}
-	});
-
-	$.ajax({
-		url : '/publisher/api/assets/' + operation + '/' + type
-				+ '/getAPIUsageByUser/',
-		type : 'POST',
-		data : {
-			'startDate' : from,
-			'endDate' : to
-		},
-		success : function(response) {
-			drawAPIUsageByUser(response);
-		},
-		error : function(response) {
-			alert('Error occured at statistics graph rendering');
-		}
-	});
-
-	$.ajax({
-		url : '/publisher/api/assets/' + operation + '/' + type
-				+ '/getAPIResponseTime/',
-		type : 'POST',
-		data : {
-			'startDate' : from,
-			'endDate' : to
-		},
-		success : function(response) {
-			drawAPIResponseTime(response);
-		},
-		error : function(response) {
-			alert('Error occured at statistics graph rendering');
-		}
-	});
-
-	$.ajax({
-		url : '/publisher/api/assets/' + operation + '/' + type
-				+ '/getAPIUsageByPage/',
-		type : 'POST',
-		data : {
-			'startDate' : from,
-			'endDate' : to
-		},
-		success : function(response) {
-			drawAPIUsageByPage(response);
-		},
-		error : function(response) {
-			alert('Error occured at statistics graph rendering');
-		}
-	});
-
-	$('.btn-maximize').on('click', function() {
-		$(this).parents('.widget').toggleClass('widget-maximized');
-		$('.backdrop').show();
-	});
-
-	$('.btn-minimize').on('click', function() {
-		$(this).parents('.widget').toggleClass('widget-maximized');
-		$('.backdrop').hide();
-	});
-
-	$('.btn-remove').on('click', function() {
-		$(this).parents('.widget').toggleClass('graph-maximized');
-		$('.backdrop').hide();
-	});
+$(function () {
+    drawGraphs();
 
 });
+
+function drawGraphs() {
+    var url = window.location.pathname;
+
+    var comps = url.split('/');
+    var type = comps[comps.length - 2];
+    var operation = comps[comps.length - 3];
+    var action = 'getSubscriberCountByAPIs';
+
+    var dateRange = $('#date-range-field span').text();
+    var from = dateRange.split('to')[0];
+    var to = dateRange.split('to')[1];
+
+    var userParsedResponse;
+
+    $.ajax({
+        /* Web Application Last Access Time Graph */
+        url : '/publisher/api/assets/' + operation + '/' + type + '/' + action
+            + '/',
+        type : 'POST',
+        data : {
+            'startDate' : from,
+            'endDate' : to
+        },
+        success : function(response) {
+            drawSubscriberCountByAPIs(response);
+        },
+        error : function(response) {
+            alert('Error occured at statistics graph rendering');
+        }
+    });
+
+    $.ajax({
+        url : '/publisher/api/assets/' + operation + '/' + type
+            + '/getSubscribedAPIsByUsers/',
+        type : 'POST',
+        data : {
+            'startDate' : from,
+            'endDate' : to
+        },
+        success : function(response) {
+            drawSubscribedAPIsByUsers(response);
+        },
+        error : function(response) {
+            alert('Error occured at statistics graph rendering');
+        }
+    });
+
+    $.ajax({
+        url : '/publisher/api/assets/' + operation + '/' + type
+            + '/getAPIUsageByUser/',
+        type : 'POST',
+        data : {
+            'startDate' : from,
+            'endDate' : to
+        },
+        success : function(response) {
+            drawAPIUsageByUser(response);
+        },
+        error : function(response) {
+            alert('Error occured at statistics graph rendering');
+        }
+    });
+
+    $.ajax({
+        url : '/publisher/api/assets/' + operation + '/' + type
+            + '/getAPIResponseTime/',
+        type : 'POST',
+        data : {
+            'startDate' : from,
+            'endDate' : to
+        },
+        success : function(response) {
+            drawAPIResponseTime(response);
+        },
+        error : function(response) {
+            alert('Error occured at statistics graph rendering');
+        }
+    });
+
+    $.ajax({
+        url : '/publisher/api/assets/' + operation + '/' + type
+            + '/getAPIUsageByPage/',
+        type : 'POST',
+        data : {
+            'startDate' : from,
+            'endDate' : to
+        },
+        success : function(response) {
+            drawAPIUsageByPage(response);
+        },
+        error : function(response) {
+            alert('Error occured at statistics graph rendering');
+        }
+    });
+
+    $('.btn-maximize').on('click', function() {
+        $(this).parents('.widget').addClass('widget-maximized');
+        $('.backdrop').show();
+    });
+
+    $('.btn-minimize').on('click', function() {
+        $(this).parents('.widget').removeClass('widget-maximized');
+        $('.backdrop').hide();
+    });
+
+    $('.btn-remove').on('click', function() {
+        $(this).parents('.widget').removeClass('graph-maximized');
+        $('.backdrop').hide();
+    });
+
+}
 
 var drawSubscriberCountByAPIs = function(response) {
 	var parsedResponse = JSON.parse(response);
@@ -135,31 +140,40 @@ var drawSubscriberCountByAPIs = function(response) {
 		}
 	}
 
-	$.plot(
-					'#placeholder',
-					data,
-					{
-						series : {
-							pie : {
-								show : true,
-								radius : 1,
-								label : {
-									show : true,
-									radius : 3 / 4,
-									formatter : function(label, series) {
-										return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'
-												+ label
-												+ '<br/>'
-												+ Math.round(series.percent)
-												+ '%</div>';
-									}
-								}
-							}
-						},
-						legend : {
-							show : false
-						}
-					});
+    $.plot(
+        '#placeholder',
+        data, {
+            series: {
+                pie: {
+                    show: true,
+                    radius: 1,
+                    label: {
+                        show: true,
+                        radius: 1 / 2,
+                        formatter: function(label, series) {
+                            return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'
+                                +Math.round(series.percent)
+                                + '%</div>';
+                        }
+                    }
+                }
+            },
+            grid: {
+                hoverable: true
+            },
+            tooltip: true,
+            tooltipOpts: {
+                content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                shifts: {
+                    x: 20,
+                    y: 0
+                },
+                defaultTheme: true
+            },
+            legend: {
+                show: true
+            }
+        });
 
 }
 
@@ -169,7 +183,7 @@ var drawSubscribedAPIsByUsers = function(response) {
 	/* Overall Web Application Usage Graph */
 	$('#placeholder2').append(
 			$('<table class="table graphTable" id="webAppTable2">' + '<tr>'
-					+ '<th>Users</th>' + '<th>Web Apps</th>' + '</tr>'
+					+ '<th>User</th>' + '<th>Web Apps</th>' + '</tr>'
 					+ '</table>'));
 	for ( var i = 0; i < parsedResponse.length; i++) {
 		var apps = parsedResponse[i].apps;
@@ -233,7 +247,7 @@ var drawSubscribedAPIsByUsers = function(response) {
 		}
 		userParsedResponse = parsedResponse;
 
-		statement = '<tr><td rowspan='+ count + '><a id="link" href="#" onclick="$(this).parents(\'.widget\').toggleClass(\'graph-maximized\');$(\'.backdrop\').show();maximizeTable('+  i+ ');">' + parsedResponse[i][0] + '</td>' + statement;
+		statement = '<tr><td rowspan='+ count + '><a id="link" href="#" onclick="$(this).parents(\'.widget\').addClass(\'graph-maximized\');$(\'.backdrop\').show();maximizeTable('+  i+ ');">' + parsedResponse[i][0] + '</td>' + statement;
 		tableStatement = tableStatement + statement;
 		
 
@@ -364,12 +378,15 @@ var drawAPIResponseTime = function(response) {
 		yaxis : {
 			show : true,
 			ticks : parsedResponse.referer,
-			tickLength : 0
+            tickLength: 0,
+            axisLabel: "Web Pages"
 		},
 		xaxis : {
 			show : true,
 			min : 0,
-			max : max
+			max : max,
+            axisLabelUseCanvas :false,
+            axisLabel: "<b>Response Time(ms)</b>"
 
 		}
 
@@ -411,7 +428,8 @@ var drawAPIUsageByPage = function(response) {
 			barWidth : 0.3
 		},
 		xaxis : {
-			axisLabel : "Web Apps",
+            axisLabelUseCanvas :false,
+			axisLabel : "<b>Web Apps</b>",
 			tickLength : 0,
 			ticks : ticks
 		},
@@ -427,125 +445,89 @@ var drawAPIUsageByPage = function(response) {
 
 	$.plot($("#placeholder51"), dataset, options);
 
-	$("#placeholder51").bind("plotclick", function(event, pos, item) {
-		$(this).parents('.widget').toggleClass('graph-maximized');
-		$('.backdrop').show();
+    $("#placeholder51").bind("plotclick", function (event, pos, item) {
+        if (item != null) {
+            $(this).parents('.widget').addClass('graph-maximized');
+            $('.backdrop').show();
 
-		var x = item.datapoint[0];
-		var label = item.series.xaxis.ticks[x].label;
-		var webappPage = [];
-		var webappPageCount = [];
+            var x = item.datapoint[0];
+            var label = item.series.xaxis.ticks[x].label;
+            var webappPage = [];
+            var webappPageCount = [];
 
-		for (t = 0; t < parsedResponse.webappDeatails.length; t++) {
-			if (label == parsedResponse.webappDeatails[t][0]) {
-				webappPage = parsedResponse.webappDeatails[t][1];
-				webappPageCount = parsedResponse.webappDeatails[t][2]
-			}
-		}
+            for (t = 0; t < parsedResponse.webappDeatails.length; t++) {
+                if (label == parsedResponse.webappDeatails[t][0]) {
+                    webappPage = parsedResponse.webappDeatails[t][1];
+                    webappPageCount = parsedResponse.webappDeatails[t][2]
+                }
+            }
 
-		var max = 0;
-		for (t = 0; t < webappPageCount.length; t++) {
-			if (max < webappPageCount[t][0]) {
-				max = webappPageCount[t][0];
-			}
-		}
+            var max = 0;
+            for (t = 0; t < webappPageCount.length; t++) {
+                if (max < webappPageCount[t][0]) {
+                    max = webappPageCount[t][0];
+                }
+            }
 
-		max = max + 10;
+            max = max + 10;
 
-		var data = webappPageCount;
-		var dataset = [ {
-			data : data,
-			color : "#5482FF"
-		} ];
-		var ticks = webappPage;
+            var data = webappPageCount;
+            var dataset = [
+                {
+                    data: data,
+                    color: "#5482FF"
+                }
+            ];
+            var ticks = webappPage;
 
-		var options = {
-			series : {
-				bars : {
-					show : true,
-					horizontal : true,
+            var options = {
+                series: {
+                    bars: {
+                        show: true,
+                        horizontal: true
 
-				}
-			},
-			bars : {
-				align : "center",
-				barWidth : 0.5
-			},
-			xaxis : {
-				axisLabel : "Total request count",
-				reserveSpace : true,
-				labelWidth : 150,
-				min : 0,
-				max : max
-			},
-			yaxis : {
-				ticks : ticks,
-				tickLength : 0,
-				axisLabel : "Accessed Page",
+                    }
+                },
+                bars: {
+                    align: "center",
+                    barWidth: 0.5
+                },
+                xaxis: {
+                    axisLabelUseCanvas: false,
+                    axisLabel: "<b>Total Request Count</b>",
+                    reserveSpace: true,
+                    labelWidth: 150,
+                    min: 0,
+                    max: max
+                },
+                yaxis: {
+                    ticks: ticks,
+                    tickLength: 0,
+                    axisLabel: "Accessed Page"
 
-			}
+                }
 
-		};
+            };
 
-		$.plot($("#placeholder52"), dataset, options);
+            $.plot($("#placeholder52"), dataset, options);
+        }
 
-	});
+    });
 
 }
 
-var convertDate = function(date) {
-	var month = date.getMonth() + 1;
-	var day = date.getDate();
-	return date.getFullYear() + '-' + (('' + month).length < 2 ? '0' : '')
-			+ month + '-' + (('' + day).length < 2 ? '0' : '') + day;
+var onDateSelected = function() {
+    clearTables();
+    drawGraphs();
 }
-var onDateSelected = function(from, to) {
-	var url = window.location.pathname;
-	var comps = url.split('/');
 
-	var type = comps[comps.length - 2];
-	var operation = comps[comps.length - 3];
-	$.ajax({
-		url : '/publisher/api/assets/' + operation + '/' + type + '/',
-		type : 'POST',
-		data : {
-			'startDate' : from,
-			'endDate' : to,
-			'isOnChoice' : true
-		},
-		success : function(response) {
-			var parsedResponse = JSON.parse(response);
+function clearTables() {
+    $('#webAppTable').remove();
+    $('#webAppTable2').remove();
+    $('#webAppTable3').remove();
+    $('#webAppTable4').remove();
+    $('#webAppTable5').remove();
 
-			/* Hot assets stats graph */
-			var data2 = [ {
-				data : parsedResponse.hotAssetStats,
-				color : '#FFC826',
-				label : 'Assets',
-				bars : {
-					show : true,
-					barWidth : 0.6,
-					align : "center"
-				}
-			} ];
-
-			var options2 = {
-				yaxis : {
-					show : true,
-					tickDecimals : 0
-
-				},
-				xaxis : {
-					labelAngle : 90,
-					ticks : parsedResponse.hotAssetTicks
-				}
-
-			};
-
-			$.plot($("#placeholder2"), data2, options2);
-
-		},
-		error : function(response) {
-			alert('Error occured at statistics graph rendering');
-		}
-	});
 }
+
+

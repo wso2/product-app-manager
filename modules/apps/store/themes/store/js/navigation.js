@@ -50,8 +50,6 @@ $(function() {
         if(!username.match(/^[\S]{3,30}$/)){
             errorMessage = "No conformance";
             return errorMessage;
-        }else if(username == "null" && username == ''){
-            return errorMessage;
         }
         if (username == '') {
             errorMessage = "Empty string";

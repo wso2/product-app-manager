@@ -14,7 +14,7 @@ require('/modules/publisher.js').exec(function(ctx) {
 
 var router = require('/modules/router-g.js').router();
 var config = require('/config/publisher.json');
- caramel = require('caramel');
+caramel = require('caramel');
 var server = require('store').server;
 var publisher = require('/modules/publisher.js').publisher(request, session);
 

@@ -46,32 +46,41 @@ $(function() {
             $this.after('<i class="icon-check-appname"></i>');
             flag = $('.icon-check-appname');
         }
+        if(context !== '') {
 
-        //check if the asset name available as user types in
-        $.ajax({
-            url : '/publisher/api/validations/assets/' + type + '/overview_context/' + context,
-            type : 'GET',
-            success : function(response) {
-
-                //Check if the context already exists
-                if (response == 'true') {
-
-                    flag.removeClass().addClass('icon-ban-circle icon-check-appname').show();
-                    btnCreate.attr('disabled', 'disabled');
-                    showAlert("Duplicate context value.", 'error');
-                } else {
-
-                    flag.removeClass().addClass('icon-ok icon-check-appname').show();
-                    btnCreate.removeAttr('disabled');
-                    $(".alert-error");
-                }
-
-            },
-            error : function(response) {
-                flag.removeClass().addClass('icon-ok icon-check-appname').hide();
-                showAlert('Unable to auto check Asset name availability', 'error');
+            if(context.charAt(0) == '/'){
+                context = context.substr(1);
             }
-        });
+
+
+            //check if the asset name available as user types in
+            $.ajax({
+                url : '/publisher/api/validations/assets/' + type + '/overview_context/' + context,
+                type : 'GET',
+                success : function(response) {
+
+                    //Check if the context already exists
+                    if (response == 'true') {
+
+                        flag.removeClass().addClass('icon-ban-circle icon-check-appname').show();
+                        btnCreate.attr('disabled', 'disabled');
+                        showAlert("Duplicate context value.", 'error');
+                    } else {
+
+                        flag.removeClass().addClass('icon-ok icon-check-appname').show();
+                        btnCreate.removeAttr('disabled');
+                        $(".alert-error");
+                    }
+
+                },
+                error : function(response) {
+                    flag.removeClass().addClass('icon-ok icon-check-appname').hide();
+                    showAlert('Unable to auto check Asset name availability', 'error');
+                }
+            });
+        }else{
+            showAlert('Context Cannot be null.');
+        }
 
     });
 
@@ -90,14 +99,12 @@ $(function() {
         var name =  $('#overview_name').val()
 		var version =  $('#overview_version').val();
 
-		var tracking_code = context + version;
-		 
-		 var hash = 5381;
-		 for (i = 0; i < tracking_code.length; i++) {
-		        char = tracking_code.charCodeAt(i);
-		        hash = ((hash << 5) + hash) + char; /* hash * 33 + c */
-		 }
-		var tracking_code_id = "AM_"+hash;
+        // random number between 0 to 1 e.g-0.5838903994299471
+        var randomNum = Math.random();
+        var code =randomNum.toString();
+        code = code.replace("0.","");
+        var tracking_code_id = "AM_"+code;
+
 		$('#tracking_code').val(tracking_code_id);
 		
 		 if($('#autoConfig').is(':checked')){
