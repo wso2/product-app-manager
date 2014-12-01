@@ -588,16 +588,35 @@ function updatePolicyPartial() {
 
 $(document).on("click", "#btn-add-xacml-policy", function () {
 
-    editedpolicyPartialId = 0;
-    editor.setValue("");
+     //editedpolicyPartialId = 0;
+
+    $('#entitlement-policy-editor #policy-content').val("");
+   // editor.setValue("dhdfh");
+   getXacmlPolicyTemplate();
 
     $('#entitlement-policy-editor #policy-name').val("");
-    $('#entitlement-policy-editor #policy-name').prop("readonly",false);
-    $('#entitlement-policy-editor .modal-footer #shared-partial').selected(false);
-    $('#entitlement-policy-editor .modal-footer').show();
     hideEntitlementError();
 
 });
+
+function getXacmlPolicyTemplate(){
+
+    $.ajax({
+        url: '/publisher/api/test',
+        type: 'GET',
+
+        dataType: "text",
+        success: function(response) {
+            if(response != null){
+             editor.setValue(response);
+                 $('#entitlement-policy-editor #policy-content').val(response);
+            }
+        },
+        error: function(response) {
+            showAlert('Error occured while fetching entitlement policy content', 'error');
+        }
+    });
+}
 
 
 $(document).on("click", ".policy-edit-button", function () {
