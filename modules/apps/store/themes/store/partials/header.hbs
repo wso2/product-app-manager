@@ -31,7 +31,18 @@
 
 						<ul class="nav menu pull-right">
 
+
+
 							{{#if user}}
+
+                                <li class="nav-separator">
+                                    <a href="{{url "/assets/webapp"}}"><i class="icon-cog store-topnav-bookmark"></i> {{t "Web Applications"}}</a>
+                                </li>
+                                <li class="nav-separator">
+                                    <a href="{{url "/assets/mobileapp"}}"><i class="icon-mobile-phone store-topnav-bookmark"></i> {{t "Mobile Applications"}}</a>
+                                </li>
+
+
 							<li class="nav-separator">
 								<a href="{{url "/extensions/assets/webapp/subscriptions"}}"><i
 								class="icon-tags store-topnav-bookmark"></i> {{t "My Subscriptions"}}</a>
