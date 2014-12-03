@@ -28,9 +28,9 @@ var filterManager=publisher.filterManager;
 
 var log=new Log();
 
-var DEFAULT_PAGE = 10;
-var DEFAULT_PAGIN = {'start':0, 'count':1000 , 'sortOrder':'desc','sortBy': 'overview_createdtime', 'paginationLimit':1000};
-
+var PAGE_SIZE = config.paginationConfig.PAGE_SIZE;
+//var DEFAULT_PAGIN = {'start':0, 'count':20 , 'sortOrder':'desc','sortBy': 'overview_createdtime', 'paginationLimit':1000};
+var DEFAULT_PAGING = {'sortOrder':'desc','sortBy': 'overview_createdtime', 'paginationLimit':1000};
 
 /*routeMnger.register('GET','publisher','/publisher/assets/list',function(context){
 
@@ -44,35 +44,121 @@ var DEFAULT_PAGIN = {'start':0, 'count':1000 , 'sortOrder':'desc','sortBy': 'ove
 
  });*/
 var log = new Log();
+    /**
+     * The function will create an array of page indices upto the page count
+     * @param pageCount The max page count
+     */
+var pageIndexPopulator = function(pageCount,currentIndex){
+
+    var indices = [];
+    var temp={};
+    for(var index=1;index<=pageCount;index++){
+        temp={};
+        temp.index = ''+index;
+        temp.isDisabled = false;
+
+        var pageNumber = Math.floor(currentIndex/PAGE_SIZE);
+        var remainder = (currentIndex/PAGE_SIZE) % 1;
+
+        if(remainder || pageNumber===0){
+            pageNumber = pageNumber +1;
+        }
+
+        //The current page is offset by 1 as the loop starts at 1
+        if(index==pageNumber){
+           temp.isDisabled=true;
+        }
+            indices.push(temp);
+    }
+    return indices;
+};
+
+
+var getCurrentPage = function(currentIndex){
+    var pageNumber = Math.floor(currentIndex/PAGE_SIZE);
+    var remainder = (currentIndex/PAGE_SIZE) % 1;
+
+    if(remainder || pageNumber===0){
+        pageNumber = pageNumber +1;
+    }
+    return pageNumber;
+}
 
 routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(context) {
 	var query = request.getParameter("query");
 	var sortby = request.getParameter("sortby");
 	var sort = request.getParameter("sort");
+    var page = request.getParameter("page");
 	var type = context.params.type;
 	try {
 		//TODO: Check for valid asset types
 		var artifactManager = rxtManager.getArtifactManager(type);
-		var artifacts = artifactManager.list(DEFAULT_PAGE) || [];
+		var artifacts = artifactManager.list(null) || [];
+        //var DEFAULT_PAGIN = {'start':0, 'count':20 , 'sortOrder':'desc','sortBy': 'overview_createdtime', 'paginationLimit':1000};
+        var startVal;
+        if(page) {
+            if(page>=0) {
+                var appliedPageValue;
+                if (page > 1) {
+                    appliedPageValue = page - 1;
+                    startVal = PAGE_SIZE * appliedPageValue;
+                }else{
+                    startVal = 0;
+                }
+            }else{
+                response.sendError(400, "Invalid page number supplied in query params");
+            }
+        }else{
+            startVal = 0;
+        }
+
+        DEFAULT_PAGING.start = startVal;
+        DEFAULT_PAGING.count = PAGE_SIZE;
 
 		// for queries
 		if(query) {
-			assets = artifactManager.search(query, DEFAULT_PAGIN);
+			assets = artifactManager.search(query, DEFAULT_PAGING);
 			artifacts = assets;
-		} else if (sortby && sort){			
-			DEFAULT_PAGIN.sortBy = 'overview_'+sortby;
-			DEFAULT_PAGIN.sortOrder = sort.toUpperCase();
-			var artifacts = artifactManager.search(null,DEFAULT_PAGIN) || [];
+		} else if (sortby && sort){
+            DEFAULT_PAGING.sortBy = 'overview_'+sortby;
+            DEFAULT_PAGING.sortOrder = sort.toUpperCase();
+			var artifacts = artifactManager.search(null,DEFAULT_PAGING) || [];
 		} else {
 			//normal list for asserts			
 			var queryz = {};
-			assets = artifactManager.search(queryz, DEFAULT_PAGIN);
+			assets = artifactManager.search(queryz, DEFAULT_PAGING);
 			artifacts = assets;
 		}
 		dataInjector.inject(artifacts, DataInjectorModes.DISPLAY);
         	//Perform some filtering logic on the artifacts
         	artifacts=filterManager.filter(artifacts,session);
-		caramel.render({op : 'list',cuser : server.current(session), roles : server.current(session).getRoles(),shortName : type,artifacts : artifacts,query : query,title : type});
+            var appCount = artifactManager.count();
+
+        var availablePages = Math.floor(appCount/PAGE_SIZE);
+        var remainder = (appCount/PAGE_SIZE) % 1;
+        if(remainder){
+            availablePages = availablePages +1;
+        }
+
+        var currIndex = startVal + 1;
+
+        var indices = pageIndexPopulator(availablePages,currIndex);
+        var pageIndices;
+        if(indices.length > 1){
+            pageIndices = indices;
+        }
+
+        var currentPage = getCurrentPage(currIndex);
+        //currentPage = parseInt(currentPage, 10);
+
+        if(currentPage-1 >= 0){
+            var leftnav = currentPage-1;
+        }
+        if(currentPage+1 <= availablePages){
+            var rightnav = currentPage+1;
+        }
+
+		caramel.render({op : 'list',cuser : server.current(session), roles : server.current(session).getRoles(),shortName : type,artifacts : artifacts,query : query,title : type, pageIndices:pageIndices, leftNav:leftnav, rightNav:rightnav});
 	} catch (e) {
 		response.sendError(400, "Your request is malformed");
 		log.debug(e);

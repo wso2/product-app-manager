@@ -13,7 +13,9 @@ var caramel = require('caramel');
 
 var router = require('/modules/router-g.js').router();
 var routeManager = new router.Router();
-var DEFAULT_PAGIN = {'start':0, 'count':1000 , 'sortOrder':'asc','sortBy': 'overview_name', 'paginationLimit':1000};
+//var DEFAULT_PAGIN = {'start':0, 'count':20 , 'sortOrder':'desc','sortBy': 'overview_createdtime', 'paginationLimit':1000};
+var PAGE_SIZE = config.paginationConfig.PAGE_SIZE;
+var DEFAULT_PAGING = {'sortOrder':'desc','sortBy': 'overview_createdtime', 'paginationLimit':1000};
 
 var log = new Log();
 
@@ -29,7 +31,8 @@ routeManager.register('GET', 'publisher', '/publisher/api/cache/{type}', functio
     var cachedAssetsBeforeRefresh=0;
     var session=context.session;
 
-
+    DEFAULT_PAGING.start = 0;
+    DEFAULT_PAGING.count = PAGE_SIZE;
 
     //TODO: Get a fresh copy of the session!!!
 
@@ -40,7 +43,7 @@ routeManager.register('GET', 'publisher', '/publisher/api/cache/{type}', functio
 
         assetCacheManager=new assetCachingModule.AssetCacheManager(session);
 
-        assets=artifactManager.search(null,DEFAULT_PAGIN)||[];
+        assets=artifactManager.search(null,DEFAULT_PAGING)||[];
 
         cachedAssetsBeforeRefresh=assetCacheManager.getCachedAssetCount(shortName);
         cachedAssetsAfterRefresh=assetCacheManager.refresh(assets,shortName);
