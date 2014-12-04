@@ -55,12 +55,12 @@ var generateLeftNavJson = function(data, listPartial) {
                      additionalClasses : (listPartial == "edit-asset" ) ? "active" : null,
                     url : "/publisher/asset/operations/edit/" + data.shortName + "/" + data.artifact.id + ""
                 },
-                {
-                    name : "Life Cycle",
-                    iconClass : "icon-retweet",
-                     additionalClasses : (listPartial == "lifecycle-asset" ) ? "active" : null,
-                    url : "/publisher/asset/operations/lifecycle/" + data.shortName + "/" + data.artifact.id + ""
-                }
+//                {
+//                    name : "Life Cycle",
+//                    iconClass : "icon-retweet",
+//                     additionalClasses : (listPartial == "lifecycle-asset" ) ? "active" : null,
+//                    url : "/publisher/asset/operations/lifecycle/" + data.shortName + "/" + data.artifact.id + ""
+//                }
             ]
         };
     }
