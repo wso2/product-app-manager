@@ -602,7 +602,7 @@ $(document).on("click", "#btn-add-xacml-policy", function () {
 function getXacmlPolicyTemplate(){
 
     $.ajax({
-        url: '/publisher/api/xacmelpolicy',
+        url: '/publisher/api/xacmlpolicy',
         type: 'GET',
 
         dataType: "text",
