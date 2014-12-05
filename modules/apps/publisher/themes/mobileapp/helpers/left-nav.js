@@ -43,18 +43,18 @@ var generateLeftNavJson = function(data, listPartial) {
                                    url : "/publisher/assets/" + data.shortName + "/"
                                },*/
                
-                {
-                    name : "Overview",
-                    iconClass : "icon-list-alt",
-                    additionalClasses : (listPartial == "view-asset" ) ? "active" : null,
-                    url : "/publisher/asset/operations/view/" + data.shortName + "/" + data.artifact.id + ""
-                },
-                {
-                    name : "Edit",
-                    iconClass : "icon-edit",
-                     additionalClasses : (listPartial == "edit-asset" ) ? "active" : null,
-                    url : "/publisher/asset/operations/edit/" + data.shortName + "/" + data.artifact.id + ""
-                },
+//                {
+//                    name : "Overview",
+//                    iconClass : "icon-list-alt",
+//                    additionalClasses : (listPartial == "view-asset" ) ? "active" : null,
+//                    url : "/publisher/asset/operations/view/" + data.shortName + "/" + data.artifact.id + ""
+//                },
+//                {
+//                    name : "Edit",
+//                    iconClass : "icon-edit",
+//                     additionalClasses : (listPartial == "edit-asset" ) ? "active" : null,
+//                    url : "/publisher/asset/operations/edit/" + data.shortName + "/" + data.artifact.id + ""
+//                },
 //                {
 //                    name : "Life Cycle",
 //                    iconClass : "icon-retweet",
