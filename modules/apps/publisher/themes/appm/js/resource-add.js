@@ -8,8 +8,6 @@ var RESOURCES = [
 ];
 
 
-
-
 $( document ).ready(function() {
 
     //fixed chrome issue with file paths

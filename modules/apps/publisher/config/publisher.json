@@ -63,7 +63,7 @@
     "assetCreatedDateLength" : 20
     },
     "paginationConfig" :{
-    	"PAGE_SIZE" : 4
+    	"PAGE_SIZE" : 20
     }
 
 }
