@@ -588,7 +588,8 @@ function updatePolicyPartial() {
 
 $(document).on("click", "#btn-add-xacml-policy", function () {
 
-     //editedpolicyPartialId = 0;
+     editedpolicyPartialId = 0;
+    $('#entitlement-policy-editor #policy-name').prop("readonly", false);
 
     $('#entitlement-policy-editor #policy-content').val("");
    // editor.setValue("dhdfh");
