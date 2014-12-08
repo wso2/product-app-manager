@@ -75,12 +75,13 @@
             </nav>
         </div>
 	{{else}}
-			<div class="emptyAssets-MsgDiv">
-			    <i class="icon-frown largeMsgIcon"></i>
-			    
-			     <p class="emptyAssets">Sorry. I couldn't find anything for you</p>
-			    
-			</div>
+        <div class="emptyAssets-MsgDiv">
+            <i class="icon-inbox largeMsgIcon"></i>
+            <br />
+            Nothing added yet.
+            <br />
+            <a type="button" class="btn btn-addNewAssetLarge" href="/publisher/asset/{{shortName}}"><i class="icon-plus-sign-alt"></i>Add New Web App</a>
+        </div>
 	{{/if}}
 	<div class="modal fade" id="messageModal2" style="display:none"></div>
         <div id="confirmation-data1" style="display:none;">
