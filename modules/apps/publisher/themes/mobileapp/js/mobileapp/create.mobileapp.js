@@ -282,8 +282,13 @@ jQuery("#form-asset-create").submit(function(e) {
 	}
 
 	if($('#appmeta').val() == null || $('#appmeta').val() == ""){
-		 $("#modal-upload-app").modal('show');
-		 $("#modal-upload-data").css("display", "block");
+		// $("#modal-upload-app").modal('show');
+		// $("#modal-upload-data").css("display", "block");
+        //$('#newMobileAppWizard li').addClass("active");
+        $('#newMobileAppWizard li').removeClass("active");
+        $('#newMobileAppWizard li:first-child').addClass("active");
+        $("#modal-upload-data").show();
+        $('#wizard_step2').hide();
 		e.preventDefault();
 	}
    //alert($('#appmeta').val());

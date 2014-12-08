@@ -229,7 +229,8 @@ $(document).ready(function() {
 
 	function search() {
 		var searchAssetString = $('#inp_searchAsset').val();
-		var searchPrefix = $('#search-prefix').val();
+		//var searchPrefix = $('#search-prefix').val();
+        var searchPrefix = 'mobileapp';
 
 		if (searchAssetString != "") {
 			var link = '/publisher/assets/' + searchPrefix + '/?query=' + searchAssetString;
