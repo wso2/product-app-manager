@@ -27,6 +27,7 @@ var render = function(theme, data, meta, require) {
                 sso : data.sso,
                 asset : data.asset,
                 type : data.type,
+                tenantId : data.tenantId,
                 inDashboard : data.inDashboard,
                 isSubscribed: data.isSubscribed,
                 subscriptionInfo : data.subscriptionInfo,

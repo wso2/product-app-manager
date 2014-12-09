@@ -853,6 +853,9 @@ function PaginationFormBuilder(pagin) {
             DEFAULT_PAGIN.sortOrder = 'DES';
             DEFAULT_PAGIN.sortBy = 'overview_name';
             break;
+        case 'usage':
+            // no regsiter pagination support, socail feature need to check
+            break;
         default:
             DEFAULT_PAGIN.sortOrder = 'ASC';
     }
