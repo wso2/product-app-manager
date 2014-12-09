@@ -19,7 +19,8 @@ require('/modules/store.js').exec(function (ctx) {
             site = ctx.site,
             search = require('/modules/search.js'),
             subscriptions = {},
-            subscription = false;
+            subscription = false,
+            avaliablePages;
 
     caramel = require('caramel');
     process = require('process'),
@@ -27,9 +28,32 @@ require('/modules/store.js').exec(function (ctx) {
     httpsPort = process.getProperty('https.port');
         
     url = '/assets/' + type + '/?' + (tag ? 'tag=' + tag + '&' : '') + (query ? 'query=' + query + '&' : '');
-    paging = store.assetsPaging(request);
+    paging = store.assetsPagingOverrided(request);
+
     mainPage = type;
     title = store.assetLinks(type).title;
+    avaliablePages = store.getAvailablePages(type,ctx.request,ctx.session);
+
+    var indices = store.pageIndexPopulator(avaliablePages,paging.start+1);
+    var PAGE_SIZE = store.getPageSize();
+    var pageIndices;
+    if(indices.length > 1){
+        pageIndices = indices;
+    }
+
+    var currIndex = paging.start + 1;
+
+    var currentPage = store.getCurrentPage(currIndex);
+    //currentPage = parseInt(currentPage, 10);
+
+    if(currentPage-1 > 0){
+        var leftnav = currentPage-1;
+    }
+
+    if(currentPage+1 <= avaliablePages){
+        var rightnav = currentPage+1;
+    }
+
 
     if (user) {
         subscriptions = store.subscriptions(type);
@@ -68,17 +92,17 @@ require('/modules/store.js').exec(function (ctx) {
                 var getNextassetSet = function () {
                     var db = new Database('SOCIAL_CACHE');
                     var result = db.query("SELECT ID FROM SOCIAL_CACHE WHERE TYPE='" + type.replace(/\W/g, '') + "' AND " +
-                            "TENANT='" + tenantDomain + "' ORDER BY RATING DESC LIMIT " + (paging.start + index) + ",12");
+                            "TENANT='" + tenantDomain + "' ORDER BY RATING DESC LIMIT " + (paging.start + index) + ","+PAGE_SIZE);
                     db.close();
-                    index += 12;
+                    index += store.getPageSize();;
                     return result;
                 };
                 assets = [];
                 var pos, aid, asset;
-                while (assets.length < 12 && maxTry < 10) {
+                while (assets.length < PAGE_SIZE && maxTry < 10) {
                     maxTry++;
                     var result = getNextassetSet();
-                    for (var n = 0; n < result.length && assets.length < 12; n++) {
+                    for (var n = 0; n < result.length && assets.length < PAGE_SIZE; n++) {
                         var combinedAid = String(result[n].ID);
                         pos = combinedAid.indexOf(':');
                         aid = combinedAid.substring(pos + 1);
@@ -148,7 +172,7 @@ require('/modules/store.js').exec(function (ctx) {
             url: url + 'sort='
         },
 
-        myAssets : { user:user, type: type, title: title, subscriptions: subscriptions[type], subscription : subscription},
+        myAssets : { user:user, type: type, title: title, subscriptions: subscriptions[type], subscription : subscription, pageIndices : pageIndices, leftNav:leftnav, rightNav:rightnav},
         recentAssets: store.recentAssets(type)
 
     });

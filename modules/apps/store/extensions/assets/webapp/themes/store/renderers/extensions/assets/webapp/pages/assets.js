@@ -22,8 +22,9 @@ var render = function (theme, data, meta, require) {
             },
             {
                 partial: 'assets',
-                context: assets.currentPage(data.assets,data.sso,data.user, data.paging,data.config)
-            }/*,
+                context: assets.currentPage(data.assets,data.sso,data.user, data.paging,data.config, data.myAssets.pageIndices, data.myAssets.leftNav, data.myAssets.rightNav)
+            }
+            /*,
              {
              partial: 'pagination',
              context: require('/helpers/pagination.js').format(data.paging)

@@ -30,5 +30,8 @@
         "api": "https://localhost:9443/emm/api",
         "archieve_location_ios": "%https.ip%",
         "archieve_location_android": "%http.ip%"
-    }	
+    },
+    "pagination": {
+        "PAGE_SIZE" : 12
+    }
 }

@@ -116,7 +116,7 @@ $(function() {
 	    	
 	});
 
-	mouseStop();
+//	mouseStop();
 	applyTopAssetsSlideshow();
 
 	$("#top-asset-slideshow-gadget").carouFredSel({

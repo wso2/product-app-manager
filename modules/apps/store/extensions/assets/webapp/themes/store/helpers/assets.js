@@ -30,9 +30,17 @@ var resources = function (page, meta) {
 
 var cp = that.currentPage;
 
-var currentPage = function (assetsx,ssox,userx, paging,config) {
-  var c = cp(assetsx,ssox,userx, paging);   
+var currentPage = function (assetsx,ssox,userx, paging,config, pageIndeces ,leftNav, rightNav) {
+  var c = cp(assetsx,ssox,userx, paging, pageIndeces,leftNav,rightNav);
   c.config = config;
+  var log = new Log();
+  c.pageIndeces = pageIndeces;
+  if(leftNav) {
+      c.leftNav = leftNav;
+  }
+  if(rightNav) {
+      c.rightNav = rightNav;
+  }
   return c;  
 };
 
