@@ -16,7 +16,35 @@
     {{{ form_render "overview_name" data.fields }}}
     {{{ form_render "overview_context" data.fields }}}
     {{{ form_render "overview_version" data.fields }}}
-    {{{ form_render "overview_transports" data.fields }}}
+
+
+
+    <div class="form-group">
+        <label class="control-label col-sm-2">Transports:  <span class="label-required">*</span></label>
+        <div class="col-sm-10">
+
+            <div class="col-sm-2">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" class="trans_checkbox" data-value="http"> http
+                    </label>
+                </div>
+            </div>
+
+
+            <div class="col-sm-2">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" class="trans_checkbox" data-value="https"> https
+                    </label>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <input type="hidden" required="" class="col-lg-6 col-sm-12 col-xs-12" name="overview_transports" id="overview_transports">
+
+
     {{{ form_render "overview_webAppUrl" data.fields }}}
     {{{ form_render "overview_description" data.fields }}}
     {{{ form_render "images_thumbnail" data.fields }}}

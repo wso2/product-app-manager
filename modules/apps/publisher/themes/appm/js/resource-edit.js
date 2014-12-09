@@ -2,6 +2,31 @@
 $( document ).ready(function() {
 
 
+    $(".trans_checkbox").click(function(){
+        var output = [];
+        $( ".trans_checkbox" ).each(function( index ) {
+            var value = $(this).data('value');
+            if( $(this).is(':checked')){
+                output.push(value);
+            }
+        });
+
+        $('#overview_transports').val(output);
+
+
+    });
+
+
+    var transportVal = $('#overview_transports').val().split(',');
+    $( ".trans_checkbox" ).each(function( index ) {
+        var value = $(this).data('value');
+        if($.inArray(value, transportVal) >= 0){
+            $(this).prop('checked', true);
+        }
+
+    });
+
+
    //fixed chrome issue with file paths
     $('input[type=file]').on('change', function(e) {
         var filename = $(e.currentTarget).val().replace(/^.*\\/, "");
