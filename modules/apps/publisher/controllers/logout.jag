@@ -4,7 +4,7 @@
     if(currentSession) {
         var user = currentSession.username;//session.get("LOGGED_IN_USER");
         if (user === null) {
-            response.sendRedirect('/portal');
+            response.sendRedirect('/store');
         } else {
             var config = require('/config/publisher.js').config(),
                     sso = require('sso'),
@@ -47,7 +47,7 @@
                     <%
         }
     }else {
-        response.sendRedirect('/portal');
+        response.sendRedirect('/store');
     }
 }());
 %>
