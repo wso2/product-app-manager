@@ -239,6 +239,12 @@ Store.prototype.assetsPageSize = function () {
     return configs()[ASSETS_PAGE_SIZE];
 };
 
+Store.prototype.getPageSize = function () {
+    var config  = require('/config/store.js').config();
+    var log = new Log();
+    return config.pagination.PAGE_SIZE;
+};
+
 Store.prototype.commentsPageSize = function () {
     return configs()[COMMENTS_PAGE_SIZE];
 };
@@ -252,6 +258,42 @@ Store.prototype.assetsPaging = function (request) {
         count: size,
         sort: request.getParameter('sort') || 'recent'
     };
+};
+
+Store.prototype.assetsPagingOverrided = function (request) {
+    var page = request.getParameter('page'),
+    size = this.getPageSize();
+    page = page ? page - 1 : 0;
+    return {
+        start: page * size,
+        count: size,
+        sort: request.getParameter('sort') || 'recent'
+    };
+};
+
+Store.prototype.pageIndexPopulator = function(pageCount,currentIndex){
+    var indices = [];
+    var temp={};
+    for(var index=1;index<=pageCount;index++){
+        temp={};
+        temp.index = ''+index;
+        temp.isDisabled = false;
+
+        var PAGE_SIZE = this.getPageSize();
+
+        var pageNumber = Math.floor(currentIndex/PAGE_SIZE);
+        var remainder = (currentIndex/PAGE_SIZE) % 1;
+
+        if(remainder || pageNumber===0){
+            pageNumber = pageNumber +1;
+        }
+        //The current page is offset by 1 as the loop starts at 1
+        if(index==pageNumber){
+            temp.isDisabled=true;
+        }
+        indices.push(temp);
+    }
+    return indices;
 };
 
 Store.prototype.commentsPaging = function (request) {
@@ -515,6 +557,34 @@ Store.prototype.assetLinks = function (type) {
     mod = require(path);
     return mod.assetLinks(this.user);
 };
+
+Store.prototype.getAvailablePages = function (type,req,session) {
+    var pages;
+    var PAGE_SIZE = this.getPageSize();
+    //var rxtManager = this.rxtManager(type,session);
+    var managers= storeManagers(req,session);
+    var rxtManager = managers.rxtManager;
+    var artifactManager = rxtManager.getArtifactManager(type);
+    var appCount = artifactManager.count();
+    var pageNumber = Math.floor(appCount/PAGE_SIZE);
+    var remainder = (appCount/PAGE_SIZE) % 1;
+
+    if(remainder || pageNumber===0){
+        pageNumber = pageNumber +1;
+    }
+    return pageNumber;
+};
+
+Store.prototype.getCurrentPage = function(currentIndex){
+    var PAGE_SIZE = this.getPageSize();
+    var pageNumber = Math.floor(currentIndex/PAGE_SIZE);
+    var remainder = (currentIndex/PAGE_SIZE) % 1;
+
+    if(remainder || pageNumber===0){
+        pageNumber = pageNumber +1;
+    }
+    return pageNumber;
+}
 
 /**
  * @param type

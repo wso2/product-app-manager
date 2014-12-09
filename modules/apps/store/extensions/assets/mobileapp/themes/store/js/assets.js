@@ -49,7 +49,7 @@ $(function() {
 		location.href = link;
 	});
 
-	mouseStop();
+//	mouseStop();
 
 	History.Adapter.bind(window, 'statechange', function() {
 		var state = History.getState();
@@ -115,7 +115,7 @@ $(function() {
 		var thiz = $(this);
 		thiz.addClass('selected-type');
 		loadAssets(thiz.attr('href'));
-		mouseStop();
+//		mouseStop();
 		e.preventDefault();
 	});
 
