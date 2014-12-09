@@ -60,6 +60,21 @@ $( document ).ready(function() {
     });
 
 
+    $(".trans_checkbox").click(function(){
+        var output = [];
+        $( ".trans_checkbox" ).each(function( index ) {
+            var value = $(this).data('value');
+            if( $(this).is(':checked')){
+                output.push(value);
+            }
+        });
+
+        $('#overview_transports').val(output);
+
+
+    });
+
+
     $("#clear_resource").click(function(){
         resetResource();
     });
