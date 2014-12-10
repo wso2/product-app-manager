@@ -11,7 +11,8 @@ var renderAssets, mouseStop, renderAssetsScroll;
             theme.loaded(el, sort);
             el.append(assets);
             caramel.js($('body'), data.body['assets'].resources.js, 'assets', function () {
-                mouseStop();
+                renderAssetsForPagination(data);
+                renderPageIndices(data)
             });
             caramel.js($('body'), data.body['sort-assets'].resources.js, 'sort-assets', function () {
                 updateSortUI();
@@ -20,6 +21,93 @@ var renderAssets, mouseStop, renderAssetsScroll;
 
             infiniteScroll = data.body.assets.context.assets.length >= 12;
         });
+    };
+
+    renderAssetsForPagination = function(data){
+        var temp = '{{#slice assets size="4"}}<div class="row-fluid">';
+        temp += '{{#each .}}';
+        temp += '<div class="span3 asset" data-id="{{id}}" data-path="{{path}}" data-type="{{type}}">';
+        temp += '	{{#attributes}}';
+        temp += '	<a href="{{url "/assets"}}/{{../type}}/{{../id}}">';
+        temp += '	<div class="asset-icon">';
+        temp += '		{{#if ../indashboard}}';
+        temp += '				<i class="icon-bookmark store-bookmark-icon"></i>';
+        temp += '		{{/if}}';
+        temp += '	<img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}">';
+        temp += '	</div> </a>';
+        temp += '	<div class="asset-details">';
+        temp += '		<div class="asset-name">';
+        temp += '			<a href="{{url "/assets"}}/{{../type}}/{{../id}}"> <h4>{{overview_name}}</h4> </a>';
+        temp += '		</div>';
+        temp += '		<div class="asset-rating">';
+        temp += '			<div class="asset-rating-{{../rating/average}}star">';
+        temp += '			</div>';
+        temp += '		</div>';
+        temp += '		<div class="asset-author-category">';
+        temp += '			<ul>';
+        temp += '				<li>';
+        temp += '					<h4>{{t "Version"}}</h4>';
+        temp += '					<a class="asset-version" href="#">{{overview_version}}</a>';
+        temp += '				</li>';
+        temp += '				<li>';
+        temp += '					<h4>{{t "Category"}}</h4>';
+        temp += '					<a class="asset-category" href="#">{{cap ../type}}</a>';
+        temp += '				</li>';
+        temp += '				<li>';
+        temp += '					<h4>{{t "Author"}}</h4>';
+        temp += '					<a class="asset-author" href="#">{{overview_provider}}</a>';
+        temp += '				</li>';
+        temp += '			</ul>';
+        temp += '			{{#if ../indashboard}}';
+        temp += '			<a href="#" class="btn disabled btn-added">{{t "Bookmarked"}}</a>';
+        temp += '			{{else}}';
+        temp += '				{{# if ../../../../sso}}';
+        temp += '				<a href="{{url "/login"}}" class="btn btn-primary asset-add-btn">{{t "Bookmark"}}</a>';
+        temp += '				{{else}}';
+        temp += '					<a href="#" class="btn btn-primary asset-add-btn">{{t "Bookmark"}}</a>';
+        temp += '				{{/if}}';
+        temp += '				{{# if ../../../../user.username}}';
+        temp += '				<a href="#" class="btn btn-primary asset-add-btn">{{t "Bookmark"}}</a>';
+        temp += '				{{/if}}';
+        temp += '			{{/if}}';
+        temp += '		</div>';
+        temp += '	</div>';
+        temp += '	{{/attributes}}';
+        temp += '</div>';
+        temp += '{{/each}}';
+        temp += '</div>{{/slice}}';
+
+        var assetsTemp = Handlebars.compile(temp);
+        var render = assetsTemp(data.body.assets.context);
+        $('#assets-container').html(render);
+
+        caramel.js($('body'), data.body['assets'].resources.js, 'assets', function () {
+//                mouseStop();
+        });
+
+    };
+
+    renderPageIndices = function(data){
+        var temp = '<ul class="pagination">';
+        temp+= '{{#if leftNav}}';
+        temp+= '    <li><a href="{{url "/assets/webapp?page="}}{{this.leftNav}}"><span aria-hidden="true">&laquo;</span><span class="sr-only"></span></a></li>';
+        temp+= '{{/if}}';
+        temp+= '{{#each pageIndeces}}';
+        temp+= '   {{#if this.isDisabled}}';
+        temp+= '        <li class="disabled"><a>{{this.index}}</a></li>';
+        temp+= '   {{else}}';
+        temp+= '        <li><a href="{{url "/assets/webapp?page="}}{{this.index}}">{{this.index}}</a></li>';
+        temp+= '   {{/if}}';
+        temp+= '{{/each}}';
+        temp+= '{{#if rightNav}}';
+        temp+= '    <li><a href="{{url "/assets/webapp?page="}}{{this.rightNav}}"><span aria-hidden="true">&raquo;</span><span class="sr-only"></span></a></li>';
+        temp+= '{{/if}}';
+        temp+= '</ul>';
+
+        var assetsTemp = Handlebars.compile(temp);
+        var render = assetsTemp(data.body.assets.context);
+        $('#paging-indices').html(render);
+
     };
 
     renderAssetsScroll = function(data){
