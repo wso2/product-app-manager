@@ -20,7 +20,7 @@ $(function() {
 		location.href = link;
 	});
 
-//	mouseStop();
+	mouseStop();
 
 	History.Adapter.bind(window, 'statechange', function() {
 		var state = History.getState();
