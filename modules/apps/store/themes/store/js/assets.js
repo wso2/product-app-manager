@@ -90,14 +90,14 @@ $(function() {
 		e.preventDefault();
 	});
 
-//	$(document).on('click', '.pagination a', function(e) {
-//		e.preventDefault();
-//		var url = $(this).attr('href');
-//		if (url === '#') {
-//			return;
-//		}
-//		loadAssets(url);
-//	});
+	$(document).on('click', '.pagination a', function(e) {
+		e.preventDefault();
+		var url = $(this).attr('href');
+		if (url === '#') {
+			return;
+		}
+		loadAssets(url);
+	});
 
 //	var scroll = function() {
 

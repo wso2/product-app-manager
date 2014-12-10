@@ -161,12 +161,12 @@ require('/modules/store.js').exec(function (ctx) {
 			httpsPort : httpsPort
         },
         assets: assets,
-        <!--paging: {-->
-            <!--url: url + 'sort=' + paging.sort + '&page=',-->
-            <!--sort: paging.sort,-->
-            <!--tag: tag,-->
-            <!--size: assets.length-->
-        <!--},-->
+        paging: {
+            url: url + 'sort=' + paging.sort + '&page=',
+            sort: paging.sort,
+            tag: tag,
+            size: assets.length
+        },
         sorting: {
             url: url + 'sort='
         },
