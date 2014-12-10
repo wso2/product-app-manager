@@ -1,9 +1,10 @@
 $(function() {
-		
-	$(".asset-icon").on('click', function(e) {
+
+	$(document).on( 'click',".asset-icon", function(e) {
 		  var loggedUser = $("#assetsloggedinuser").val();
 		  if(loggedUser == "" || loggedUser == null){
 			  var ssoEnabled = $('#sso').val();
+              console.log(ssoEnabled);
 			  if(ssoEnabled == 'true'){
 				  var localIP = $("#assetsLocalIP").val();
 				  var port = $("#assetshttpsPort").val()
