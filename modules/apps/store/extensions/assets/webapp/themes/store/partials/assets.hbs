@@ -1,10 +1,10 @@
 <div>
+    {{#if user}}
+        <input type="hidden" value="{{user.username}}" id="assetsloggedinuser" name="loggedinuser">
+    {{else}}
+        <input type="hidden" value="{{user.username}}" id="assetsloggedinuser" name="loggedinuser">
+    {{/if}}
 	<div id="assets-container" data-pages="{{pages}}">
-	{{#if user}}
-		<input type="hidden" value="{{user.username}}" id="assetsloggedinuser" name="loggedinuser">
-	{{else}}
-		<input type="hidden" value="{{user.username}}" id="assetsloggedinuser" name="loggedinuser">
-	{{/if}}
 	
 	<input type="hidden" value="{{config.localIP}}" id="assetsLocalIP" name="assetsLocalIP">	
 	<input type="hidden" value="{{config.httpsPort}}" id="assetshttpsPort" name="assetshttpsPort">
