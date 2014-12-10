@@ -69,7 +69,11 @@
 		 <iframe name="socialIfr" id="socialIfr"
 		 src="../../../social/?target={{../../type}}:{{../id}}&user={{../../user.username}}"
 		 width="100%" height="100%" style="height: 300px;"></iframe>
-		 {{#if ../../inDashboard}}
+             <input value="{{../id}}" id="hdnAssetId" name="hdnAssetId" type="hidden">
+             <input value="{{../../user.username}}" id="hdnUsertId" name="hdnAssetId" type="hidden">
+             <input value="{{../../tenantId}}" id="hdnTenantId" name="hdnTenantId" type="hidden">
+
+             {{#if ../../inDashboard}}
 		 <div id="comment-content" class="content"></div>
 		 {{else}}
 		 <div id="comment-content" class="content user-review"></div>
