@@ -11,7 +11,7 @@ var renderAssets, mouseStop, renderAssetsScroll;
             theme.loaded(el, sort);
             el.append(assets);
             caramel.js($('body'), data.body['assets'].resources.js, 'assets', function () {
-//                mouseStop();
+                mouseStop();
             });
             caramel.js($('body'), data.body['sort-assets'].resources.js, 'sort-assets', function () {
                 updateSortUI();
@@ -81,7 +81,7 @@ var renderAssets, mouseStop, renderAssetsScroll;
       $('#assets-container').append(render);
       
        caramel.js($('body'), data.body['assets'].resources.js, 'assets', function () {
-//                mouseStop();
+                mouseStop();
             });
     	
     };

@@ -86,36 +86,36 @@ $(function() {
 		var thiz = $(this);
 		thiz.addClass('selected-type');
 		loadAssets(thiz.attr('href'));
-//		mouseStop();
+		mouseStop();
 		e.preventDefault();
 	});
 
-	$(document).on('click', '.pagination a', function(e) {
-		e.preventDefault();
-		var url = $(this).attr('href');
-		if (url === '#') {
-			return;
-		}
-		loadAssets(url);
-	});
+//	$(document).on('click', '.pagination a', function(e) {
+//		e.preventDefault();
+//		var url = $(this).attr('href');
+//		if (url === '#') {
+//			return;
+//		}
+//		loadAssets(url);
+//	});
 
-	var scroll = function() {
+//	var scroll = function() {
 
-		if(infiniteScroll || (store.asset.paging.size >= 12 && infiniteScroll == null)) {
-			if($(window).scrollTop() + $(window).height() >= $(document).height() * .8) {
-				var url = caramel.url(store.asset.paging.url + (++currentPage));
-				loadAssetsScroll(url);
-				$(window).unbind('scroll', scroll);
-				setTimeout(function() {
-					$(window).bind('scroll', scroll);
-				}, 500);
-			}
-		} else {
-			$('.loading-inf-scroll').hide();
-		}
-	}
+//		if(infiniteScroll || (store.asset.paging.size >= 12 && infiniteScroll == null)) {
+//			if($(window).scrollTop() + $(window).height() >= $(document).height() * .8) {
+//				var url = caramel.url(store.asset.paging.url + (++currentPage));
+//				loadAssetsScroll(url);
+//				$(window).unbind('scroll', scroll);
+//				setTimeout(function() {
+//					$(window).bind('scroll', scroll);
+//				}, 500);
+//			}
+//		} else {
+//			$('.loading-inf-scroll').hide();
+//		}
+//	}
 
-	$(window).bind('scroll', scroll);
+//	$(window).bind('scroll', scroll);
 
 	$("a[data-toggle='tooltip']").tooltip();
 	
