@@ -93,7 +93,46 @@ require('/modules/store.js').exec(function (ctx) {
                 }
             });
 
-        } else {
+        }
+        else if (paging.sort == 'usage') {
+            server.privileged(function () {
+                var config = require('/config/store.json');
+                var userName = user ? user.username : "";
+                var index = 0, maxTry = 0;
+                var getNextassetSet = function () {
+                    var bamService = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
+                    var bamServiceObj = new bamService();
+                    log.debug("Object initialized successfully : org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO ");
+
+                    var result = bamServiceObj.getAppsByHitCount(userName, (paging.start + index), 12, config.uiActivityPublishDataSource);
+                    log.debug("query executed successfully to get the assets hit count");
+
+                    index += 12;
+                    return JSON.parse(result);
+                };
+
+                assets = [];
+                var aid, asset;
+                while (assets.length < 12 && maxTry < 10) {
+                    maxTry++;
+                    var result = getNextassetSet();
+                    for (var n = 0; n < result.length && assets.length < 12; n++) {
+                        aid = String(result[n].UUID);
+                        try {
+                            asset = store.asset(type, aid);
+                            asset.indashboard = store.isuserasset(aid, type);
+                            if (configs.lifeCycleBehaviour.visibleIn.indexOf(String(asset.lifecycleState), 0) >= 0) {
+                                assets.push(asset);
+                            }
+                        } catch (e) {
+                            log.warn("error retrieving asset from store ,information might be stale in table. id=" +
+                            aid);
+                        }
+                    }
+                }
+            });
+        }
+        else {
             assets = store.assets(type, paging);
         }
     }

@@ -25,6 +25,7 @@ authenticator.init(jagg,session);
 
 
 var carbon = require('carbon');
+var tenantIdVal = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantId();
 
 
 require('/modules/store.js').exec(function (ctx) {
@@ -261,6 +262,7 @@ require('/modules/store.js').exec(function (ctx) {
         subscriptionInfo : subscriptionInfo,
         isEnterpriseSubscriptionAllowed: isStoreAdmin,
         asset: asset,
+        tenantId : tenantIdVal,
         tags: [
             {
                 url: '/assets/' + type + '/?page=1&tag=',
