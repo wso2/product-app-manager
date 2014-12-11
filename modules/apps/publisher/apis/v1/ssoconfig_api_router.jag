@@ -35,10 +35,32 @@ require('/modules/publisher.js').exec(function(ctx) {
         }
     });
 
-    routeManager.register('GET', 'publisher', '/publisher/api/sso/provider/{providerName}/{version}/{appName}', function (context) {
+    routeManager.register('GET', 'publisher', '/publisher/api/sso/{providerName}/{version}/{appProvider}/{appName}/{appVersion}', function (context) {
+
         var shortName = context.params.type;
+        var providerName = context.params.providerName;
+        var providerVersion = context.params.version;
+        var appProvider = context.params.appProvider;
+        var appName = context.params.appName;
+        var appVersion = context.params.appVersion;
+
+        var result = null;
+        var issuerName = null;
+
+        var store = jagg.module("manager").getAPIStoreObj();
+        var isEmailLoginEnabled = store.isEnableEmailUsername();
+
+        if (!isEmailLoginEnabled && appProvider != null && appProvider.indexOf("-AT-") != -1) {
+            result = appProvider.split("-AT-");
+        }
+        if (result != null ) {
+            issuerName =  appName + "-" + result[1] + "-" + appVersion;
+        } else {
+            issuerName =  appName + "-" + appVersion;
+        }
+
         var ssoConfiguratorUtil = Packages.org.wso2.carbon.appmgt.impl.idp.sso.SSOConfiguratorUtil;
-        returnVal = createResponseObject(ssoConfiguratorUtil.getSSOProvider(context.params.providerName,context.params.version,context.params.appName));
+        returnVal = createResponseObject(ssoConfiguratorUtil.getSSOProvider(providerName, providerVersion,issuerName));
         print(returnVal);
     });
 
