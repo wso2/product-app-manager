@@ -73,6 +73,14 @@ var pageIndexPopulator = function(pageCount,currentIndex){
     return indices;
 };
 
+var getAvailablePages = function(appCount){
+    var availablePages = Math.floor(appCount/PAGE_SIZE);
+    var remainder = (appCount/PAGE_SIZE) % 1;
+    if(remainder){
+        availablePages = availablePages +1;
+    }
+    return availablePages;
+}
 
 var getCurrentPage = function(currentIndex){
     var pageNumber = Math.floor(currentIndex/PAGE_SIZE);
@@ -96,17 +104,22 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 		var artifacts = artifactManager.list(null) || [];
         //var DEFAULT_PAGIN = {'start':0, 'count':20 , 'sortOrder':'desc','sortBy': 'overview_createdtime', 'paginationLimit':1000};
         var startVal;
+        var appCount = artifactManager.count();
+        var availablePages = getAvailablePages(appCount);
         if(page) {
             if(page>=0) {
                 var appliedPageValue;
-                if (page > 1) {
+                if(page > availablePages){
+                    appliedPageValue = availablePages - 1;
+                    startVal = PAGE_SIZE * appliedPageValue;
+                } else if (page > 1) {
                     appliedPageValue = page - 1;
                     startVal = PAGE_SIZE * appliedPageValue;
                 }else{
                     startVal = 0;
                 }
-            }else{
-                response.sendError(400, "Invalid page number supplied in query params");
+            }else {
+                startVal = 0;
             }
         }else{
             startVal = 0;
@@ -132,13 +145,6 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 		dataInjector.inject(artifacts, DataInjectorModes.DISPLAY);
         	//Perform some filtering logic on the artifacts
         	artifacts=filterManager.filter(artifacts,session);
-            var appCount = artifactManager.count();
-
-        var availablePages = Math.floor(appCount/PAGE_SIZE);
-        var remainder = (appCount/PAGE_SIZE) % 1;
-        if(remainder){
-            availablePages = availablePages +1;
-        }
 
         var currIndex = startVal + 1;
 
