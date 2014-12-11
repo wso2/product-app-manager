@@ -45,11 +45,11 @@ require('/modules/store.js').exec(function (ctx) {
     httpsPort = process.getProperty('https.port');
         
     url = '/assets/' + type + '/?' + (tag ? 'tag=' + tag + '&' : '') + (query ? 'query=' + query + '&' : '');
-    paging = store.assetsPagingOverrided(request);
+    avaliablePages = store.getAvailablePages(type,ctx.request,ctx.session);
+    paging = store.assetsPagingOverrided(request,avaliablePages);
 
     mainPage = type;
     title = store.assetLinks(type).title;
-    avaliablePages = store.getAvailablePages(type,ctx.request,ctx.session);
 
     var indices = store.pageIndexPopulator(avaliablePages,paging.start+1);
     var PAGE_SIZE = store.getPageSize();
