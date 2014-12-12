@@ -175,7 +175,7 @@ require('/modules/publisher.js').exec(function(ctx) {
         var msg={};
         var artifactManager = rxtManager.getArtifactManager(shortName);
         var server  = require('store').server;
-        var username = server.current(session).username;
+        var username = jagg.getUser().username;
 
         try {
             //Get the original artifact
