@@ -47,6 +47,7 @@
                     <%
         }
     }else {
+        session.invalidate(); //Clear the session
         response.sendRedirect('/portal');
     }
 }());
