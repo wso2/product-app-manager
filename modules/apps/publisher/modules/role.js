@@ -30,8 +30,7 @@ var checkeRole = function (username, session) {
 
 
   	if (!( usr.hasRoles(["Internal/publisher"]) || usr.hasRoles(["Internal/creator"]) || usr.hasRoles(["Internal/reviewer"])      ) ) {
-            session.invalidate();
-      		return false;
+           return false;
   	}
   	return true;
 };
