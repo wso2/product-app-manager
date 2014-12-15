@@ -33,6 +33,13 @@ require('/modules/store.js').exec(function (ctx) {
 
 	var subscriptions = [];
 	var userData = authenticator.getLoggedInUser();
+
+	//If the user is not logged in, redirect to the login page
+	if (userData == null) {
+		response.sendRedirect('/store');
+		return;
+	}
+
 	var apps = subsApi.getAppsWithSubs({user: userData.username});
 		
 	if(apps.length >0){
