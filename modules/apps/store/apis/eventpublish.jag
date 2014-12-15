@@ -21,7 +21,11 @@
     var server = require('store').server;
     var user = server.current(session);
     if (!user) {
-        throw "user is not logged in";
+        //Capturing the UI activity change only if user is logged in
+        if (log.isDebugEnabled()) {
+            log.debug("user is not logged in");
+        }
+        return;
     }
 
     //events contains the object[] passed from the JS which contains UI activity changes.

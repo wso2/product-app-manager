@@ -47,7 +47,8 @@
                     <%
         }
     }else {
-        response.sendRedirect('/store');
+        session.invalidate(); //Clear the session
+        response.sendRedirect('/portal');
     }
 }());
 %>
