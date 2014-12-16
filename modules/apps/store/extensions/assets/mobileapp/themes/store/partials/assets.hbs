@@ -10,8 +10,6 @@
 			<div class="span3 asset" data-id="{{id}}" data-type="{{type}}">
 				{{#attributes}}
 
-
-				
 				<a href="{{url "/assets"}}/{{../type}}/{{../id}}{{#if ../../../device}}?device={{../../../../device}}{{/if}}">
 
                     <div class="asset-icon">
@@ -69,9 +67,34 @@
 		{{/if}}
 
 	</div>
-	<div class="loading-inf-scroll"></div>
+	<!--<div class="loading-inf-scroll"></div> -->
+
+
+    <div id="paging-indices">
+        <ul class="pagination">
+            {{#if leftNav}}
+                <li><a href="{{url "/assets/mobileapp?page="}}{{this.leftNav}}"><span aria-hidden="true">&laquo;</span><span class="sr-only"></span></a></li>
+            {{/if}}
+            {{#each pageIndeces}}
+                {{#if this.isDisabled}}
+                    <li class="disabled"><a>{{this.index}}</a></li>
+                {{else}}
+                    <li><a href="{{url "/assets/mobileapp?page="}}{{this.index}}">{{this.index}}</a></li>
+                {{/if}}
+            {{/each}}
+            {{#if rightNav}}
+                <li><a href="{{url "/assets/mobileapp?page="}}{{this.rightNav}}"><span aria-hidden="true">&raquo;</span><span class="sr-only"></span></a></li>
+            {{/if}}
+        </ul>
+    </div>
+
+
+
 
 </div>
+
+
+
 
 
 

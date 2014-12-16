@@ -14,17 +14,44 @@ require('/modules/store.js').exec(function (ctx) {
             configs = ctx.configs,
             site = ctx.site,
             subscriptions = {},
-            subscription = false;
+            subscription = false,
+            avaliablePages;
 
     caramel = require('caramel');
 
     url = '/assets/' + type + '/?' + (tag ? 'tag=' + tag + '&' : '') + (query ? 'query=' + query + '&' : '');
 
-    paging = store.assetsPaging(request);
+   // paging = store.assetsPaging(request);
+    avaliablePages = store.getAvailablePages(type,ctx.request,ctx.session);
+    paging = store.assetsPagingOverrided(request);
+
+
 
     mainPage = type;
 
     title = store.assetLinks(type).title;
+
+
+    var indices = store.pageIndexPopulator(avaliablePages,paging.start+1);
+    var PAGE_SIZE = store.getPageSize();
+    var pageIndices;
+    if(indices.length > 1){
+        pageIndices = indices;
+    }
+
+    var currIndex = paging.start + 1;
+
+    var currentPage = store.getCurrentPage(currIndex);
+    //currentPage = parseInt(currentPage, 10);
+
+    if(currentPage-1 > 0){
+        var leftnav = currentPage-1;
+    }
+
+    if(currentPage+1 <= avaliablePages){
+        var rightnav = currentPage+1;
+    }
+
    
    
 
@@ -107,16 +134,16 @@ require('/modules/store.js').exec(function (ctx) {
                     var result = bamServiceObj.getAppsByHitCount(userName, (paging.start + index), 12, config.uiActivityPublishDataSource);
                     log.debug("query executed successfully to get the assets hit count");
 
-                    index += 12;
+                    index += store.getPageSize();
                     return JSON.parse(result);
                 };
 
                 assets = [];
                 var aid, asset;
-                while (assets.length < 12 && maxTry < 10) {
+                while (assets.length < PAGE_SIZE && maxTry < 10) {
                     maxTry++;
                     var result = getNextassetSet();
-                    for (var n = 0; n < result.length && assets.length < 12; n++) {
+                    for (var n = 0; n < result.length && assets.length < PAGE_SIZE; n++) {
                         aid = String(result[n].UUID);
                         try {
                             asset = store.asset(type, aid);
@@ -193,7 +220,7 @@ require('/modules/store.js').exec(function (ctx) {
             url: url + 'sort='
         },
         config : configs.mobile,
-        myAssets : { user:user, type: type, title: title, subscriptions: subscriptions[type], subscription : subscription},
+        myAssets : { user:user, type: type, title: title, subscriptions: subscriptions[type], subscription : subscription, pageIndices : pageIndices, leftNav:leftnav, rightNav:rightnav},
         recentAssets: store.recentAssets(type)
 
     });
