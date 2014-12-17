@@ -153,8 +153,8 @@ $( document ).ready(function() {
                     "<tr> \
                       <td><span style='color:#999'>/{context}/{version}/</span>"+ RESOURCES_1[i].url_pattern +" <input type='hidden' value='"+RESOURCES_1[i].url_pattern+"' name='uritemplate_urlPattern"+i+"'/></td> \
                   <td><strong>"+ RESOURCES_1[i].http_verb +"</strong><input type='hidden' value='"+RESOURCES_1[i].http_verb+"' name='uritemplate_httpVerb"+i+"'/></td> \
-                  <td style='padding:0px'><select name='uritemplate_tier"+i+"' class='selectpicker' id='getThrottlingTier' style='width:100%;border:none;'><option title='Allows unlimited requests' value='Unlimited' id='Unlimited'>Unlimited</option><option title='Allows 5 request(s) per minute.' value='Silver' id='Silver'>Silver</option><option title='Allows 20 request(s) per minute.' value='Gold' id='Gold'>Gold</option><option title='Allows 1 request(s) per minute.' value='Bronze' id='Bronze'>Bronze</option></select></td> \
-                  <td style='padding:0px'><select name='uritemplate_skipthrottle"+i+"' class='selectpicker' id='' style='width:100%;border:none;'><option value='False' id='False'>False</option><option value='True' id='True'>True</option></select></td> \
+                    <td style='padding:0px'><select name='uritemplate_tier" + i + "' onChange='updateDropdownThrottlingTier(" + i + ");' class='selectpicker' id='getThrottlingTier" + i + "' style='width:100%;border:none;'><option title='Allows unlimited requests' value='Unlimited' id='Unlimited'>Unlimited</option><option title='Allows 5 request(s) per minute.' value='Silver' id='Silver'>Silver</option><option title='Allows 20 request(s) per minute.' value='Gold' id='Gold'>Gold</option><option title='Allows 1 request(s) per minute.' value='Bronze' id='Bronze'>Bronze</option></select></td> \
+                  <td style='padding:0px'><select name='uritemplate_skipthrottle" + i + "' onChange='updateDropDownSkipThrottle(" + i + ");' class='selectpicker' id='getSkipthrottle" + i + "' style='width:100%;border:none;'><option value='False' id='False'>False</option><option value='True' id='True'>True</option></select></td> \
                    \
                   <td> \
                      \
@@ -169,7 +169,7 @@ $( document ).ready(function() {
 \
                   </td> \
                    \
-                   <td class='userRoles' style='padding:0px'><input  type='text' name='uritemplate_userRoles"+i+"' id='getUserRoles"+i+"' style='width:95%;border:none;'></input></td> \
+                   <td class='userRoles' style='padding:0px'><input  type='text' name='uritemplate_userRoles"+i+"' onChange='updateUserRoles("+i+");'  id='getUserRoles"+i+"' style='width:95%;border:none;'></input></td> \
                   \
                   <td> \
                   	<a data-index='"+i+"' class='delete_resource'><i class='icon-remove-sign'></i>  Delete</a>&nbsp; \
@@ -240,3 +240,31 @@ function resetResource() {
            this.checked = false;
     })
 }
+
+/*
+ Fires when user change Throttling Tier
+ @param index : row id
+ */
+function updateDropdownThrottlingTier(index) {
+    var throttlingTierElement = document.getElementById("getThrottlingTier" + index);
+    RESOURCES_1[index].throttling_tier = throttlingTierElement.options[throttlingTierElement.selectedIndex].value;
+}
+
+/*
+ Fires when user change Skip Throttle
+ @param index : row id
+ */
+function updateDropDownSkipThrottle(index) {
+    var skipthrottleElement = document.getElementById("getSkipthrottle" + index);
+    RESOURCES_1[index].skipthrottle = skipthrottleElement.options[skipthrottleElement.selectedIndex].value;
+}
+
+/*
+ Fires when user change user roles
+ @param index : row id
+ */
+function updateUserRoles(index) {
+    var userRolesElement = document.getElementById("getUserRoles" + index);
+    RESOURCES_1[index].user_roles = userRolesElement.value;
+}
+

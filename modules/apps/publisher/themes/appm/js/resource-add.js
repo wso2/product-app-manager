@@ -108,8 +108,8 @@ $( document ).ready(function() {
                 "<tr> \
                   <td><span style='color:#999'>/{context}/{version}/</span>"+ RESOURCES[i].url_pattern +" <input type='hidden' value='"+RESOURCES[i].url_pattern+"' name='uritemplate_urlPattern"+i+"'/></td> \
                   <td><strong>"+ RESOURCES[i].http_verb +"</strong><input type='hidden' value='"+RESOURCES[i].http_verb+"' name='uritemplate_httpVerb"+i+"'/></td> \
-                  <td style='padding:0px'><select name='uritemplate_tier"+i+"' class='selectpicker' id='getThrottlingTier' style='width:100%;border:none;'><option title='Allows unlimited requests' value='Unlimited'>Unlimited</option><option title='Allows 5 request(s) per minute.' value='Silver'>Silver</option><option title='Allows 20 request(s) per minute.' value='Gold'>Gold</option><option title='Allows 1 request(s) per minute.' value='Bronze'>Bronze</option></select></td> \
-                  <td style='padding:0px'><select name='uritemplate_skipthrottle"+i+"' class='selectpicker' id='' style='width:100%;border:none;'><option value='False'>False</option><option value='True'>True</option></select></td> \
+                  <td style='padding:0px'><select name='uritemplate_tier" + i + "' class='selectpicker'  onChange='updateDropdownThrottlingTier(" + i + ");' id='getThrottlingTier" + i + "' style='width:100%;border:none;'><option title='Allows unlimited requests' value='Unlimited'>Unlimited</option><option title='Allows 5 request(s) per minute.' value='Silver'>Silver</option><option title='Allows 20 request(s) per minute.' value='Gold'>Gold</option><option title='Allows 1 request(s) per minute.' value='Bronze'>Bronze</option></select></td> \
+                  <td style='padding:0px'><select name='uritemplate_skipthrottle" + i + "' class='selectpicker' onChange='updateDropDownSkipThrottle(" + i + ");' id='getSkipthrottle" + i + "' style='width:100%;border:none;'><option value='False'>False</option><option value='True'>True</option></select></td> \
                   \
                   <td> \
                     \
@@ -124,7 +124,7 @@ $( document ).ready(function() {
                     <input type='hidden' class='uritemplate_entitlementPolicyPartialMappings_text' id='uritemplate_entitlementPolicyPartialMappings"+i+"'  name='uritemplate_entitlementPolicyPartialMappings"+i+"'value='[]'/> \
                   </td> \
                   \
-                  <td class='userRoles' style='padding:0px'><input type='text' name='uritemplate_userRoles"+i+"' id='getUserRoles"+i+"' style='width:95%;border:none;'></input></td> \
+                  <td class='userRoles' style='padding:0px'><input type='text' name='uritemplate_userRoles"+i+"' onChange='updateUserRoles(" + i + ");' id='getUserRoles"+i+"' style='width:95%;border:none;'></input></td> \
                   <td> \
                   	<a data-index='"+i+"' class='delete_resource'><i class='icon-remove-sign'></i>  Delete</a>&nbsp; \
                   </td> \
@@ -147,6 +147,24 @@ $( document ).ready(function() {
 
               	}
           	});
+
+            //set Throttling Tier when adding a new resource
+            if (RESOURCES[i].throttling_tier !== undefined && RESOURCES[i].throttling_tier !== '') {
+                $('#getThrottlingTier' + i).val(RESOURCES[i].throttling_tier);
+            }
+
+            //set Skip Throttling when adding a new resource
+            if (RESOURCES[i].skipthrottle !== undefined && RESOURCES[i].skipthrottle !== '') {
+                $('#getSkipthrottle' + i).val(RESOURCES[i].skipthrottle);
+            }
+
+            //set User Roles when adding a new resource
+            if (RESOURCES[i].user_roles !== undefined && RESOURCES[i].user_roles !== '') {
+                var res = RESOURCES[i].user_roles.split(",");
+                for (var j = 0; j < res.length; ++j) {
+                    $('#getUserRoles' + i).tokenInput("add", {id: res[j], name: res[j]});
+                }
+            }
         }
     });
 
@@ -177,4 +195,31 @@ function resetResource() {
     $(".http_verb").each(function(){
            this.checked = false;
     })
+}
+
+/*
+ Fires when user change Throttling Tier
+ @param index : row id
+ */
+function updateDropdownThrottlingTier(index) {
+    var throttlingTierElement = document.getElementById("getThrottlingTier" + index);
+    RESOURCES[index].throttling_tier = throttlingTierElement.options[throttlingTierElement.selectedIndex].value;
+}
+
+/*
+ Fires when user change Skip Throttle
+ @param index : row id
+ */
+function updateDropDownSkipThrottle(index) {
+    var skipthrottleElement = document.getElementById("getSkipthrottle" + index);
+    RESOURCES[index].skipthrottle = skipthrottleElement.options[skipthrottleElement.selectedIndex].value;
+}
+
+/*
+ Fires when user change user roles
+ @param index : row id
+ */
+function updateUserRoles(index) {
+    var userRolesElement = document.getElementById("getUserRoles" + index);
+    RESOURCES[index].user_roles = userRolesElement.value;
 }
