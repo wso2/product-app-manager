@@ -1,6 +1,12 @@
 
 var render = function (theme, data, meta, require) {
 
+    var subscriptions = [];
+    if(data.appsWithSubs != null && data.appsWithSubs.length > 0){
+        var subscriptions = data.appsWithSubs[0].subscriptions;
+    }
+
+
     theme('2-column-right', {
         title: 'Subscriptions',
         metadata:data.metadata,
@@ -17,7 +23,7 @@ var render = function (theme, data, meta, require) {
         body:[
             {
                 partial:'subscriptions',
-                context:{appsWithSubs:data.appsWithSubs}
+                context:{appsWithSubs:data.appsWithSubs, subscriptions: subscriptions}
             }
         ],
         right:[
