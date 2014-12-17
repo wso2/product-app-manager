@@ -1,27 +1,24 @@
 <div id="myasset-container" class="row">
+
+
+
     <div class="span9">
+
+        <h4> My Subscriptions</h4>
 
         {{#if subscriptions}}
             {{#each subscriptions}}
 
 
-                <div class="span2 store-my-item" >
+                <div class="span2 asset store-my-item" >
 
                     <div class="store-my-item-thumbnail">
-                        <a href="{{url "/assets/webapp/"}}{{uuid}}"><img src="/store/storage/webapp/{{uuid}}/{{thumbnail}}"></a>
+                        <a href="{{url "/assets/webapp/"}}{{uuid}}"><img class="icon" src="/store/storage/webapp/{{uuid}}/{{thumbnail}}"></a>
                     </div>
                     <div class="store-my-item-info">
                         <a class="asset-title" href="{{url "/assets/"}}{{../../key}}/{{../id}}">
                             <strong>{{name}}</strong>
                         </a>
-                        <small class="bookmark-assert-provider">by {{provider}}</small>
-                        <br><div class="btn-group">
-
-
-                        <a class="btn btn-primary asset-reinstall-btn" href="{{url "/assets/webapp/"}}{{uuid}}">
-                            View
-                        </a>
-                         </div>
                     </div>
 
                 </div>
