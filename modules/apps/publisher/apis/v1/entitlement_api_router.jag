@@ -76,11 +76,6 @@ require('/modules/publisher.js').exec(function(ctx) {
 
     });
 
-    routeManager.register('GET', 'publisher', '/publisher/api/entitlement/get/Tiers', function (context) {
-        var Tiers = getTiers();
-        print(Tiers);
-    });
-
     /**
      * Returns external entitlement policy for the given policy id.
      */
@@ -152,11 +147,6 @@ require('/modules/publisher.js').exec(function(ctx) {
     function saveApplicationPolicyPartialMapping(applicationId,partialIdList){
         apiProvider.saveApplicationPolicyPartialMapping(applicationId,partialIdList);
 
-    }
-
-    function getTiers()
-    {
-      return  apiProvider.getTiers();
     }
 
     /**
