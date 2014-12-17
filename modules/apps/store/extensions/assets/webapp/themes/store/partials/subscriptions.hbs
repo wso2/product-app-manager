@@ -1,6 +1,41 @@
-<div>
-    <div id='subscription-list'>
-        <!-- The subscribed APIs will be rendered here-->
-       {{> subscriptions/sub-listing .}}
+<div id="myasset-container" class="row">
+
+
+
+    <div class="span9">
+
+        <h4> My Subscriptions</h4>
+
+        {{#if subscriptions}}
+            {{#each subscriptions}}
+
+
+                <div class="span2 asset store-my-item" >
+
+                    <div class="store-my-item-thumbnail">
+                        <a href="{{url "/assets/webapp/"}}{{uuid}}"><img class="icon" src="/store/storage/webapp/{{uuid}}/{{thumbnail}}"></a>
+                    </div>
+                    <div class="store-my-item-info">
+                        <a class="asset-title" href="{{url "/assets/"}}{{../../key}}/{{../id}}">
+                            <strong>{{name}}</strong>
+                        </a>
+                    </div>
+
+                </div>
+
+
+
+            {{/each}}
+        {{else}}
+            <div id="no-data-my-items" class="no-data">
+                <i class="icon-inbox"></i>
+                <p>
+                    {{t "You still haven't any apps from the Store."}}
+                </p>
+                <p>
+                    <a href="{{url "/assets/webapp/"}}" class="btn btn-primary">{{t "Subscribe now"}}</a>
+                </p>
+            </div>
+        {{/if}}
     </div>
 </div>

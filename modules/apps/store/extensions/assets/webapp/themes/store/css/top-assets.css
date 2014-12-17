@@ -1,0 +1,28 @@
+
+.store-my-item{
+    padding-top: 0px;
+}
+
+
+.icon {
+    border: medium none;
+    margin: 13px;
+    width: 80%;
+
+}
+
+
+.asset {
+    border: 1px solid #CCCCCC;
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 7px;
+    margin-right: 10px;
+    margin-left: 0px!important;
+    margin-top: 20px;
+}
+
+.store-my-item-info{
+    padding-left: 12px;
+}

@@ -97,7 +97,7 @@ $(document).on("click", "#btn-policy-partial-validate", function () {
 
 $(document).on("click", "#btn-policy-save-and-close", function () {
 
-   // $('#entitlement-policy-editor #save-and-close').val("YES");
+    // $('#entitlement-policy-editor #save-and-close').val("YES");
     saveAndClose = true;
     var policyContent = editor.getValue();
     var policyName = $('#entitlement-policy-editor #policy-name').val();
@@ -112,7 +112,7 @@ $(document).on("click", "#btn-policy-save-and-close", function () {
         displayValidationRequestException);
 
 
-   // $("#entitlement-policy-editor").modal('hide');
+    // $("#entitlement-policy-editor").modal('hide');
     //editor.setValue("");
 
 });
@@ -158,7 +158,7 @@ function continueAddingEntitlementPolicyPartialAfterValidation(response){
 
             if(saveAndClose){
                 $("#entitlement-policy-editor").modal('hide');
-               // alert("hi");
+                // alert("hi");
             }
 
             return;
@@ -493,15 +493,15 @@ function deleteApplicationPolicyPartialMapping(applicationId,policyPartialId){
 function saveApplicationPolicyPartialMapping(applicationId, partialIdList){
 
     $.ajax({
-            url: '/publisher/api/entitlement/partials',
-            type: 'POST',
-            contentType: 'application/x-www-form-urlencoded',
-            data:{"applicationId":applicationId,"partialIdList":partialIdList},
-            success: function(data){
+        url: '/publisher/api/entitlement/partials',
+        type: 'POST',
+        contentType: 'application/x-www-form-urlencoded',
+        data:{"applicationId":applicationId,"partialIdList":partialIdList},
+        success: function(data){
 
-            },
-            error: function(){}
-        });
+        },
+        error: function(){}
+    });
 }
 
 function setPolicyContent(policyContent){
@@ -547,10 +547,22 @@ function updatePolicyPartial() {
                <td style='padding-left: 30px;'> <input class='policy-deny-cb policy-deny-cb"+ obj.id +"' data-policy-id='" + obj.id + "'  type='checkbox'></td> \
                 </tr>");
 
-           policyPartialIndexArray.push(obj.id);
+            policyPartialIndexArray.push(obj.id);
 
         }
 
+
+
+
+    });
+
+    policyPartialDropdownText += ("</table></li>");
+    $(".policy-partial-dropdown").html(policyPartialDropdownText);
+
+
+
+
+    $.each(policyPartialsArray, function (index, obj) {
         var uriTemplates = $('.uritemplate_entitlementPolicyPartialMappings_text').length
 
 
@@ -560,12 +572,17 @@ function updatePolicyPartial() {
 
             if(values) {
                 for (var j = 0; j < values.length; j++) {
-                    if (values[j].effect == "Permit") {
-                        $('#dropdown_entitlementPolicyPartialMappings' + (uriTemplates - i - 1) + " .policy-allow-cb" + values[j].entitlementPolicyPartialId).prop('checked', true);
-                    } else if (values[j].effect == "Deny") {
+                    if(values[j]){
 
-                        $('#dropdown_entitlementPolicyPartialMappings' + (uriTemplates - i - 1) + " .policy-deny-cb" + values[j].entitlementPolicyPartialId).prop('checked', true);
+                        if (values[j].effect == "Permit") {
+                            $('#dropdown_entitlementPolicyPartialMappings' + (uriTemplates - i - 1) + " .policy-allow-cb" + values[j].entitlementPolicyPartialId).prop('checked', true);
+                        } else if (values[j].effect == "Deny") {
+
+                            $('#dropdown_entitlementPolicyPartialMappings' + (uriTemplates - i - 1) + " .policy-deny-cb" + values[j].entitlementPolicyPartialId).prop('checked', true);
+                        }
+
                     }
+
                 }
             }
 
@@ -574,10 +591,11 @@ function updatePolicyPartial() {
 
     });
 
-    policyPartialDropdownText += ("</table></li>");
-    $(".policy-partial-dropdown").html(policyPartialDropdownText);
 
-    if(policyPartialsArray == null || policyPartialsArray[0] == null || policyPartialsArray.length == 0 ){
+
+
+
+    if(policyPartialsArray ==  null || policyPartialsArray.length == 0 ){
         $(".dropdown").hide();
     }else{
         $(".dropdown").show()
@@ -591,12 +609,12 @@ function updatePolicyPartial() {
 
 $(document).on("click", "#btn-add-xacml-policy", function () {
 
-     editedpolicyPartialId = 0;
+    editedpolicyPartialId = 0;
     $('#entitlement-policy-editor #policy-name').prop("readonly", false);
 
     $('#entitlement-policy-editor #policy-content').val("");
-   // editor.setValue("dhdfh");
-   getXacmlPolicyTemplate();
+    // editor.setValue("dhdfh");
+    getXacmlPolicyTemplate();
 
     $('#entitlement-policy-editor #policy-name').val("");
     hideEntitlementError();
@@ -612,8 +630,8 @@ function getXacmlPolicyTemplate(){
         dataType: "text",
         success: function(response) {
             if(response != null){
-             editor.setValue(response);
-                 $('#entitlement-policy-editor #policy-content').val(response);
+                editor.setValue(response);
+                $('#entitlement-policy-editor #policy-content').val(response);
             }
         },
         error: function(response) {
@@ -751,7 +769,7 @@ $(document).on("click", ".policy-deny-cb", function () {
 
     $(this).parent().siblings('td').children( ".policy-allow-cb" ).prop('checked', false);
     policyId = $(this).data( "policyId");
-    resourcesId = $(this).parent().parent().parent().data( "resourceId");
+    resourcesId = $(this).parent().parent().parent().parent().parent().parent().data( "resourceId");
     updatePolcyparialForresource(resourcesId);
 
 });
@@ -760,7 +778,7 @@ $(document).on("click", ".policy-deny-cb", function () {
 $(document).on("click", ".policy-allow-cb", function () {
     $(this).parent().siblings('td').children( ".policy-deny-cb" ).prop('checked', false);
     policyId = $(this).data( "policyId");
-    resourcesId = $(this).parent().parent().parent().data( "resourceId");
+    resourcesId = $(this).parent().parent().parent().parent().parent().parent().data( "resourceId");
     updatePolcyparialForresource(resourcesId);
 });
 
@@ -771,13 +789,13 @@ function updatePolcyparialForresource(resourcesId){
 
     $('#dropdown_entitlementPolicyPartialMappings'+ resourcesId +' li table tr').each(function(i, li) {
 
-            if($(this).parent().find('.policy-allow-cb').prop('checked')){
-                policyArray.push({"entitlementPolicyPartialId":$(this).parent().find('.policy-allow-cb').data( "policyId"), "effect":"Permit"});
-            }
+        if($(this).find('.policy-allow-cb').prop('checked')){
+            policyArray.push({"entitlementPolicyPartialId":$(this).find('.policy-allow-cb').data( "policyId"), "effect":"Permit"});
+        }
 
-            if($(this).parent().find('.policy-deny-cb').prop('checked')){
-                policyArray.push({"entitlementPolicyPartialId":$(this).parent().find('.policy-deny-cb').data( "policyId"), "effect":"Deny"});
-            }
+        if($(this).find('.policy-deny-cb').prop('checked')){
+            policyArray.push({"entitlementPolicyPartialId":$(this).find('.policy-deny-cb').data( "policyId"), "effect":"Deny"});
+        }
 
     });
 
