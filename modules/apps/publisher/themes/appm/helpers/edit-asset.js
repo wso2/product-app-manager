@@ -57,7 +57,7 @@ var extractVisibleRoles = function(data){
 		}
 
 		// Or else check against the exclude list.
-		var excludedRolesList = ["admin", "subscriber", "publisher"];
+		var excludedRolesList = ["admin", "Internal/subscriber", "publisher"];
 	
 		for(var i = 0; i < excludedRolesList.length; i++){
 			if(role == excludedRolesList[i]){
