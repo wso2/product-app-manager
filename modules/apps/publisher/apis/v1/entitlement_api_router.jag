@@ -52,7 +52,6 @@ require('/modules/publisher.js').exec(function(ctx) {
 
     routeManager.register('GET', 'publisher', '/publisher/api/entitlement/get/apps/associated/to/policy/{policyPartialId}', function (context) {
         var appsNameList = getAssociatedAppsNameList(context.params.policyPartialId);
-        log.info(stringify(appsNameList))
         print(appsNameList);
     });
 
