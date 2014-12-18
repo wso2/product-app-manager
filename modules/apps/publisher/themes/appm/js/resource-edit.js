@@ -1,6 +1,22 @@
+var tiers ={}; //contains Throttling tier details
+var throttlingTierControlBlock; //html formatted block for throttling tiers list
 
 $( document ).ready(function() {
 
+    //get Tier details from tier.xml
+    $.ajax({
+        url: '/publisher/api/entitlement/get/Tiers',
+        type: 'GET',
+        contentType: 'application/json',
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+            tiers = data;
+            throttlingTierControlBlock = drawThrottlingTiersDynamically();
+        },
+        error: function () {
+        }
+    });
 
     $(".trans_checkbox").click(function(){
         var output = [];
@@ -153,7 +169,7 @@ $( document ).ready(function() {
                     "<tr> \
                       <td><span style='color:#999'>/{context}/{version}/</span>"+ RESOURCES_1[i].url_pattern +" <input type='hidden' value='"+RESOURCES_1[i].url_pattern+"' name='uritemplate_urlPattern"+i+"'/></td> \
                   <td><strong>"+ RESOURCES_1[i].http_verb +"</strong><input type='hidden' value='"+RESOURCES_1[i].http_verb+"' name='uritemplate_httpVerb"+i+"'/></td> \
-                    <td style='padding:0px'><select name='uritemplate_tier" + i + "' onChange='updateDropdownThrottlingTier(" + i + ");' class='selectpicker' id='getThrottlingTier" + i + "' style='width:100%;border:none;'><option title='Allows unlimited requests' value='Unlimited' id='Unlimited'>Unlimited</option><option title='Allows 5 request(s) per minute.' value='Silver' id='Silver'>Silver</option><option title='Allows 20 request(s) per minute.' value='Gold' id='Gold'>Gold</option><option title='Allows 1 request(s) per minute.' value='Bronze' id='Bronze'>Bronze</option></select></td> \
+                    <td style='padding:0px'><select name='uritemplate_tier" + i + "' onChange='updateDropdownThrottlingTier(" + i + ");' class='selectpicker' id='getThrottlingTier" + i + "' style='width:100%;border:none;'> "+ throttlingTierControlBlock +" </select></td> \
                   <td style='padding:0px'><select name='uritemplate_skipthrottle" + i + "' onChange='updateDropDownSkipThrottle(" + i + ");' class='selectpicker' id='getSkipthrottle" + i + "' style='width:100%;border:none;'><option value='False' id='False'>False</option><option value='True' id='True'>True</option></select></td> \
                    \
                   <td> \
@@ -268,3 +284,13 @@ function updateUserRoles(index) {
     RESOURCES_1[index].user_roles = userRolesElement.value;
 }
 
+/*
+ Create the html formatted block for throttling tier list
+ */
+function drawThrottlingTiersDynamically() {
+    var strContent = "";
+    for (var i = 0; i < tiers.length; i++) {
+        strContent += "<option title='" + tiers[i].tierDescription + "' value='" + tiers[i].tierName + "' id='" + tiers[i].tierName + "'>" + tiers[i].tierDisplayName + "</option>";
+    }
+    return strContent;
+}

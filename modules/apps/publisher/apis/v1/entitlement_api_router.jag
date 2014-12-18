@@ -11,6 +11,10 @@ require('/modules/publisher.js').exec(function(ctx) {
     var routeManager = new router.Router();
     var log= new Log();
 
+    routeManager.register('GET', 'publisher', '/publisher/api/entitlement/get/Tiers', function (context) {
+        var tiers = getTiers();
+        print(tiers);
+    });
 
     routeManager.register('POST', 'publisher', '/publisher/api/entitlement/policy/validate', function (context) {
 
@@ -160,8 +164,11 @@ require('/modules/publisher.js').exec(function(ctx) {
         }
     }
 
-
-
+    //Get Tier details
+    function getTiers()
+    {
+        return  apiProvider.getTiers();
+    }
 
     var securityModule=require('/modules/security/security.manager.js').securityManagementModule();
 
