@@ -5,7 +5,7 @@ $(function() {
     var TAG_API_URL = '/publisher/api/tag/';
     var TAG_CONTAINER = '#tag-test';
     var CHARS_REM = 'chars-rem';
-
+    var SP_ERROR_MEESAGE = 'Error adding service providers.';
 
 
     $('#overview_description').after('<span class="span8 ' + CHARS_REM + '"></span>');
@@ -28,7 +28,7 @@ $(function() {
                 }
             },
             error: function(response) {
-                showAlert('Error adding providers.', 'error');
+                showAlert(SP_ERROR_MEESAGE, 'error');
             }
         });
 
@@ -46,7 +46,7 @@ $(function() {
                 }
             },
             error: function(response) {
-                showAlert('Error adding providers.', 'error');
+                showAlert(SP_ERROR_MEESAGE, 'error');
             }
         });
 
@@ -93,7 +93,7 @@ $(function() {
 
             },
             error: function(response) {
-                showAlert('Error adding providers.', 'error');
+                showAlert(SP_ERROR_MEESAGE, 'error');
             }
         });
     }
@@ -254,7 +254,7 @@ $(function() {
 
         },
         error: function(response) {
-            showAlert('Error adding providers.', 'error');
+            showAlert(SP_ERROR_MEESAGE, 'error');
         }
     });
 
@@ -360,7 +360,7 @@ $(function() {
             contentType: 'application/json',
             data: JSON.stringify(sso_config),
             error: function(response) {
-                showAlert('Error adding service provider.', 'error');
+                showAlert(SP_ERROR_MEESAGE, 'error');
             }
         });
     }

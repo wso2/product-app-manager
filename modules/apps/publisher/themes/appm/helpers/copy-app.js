@@ -48,7 +48,9 @@ var extractVisibleRoles = function(data) {
 
         // Exclude if the role is an internal one.
         if (isInternalRole(role)) {
-            log.debug("Excluding role '" + role + "' from visible roles list. Reason : Role is an internal role");
+            if (log.isDebugEnabled()) {
+                log.debug("Excluding role '" + role + "' from visible roles list. Reason : Role is an internal role");
+            }
             return true;
         }
 
@@ -57,8 +59,10 @@ var extractVisibleRoles = function(data) {
 
         for (var i = 0; i < excludedRolesList.length; i++) {
             if (role == excludedRolesList[i]) {
-                log.debug("Excluding role '" + role + "' from visible roles list. Reason : Role is in the exclude list ==> " + JSON.stringify(excludedRolesList))
-                return true;
+                if (log.isDebugEnabled()) {
+                    log.debug("Excluding role '" + role + "' from visible roles list. Reason : Role is in the exclude list ==> " + JSON.stringify(excludedRolesList))
+                }
+                    return true;
             }
         }
 
