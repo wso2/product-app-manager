@@ -159,7 +159,6 @@ $( document ).ready(function() {
 
               	},
               	onDelete: function(role) {
-                  		console.log()
 
               	}
           	});
