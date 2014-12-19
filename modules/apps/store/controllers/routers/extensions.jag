@@ -75,8 +75,6 @@ var type;
 
             request.getMappedPath = mapper(path);
 
-
-            log.info("PATH >>>>>>>>>>>>>>>>>>>>>" + path);
             include(path);
             return;
         }
