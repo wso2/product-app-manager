@@ -1,7 +1,6 @@
 <div id="myasset-container" class="row">
 
 
-
     <div class="span9">
 
         <h4> My Subscriptions</h4>
@@ -35,5 +34,31 @@
                 </p>
             </div>
         {{/if}}
+
+
+
     </div>
+
+</div>
+
+<div class="row" style="padding-left: 30px">
+
+    <div>
+        <ul class="pagination">
+            {{#compare page 1 operator="!="}}
+                <li><a href="{{url "/extensions/assets/webapp/subscriptions?page="}}{{math page "-" 1}}"><span aria-hidden="true">&laquo;</span><span class="sr-only"></span></a></li>
+            {{/compare}}
+
+            {{#pagesloop pages}}
+                <li {{#compare this ../page}}class="disabled" {{/compare}} ><a  href="{{url "/extensions/assets/webapp/subscriptions?page="}}{{this}}">{{this}}</a></li>
+            {{/pagesloop}}
+
+            {{#compare page pages operator="!="}}
+                <li><a href="{{url "/extensions/assets/webapp/subscriptions?page="}}{{math page "-" 1}}"><span aria-hidden="true">&raquo;</span><span class="sr-only"></span></a></li>
+            {{/compare}}
+
+
+        </ul>
+    </div>
+
 </div>

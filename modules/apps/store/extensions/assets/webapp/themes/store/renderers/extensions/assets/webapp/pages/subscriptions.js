@@ -23,7 +23,7 @@ var render = function (theme, data, meta, require) {
         body:[
             {
                 partial:'subscriptions',
-                context:{appsWithSubs:data.appsWithSubs, subscriptions: subscriptions}
+                context:{appsWithSubs:data.appsWithSubs, subscriptions: subscriptions, pages: data.pages, page: data.page}
             }
         ],
         right:[
