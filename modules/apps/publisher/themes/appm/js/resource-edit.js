@@ -217,8 +217,8 @@ $( document ).ready(function() {
             }
 
             //set Access Policy Options when adding a new resource
-            if (RESOURCES[i].accessPolicyOptions !== undefined && RESOURCES[i].accessPolicyOptions !== '') {
-                $('#uritemplate_entitlementPolicyPartialMappings' + i).val(RESOURCES[i].accessPolicyOptions);
+            if (RESOURCES_1[i].accessPolicyOptions !== undefined && RESOURCES_1[i].accessPolicyOptions !== '') {
+                $('#uritemplate_entitlementPolicyPartialMappings' + i).val(RESOURCES_1[i].accessPolicyOptions);
                 updatePolicyPartial();
             }
         }
@@ -307,5 +307,5 @@ function drawThrottlingTiersDynamically() {
  */
 function updateAccessPolicyOptions(index) {
     var entitlementPolicyPartialMappingsElement = document.getElementById("uritemplate_entitlementPolicyPartialMappings" + index);
-    RESOURCES[index].accessPolicyOptions = entitlementPolicyPartialMappingsElement.value;
+    RESOURCES_1[index].accessPolicyOptions = entitlementPolicyPartialMappingsElement.value;
 }
