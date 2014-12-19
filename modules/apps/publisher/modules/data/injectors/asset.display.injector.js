@@ -94,7 +94,9 @@ var injector = function () {
                 object['lifecycleAvailableActions'] = actions;
                 //Check if it is a valid uuid and create a new url
                 if((uuid)&&(utility.isValidUuid(uuid))){
-                    log.debug('creating a new url for '+url);
+                    if (log.isDebugEnabled()) {
+                        log.debug('creating a new url for ' + url);
+                    }
                     object.attributes[field]=getUrl(url,config,object);
                 }
 

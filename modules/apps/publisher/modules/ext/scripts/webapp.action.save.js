@@ -71,8 +71,8 @@ var module = function () {
         var index = 0;
         var attributes = asset.attributes;
         var urlPattern = attributes["uritemplate_urlPattern" + index];
-        var policyPartialList = attributes["uritemplate_policyPartialIds"];
-        webAppObj.setPolicyPartialList(policyPartialList);
+        var policyPartials = attributes["uritemplate_policyPartialIds"];
+        webAppObj.setPolicyPartials(policyPartials);
 
         while(urlPattern != null && trim(urlPattern).length > 0){
 
