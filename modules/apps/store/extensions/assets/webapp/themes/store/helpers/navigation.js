@@ -3,7 +3,7 @@ var log=new Log();
 var resources= function (page,meta){
 
     return{
-        js : ['asset-helpers.js', 'jquery.validate.js', 'search.js','logic/login/login.js'],
+        js : ['asset-helpers.js', 'jquery.validate.js', 'search.js','logic/login/login.js','logic/assets/lazy-load.js'],
         css : ['navigation.css']
     } ;
 };

@@ -8,7 +8,6 @@ require('/modules/store.js').exec(function (ctx) {
         tenant = server.tenant(request, session),
         tenantId = tenant.tenantId,
         store = require('/modules/store.js').store(tenantId, session);
-
     var type, total, assets,
         tag = request.getParameter('tag'),
         sort = request.getParameter('sort'),
@@ -20,6 +19,17 @@ require('/modules/store.js').exec(function (ctx) {
         } else {
             assets = store.assets(type, paging);
         }
+        caramel.render(assets);
+        return;
+    }
+    if (matcher.match('/{context}/apis/assets/{type}/lazy') ) {
+        var count = request.getParameter("count");
+        var from = request.getParameter("from");
+        type = matcher.elements().type;
+
+        paging.count = count;
+        paging.start = from;
+        assets = store.assetsLazy(type, paging);
         caramel.render(assets);
         return;
     }
