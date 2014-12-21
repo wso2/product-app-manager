@@ -479,10 +479,10 @@ require('/modules/publisher.js').exec(function(ctx) {
             var webApp = Packages.org.wso2.carbon.appmgt.api.model.WebApp;
             var webAppObj = new webApp(apiIdentifierObj);
 
-            var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
-            var apiMgtDAOObj = new apiMgtDAO();
+            var appMDAO = Packages.org.wso2.carbon.appmgt.impl.dao.AppMDAO;
+            var appMDAOObj = new appMDAO();
 
-            apiMgtDAOObj.updateOAuthAPIAccessInfo(webAppObj);
+            appMDAOObj.updateOAuthAPIAccessInfo(webAppObj);
 
             var count = 1;
             var tokenEndpoint = attributes["oauthapis_apiTokenEndpoint" + count];
@@ -498,7 +498,7 @@ require('/modules/publisher.js').exec(function(ctx) {
                 tokenEndpoint = attributes["oauthapis_apiTokenEndpoint" + count];
 
                 //Save OAuth APIs consumer details per given web-app
-                apiMgtDAOObj.addOAuthAPIAccessInfo(webAppObj);
+                appMDAOObj.addOAuthAPIAccessInfo(webAppObj);
             }
 
             saveExternalEntitlementPolicies(context.post);

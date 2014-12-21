@@ -63,8 +63,8 @@ var module = function () {
         webAppObj.setUUID(uuid);
         webAppObj.setLogoutURL(logoutURL);
 
-        var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
-        var apiMgtDAOObj = new apiMgtDAO();
+        var appMDAO = Packages.org.wso2.carbon.appmgt.impl.dao.AppMDAO;
+        var appMDAOObj = new appMDAO();
 
         var identityUtil = Packages.org.wso2.carbon.identity.core.util.IdentityUtil;
 
@@ -107,11 +107,11 @@ var module = function () {
         		urlPattern = attributes["uritemplate_urlPattern" + index];
         }
 
-        apiMgtDAOObj.addWebApp(webAppObj);
+        appMDAOObj.addWebApp(webAppObj);
 
         //Generate consumer/secret for web-app
         var tenantId = identityUtil.getTenantIdOFUser(webappProvider);
-        apiMgtDAOObj.addOAuthConsumer(webappProvider, tenantId, webappName, "");
+        appMDAOObj.addOAuthConsumer(webappProvider, tenantId, webappName, "");
 
         var count = 1;
         var tokenEndpoint = attributes["oauthapis_apiTokenEndpoint" + count];
@@ -126,7 +126,7 @@ var module = function () {
             tokenEndpoint = attributes["oauthapis_apiTokenEndpoint" + count];
 
             //Save OAuth APIs consumer details per given web-app
-            apiMgtDAOObj.addOAuthAPIAccessInfo(webAppObj);
+            appMDAOObj.addOAuthAPIAccessInfo(webAppObj);
         }
 
     }

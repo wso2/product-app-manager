@@ -127,9 +127,9 @@ require('/modules/store.js').exec(function (ctx) {
                 var userName = user ? user.username : "";
                 var index = 0, maxTry = 0;
                 var getNextassetSet = function () {
-                    var bamService = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
+                    var bamService = Packages.org.wso2.carbon.appmgt.impl.dao.AppMDAO;
                     var bamServiceObj = new bamService();
-                    log.debug("Object initialized successfully : org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO ");
+                    log.debug("Object initialized successfully : org.wso2.carbon.appmgt.impl.dao.AppMDAO ");
 
                     var result = bamServiceObj.getAppsByHitCount(userName, (paging.start + index), 12, config.uiActivityPublishDataSource);
                     log.debug("query executed successfully to get the assets hit count");
