@@ -32,6 +32,6 @@
         "archieve_location_android": "%http.ip%"
     },
     "pagination": {
-        "PAGE_SIZE" : 5
+        "PAGE_SIZE" : 12
     }
 }
