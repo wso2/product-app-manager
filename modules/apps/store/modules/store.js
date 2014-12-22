@@ -498,6 +498,33 @@ Store.prototype.assets = function (type, paging) {
     return assetz;
 };
 
+Store.prototype.assetsLazy = function (type, paging) {
+
+    //var type=(type=='null')?null:type;
+
+    //Check if a type has been provided
+    /*if(!type){
+     log.debug('Returning an empty [] for Store.assets.');
+     return [];
+     }*/
+
+    var options = {};
+    options = obtainViewQuery(options);
+    options = {"attributes": options};
+    var i;
+    var newPaging = PaginationFormBuilder(paging);
+
+    //var assetz = this.assetManager(type).list(paging);
+
+    var assetz = this.assetManager(type).search(options, newPaging);
+
+
+    for (i = 0; i < assetz.length; i++) {
+        assetz[i].indashboard = this.isuserasset(assetz[i].id, type);
+    }
+    return assetz;
+};
+
 Store.prototype.tagged = function (type, tag, paging) {
 
     // var type=(type=='null')?null:type;

@@ -1,5 +1,12 @@
 var render = function (theme, data, meta, require) {
     var assets = require('/helpers/assets.js');
+    var bodyPartial = "assets";
+    var bodyContext =  assets.currentPage(data.assets,data.sso,data.user, data.paging,data.config, data.myAssets.pageIndices, data.myAssets.leftNav, data.myAssets.rightNav);
+
+    if(request.getHeader("User-Agent").indexOf("Mobile") != -1){  //mobile devices
+        bodyPartial = "assets-for-mobiles";
+        bodyContext =  assets.currentPage(data.assets,data.sso,data.user, data.paging,data.config, data.myAssets.pageIndices, data.myAssets.leftNav, data.myAssets.rightNav);
+    }
     theme('2-column-right', {
         title: data.title,
         header: [
@@ -21,8 +28,8 @@ var render = function (theme, data, meta, require) {
                 context: require('/helpers/sort-assets.js').format(data.sorting, data.paging, data.navigation, data.type, data.selectedCategory, data.header)
             },
             {
-                partial: 'assets',
-                context: assets.currentPage(data.assets,data.sso,data.user, data.paging,data.config, data.myAssets.pageIndices, data.myAssets.leftNav, data.myAssets.rightNav)
+                partial: bodyPartial,
+                context: bodyContext
             }
             /*,
              {

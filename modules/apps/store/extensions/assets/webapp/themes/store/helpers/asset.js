@@ -20,12 +20,6 @@ var resources = function (page, meta) {
     var o = fn(page, meta);
 
     o.js.push('libs/jquery.slideto.min.js');
-    o.js.push('libs/jquery.wiggle.min.js');
-    o.js.push('libs/jquery.ba-bbq.min.js');
-    o.js.push('libs/underscore-min.js');
-    o.js.push('libs/backbone-min.js');
-    o.js.push('libs/swagger.js');
-    o.js.push('libs/swagger-ui.js');
 
     o.js.push('logic/asset/tabs/apiconsole.js');
     o.js.push('logic/asset/overview/asset-utilization.js');

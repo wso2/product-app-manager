@@ -258,9 +258,9 @@ routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/subscribe/{t
 	var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
   	var apiIdentifierObj = new apiIdentifier(webappProvider, webappName, webappVersion);
   	       
-  	var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
-  	var apiMgtDAOObj = new apiMgtDAO();
-  	var count = apiMgtDAOObj.getAPISubscriptionCountByAPI(apiIdentifierObj);
+  	var appMDAO = Packages.org.wso2.carbon.appmgt.impl.dao.AppMDAO;
+  	var appMDAOObj = new appMDAO();
+  	var count = appMDAOObj.getAPISubscriptionCountByAPI(apiIdentifierObj);
   	var subscribed = false;
   	if(count > 0){
 		subscribed = true;

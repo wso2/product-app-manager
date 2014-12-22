@@ -183,7 +183,6 @@ require('/modules/publisher.js').exec(function(ctx) {
             var attributes = originalArtifact.attributes;
 
             var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
-            var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
             var webApp = Packages.org.wso2.carbon.appmgt.api.model.WebApp;
 
             var ssoProvider = Packages.org.wso2.carbon.appmgt.api.model.SSOProvider;
@@ -199,18 +198,17 @@ require('/modules/publisher.js').exec(function(ctx) {
                 ssoProviderObj = null;
             }
 
-            var apiMgtDAOObj = new apiMgtDAO();
             var webAppObj = new webApp(apiIdentifierObj);
 
-            var isDeleted = apiMgtDAOObj.deleteApp(apiIdentifierObj,username,ssoProviderObj);
+            var isDeleted = apiProvider.deleteApp(apiIdentifierObj, username, ssoProviderObj);
 
-            if(isDeleted==true){
-                msg['ok']=true;
-                msg['message']='asset delete';
+            if(isDeleted == true){
+                msg['isDeleted']=true;
+                msg['message'] = 'asset delete';
                 print(msg);
-            }else if (isDeleted==false){
-                msg['ok']=false;
-                msg['message']='asset subscribed';
+            }else if (isDeleted == false){
+                msg['isDeleted'] = false;
+                msg['message'] = 'asset subscribed';
                 print(msg);
             }else{
                 msg['ok']=null;
@@ -481,10 +479,10 @@ require('/modules/publisher.js').exec(function(ctx) {
             var webApp = Packages.org.wso2.carbon.appmgt.api.model.WebApp;
             var webAppObj = new webApp(apiIdentifierObj);
 
-            var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
-            var apiMgtDAOObj = new apiMgtDAO();
+            var appMDAO = Packages.org.wso2.carbon.appmgt.impl.dao.AppMDAO;
+            var appMDAOObj = new appMDAO();
 
-            apiMgtDAOObj.updateOAuthAPIAccessInfo(webAppObj);
+            appMDAOObj.updateOAuthAPIAccessInfo(webAppObj);
 
             var count = 1;
             var tokenEndpoint = attributes["oauthapis_apiTokenEndpoint" + count];
@@ -500,7 +498,7 @@ require('/modules/publisher.js').exec(function(ctx) {
                 tokenEndpoint = attributes["oauthapis_apiTokenEndpoint" + count];
 
                 //Save OAuth APIs consumer details per given web-app
-                apiMgtDAOObj.addOAuthAPIAccessInfo(webAppObj);
+                appMDAOObj.addOAuthAPIAccessInfo(webAppObj);
             }
 
             saveExternalEntitlementPolicies(context.post);

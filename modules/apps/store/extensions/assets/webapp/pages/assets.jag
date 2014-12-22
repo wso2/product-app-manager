@@ -143,7 +143,7 @@ require('/modules/store.js').exec(function (ctx) {
                 var userName = user ? user.username : "";
                 var index = 0, maxTry = 0;
                 var getNextassetSet = function () {
-                    var appMgtDaoService = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
+                    var appMgtDaoService = Packages.org.wso2.carbon.appmgt.impl.dao.AppMDAO;
                     var appMgtDaoObj = new appMgtDaoService();
 
                     var result = appMgtDaoObj.getAppsByHitCount(userName, (paging.start + index), 12);

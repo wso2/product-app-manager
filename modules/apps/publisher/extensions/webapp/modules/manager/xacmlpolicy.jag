@@ -3,10 +3,10 @@
     var log = new Log();
 
 
-    var apiUtil = Packages.org.wso2.carbon.appmgt.impl.utils.APIUtil;
-    var apiUtil = new apiUtil();
+    var appMUtil = Packages.org.wso2.carbon.appmgt.impl.utils.AppManagerUtil;
+    var appMUtil = new appMUtil();
 
-    var xacmlPolicyTemplate = apiUtil.getXACMLPolicyTemplate();
+    var xacmlPolicyTemplate = appMUtil.getXACMLPolicyTemplate();
 
     print(xacmlPolicyTemplate);
 

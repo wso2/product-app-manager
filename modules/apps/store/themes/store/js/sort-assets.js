@@ -1,5 +1,7 @@
 var updateSortUI = function() {
-	$('#ul-sort-assets').find('a[data-sort="' + store.asset.paging.sort + '"]').addClass('selected-type');
+    if(store.asset != undefined) {
+        $('#ul-sort-assets').find('a[data-sort="' + store.asset.paging.sort + '"]').addClass('selected-type');
+    }
 };
 
 $(function() {
@@ -9,9 +11,9 @@ $(function() {
 		$('#breadcrumb > div').not(this).removeClass('breadcrumb-sel').find('.breadcrumb-body').hide();
 		e.stopPropagation();
 	});
-	
+
 	$(document).click(function(){
 		$('.breadcrumb-body').hide();
 	});
 
-}); 
+});
