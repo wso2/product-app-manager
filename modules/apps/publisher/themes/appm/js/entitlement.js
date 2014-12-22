@@ -90,7 +90,7 @@ $(document).on("click", "#btn-policy-partial-validate", function () {
     }
 
     saveAndClose = false;
-    validatePolicyPartial(policyContent, validationResult, displayValidationRequestException);
+    validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation, displayValidationRequestException);
 
 
 })
@@ -122,26 +122,6 @@ $(document).on("click", ".mclose-button", function () {
     editor.setValue("");
 });
 
-function validationResult(response) {
-    var response = JSON.parse(response);
-
-    if (response.success) {
-        response = response.response;
-
-        if (response.isValid) {
-
-            showEntitlementError("Policy is valid.");
-
-
-        } else {
-            showEntitlementError("Policy is not valid.");
-        }
-
-    } else {
-        showEntitlementError("Could not complete validation.");
-    }
-
-}
 
 function continueAddingEntitlementPolicyPartialAfterValidation(response){
 
@@ -354,11 +334,10 @@ function savePolicyPartial() {
 
                     var apps = "";
                     if (response.length != 0) {
-
+                        // construct and show the  the warning message with app names which use this partial before update
                         for (var i = 0; i < response.length; i++) {
                             var j = i + 1;
                             apps = apps + j + ". " + response[i].appName + "\n";
-
                         }
 
                         var msg = "policy " + policyPartialName + " is used in following apps\n\n" +
@@ -707,7 +686,7 @@ $(document).on("click", ".policy-delete-button", function () {
 
                 var apps = "";
                 if (response.length != 0) {
-
+                    // construct and show the  the warning message with app names which use this partial before delete
                     for (var i = 0; i < response.length; i++) {
                         var j = i + 1;
                         apps = apps + j + ". " + response[i].appName + "\n";

@@ -180,6 +180,7 @@ require('/modules/publisher.js').exec(function (ctx) {
             var webappDetailsIndex = -1;
             var totalPageCount = [];
             var webappDeatails = [];
+            var webappObject = {};
 
             for (x = 0; x < usage.length; x++) {
                 for (y = 0; y < webapps.length; y++) {

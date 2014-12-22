@@ -1,0 +1,53 @@
+<div>
+{{#if user}}
+    <input type="hidden" value="{{user.username}}" id="assetsloggedinuser" name="loggedinuser" />
+{{else}}
+    <input type="hidden" value="{{user.username}}" id="assetsloggedinuser" name="loggedinuser" />
+{{/if}}
+<input type="hidden" value="{{config.localIP}}" id="assetsLocalIP" name="assetsLocalIP" />
+<input type="hidden" value="{{config.httpsPort}}" id="assetshttpsPort" name="assetshttpsPort" />
+<input type="hidden" value="{{sso}}" id="sso" name="sso" />
+<div id="assets-container" data-pages="{{pages}}">
+{{#if assets}}
+        <div class="row-fluid" id="thumbnail_container_all">
+            <div data-type="webapp" data-id="dummy" class="span3 asset" style="display: none">
+
+                <a class="assetsLink" href="">
+                    <div class="asset-icon">
+
+                        <img src="dummy">
+                    </div>
+                </a>
+
+                <div class="asset-details">
+                    <div class="asset-name">
+                        <a class="assetDeatils" href="dummy"> <h4>dummy</h4></a>
+                    </div>
+                    <div class="asset-rating">
+                        <div class="asset-rating-0star"></div>
+                    </div>
+                    <div class="asset-author-category">
+                        <ul>
+                            <li>
+                                <h4>Version</h4>
+                                <a href="#" class="asset-version">1.0.0</a>
+                            </li>
+                            <li>
+                                <h4>Category</h4>
+                                <a href="#" class="asset-category">Webapp</a>
+                            </li>
+                            <li>
+                                <h4>Author</h4>
+                                <a href="#" class="asset-author">admin</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+{{else}}
+    <div class="empty-assert">{{t "We couldn't find anything for you."}}</div>
+{{/if}}
+</div> <!--assets-container-->
+</div>

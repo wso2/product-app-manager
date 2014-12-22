@@ -1,5 +1,4 @@
 $(function() {
-
 	$(document).on( 'click',".asset-icon", function(e) {
 		  var loggedUser = $("#assetsloggedinuser").val();
 		  if(loggedUser == "" || loggedUser == null){
@@ -38,7 +37,4 @@ $(function() {
 		  }
 	    	
 	});
-
- 
-
 });

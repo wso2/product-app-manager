@@ -22,9 +22,9 @@ var merge = function(data){
 	
      var log =  new Log();
 	     
-     var apiMgtDAO = Packages.org.wso2.carbon.appmgt.impl.dao.ApiMgtDAO;
-     var apiMgtDAOObj = new apiMgtDAO();
-     var result  = apiMgtDAOObj.getApplicationKeyPair(data.artifact.attributes.overview_name,data.artifact.attributes.overview_provider);
+     var appMDAO = Packages.org.wso2.carbon.appmgt.impl.dao.AppMDAO;
+     var appMDAOObj = new appMDAO();
+     var result  = appMDAOObj.getApplicationKeyPair(data.artifact.attributes.overview_name,data.artifact.attributes.overview_provider);
      
      var sResult = result.toString();
       sResult = sResult.substr(1, sResult.length()-2);
