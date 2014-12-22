@@ -54,7 +54,7 @@
             {{/pagesloop}}
 
             {{#compare page pages operator="!="}}
-                <li><a href="{{url "/extensions/assets/webapp/subscriptions?page="}}{{math page "-" 1}}"><span aria-hidden="true">&raquo;</span><span class="sr-only"></span></a></li>
+                <li><a href="{{url "/extensions/assets/webapp/subscriptions?page="}}{{math page "+" 1}}"><span aria-hidden="true">&raquo;</span><span class="sr-only"></span></a></li>
             {{/compare}}
 
 

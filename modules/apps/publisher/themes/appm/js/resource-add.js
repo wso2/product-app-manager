@@ -137,7 +137,7 @@ $( document ).ready(function() {
                 </div>\
                   \
                     \
-                    <input type='hidden' class='uritemplate_entitlementPolicyPartialMappings_text' id='uritemplate_entitlementPolicyPartialMappings"+i+"'  name='uritemplate_entitlementPolicyPartialMappings"+i+"'value='[]'/> \
+                    <input type='text' class='uritemplate_entitlementPolicyPartialMappings_text' id='uritemplate_entitlementPolicyPartialMappings"+i+"'  name='uritemplate_entitlementPolicyPartialMappings"+i+"'value='[]'/> \
                   </td> \
                   \
                   <td class='userRoles' style='padding:0px'><input type='text' name='uritemplate_userRoles"+i+"' onChange='updateUserRoles(" + i + ");' id='getUserRoles"+i+"' style='width:95%;border:none;'></input></td> \
