@@ -424,6 +424,8 @@ function getEntitlementPolicyPartial(policyPartialId){
 
 function getApplicationPolicyPartialList(applicationId){
 
+
+
     $.ajax({
         url: '/publisher/api/entitlement/policy/partialList/'+applicationId,
         type: 'GET',
