@@ -74,7 +74,7 @@ $( document ).ready(function() {
     var uuid = $("#uuid").val();
 
     $.ajax({
-        url: '/publisher/api/entitlement/webapp/' + uuid,
+        url: '/publisher/api/entitlement/get/webapp/id/from/entitlements/uuid/' + uuid,
         type: 'GET',
         contentType: 'application/json',
         success: function(id){

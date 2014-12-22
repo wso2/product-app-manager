@@ -80,7 +80,7 @@
 			var zipFileReading = new Packages.org.wso2.mobile.utils.utilities.ZipFileReading();
 
 			var path =  Packages.java.lang.System.getProperty("carbon.home") + mam_config.filePreciseLocation + fileName;
-            log.info("META PATH: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + path);
+            log.debug("META PATH: " + path);
 			try{
 				if(ext=="ipa"){
 					var d = zipFileReading.readiOSManifestFile(path, getFileOnly(file));

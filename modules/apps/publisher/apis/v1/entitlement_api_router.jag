@@ -55,7 +55,7 @@ require('/modules/publisher.js').exec(function(ctx) {
         print(appsNameList);
     });
 
-    routeManager.register('GET', 'publisher', '/publisher/api/entitlement/webapp/{id}', function (context) {
+    routeManager.register('GET', 'publisher', '/publisher/api/entitlement/get/webapp/id/from/entitlements/uuid/{id}', function (context) {
         var webappId = getWebAppId(context.params.id);
         print(webappId);
     });

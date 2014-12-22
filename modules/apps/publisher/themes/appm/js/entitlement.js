@@ -115,6 +115,9 @@ $(document).on("click", "#btn-policy-save-and-close", function () {
     // $("#entitlement-policy-editor").modal('hide');
     //editor.setValue("");
 
+
+
+
 });
 
 
@@ -134,6 +137,10 @@ function continueAddingEntitlementPolicyPartialAfterValidation(response){
             savePolicyPartial();
 
             showEntitlementError("Policy is valid.");
+
+            $('.wr-overview-policies').css('display', 'block');
+            $('.wr-overview-policies').parent().find('i').removeClass('icon-chevron-sign-right');
+            $('.wr-overview-policies').parent().find('i').addClass('icon-chevron-sign-down');
 
 
             if(saveAndClose){
@@ -416,6 +423,8 @@ function getEntitlementPolicyPartial(policyPartialId){
 }
 
 function getApplicationPolicyPartialList(applicationId){
+
+
 
     $.ajax({
         url: '/publisher/api/entitlement/policy/partialList/'+applicationId,
