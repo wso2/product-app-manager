@@ -57,7 +57,9 @@ var extractVisibleRoles = function(data){
 		}
 
 		// Or else check against the exclude list.
-		var excludedRolesList = ["admin", "subscriber", "publisher"];
+		var config = require("/config/publisher.json");
+		var excludedRolesList = config.excludedRolesList;
+
 	
 		for(var i = 0; i < excludedRolesList.length; i++){
 			if(role == excludedRolesList[i]){
