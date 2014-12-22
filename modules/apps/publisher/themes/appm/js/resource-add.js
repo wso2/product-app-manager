@@ -131,7 +131,7 @@ $( document ).ready(function() {
                     \
                <div class='dropdown'> \
                     <a href='#' data-toggle='dropdown' class='dropdown-toggle'>Add <b class='caret'></b></a>\
-                    <ul  id='dropdown_entitlementPolicyPartialMappings"+i+"' class='dropdown-menu policy-partial-dropdown' data-resource-id='"+ i +"' style='margin: 0px;'>\
+                    <ul  id='dropdown_entitlementPolicyPartialMappings"+i+"' class='dropdown-menu policy-partial-dropdown' onChange='updateAccessPolicyOptions(" + i + ");' data-resource-id='"+ i +"' style='margin: 0px;'>\
                     \
                     </ul>\
                 </div>\
@@ -179,6 +179,12 @@ $( document ).ready(function() {
                 for (var j = 0; j < res.length; ++j) {
                     $('#getUserRoles' + i).tokenInput("add", {id: res[j], name: res[j]});
                 }
+            }
+
+            //set Access Policy Options when adding a new resource
+            if (RESOURCES[i].accessPolicyOptions !== undefined && RESOURCES[i].accessPolicyOptions !== '') {
+                $('#uritemplate_entitlementPolicyPartialMappings' + i).val(RESOURCES[i].accessPolicyOptions);
+                updatePolicyPartial();
             }
         }
     });
@@ -248,4 +254,13 @@ function drawThrottlingTiersDynamically() {
         strContent += "<option title='" + tiers[i].tierDescription + "' value='" + tiers[i].tierName + "' id='" + tiers[i].tierName + "'>" + tiers[i].tierDisplayName + "</option>";
     }
     return strContent;
+}
+
+/*
+ Fires when user change Access Policy Options
+ @param index : row id
+ */
+function updateAccessPolicyOptions(index) {
+    var entitlementPolicyPartialMappingsElement = document.getElementById("uritemplate_entitlementPolicyPartialMappings" + index);
+    RESOURCES[index].accessPolicyOptions = entitlementPolicyPartialMappingsElement.value;
 }
