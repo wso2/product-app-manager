@@ -295,6 +295,7 @@ function updateUserRoles(index) {
  */
 function drawThrottlingTiersDynamically() {
     var strContent = "";
+    tiers.reverse();
     for (var i = 0; i < tiers.length; i++) {
         strContent += "<option title='" + tiers[i].tierDescription + "' value='" + tiers[i].tierName + "' id='" + tiers[i].tierName + "'>" + tiers[i].tierDisplayName + "</option>";
     }
