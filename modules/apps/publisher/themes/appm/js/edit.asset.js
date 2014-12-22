@@ -277,6 +277,7 @@ $(function() {
 				if (result.ok) {
 					var asset = result.asset;
 					createMessage(MSG_CONTAINER, SUCCESS_CSS, 'Asset updated successfully');
+
 					updateFileFields(asset);
 				        
 			        (function setupPermissions() {
@@ -316,6 +317,8 @@ $(function() {
 			    	if($('#autoConfig').is(':checked')){
 						createServiceProvider();
 					}
+
+                    window.location = "/publisher/assets/webapp/";
 				} else {
 					var report = processErrorReport(result.report);
 					createMessage(MSG_CONTAINER, ERROR_CSS, report);
