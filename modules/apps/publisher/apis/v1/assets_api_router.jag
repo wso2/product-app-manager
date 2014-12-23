@@ -22,9 +22,9 @@ require('/modules/publisher.js').exec(function (ctx) {
 
         var appMgtProviderObj = new appmgtPublisher.APIProvider(stringify(username));
 
-
-        
-
+        if (endDate != null) {
+           endDate = endDate.trim();
+        }
 
         var usage = [];
 
