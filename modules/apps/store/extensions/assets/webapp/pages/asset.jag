@@ -139,20 +139,34 @@ require('/modules/store.js').exec(function (ctx) {
 
     }
 
-    var getEnterprises = function(){
+    var getEnterprises = function () {
+        var store = jagg.module("manager").getAPIStoreObj();
+        var isEmailLoginEnabled = store.isEnableEmailUsername();
 
         var appName = asset.attributes.overview_name;
         var appVersion = asset.attributes.overview_version;
+        var appProvider = asset.attributes.overview_provider;
+        var result = null;
+        var issuerName = null;
+        var store = jagg.module("manager").getAPIStoreObj();
+        var isEmailLoginEnabled = store.isEnableEmailUsername();
 
-        //Generate unique appName using application name and application verison
-        var uniqueAppName = appName + "-" +appVersion;
+        //Check whether application author is a tenant
+        if (!isEmailLoginEnabled && appProvider != null && appProvider.indexOf("-AT-") != -1) {
+            result = appProvider.split("-AT-");
+        }
+        if (result != null) {
+            issuerName = appName + "-" + result[1] + "-" + appVersion;
+        } else {
+            issuerName = appName + "-" + appVersion;
+        }
 
         var ssoProviderInfo = asset.attributes.sso_ssoProvider.split("-");
 
-        var result = subscriptionService.getEnterprisesForApplication(
-                                    {appName:uniqueAppName, ssoProviderName:ssoProviderInfo[0], ssoProviderVersion:ssoProviderInfo[1] })
+        var authResult = subscriptionService.getEnterprisesForApplication(
+                {appName: issuerName, ssoProviderName: ssoProviderInfo[0], ssoProviderVersion: ssoProviderInfo[1]})
 
-        return result.enterprises;    
+        return authResult.enterprises;
 
     }
 
