@@ -65,6 +65,6 @@
     "paginationConfig" :{
     	"PAGE_SIZE" : 20
     },
-    "excludedRolesList":["admin","subscriber","publisher"]
+    "excludedRolesList":["admin","Internal/subscriber","publisher"]
 
 }

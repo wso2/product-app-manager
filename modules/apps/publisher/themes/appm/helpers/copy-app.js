@@ -40,13 +40,13 @@ var extractVisibleRoles = function(data) {
     // Function :: Filters out system roles from in the list.
     var isExcludedRole = function(role) {
 
-        // Function :: Checks whether the given role is an internal one.
+        // Function :: Checks whether the given role has the prefix 'Internal/private_'.
         var isInternalRole = function(role) {
-            var internalRolePrefix = "Internal/";
+            var internalRolePrefix = "Internal/private_";
             return role.indexOf(internalRolePrefix) == 0;
         }
 
-        // Exclude if the role is an internal one.
+        // Exclude if the role has the prefix 'Internal/private_'.
         if (isInternalRole(role)) {
             if (log.isDebugEnabled()) {
                 log.debug("Excluding role '" + role + "' from visible roles list. Reason : Role is an internal role");

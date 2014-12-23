@@ -189,12 +189,31 @@ require('/modules/publisher.js').exec(function(ctx) {
             //Create SSOProvider Object
             var ssoProviderObj = new ssoProvider();
 
-            var apiIdentifierObj = new apiIdentifier(attributes["overview_provider"], attributes["overview_name"], attributes["overview_version"]);
-            if(attributes["sso_ssoProvider"] != " "){
-                ssoProviderObj.setProviderName(attributes["sso_ssoProvider"].split("-")[0]);
-                ssoProviderObj.setProviderVersion(attributes["sso_ssoProvider"].split("-")[1]);
-                ssoProviderObj.setIssuerName(attributes["overview_name"]+"-"+attributes["overview_version"]);
-            }else{
+            var appProvider = attributes["overview_provider"];
+            var appName = attributes["overview_name"];
+            var appVersion = attributes["overview_version"];
+            var ssoProvider = attributes["sso_ssoProvider"];
+            var result = null;
+            var issuerName = null;
+            var store = jagg.module("manager").getAPIStoreObj();
+            var isEmailLoginEnabled = store.isEnableEmailUsername();
+
+            //Check whether application author is a tenant
+            if (!isEmailLoginEnabled && appProvider != null && appProvider.indexOf("-AT-") != -1) {
+                result = appProvider.split("-AT-");
+            }
+            if (result != null) {
+                issuerName = appName + "-" + result[1] + "-" + appVersion;
+            } else {
+                issuerName = appName + "-" + appVersion;
+            }
+
+            var apiIdentifierObj = new apiIdentifier(appProvider, appName, appVersion);
+            if (ssoProvider != " ") {
+                ssoProviderObj.setProviderName(ssoProvider.split("-")[0]);
+                ssoProviderObj.setProviderVersion(ssoProvider.split("-")[1]);
+                ssoProviderObj.setIssuerName(issuerName);
+            } else {
                 ssoProviderObj = null;
             }
 
