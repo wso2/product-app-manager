@@ -43,7 +43,20 @@ var extractVisibleRoles = function(data){
 
 	// Function :: Filters out system roles from in the list.
 	var isExcludedRole = function(role){
-		// check against the exclude list.
+
+		// Function :: Checks whether the given role has the prefix 'Internal/private_'.
+		var isInternalRole = function(role){
+			var internalRolePrefix = "Internal/private_";
+			return role.indexOf(internalRolePrefix) == 0;
+		}
+
+		// Exclude if the role has the prefix 'Internal/private_'.
+		if(isInternalRole(role)){
+			log.debug("Excluding role '" + role + "' from visible roles list. Reason : Role is an internal role");
+			return true;
+		}
+
+		// Or else check against the exclude list.
 		var config = require("/config/publisher.json");
 		var excludedRolesList = config.excludedRolesList;
 	
