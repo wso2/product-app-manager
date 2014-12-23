@@ -26,9 +26,9 @@ $('.btn-delete').on('click', function(e) {
                     contentType: 'application/json',
                     success: function(response) {
                         var result = JSON.parse(response);
-                        if (result.ok) {
+                        if (result.isDeleted) {
                             showDeleteModel("Successfully deleted the Asset","Delete Successfull",type);
-                        } else if(result.ok==false){
+                        } else if(result.isDeleted == false){
                             showDeleteModel("Asset is already subscribed","Asset Subscribed",type);
                         }else{
                             showDeleteModel("Asset is not successfully deleted","Delete Failed",type);
