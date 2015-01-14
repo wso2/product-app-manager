@@ -6,11 +6,6 @@ var editedpolicyPartialId = 0;
 
 var saveAndClose = false;
 
-
-
-
-
-
 var tags =[];
 function showEntitlementError(text){
     $('#notification-text').show();
@@ -114,9 +109,6 @@ $(document).on("click", "#btn-policy-save-and-close", function () {
 
     // $("#entitlement-policy-editor").modal('hide');
     //editor.setValue("");
-
-
-
 
 });
 
@@ -669,7 +661,7 @@ $(document).on("click", ".policy-edit-button", function () {
 
 
 $(document).on("click", ".policy-delete-button", function () {
-
+4
     var policyName = $(this).data("policyName");
     var policyId = $(this).data("policyId");
     var policyPartial;

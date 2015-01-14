@@ -221,6 +221,8 @@ $( document ).ready(function() {
                 $('#uritemplate_entitlementPolicyPartialMappings' + i).val(RESOURCES_1[i].accessPolicyOptions);
                 updatePolicyPartial();
             }
+
+            updatePolicyPartial();
         }
     });
 

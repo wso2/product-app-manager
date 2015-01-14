@@ -195,7 +195,7 @@ $(document).ready(function(){
                 $("#modal-upload-progress").hide();
 
 
-                window.location.replace("/publisher/assets/mobileapp/");
+              //  window.location.replace("/publisher/assets/mobileapp/");
 
 
                 noty({
@@ -208,11 +208,10 @@ $(document).ready(function(){
                     buttons: [
                         {
 
-                            addClass: 'btn',
+                            addClass: 'btn btn-default',
                             text: 'Ok',
                             onClick: function ($noty) {
                                 location.reload();
-
                             }
 
                         }
@@ -243,6 +242,7 @@ $(document).ready(function(){
 });
 
 $('#btn-app-upload').click(function () {
+
       if(appMetaData == null){
           $("#modal-upload-data").hide();
           $('#wizard_step2').show();
