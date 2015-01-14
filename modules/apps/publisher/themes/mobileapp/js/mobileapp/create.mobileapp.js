@@ -21,7 +21,6 @@ $('#txtOS').on("change",function() {
 		   $('#market-type-block').css('display', 'block');
 	  }
 
-
 	   if($('#txtOS').val() == 'android'){
 	   		$('#txtNameLabel').text('Package Name');
 		   	if($('#txtMarket').val() == "VPP"){
@@ -158,8 +157,6 @@ $(document).ready(function(){
                	}else{
                		window.location.replace("/publisher/assets/mobileapp/");
                	}
-
-
 
             });
         });
