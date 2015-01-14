@@ -22,20 +22,9 @@ require('/modules/publisher.js').exec(function (ctx) {
 
         var appMgtProviderObj = new appmgtPublisher.APIProvider(stringify(username));
 
-
-        //manipulate endDate to overcome date-picker issue
-        var date = new Date(Date.parse(endDate.replace(/-/g, "/")));
-        date.setDate(date.getDate() + 1);
-        // The getMonth() method returns the month (from 0 to 11) for the specified date
-        date.setMonth(date.getMonth() + 1);
-        endDate = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
-
-        if (date.getMonth().toString().length < 2) {
-            endDate = date.getFullYear() + '-' + '0' + date.getMonth() + '-' + date.getDate();
-        } else {
-            endDate = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+        if (endDate != null) {
+           endDate = endDate.trim();
         }
-
 
         var usage = [];
 
