@@ -240,6 +240,54 @@ $(document).ready(function(){
 
 $('#btn-app-upload').click(function () {
 
+    if(($('#txtOS').val() != 'webapp' && $('#txtMarket').val() == 'Market') && $('#txtPackagename').val() === ""){
+        noty({
+            text: 'Please enter a correct value as Package Name or App Identifier',
+            template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
+            layout: "center",
+            modal: true,
+            type: "error",
+            buttons: [
+                {
+
+                    addClass: 'btn btn-default',
+                    text: 'Ok',
+                    onClick: function ($noty) {
+                        $noty.close();
+                    }
+
+                }
+            ]
+        });
+        return;
+    }
+
+
+    if($('#txtOS').val() == 'webapp'  && $('#txtWebapp').val() === ""){
+        noty({
+            text: 'Please enter a correct value as web app URL',
+            template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
+            layout: "center",
+            modal: true,
+            type: "error",
+            buttons: [
+                {
+
+                    addClass: 'btn btn-default',
+                    text: 'Ok',
+                    onClick: function ($noty) {
+                        $noty.close();
+                    }
+
+                }
+            ]
+        });
+        return;
+    }
+
+
+
+
       if(appMetaData == null){
           $("#modal-upload-data").hide();
           $('#wizard_step2').show();
