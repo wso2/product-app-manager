@@ -27,11 +27,13 @@ $('#txtOS').on("change",function() {
 		   		$('#txtMarket').val('Market');
 		   	}
 	   		$('#file-upload-text').html('<i class="icon-plus-sign"></i> SELECT .APK FILE');
+           $('#txtAppUpload').attr('accept', 'application/vnd.android.package-archive,.apk');
 	   		$('#txtMarket').children('option[value="VPP"]').css('display','none');
 
 	   }else if($('#txtOS').val() == 'ios'){
 	   		$('#txtNameLabel').html('App Identifier <span style="color:#FF0000">*</span></label>');
 	   		$('#file-upload-text').html('<i class="icon-plus-sign"></i> SELECT .IPA FILE');
+           $('#txtAppUpload').attr('accept', 'application/octet-stream ipa,.ipa');
 	   		//$('#txtMarket').children('option[value="VPP"]').css('display','block');
 	   }
 
