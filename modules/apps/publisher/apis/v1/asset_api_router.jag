@@ -54,7 +54,7 @@ require('/modules/publisher.js').exec(function(ctx) {
         var text = "";
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-        for( var i=0; i < 5; i++ )
+        for( var i=0; i < 15; i++ )
             text += possible.charAt(Math.floor(Math.random() * possible.length));
 
         return text;
@@ -80,7 +80,8 @@ require('/modules/publisher.js').exec(function(ctx) {
     }
     var saveFile = function(file){
         if(file!=undefined){
-            var file_n= file.getName()
+            var file_n= file.getName();
+            file_n = "." + file_n.split('.').pop();
             if(file_n==""){
                 return "";
             }
