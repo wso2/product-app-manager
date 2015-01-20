@@ -32,7 +32,6 @@ require('/modules/publisher.js').exec(function(ctx) {
 
     /****************************MOBILE*******************************************/
 
-
     var config = require('/config/publisher.json');
     var mam_config = require('/extensions/mobileapp/config/mam-config.json');
     var caramel = require('caramel');
@@ -717,6 +716,10 @@ require('/modules/publisher.js').exec(function(ctx) {
 
 
     /**************** MOBILE APP *********************************************************/
+
+
+
+
 
 
     function addNewMobileApp(context, rxtManager){
