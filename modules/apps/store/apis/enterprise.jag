@@ -1,0 +1,50 @@
+<%
+
+matcher = new URIMatcher(request.getRequestURI());
+
+
+require('/modules/store.js').exec(function (ctx) {
+
+    var server = require('store').server,
+            tenant = server.tenant(request, session),
+            tenantId = tenant.tenantId,
+            store = require('/modules/store.js').store(tenantId, session),
+            user = server.current(session);
+
+    var um = new carbon.user.UserManager(server, tenantId);
+
+    if (matcher.match('/{context}/apis/enterprise/get-all-roles')) {
+        var roles = removeInternalroles(um.allRoles());
+        print(roles);
+        return;
+    }
+
+    if (matcher.match('/{context}/apis/enterprise/get-all-users')) {
+        var users = um.listUsers();
+        print(users);
+        return;
+    }
+
+    response.sendError(404, 'API Endpoint Not Found');
+
+}, request, response, session);
+
+
+function removeInternalroles(roles){
+
+    var filterdRoles =[];
+
+    for(i = 0; i < roles.length; i++){
+
+        if(roles[i].indexOf("Internal/") <= -1){
+            filterdRoles.push(roles[i]);
+        }
+    }
+
+    return filterdRoles;
+}
+
+
+
+
+%>

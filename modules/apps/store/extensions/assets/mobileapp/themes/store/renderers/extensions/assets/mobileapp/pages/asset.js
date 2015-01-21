@@ -32,6 +32,7 @@ var render = function(theme, data, meta, require) {
                 asset : data.asset,
                 type : data.type,
                 inDashboard : data.inDashboard,
+                isAdmin : data.isAdmin,
                 embedURL : data.embedURL,
                 isSocial : data.isSocial,
                 devices : data.devices,

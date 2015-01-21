@@ -26,10 +26,11 @@
     },
     
     "mobile": {
-        "is_catalog" : true,
+        "is_catalog" : false,
         "api": "https://localhost:9450/emm/api",
         "archieve_location_ios": "%https.ip%",
-        "archieve_location_android": "%http.ip%"
+        "archieve_location_android": "%http.ip%",
+        "enterprise_installation" : true
     },
     "pagination": {
         "PAGE_SIZE" : 12

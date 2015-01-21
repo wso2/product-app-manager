@@ -16,6 +16,18 @@ require('/modules/store.js').exec(function (ctx) {
 
     caramel = require('caramel');
 
+    var server = require('store').server;
+    var um = new carbon.user.UserManager(server, tenantId);
+    var isAdmin = false;
+    var userRoles = um.getRoleListOfUser(user.username);
+    for(var i = 0; i < userRoles.length; i++){
+        if(userRoles[i] == "admin"){
+            isAdmin = true;
+            break;
+        }
+    }
+
+
     matcher.match('/{context}' + configs.assetsUrlPrefix + '/{type}/{aid}');
     aid = matcher.elements().aid;
     title = store.assetLinks(type).title;
@@ -47,12 +59,12 @@ require('/modules/store.js').exec(function (ctx) {
 
     }
 
-
     caramel.render({
         title: 'Store | ' + type,
         user: user,
         sso: sso,
         devices: devices,
+        isAdmin: isAdmin,
         header: site.header(tenantId, {
             sso: sso,
             user: user
