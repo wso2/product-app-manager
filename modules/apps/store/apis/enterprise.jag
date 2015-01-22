@@ -15,13 +15,24 @@ require('/modules/store.js').exec(function (ctx) {
 
     if (matcher.match('/{context}/apis/enterprise/get-all-roles')) {
         var roles = removeInternalroles(um.allRoles());
-        print(roles);
+        var data = [];
+        for(var i = 0; i < roles.length; i++){
+            data.push([roles[i]]);
+        }
+        print({aaData:data});
+
+       // print( {"aaData" : [["Mobile"], ["Sales"], ["admin"] , ["A"], ["B"], ["C"] ,["D"], ["E"], ["F"], ["G"], ["H"], ["I"], ["J"], ["K"], ["L"], ["M"], ["N"], ["O"]]});
+
         return;
     }
 
     if (matcher.match('/{context}/apis/enterprise/get-all-users')) {
         var users = um.listUsers();
-        print(users);
+        var data = [];
+        for(var i = 0; i < users.length; i++){
+            data.push([users[i]]);
+        }
+        print({aaData:data});
         return;
     }
 

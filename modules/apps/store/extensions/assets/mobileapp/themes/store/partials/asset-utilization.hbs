@@ -5,8 +5,8 @@
                data-toggle="modal"
                data-aid="{{../../id}}" data-type="{{../../type}}"> {{t "Installed"}} </a>
 
-            {{#if ../../../isAdmin}}
-                <a id="btn-add-gadget" class="btn btn-primary" href="{{url "/login"}}"
+            {{#if ../../../isEnterpriseInstallEnabled}}
+                <a id="btn-ent-install" class="btn btn-primary" href="#modal-ent-install"
                    data-toggle="modal"
                    data-app="{{../../id}}"
                    data-aid="{{../../id}}"
@@ -33,8 +33,8 @@
                        data-type="{{../../../../type}}"> {{t "Install "}}</a>
                 {{/if}}
 
-                {{#if ../../../../isAdmin}}
-                    <a id="btn-add-gadget" class="btn btn-primary" href="{{url "/login"}}"
+                {{#if ../../../../isEnterpriseInstallEnabled}}
+                    <a id="btn-ent-install" class="btn btn-primary" href="#modal-ent-install"
                        data-toggle="modal"
                        data-app="{{../../../../id}}"
                        data-aid="{{../../../../id}}"

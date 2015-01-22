@@ -16,16 +16,23 @@ require('/modules/store.js').exec(function (ctx) {
 
     caramel = require('caramel');
 
-    var server = require('store').server;
-    var um = new carbon.user.UserManager(server, tenantId);
-    var isAdmin = false;
-    var userRoles = um.getRoleListOfUser(user.username);
-    for(var i = 0; i < userRoles.length; i++){
-        if(userRoles[i] == "admin"){
-            isAdmin = true;
-            break;
+
+
+
+    var isEnterpriseInstallEnabled = false;
+
+    if(user && configs.mobile.enterprise_installation){
+        var server = require('store').server;
+        var um = new carbon.user.UserManager(server, tenantId);
+        var userRoles = um.getRoleListOfUser(user.username);
+        for(var i = 0; i < userRoles.length; i++){
+            if(userRoles[i] == "admin"){
+                isEnterpriseInstallEnabled = true;
+                break;
+            }
         }
     }
+
 
 
     matcher.match('/{context}' + configs.assetsUrlPrefix + '/{type}/{aid}');
@@ -64,7 +71,7 @@ require('/modules/store.js').exec(function (ctx) {
         user: user,
         sso: sso,
         devices: devices,
-        isAdmin: isAdmin,
+        isEnterpriseInstallEnabled: isEnterpriseInstallEnabled,
         header: site.header(tenantId, {
             sso: sso,
             user: user
