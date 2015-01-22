@@ -26,3 +26,14 @@
 .install-uninstall-panel{
     padding-bottom: 30px;
 }
+
+
+
+
+#modal-ent-install .modal-body{
+    max-height: 800px;
+}
+
+
+/** PAGINATION **/
+

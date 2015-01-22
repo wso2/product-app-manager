@@ -91,6 +91,7 @@ $(document).ready( function () {
         clearSelected();
     });
 
+
     function clearSelected(){
         $(".role-checkbox:checked", oTable.fnGetNodes()).each(function(){
             $(this).removeAttr( 'checked' );

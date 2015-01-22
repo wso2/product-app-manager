@@ -21,8 +21,6 @@ require('/modules/store.js').exec(function (ctx) {
         }
         print({aaData:data});
 
-       // print( {"aaData" : [["Mobile"], ["Sales"], ["admin"] , ["A"], ["B"], ["C"] ,["D"], ["E"], ["F"], ["G"], ["H"], ["I"], ["J"], ["K"], ["L"], ["M"], ["N"], ["O"]]});
-
         return;
     }
 
