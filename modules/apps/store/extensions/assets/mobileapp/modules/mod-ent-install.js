@@ -9,7 +9,7 @@
         var  server = require('store').server,
                 store = require('/modules/store.js').store(tenantId, session);
         asset = store.asset('mobileapp', app);
-         log.debug("Asset retrieved : " + stringify(asset));
+        log.debug("Asset retrieved : " + stringify(asset));
 
     };
 

@@ -25,12 +25,13 @@ $(document).ready( function () {
         },
 
         aoColumns: [
+
             {   "mData": function (data, type, full) {
-                return '<input type="checkbox"  class="select-checkbox role-checkbox" value="' + data[0] + '" id="' + data[0] + '"  data-true-val="true" data-false-val="false">';
+                    return  data[0];
                 }
             },
             {   "mData": function (data, type, full) {
-                    return  data[0];
+                    return '<input type="checkbox"  class="select-checkbox role-checkbox" value="' + data[0] + '" id="' + data[0] + '"  data-true-val="true" data-false-val="false">';
                 }
             }
         ]
@@ -57,12 +58,12 @@ $(document).ready( function () {
 
         aoColumns: [
             {   "mData": function (data, type, full) {
-                return '<input type="checkbox"  class="select-checkbox user-checkbox" value="' + data[0] + '" id="' + data[0] + '"  data-true-val="true" data-false-val="false">';
-            }
+                    return  data[0];
+                }
             },
             {   "mData": function (data, type, full) {
-                return  data[0];
-            }
+                    return '<input type="checkbox"  class="select-checkbox user-checkbox" value="' + data[0] + '" id="' + data[0] + '"  data-true-val="true" data-false-val="false">';
+                }
             }
         ]
     } );

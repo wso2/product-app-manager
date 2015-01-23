@@ -58,17 +58,14 @@ require('/modules/store.js').exec(function (ctx) {
         var app = params.app;
         var data = params["data[]"];
 
+        log.debug("Params Received " +stringify(elements) + " & " + stringify(params))
+
 
         if(action && type && app && data){
             enterpriseInstall.performAction(action, tenantId, type, app, data);
             print('{"status" : "sucess"}');
-        }else{
-            response.sendError(404, 'Invalid params');
+            return;
         }
-
-
-
-        log.debug("Params Received " +stringify(elements) + " & " + stringify(params))
 
     }
 
