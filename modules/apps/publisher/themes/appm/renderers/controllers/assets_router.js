@@ -21,7 +21,7 @@ var render = function (theme, data, meta, require) {
 
                 for(var k = 0; k < data.roles.length; k++){
                     //	print(data.roles[k]);
-                    if(data.roles[k] == "admin" || data.roles[k] == "Internal/publisher"){
+                    if(data.roles[k] == "admin" || data.roles[k] == "Internal/publisher" || data.roles[k] == "Internal/reviewer"){
                         if(name == "Approve"){
                             lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
                         }
