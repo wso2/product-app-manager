@@ -7,7 +7,7 @@
 	    var text = "";
 	    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-	    for( var i=0; i < 5; i++ )
+	    for( var i=0; i < 15; i++ )
 	        text += possible.charAt(Math.floor(Math.random() * possible.length));
 
 	    return text;
@@ -26,7 +26,9 @@
 	}
 	var saveFile = function(file){
 		if(file!=undefined){
-			var file_n= file.getName()
+			var file_n= file.getName();
+            file_n = "." + file_n.split('.').pop();
+
 			if(file_n==""){
 				return "";
 			}
@@ -77,6 +79,9 @@
 		//meta.path = '/publisher' +meta.path;
 		var ext = getExtension(file);
 		if(ext=="ipa" || ext =="apk"){
+
+
+
 			var zipFileReading = new Packages.org.wso2.mobile.utils.utilities.ZipFileReading();
 
 			var path =  Packages.java.lang.System.getProperty("carbon.home") + mam_config.filePreciseLocation + fileName;
@@ -102,7 +107,7 @@
 		}else{
 			print({"ok" : false, "message" : "Validation failure", "report" : {"failed" : true, "name" : ["Invalid Filetype - Uploaded file is not an archive"]}})
 			return;
-		}	
+		}
 	}
 }());
 %>

@@ -20,6 +20,8 @@ var SUBSCRIPTIONS_PATH = '/subscriptions';
 
 var RESOURCE_TYPE_WEBAPP = 'webapp';
 
+var RESOURCE_TYPE_MOBILEAPP = 'mobileapp';
+
 var log = new Log();
 
 var merge = function (def, options) {
@@ -404,7 +406,9 @@ Store.prototype.tags = function (type) {
 		mediaType = "application/vnd.wso2-webapp+xml", 
 		lifeCycleStateKey = "registry.lifecycle.WebAppLifeCycle.state", 
 		lifeCycleStateValue = "Published";
-	}else if(type){
+	}else if (type == RESOURCE_TYPE_MOBILEAPP){
+        return tagz;
+    }else if(type){
 		log.warn("Retrieving tags : Type " + type +  " is not supported.");
 		return tagz;
 	}

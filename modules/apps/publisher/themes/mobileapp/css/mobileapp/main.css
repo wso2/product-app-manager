@@ -20,7 +20,12 @@
 }
 
 
-
+.right-addon .icon {
+    right: 100;
+}
+.inner-addon .icon {
+    padding-left: 10px;
+}
 
 
 

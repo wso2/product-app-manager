@@ -1,0 +1,34 @@
+<%
+
+require('/modules/publisher.js').exec(function(ctx) {
+
+    var config = require('/config/publisher.json');
+    var router = require('/modules/router-g.js').router();
+    var routeManager = new router.Router();
+    var log = new Log();
+
+    var publisher = require('/modules/publisher.js').publisher(request, session);
+    var rxtManager = publisher.rxtManager;
+
+    routeManager.register('GET', 'publisher', '/publisher/api/mobile/isexist', function (ctx) {
+
+        var name = request.getParameter("name");
+
+
+        var artifactManager = rxtManager.getArtifactManager("mobileapp");
+
+        var versionList=artifactManager.getAllAssetVersions(name);
+        if(versionList.length > 0){
+            print({isExist: true});
+        }else{
+            print({isExist: false});
+        }
+
+    });
+
+    routeManager.handle(request, response);
+
+}, request, response, session);
+
+
+%>

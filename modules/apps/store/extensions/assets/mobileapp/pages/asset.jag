@@ -16,6 +16,25 @@ require('/modules/store.js').exec(function (ctx) {
 
     caramel = require('caramel');
 
+
+
+
+    var isEnterpriseInstallEnabled = false;
+
+    if(user && configs.mobile.enterprise_installation){
+        var server = require('store').server;
+        var um = new carbon.user.UserManager(server, tenantId);
+        var userRoles = um.getRoleListOfUser(user.username);
+        for(var i = 0; i < userRoles.length; i++){
+            if(userRoles[i] == "admin"){
+                isEnterpriseInstallEnabled = true;
+                break;
+            }
+        }
+    }
+
+
+
     matcher.match('/{context}' + configs.assetsUrlPrefix + '/{type}/{aid}');
     aid = matcher.elements().aid;
     title = store.assetLinks(type).title;
@@ -47,12 +66,12 @@ require('/modules/store.js').exec(function (ctx) {
 
     }
 
-
     caramel.render({
         title: 'Store | ' + type,
         user: user,
         sso: sso,
         devices: devices,
+        isEnterpriseInstallEnabled: isEnterpriseInstallEnabled,
         header: site.header(tenantId, {
             sso: sso,
             user: user
