@@ -7,6 +7,15 @@ var render = function (theme, data, meta, require) {
         bodyPartial = "assets-for-mobiles";
         bodyContext =  assets.currentPage(data.assets,data.sso,data.user, data.paging,data.config, data.myAssets.pageIndices, data.myAssets.leftNav, data.myAssets.rightNav);
     }
+
+    var hasApps = false;
+    if(data.assets.length > 0){
+        hasApps = true;
+    }else{
+        hasApps = false;
+    }
+
+
     theme('2-column-right', {
         title: data.title,
         header: [
@@ -25,7 +34,7 @@ var render = function (theme, data, meta, require) {
         body: [
             {
                 partial: 'sort-assets',
-                context: require('/helpers/sort-assets.js').format(data.sorting, data.paging, data.navigation, data.type, data.selectedCategory, data.header)
+                context: require('/helpers/sort-assets.js').format(data.sorting, data.paging, data.navigation, data.type, data.selectedCategory, data.header, hasApps)
             },
             {
                 partial: bodyPartial,

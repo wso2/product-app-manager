@@ -50,10 +50,12 @@
 		</div>
         <div class="span4">
             <ul id="ul-sort-assets" data-type="gadget" class="pull-right">
+                {{#if hasApps}}
                 <li>
                     <a href="{{url this.url}}popular" data-toggle="tooltip" data-sort="popular"
                        title="{{t "Sort by Popularity"}}"><i class="icon-star"></i></a>
                 </li>
+                {{/if}}
                 <li>
                     <a href="{{url this.url}}az" data-toggle="tooltip" data-sort="az"
                        title="{{t "Sort by Alphabetical Order"}}"><i class="icon-sort-alphabetical"></i></a>
