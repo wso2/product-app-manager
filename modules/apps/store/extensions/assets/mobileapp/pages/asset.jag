@@ -26,7 +26,7 @@ require('/modules/store.js').exec(function (ctx) {
         var um = new carbon.user.UserManager(server, tenantId);
         var userRoles = um.getRoleListOfUser(user.username);
         for(var i = 0; i < userRoles.length; i++){
-            if(userRoles[i] == "admin"){
+            if(userRoles[i] == configs.mobile.enterprise_installation_role){
                 isEnterpriseInstallEnabled = true;
                 break;
             }

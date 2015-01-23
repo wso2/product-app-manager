@@ -1,5 +1,7 @@
 var selectedTab = "roles";
 
+var selectedApp = "";
+
 
 $(document).ready( function () {
 
@@ -76,6 +78,12 @@ $(document).ready( function () {
     });
 
 
+
+    $("#btn-ent-install").click(function () {
+        selectedApp = $(this).data("aid");
+    });
+
+
     $("#btn-apps-ent-uninstall").click(function () {
 
             if(selectedTab === "roles"){
@@ -141,11 +149,19 @@ $(document).ready( function () {
 
                         $noty.close();
 
-                        noty({
-                            text : 'App is installed to the selected role',
-                            'layout' : 'center',
-                            'modal' : true,
-                            timeout: 1000
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/store/apis/enterprise/perform/install/role",
+                            data: { app: selectedApp, data:  rolesSelected }
+                        })
+                            .done(function( msg ) {
+                                noty({
+                                    text : 'App is installed to the selected role',
+                                    'layout' : 'center',
+                                    'modal' : true,
+                                    timeout: 1000
+                                });
                         });
 
                     }
@@ -200,12 +216,19 @@ $(document).ready( function () {
 
                         $noty.close();
 
-                        noty({
-                            text : 'App is uninstalled from the selected role',
-                            'layout' : 'center',
-                            'modal' : true,
-                            timeout: 1000
-                        });
+                        $.ajax({
+                            type: "POST",
+                            url: "/store/apis/enterprise/perform/uninstall/role",
+                            data: { app: selectedApp, data:  rolesSelected }
+                        })
+                            .done(function( msg ) {
+                                noty({
+                                    text : 'App is uninstalled from the selected role',
+                                    'layout' : 'center',
+                                    'modal' : true,
+                                    timeout: 1000
+                                });
+                         });
 
                     }
                 },
@@ -259,12 +282,19 @@ $(document).ready( function () {
 
                         $noty.close();
 
-                        noty({
-                            text : 'App is installed to the selected user',
-                            'layout' : 'center',
-                            'modal' : true,
-                            timeout: 1000
-                        });
+                        $.ajax({
+                            type: "POST",
+                            url: "/store/apis/enterprise/perform/install/user",
+                            data: { app: selectedApp, data:  usersSelected }
+                        })
+                            .done(function( msg ) {
+                                noty({
+                                    text : 'App is installed to the selected user',
+                                    'layout' : 'center',
+                                    'modal' : true,
+                                    timeout: 1000
+                                });
+                         });
 
                     }
                 },
@@ -319,12 +349,19 @@ $(document).ready( function () {
 
                         $noty.close();
 
-                        noty({
-                            text : 'App is uninstalled from the selected user',
-                            'layout' : 'center',
-                            'modal' : true,
-                            timeout: 1000
-                        });
+                        $.ajax({
+                            type: "POST",
+                            url: "/store/apis/enterprise/perform/uninstall/user",
+                            data: { app: selectedApp, data:  usersSelected }
+                        })
+                            .done(function( msg ) {
+                                noty({
+                                    text : 'App is uninstalled from the selected user',
+                                    'layout' : 'center',
+                                    'modal' : true,
+                                    timeout: 1000
+                                });
+                            });
 
                     }
                 },

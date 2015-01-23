@@ -31,7 +31,7 @@
         "archieve_location_ios": "%https.ip%",
         "archieve_location_android": "%http.ip%",
         "enterprise_installation" : true,
-        "enterprise_installation_roles" : ["admin"]
+        "enterprise_installation_role" : "admin"
     },
     "pagination": {
         "PAGE_SIZE" : 12

@@ -5,11 +5,25 @@ matcher = new URIMatcher(request.getRequestURI());
 
 require('/modules/store.js').exec(function (ctx) {
 
+    var log = new Log();
+
     var server = require('store').server,
             tenant = server.tenant(request, session),
             tenantId = tenant.tenantId,
             store = require('/modules/store.js').store(tenantId, session),
-            user = server.current(session);
+            user = server.current(session),
+            enterpriseInstall = require('/extensions/assets/mobileapp/modules/mod-ent-install.js');
+
+
+    if (!user) {
+        if (log.isDebugEnabled()) {
+            log.debug("user is not logged in");
+        }
+        response.sendError(401, 'Unauthorized');
+        return;
+    }
+
+
 
     var um = new carbon.user.UserManager(server, tenantId);
 
@@ -32,6 +46,30 @@ require('/modules/store.js').exec(function (ctx) {
         }
         print({aaData:data});
         return;
+    }
+
+
+    if (matcher.match('/{context}/apis/enterprise/perform/{action}/{type}')) {
+        var elements = matcher.elements();
+        var params = request.getAllParameters("UTF-8");
+
+        var action = elements.action;
+        var type = elements.type;
+        var app = params.app;
+        var data = params["data[]"];
+
+
+        if(action && type && app && data){
+            enterpriseInstall.performAction(action, tenantId, type, app, data);
+            print('{"status" : "sucess"}');
+        }else{
+            response.sendError(404, 'Invalid params');
+        }
+
+
+
+        log.debug("Params Received " +stringify(elements) + " & " + stringify(params))
+
     }
 
     response.sendError(404, 'API Endpoint Not Found');
