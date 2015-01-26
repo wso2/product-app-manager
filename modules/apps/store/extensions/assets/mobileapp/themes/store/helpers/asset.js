@@ -17,6 +17,9 @@ var fn = that.resources;
 var resources = function (page, meta) {
     var o = fn(page, meta);
     o.js.push('devices.js');
+    o.js.push('jquery.datatables.js');
+    o.js.push('ent-install.js');
+    o.css.push('mobileapps.css');
     //o.js.push('mobileapp-install.js');
     //o.css.push('mobileapp-custom.css');
     return o;

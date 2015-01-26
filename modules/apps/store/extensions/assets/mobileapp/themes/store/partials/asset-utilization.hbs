@@ -4,6 +4,16 @@
             <a id="btn-add-gadget" class="btn disabled" href="#modal-add-gadget"
                data-toggle="modal"
                data-aid="{{../../id}}" data-type="{{../../type}}"> {{t "Installed"}} </a>
+
+            {{#if ../../../isEnterpriseInstallEnabled}}
+                <a id="btn-ent-install" class="btn btn-primary" href="#modal-ent-install"
+                   data-toggle="modal"
+                   data-app="{{../../id}}"
+                   data-aid="{{../../id}}"
+                   data-platform="{{../../attributes.overview_platform}}"
+                   data-type="{{../../type}}"> {{t "Enterprise Install"}}</a>
+            {{/if}}
+
         {{else}}
 
             {{#if ../../../sso}}
@@ -22,6 +32,16 @@
                        data-platform="{{../../../../attributes.overview_platform}}"
                        data-type="{{../../../../type}}"> {{t "Install "}}</a>
                 {{/if}}
+
+                {{#if ../../../../isEnterpriseInstallEnabled}}
+                    <a id="btn-ent-install" class="btn btn-primary" href="#modal-ent-install"
+                       data-toggle="modal"
+                       data-app="{{../../../../id}}"
+                       data-aid="{{../../../../id}}"
+                       data-platform="{{../../../../attributes.overview_platform}}"
+                       data-type="{{../../../../type}}"> {{t "Enterprise Install"}}</a>
+                 {{/if}}
+
             {{else}}
                 <a id="btn-add-gadget" class="btn btn-primary" href="#modal-add-gadget"
                    data-toggle="modal"
@@ -29,6 +49,8 @@
                    data-platform="{{../../../../attributes.overview_platform}}"
                    data-aid="{{../../../id}}" data-type="{{../../../type}}"> {{t "Install"}}</a>
             {{/if}}
+
+
 
         {{/if}}
        

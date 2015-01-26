@@ -7,6 +7,30 @@ $('#application-tab a').click(function(e) {
 });
 
 
+$("#txtName").change(function() {
+    $.ajax({
+        type: "GET",
+        url: "/publisher/api/mobile/isexist",
+        data: {name: $(this).val()},
+        success: function (data) {
+            var data = JSON.parse(data);
+            if(data.isExist){
+                $("#name_is_ok").css("color", "#ff0000");
+                $("#name_is_ok").addClass("icon-remove");
+                $("#name_is_ok").removeClass("icon-ok");
+                $("#name_is_ok").css("padding-left", "15px");
+                $("#name_is_ok").attr("title", "Mobile app name already exists");
+
+            }else{
+                $("#name_is_ok").css("color", "#00ff00");
+                $("#name_is_ok").addClass("icon-ok");
+                $("#name_is_ok").removeClass("icon-remove");
+                $("#name_is_ok").css("padding-left", "30px");
+            }
+        }
+    });
+});
+
 
 
 $('#txtOS').on("change",function() {
@@ -21,18 +45,19 @@ $('#txtOS').on("change",function() {
 		   $('#market-type-block').css('display', 'block');
 	  }
 
-
 	   if($('#txtOS').val() == 'android'){
-	   		$('#txtNameLabel').text('Package Name');
+	   		$('#txtNameLabel').html('Package Name <span style="color:#FF0000">*</span></label>');
 		   	if($('#txtMarket').val() == "VPP"){
 		   		$('#txtMarket').val('Market');
 		   	}
 	   		$('#file-upload-text').html('<i class="icon-plus-sign"></i> SELECT .APK FILE');
+           $('#txtAppUpload').attr('accept', 'application/vnd.android.package-archive,.apk');
 	   		$('#txtMarket').children('option[value="VPP"]').css('display','none');
 
 	   }else if($('#txtOS').val() == 'ios'){
-	   		$('#txtNameLabel').text('App Identifier');
+	   		$('#txtNameLabel').html('App Identifier <span style="color:#FF0000">*</span></label>');
 	   		$('#file-upload-text').html('<i class="icon-plus-sign"></i> SELECT .IPA FILE');
+           $('#txtAppUpload').attr('accept', 'application/octet-stream ipa,.ipa');
 	   		//$('#txtMarket').children('option[value="VPP"]').css('display','block');
 	   }
 
@@ -159,8 +184,6 @@ $(document).ready(function(){
                		window.location.replace("/publisher/assets/mobileapp/");
                	}
 
-
-
             });
         });
 
@@ -195,7 +218,7 @@ $(document).ready(function(){
                 $("#modal-upload-progress").hide();
 
 
-                window.location.replace("/publisher/assets/mobileapp/");
+              //  window.location.replace("/publisher/assets/mobileapp/");
 
 
                 noty({
@@ -208,11 +231,10 @@ $(document).ready(function(){
                     buttons: [
                         {
 
-                            addClass: 'btn',
+                            addClass: 'btn btn-default',
                             text: 'Ok',
                             onClick: function ($noty) {
                                 location.reload();
-
                             }
 
                         }
@@ -243,6 +265,55 @@ $(document).ready(function(){
 });
 
 $('#btn-app-upload').click(function () {
+
+    if(($('#txtOS').val() != 'webapp' && $('#txtMarket').val() == 'Market') && $('#txtPackagename').val() === ""){
+        noty({
+            text: 'Please enter a correct value as Package Name or App Identifier',
+            template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
+            layout: "center",
+            modal: true,
+            type: "error",
+            buttons: [
+                {
+
+                    addClass: 'btn btn-default',
+                    text: 'Ok',
+                    onClick: function ($noty) {
+                        $noty.close();
+                    }
+
+                }
+            ]
+        });
+        return;
+    }
+
+
+    if($('#txtOS').val() == 'webapp'  && $('#txtWebapp').val() === ""){
+        noty({
+            text: 'Please enter a correct value as web app URL',
+            template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
+            layout: "center",
+            modal: true,
+            type: "error",
+            buttons: [
+                {
+
+                    addClass: 'btn btn-default',
+                    text: 'Ok',
+                    onClick: function ($noty) {
+                        $noty.close();
+                    }
+
+                }
+            ]
+        });
+        return;
+    }
+
+
+
+
       if(appMetaData == null){
           $("#modal-upload-data").hide();
           $('#wizard_step2').show();

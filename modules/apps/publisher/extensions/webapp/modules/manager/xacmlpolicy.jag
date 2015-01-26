@@ -3,7 +3,7 @@
     var log = new Log();
 
 
-    var apiUtil = Packages.org.wso2.carbon.appmgt.impl.utils.APIUtil;
+    var apiUtil = Packages.org.wso2.carbon.appmgt.impl.utils.AppManagerUtil;
     var apiUtil = new apiUtil();
 
     var xacmlPolicyTemplate = apiUtil.getXACMLPolicyTemplate();

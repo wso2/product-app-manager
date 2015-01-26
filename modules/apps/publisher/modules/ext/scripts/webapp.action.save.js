@@ -36,7 +36,7 @@ var module = function () {
                 var db = new Database("SOCIAL_CACHE");
                 db.query(CREATE_QUERY);
                 var combinedId = type + ':' + id;
-                db.query("MERGE INTO SOCIAL_CACHE (id,tenant,type,body,rating) VALUES('" + combinedId + "','" + domain + "','" + type + "','',0)");
+                db.query("INSERT INTO SOCIAL_CACHE (id,tenant,type,body,rating) VALUES('" + combinedId + "','" + domain + "','" + type + "','',0)");
                 db.close();
             });
         }

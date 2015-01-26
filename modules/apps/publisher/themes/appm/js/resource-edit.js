@@ -249,10 +249,14 @@ $( document ).ready(function() {
                 updatePolicyPartial();
             }
 
+
             //set Anonymous Allow option value
             if(RESOURCES_1[i].allowAnonymous !== undefined && RESOURCES_1[i].allowAnonymous !== '') {
                 $('#getAllowAnonymous' + i).val(RESOURCES_1[i].allowAnonymous);
             }
+
+            updatePolicyPartial();
+
         }
     });
 
