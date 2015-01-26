@@ -464,6 +464,7 @@ require('/modules/publisher.js').exec(function(ctx) {
                     var key_skipthrottle = 'uritemplate_skipthrottle'  + index;
                     var key_user_roles = 'uritemplate_userRoles' + index;
                     var key_policy_id = 'uritemplate_entitlementPolicyId' + index;
+                    var key_allow_anonymous = 'uritemplate_allowanonymous' + index;
 
                     delete artifact.attributes[key_pattern];
                     delete artifact.attributes[key_httpVerb];
@@ -471,7 +472,7 @@ require('/modules/publisher.js').exec(function(ctx) {
                     delete artifact.attributes[key_skipthrottle];
                     delete artifact.attributes[key_user_roles];
                     delete artifact.attributes[key_policy_id];
-
+                    delete artifact.attributes[key_allow_anonymous];
                 }
                 index++;
                 uritemplate = "uritemplate_urlPattern" + index;

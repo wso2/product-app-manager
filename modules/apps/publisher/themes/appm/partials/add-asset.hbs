@@ -68,6 +68,16 @@
             <input type='text' id='tag-test' name='tags'>
         </div>
     </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2">Allow Anonymous:  </label>
+        <div class="col-sm-10">
+            <input type="checkbox" class="anonymous_checkbox">
+        </div>
+    </div>
+
+    <input type="hidden" required="" value="false" class="col-lg-6 col-sm-12 col-xs-12" name="overview_allowAnonymous" id="overview_allowAnonymous">
+
 </fieldset>
 </div>
 </div>
@@ -146,6 +156,7 @@
             <th style="width: 80px;">HTTP Verb</th>
             <th style="width: 100px;">Throttling Tier</th>
             <th style="width: 70px;">Skip Throttling</th>
+            <th style="width: 70px;">Allow Anonymous Access</th>
             <th style="width: 50px;">Access Policy</th>
             <th style="width: 190px">User Roles</th>
             <th style="width: 65px"></th>

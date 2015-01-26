@@ -42,6 +42,32 @@ $( document ).ready(function() {
 
     });
 
+    $(".anonymous_checkbox").click(function(){
+        var output = [];
+        $( ".anonymous_checkbox" ).each(function( index ) {
+            if( $(this).is(':checked')){
+                output.push("TRUE");
+            }
+            else
+            {
+                output.push("FALSE");
+            }
+        });
+        $('#overview_allowAnonymous').val(output);
+     });
+
+
+    var anonymousVal = $('#overview_allowAnonymous').val();
+    $( ".anonymous_checkbox" ).each(function( index ) {
+        if(anonymousVal == "TRUE"){
+            $(this).prop('checked', true);
+        }
+        else
+        {
+            $(this).prop('checked', false);
+        }
+    });
+
 
    //fixed chrome issue with file paths
     $('input[type=file]').on('change', function(e) {
@@ -171,6 +197,7 @@ $( document ).ready(function() {
                   <td><strong>"+ RESOURCES_1[i].http_verb +"</strong><input type='hidden' value='"+RESOURCES_1[i].http_verb+"' name='uritemplate_httpVerb"+i+"'/></td> \
                     <td style='padding:0px'><select name='uritemplate_tier" + i + "' onChange='updateDropdownThrottlingTier(" + i + ");' class='selectpicker' id='getThrottlingTier" + i + "' style='width:100%;border:none;'> "+ throttlingTierControlBlock +" </select></td> \
                   <td style='padding:0px'><select name='uritemplate_skipthrottle" + i + "' onChange='updateDropDownSkipThrottle(" + i + ");' class='selectpicker' id='getSkipthrottle" + i + "' style='width:100%;border:none;'><option value='False' id='False'>False</option><option value='True' id='True'>True</option></select></td> \
+                     <td style='padding:0px'><select name='uritemplate_allowAnonymous" + i + "' onChange='updateDropDownAllowAnonymous(" + i + ");' class='selectpicker' id='getAllowAnonymous" + i + "' style='width:100%;border:none;'><option value='False' id='False'>False</option><option value='True' id='True'>True</option></select></td> \
                    \
                   <td> \
                      \
@@ -220,6 +247,11 @@ $( document ).ready(function() {
             if (RESOURCES_1[i].accessPolicyOptions !== undefined && RESOURCES_1[i].accessPolicyOptions !== '') {
                 $('#uritemplate_entitlementPolicyPartialMappings' + i).val(RESOURCES_1[i].accessPolicyOptions);
                 updatePolicyPartial();
+            }
+
+            //set Anonymous Allow option value
+            if(RESOURCES_1[i].allowAnonymous !== undefined && RESOURCES_1[i].allowAnonymous !== '') {
+                $('#getAllowAnonymous' + i).val(RESOURCES_1[i].allowAnonymous);
             }
         }
     });
@@ -309,4 +341,13 @@ function drawThrottlingTiersDynamically() {
 function updateAccessPolicyOptions(index) {
     var entitlementPolicyPartialMappingsElement = document.getElementById("uritemplate_entitlementPolicyPartialMappings" + index);
     RESOURCES_1[index].accessPolicyOptions = entitlementPolicyPartialMappingsElement.value;
+}
+
+/*
+ Fires when user change Access Allow Anonymous option
+ @param index : row id
+ */
+function updateDropDownAllowAnonymous(index) {
+    var allowAnonymousElement = document.getElementById("getAllowAnonymous" + index);
+    RESOURCES_1[index].allowAnonymous = allowAnonymousElement.options[allowAnonymousElement.selectedIndex].value;
 }

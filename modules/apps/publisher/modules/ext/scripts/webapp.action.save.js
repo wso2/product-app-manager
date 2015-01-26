@@ -47,7 +47,7 @@ var module = function () {
 	}
 
     //TODO: Change this method to take WebAppObj as argument instead of passing properties separately.
-    function addToWebApp(uuid,webappProvider, webappName, webappVersion, webappContext, webappTrackingCode,asset, ssoEnabled, idpProviderUrl, saml2SsoIssuer, logoutURL) {
+    function addToWebApp(uuid,webappProvider, webappName, webappVersion, webappContext, webappTrackingCode,asset, ssoEnabled, idpProviderUrl, saml2SsoIssuer, logoutURL,allowAnonymous) {
 
         var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
         var apiIdentifierObj = new apiIdentifier(webappProvider, webappName, webappVersion);
@@ -62,6 +62,16 @@ var module = function () {
         webAppObj.setSaml2SsoIssuer(saml2SsoIssuer);
         webAppObj.setUUID(uuid);
         webAppObj.setLogoutURL(logoutURL);
+
+        if (allowAnonymous=="TRUE")
+        {
+            webAppObj.setAllowAnonymous(true);
+        }
+        else
+        {
+            webAppObj.setAllowAnonymous(false);
+        }
+
 
         var appMDAO = Packages.org.wso2.carbon.appmgt.impl.dao.AppMDAO;
         var appMDAOObj = new appMDAO();
@@ -85,6 +95,7 @@ var module = function () {
         		uriTemplate.setThrottlingTier(attributes["uritemplate_tier" + index]);
         		uriTemplate.setSkipThrottling(attributes["uritemplate_skipthrottle" + index] === "True");
         		uriTemplate.setUserRoles(attributes["uritemplate_userRoles" + index]);
+                uriTemplate.setAllowAnonymousURL(attributes["uritemplate_allowAnonymous" + index] === "True");
 
                 // Set policy partial ids.
                 var policyPartialMappings = attributes["uritemplate_entitlementPolicyPartialMappings" + index];
@@ -157,6 +168,7 @@ var module = function () {
             var name = model.getField('overview.name').value;
             var version = model.getField('overview.version').value;
             var contextname = model.getField('overview.context').value;
+            var allowAnonymous=model.getField('overview.allowAnonymous').value;
 
             if(contextname.charAt(0)!='/'){
                 contextname = '/'+contextname;
@@ -228,7 +240,7 @@ var module = function () {
 
 
             //adding to database
-            addToWebApp(id,provider, name, version, contextname, tracking_code,asset, attributes['sso_singleSignOn'], attributes['sso_idpProviderUrl'], attributes['sso_saml2SsoIssuer'],revisedURL);
+            addToWebApp(id,provider, name, version, contextname, tracking_code,asset, attributes['sso_singleSignOn'], attributes['sso_idpProviderUrl'], attributes['sso_saml2SsoIssuer'],revisedURL,allowAnonymous);
 
             //Save the id data to the model
             model.setField('*.id', id);

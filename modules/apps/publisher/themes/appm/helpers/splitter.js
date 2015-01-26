@@ -83,6 +83,8 @@ var splitData = function(copyOfData){
                         patternEntry.roles = uriTemplate[j].value;
                     }else if(secondNamePart == "uritemplate_entitlementPolicyPartialMappings"){
                         patternEntry.policy = uriTemplate[j].value;
+                    }else if(secondNamePart == "uritemplate_allowanonymous"){
+                        patternEntry.anonymous= uriTemplate[j].value;
                     }
                 }
             }
