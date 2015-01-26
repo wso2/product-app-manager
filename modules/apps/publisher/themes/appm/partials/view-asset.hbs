@@ -11,7 +11,7 @@
 
                 <div class="space-right-20 pull-left">
                     {{#each newViewData.images}}
-                        {{#ifCond value "!=" "null"}}{{#ifCond name "==" "images_thumbnail"}}<img src="{{value}}" class="pull-left app-stand-alone-icon"  />{{/ifCond}}{{/ifCond}}
+                        {{#ifCond value "!=" "null"}}{{#ifCond name "==" "images_thumbnail"}}<img src="{{value}}" style="max-width: 400px; max-height: 400px" class="pull-left app-stand-alone-icon"  />{{/ifCond}}{{/ifCond}}
                     {{/each}}
                 </div>
                 <div class="pull-left main-data-container">
