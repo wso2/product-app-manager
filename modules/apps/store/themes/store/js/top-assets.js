@@ -23,18 +23,21 @@ $(function() {
 	$(".asset-icon").on('click', function(e) {
 		  var loggedUser = $("#loggedinuser").val();
 		  if(loggedUser == "" || loggedUser == null){
-			  var ssoEnabled = $('#sso').val();
-			  if(ssoEnabled == 'true'){
-				  var localIP = $("#localIP").val();
-				  var port = $("#httpsPort").val()
-				  location.href = localIP + ":" + port + "/store/login";	
-			  }else{
-				  var assetId = $('#slideAsset').data('id');
-				  $('#modal-login').data('value', assetId);
-				  $("#modal-login").modal('show');
-			  }	  	  
-			  e.preventDefault();
-			  e.stopPropagation();
+			  var allowAnonymous = $(this).find("input").val();
+			  if (allowAnonymous.toUpperCase()!="TRUE") {
+				  var ssoEnabled = $('#sso').val();
+				  if (ssoEnabled == 'true') {
+					  var localIP = $("#localIP").val();
+					  var port = $("#httpsPort").val()
+					  location.href = localIP + ":" + port + "/store/login";
+				  } else {
+					  var assetId = $('#slideAsset').data('id');
+					  $('#modal-login').data('value', assetId);
+					  $("#modal-login").modal('show');
+				  }
+				  e.preventDefault();
+				  e.stopPropagation();
+			  }
 		  }
 	    	
 	});
@@ -42,18 +45,21 @@ $(function() {
 	$(".recent-asset-icon").on('click', function(e) {
 		  var loggedUser = $("#loggedinuser").val();
 		  if(loggedUser == "" || loggedUser == null){
-			  var ssoEnabled = $('#sso').val();
-			  if(ssoEnabled == 'true'){
-				  var localIP = $("#localIP").val();
-				  var port = $("#httpsPort").val()
-				  location.href = localIP + ":" + port + "/store/login";	
-			  }else{
-				  var assetId = $('#slideAsset').data('id');
-				  $('#modal-login').data('value', assetId);
-				  $("#modal-login").modal('show');
-			  }	  	  
-			  e.preventDefault();
-			  e.stopPropagation();
+			  var allowAnonymous = $(this).find("input").val();
+			  if (allowAnonymous.toUpperCase()!="TRUE") {
+				  var ssoEnabled = $('#sso').val();
+				  if (ssoEnabled == 'true') {
+					  var localIP = $("#localIP").val();
+					  var port = $("#httpsPort").val()
+					  location.href = localIP + ":" + port + "/store/login";
+				  } else {
+					  var assetId = $('#slideAsset').data('id');
+					  $('#modal-login').data('value', assetId);
+					  $("#modal-login").modal('show');
+				  }
+				  e.preventDefault();
+				  e.stopPropagation();
+			  }
 		  }
 	    	
 	});
@@ -61,18 +67,21 @@ $(function() {
 	$(".recent-asset-details").on('click', function(e) {
 		  var loggedUser = $("#loggedinuser").val();
 		  if(loggedUser == "" || loggedUser == null){
-			  var ssoEnabled = $('#sso').val();
-			  if(ssoEnabled == 'true'){
-				  var localIP = $("#localIP").val();
-				  var port = $("#httpsPort").val()
-				  location.href = localIP + ":" + port + "/store/login";	
-			  }else{
-				  var assetId = $('#slideAsset').data('id');
-				  $('#modal-login').data('value', assetId);
-				  $("#modal-login").modal('show');
-			  }	  	  
-			  e.preventDefault();
-			  e.stopPropagation();
+			  var allowAnonymous = $(this).find("input").val();
+			  if (allowAnonymous.toUpperCase()!="TRUE") {
+				  var ssoEnabled = $('#sso').val();
+				  if (ssoEnabled == 'true') {
+					  var localIP = $("#localIP").val();
+					  var port = $("#httpsPort").val()
+					  location.href = localIP + ":" + port + "/store/login";
+				  } else {
+					  var assetId = $('#slideAsset').data('id');
+					  $('#modal-login').data('value', assetId);
+					  $("#modal-login").modal('show');
+				  }
+				  e.preventDefault();
+				  e.stopPropagation();
+			  }
 		  }
 	    	
 	});
@@ -81,18 +90,21 @@ $(function() {
 	$(".asset-details").on('click', function(e) {
 		  var loggedUser = $("#loggedinuser").val();
 		  if(loggedUser == "" || loggedUser == null){
-			  var ssoEnabled = $('#sso').val();
-			  if (ssoEnabled == 'true'){
-			  var localIP = $("#localIP").val();
-			  var port = $("#httpsPort").val()
-			  location.href = localIP + ":" + port + "/store/login";
-			  }else{
-				  var assetId = $('#slideAsset').data('id');
-				  $('#modal-login').data('value', assetId);
-				  $("#modal-login").modal('show');
+			  var allowAnonymous = $(this).find("input").val();
+			  if (allowAnonymous.toUpperCase()!="TRUE") {
+				  var ssoEnabled = $('#sso').val();
+				  if (ssoEnabled == 'true') {
+					  var localIP = $("#localIP").val();
+					  var port = $("#httpsPort").val()
+					  location.href = localIP + ":" + port + "/store/login";
+				  } else {
+					  var assetId = $('#slideAsset').data('id');
+					  $('#modal-login').data('value', assetId);
+					  $("#modal-login").modal('show');
+				  }
+				  e.preventDefault();
+				  e.stopPropagation();
 			  }
-			  e.preventDefault();
-			  e.stopPropagation();
 		  }
 	    	
 	});
@@ -100,18 +112,21 @@ $(function() {
 	$("#btn-add-gadget").on('click', function(e) {
 		  var loggedUser = $("#loggedinuser").val();
 		  if(loggedUser == "" || loggedUser == null){
-			  var ssoEnabled = $('#sso').val();
-			  if (ssoEnabled == 'true'){
-				  var localIP = $("#localIP").val();
-				  var port = $("#httpsPort").val()
-				  location.href = localIP + ":" + port + "/store/login";
-			  }else{
-				  var assetId = $('#slideAsset').data('id');
-				  $('#modal-login').data('value', assetId);
-				  $("#modal-login").modal('show');
-			  } 
-			  e.preventDefault();
-			  e.stopPropagation();
+			  var allowAnonymous = $(this).find("input").val();
+			  if (allowAnonymous.toUpperCase()!="TRUE") {
+				  var ssoEnabled = $('#sso').val();
+				  if (ssoEnabled == 'true') {
+					  var localIP = $("#localIP").val();
+					  var port = $("#httpsPort").val()
+					  location.href = localIP + ":" + port + "/store/login";
+				  } else {
+					  var assetId = $('#slideAsset').data('id');
+					  $('#modal-login').data('value', assetId);
+					  $("#modal-login").modal('show');
+				  }
+				  e.preventDefault();
+				  e.stopPropagation();
+			  }
 		  }
 	    	
 	});

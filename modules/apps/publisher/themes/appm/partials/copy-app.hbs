@@ -27,6 +27,7 @@
                      <input type='text' value="{{{snoop "fields(name=overview_description).value" data}}}" name="overview_description" id="overview_description"/>
                      <input type='text' value="{{{snoop "fields(name=images_thumbnail).value" data}}}" name="images_thumbnail" id="images_thumbnail"/>
                      <input type='text' value="{{{snoop "fields(name=images_banner).value" data}}}" name="images_banner" id="images_banner"/>
+                      <input type='text' value="{{{snoop "fields(name=overview_allowAnonymous).value" data}}}" name="overview_allowAnonymous" id="overview_allowAnonymous"/>
                      <input type='hidden' id="uuid" value="{{data.info.id}}"/>               
                      <input type='hidden' value="" name="overview_trackingCode" id="tracking_code" />
                      <input type='hidden' value="{{{snoop "fields(name=sso_ssoProvider).value" data}}}" name="sso_ssoProvider" id="sso_ssoProvider"/>
@@ -42,6 +43,7 @@
                            <input type='text' id='tag-test' name='tags'>
                         </div>
                      </div>
+
                   </fieldset>
 
                   <fieldset style="display:none;">
@@ -116,8 +118,9 @@
                                 resource.http_verb = RESOURCES[index+1].value;
                                 resource.throttling_tier =RESOURCES[index+2].value;
                                 resource.skipthrottle = RESOURCES[index+3].value;
-                                resource.user_roles = RESOURCES[index+4].value;
-                                resource.entitlement_policy_id = RESOURCES[index+5].value
+                                resource.allowAnonymous = RESOURCES[index+4].value;
+                                resource.user_roles = RESOURCES[index+5].value;
+                                resource.entitlement_policy_id = RESOURCES[index+6].value
                                 RESOURCES_1.push(resource);
                                 uriTemplate++;
                             }
@@ -134,6 +137,7 @@
                               <th style="width: 60px;">HTTP Verb</th>
                               <th style="width: 80px;">Throttling Tier</th>
                               <th style="width: 70px;">Skip Throttling</th>
+                               <th style="width: 70px;">Allow Anonymous Access</th>
                               <th style="width: 190px">User Roles</th>
                               <th style="width: 50px;">Access Policy</th>
                               <th style="width: 55px"></th>

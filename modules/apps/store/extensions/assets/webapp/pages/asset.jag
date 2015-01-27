@@ -120,11 +120,26 @@ require('/modules/store.js').exec(function (ctx) {
 
         var defaultApplicationName = "DefaultApplication";
 
-        var enterpriseSubscription = subscriptionService.getSubscription(appInfo, defaultApplicationName, "ENTERPRISE", authenticator.getLoggedInUser().username).subscription; 
+        var enterpriseSubscription;
+        if (authenticator.getLoggedInUser()) {
+            enterpriseSubscription = subscriptionService.getSubscription(appInfo, defaultApplicationName, "ENTERPRISE", authenticator.getLoggedInUser().username).subscription;
+        }
+        else
+        {
+            enterpriseSubscription = subscriptionService.getSubscription(appInfo, defaultApplicationName, "ENTERPRISE", null).subscription;
+        }
 
-        var individualSubscription = subscriptionService.getSubscription(appInfo, defaultApplicationName, "INDIVIDUAL", authenticator.getLoggedInUser().username).subscription; 
+        var individualSubscription;
+        if (authenticator.getLoggedInUser()) {
+            individualSubscription = subscriptionService.getSubscription(appInfo, defaultApplicationName, "INDIVIDUAL", authenticator.getLoggedInUser().username).subscription;
+        }
+        else
+        {
+            individualSubscription = subscriptionService.getSubscription(appInfo, defaultApplicationName, "INDIVIDUAL", null).subscription;
+        }
 
-        
+
+
         // Get all available IDPs (enterprises)
         var enterprises = getEnterprises();
 
@@ -202,7 +217,13 @@ require('/modules/store.js').exec(function (ctx) {
     }
 
     function isStoreAdmin(){
-        return hasUserRole("Internal/store-admin");
+        if(authenticator.getLoggedInUser()) {
+            return hasUserRole("Internal/store-admin");
+        }
+        else
+        {
+            return false;
+        }
     }
 
     function hasUserRole(userRoleName){
@@ -223,15 +244,33 @@ require('/modules/store.js').exec(function (ctx) {
 
     var assetsByProvider = getAssetsFromProvider(asset, store);
 
-    var docs =docsManager.getAllDocumentation(asset.attributes.overview_provider,
-            asset.attributes.overview_name,
-            asset.attributes.overview_version,
-            authenticator.getLoggedInUser().username);
+    var docs;
+    if (authenticator.getLoggedInUser()) {
+        docs = docsManager.getAllDocumentation(asset.attributes.overview_provider,
+                asset.attributes.overview_name,
+                asset.attributes.overview_version,
+                authenticator.getLoggedInUser().username);
+    }
+    else{
+        docs = docsManager.getAllDocumentation(asset.attributes.overview_provider,
+                asset.attributes.overview_name,
+                asset.attributes.overview_version,
+                null);
+    }
     
     var apiData=apiInfoManager.getAPIDescription(asset.attributes.overview_provider,
            asset.attributes.overview_name,
            asset.attributes.overview_version);
-    var myapps=appInfoApi.getApplications(authenticator.getLoggedInUser().username);
+
+    var myapps;
+    if (authenticator.getLoggedInUser()) {
+        myapps = appInfoApi.getApplications(authenticator.getLoggedInUser().username);
+    }
+    else
+    {
+        myapps = appInfoApi.getApplications(null);
+    }
+
     var availableTiers=apiInfoManager.getTiers();
 
     user=authenticator.getLoggedInUser();
