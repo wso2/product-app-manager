@@ -797,5 +797,8 @@ $(document).on("click", ".btn-reset", function () {
 
     policyPartialsArray = new Array();
     updatePolicyPartial();
+    $('#roles').tokenInput("clear");
+    $('#tag-test').tokenInput("clear");
+
 
 });

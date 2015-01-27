@@ -1,5 +1,7 @@
 var selectedTab = "roles";
 
+var selectedApp = "";
+
 
 $(document).ready( function () {
 
@@ -23,12 +25,13 @@ $(document).ready( function () {
         },
 
         aoColumns: [
+
             {   "mData": function (data, type, full) {
-                return '<input type="checkbox"  class="select-checkbox role-checkbox" value="' + data[0] + '" id="' + data[0] + '"  data-true-val="true" data-false-val="false">';
+                    return  data[0];
                 }
             },
             {   "mData": function (data, type, full) {
-                    return  data[0];
+                    return '<input type="checkbox"  class="select-checkbox role-checkbox" value="' + data[0] + '" id="' + data[0] + '"  data-true-val="true" data-false-val="false">';
                 }
             }
         ]
@@ -55,12 +58,12 @@ $(document).ready( function () {
 
         aoColumns: [
             {   "mData": function (data, type, full) {
-                return '<input type="checkbox"  class="select-checkbox user-checkbox" value="' + data[0] + '" id="' + data[0] + '"  data-true-val="true" data-false-val="false">';
-            }
+                    return  data[0];
+                }
             },
             {   "mData": function (data, type, full) {
-                return  data[0];
-            }
+                    return '<input type="checkbox"  class="select-checkbox user-checkbox" value="' + data[0] + '" id="' + data[0] + '"  data-true-val="true" data-false-val="false">';
+                }
             }
         ]
     } );
@@ -73,6 +76,12 @@ $(document).ready( function () {
             }else if (selectedTab === "users"){
                 installToUsers();
             }
+    });
+
+
+
+    $("#btn-ent-install").click(function () {
+        selectedApp = $(this).data("aid");
     });
 
 
@@ -141,11 +150,19 @@ $(document).ready( function () {
 
                         $noty.close();
 
-                        noty({
-                            text : 'App is installed to the selected role',
-                            'layout' : 'center',
-                            'modal' : true,
-                            timeout: 1000
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/store/apis/enterprise/perform/install/role",
+                            data: { app: selectedApp, data:  rolesSelected }
+                        })
+                            .done(function( msg ) {
+                                noty({
+                                    text : 'App is installed to the selected role',
+                                    'layout' : 'center',
+                                    'modal' : true,
+                                    timeout: 1000
+                                });
                         });
 
                     }
@@ -200,12 +217,19 @@ $(document).ready( function () {
 
                         $noty.close();
 
-                        noty({
-                            text : 'App is uninstalled from the selected role',
-                            'layout' : 'center',
-                            'modal' : true,
-                            timeout: 1000
-                        });
+                        $.ajax({
+                            type: "POST",
+                            url: "/store/apis/enterprise/perform/uninstall/role",
+                            data: { app: selectedApp, data:  rolesSelected }
+                        })
+                            .done(function( msg ) {
+                                noty({
+                                    text : 'App is uninstalled from the selected role',
+                                    'layout' : 'center',
+                                    'modal' : true,
+                                    timeout: 1000
+                                });
+                         });
 
                     }
                 },
@@ -259,12 +283,19 @@ $(document).ready( function () {
 
                         $noty.close();
 
-                        noty({
-                            text : 'App is installed to the selected user',
-                            'layout' : 'center',
-                            'modal' : true,
-                            timeout: 1000
-                        });
+                        $.ajax({
+                            type: "POST",
+                            url: "/store/apis/enterprise/perform/install/user",
+                            data: { app: selectedApp, data:  usersSelected }
+                        })
+                            .done(function( msg ) {
+                                noty({
+                                    text : 'App is installed to the selected user',
+                                    'layout' : 'center',
+                                    'modal' : true,
+                                    timeout: 1000
+                                });
+                         });
 
                     }
                 },
@@ -319,12 +350,19 @@ $(document).ready( function () {
 
                         $noty.close();
 
-                        noty({
-                            text : 'App is uninstalled from the selected user',
-                            'layout' : 'center',
-                            'modal' : true,
-                            timeout: 1000
-                        });
+                        $.ajax({
+                            type: "POST",
+                            url: "/store/apis/enterprise/perform/uninstall/user",
+                            data: { app: selectedApp, data:  usersSelected }
+                        })
+                            .done(function( msg ) {
+                                noty({
+                                    text : 'App is uninstalled from the selected user',
+                                    'layout' : 'center',
+                                    'modal' : true,
+                                    timeout: 1000
+                                });
+                            });
 
                     }
                 },

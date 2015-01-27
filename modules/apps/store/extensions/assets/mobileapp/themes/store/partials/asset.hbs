@@ -1,3 +1,72 @@
+<div id="modal-ent-install" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="width:800px; margin-left: -400px" aria-hidden="true">
+
+    <div class="modal-header">
+        <button id="btn-ent-install-close" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            x
+        </button>
+        <h4 id="myModalLabel">Enterprise Install</h4>
+    </div>
+    <div class="modal-body">
+
+        <ul class="nav nav-tabs" id="ent-install-tabs">
+            <li class="active"><a href="#roles-tab" data-name="roles" >Roles</a></li>
+            <li><a href="#users-tab" data-name="users" >Users</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane active" id="roles-tab">
+
+                <div class="raw">
+
+                    <table cellpadding="0" cellspacing="0" border="0"
+                           class="table table-striped table-bordered" id="roles-table">
+                        <thead>
+                        <tr>
+                            <th>Role name</th>
+                            <th>#</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+
+                </div>
+
+
+            </div>
+            <div class="tab-pane" id="users-tab">
+
+
+                <div class="raw">
+
+                    <table cellpadding="0" cellspacing="0" border="0"
+                           class="table table-striped table-bordered" id="users-table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Username</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="raw offset5 install-uninstall-panel">
+            <input id="btn-apps-ent-install" type="button" class="btn btn-primary" value="Install">
+            <input id="btn-apps-ent-uninstall" type="button" class="btn btn-danger" value="Uninstall">
+        </div>
+
+    </div>
+</div>
+
+
+
 <script>
     var isSocial = ('{{isSocial}}' == 'true');
 </script>
@@ -110,75 +179,7 @@ Copy Gadget Code
 
 
 
-    <div id="modal-ent-install" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="width:800px; margin-left: -400px" aria-hidden="true">
 
-        <div class="modal-header">
-            <button id="btn-ent-install-close" type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                x
-            </button>
-            <h4 id="myModalLabel">Enterprise Install</h4>
-        </div>
-        <div class="modal-body">
-
-            <div class="raw offset5 install-uninstall-panel">
-                <input id="btn-apps-ent-install" type="button" class="btn btn-primary" value="Install">
-                <input id="btn-apps-ent-uninstall" type="button" class="btn btn-danger" value="Uninstall">
-            </div>
-
-
-            <ul class="nav nav-tabs" id="ent-install-tabs">
-                <li class="active"><a href="#roles-tab" data-name="roles" >Roles</a></li>
-                <li><a href="#users-tab" data-name="users" >Users</a></li>
-            </ul>
-
-            <div class="tab-content">
-                <div class="tab-pane active" id="roles-tab">
-
-                    <div class="raw">
-
-                        <table cellpadding="0" cellspacing="0" border="0"
-                               class="table table-striped table-bordered" id="roles-table">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Role name</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-
-                    </div>
-
-
-                </div>
-                <div class="tab-pane" id="users-tab">
-
-
-                    <div class="raw">
-
-                        <table cellpadding="0" cellspacing="0" border="0"
-                               class="table table-striped table-bordered" id="users-table">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Username</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-
-                    </div>
-
-
-
-                </div>
-
-            </div>
-
-        </div>
-    </div>
 
 
 

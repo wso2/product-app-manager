@@ -162,7 +162,7 @@ $(function(){
            	   if(JSON.parse(response).status == false){
            		showIndividualSubscriptionMessage(false,'Subscription Approval','your request to subscribe the application is awaiting administrator approval');
            	   }else if(JSON.parse(response).status == true){
-           		showIndividualSubscriptionMessage(true,'Subscription Successful','Congratulations! You have successfully subscribed to the ');
+           		showIndividualSubscriptionMessage(true,'Subscription Successful','Congratulations! You have successfully subscribed to the ' +'<b>"' + apiName + '</b>"' );
            	   }else{
         		console.info('Error occured in subscribe to web app: ');
 		   }

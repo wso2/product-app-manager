@@ -7,15 +7,13 @@
 
         {{#if subscriptions}}
             {{#each subscriptions}}
-
-
                 <div class="span2 asset store-my-item" >
 
                     <div class="store-my-item-thumbnail">
                         <a href="{{url "/assets/webapp/"}}{{uuid}}"><img class="icon" src="/store/storage/webapp/{{uuid}}/{{thumbnail}}"></a>
                     </div>
                     <div class="store-my-item-info">
-                        <a class="asset-title" href="{{url "/assets/"}}{{../../key}}/{{../id}}">
+                        <a class="asset-title" href="{{url "/assets/webapp/"}}{{uuid}}">
                             <strong>{{name}}</strong>
                         </a>
                     </div>
