@@ -2,7 +2,7 @@
 
 {{#unless isLogged}}
 <div class="com-guest">
-	Please Sign in to add a Review
+	Please Sign In to add a review
 </div>
 {{/unless}}
 
@@ -28,9 +28,11 @@
 				{{> activity}}
 			{{/each}}
 		{{else}}
+			{{#if isLogged}}
 			<p class="com-first-review">
 				Be the first one to review!
 			</p>
+			{{/if}}
 		{{/if}}
 	</div>
 </div>
