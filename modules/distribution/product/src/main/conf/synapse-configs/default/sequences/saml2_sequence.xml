@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<sequence xmlns="http://ws.apache.org/ns/synapse" name="saml2_sequence">
+    <property name="uri.var.saml2.request" expression="get-property('SAMLRequest')" />
+    <property name="uri.var.idp.url" expression="get-property('IdpUrl')" />
+    <call>
+	<endpoint xmlns="http://ws.apache.org/ns/synapse" name="HTTPEndpoint">
+	    <http uri-template="{uri.var.idp.url}?SAMLRequest={uri.var.saml2.request}" method="POST">
+	</http>
+     </endpoint>
+   </call>
+    <respond/>
+</sequence>

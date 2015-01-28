@@ -1,0 +1,951 @@
+<?xml version="1.0"?>
+<artifactType type="application/vnd.wso2-webapp+xml" shortName="webapp" singularLabel="webapp" pluralLabel="webapps" hasNamespace="false" iconSet="7">
+	<storagePath>/apimgt/applicationdata/provider/@{overview_provider}/@{overview_name}/@{overview_version}/webapp</storagePath>
+	<!--storagePath>/gadgets/@{overview_provider}/@{overview_name}/@{overview_version}</storagePath-->
+	<nameAttribute>overview_name</nameAttribute>
+	<ui>
+        <list>
+            <column name="Provider">
+                <data type="path" value="overview_provider" href="@{storagePath}"/>
+            </column>
+            <column name="Name">
+                <data type="path" value="overview_name" href="@{storagePath}"/>
+            </column>
+            <column name="Platform">
+                <data type="path" value="overview_platform" href="@{storagePath}"/>
+            </column>
+            <column name="Version">
+                <data type="path" value="overview_version" href="@{storagePath}"/>
+            </column>
+        </list>
+	</ui>
+<content>
+    <table name="Overview">
+        <field type="text" required="true" readonly="true">
+            <name label="Author">Provider</name>
+        </field>
+
+        <field type="text" required="true">
+            <name>Name</name>
+        </field>
+
+        <field type="text" required="true">
+            <name>Context</name>
+        </field>
+
+        <field type="text" required="true">
+            <name>Version</name>
+        </field>
+
+	<field type="text" required="true">
+            <name>Transports</name>
+        </field>
+
+        	<field type="text">
+                    <name>Allow Anonymous</name>
+                </field>
+
+        <field type="text-area">
+            <name>Description</name>
+       	</field>
+        <field type="text" url="true" required="true">
+            <name>Web App URL</name>
+        </field>
+        <field type="text" url="true">
+            <name>Logout URL</name>
+        </field>
+
+       <field type="options">
+            <name label="Tier Availability">Tier</name>
+            <values>
+                <value>Gold</value>
+                <value>Silver</value>
+                <value>Bronze</value>
+                <value>Unlimited</value>
+
+            </values>
+        </field>
+
+      <field type="text">
+            <name label="Tracking ID">Tracking Code</name>
+      </field>
+    </table>
+    <table name="URITemplate" columns="6">
+            <subheading>
+                <heading>URL Pattern</heading>
+                <heading>HTTP Verb</heading>
+                <heading>Throttling Tier</heading>
+                <heading>Skip Throttling</heading>
+                <heading>Allow Anonymous Access</heading>
+		<heading>User Roles</heading>
+		<heading>Policy Id</heading>
+            </subheading>
+            <field type="text">
+                <name>URL Pattern0</name>
+            </field>
+            <field type="text">
+                <name>HTTP Verb0</name>
+            </field>
+
+	       <field type="options">
+			<name label="Tier">tier0</name>
+		    <values>
+		        <value>Gold</value>
+		        <value>Silver</value>
+			<value>Bronze</value>
+                	<value>Unlimited</value>
+		    </values>
+		</field>
+		<field type="options">
+			<name label="Skip Throttle">skipThrottle0</name>
+		    <values>
+		        <value>False</value>
+		        <value>True</value>
+		    </values>
+		</field>
+			<field type="options">
+        			<name label="Allow Anonymous Access">allowAnonymous0</name>
+        		    <values>
+        		        <value>False</value>
+        		        <value>True</value>
+        		    </values>
+        		</field>
+		<field type="text">
+                	<name>User Roles0</name>
+                </field>
+		<field type="text">
+			<name>Entitlement Policy Partial Mappings0</name>
+		</field>
+
+
+
+            <field type="text">
+                <name>URL Pattern1</name>
+            </field>
+            <field type="text">
+                <name>HTTP Verb1</name>
+            </field>
+
+	       <field type="options">
+			<name label="Tier">tier1</name>
+		    <values>
+		        <value>Gold</value>
+		        <value>Silver</value>
+			<value>Bronze</value>
+                	<value>Unlimited</value>
+		    </values>
+		</field>
+		<field type="options">
+			<name label="Skip Throttle">skipThrottle1</name>
+		    <values>
+		        <value>False</value>
+		        <value>True</value>
+		    </values>
+		</field>
+		<field type="options">
+                			<name label="Allow Anonymous Access">allowAnonymous1</name>
+                		    <values>
+                		        <value>False</value>
+                		        <value>True</value>
+                		    </values>
+                		</field>
+		<field type="text">
+                	<name>User Roles1</name>
+                </field>
+		<field type="text">
+                        <name>Entitlement Policy Partial Mappings1</name>
+                </field>
+
+             <field type="text">
+                <name>URL Pattern2</name>
+            </field>
+            <field type="text">
+                <name>HTTP Verb2</name>
+            </field>
+
+	       <field type="options">
+			<name label="Tier">tier2</name>
+		    <values>
+		        <value>Gold</value>
+		        <value>Silver</value>
+			<value>Bronze</value>
+                	<value>Unlimited</value>
+		    </values>
+		</field>
+		<field type="options">
+			<name label="Skip Throttle">skipThrottle2</name>
+		    <values>
+		        <value>False</value>
+		        <value>True</value>
+		    </values>
+		</field>
+		<field type="options">
+                			<name label="Allow Anonymous Access">allowAnonymous2</name>
+                		    <values>
+                		        <value>False</value>
+                		        <value>True</value>
+                		    </values>
+                		</field>
+		<field type="text">
+                	<name>User Roles2</name>
+                </field>
+		<field type="text">
+                        <name>Entitlement Policy Partial Mappings2</name>
+                </field>
+
+
+             <field type="text">
+                <name>URL Pattern3</name>
+            </field>
+            <field type="text">
+                <name>HTTP Verb3</name>
+            </field>
+
+	       <field type="options">
+			<name label="Tier">tier3</name>
+		    <values>
+		        <value>Gold</value>
+		        <value>Silver</value>
+			<value>Bronze</value>
+                	<value>Unlimited</value>
+		    </values>
+		</field>
+
+		<field type="options">
+			<name label="Skip Throttle">skipThrottle3</name>
+		    <values>
+		        <value>False</value>
+		        <value>True</value>
+		    </values>
+		</field>
+		<field type="options">
+                			<name label="Allow Anonymous Access">allowAnonymous3</name>
+                		    <values>
+                		        <value>False</value>
+                		        <value>True</value>
+                		    </values>
+                		</field>
+		<field type="text">
+                	<name>User Roles3</name>
+                </field>
+		<field type="text">
+                        <name>Entitlement Policy Partial Mappings3</name>
+                </field>
+
+             <field type="text">
+                <name>URL Pattern4</name>
+            </field>
+            <field type="text">
+                <name>HTTP Verb4</name>
+            </field>
+
+	       <field type="options">
+			<name label="Tier">tier4</name>
+		    <values>
+		        <value>Gold</value>
+		        <value>Silver</value>
+			<value>Bronze</value>
+                	<value>Unlimited</value>
+		    </values>
+		</field>
+		<field type="options">
+			<name label="Skip Throttle">skipThrottle4</name>
+		    <values>
+		        <value>False</value>
+		        <value>True</value>
+		    </values>
+		</field>
+		<field type="options">
+                			<name label="Allow Anonymous Access">allowAnonymous4</name>
+                		    <values>
+                		        <value>False</value>
+                		        <value>True</value>
+                		    </values>
+                		</field>
+		<field type="text">
+                	<name>User Roles4</name>
+              	</field>
+		<field type="text">
+                        <name>Entitlement Policy Partial Mappings4</name>
+                </field>
+
+	<field type="text">
+                <name>URL Pattern5</name>
+            </field>
+            <field type="text">
+                <name>HTTP Verb5</name>
+            </field>
+
+	       <field type="options">
+			<name label="Tier">tier5</name>
+		    <values>
+		        <value>Gold</value>
+		        <value>Silver</value>
+			<value>Bronze</value>
+               	        <value>Unlimited</value>
+		    </values>
+		</field>
+		<field type="options">
+			<name label="Skip Throttle">skipThrottle5</name>
+		    <values>
+		        <value>False</value>
+		        <value>True</value>
+		    </values>
+		</field>
+		<field type="options">
+                			<name label="Allow Anonymous Access">allowAnonymous5</name>
+                		    <values>
+                		        <value>False</value>
+                		        <value>True</value>
+                		    </values>
+                		</field>
+		<field type="text">
+                	<name>User Roles5</name>
+                </field>
+		<field type="text">
+                        <name>Entitlement Policy Partial Mappings5</name>
+                </field>
+
+	<field type="text">
+                <name>URL Pattern6</name>
+            </field>
+            <field type="text">
+                <name>HTTP Verb6</name>
+            </field>
+
+	       <field type="options">
+			<name label="Tier">tier6</name>
+		    <values>
+		        <value>Gold</value>
+		        <value>Silver</value>
+			<value>Bronze</value>
+                	<value>Unlimited</value>
+		    </values>
+		</field>
+		<field type="options">
+			<name label="Skip Throttle">skipThrottle6</name>
+		    <values>
+		        <value>False</value>
+		        <value>True</value>
+		    </values>
+		</field>
+		<field type="options">
+                			<name label="Allow Anonymous Access">allowAnonymous6</name>
+                		    <values>
+                		        <value>False</value>
+                		        <value>True</value>
+                		    </values>
+                		</field>
+		<field type="text">
+                	<name>User Roles6</name>
+                </field>
+		<field type="text">
+                        <name>Entitlement Policy Partial Mappings6</name>
+                </field>
+
+	<field type="text">
+                <name>URL Pattern7</name>
+            </field>
+            <field type="text">
+                <name>HTTP Verb7</name>
+            </field>
+
+	       <field type="options">
+			<name label="Tier">tier7</name>
+		    <values>
+		        <value>Gold</value>
+		        <value>Silver</value>
+			<value>Bronze</value>
+                	<value>Unlimited</value>
+		    </values>
+		</field>
+		<field type="options">
+			<name label="Skip Throttle">skipThrottle7</name>
+		    <values>
+		        <value>False</value>
+		        <value>True</value>
+		    </values>
+		</field>
+		<field type="options">
+                			<name label="Allow Anonymous Access">allowAnonymous7</name>
+                		    <values>
+                		        <value>False</value>
+                		        <value>True</value>
+                		    </values>
+                		</field>
+		<field type="text">
+                	<name>User Roles7</name>
+                </field>
+		<field type="text">
+                        <name>Entitlement Policy Partial Mappings7</name>
+                </field>
+
+    <field type="text">
+                <name>URL Pattern8</name>
+            </field>
+            <field type="text">
+                <name>HTTP Verb8</name>
+            </field>
+
+           <field type="options">
+            <name label="Tier">tier8</name>
+            <values>
+                <value>Gold</value>
+                <value>Silver</value>
+            <value>Bronze</value>
+                    <value>Unlimited</value>
+            </values>
+        </field>
+        <field type="options">
+            <name label="Skip Throttle">skipThrottle8</name>
+            <values>
+                <value>False</value>
+                <value>True</value>
+            </values>
+        </field>
+        <field type="options">
+                			<name label="Allow Anonymous Access">allowAnonymous8</name>
+                		    <values>
+                		        <value>False</value>
+                		        <value>True</value>
+                		    </values>
+                		</field>
+        <field type="text">
+                    <name>User Roles8</name>
+                </field>
+        <field type="text">
+                        <name>Entitlement Policy Partial Mappings8</name>
+                </field>
+
+    <field type="text">
+                <name>URL Pattern9</name>
+            </field>
+            <field type="text">
+                <name>HTTP Verb9</name>
+            </field>
+
+           <field type="options">
+            <name label="Tier">tier9</name>
+            <values>
+                <value>Gold</value>
+                <value>Silver</value>
+            <value>Bronze</value>
+                    <value>Unlimited</value>
+            </values>
+        </field>
+        <field type="options">
+            <name label="Skip Throttle">skipThrottle9</name>
+            <values>
+                <value>False</value>
+                <value>True</value>
+            </values>
+        </field>
+        <field type="options">
+                			<name label="Allow Anonymous Access">allowAnonymous9</name>
+                		    <values>
+                		        <value>False</value>
+                		        <value>True</value>
+                		    </values>
+                		</field>
+        <field type="text">
+                    <name>User Roles9</name>
+                </field>
+        <field type="text">
+                        <name>Entitlement Policy Partial Mappings9</name>
+                </field>
+
+
+    <field type="text">
+                <name>URL Pattern10</name>
+            </field>
+            <field type="text">
+                <name>HTTP Verb10</name>
+            </field>
+
+           <field type="options">
+            <name label="Tier">tier10</name>
+            <values>
+                <value>Gold</value>
+                <value>Silver</value>
+            <value>Bronze</value>
+                    <value>Unlimited</value>
+            </values>
+        </field>
+        <field type="options">
+            <name label="Skip Throttle">skipThrottle10</name>
+            <values>
+                <value>False</value>
+                <value>True</value>
+            </values>
+        </field>
+        <field type="options">
+                			<name label="Allow Anonymous Access">allowAnonymous10</name>
+                		    <values>
+                		        <value>False</value>
+                		        <value>True</value>
+                		    </values>
+                		</field>
+        <field type="text">
+                    <name>User Roles10</name>
+                </field>
+        <field type="text">
+                        <name>Entitlement Policy Partial Mappings10</name>
+                </field>
+
+    <field type="text">
+                <name>URL Pattern11</name>
+            </field>
+            <field type="text">
+                <name>HTTP Verb11</name>
+            </field>
+
+           <field type="options">
+            <name label="Tier">tier11</name>
+            <values>
+                <value>Gold</value>
+                <value>Silver</value>
+            <value>Bronze</value>
+                    <value>Unlimited</value>
+            </values>
+        </field>
+        <field type="options">
+            <name label="Skip Throttle">skipThrottle11</name>
+            <values>
+                <value>False</value>
+                <value>True</value>
+            </values>
+        </field>
+        <field type="options">
+                			<name label="Allow Anonymous Access">allowAnonymous11</name>
+                		    <values>
+                		        <value>False</value>
+                		        <value>True</value>
+                		    </values>
+                		</field>
+        <field type="text">
+                    <name>User Roles11</name>
+                </field>
+        <field type="text">
+                        <name>Entitlement Policy Partial Mappings11</name>
+                </field>
+
+
+    <field type="text">
+                <name>URL Pattern12</name>
+            </field>
+            <field type="text">
+                <name>HTTP Verb12</name>
+            </field>
+
+           <field type="options">
+            <name label="Tier">tier12</name>
+            <values>
+                <value>Gold</value>
+                <value>Silver</value>
+            <value>Bronze</value>
+                    <value>Unlimited</value>
+            </values>
+        </field>
+        <field type="options">
+            <name label="Skip Throttle">skipThrottle12</name>
+            <values>
+                <value>False</value>
+                <value>True</value>
+            </values>
+        </field>
+        <field type="options">
+                			<name label="Allow Anonymous Access">allowAnonymous12</name>
+                		    <values>
+                		        <value>False</value>
+                		        <value>True</value>
+                		    </values>
+                		</field>
+        <field type="text">
+                    <name>User Roles12</name>
+                </field>
+        <field type="text">
+                        <name>Entitlement Policy Partial Mappings12</name>
+                </field>
+
+    <field type="text">
+                <name>URL Pattern13</name>
+            </field>
+            <field type="text">
+                <name>HTTP Verb13</name>
+            </field>
+
+           <field type="options">
+            <name label="Tier">tier13</name>
+            <values>
+                <value>Gold</value>
+                <value>Silver</value>
+            <value>Bronze</value>
+                    <value>Unlimited</value>
+            </values>
+        </field>
+        <field type="options">
+            <name label="Skip Throttle">skipThrottle13</name>
+            <values>
+                <value>False</value>
+                <value>True</value>
+            </values>
+        </field>
+        <field type="options">
+                			<name label="Allow Anonymous Access">allowAnonymous13</name>
+                		    <values>
+                		        <value>False</value>
+                		        <value>True</value>
+                		    </values>
+                		</field>
+        <field type="text">
+                    <name>User Roles13</name>
+                </field>
+        <field type="text">
+                        <name>Entitlement Policy Partial Mappings13</name>
+                </field>
+
+    <field type="text">
+                <name>URL Pattern14</name>
+            </field>
+            <field type="text">
+                <name>HTTP Verb14</name>
+            </field>
+
+           <field type="options">
+            <name label="Tier">tier14</name>
+            <values>
+                <value>Gold</value>
+                <value>Silver</value>
+            <value>Bronze</value>
+                    <value>Unlimited</value>
+            </values>
+        </field>
+        <field type="options">
+            <name label="Skip Throttle">skipThrottle14</name>
+            <values>
+                <value>False</value>
+                <value>True</value>
+            </values>
+        </field>
+        <field type="options">
+                			<name label="Allow Anonymous Access">allowAnonymous14</name>
+                		    <values>
+                		        <value>False</value>
+                		        <value>True</value>
+                		    </values>
+                		</field>
+        <field type="text">
+                    <name>User Roles14</name>
+                </field>
+        <field type="text">
+                        <name>Entitlement Policy Partial Mappings14</name>
+                </field>
+
+
+    <field type="text">
+                <name>URL Pattern15</name>
+            </field>
+            <field type="text">
+                <name>HTTP Verb15</name>
+            </field>
+
+           <field type="options">
+            <name label="Tier">tier15</name>
+            <values>
+                <value>Gold</value>
+                <value>Silver</value>
+            <value>Bronze</value>
+                    <value>Unlimited</value>
+            </values>
+        </field>
+        <field type="options">
+            <name label="Skip Throttle">skipThrottle15</name>
+            <values>
+                <value>False</value>
+                <value>True</value>
+            </values>
+        </field>
+        <field type="options">
+                			<name label="Allow Anonymous Access">allowAnonymous15</name>
+                		    <values>
+                		        <value>False</value>
+                		        <value>True</value>
+                		    </values>
+                		</field>
+        <field type="text">
+                    <name>User Roles15</name>
+                </field>
+        <field type="text">
+                        <name>Entitlement Policy Partial Mappings15</name>
+                </field>
+
+
+    <field type="text">
+                <name>URL Pattern16</name>
+            </field>
+            <field type="text">
+                <name>HTTP Verb16</name>
+            </field>
+
+           <field type="options">
+            <name label="Tier">tier16</name>
+            <values>
+                <value>Gold</value>
+                <value>Silver</value>
+            <value>Bronze</value>
+                    <value>Unlimited</value>
+            </values>
+        </field>
+        <field type="options">
+            <name label="Skip Throttle">skipThrottle16</name>
+            <values>
+                <value>False</value>
+                <value>True</value>
+            </values>
+        </field>
+        <field type="options">
+                			<name label="Allow Anonymous Access">allowAnonymous16</name>
+                		    <values>
+                		        <value>False</value>
+                		        <value>True</value>
+                		    </values>
+                		</field>
+        <field type="text">
+                    <name>User Roles16</name>
+                </field>
+        <field type="text">
+                        <name>Entitlement Policy Partial Mappings16</name>
+                </field>
+
+
+    <field type="text">
+                <name>URL Pattern17</name>
+            </field>
+            <field type="text">
+                <name>HTTP Verb17</name>
+            </field>
+
+           <field type="options">
+            <name label="Tier">tier17</name>
+            <values>
+                <value>Gold</value>
+                <value>Silver</value>
+            <value>Bronze</value>
+                    <value>Unlimited</value>
+            </values>
+        </field>
+        <field type="options">
+            <name label="Skip Throttle">skipThrottle17</name>
+            <values>
+                <value>False</value>
+                <value>True</value>
+            </values>
+        </field>
+        <field type="options">
+                			<name label="Allow Anonymous Access">allowAnonymous17</name>
+                		    <values>
+                		        <value>False</value>
+                		        <value>True</value>
+                		    </values>
+                		</field>
+        <field type="text">
+                    <name>User Roles17</name>
+                </field>
+        <field type="text">
+                        <name>Entitlement Policy Partial Mappings17</name>
+                </field>
+
+
+    <field type="text">
+                <name>URL Pattern18</name>
+            </field>
+            <field type="text">
+                <name>HTTP Verb18</name>
+            </field>
+
+           <field type="options">
+            <name label="Tier">tier18</name>
+            <values>
+                <value>Gold</value>
+                <value>Silver</value>
+            <value>Bronze</value>
+                    <value>Unlimited</value>
+            </values>
+        </field>
+        <field type="options">
+            <name label="Skip Throttle">skipThrottle18</name>
+            <values>
+                <value>False</value>
+                <value>True</value>
+            </values>
+        </field>
+        <field type="options">
+                			<name label="Allow Anonymous Access">allowAnonymous18</name>
+                		    <values>
+                		        <value>False</value>
+                		        <value>True</value>
+                		    </values>
+                		</field>
+        <field type="text">
+                    <name>User Roles18</name>
+                </field>
+        <field type="text">
+                        <name>Entitlement Policy Partial Mappings18</name>
+                </field>
+
+    <field type="text">
+                <name>URL Pattern19</name>
+            </field>
+            <field type="text">
+                <name>HTTP Verb19</name>
+            </field>
+
+           <field type="options">
+            <name label="Tier">tier19</name>
+            <values>
+                <value>Gold</value>
+                <value>Silver</value>
+            <value>Bronze</value>
+                    <value>Unlimited</value>
+            </values>
+        </field>
+        <field type="options">
+            <name label="Skip Throttle">skipThrottle19</name>
+            <values>
+                <value>False</value>
+                <value>True</value>
+            </values>
+        </field>
+        <field type="options">
+                			<name label="Allow Anonymous Access">allowAnonymous19</name>
+                		    <values>
+                		        <value>False</value>
+                		        <value>True</value>
+                		    </values>
+                		</field>
+        <field type="text">
+                    <name>User Roles19</name>
+                </field>
+        <field type="text">
+                        <name>Entitlement Policy Partial Mappings19</name>
+                </field>
+
+    <field type="text">
+                <name>URL Pattern20</name>
+            </field>
+            <field type="text">
+                <name>HTTP Verb20</name>
+            </field>
+
+           <field type="options">
+            <name label="Tier">tier20</name>
+            <values>
+                <value>Gold</value>
+                <value>Silver</value>
+            <value>Bronze</value>
+                    <value>Unlimited</value>
+            </values>
+        </field>
+        <field type="options">
+            <name label="Skip Throttle">skipThrottle20</name>
+            <values>
+                <value>False</value>
+                <value>True</value>
+            </values>
+        </field>
+        <field type="options">
+                			<name label="Allow Anonymous Access">allowAnonymous20</name>
+                		    <values>
+                		        <value>False</value>
+                		        <value>True</value>
+                		    </values>
+                		</field>
+        <field type="text">
+                    <name>User Roles20</name>
+                </field>
+        <field type="text">
+                        <name>Entitlement Policy Partial Mappings20</name>
+                </field>
+
+        </table>
+
+	<table name="Images">
+            <field type="text">
+                <name>Icon</name>
+            </field>
+            <field type="text">
+                <name>Thumbnail</name>
+            </field>
+            <field type="text">
+                <name>Banner</name>
+            </field>
+        </table>
+
+        <table name="sso">
+           <field type="options">
+            <name label="Single Sign On">Single Sign On</name>
+            <values>
+                <value>Disabled</value>
+                <value>Enabled</value>
+            </values>
+           </field>
+            <field type="text">
+                <name>IDP Provider URL</name>
+            </field>
+            <field type="text">
+                <name>SAML2 SSO Issuer</name>
+            </field>
+ 	    <field type="text">
+                <name>SSO Provider</name>
+            </field>
+        </table>
+
+	<table name="OAuthAPIs">
+	     <field type="text">
+               <name>Webapp Consumer Key</name>
+           </field>
+	   <field type="text">
+               <name>Webapp Consumer Secret</name>
+           </field>
+            <field type="text">
+                <name>API Token Endpoint1</name>
+            </field>
+            <field type="text">
+                <name>API Consumer Key1</name>
+            </field>
+            <field type="text">
+                <name>API Consumer Secret1</name>
+            </field>
+            <field type="text">
+                <name>API Name1</name>
+            </field>
+
+            <field type="text">
+                <name>API Token Endpoint2</name>
+            </field>
+            <field type="text">
+                <name>API Consumer Key2</name>
+            </field>
+            <field type="text">
+                <name>API Consumer Secret2</name>
+            </field>
+            <field type="text">
+                <name>API Name2</name>
+            </field>
+
+            <field type="text">
+                <name>API Token Endpoint3</name>
+            </field>
+            <field type="text">
+                <name>API Consumer Key3</name>
+            </field>
+            <field type="text">
+                <name>API Consumer Secret3</name>
+            </field>
+            <field type="text">
+                <name>API Name3</name>
+            </field>
+	</table>
+</content>
+
+</artifactType>

@@ -1,0 +1,5 @@
+<sequence name="_throttle_out_handler_" xmlns="http://ws.apache.org/ns/synapse">
+	<!--Removing Build sequence as it is of no use when used with PT Transport-->
+        <!--sequence key="_build_"/-->
+    <property name="X-JWT-Assertion" scope="transport" action="remove"/>
+</sequence>

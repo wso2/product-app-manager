@@ -1,0 +1,35 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="am-features-test-suite">
+    <parameter name="useDefaultListeners" value="false"/>
+    <test name="Test - APPmanager" preserve-order="true" parallel="false">
+        <packages>
+            <!--<package name="org.wso2.carbon.registry.search.metadata.test.old"/>-->
+        </packages>
+
+        <classes>
+            <!--
+            This test case will be use to test usage metering with BAM/ Run BAM server as instructed in stats TestCases
+            with port offset one. Then enable this test. This will take some time as it take time to generate summery
+            -->
+            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.SAMLtoBackendTestCase"/>
+            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.JWTGenerationTestCase"/>
+            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.ResourceAuthXCMLTestCase"/>
+            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.ThrottlingTestCase"/>
+            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.TagsTestCase"/>
+            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.ResourceAuthRolesTestCase"/>
+            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.LifeCycleTestCase"/>
+            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.SSOTestCase"/>
+            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.SSOutTestCase"/>
+            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.AppDeleteTestCase"/>
+            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.SelfSignUpTestCase"/>
+
+
+        </classes>
+    </test>
+    <!--test name="Rest Test" preserve-order="true" verbose="2">
+        <packages>
+            <package name="org.wso2.carbon.am.tests.rest"/>
+        </packages>
+    </test-->
+</suite>

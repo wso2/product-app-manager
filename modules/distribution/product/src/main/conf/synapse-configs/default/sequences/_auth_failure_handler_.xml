@@ -1,0 +1,5 @@
+<sequence name="_auth_failure_handler_" xmlns="http://ws.apache.org/ns/synapse">
+    <property name="error_message_type" value="application/xml"/>
+	<!--Removing Build sequence as it is of no use when used with PT Transport-->
+        <!--sequence key="_build_"/-->
+</sequence>

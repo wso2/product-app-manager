@@ -1,0 +1,6 @@
+<module name="apistore" namespace="ns" expose="true" xmlns="http://wso2.org/projects/jaggery/module.xml">
+    <hostObject>
+        <className>org.wso2.carbon.appmgt.hostobjects.APIStoreHostObject</className>
+        <name>APIStore</name>
+    </hostObject>
+</module>
