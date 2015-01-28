@@ -210,7 +210,7 @@
                                     <classpath>
                                         <path refid="h2.classpath"/>
                                     </classpath>
-                                    <fileset file="${basedir}/../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/dbscripts/social/h2/resource.sql"/>
+                                    <fileset file="${basedir}/../../jaggery-apps/enterprise-store/storage/h2/resource.sql"/>
                                 </sql>
 				<sql
                                         driver="org.h2.Driver"
