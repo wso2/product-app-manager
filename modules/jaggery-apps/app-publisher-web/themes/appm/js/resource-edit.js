@@ -3,6 +3,8 @@ var throttlingTierControlBlock; //html formatted block for throttling tiers list
 
 $( document ).ready(function() {
 
+    $("#overview_context").attr('maxlength','200');
+
     //get Tier details from tier.xml
     $.ajax({
         url: '/publisher/api/entitlement/get/Tiers',
