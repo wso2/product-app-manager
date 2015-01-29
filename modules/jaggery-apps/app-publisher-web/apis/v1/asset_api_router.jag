@@ -293,9 +293,6 @@ require('/modules/publisher.js').exec(function(ctx) {
         }
 
 
-        log.info("VALIDATE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + context.post['overview_context']);
-
-
         //Check if the type is valid
         try {
 

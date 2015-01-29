@@ -273,6 +273,11 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
         var provider = model.get('overview.provider').value;
         var version = model.get('overview.version').value;
 
+        if(context.post['overview_context'].length > 200){
+            print({ok:false,message:'Context value length is more than 200',report:report});
+            return;
+        }
+
         //Check whether duplicate webapp exists
         var isexists = isWebappExists(name, provider, version);
 
