@@ -293,6 +293,9 @@ require('/modules/publisher.js').exec(function(ctx) {
         }
 
 
+        log.info("VALIDATE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + context.post['overview_context']);
+
+
         //Check if the type is valid
         try {
 
@@ -305,6 +308,8 @@ require('/modules/publisher.js').exec(function(ctx) {
             if(context.post['images_banner'] == '') {
                 context.post['images_banner'] = '/publisher/config/defaults/img/banner.jpg';
             }
+
+
 
             model.import('form.importer',context.post);
 
@@ -397,6 +402,7 @@ require('/modules/publisher.js').exec(function(ctx) {
         if(context.post['images_banner'] instanceof Array){
             context.post['images_banner'] = context.post['images_banner'][0];
         }
+
 
         try {
             var modelA = modelManager.getModel(shortName);
