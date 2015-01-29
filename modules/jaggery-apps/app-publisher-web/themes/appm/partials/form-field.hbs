@@ -34,6 +34,21 @@
             </div>
 
             {{/if}}
+
+            {{#if field.isImageFile}}
+
+                <div class="tbl-upload">
+                    <div class="tbl-upload-row">
+                        <input type="text" class="txt-filepath col-lg-6 col-sm-8 col-xs-6" disabled="true" name='{{field.name}}' value='{{field.value}}'/>
+                        <input type="hidden" value="{{field.value}}" name='{{field.name}}'>
+                        <button class="btn btn-upload btn-default">Browse</button>
+                        <input id='{{field.name}}'  accept="image/*" type='file' accept="image/*" name='{{field.name}}' class="col-lg-6 col-sm-12 col-xs-12"/>
+                    </div>
+                </div>
+
+            {{/if}}
+
+
         {{/if}}
 
         {{#if field.isOptionsText}}

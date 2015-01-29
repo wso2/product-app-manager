@@ -79,12 +79,13 @@
         {
             "name": "banner",
             "table": "images",
-            "type": "file"
+            "type": "imageFile"
+
         },
         {
             "name": "thumbnail",
             "table": "images",
-            "type": "file"
+            "type": "imageFile"
         },
         {
             "name":"description",

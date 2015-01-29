@@ -50,6 +50,7 @@ var module = function () {
                 data['isReadOnly'] = (fieldTemplate.meta.readOnly) ? fieldTemplate.meta.readOnly : false;
                 data['isEditable'] = (fieldTemplate.meta.editable) ? fieldTemplate.meta.editable : false;
                 data['isFile'] = (fieldTemplate.type == 'file') ? true : false;
+                data['isImageFile'] = (fieldTemplate.type == 'imageFile') ? true : false;
 
 			    data['value']=field.value;
 
