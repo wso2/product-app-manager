@@ -102,7 +102,7 @@ var module = function () {
 
                 if(policyPartialMappings){
                     policyPartialMappings = JSON.parse(policyPartialMappings);
-                    log.warn(policyPartialMappings);
+                    log.debug("policyPartialMappings : " + stringify(policyPartialMappings));
                     for(var i = 0; i < policyPartialMappings.length; i++){
                         var EntitlementPolicyPartialMapping = Packages.org.wso2.carbon.appmgt.api.model.entitlement.EntitlementPolicyPartialMapping;
                         var mapping = new EntitlementPolicyPartialMapping();
