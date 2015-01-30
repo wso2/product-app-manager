@@ -17,7 +17,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>backend-service</module>
+       <!-- <module>backend-service</module>-->
         <module>tests-ui</module>
     </modules>
 
