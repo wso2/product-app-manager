@@ -180,6 +180,12 @@ $( document ).ready(function() {
     });
 
     $("#resource_tbody").delegate(".delete_resource","click", function(){
+
+        var conf = confirm("Are you sure you want to delete the selected resource?");
+        if (conf == false) {
+            return;
+        }
+
         var i = $(this).attr("data-index");
         RESOURCES_1.splice(i, 1);
 

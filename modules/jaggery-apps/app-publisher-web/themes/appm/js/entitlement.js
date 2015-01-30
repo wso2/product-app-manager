@@ -800,5 +800,4 @@ $(document).on("click", ".btn-reset", function () {
     $('#roles').tokenInput("clear");
     $('#tag-test').tokenInput("clear");
 
-
 });

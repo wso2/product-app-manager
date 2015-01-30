@@ -121,6 +121,7 @@ $( document ).ready(function() {
 
         var conf = confirm("Are you sure you want to delete the selected resource?");
         if (conf == true) {
+
             var i = $(this).attr("data-index");
             RESOURCES.splice(i, 1);
 
@@ -128,9 +129,8 @@ $( document ).ready(function() {
             invalidateEntitlementPolicy(i);
 
             $("#resource_tbody").trigger("draw");
+
         }
-
-
 
 
     });
