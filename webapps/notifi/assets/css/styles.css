@@ -1,0 +1,29 @@
+body{
+	padding-top: 60px;
+}
+
+textarea.form-control {
+	font-size:30px;
+}
+
+.raw-seperator{
+	padding-top: 20px;
+}
+
+.raw-message{
+	padding-top: 50px;
+	padding-bottom: 200px;
+}
+
+.raw-space{
+	padding-top: 20px;
+}
+
+.container-center{
+	padding-top: 100px;
+	text-align: center;
+}
+
+.icon-image{
+	width: 100px;
+}
