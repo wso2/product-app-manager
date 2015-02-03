@@ -396,7 +396,7 @@
         <stratos.version>2.2.0</stratos.version>
         <bcprov.jdk13.version>140</bcprov.jdk13.version>
         <bcprov.jdk15.version>132</bcprov.jdk15.version>
-        <automation.framework.utills.version>4.3.0-SNAPSHOT</automation.framework.utills.version>
+        <automation.framework.utills.version>4.3.0</automation.framework.utills.version>
     </properties>
 
 </project>
