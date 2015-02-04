@@ -438,7 +438,7 @@
                                 <featureArtifactDef>org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.feature:1.0.0-SNAPSHOT
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.appmanager:org.wso2.stratos.appmgt.dashboard.ui.feature:${stratos.version}
+                                    org.wso2.appmanager:org.wso2.stratos.appmgt.dashboard.ui.feature:1.0.0-SNAPSHOT
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.mobile.feature:1.0.0-SNAPSHOT
@@ -966,7 +966,7 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.stratos.appmgt.dashboard.ui.feature.group</id>
-                                    <version>${stratos.version}</version>
+                                    <version>1.0.0-SNAPSHOT</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.appmgt.mobile.feature.group</id>
