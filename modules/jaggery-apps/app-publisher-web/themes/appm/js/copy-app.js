@@ -52,7 +52,6 @@ $(function() {
 
     }
 
-
     function loadSelectedProviders(providers_data) {
         for (var i = 0; i < providers_data.length; i++) {
             var x = providers_data[i];
@@ -64,7 +63,6 @@ $(function() {
         loadClaims(sso_provider);
         loadSelectedClaims(sso_provider);
     }
-
 
     function loadSelectedClaims(selectedProvider) {
         var y = selectedProvider.split("-");
