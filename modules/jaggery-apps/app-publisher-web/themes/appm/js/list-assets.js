@@ -5,10 +5,23 @@ var action = $(this).data("action");
 //alert(app + action);
 
 
-	jQuery.ajax({
-		url : '/publisher/api/lifecycle/'+ action +'/webapp/' + app,
-		type : "PUT"
-	});
+    jQuery.ajax({
+        url: '/publisher/api/lifecycle/' + action + '/webapp/' + app,
+        type: "PUT",
+        success: function (response) {
+            //Convert the response to a JSON object
+            var statInfo = JSON.parse(response);
+            var isAsynch = statInfo.asynch;
+            if (isAsynch == false && action == 'Approve') {
+                showMessageModel("Your request to publish the application is awaiting administrator approval.", "Awaiting administrator approval", "webapp");
+            } else {
+                location.reload();
+            }
+        },
+        error: function (response) {
+            showMessageModel("Error occured while updating life-cycle state : " + action, "Lify-cycle update failed", "webapp");
+        }
+    });
 	
 	$( document ).ajaxComplete(function() {
 		 location.reload();
@@ -68,7 +81,18 @@ $( ".btn-view-app" ).click(function(e) {
 
 });
 
+var showMessageModel = function (msg, head, type) {
 
+    $('#messageModal2').html($('#confirmation-data1').html());
+    $('#messageModal2 h3.modal-title').html((head));
+    $('#messageModal2 div.modal-body').html('\n\n' + (msg) + '</b>');
+    $('#messageModal2 a.btn-other').html('OK');
+    $('#messageModal2').modal();
+    $("#messageModal2").on('hidden.bs.modal', function () {
+        window.location = '/publisher/assets/' + type + '/';
+    });
+
+};
 
 function updateQRCode(text) {
 
