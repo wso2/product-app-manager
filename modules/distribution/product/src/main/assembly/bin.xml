@@ -98,7 +98,7 @@
         </fileSet>
 	<fileSet>
             <directory>
-                ../../jaggery-apps/enterprise-store/storage/
+                ../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/dbscripts/storage/
             </directory>
             <outputDirectory>wso2appm-${pom.version}/dbscripts/storage</outputDirectory>
             <includes>

@@ -99,9 +99,7 @@
                 <enabled>false</enabled>
             </releases>
         </repository>
-
-
-    </repositories>
+    </repositories> 
 
     <pluginRepositories>
         <pluginRepository>
