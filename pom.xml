@@ -350,7 +350,7 @@
                 <version>${version.javax.servlet.jsp}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon</groupId>
+                <groupId>org.wso2.carbon.automationutils</groupId>
                 <artifactId>org.wso2.carbon.integration.common.admin.client</artifactId>
                 <version>${automation.framework.utills.version}</version>
                 <scope>test</scope>
