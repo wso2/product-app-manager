@@ -164,7 +164,6 @@ $( document ).ready(function() {
 
 
 
-
     $("#add_resource").click(function(){
         $(".http_verb").each(function(){
             var resource = {};
