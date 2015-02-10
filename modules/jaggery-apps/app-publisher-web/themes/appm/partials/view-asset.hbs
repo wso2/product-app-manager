@@ -57,7 +57,53 @@
                                 <tr>
                                     <td>{{urlPattern}}</td>
                                     <td>{{httpVerb}}</td>
-                                    <td>{{policyGroupName}}</td>
+                                    <td>{{policyGroupName}}
+                                        <a data-toggle="modal" data-target=".bs-example-modal-sm-{{policyGroupId}}{{httpVerb}}"
+                                           class="policy-tool-tip">
+                                            <i class="icon-info-sign"></i>
+                                        </a>
+                                        <!-- add model for each policy -->
+                                        <div class="modal fade bs-example-modal-sm-{{policyGroupId}}{{httpVerb}}"
+                                             tabindex="-1" role="dialog"
+                                             aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">
+                                                            <span aria-hidden="true">×</span>
+                                                            <span class="sr-only">Close</span>
+                                                        </button>
+                                                        <h4 class="modal-title" id="mySmallModalLabel">
+                                                            Policy Group Details - <b>{{policyGroupName}}</b>
+                                                        </h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <table class="table table-striped">
+                                                            <tr>
+                                                                <td>Throttling Tier:</td>
+                                                                <td>{{policyGroupTire}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Anonymous Access:</td>
+                                                                <td>{{policyGroupAnonymous}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>User Roles:</td>
+                                                                <td>{{policyGroupRoles}}</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>XACML Policies:</td>
+                                                                <td>{{policyGroupPartials}}</td>
+                                                            </tr>
+
+                                                        </table>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
                             {{/compare}}
                         {{/compare}}

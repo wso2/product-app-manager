@@ -1429,3 +1429,10 @@ h2.first-h2{
     font-size: 17px;
     margin-top: -26px;
 }
+
+a.policy-tool-tip {
+    float: right;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 15px;
+}
