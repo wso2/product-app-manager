@@ -141,7 +141,7 @@ $( document ).ready(function() {
                 async:false,
                 success: function (data) {
                     for (var i = 0; i < data.length; i++) {
-
+                        
                         policyGroupsArray.push({
                             policyGroupId: data[i].policyGroupId,
                             policyGroupName: data[i].policyGroupName,
@@ -157,7 +157,6 @@ $( document ).ready(function() {
                 }
             });
 
-alert(JSON.stringify(policyGroupsArray[0].policyPartials));
         },
         error: function(){}
     });
