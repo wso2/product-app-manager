@@ -45,13 +45,9 @@
                 <table style="margin-top: 10px;" class="table table-striped table-bordered table-condensed table-hover resource-table">
                     <thead>
                     <tr>
-                        <th>URL Pattern</th>
-                        <th>HTTP Verb</th>
-                        <th>Throttling Tier</th>
-                        <th>Skip Throttling</th>
-                        <th>Allow Anonymous Access</th>
-                        <th>Access Policy</th>
-                        <th>User Roles</th>
+                        <th class="col-md-7">URL Pattern</th>
+                      <th class="col-md-2">HTTP Verb</th>
+                        <th class="col-md-2">Policy Group</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -61,11 +57,7 @@
                                 <tr>
                                     <td>{{urlPattern}}</td>
                                     <td>{{httpVerb}}</td>
-                                    <td>{{tire}}</td>
-                                    <td>{{skip}}</td>
-                                    <td>{{anonymous}}</td>
-                                    <td>{{policy}}</td>
-                                    <td>{{roles}}</td>
+                                    <td>{{policyGroupName}}</td>
                                 </tr>
                             {{/compare}}
                         {{/compare}}

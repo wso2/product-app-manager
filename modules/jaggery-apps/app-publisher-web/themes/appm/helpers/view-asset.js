@@ -30,9 +30,8 @@ var merge = function(data){
       sResult = sResult.substr(1, sResult.length()-2);
 
 
-	var resultPolicy = appMDAOObj.getPolicyGroupPoliciesApplicationWise(data.artifact.id);
-
-
+	var resultPolicy = JSON.parse(appMDAOObj.getPolicyGroupPoliciesApplicationWise(data.artifact.id));
+log.info(resultPolicy)
 	 
 	 for(var i in data.data.fields) {
 
@@ -43,13 +42,26 @@ var merge = function(data){
 
 
 		 for (var c in data.data.fields) {
+
 			 if (data.data.fields[i].name == "uritemplate_policygroupid" + c) {
 				 if (data.data.fields[i].value != "" && !isNaN(data.data.fields[i].value)) {
-
-					 // data.data.fields[i].value = sResultPolicy.split(",")[1];
+                     //replace group policy id by name
+                     for(var j=0; j < resultPolicy.length; j++){
+                        if(resultPolicy[j].POLICY_GRP_ID == data.data.fields[i].value){
+                            data.data.fields[i].value = {
+                                'id': resultPolicy[j].POLICY_GRP_ID,
+                                'name': resultPolicy[j].POLICY_GRP_NAME,
+                                'tire': resultPolicy[j].THROTTLING_TIER,
+                                'anonymous':resultPolicy[j].URL_ALLOW_ANONYMOUS,
+                                'roles':resultPolicy[j].USER_ROLES
+                            };
+                        }
+                     }
 
 				 }
 			 }
+
+
 		 }
 	 }
 
