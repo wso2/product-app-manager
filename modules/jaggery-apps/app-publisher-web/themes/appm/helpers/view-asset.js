@@ -29,15 +29,31 @@ var merge = function(data){
      var sResult = result.toString();
       sResult = sResult.substr(1, sResult.length()-2);
 
-	 
-	 for(var i in data.data.fields){
 
-		 if (data.data.fields[i].name == 'oauthapis_webappConsumerKey'){
-			 data.data.fields[i].value =  sResult.split(",")[0];
-		 }else if(data.data.fields[i].name == 'oauthapis_webappConsumerSecret')
+	var resultPolicy = appMDAOObj.getPolicyGroupPoliciesApplicationWise(data.artifact.id);
+
+
+	 
+	 for(var i in data.data.fields) {
+
+		 if (data.data.fields[i].name == 'oauthapis_webappConsumerKey') {
+			 data.data.fields[i].value = sResult.split(",")[0];
+		 } else if (data.data.fields[i].name == 'oauthapis_webappConsumerSecret')
 			 data.data.fields[i].value = sResult.split(",")[1];
 
+
+		 for (var c in data.data.fields) {
+			 if (data.data.fields[i].name == "uritemplate_policygroupid" + c) {
+				 if (data.data.fields[i].value != "" && !isNaN(data.data.fields[i].value)) {
+
+					 // data.data.fields[i].value = sResultPolicy.split(",")[1];
+
+				 }
+			 }
+		 }
 	 }
+
+
 	 return data;
 };
 
