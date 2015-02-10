@@ -79,6 +79,19 @@ var render = function (theme, data, meta, require) {
         case 'statistics':
             listPartial = 'statistics';
             break;
+        case 'app_sub_user':
+            listPartial = 'app_sub_user';
+            break;
+        case 'apps':
+            listPartial = 'apps';
+            break;
+        case 'response-time':
+            listPartial = 'response-time';
+            break;
+        case 'usage-page':
+            listPartial = 'usage-page';
+            break;
+
         default:
             break;
     }
