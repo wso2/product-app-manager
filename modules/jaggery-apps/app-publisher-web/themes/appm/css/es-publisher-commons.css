@@ -1422,3 +1422,10 @@ h2.first-h2{
 .space-top-20{
     margin-top: 20px;
 }
+
+.group-role-search {
+    float: left;
+    margin-left: 378px;
+    font-size: 17px;
+    margin-top: -26px;
+}
