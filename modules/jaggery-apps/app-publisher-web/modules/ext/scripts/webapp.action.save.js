@@ -82,42 +82,23 @@ var module = function () {
         var attributes = asset.attributes;
         var urlPattern = attributes["uritemplate_urlPattern" + index];
         var policyPartials = attributes["uritemplate_policyPartialIds"];
+        var policyGroups = attributes["uritemplate_policyGroupIds"];
+
         webAppObj.setPolicyPartials(policyPartials);
+        webAppObj.setPolicyGroups(policyGroups); //set policy group id list
 
         while(urlPattern != null && trim(urlPattern).length > 0){
 
         		var URITemplate = Packages.org.wso2.carbon.appmgt.api.model.URITemplate;
         		var uriTemplate = new URITemplate();
-
         		uriTemplate.setHTTPVerb(attributes["uritemplate_httpVerb" + index]);
-        		uriTemplate.setAuthType(attributes["uritemplate_authType" + index]);
         		uriTemplate.setUriTemplate(attributes["uritemplate_urlPattern" + index]);
-        		uriTemplate.setThrottlingTier(attributes["uritemplate_tier" + index]);
-        		uriTemplate.setSkipThrottling(attributes["uritemplate_skipthrottle" + index] === "True");
-        		uriTemplate.setUserRoles(attributes["uritemplate_userRoles" + index]);
-                uriTemplate.setAllowAnonymousURL(attributes["uritemplate_allowAnonymous" + index] === "True");
+                uriTemplate.setPolicyGroupId(attributes["uritemplate_policygroupid" + index]);
 
-                // Set policy partial ids.
-                var policyPartialMappings = attributes["uritemplate_entitlementPolicyPartialMappings" + index];
-
-                if(policyPartialMappings){
-                    policyPartialMappings = JSON.parse(policyPartialMappings);
-                    log.warn(policyPartialMappings);
-                    for(var i = 0; i < policyPartialMappings.length; i++){
-                        var EntitlementPolicyPartialMapping = Packages.org.wso2.carbon.appmgt.api.model.entitlement.EntitlementPolicyPartialMapping;
-                        var mapping = new EntitlementPolicyPartialMapping();
-                        mapping.setEntitlementPolicyPartialId(policyPartialMappings[i]["entitlementPolicyPartialId"]);
-                        mapping.setEffect(policyPartialMappings[i]["effect"]);
-                        uriTemplate.addEntitlementPolicyPartialMapping(mapping);
-                    }
-                }
-
-        		webAppObj.getUriTemplates().add(uriTemplate);
-
+                webAppObj.getUriTemplates().add(uriTemplate);
         		index++;
         		urlPattern = attributes["uritemplate_urlPattern" + index];
         }
-
         appMDAOObj.addWebApp(webAppObj);
 
         //Generate consumer/secret for web-app

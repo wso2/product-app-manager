@@ -85,7 +85,10 @@ var splitData = function(copyOfData){
                         patternEntry.policy = uriTemplate[j].value;
                     }else if(secondNamePart == "uritemplate_allowanonymous"){
                         patternEntry.anonymous= uriTemplate[j].value;
+                    }else if(secondNamePart == "uritemplate_policygroupid") {
+                        patternEntry.policyGroup = uriTemplate[j].value;
                     }
+
                 }
             }
             if(!isEmpty(patternEntry)){

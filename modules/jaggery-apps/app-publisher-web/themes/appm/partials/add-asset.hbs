@@ -83,6 +83,36 @@
                 </div>
             </div>
 
+            <!-- TODO: block for JAVA Policies -->
+            <!--
+            <div class="wr-section">
+                <h2 class="exp_col"><i class="icon-chevron-sign-right icon"></i>JAVA Policies</h2>
+                <div id="wr-overview" style="display:none">
+
+                    <fieldset>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Policy Name</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>policy one</td>
+                                    <td><input type="checkbox"></td>
+                                </tr>
+                                <tr>
+                                    <td>policy Two</td>
+                                    <td><input type="checkbox"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </fieldset>
+                </div>
+            </div>
+            -->
 
             <div class="wr-section">
                 <button id="btn-add-xacml-policy" class="btn btn-default pull-right" data-toggle='modal' data-target='#entitlement-policy-editor' type="button">Add New Policy</button>
@@ -92,9 +122,11 @@
 
                     <fieldset>
                         <input type='hidden' value="[]" name="uritemplate_policyPartialIds" id="uritemplate_policyPartialIds" />
+                        <input type='hidden' value="[]" name="uritemplate_policyGroupIds" id="uritemplate_policyGroupIds" />
+
                         <table class="table table-striped" id="policyPartialsTable">
                             <thead>
-                            <tr >
+                            <tr>
                                 <th>Policy Name</th>
                                 <th>Shared</th>
                                 <th>Author</th>
@@ -114,7 +146,7 @@
             <div class="wr-section">
                 <button id="btn-add-policy-group" class="btn btn-default pull-right" data-toggle='modal' data-target='#policy-group-editor' type="button">Add Policy Group</button>
                 <h2 class="exp_col"><i class="icon-chevron-sign-right icon"></i>Policy Groups</h2>
-                <div id="wr-overview" class="wr-overview-policies" style="display:none">
+                <div id="wr-overview" style="display:none">
                     <!--p class="title-helper-txt">A small description about these set of fields.</p-->
 
                     <fieldset>
@@ -180,11 +212,7 @@
                             <tr>
                                 <th>URL Pattern</th>
                                 <th style="width: 80px;">HTTP Verb</th>
-                                <th style="width: 100px;">Throttling Tier</th>
-                                <th style="width: 70px;">Skip Throttling</th>
-                                <th style="width: 70px;">Allow Anonymous Access</th>
-                                <th style="width: 50px;">Access Policy</th>
-                                <th style="width: 190px">User Roles</th>
+                                <th style="width: 70px;">Policy Group</th>
                                 <th style="width: 65px"></th>
                             </tr>
                             </thead>

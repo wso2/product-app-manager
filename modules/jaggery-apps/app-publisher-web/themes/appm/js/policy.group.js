@@ -17,10 +17,12 @@
  */
 
 
-var editedPolicyGroup = 0; //if edit or save
-var policyGroupsArray = new Array();
+var editedPolicyGroup = 0; //contains status (if edit or save)
+var policyGroupsArray = new Array(); //policy group related details array
+var policyGroupBlock; //contains html formatted options list of Policy Groups
 
 $(document).ready(function () {
+    //load throttling tiers
     $("#throttlingTier").empty().append(throttlingTierControlBlock);
 });
 
@@ -29,19 +31,34 @@ $('#userRoles').tokenInput('/publisher/api/lifecycle/information/meta/' + $('#me
     theme: 'facebook',
     preventDuplicates: true,
     onAdd: function (role) {
-
     },
     onDelete: function (role) {
-
     }
 });
 
-function savePolicyGroup() {
-    var policyGroupName = $('#policyGroupName').val();
-    var throttlingTier = $('#throttlingTier').val();
-    var anonymousAccessToUrlPattern = $('#anonymousAccessToUrlPattern').val();
-    var userRoles = $('#userRoles').val();
+/** validate data before saving
+ *
+ * @param policyGroupName :Policy Group Name
+ * @returns {boolean} :if successfully validated returns true else returns false
+ */
+function validate(policyGroupName) {
+    var result = true;
+    if (policyGroupName == "") {
+        showPolicyGroupNotification(($('#lblPolicyGroupName').text() + " field cannot be blank"), "alert-danger");
+        result = false;
+    }
+    return result;
+}
 
+/**
+ * Save policy group
+ * @param policyGroupName :Policy Group Name
+ * @param throttlingTier :Throttling Tier
+ * @param anonymousAccessToUrlPattern : if anonymous access allowed for the related url pattern/verb
+ * @param userRoles : User Roles
+ * @param objPartialMappings : Object which contains XACML policy partial details arrays
+ */
+function savePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, objPartialMappings) {
     $.ajax({
         url: '/publisher/api/entitlement/policy/partial/policyGroup/save',
         type: 'POST',
@@ -49,32 +66,39 @@ function savePolicyGroup() {
             "policyGroupName": policyGroupName,
             "throttlingTier": throttlingTier,
             "userRoles": userRoles,
-            "anonymousAccessToUrlPattern": anonymousAccessToUrlPattern
+            "anonymousAccessToUrlPattern": anonymousAccessToUrlPattern,
+            "objPartialMappings": objPartialMappings
         },
         success: function (data) {
             editedPolicyGroup = JSON.parse(data).response.id;
             policyGroupsArray.push({
-                policyGroupId: returnedId,
+                policyGroupId: editedPolicyGroup,
                 policyGroupName: policyGroupName,
                 throttlingTier: throttlingTier,
                 anonymousAccessToUrlPattern: anonymousAccessToUrlPattern,
                 userRoles: userRoles
-            });
 
-            showPolicyGroupError("Policy Group "+editedPolicyGroup+" saved successfully ");
+            });
+            //Policy Group partial update
+            updatePolicyGroupPartial(policyGroupsArray);
+            $('#policy-group-editor #policyGroupName').prop("readonly", true);
+            showPolicyGroupNotification("Policy Group - " + policyGroupName + " saved successfully ", "alert-success");
         },
         error: function () {
-            showPolicyGroupError("Error occurred while saving the Policy Group data")
+            showPolicyGroupNotification("Error occurred while saving the Policy Group data")
         }
     });
 }
 
-
-function updatePolicyGroup() {
-    var policyGroupName = $('#policyGroupName').val();
-    var throttlingTier = $('#throttlingTier').val();
-    var anonymousAccessToUrlPattern = $('#anonymousAccessToUrlPattern').val();
-    var userRoles = $('#userRoles').val(); 
+/**
+ * Update policy group
+ * @param policyGroupName :Policy Group Name
+ * @param throttlingTier :Throttling Tier
+ * @param anonymousAccessToUrlPattern : if anonymous access allowed for the related url pattern/verb
+ * @param userRoles : User Roles
+ * @param objPartialMappings : Object which contains XACML policy partial details arrays
+ */
+function updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, objPartialMappings) {
     $.ajax({
         url: '/publisher/api/entitlement/policy/partial/policyGroup/details/update',
         type: 'POST',
@@ -83,43 +107,302 @@ function updatePolicyGroup() {
             "throttlingTier": throttlingTier,
             "userRoles": userRoles,
             "anonymousAccessToUrlPattern": anonymousAccessToUrlPattern,
-            "policyGroupId":editedPolicyGroup
+            "policyGroupId": editedPolicyGroup,
+            "objPartialMappings": objPartialMappings
         },
-        success: function (data) { 
-            showPolicyGroupError("Policy Group "+editedPolicyGroup+" updated successfully");
+        success: function (data) {
+            updatePolicyGroupPartial(policyGroupsArray);
+            showPolicyGroupNotification("Policy Group - " + policyGroupName + " updated successfully", "alert-success");
+
         },
         error: function () {
-            showPolicyGroupError("Error occurred while saving the Policy Group data")
+            showPolicyGroupNotification("Error occurred while saving the Policy Group data")
         }
     });
 }
 
 
-$(document).on("click", "#btn-policy-save", function () {
-    if (editedPolicyGroup == 0) {
-        savePolicyGroup();
-    }
-    else {
-        updatePolicyGroup();
+$(document).on("click", "#btn-policy-group-save", function () {
+    //Policy Group Name
+    var policyGroupName = $('#policy-group-editor #policyGroupName').val().trim();
+    //Throttling Tier
+    var throttlingTier = $('#policy-group-editor #throttlingTier').val();
+    //if anonymous access allowed for the related url pattern/verb
+    var anonymousAccessToUrlPattern = $('#policy-group-editor #anonymousAccessToUrlPattern').val();
+    //User Roles
+    var userRoles = $('#policy-group-editor #userRoles').val();
+
+    hidePolicyGroupNotification();
+
+    //contains XACML policy partial details arrays
+    var objPartialMappings = {policyGroupOptions: []};
+
+    //check the selected XACML policy partial options and add to array
+    $('.policy-opt-val').each(function (index, obj) {
+        //get checked value from list
+        if ($(this).context.checked) {
+            var pgID = $(this).attr('data-policy-id'); //partial id
+            if ($(this).hasClass('policy-allow-cb')) {
+                objPartialMappings.policyGroupOptions.push({"entitlementPolicyPartialId": pgID, "effect": "Permit"});
+            } else if ($(this).hasClass('policy-deny-cb')) {
+                objPartialMappings.policyGroupOptions.push({"entitlementPolicyPartialId": pgID, "effect": "Deny"});
+            }
+        }
+    });
+
+    if (validate(policyGroupName)) {
+        // editedPolicyGroup : 0 > then insert else update
+        if (editedPolicyGroup == 0) {
+            savePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions));
+        }
+        else {
+            updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions));
+        }
     }
 });
 
-function showPolicyGroupError(text) {
+
+$(document).on("click", "#btn-policy-group-save-and-close", function () {
+    //Policy Group Name
+    var policyGroupName = $('#policy-group-editor #policyGroupName').val().trim();
+    //Throttling Tier
+    var throttlingTier = $('#policy-group-editor #throttlingTier').val();
+    //if anonymous access allowed for the related url pattern/verb
+    var anonymousAccessToUrlPattern = $('#policy-group-editor #anonymousAccessToUrlPattern').val();
+    //User Roles
+    var userRoles = $('#policy-group-editor #userRoles').val();
+
+    hidePolicyGroupNotification();
+
+    //contains XACML policy partial details arrays
+    var objPartialMappings = {policyGroupOptions: []};
+
+    //check the selected XACML policy partial options and add to array
+    $('.policy-opt-val').each(function (index, obj) {
+        //get checked value from list
+        if ($(this).context.checked) {
+            var pgID = $(this).attr('data-policy-id'); //partial id
+            if ($(this).hasClass('policy-allow-cb')) {
+                objPartialMappings.policyGroupOptions.push({"entitlementPolicyPartialId": pgID, "effect": "Permit"});
+            } else if ($(this).hasClass('policy-deny-cb')) {
+                objPartialMappings.policyGroupOptions.push({"entitlementPolicyPartialId": pgID, "effect": "Deny"});
+            }
+        }
+
+    });
+
+    if (validate(policyGroupName)) {
+        // editedPolicyGroup : 0 > then insert else update
+        if (editedPolicyGroup == 0) {
+            savePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions));
+        }
+        else {
+            updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions));
+        }
+        //close the modal
+        $("#policy-group-editor").modal('hide');
+    }
+
+});
+
+
+$(document).on("click", ".policy-group-edit-button", function () {
+    var policyGroupId = $(this).attr('data-policy-id');
+    $('#policy-group-editor #policyGroupName').prop("readonly", true);
+    hidePolicyGroupNotification();
+    //handling edit view on partial
+    $.each(policyGroupsArray, function (index, obj) {
+        if (obj != null && obj.policyGroupId == policyGroupId) {
+            $('#policy-group-editor #policyGroupName').val(obj.policyGroupName);
+            $("#policy-group-editor #throttlingTier option[value=" + obj.throttlingTier +
+            "]").attr("selected", "selected");
+            $("#policy-group-editor #anonymousAccessToUrlPattern option[value=" + obj.anonymousAccessToUrlPattern +
+            "]").attr("selected", "selected");
+            $('#policy-group-editor #userRoles').val(obj.userRoles);
+            //generate token input method
+            $('#userRoles').tokenInput("clear");
+            if (obj.userRoles != '') {
+                var roletoken = obj.userRoles.split(',');
+            } else {
+                var roletoken = [];
+            }
+
+            for (var i = 0; i < roletoken.length; i++) {
+                $('#userRoles').tokenInput("add", {id: roletoken[i], name: roletoken[i]});
+            }
+        }
+    });
+});
+
+/**
+ * Notification Alert
+ * @param text : message text
+ * @param alertType : alert type ('alert-success' or 'alert-danger')
+ */
+function showPolicyGroupNotification(text, alertType) {
+    var alerttype = alertType,
+        alerttext = $('#policyGroup-notification-text');
+
+    if (alerttext.hasClass('alert-danger')) {
+        alerttext.removeClass('alert-danger');
+    } else {
+        alerttext.removeClass('alert-success');
+    }
+
+    alerttext.addClass(alerttype);
     $('#policyGroup-notification-text').show();
     $('#policyGroup-notification-text-data').html(text);
 }
-function hidePolicyGroupError() {
+
+/**
+ * hide notification message
+ */
+function hidePolicyGroupNotification() {
     $('#policyGroup-notification-text').hide();
 }
 
 
 $(document).on("click", "#btn-add-policy-group", function () {
-    hidePolicyGroupError();
+    editedPolicyGroup = 0;
+    $('#policy-group-editor #policyGroupName').val("");
+    $('#policy-group-editor #policyGroupName').prop("readonly", false);
+    $('#policy-group-editor #throttlingTier').prop('selectedIndex', 0);
+    $('#policy-group-editor #anonymousAccessToUrlPattern').prop('selectedIndex', 0);
+    $('#policy-group-editor #userRoles').tokenInput("clear");
+    hidePolicyGroupNotification();
 });
 
-$.each(policyGroupsArray, function (index, obj) {
-    if (obj != null) {
-        $('#policyGroupsTable tbody').append('<tr><td>' + obj.policyGroupId + '</td><td>' + obj.policyGroupName + '</td><td><a data-target="#entitlement-policy-editor" data-toggle="modal" data-policy-id="' + obj.policyGroupId + '" class="policy-edit-button"><i class="icon-edit"></i></a> &nbsp;<a  data-policy-name="' + obj.policyGroupName + '"  data-policy-id="' + obj.policyGroupId + '" class="policy-delete-button"><i class="icon-trash"></i></a></td></tr>');
+/**
+ * Policy Group partial update
+ * This will update html after saving a policy group
+ * @param policyGroupsArray
+ */
+function updatePolicyGroupPartial(policyGroupsArray) {
+    $('#policyGroupsTable tbody').html('');
+    var policyGroupIndexArray = [];
+
+    $.each(policyGroupsArray, function (index, obj) {
+        if (obj != null) {
+            $('#policyGroupsTable tbody').append('<tr><td>' + obj.policyGroupName +
+            '</td><td><a data-target="#policy-group-editor" data-toggle="modal" data-policy-id="'
+            + obj.policyGroupId + '" class="policy-group-edit-button"><i class="icon-edit"></i></a> &nbsp;' +
+            '<a  data-policy-name="' + obj.policyGroupName + '"  data-policy-id="' + obj.policyGroupId +
+            '" class="policy-group-delete-button"><i class="icon-trash"></i></a></td></tr>');
+
+            policyGroupIndexArray.push(obj.policyGroupId);
+        }
+    });
+
+    //store the list of policy group id's (will be used in save operation to map the application wise created policy groups)
+    $('#uritemplate_policyGroupIds').val(JSON.stringify(policyGroupIndexArray));
+
+    //formatted policy group option list block
+    policyGroupBlock = drawPolicyGroupsDynamically();
+
+    //update the url pattern wise policy group drop downs
+    $('.policy_groups').each(function () {
+        $(this).html(policyGroupBlock);
+    });
+
+    setPolicyGroupValue();
+}
+
+//handle policy group delete event
+$(document).on("click", ".policy-group-delete-button", function () {
+    //Policy Group Id
+    var policyGroupId = $(this).attr('data-policy-id');
+    //Policy Group Name
+    var policyGroupName = $(this).attr('data-policy-name');
+    //Application UUID
+    var uuid = $("#uuid").val();
+    //Application Id
+    var applicationId = getApplicationId(uuid);
+
+    deletePolicyGroup(applicationId, policyGroupId, policyGroupName);
+});
+
+/**
+ * Delete policy group by id
+ * @param applicationId :Application Id
+ * @param policyGroupId : PolicyGroup Id
+ * @param policyGroupName :Policy Group Name
+ */
+function deletePolicyGroup(applicationId, policyGroupId, policyGroupName) {
+    var arrayIndex; //deleted index of the array
+    var groupPartial;
+    var conf = confirm("Are you sure you want to delete the policy " + policyGroupName + "?");
+    if (conf) {
+        $.each(policyGroupsArray, function (index, obj) {
+            if (obj != null && obj.policyGroupId == policyGroupId) {
+                groupPartial = obj;
+                arrayIndex = index;
+                return false; // break
+            }
+        });
+
+        $.ajax({
+            url: '/publisher/api/entitlement/policy/partial/policyGroup/details/delete/' + applicationId + '/' + policyGroupId,
+            type: 'DELETE',
+            success: function (data) {
+                //to remove index and value from policy array
+                for (var i in policyGroupsArray) {
+                    if (i == arrayIndex) {
+                        policyGroupsArray.splice(i, 1);
+                        break;
+                    }
+                }
+                updatePolicyGroupPartial(policyGroupsArray);
+            },
+            error: function () {
+                alert("Couldn't delete the Policy Group " + policyGroupName + ". This Policy Group is being used by web apps  ")
+            }
+        });
     }
-});
+}
 
+/**
+ * Get Application Id by passing Application UUID
+ * @param uuid : Application UUID
+ * @returns {string} : Application Id
+ */
+function getApplicationId(uuid) {
+    var appid = "-1";
+    $.ajax({
+        url: '/publisher/api/entitlement/get/webapp/id/from/entitlements/uuid/' + uuid,
+        type: 'GET',
+        contentType: 'application/json',
+        async: false,
+        success: function (id) {
+            appid = id;
+        },
+        error: function () {
+        }
+    });
+    return appid;
+}
+
+
+/**
+ * Create the html formatted block of throttling tier list
+ * @returns {string} : throttling tier options list
+ */
+function drawThrottlingTiersDynamically() {
+    var strContent = "";
+    tiers.reverse();
+    for (var i = 0; i < tiers.length; i++) {
+        strContent += "<option title='" + tiers[i].tierDescription + "' value='" + tiers[i].tierName + "' id='" + tiers[i].tierName + "'>" + tiers[i].tierDisplayName + "</option>";
+    }
+    return strContent;
+}
+
+/**
+ * Create the html formatted block for policy group list
+ * @returns {string} : policy group options list
+ */
+function drawPolicyGroupsDynamically() {
+    var strContent = "";
+    for (var i = 0; i < policyGroupsArray.length; i++) {
+        strContent += "<option title='" + policyGroupsArray[i].policyGroupName + "' value='" + policyGroupsArray[i].policyGroupId + "' id='" + policyGroupsArray[i].policyGroupId + "'>" + policyGroupsArray[i].policyGroupName + "</option>";
+    }
+    return strContent;
+}
