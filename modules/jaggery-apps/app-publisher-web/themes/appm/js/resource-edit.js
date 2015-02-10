@@ -147,7 +147,8 @@ $( document ).ready(function() {
                             policyGroupName: data[i].policyGroupName,
                             throttlingTier: data[i].throttlingTier,
                             anonymousAccessToUrlPattern: data[i].userRoles,
-                            userRoles: data[i].allowAnonymous
+                            userRoles: data[i].allowAnonymous,
+                            policyPartials:data[i].policyPartials
                         })
                     }
                     updatePolicyGroupPartial(policyGroupsArray);
@@ -156,7 +157,7 @@ $( document ).ready(function() {
                 }
             });
 
-
+alert(JSON.stringify(policyGroupsArray[0].policyPartials));
         },
         error: function(){}
     });
