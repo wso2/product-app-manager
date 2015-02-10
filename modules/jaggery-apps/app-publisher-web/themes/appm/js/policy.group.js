@@ -219,6 +219,10 @@ $(document).on("click", ".policy-group-edit-button", function () {
             $("#policy-group-editor #anonymousAccessToUrlPattern option[value=" + obj.anonymousAccessToUrlPattern +
             "]").attr("selected", "selected");
             $('#policy-group-editor #userRoles').val(obj.userRoles);
+            //clear all checkbox
+            $('.policy-opt-val').each(function(){
+                $(this).prop('checked', false)
+            });
             //generate token input method
             $('#userRoles').tokenInput("clear");
             if (obj.userRoles != '') {
@@ -230,6 +234,34 @@ $(document).on("click", ".policy-group-edit-button", function () {
             for (var i = 0; i < roletoken.length; i++) {
                 $('#userRoles').tokenInput("add", {id: roletoken[i], name: roletoken[i]});
             }
+
+            //handle XACML Policies:
+            var getPolicyPartials = JSON.parse(obj.policyPartials);
+
+            for(var j=0; j < getPolicyPartials.length; j++){
+                if(getPolicyPartials[j].POLICY_GRP_ID == policyGroupId){
+
+                    $('.policy-opt-val').each(function(){
+                        var checkeditem = $(this).attr('data-policy-id');
+                        if(getPolicyPartials[j].POLICY_PARTIAL_ID == checkeditem && getPolicyPartials[j].EFFECT == 'Permit'){
+                            if($(this).hasClass('policy-allow-cb')){
+                                $(this).prop('checked', true);
+                            }
+                        }
+                        if(getPolicyPartials[j].POLICY_PARTIAL_ID == checkeditem && getPolicyPartials[j].EFFECT == 'Deny'){
+                            if($(this).hasClass('policy-deny-cb')){
+                                $(this).prop('checked', true);
+                            }
+                        }
+                    });
+
+
+                }
+
+
+
+            }
+
         }
     });
 });

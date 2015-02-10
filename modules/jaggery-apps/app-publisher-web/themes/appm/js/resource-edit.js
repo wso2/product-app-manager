@@ -157,7 +157,6 @@ $( document ).ready(function() {
                 }
             });
 
-alert(JSON.stringify(policyGroupsArray[0].policyPartials));
         },
         error: function(){}
     });
