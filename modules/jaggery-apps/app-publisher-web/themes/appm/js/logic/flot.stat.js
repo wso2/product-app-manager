@@ -1,24 +1,22 @@
 $(function () {
     drawGraphs();
-
 });
 
 function drawGraphs() {
-    var url = window.location.pathname;
 
+    var url = window.location.pathname;
     var comps = url.split('/');
     var type = comps[comps.length - 2];
     var operation = comps[comps.length - 3];
     var action = 'getSubscriberCountByAPIs';
-
     var dateRange = $('#date-range-field span').text();
     var from = dateRange.split('to')[0];
     var to = dateRange.split('to')[1];
-
     var userParsedResponse;
 
     $.ajax({
         /* Web Application Last Access Time Graph */
+        async :false,
         url : '/publisher/api/assets/' + operation + '/' + type + '/' + action
             + '/',
         type : 'POST',
@@ -33,491 +31,443 @@ function drawGraphs() {
             alert('Error occured at statistics graph rendering');
         }
     });
-
-    $.ajax({
-        url : '/publisher/api/assets/' + operation + '/' + type
-            + '/getSubscribedAPIsByUsers/',
-        type : 'POST',
-        data : {
-            'startDate' : from,
-            'endDate' : to
-        },
-        success : function(response) {
-            drawSubscribedAPIsByUsers(response);
-        },
-        error : function(response) {
-            alert('Error occured at statistics graph rendering');
-        }
-    });
-
-    $.ajax({
-        url : '/publisher/api/assets/' + operation + '/' + type
-            + '/getAPIUsageByUser/',
-        type : 'POST',
-        data : {
-            'startDate' : from,
-            'endDate' : to
-        },
-        success : function(response) {
-            drawAPIUsageByUser(response);
-        },
-        error : function(response) {
-            alert('Error occured at statistics graph rendering');
-        }
-    });
-
-    $.ajax({
-        url : '/publisher/api/assets/' + operation + '/' + type
-            + '/getAPIResponseTime/',
-        type : 'POST',
-        data : {
-            'startDate' : from,
-            'endDate' : to
-        },
-        success : function(response) {
-            drawAPIResponseTime(response);
-        },
-        error : function(response) {
-            alert('Error occured at statistics graph rendering');
-        }
-    });
-
-    $.ajax({
-        url : '/publisher/api/assets/' + operation + '/' + type
-            + '/getAPIUsageByPage/',
-        type : 'POST',
-        data : {
-            'startDate' : from,
-            'endDate' : to
-        },
-        success : function(response) {
-            drawAPIUsageByPage(response);
-        },
-        error : function(response) {
-            alert('Error occured at statistics graph rendering');
-        }
-    });
-
-    $('.btn-maximize').on('click', function() {
-        $(this).parents('.widget').addClass('widget-maximized');
-        $('.backdrop').show();
-    });
-
-    $('.btn-minimize').on('click', function() {
-        $(this).parents('.widget').removeClass('widget-maximized');
-        $('.backdrop').hide();
-    });
-
-    $('.btn-remove').on('click', function() {
-        $(this).parents('.widget').removeClass('graph-maximized');
-        $('.backdrop').hide();
-    });
-
 }
 
 var drawSubscriberCountByAPIs = function(response) {
-	var parsedResponse = JSON.parse(response);
 
-	/* Web Application Last Access Time Graph */
-	$('#placeholder1').append(
-			$('<table class="table graphTable" id="webAppTable">' + '<tr>'
-					+ '<th>Web App</th>' + '<th>Subscriptions</th>' + '</tr>'
-					+ '</table>'));
-	for ( var i = 0; i < parsedResponse.length; i++) {
-		$('#webAppTable').append(
-				$('<tr><td>' + parsedResponse[i].apiName
-						+ '</td><td class="NumberCell">'
-						+ parsedResponse[i].count + '</td></tr>'));
+    var parsedResponse = JSON.parse(response);
 
-	}
+    var chartColorScheme=[];
+    var colorRangeArray=[];
 
-	var data = [];
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF'.split('');
+        var color = '#';
 
-	for ( var i = 0; i < parsedResponse.length; i++) {
-		data[i] = {
-			label : parsedResponse[i].apiName,
-			data : parsedResponse[i].count
-		}
-	}
+        for (var i = 0; i < 6; i++ ) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
 
-    $.plot(
-        '#placeholder',
-        data, {
-            series: {
-                pie: {
-                    show: true,
-                    radius: 1,
-                    label: {
-                        show: true,
-                        radius: 1 / 2,
-                        formatter: function(label, series) {
-                            return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'
-                                +Math.round(series.percent)
-                                + '%</div>';
-                        }
-                    }
+        return color;
+    }
+
+    function hexToRgb(hex) {
+      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? {
+          r: parseInt(result[1], 16),
+          g: parseInt(result[2], 16),
+          b: parseInt(result[3], 16)
+      } : null;
+    }
+
+    //var parsedResponse=[["Hardware Repo", [["1.1", 3, "fd006718-6fc0-44ac-a980-0bc47cdff6aa"],["2.1", 10, "fd006718-6fc0-44ac-a980-0bc47cdff6aa"]]], ["Leave Managment", [["3.1", 3, "0f59943b-bdaf-4751-b2a3-a59cb232ce2d"],["1.1", 15, "0f59943b-bdaf-4751-b2a3-a59cb232ce2d"],["2.1", 10, "0f59943b-bdaf-4751-b2a3-a59cb232ce2d"]]], ["Net Usage Analyser", [["1.2", 3, "c46f9d48-944b-4933-a153-f58b2f9765d9"],["3.1", 8 ,"c46f9d48-944b-4933-a153-f58b2f9765d9"],["1.1", 15, "c46f9d48-944b-4933-a153-f58b2f9765d9"]]], ["Travel Booking", [["1", 3, "d81c4459"]]], ["Travel Claims", [["1", 3, "71509a4a"],["2.1", 9, "71509a4a"]]], ["pizza", [["1", 3, "84718876"],["1.2", 8, "84718876"]]], ["sample", [["1", 3, "8fe9e814"]]], ["webappsample", [["1", 3, "227225ea"]]], ["Conference Booking", [["1", 1, "1c52c82e"]]], ["Event Management", [["1", 1, "1c80aaac"]]], ["MyApp", [["1", 1, "204706ba"]]], ["Sales Tracking Portal", [["1", 1, "1a488491"]]]]
+
+    var totalCount = 0;
+    for ( var i = 0; i < parsedResponse.length; i++) {
+    		for ( var j = 0; j < parsedResponse[i][1].length; j++) {
+                totalCount +=Number(parsedResponse[i][1][j][1]);
+            }
+    }
+
+    for ( var i = 0; i < parsedResponse.length; i++) {
+
+    	var dataStructure=[];
+    	var otherCount = 0;
+
+        for ( var j = 0; j < parsedResponse[i][1].length; j++) {
+            var user = parsedResponse[i][1][j][0];
+            otherCount += Number(parsedResponse[i][1][j][1]);
+            dataStructure.push({
+                "itemLabel":"V "+parsedResponse[i][1][j][0],
+                "itemValue":Number(parsedResponse[i][1][j][1]),
+
+            });
+        }
+        var randomColor=getRandomColor();
+        var rgb=hexToRgb(randomColor);
+
+        var r=rgb.r;
+        var g=rgb.g;
+        var b=rgb.b;
+
+        if(r<210 && g<210 && b<210){
+             for(var j=0;j<=parsedResponse[i][1].length;j++){
+                 r-=10;
+                 g-=10;
+                 b-=10;
+
+                 chartColorScheme.push("rgb("+r+","+g+","+b+")");
+             }
+        }else{
+             for(var j=0;j<=parsedResponse[i][1].length;j++){
+                  r-=13;
+                  g-=13;
+                  b-=13;
+
+                  chartColorScheme.push("rgb("+r+","+g+","+b+")");
+             }
+        }
+
+        chartColorScheme.splice(parsedResponse[i][1].length, 0, "#eee");
+        colorRangeArray.push(chartColorScheme);
+
+        dataStructure.push({
+            "itemLabel":"other",
+            "itemValue":totalCount-otherCount,
+
+        });
+        var data;
+
+        var div = d3.select("body").append("div").attr("class", "toolTip");
+
+        var w = 250;
+        var h = 220;
+        var r = 60;
+        var ir = 35;
+        var textOffset = 24;
+        var tweenDuration = 1050;
+
+        //OBJECTS TO BE POPULATED WITH DATA LATER
+        var lines, valueLabels, nameLabels;
+        var pieData = [];
+        var oldPieData = [];
+        var filteredPieData = [];
+
+        //D3 helper function to populate pie slice parameters from array data
+        var donut = d3.layout.pie().value(function(d){
+          return d.itemValue;
+        });
+
+        //D3 helper function to create colors from an ordinal scale
+        // var color = d3.scale.category20c();
+        var color = d3.scale.ordinal()
+              .range(colorRangeArray[i]);
+
+        chartColorScheme=[];
+        //D3 helper function to draw arcs, populates parameter "d" in path object
+        var arc = d3.svg.arc()
+          .startAngle(function(d){ return d.startAngle; })
+          .endAngle(function(d){ return d.endAngle; })
+          .innerRadius(ir)
+          .outerRadius(r);
+
+        // CREATE VIS & GROUPS
+        var vis = d3.select("#pie-chart").append("svg:svg")
+          .attr("width", w)
+          .attr("height", h);
+           vis.append("text").attr("class", "title_text")
+             .attr("x", 125)
+             .attr("y", 200)
+             .style("font-size", "14px").style("font-weight", "10px")
+             .style("font-family", "'Helvetica Neue',Helvetica,Arial,sans-serif")
+             .style("z-index", "19")
+             .style("text-anchor", "middle")
+             .style("color","gray")
+             .text('\n'+parsedResponse[i][0]);
+
+
+        //GROUP FOR ARCS/PATHS
+        var arc_group = vis.append("svg:g")
+          .attr("class", "arc")
+          .attr("transform", "translate(" + (w/2) + "," + (h/2) + ")");
+
+        //GROUP FOR LABELS
+        var label_group = vis.append("svg:g")
+          .attr("class", "label_group")
+          .attr("transform", "translate(" + (w/2) + "," + (h/2) + ")");
+
+        //GROUP FOR CENTER TEXT
+        var center_group = vis.append("svg:g")
+          .attr("class", "center_group")
+          .attr("transform", "translate(" + (w/2) + "," + (h/2) + ")");
+
+        //WHITE CIRCLE BEHIND LABELS
+        var whiteCircle = center_group.append("svg:circle")
+          .attr("fill", "white")
+          .attr("r", ir);
+
+
+        // to run each time data is generated
+        function update() {
+
+          data = dataStructure;
+          oldPieData = filteredPieData;
+          pieData = donut(data);
+
+          var sliceProportion = 0; //size of this slice
+          filteredPieData = pieData.filter(filterData);
+          function filterData(element, index, array) {
+            element.name = data[index].itemLabel;
+            element.value = data[index].itemValue;
+            sliceProportion =totalCount;
+            return (element.value > 0);
+          }
+
+            //DRAW ARC PATHS
+            paths = arc_group.selectAll("path").data(filteredPieData);
+            paths.enter().append("svg:path")
+              .attr("stroke", "white")
+              .attr("stroke-width", 0.5)
+              .attr("fill", function(d, i) { return color(i); })
+              .attr("cursor", function(d) {
+                   if(d.name=="other"){
+                         return "default";
+                   }else{
+                         return "pointer";
+                   }
+              })
+              .attr("pointer-events", function(d) {
+                   if(d.name=="other"){
+                         return "none";
+                   }
+              })
+              .transition()
+                .duration(tweenDuration)
+                .attrTween("d", pieTween);
+                paths
+                  .transition()
+                    .duration(tweenDuration)
+                    .attrTween("d", pieTween);
+                paths.exit()
+                  .transition()
+                    .duration(tweenDuration)
+                    .attrTween("d", removePieTween)
+                  .remove();
+
+        paths.on("mousemove", function(d){
+            div.style("left", d3.event.pageX+10+"px");
+                  div.style("top", d3.event.pageY-25+"px");
+                  div.style("display", "inline-block");
+            div.html((d.data.itemLabel)+"<br>"+("Count : "+d.data.itemValue));
+               if(d.data.version=="other"){
+                         div.style("display", "none");
+               }
+        });
+
+        paths.on("mouseout", function(d){
+            div.style("display", "none");
+        });
+
+        var val = i;
+        paths.on("click", function(d){
+        for ( var j = 0; j < parsedResponse[val][1].length; j++) {
+            if("V "+parsedResponse[val][1][j][0] == d.data.itemLabel ){
+            document.location.href="/publisher/asset/webapp/"+parsedResponse[val][1][j][2];
+            }
+        }
+        });
+
+            //DRAW TICK MARK LINES FOR LABELS
+            lines = label_group.selectAll("line").data(filteredPieData);
+            lines.enter().append("svg:line")
+              .attr("x1", 0)
+              .attr("x2", 0)
+              .attr("y1", -r-3)
+              .attr("y2", -r-15)
+              .attr("stroke", "gray")
+                 .attr("display", function(d) {
+                               if(d.name=="other"){
+                                  return "none";
+                               }
+                          })
+              .attr("transform", function(d) {
+                return "rotate(" + (d.startAngle+d.endAngle)/2 * (180/Math.PI) + ")";
+              });
+            lines.transition()
+              .duration(tweenDuration)
+              .attr("transform", function(d) {
+                return "rotate(" + (d.startAngle+d.endAngle)/2 * (180/Math.PI) + ")";
+              });
+            lines.exit().remove();
+
+            //DRAW LABELS WITH PERCENTAGE VALUES
+            valueLabels = label_group.selectAll("text.value").data(filteredPieData)
+              .attr("dy", function(d){
+                if ((d.startAngle+d.endAngle)/2 > Math.PI/2 && (d.startAngle+d.endAngle)/2 < Math.PI*1.5 ) {
+                  return 5;
+                } else {
+                  return -7;
                 }
-            },
-            grid: {
-                hoverable: true
-            },
-            tooltip: true,
-            tooltipOpts: {
-                content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
-                shifts: {
-                    x: 20,
-                    y: 0
-                },
-                defaultTheme: true
-            },
-            legend: {
-                show: true
+              })
+              .attr("text-anchor", function(d){
+                if ( (d.startAngle+d.endAngle)/2 < Math.PI ){
+                  return "beginning";
+                } else {
+                  return "end";
+                }
+              })
+              .text(function(d){
+                var percentage = (d.value/sliceProportion)*100;
+                return percentage.toFixed(1) + "%";
+              });
+
+            valueLabels.enter().append("svg:text")
+              .attr("class", "value")
+              .attr("transform", function(d) {
+                return "translate(" + Math.cos(((d.startAngle+d.endAngle - Math.PI)/2)) * (r+textOffset) + "," + Math.sin((d.startAngle+d.endAngle - Math.PI)/2) * (r+textOffset) + ")";
+              })
+              .attr("dy", function(d){
+                if ((d.startAngle+d.endAngle)/2 > Math.PI/2 && (d.startAngle+d.endAngle)/2 < Math.PI*1.5 ) {
+                  return 5;
+                } else {
+                  return -7;
+                }
+              })
+              .attr("text-anchor", function(d){
+                if ( (d.startAngle+d.endAngle)/2 < Math.PI ){
+                  return "beginning";
+                } else {
+                  return "end";
+                }
+              }).text(function(d){
+                var percentage = (d.value/sliceProportion)*100;
+                if(d.name=="other"){
+                                 return "";
+                           }else{
+                                 return percentage.toFixed(1) + "%";
+                           }
+              });
+
+            valueLabels.transition().duration(tweenDuration).attrTween("transform", textTween);
+
+            valueLabels.exit().remove();
+
+
+            //DRAW LABELS WITH ENTITY NAMES
+            nameLabels = label_group.selectAll("text.units").data(filteredPieData)
+              .attr("dy", function(d){
+                if ((d.startAngle+d.endAngle)/2 > Math.PI/2 && (d.startAngle+d.endAngle)/2 < Math.PI*1.5 ) {
+                  return 17;
+                } else {
+                  return 5;
+                }
+              })
+              .attr("text-anchor", function(d){
+                if ((d.startAngle+d.endAngle)/2 < Math.PI ) {
+                  return "beginning";
+                } else {
+                  return "end";
+                }
+              }).text(function(d){
+                return d.name;
+              });
+
+            nameLabels.enter().append("svg:text")
+              .attr("class", "units")
+              .attr("transform", function(d) {
+                return "translate(" + Math.cos(((d.startAngle+d.endAngle - Math.PI)/2)) * (r+textOffset) + "," + Math.sin((d.startAngle+d.endAngle - Math.PI)/2) * (r+textOffset) + ")";
+              })
+              .attr("dy", function(d){
+                if ((d.startAngle+d.endAngle)/2 > Math.PI/2 && (d.startAngle+d.endAngle)/2 < Math.PI*1.5 ) {
+                  return 17;
+                } else {
+                  return 5;
+                }
+              })
+              .attr("text-anchor", function(d){
+                if ((d.startAngle+d.endAngle)/2 < Math.PI ) {
+                  return "beginning";
+                } else {
+                  return "end";
+                }
+              }).text(function(d){
+                if(d.name=="other"){
+                            return "";
+                        }else{
+                            return d.name;
+                            }
+              });
+
+            nameLabels.transition().duration(tweenDuration).attrTween("transform", textTween);
+
+            nameLabels.exit().remove();
+
+        }
+
+        // Interpolate the arcs in data space.
+        function pieTween(d, i) {
+            var s0;
+            var e0;
+            if(oldPieData[i]){
+                s0 = oldPieData[i].startAngle;
+                e0 = oldPieData[i].endAngle;
+            } else if (!(oldPieData[i]) && oldPieData[i-1]) {
+                s0 = oldPieData[i-1].endAngle;
+                e0 = oldPieData[i-1].endAngle;
+            } else if(!(oldPieData[i-1]) && oldPieData.length > 0){
+                s0 = oldPieData[oldPieData.length-1].endAngle;
+                e0 = oldPieData[oldPieData.length-1].endAngle;
+            } else {
+                s0 = 0;
+                e0 = 0;
+            }
+            var i = d3.interpolate({startAngle: s0, endAngle: e0}, {startAngle: d.startAngle, endAngle: d.endAngle});
+            return function(t) {
+                var b = i(t);
+                return arc(b);
+            };
+        }
+
+        function removePieTween(d, i) {
+            s0 = 2 * Math.PI;
+            e0 = 2 * Math.PI;
+            var i = d3.interpolate({startAngle: d.startAngle, endAngle: d.endAngle}, {startAngle: s0, endAngle: e0});
+            return function(t) {
+                var b = i(t);
+                return arc(b);
+            };
+        }
+
+        function textTween(d, i) {
+            var a;
+            if(oldPieData[i]){
+                a = (oldPieData[i].startAngle + oldPieData[i].endAngle - Math.PI)/2;
+            } else if (!(oldPieData[i]) && oldPieData[i-1]) {
+                a = (oldPieData[i-1].startAngle + oldPieData[i-1].endAngle - Math.PI)/2;
+            } else if(!(oldPieData[i-1]) && oldPieData.length > 0) {
+                a = (oldPieData[oldPieData.length-1].startAngle + oldPieData[oldPieData.length-1].endAngle - Math.PI)/2;
+            } else {
+                a = 0;
+            }
+            var b = (d.startAngle + d.endAngle - Math.PI)/2;
+
+            var fn = d3.interpolateNumber(a, b);
+            return function(t) {
+                var val = fn(t);
+                return "translate(" + Math.cos(val) * (r+textOffset) + "," + Math.sin(val) * (r+textOffset) + ")";
+            };
+        }
+        update();
+    }
+    if(parsedResponse.length != 0){
+        var items = $("#pie-chart svg");
+        var numItems = items.length;
+        var perPage = 6;
+        // only show the first 2 (or "first per_page") items initially
+        items.slice(perPage).hide();
+        // now setup pagination
+        $("#pagination").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "light-theme",
+            onPageClick: function(pageNumber) { // this is where the magic happens
+                // someone changed page, lets hide/show trs appropriately
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide() // first hide everything, then show for the new page
+                .slice(showFrom, showTo).show();
             }
         });
 
-}
+    }
 
-var drawSubscribedAPIsByUsers = function(response) {
-	var parsedResponse = JSON.parse(response);
-
-	/* Overall Web Application Usage Graph */
-	$('#placeholder2').append(
-			$('<table class="table graphTable" id="webAppTable2">' + '<tr>'
-					+ '<th>User</th>' + '<th>Web Apps</th>' + '</tr>'
-					+ '</table>'));
-	for ( var i = 0; i < parsedResponse.length; i++) {
-		var apps = parsedResponse[i].apps;
-
-		$('#webAppTable2').append(
-				$('<tr><td>' + parsedResponse[i].user + '</td><td>' + apps
-						+ '</td></tr>'));
-
-	}
-
-}
-
-	var drawAPIUsageByUser = function(response) {
-	
-	var parsedResponse = JSON.parse(response);
-	
-
-	/* Overall Web Application Usage Graph */
-	$('#placeholder3').append(
-			$('<table class="table graphTable" id="webAppTable3">' + '<tr>'
-					+ '<th>Web App</th>' + '<th>Version</th>' + '<th>User</th>'
-					+ '<th>Number of Access</th>' + '</tr>' + '</table>'));
-
-	var tableStatement = '';
-
-	for ( var i = 0; i < parsedResponse.length; i++) {
-		var statement = '';
-		var count = 0;
-
-		for ( var j = 0; j < parsedResponse[i][1].length; j++) {
-
-			if (j != 0) {
-				statement = statement + '<tr>'
-			}
-			
-			var maximumUsers = parsedResponse[i][1][j][1].length;
-			maxrowspan = parsedResponse[i][1][j][1].length;
-			if(maximumUsers > 5){
-				
-				maximumUsers  = 5;
-			}
-			statement = statement + '<td rowspan='
-					+ maximumUsers + '>'
-					+ parsedResponse[i][1][j][0] + '</td>'
-
-			
-					
-			for ( var k = 0; k < maximumUsers; k++) {
-				if (k != 0) {
-					statement = statement + '<tr>'
-				}
-				count++;
-
-				for ( var l = 0; l < parsedResponse[i][1][j][1][k].length; l++) {
-					statement = statement + '<td>'
-							+ parsedResponse[i][1][j][1][k][l] + '</td>'
-				}
-				statement = statement + '</tr>'
-
-			}
-		}
-		userParsedResponse = parsedResponse;
-
-		statement = '<tr><td rowspan='+ count + '><a id="link" href="#" onclick="$(this).parents(\'.widget\').addClass(\'graph-maximized\');$(\'.backdrop\').show();maximizeTable('+  i+ ');">' + parsedResponse[i][0] + '</td>' + statement;
-		tableStatement = tableStatement + statement;
-		
-
-	}
-
-	$('#webAppTable3').append($(tableStatement));
-	
-	
-}
-
-function maximizeTable(row) {
-
-	$('#placeholder31').append(
-			$('<table class="table graphTable" id="webAppTable31">' + '<tr>'
-					+ '<th>Web App</th>' + '<th>Version</th>' + '<th>User</th>'
-					+ '<th>Number of Access</th>' + '</tr>' + '</table>'));
-	
-	
-	
-	//var parsedResponse = JSON.parse(response);
-	//var parsedResponse = userParsedResponse;
-		var maxviewTableStatement = '';
-	
-		var maxviewStatement  = '';
-		var maxviewCount =0;
-		
-		for(var j=0;j<userParsedResponse[row][1].length;j++){
-	
-			if(j != 0){
-				maxviewStatement = maxviewStatement + '<tr>'
-			}
-			maxviewStatement = maxviewStatement + '<td rowspan='+ userParsedResponse[row][1][j][1].length + '>' + userParsedResponse[row][1][j][0] + '</td>'
-	
-			for(var k=0;k<userParsedResponse[row][1][j][1].length;k++){
-				  if(k != 0){
-					  maxviewStatement = maxviewStatement +  '<tr>'
-				  }
-				  maxviewCount++;
-	
-			      for(var l=0;l<userParsedResponse[row][1][j][1][k].length;l++){
-			    	  maxviewStatement = maxviewStatement +'<td>'+ userParsedResponse[row][1][j][1][k][l]  +'</td>'
-			       }
-			      maxviewStatement = maxviewStatement +'</tr>'
-				
-			}
-		}
-		
-		maxviewStatement = '<tr><td rowspan='
-			+ maxviewCount
-			+ '>' + userParsedResponse[row][0] + '</td>' + maxviewStatement;
-		maxviewTableStatement = maxviewTableStatement + maxviewStatement;
-		
-		
-		$('#webAppTable31').append($(maxviewTableStatement));
-		
-		
-		$('#userbtnremove').on('click', function() {
-			
-			$('#webAppTable31').remove();
-			$('.backdrop').hide();
-		});
-
-
-}
-
-var drawAPIResponseTime = function(response) {
-
-	var parsedResponse = JSON.parse(response);
-
-	$('#placeholder4').append(
-			$('<table class="table graphTable" id="webAppTable4">' + '<tr>'
-					+ '<th>Web App</th>' + '<th>Page</th>'
-					+ '<th>Response Time(ms)</th>' + '</tr>' + '</table>'));
-
-	var tableStatement = '';
-
-	for ( var i = 0; i < parsedResponse.webapps.length; i++) {
-
-		var statement = '';
-		var count = 0;
-
-		for ( var j = 0; j < parsedResponse.webapps[i][1].length; j++) {
-
-			if (j != 0) {
-				statement = statement + '<tr>'
-			}
-
-			count++;
-
-			for ( var l = 0; l < parsedResponse.webapps[i][1][j].length; l++) {
-				statement = statement + '<td>'
-						+ parsedResponse.webapps[i][1][j][l] + '</td>'
-			}
-			statement = statement + '</tr>'
-
-		}
-
-		statement = '<tr><td rowspan=' + count + '>'
-				+ parsedResponse.webapps[i][0] + '</td>' + statement;
-		tableStatement = tableStatement + statement;
-
-	}
-
-	$('#webAppTable4').append($(tableStatement));
-
-	var max = 0;
-	for (t = 0; t < parsedResponse.serviceTime.length; t++) {
-		if (max < parsedResponse.serviceTime[t][0]) {
-			max = parsedResponse.serviceTime[t][0];
-		}
-	}
-
-	max = max + 100;
-
-	var data2 = [ {
-		data : parsedResponse.serviceTime,
-		color : '#5482FF',
-		bars : {
-			show : true,
-			barWidth : 0.5,
-			align : "center",
-			horizontal : true,
-			order : 1
-		}
-	} ];
-
-	var options2 = {
-		yaxis : {
-			show : true,
-			ticks : parsedResponse.referer,
-            tickLength: 0,
-            axisLabel: "Web Pages"
-		},
-		xaxis : {
-			show : true,
-			min : 0,
-			max : max,
-            axisLabelUseCanvas :false,
-            axisLabel: "<b>Response Time(ms)</b>"
-
-		}
-
-	};
-
-	$.plot($("#placeholder41"), data2, options2);
-}
-
-var drawAPIUsageByPage = function(response) {
-
-	var parsedResponse = JSON.parse(response);
-
-	$('#placeholder5').append(
-			$('<table class="table graphTable" id="webAppTable5">' + '<tr>'
-					+ '<th>Web App</th>' + '<th>Number of Access</th>'
-					+ '</tr>' + '</table>'));
-	for ( var i = 0; i < parsedResponse.webapp.length; i++) {
-		$('#webAppTable5').append(
-				$('<tr><td>' + parsedResponse.webapp[i][1]
-						+ '</td><td class="NumberCell">'
-						+ parsedResponse.totalPageCount[i][1] + '</td><tr>'));
-	}
-
-	var data = parsedResponse.totalPageCount;
-	var dataset = [ {
-		data : data,
-		color : "#5482FF"
-	} ];
-	var ticks = parsedResponse.webapp;
-
-	var options = {
-		series : {
-			bars : {
-				show : true
-			}
-		},
-		bars : {
-			align : "center",
-			barWidth : 0.3
-		},
-		xaxis : {
-            axisLabelUseCanvas :false,
-			axisLabel : "<b>Web Apps</b>",
-			tickLength : 0,
-			ticks : ticks
-		},
-		yaxis : {
-			axisLabel : "Total Request"
-
-		},
-		grid : {
-			clickable : true,
-			borderWidth : 1
-		}
-	};
-
-	$.plot($("#placeholder51"), dataset, options);
-
-    $("#placeholder51").bind("plotclick", function (event, pos, item) {
-        if (item != null) {
-            $(this).parents('.widget').addClass('graph-maximized');
-            $('.backdrop').show();
-
-            var x = item.datapoint[0];
-            var label = item.series.xaxis.ticks[x].label;
-            var webappPage = [];
-            var webappPageCount = [];
-
-            for (t = 0; t < parsedResponse.webappDeatails.length; t++) {
-                if (label == parsedResponse.webappDeatails[t][0]) {
-                    webappPage = parsedResponse.webappDeatails[t][1];
-                    webappPageCount = parsedResponse.webappDeatails[t][2]
-                }
-            }
-
-            var max = 0;
-            for (t = 0; t < webappPageCount.length; t++) {
-                if (max < webappPageCount[t][0]) {
-                    max = webappPageCount[t][0];
-                }
-            }
-
-            max = max + 10;
-
-            var data = webappPageCount;
-            var dataset = [
-                {
-                    data: data,
-                    color: "#5482FF"
-                }
-            ];
-            var ticks = webappPage;
-
-            var options = {
-                series: {
-                    bars: {
-                        show: true,
-                        horizontal: true
-
-                    }
-                },
-                bars: {
-                    align: "center",
-                    barWidth: 0.5
-                },
-                xaxis: {
-                    axisLabelUseCanvas: false,
-                    axisLabel: "<b>Total Request Count</b>",
-                    reserveSpace: true,
-                    labelWidth: 150,
-                    min: 0,
-                    max: max
-                },
-                yaxis: {
-                    ticks: ticks,
-                    tickLength: 0,
-                    axisLabel: "Accessed Page"
-
-                }
-
-            };
-
-            $.plot($("#placeholder52"), dataset, options);
-        }
-
-    });
 
 }
 
 var onDateSelected = function() {
     clearTables();
+    $('#pie-chart').empty();
+    $('#pagination').empty();
     drawGraphs();
 }
 
@@ -529,5 +479,4 @@ function clearTables() {
     $('#webAppTable5').remove();
 
 }
-
 
