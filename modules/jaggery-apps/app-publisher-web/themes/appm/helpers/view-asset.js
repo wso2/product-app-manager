@@ -51,7 +51,8 @@ var merge = function(data){
                                 'name': resultPolicy[j].POLICY_GRP_NAME,
                                 'tire': resultPolicy[j].THROTTLING_TIER,
                                 'anonymous':resultPolicy[j].URL_ALLOW_ANONYMOUS,
-                                'roles':resultPolicy[j].USER_ROLES
+                                'roles':resultPolicy[j].USER_ROLES,
+                                'partials':resultPolicy[j].POLICY_PARTIAL_NAME
                             };
                         }
                      }

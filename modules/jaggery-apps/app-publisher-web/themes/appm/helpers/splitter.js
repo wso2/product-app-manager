@@ -86,8 +86,12 @@ var splitData = function(copyOfData){
                     }else if(secondNamePart == "uritemplate_allowanonymous"){
                         patternEntry.anonymous= uriTemplate[j].value;
                     }else if(secondNamePart == "uritemplate_policygroupid") {
-                        patternEntry.policyGroupName = uriTemplate[j].value.name;
                         patternEntry.policyGroupId = uriTemplate[j].value.id;
+                        patternEntry.policyGroupName = uriTemplate[j].value.name;
+                        patternEntry.policyGroupTire = uriTemplate[j].value.tire;
+                        patternEntry.policyGroupAnonymous = uriTemplate[j].value.anonymous;
+                        patternEntry.policyGroupRoles = uriTemplate[j].value.roles;
+                        patternEntry.policyGroupPartials = uriTemplate[j].value.partials;
                     }
 
                 }
