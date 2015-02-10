@@ -146,8 +146,8 @@ $( document ).ready(function() {
                             policyGroupId: data[i].policyGroupId,
                             policyGroupName: data[i].policyGroupName,
                             throttlingTier: data[i].throttlingTier,
-                            anonymousAccessToUrlPattern: data[i].userRoles,
-                            userRoles: data[i].allowAnonymous,
+                            anonymousAccessToUrlPattern: data[i].allowAnonymous,
+                            userRoles: data[i].userRoles,
                             policyPartials:data[i].policyPartials
                         })
                     }
