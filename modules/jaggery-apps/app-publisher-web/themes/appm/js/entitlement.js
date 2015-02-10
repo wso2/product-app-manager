@@ -523,9 +523,7 @@ function updatePolicyPartial() {
                <tr style='padding-bottom: 20px'> \
                <td style='padding-left:10px; width:80px'>" + obj.policyPartialName + "</td> \
                <td style='padding-left: 30px;'><input class='policy-allow-cb policy-allow-cb' data-policy-id='" + obj.id + "' type='checkbox'></td> \
-               <td style='padding-left: 30px;'> <input class='policy-deny-cb policy-deny-cb' data-policy-id='" + obj.id + "'  type='checkbox'> \
-               <div><input type='text' class='uritemplate_entitlementPolicyPartialMappings_text' id='uritemplate_entitlementPolicyPartialMappings" + obj.id + "' name='uritemplate_entitlementPolicyPartialMappings" + obj.id + "' value='[]'/>  </div>\
-               </td> \
+               <td style='padding-left: 30px;'> <input class='policy-deny-cb policy-deny-cb' data-policy-id='" + obj.id + "'  type='checkbox'> </td> \
                </tr>");
 
             /*
@@ -535,8 +533,7 @@ function updatePolicyPartial() {
                 <tr style='padding-bottom: 20px'> \
                 <td style='padding-left:10px; width:80px'>" + obj.policyPartialName + "</td> \
                 <td style='padding-left: 30px;'><input class='policy-opt-val policy-allow-cb' data-policy-id='" + obj.id + "' type='checkbox'></td> \
-                <td style='padding-left: 30px;'> <input class='policy-opt-val policy-deny-cb' data-policy-id='" + obj.id + "'  type='checkbox'></td> \
-                <div><input type='text' class='uritemplate_entitlementPolicyPartialMappings_text' id='uritemplate_entitlementPolicyPartialMappings" + obj.id + "' name='uritemplate_entitlementPolicyPartialMappings" + obj.id + "' value='[]'/>  </div>\
+                <td style='padding-left: 30px;'> <input class='policy-opt-val policy-deny-cb' data-policy-id='" + obj.id + "'  type='checkbox'> </td> \
                 </tr>");
 
             policyPartialIndexArray.push(obj.id);

@@ -29,10 +29,8 @@ var merge = function(data){
      var sResult = result.toString();
       sResult = sResult.substr(1, sResult.length()-2);
 
-
 	var resultPolicy = JSON.parse(appMDAOObj.getPolicyGroupPoliciesApplicationWise(data.artifact.id));
-log.info(resultPolicy)
-	 
+
 	 for(var i in data.data.fields) {
 
 		 if (data.data.fields[i].name == 'oauthapis_webappConsumerKey') {
