@@ -1460,3 +1460,8 @@ label.control-label {
     margin-top: 10px;
     margin-bottom: 10px;
 }
+td#buttonTd a {
+    margin-right: 10px;
+    margin-left: 10px;
+    padding: 2px;
+}

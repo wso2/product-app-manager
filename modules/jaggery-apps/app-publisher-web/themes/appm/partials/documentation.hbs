@@ -28,7 +28,7 @@
 				<div class="col-md-12">
 					<div class="row-fluid">
 						<div class="control-group">
-							<input type="hidden" id="docAPIVersion" value="{{snoop "fields(name=overview_version).value" this.data}}}" /> 
+							<input type="hidden" id="docAPIVersion" value="{{snoop "fields(name=overview_version).value" this.data}}" />
 							<input type="hidden" id="docAPIName" value="{{{snoop "fields(name=overview_name).value" this.data}}}" />
 						    <input type="hidden" id="docAPIProvider" value="{{{snoop "fields(name=overview_provider).value" this.data}}}" />
 							<div id="updateDoc" style="display: none;">
@@ -142,10 +142,10 @@
 					<table class="table table-bordered table-striped" id="docTable">
 					    <thead>
 							<tr>
-								<th>Name</th>
-								<th>Type</th>
-								<th>ModifiedOn</th>
-								<th>Actions</th>
+								<th class="col-md-2">Name</th>
+								<th class="col-md-1">Type</th>
+								<th class="col-md-2">Last Modified</th>
+								<th class="col-md-2">Actions</th>
 							</tr>
 						</thead>
 						
@@ -216,3 +216,4 @@
 
 
 
+</div>
