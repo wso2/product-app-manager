@@ -119,7 +119,8 @@ $('#saveDoc').click(function() {
 
 
 var newDocFormToggle = function(){
-   $('#newDoc').toggle('slow');
+   $('#addDoc a').hide();
+   $('#newDoc').slideToggle('slow');
    $('#docName').removeAttr("disabled").val('');
    $('#summary').val('');
    $('#docUrl').val('');
