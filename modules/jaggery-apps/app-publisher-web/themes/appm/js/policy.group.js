@@ -106,7 +106,7 @@ function insertPolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrl
  * @param objPartialMappings : Object which contains XACML policy partial details arrays
  * @param isSaveAndClose : check if the call is from the save and close button
  */
-function updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, objPartialMappings,isSaveAndClose) {
+function updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, objPartialMappings, isSaveAndClose) {
     $.ajax({
         url: '/publisher/api/entitlement/policy/partial/policyGroup/details/update',
         type: 'POST',
@@ -133,12 +133,12 @@ function updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrl
     });
 }
 
-
+//save button click event
 $(document).on("click", "#btn-policy-group-save", function () {
     savePolicyGroupData(false);
 });
 
-
+//save and close button click event
 $(document).on("click", "#btn-policy-group-save-and-close", function () {
     savePolicyGroupData(true);
 });
@@ -181,16 +181,18 @@ function savePolicyGroupData(isSaveAndClose) {
     if (validate(policyGroupName)) {
         // editedPolicyGroup : 0 > then insert else update
         if (editedPolicyGroup == 0) {
-            insertPolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions),isSaveAndClose);
+            insertPolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions), isSaveAndClose);
         }
         else {
-            updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions),isSaveAndClose);
+            updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions), isSaveAndClose);
         }
     }
 }
 
+//policy group edit button click event
 $(document).on("click", ".policy-group-edit-button", function () {
     var policyGroupId = $(this).attr('data-policy-id');
+    editedPolicyGroup = policyGroupId;
     $('#policy-group-editor #policyGroupName').prop("readonly", true);
     hidePolicyGroupNotification();
     //handling edit view on partial
@@ -203,7 +205,7 @@ $(document).on("click", ".policy-group-edit-button", function () {
             "]").attr("selected", "selected");
             $('#policy-group-editor #userRoles').val(obj.userRoles);
             //clear all checkbox
-            $('.policy-opt-val').each(function(){
+            $('.policy-opt-val').each(function () {
                 $(this).prop('checked', false)
             });
             //generate token input method
@@ -221,18 +223,18 @@ $(document).on("click", ".policy-group-edit-button", function () {
             //handle XACML Policies:
             var getPolicyPartials = JSON.parse(obj.policyPartials);
 
-            for(var j=0; j < getPolicyPartials.length; j++){
-                if(getPolicyPartials[j].POLICY_GRP_ID == policyGroupId){
+            for (var j = 0; j < getPolicyPartials.length; j++) {
+                if (getPolicyPartials[j].POLICY_GRP_ID == policyGroupId) {
 
-                    $('.policy-opt-val').each(function(){
+                    $('.policy-opt-val').each(function () {
                         var checkeditem = $(this).attr('data-policy-id');
-                        if(getPolicyPartials[j].POLICY_PARTIAL_ID == checkeditem && getPolicyPartials[j].EFFECT == 'Permit'){
-                            if($(this).hasClass('policy-allow-cb')){
+                        if (getPolicyPartials[j].POLICY_PARTIAL_ID == checkeditem && getPolicyPartials[j].EFFECT == 'Permit') {
+                            if ($(this).hasClass('policy-allow-cb')) {
                                 $(this).prop('checked', true);
                             }
                         }
-                        if(getPolicyPartials[j].POLICY_PARTIAL_ID == checkeditem && getPolicyPartials[j].EFFECT == 'Deny'){
-                            if($(this).hasClass('policy-deny-cb')){
+                        if (getPolicyPartials[j].POLICY_PARTIAL_ID == checkeditem && getPolicyPartials[j].EFFECT == 'Deny') {
+                            if ($(this).hasClass('policy-deny-cb')) {
                                 $(this).prop('checked', true);
                             }
                         }
@@ -240,7 +242,6 @@ $(document).on("click", ".policy-group-edit-button", function () {
 
 
                 }
-
 
 
             }
@@ -276,7 +277,7 @@ function hidePolicyGroupNotification() {
     $('#policyGroup-notification-text').hide();
 }
 
-
+//policy group add button click event
 $(document).on("click", "#btn-add-policy-group", function () {
     editedPolicyGroup = 0;
     $('#policy-group-editor #policyGroupName').val("");

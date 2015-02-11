@@ -236,7 +236,6 @@ require('/modules/publisher.js').exec(function(ctx) {
      * @param policyGroupId :Policy Group Id
      */
     function updateEntitlementPolicies(policyGroupId){
-
         // Save external entitlement policies
         var webappId={};
         webappId.policyGroupId= policyGroupId;
