@@ -91,7 +91,7 @@ $( document ).ready(function() {
                     author: data[i].author
                 });
             }
-
+            updatePolicyPartial();
         },
         error: function () {
         }
@@ -160,7 +160,6 @@ $( document ).ready(function() {
         },
         error: function(){}
     });
-
 
 
 

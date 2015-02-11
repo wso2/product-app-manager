@@ -58,12 +58,12 @@
                                     <td>{{urlPattern}}</td>
                                     <td>{{httpVerb}}</td>
                                     <td>{{policyGroupName}}
-                                        <a data-toggle="modal" data-target=".bs-example-modal-sm-{{policyGroupId}}{{httpVerb}}"
+                                        <a data-toggle="modal" data-target=".bs-example-modal-sm-{{policyGroupId}}-{{httpVerb}}{{policyUid}}"
                                            class="policy-tool-tip">
                                             <i class="icon-info-sign"></i>
                                         </a>
                                         <!-- add model for each policy -->
-                                        <div class="modal fade bs-example-modal-sm-{{policyGroupId}}{{httpVerb}}"
+                                        <div class="modal fade bs-example-modal-sm-{{policyGroupId}}-{{httpVerb}}{{policyUid}}"
                                              tabindex="-1" role="dialog"
                                              aria-labelledby="mySmallModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">

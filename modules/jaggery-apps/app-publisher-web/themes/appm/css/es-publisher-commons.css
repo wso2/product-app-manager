@@ -1436,3 +1436,21 @@ a.policy-tool-tip {
     cursor: pointer;
     font-size: 15px;
 }
+
+#addDoc a.btn-info {
+    background-color: #5bc0de;
+}
+
+div#newDoc {
+    margin-top: 30px;
+    position: relative;
+    float: left;
+    width: 100%;
+    border: 1px solid rgb(231, 227, 227);
+    border-radius: 3px;
+    padding: 28px 8px;
+}
+
+.radio label{
+    margin-bottom: 15px;
+}
