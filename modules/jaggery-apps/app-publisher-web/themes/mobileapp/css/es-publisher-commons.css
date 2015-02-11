@@ -1564,3 +1564,7 @@ h2.first-h2{
     margin-right: -15px;
     margin-left: -15px !important;
 }
+
+.mobile-search-fix{
+    padding: 6px 7px;
+}
