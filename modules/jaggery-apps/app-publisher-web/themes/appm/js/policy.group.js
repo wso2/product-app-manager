@@ -57,8 +57,9 @@ function validate(policyGroupName) {
  * @param anonymousAccessToUrlPattern : if anonymous access allowed for the related url pattern/verb
  * @param userRoles : User Roles
  * @param objPartialMappings : Object which contains XACML policy partial details arrays
+ * @param isSaveAndClose : check if the call is from the save and close button
  */
-function savePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, objPartialMappings) {
+function insertPolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, objPartialMappings, isSaveAndClose) {
     $.ajax({
         url: '/publisher/api/entitlement/policy/partial/policyGroup/save',
         type: 'POST',
@@ -83,12 +84,18 @@ function savePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPa
             updatePolicyGroupPartial(policyGroupsArray);
             $('#policy-group-editor #policyGroupName').prop("readonly", true);
             showPolicyGroupNotification("Policy Group - " + policyGroupName + " saved successfully ", "alert-success");
+
+            //close the modal if the call is from Save and close button
+            if (isSaveAndClose) {
+                $("#policy-group-editor").modal('hide');
+            }
         },
         error: function () {
-            showPolicyGroupNotification("Error occurred while saving the Policy Group data")
+            showPolicyGroupNotification("Error occurred while saving the Policy Group data");
         }
     });
 }
+
 
 /**
  * Update policy group
@@ -97,8 +104,9 @@ function savePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPa
  * @param anonymousAccessToUrlPattern : if anonymous access allowed for the related url pattern/verb
  * @param userRoles : User Roles
  * @param objPartialMappings : Object which contains XACML policy partial details arrays
+ * @param isSaveAndClose : check if the call is from the save and close button
  */
-function updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, objPartialMappings) {
+function updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, objPartialMappings, isSaveAndClose) {
     $.ajax({
         url: '/publisher/api/entitlement/policy/partial/policyGroup/details/update',
         type: 'POST',
@@ -114,55 +122,33 @@ function updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrl
             updatePolicyGroupPartial(policyGroupsArray);
             showPolicyGroupNotification("Policy Group - " + policyGroupName + " updated successfully", "alert-success");
 
+            //close the modal if the call is from Save and close button
+            if (isSaveAndClose) {
+                $("#policy-group-editor").modal('hide');
+            }
         },
         error: function () {
-            showPolicyGroupNotification("Error occurred while saving the Policy Group data")
+            showPolicyGroupNotification("Error occurred while saving the Policy Group data");
         }
     });
 }
 
-
+//save button click event
 $(document).on("click", "#btn-policy-group-save", function () {
-    //Policy Group Name
-    var policyGroupName = $('#policy-group-editor #policyGroupName').val().trim();
-    //Throttling Tier
-    var throttlingTier = $('#policy-group-editor #throttlingTier').val();
-    //if anonymous access allowed for the related url pattern/verb
-    var anonymousAccessToUrlPattern = $('#policy-group-editor #anonymousAccessToUrlPattern').val();
-    //User Roles
-    var userRoles = $('#policy-group-editor #userRoles').val();
-
-    hidePolicyGroupNotification();
-
-    //contains XACML policy partial details arrays
-    var objPartialMappings = {policyGroupOptions: []};
-
-    //check the selected XACML policy partial options and add to array
-    $('.policy-opt-val').each(function (index, obj) {
-        //get checked value from list
-        if ($(this).context.checked) {
-            var pgID = $(this).attr('data-policy-id'); //partial id
-            if ($(this).hasClass('policy-allow-cb')) {
-                objPartialMappings.policyGroupOptions.push({"entitlementPolicyPartialId": pgID, "effect": "Permit"});
-            } else if ($(this).hasClass('policy-deny-cb')) {
-                objPartialMappings.policyGroupOptions.push({"entitlementPolicyPartialId": pgID, "effect": "Deny"});
-            }
-        }
-    });
-
-    if (validate(policyGroupName)) {
-        // editedPolicyGroup : 0 > then insert else update
-        if (editedPolicyGroup == 0) {
-            savePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions));
-        }
-        else {
-            updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions));
-        }
-    }
+    savePolicyGroupData(false);
 });
 
-
+//save and close button click event
 $(document).on("click", "#btn-policy-group-save-and-close", function () {
+    savePolicyGroupData(true);
+});
+
+
+/**
+ * save or update data
+ * @param isSaveAndClose : check if the call is from the save and close button
+ */
+function savePolicyGroupData(isSaveAndClose) {
     //Policy Group Name
     var policyGroupName = $('#policy-group-editor #policyGroupName').val().trim();
     //Throttling Tier
@@ -191,23 +177,26 @@ $(document).on("click", "#btn-policy-group-save-and-close", function () {
 
     });
 
+    var result;
     if (validate(policyGroupName)) {
         // editedPolicyGroup : 0 > then insert else update
         if (editedPolicyGroup == 0) {
-            savePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions));
+            insertPolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions), isSaveAndClose);
         }
         else {
-            updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions));
+            updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions), isSaveAndClose);
         }
-        //close the modal
-        $("#policy-group-editor").modal('hide');
+        // update policy partial values
+        policyGroupsArray=[];
+        policyPartialsArray=[];
+        loadPolicyGroupData($("#uuid").val());
     }
+}
 
-});
-
-
+//policy group edit button click event
 $(document).on("click", ".policy-group-edit-button", function () {
     var policyGroupId = $(this).attr('data-policy-id');
+    editedPolicyGroup = policyGroupId;
     $('#policy-group-editor #policyGroupName').prop("readonly", true);
     hidePolicyGroupNotification();
     //handling edit view on partial
@@ -220,7 +209,7 @@ $(document).on("click", ".policy-group-edit-button", function () {
             "]").attr("selected", "selected");
             $('#policy-group-editor #userRoles').val(obj.userRoles);
             //clear all checkbox
-            $('.policy-opt-val').each(function(){
+            $('.policy-opt-val').each(function () {
                 $(this).prop('checked', false)
             });
             //generate token input method
@@ -238,18 +227,18 @@ $(document).on("click", ".policy-group-edit-button", function () {
             //handle XACML Policies:
             var getPolicyPartials = JSON.parse(obj.policyPartials);
 
-            for(var j=0; j < getPolicyPartials.length; j++){
-                if(getPolicyPartials[j].POLICY_GRP_ID == policyGroupId){
+            for (var j = 0; j < getPolicyPartials.length; j++) {
+                if (getPolicyPartials[j].POLICY_GRP_ID == policyGroupId) {
 
-                    $('.policy-opt-val').each(function(){
+                    $('.policy-opt-val').each(function () {
                         var checkeditem = $(this).attr('data-policy-id');
-                        if(getPolicyPartials[j].POLICY_PARTIAL_ID == checkeditem && getPolicyPartials[j].EFFECT == 'Permit'){
-                            if($(this).hasClass('policy-allow-cb')){
+                        if (getPolicyPartials[j].POLICY_PARTIAL_ID == checkeditem && getPolicyPartials[j].EFFECT == 'Permit') {
+                            if ($(this).hasClass('policy-allow-cb')) {
                                 $(this).prop('checked', true);
                             }
                         }
-                        if(getPolicyPartials[j].POLICY_PARTIAL_ID == checkeditem && getPolicyPartials[j].EFFECT == 'Deny'){
-                            if($(this).hasClass('policy-deny-cb')){
+                        if (getPolicyPartials[j].POLICY_PARTIAL_ID == checkeditem && getPolicyPartials[j].EFFECT == 'Deny') {
+                            if ($(this).hasClass('policy-deny-cb')) {
                                 $(this).prop('checked', true);
                             }
                         }
@@ -257,7 +246,6 @@ $(document).on("click", ".policy-group-edit-button", function () {
 
 
                 }
-
 
 
             }
@@ -293,7 +281,7 @@ function hidePolicyGroupNotification() {
     $('#policyGroup-notification-text').hide();
 }
 
-
+//policy group add button click event
 $(document).on("click", "#btn-add-policy-group", function () {
     editedPolicyGroup = 0;
     $('#policy-group-editor #policyGroupName').val("");
