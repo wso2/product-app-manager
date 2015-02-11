@@ -301,11 +301,11 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
         addTags(context.post,assetId,artifactManager,reg);
 
         // Save external entitlement policies
-        var webappId={};
-        webappId.provider= model.get('overview.provider').value;
-        webappId.name= model.get('overview.name').value;
-        webappId.version= model.get('overview.version').value;
-        generateEntitlementPolicies(webappId);
+        // var webappId={};
+        // webappId.provider= model.get('overview.provider').value;
+        // webappId.name= model.get('overview.name').value;
+        // webappId.version= model.get('overview.version').value;
+        // generateEntitlementPolicies(webappId);
 
         print({ok:true,message:'asset added',id:assetId});
     }
