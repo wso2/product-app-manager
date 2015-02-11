@@ -1,0 +1,87 @@
+<link href="{{url "/themes/appm/css/es_statistics.css"}}" rel="stylesheet" media="screen">
+<input type="hidden" id="page" value="1">
+
+<div class="content-div">
+    <div class="row-fluid">
+        <div class="row">
+            <div class="col-md-2" >
+                {{>left-nav}}
+            </div>
+            <div class="col-md-10 asset-view-container">
+
+                <div >
+                    <div class="pull-left" style="" align="left"><h2>Web Application Statistics</h2></div>
+                    <div class="date-range-wrapper pull-right clearfix" style="margin-top: 17px;">
+                        <div id="date-range">
+                            <div id="date-range-field">
+                                <span></span>
+                                <a href="#">&#9660;</a>
+                            </div>
+                            <div id="datepicker-calendar" ></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+
+
+
+
+
+                <div class="widget">
+                    <div class="widget-head">
+                        <div class="pull-left">{{t "Usage by App"}}</div>
+                        <div style="float:right" id="chechBox-container" data-ng-controller="ClientCtrl">
+                            <!--<ul class="inline">-->
+
+                                <!--<li>-->
+                                    <!--<div class="btn-group" data-ng-class="{open: open}">-->
+                                        <!--<button class="btn">Filter by Company</button>-->
+                                        <!--<button class="btn dropdown-toggle" data-ng-click="open=!open"><span class="caret"></span>-->
+
+                                        <!--</button>-->
+                                        <!--<ul class="dropdown-menu" aria-labelledby="dropdownMenu">-->
+                                            <!--<li><a data-ng-click="checkAll()"><i class="icon-ok-sign"></i>  Check All</a>-->
+
+                                            <!--</li>-->
+                                            <!--<li><a data-ng-click="selectedCompany=[];"><i class="icon-remove-sign"></i>  Uncheck All</a>-->
+
+                                            <!--</li>-->
+                                            <!--<li class="divider"></li>-->
+                                            <!--<li data-ng-repeat="company in companyList"> <a data-ng-click="setSelectedClient()">{{company.name}}<span data-ng-class="isChecked(company.id)"></span></a>-->
+
+                                            <!--</li>-->
+                                        <!--</ul>-->
+                                    <!--</div>-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                        </div>
+                        <div class="widget-controls">
+                            <a href="#" class="btn-remove"><i class="icon icon-remove"></i></a>
+                        </div>
+                        <div class="clearfix"></div>
+
+                    </div>
+                    <div class="widget-content">
+
+                        <div class="graph-container  widget-table1 pull-left">
+                            <div id="placeholder3" class="graph-placeholder"></div>
+                        </div>
+                        <div class="graph-container widget-table" id="userUsage">
+
+                            <div id="placeholder31" class="graph-placeholder"></div>
+                        </div>
+
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div id="chartContainer">
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="backdrop"></div>
