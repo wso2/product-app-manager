@@ -12,7 +12,7 @@ var RESOURCES = [
 
 
 $( document ).ready(function() {
-alert("a");
+
     //get Tier details from tier.xml
     $.ajax({
         url: '/publisher/api/entitlement/get/Tiers',
