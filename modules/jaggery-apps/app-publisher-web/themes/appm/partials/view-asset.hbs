@@ -85,7 +85,12 @@
                                                             </tr>
                                                             <tr>
                                                                 <td>Anonymous Access:</td>
-                                                                <td>{{policyGroupAnonymous}}</td>
+                                                                <td>
+                                                                {{#if policyGroupAnonymous}}
+                                                                   True
+                                                                {{else}}
+                                                                   False
+                                                                {{/if}}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td>User Roles:</td>
