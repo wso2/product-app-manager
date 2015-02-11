@@ -11,14 +11,58 @@
             <div class="col-md-10 asset-view-container">
 
                 <div>
-                    <div class="pull-left" style="" align="left"><h2>Web Application Statistics</h2></div>
-                    <div class="date-range-wrapper pull-right clearfix" style="margin-top: 17px;">
-                        <div id="date-range">
-                            <div id="date-range-field">
-                                <span></span>
-                                <a href="#">&#9660;</a>
+                    <div class="pull-left" style="margin-top:50px;" align="left"><h2>Web Application Statistics</h2></div>
+                    <!--<div class="date-range-wrapper pull-right clearfix" style="margin-top: 17px;">-->
+                    <!--<div id="date-range">-->
+                    <!--<div id="date-range-field">-->
+                    <!--<span></span>-->
+                    <!--<a href="#">&#9660;</a>-->
+                    <!--</div>-->
+                    <!--<div id="datepicker-calendar"></div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+
+                    <div id="rangeSliderWrapper" class="well" >
+                        <div class="row-fluid">
+
+                            <!--<div id="date-range">
+                                <div id="date-range-field">
+                                    <span></span>
+                                    <a href="#">&#9660;</a>
+                                </div>
+                                <div id="datepicker-calendar" ></div>
+                            </div>-->
+                            <div id="dateRangePickerContainer" >
+
+                                <div class="btn-group" role="group" aria-label="...">
+                                    <button id="hour-btn" type="button" class="btn btn-default">Hour</button>
+                                    <button id="today-btn"type="button" class="btn btn-default">Today</button>
+                                    <button id="week-btn" type="button" class="btn btn-default">Week</button>
+                                    <div class="input-append" style="display:inline" >
+                                        <input type="text" id="date-range" style="width: 270px;display:inline;" name="dateRange" class="form-control" value=""  />
+                                        <span class="add-on"><i style="margin-right:0px;" class="icon-calendar"></i></span>
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <!--<div class="input-append" style="display:inline" >-->
+                                <!--<input type="text" id="date-range" style="width: 270px;display:inline;margin-left:-4px;" name="dateRange" class="form-control" value=""  />-->
+                                <!--<span style="margin-left:20px;width:40px;display:inline" class="add-on"><i class="icon-calendar"></i></span>-->
+                                <!--&lt;!&ndash;<div class="input-group-addon">&ndash;&gt;-->
+
+                                <!--&lt;!&ndash;<a id="cal-button" class="">&ndash;&gt;-->
+
+                                <!--&lt;!&ndash;<i class="icon-calendar"></i>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</a>&ndash;&gt;-->
+
+                                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+                                <!--</div>-->
                             </div>
-                            <div id="datepicker-calendar"></div>
+
                         </div>
                     </div>
                 </div>

@@ -10,9 +10,9 @@ function drawGraphs() {
     var type = comps[comps.length - 2];
     var operation = comps[comps.length - 3];
     var action = 'getSubscriberCountByAPIs';
-    var dateRange = $('#date-range-field span').text();
-    var from = dateRange.split('to')[0];
-    var to = dateRange.split('to')[1];
+    var dateRange = $('#date-range').val();
+    var from = dateRange.split('to')[0].trim()+":00";
+    var to = dateRange.split('to')[1].trim()+":00";;
     var userParsedResponse;
 
     $.ajax({

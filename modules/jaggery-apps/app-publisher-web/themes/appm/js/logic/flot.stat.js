@@ -9,9 +9,12 @@ function drawGraphs() {
     var type = comps[comps.length - 2];
     var operation = comps[comps.length - 3];
     var action = 'getSubscriberCountByAPIs';
-    var dateRange = $('#date-range-field span').text();
-    var from = dateRange.split('to')[0];
-    var to = dateRange.split('to')[1];
+    var dateRange = $('#date-range').val();
+    //var dateRange = $('#date-range-field span').text();
+    //alert(dateRange)
+    var from = dateRange.split('to')[0].trim()+":00";
+    var to = dateRange.split('to')[1].trim()+":00";
+    //alert(to)
     var userParsedResponse;
 
     $.ajax({
@@ -34,8 +37,13 @@ function drawGraphs() {
 }
 
 var drawSubscriberCountByAPIs = function(response) {
-
+$('#pie-chart').empty();
+//$('#graphContainer').empty();
     var parsedResponse = JSON.parse(response);
+
+
+    if(parsedResponse.length>0){
+
 
     var chartColorScheme=[];
     var colorRangeArray=[];
@@ -60,7 +68,7 @@ var drawSubscriberCountByAPIs = function(response) {
       } : null;
     }
 
-    //var parsedResponse=[["Hardware Repo", [["1.1", 3, "fd006718-6fc0-44ac-a980-0bc47cdff6aa"],["2.1", 10, "fd006718-6fc0-44ac-a980-0bc47cdff6aa"]]], ["Leave Managment", [["3.1", 3, "0f59943b-bdaf-4751-b2a3-a59cb232ce2d"],["1.1", 15, "0f59943b-bdaf-4751-b2a3-a59cb232ce2d"],["2.1", 10, "0f59943b-bdaf-4751-b2a3-a59cb232ce2d"]]], ["Net Usage Analyser", [["1.2", 3, "c46f9d48-944b-4933-a153-f58b2f9765d9"],["3.1", 8 ,"c46f9d48-944b-4933-a153-f58b2f9765d9"],["1.1", 15, "c46f9d48-944b-4933-a153-f58b2f9765d9"]]], ["Travel Booking", [["1", 3, "d81c4459"]]], ["Travel Claims", [["1", 3, "71509a4a"],["2.1", 9, "71509a4a"]]], ["pizza", [["1", 3, "84718876"],["1.2", 8, "84718876"]]], ["sample", [["1", 3, "8fe9e814"]]], ["webappsample", [["1", 3, "227225ea"]]], ["Conference Booking", [["1", 1, "1c52c82e"]]], ["Event Management", [["1", 1, "1c80aaac"]]], ["MyApp", [["1", 1, "204706ba"]]], ["Sales Tracking Portal", [["1", 1, "1a488491"]]]]
+   //var parsedResponse=[["Hardware Repo", [["1.1", 3, "fd006718-6fc0-44ac-a980-0bc47cdff6aa"],["2.1", 10, "fd006718-6fc0-44ac-a980-0bc47cdff6aa"]]], ["Leave Managment", [["3.1", 3, "0f59943b-bdaf-4751-b2a3-a59cb232ce2d"],["1.1", 15, "0f59943b-bdaf-4751-b2a3-a59cb232ce2d"],["2.1", 10, "0f59943b-bdaf-4751-b2a3-a59cb232ce2d"]]], ["Net Usage Analyser", [["1.2", 3, "c46f9d48-944b-4933-a153-f58b2f9765d9"],["3.1", 8 ,"c46f9d48-944b-4933-a153-f58b2f9765d9"],["1.1", 15, "c46f9d48-944b-4933-a153-f58b2f9765d9"]]], ["Travel Booking", [["1", 3, "d81c4459"]]], ["Travel Claims", [["1", 3, "71509a4a"],["2.1", 9, "71509a4a"]]], ["pizza", [["1", 3, "84718876"],["1.2", 8, "84718876"]]], ["sample", [["1", 3, "8fe9e814"]]], ["webappsample", [["1", 3, "227225ea"]]], ["Conference Booking", [["1", 1, "1c52c82e"]]], ["Event Management", [["1", 1, "1c80aaac"]]], ["MyApp", [["1", 1, "204706ba"]]], ["Sales Tracking Portal", [["1", 1, "1a488491"]]]]
 
     var totalCount = 0;
     for ( var i = 0; i < parsedResponse.length; i++) {
@@ -461,7 +469,11 @@ var drawSubscriberCountByAPIs = function(response) {
 
     }
 
-
+    }else{
+//          $('#pagination').hide();
+//         $('#pie-chart').hide();
+//         $('#graphContainer').html($('<span class="label label-info">No data available</span>'));
+    }
 }
 
 var onDateSelected = function() {
