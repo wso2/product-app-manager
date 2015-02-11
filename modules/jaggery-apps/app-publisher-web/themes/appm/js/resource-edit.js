@@ -141,7 +141,7 @@ $( document ).ready(function() {
                 async:false,
                 success: function (data) {
                     for (var i = 0; i < data.length; i++) {
-                        
+
                         policyGroupsArray.push({
                             policyGroupId: data[i].policyGroupId,
                             policyGroupName: data[i].policyGroupName,

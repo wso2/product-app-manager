@@ -12,7 +12,7 @@ var RESOURCES = [
 
 
 $( document ).ready(function() {
-
+alert("a");
     //get Tier details from tier.xml
     $.ajax({
         url: '/publisher/api/entitlement/get/Tiers',
@@ -135,12 +135,11 @@ $( document ).ready(function() {
     $("#resource_tbody").on("draw", function () {
         $("#resource_tbody").html("");
         for (var i = 0; i < RESOURCES.length; i++) {
-
             $("#resource_tbody").prepend(
                 "<tr> \
                   <td><span style='color:#999'>/{context}/{version}/</span>" + RESOURCES[i].url_pattern + " <input type='hidden' value='" + RESOURCES[i].url_pattern + "' name='uritemplate_urlPattern" + i + "'/></td> \
                   <td><strong>" + RESOURCES[i].http_verb + "</strong><input type='hidden' value='" + RESOURCES[i].http_verb + "' name='uritemplate_httpVerb" + i + "'/></td> \
-                    <td style='padding:0px'><select class='form-control' name='uritemplate_policyGroupId" + i + "' id='uritemplate_policyGroupId" + i + "' onChange='updateDropdownPolicyGroup(" + i + ");'  class='policy_groups'>" + policyGroupBlock + "</select></td>\
+                    <td style='padding:0px'><select name='uritemplate_policyGroupId" + i + "' id='uritemplate_policyGroupId" + i + "' onChange='updateDropdownPolicyGroup(" + i + ");'   class='policy_groups form-control'>" + policyGroupBlock + "</select></td>\
                      <td> \
                   	<a data-index='" + i + "' class='delete_resource'><i class='icon-remove-sign'></i>  Delete</a>&nbsp; \
                   </td> \
