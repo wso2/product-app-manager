@@ -1,6 +1,9 @@
 var tiers ={}; //contains Throttling tier details
 var throttlingTierControlBlock; //html formatted block for throttling tiers list
 
+
+
+
 $( document ).ready(function() {
 
     //get Tier details from tier.xml
@@ -98,70 +101,7 @@ $( document ).ready(function() {
     });
 
     var uuid = $("#uuid").val();
-
-    $.ajax({
-        url: '/publisher/api/entitlement/get/webapp/id/from/entitlements/uuid/' + uuid,
-        type: 'GET',
-        async:false,
-        contentType: 'application/json',
-        success: function(id){
-            //get partials of web app
-            $.ajax({
-                url: '/publisher/api/entitlement/policy/partialList/' + id,
-                type: 'GET',
-                contentType: 'application/json',
-                dataType: 'json',
-                async:false,
-                success: function(data){
-
-                    for (var i = 0; i < data.length; i++) {
-                        var obj = {
-                            id: data[i].partialId,
-                            policyPartialName: data[i].partialName,
-                            policyPartial: data[i].partialContent,
-                            isShared: data[i].isShared,
-                            author: data[i].author
-                        };
-                        // avoid duplicating shared partials
-                        if (!obj.isShared) {
-                            policyPartialsArray.push(obj);
-                        }
-                    }
-                    updatePolicyPartial();
-                 },
-                error: function(){}
-            });
-
-            // get the entitlement policy groups
-            $.ajax({
-                url: '/publisher/api/entitlement/get/policy/Group/by/appId/' + id,
-                type: 'GET',
-                contentType: 'application/json',
-                dataType: 'json',
-                async:false,
-                success: function (data) {
-                    for (var i = 0; i < data.length; i++) {
-
-                        policyGroupsArray.push({
-                            policyGroupId: data[i].policyGroupId,
-                            policyGroupName: data[i].policyGroupName,
-                            throttlingTier: data[i].throttlingTier,
-                            anonymousAccessToUrlPattern: data[i].allowAnonymous,
-                            userRoles: data[i].userRoles,
-                            policyPartials:data[i].policyPartials
-                        })
-                    }
-                    updatePolicyGroupPartial(policyGroupsArray);
-                },
-                error: function () {
-                }
-            });
-
-        },
-        error: function(){}
-    });
-
-
+    loadPolicyGroupData(uuid);
 
     $("#add_resource").click(function(){
         $(".http_verb").each(function(){
@@ -276,4 +216,74 @@ function setPolicyGroupValue() {
             $('#uritemplate_policyGroupId' + i).val(RESOURCES_1[i].policyGroupId);
         }
     }
+}
+
+/**
+ * load policy group details and policy partial details
+ * @param uuid
+ */
+function loadPolicyGroupData(uuid) {
+    $.ajax({
+        url: '/publisher/api/entitlement/get/webapp/id/from/entitlements/uuid/' + uuid,
+        type: 'GET',
+        async: false,
+        contentType: 'application/json',
+        success: function (id) {
+            //get partials of web app
+            $.ajax({
+                url: '/publisher/api/entitlement/policy/partialList/' + id,
+                type: 'GET',
+                contentType: 'application/json',
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+
+                    for (var i = 0; i < data.length; i++) {
+                        var obj = {
+                            id: data[i].partialId,
+                            policyPartialName: data[i].partialName,
+                            policyPartial: data[i].partialContent,
+                            isShared: data[i].isShared,
+                            author: data[i].author
+                        };
+                        // avoid duplicating shared partials
+                        if (!obj.isShared) {
+                            policyPartialsArray.push(obj);
+                        }
+                    }
+                    updatePolicyPartial();
+                },
+                error: function () {
+                }
+            });
+
+            // get the entitlement policy groups
+            $.ajax({
+                url: '/publisher/api/entitlement/get/policy/Group/by/appId/' + id,
+                type: 'GET',
+                contentType: 'application/json',
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+
+                        policyGroupsArray.push({
+                            policyGroupId: data[i].policyGroupId,
+                            policyGroupName: data[i].policyGroupName,
+                            throttlingTier: data[i].throttlingTier,
+                            anonymousAccessToUrlPattern: data[i].allowAnonymous,
+                            userRoles: data[i].userRoles,
+                            policyPartials: data[i].policyPartials
+                        })
+                    }
+                    updatePolicyGroupPartial(policyGroupsArray);
+                },
+                error: function () {
+                }
+            });
+
+        },
+        error: function () {
+        }
+    });
 }
