@@ -73,6 +73,7 @@ var splitData = function(copyOfData){
                     var secondNamePart = uriTemplate[j].name.split(numberInAction)[0];
                     if(secondNamePart == "uritemplate_urlPattern"){
                         patternEntry.urlPattern = uriTemplate[j].value;
+                        patternEntry.policyUid = (uriTemplate[j].value).replace('/','-').replace('*','-');
                     } else if(secondNamePart == "uritemplate_httpVerb"){
                         patternEntry.httpVerb = uriTemplate[j].value;
                     }else if(secondNamePart == "uritemplate_tier"){
