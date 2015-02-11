@@ -23,8 +23,14 @@
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.SSOutTestCase"/>
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.AppDeleteTestCase"/>
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.SelfSignUpTestCase"/>
+            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.DocumentTestCase"/>
+            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.GoogleAnalyticsTestCase"/>
 
 
+            <!--This test case is not run with default APP manager integration tests. To run this test we assume that
+            BPS server  is  running with port offset 2 and all the configurations are done to the BPS as mentioned in
+            the work flow extension  doc-->
+            <!--class name="org.wso2.carbon.appmanager.integration.ui.TestCases.WorkFlowTestCase"/-->
         </classes>
     </test>
     <!--test name="Rest Test" preserve-order="true" verbose="2">

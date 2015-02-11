@@ -49,7 +49,7 @@ public class SelfSignUpTestCase extends APPManagerIntegrationTest {
     @Test(groups = {"wso2.appmanager.selfSignUp"}, description = "Self sign up test case")
     public void testSelfSignUp() throws Exception {
 
-        storeUIClient.selfSignUp(driver, ApplicationInitializingUtil.storeURLHttp, newUsername, newPassword);
+        storeUIClient.selfSignUp(driver, getServerURLHttp(), newUsername, newPassword);
         assertTrue(driver.findElement(By.xpath("//a[contains(.,'" + newUsername + "')]")) != null,
                 "No user Logged in for given username. Self Sign Up failed");
     }

@@ -18,6 +18,9 @@
 
 package org.wso2.carbon.appmanager.integration.ui.Util;
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -26,6 +29,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.AppCreateRequest;
+import org.wso2.carbon.appmanager.integration.ui.Util.Bean.DocumentRequest;
+import org.wso2.carbon.automation.core.BrowserManager;
 import org.wso2.carbon.automation.core.utils.HttpRequestUtil;
 import org.wso2.carbon.automation.core.utils.HttpResponse;
 
@@ -435,5 +440,84 @@ public class APPMPublisherRestClient {
 		}
 		return true;
 	}
+
+    /**
+     * Add document
+     *
+     * @param docRequest DocumentRequest object
+     * @return HttpResponse
+     * @throws Exception
+     */
+    public HttpResponse addDocument(DocumentRequest docRequest) throws Exception {
+        checkAuthentication();
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost httppost =
+                new HttpPost(backEndUrl + "/publisher/api/doc");
+        httppost.setHeader("Cookie", requestHeaders.get("Cookie"));
+        httppost.setEntity(docRequest.generateMulipartEnitity());
+        org.apache.http.HttpResponse res = httpclient.execute(httppost);
+        HttpResponse response = HttpUtil.convertResponse(res);
+        if (response.getResponseCode() == 200) {
+            VerificationUtil.checkErrors(response);
+            return response;
+        } else {
+            throw new Exception("Failed to add File type document to the api:" + docRequest.getApiName());
+        }
+
+    }
+
+    /**
+     *
+     * @param appName APP Name
+     * @param appVersion APP Version
+     * @param provider Prover Name
+     * @param docName Document Name
+     * @param content Inline document content
+     * @return
+     * @throws Exception
+     */
+    public HttpResponse addInlineDocumentContent(String appName,String appVersion,String provider,String docName,
+                                         String content) throws Exception {
+        checkAuthentication();
+        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl +
+                "/publisher/api/doc")
+                , "action=addInlineContent" + "&provider=" + provider +
+                "&apiName=" + appName + "&version=" + appVersion + "&docName="
+                + docName + "&content=" + content
+                , requestHeaders);
+        if (response.getResponseCode() == 200) {
+            VerificationUtil.checkErrors(response);
+            return response;
+        } else {
+            throw new Exception("API Subscription failed> " + response.getData());
+        }
+
+    }
+
+    /**
+     * @param appName  APP Name
+     * @param appVersion  APP Version
+     * @param provider APP provider
+     * @param docName  Document Name
+     * @param docType  Document Type
+     * @return
+     * @throws Exception
+     */
+    public HttpResponse deleteDocument(String appName, String appVersion, String provider,
+                                       String docName, String docType) throws Exception {
+        checkAuthentication();
+        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl +
+                "/publisher/api/doc")
+                , "action=removeDocumentation" + "&provider=" + provider +
+                "&apiName=" + appName + "&version=" + appVersion + "&docName="
+                + docName + "&docType=" + docType
+                , requestHeaders);
+        if (response.getResponseCode() == 200) {
+            VerificationUtil.checkErrors(response);
+            return response;
+        } else {
+            throw new Exception("API Subscription failed> " + response.getData());
+        }
+    }
 
 }

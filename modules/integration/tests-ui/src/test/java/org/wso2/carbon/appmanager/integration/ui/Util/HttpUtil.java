@@ -299,4 +299,32 @@ public class HttpUtil {
 		return null;
 	}
 
+    /**
+     * convert org.apache.http.HttpResponse  to org.wso2.carbon.automation.core.utils.HttpResponse
+
+     * @param res org.apache.http.HttpResponse
+     * @return org.wso2.carbon.automation.core.utils.HttpResponse
+     * @throws Exception
+     */
+    public static HttpResponse convertResponse(org.apache.http.HttpResponse res) throws IOException {
+        int responseCode = res.getStatusLine().getStatusCode();
+        String data = "";
+        InputStreamReader in = null;
+        BufferedReader br = null;
+        try {
+            in=new InputStreamReader((res.getEntity().getContent()));
+            br =new BufferedReader(in);
+            String line="";
+            while ((line = br.readLine()) != null) {
+                data = data.concat(line);
+            }
+        }
+        finally {
+            in.close();
+            br.close();
+        }
+        HttpResponse response = new HttpResponse(data, responseCode);
+        return response;
+    }
+
 }
