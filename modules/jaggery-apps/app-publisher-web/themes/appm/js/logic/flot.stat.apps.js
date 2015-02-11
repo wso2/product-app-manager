@@ -38,6 +38,7 @@ var drawAPIUsageByUser = function(response) {
     //var parsedResponse = JSON.parse(response);
 
     var parsedResponse = [["Travel Claims", [["1", [["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"]]]]], ["Net Usage Analyser", [["1", [["admin", "30"]]]]], ["Leave Managment", [["1", [["admin", "30"]]]]], ["pizza", [["1", [["test", "29"]]]]], ["Travel Booking", [["1", [["admin", "29"]]]]], ["webappsample", [["1", [["test", "27"]]]]], ["sample", [["1", [["admin", "20"], ["test", "19"]]]]], ["Hardware Repo", [["1", [["admin", "18"]]]]], ["MyApp", [["1", [["test", "14"]]],["2", [["test", "14"]]]]]]
+    length=parsedResponse.length;
     $("#tooltipTable").find("tr:gt(0)").remove();
     var data = [];
     for ( var i = 0; i < parsedResponse.length; i++) {
@@ -75,22 +76,103 @@ var drawAPIUsageByUser = function(response) {
             });
 		}
 	}
-    var svg = dimple.newSvg(".graph-container", 1000, 700),
-    chart = new dimple.chart(svg, data),
-    x = chart.addCategoryAxis("x", "API"),
-    y = chart.addMeasureAxis("y", "Subscriber_Count"),
-    z = chart.addMeasureAxis("z", "Hits"),
+    var svg = dimple.newSvg(".graph-container", 1000, 700);
+    chart = new dimple.chart(svg, data);
+    chart.setBounds("10%", "10%", "75%", "60%");
+    x = chart.addCategoryAxis("x", "API");
+
+    y = chart.addMeasureAxis("y", "Subscriber_Count");
+    y.title = "Subscriber Count";
+    y.tickFormat = '1d';
+
+    z = chart.addMeasureAxis("z", "Hits");
     s = chart.addSeries("API", dimple.plot.bubble);
     var div = d3.select("body").append("div").attr("class", "toolTip");
+
+
+
+    //new code
+    var filterValues = dimple.getUniqueValues(data, "API");
+
+    var $dataTable =$('<table class="display" width="100%" cellspacing="0" id="apiSelectTable"></table>');
+
+    $dataTable.append($('<thead class="tableHead"><tr>'+
+                            '<th width="10%"></th>'+
+                            '<th>API</th>'+
+                        '</tr></thead>'));
+    for(var n=0;n<filterValues.length;n++){
+
+       /*if(n<2){
+            $dataTable.append($('<tr><td >'
+                                 +'<input name="item_checkbox'+n+'" onchange="myFunction(this);" checked   id='+n+'  type="checkbox"  data-item='+filterValues[n] +' class="ccf"/>'
+                                 +'</td>'
+                                 +'<td style="text-align:left;"><label for='+n+'>'+filterValues[n] +'</label></td></tr>'));
+        }else{
+        $dataTable.append($('<tr><td >'
+                                 +'<input name="item_checkbox'+n+'" onchange="myFunction(this);"  id='+n+'  type="checkbox"  data-item='+filterValues[n] +' class="ccf"/>'
+                                 +'</td>'
+                                 +'<td style="text-align:left;"><label for='+n+'>'+filterValues[n] +'</label></td></tr>'));
+        }*/
+
+        $dataTable.append($('<tr><td >'
+                                +'<input name="item_checkbox'+n+'" onchange="myFunction(this);" checked   id='+n+'  type="checkbox"  data-item='+filterValues[n] +' class="ccf"/>'
+                                +'</td>'
+                                +'<td style="text-align:left;"><label for='+n+'>'+filterValues[n] +'</label></td></tr>'));
+
+     }
+
+                    if (length == 0) {
+//                        $('.graph-container').html($('<span class="label label-info">No Data available</span>'));
+
+                    } else {
+
+                        $('#tableContainer').append($dataTable);
+                        $('#tableContainer').show();
+                        $('#apiSelectTable').DataTable({
+                            retrieve: true,
+                            "order": [[ 1, "asc" ]],
+                            "aoColumns": [
+                            { "bSortable": false },
+                            null
+                            ],
+
+                        });
+
+
+                        $('#apiSelectTable').on( 'change', 'input.ccf', function () {
+                                  var id =  $(this).attr('value');
+                                  var check=$(this).is(':checked');
+                                  var temp= $(this).attr('data-item');
+
+                                  // This indicates whether the item is already visible or not
+                                  var hide = false;
+                                  var newFilters = [];
+
+                                     filterValues.forEach(function (f){
+                                             if(f==temp){
+                                                 hide = true;
+                                             }
+                                             else{
+                                                 newFilters.push(f);
+                                             }
+                                     });
+                                     if (hide) {
+                                     } else {
+                                               newFilters.push(temp);
+                                     }
+                                             filterValues = newFilters;
+                                             chart.data = dimple.filterData(data, "API", filterValues);
+                                             chart.draw();
+                        } );
+                    }
+
 
     s.afterDraw = function (shp, d) {
         var shape = d3.select(shp);
         var circle=d3.select("#"+d.aggField+"_"+d.aggField+"__");
 
         circle.on("click", function(d){
-
-            for ( var i = 0; i < parsedResponse.length; i++) {
-                var statement = '';
+             for ( var i = 0; i < parsedResponse.length; i++) {
                 var count = 0;
                 var app ='';
 
@@ -102,7 +184,6 @@ var drawAPIUsageByUser = function(response) {
                         app =(parsedResponse[i][0]);
 
                         if (j != 0) {
-                            statement = statement + '<tr>'
                         }
 
                         var maximumUsers = parsedResponse[i][1][j][1].length;
@@ -110,7 +191,6 @@ var drawAPIUsageByUser = function(response) {
                         allcount = 0;
                         for ( var k = 0; k < maximumUsers; k++) {
                             if (k != 0) {
-                                statement = statement + '<tr>'
                             }
                             count++;
                             allcount = Number(allcount)+Number(parsedResponse[i][1][j][1][k][1]);
@@ -119,6 +199,7 @@ var drawAPIUsageByUser = function(response) {
                          arr.push({version:parsedResponse[i][1][j][0],count:allcount});
 
                     }
+
                     div.style("left", d3.event.pageX+10+"px");
                     div.style("top", d3.event.pageY-25+"px");
                     div.style("display", "inline-block");
@@ -144,67 +225,62 @@ var drawAPIUsageByUser = function(response) {
         });
 
     };
-    var myLegend = chart.addLegend(530, 100, 60, 300, "Right");
     chart.draw();
 
-     chart.legends = [];
-
-            // This block simply adds the legend title. I put it into a d3 data
-            // object to split it onto 2 lines.  This technique works with any
-            // number of lines, it isn't dimple specific.
-            svg.selectAll("title_text")
-              .data(["Click legend to","show/hide Apps:"])
-              .enter()
-              .append("text")
-                .attr("x", 499)
-                .attr("y", function (d, i) { return 80 + i * 14; })
-                .style("font-family", "sans-serif")
-                .style("font-size", "10px")
-                .style("color", "Black")
-                .text(function (d) { return d; });
-
-            // Get a unique list of Owner values to use when filtering
-            var filterValues = dimple.getUniqueValues(data, "API");
-            //alert(filterValues)
-
-
-
-     myLegend.shapes.selectAll("rect").on("click", function (e) {
-                // This indicates whether the item is already visible or not
-                var hide = false;
-                var newFilters = [];
-                // If the filters contain the clicked shape hide it
-                filterValues.forEach(function (f) {
-                  if (f === e.aggField.slice(-1)[0]) {
-                    //alert(e.aggField.slice(-1)[0]);
-                    hide = true;
-                  } else {
-                    //alert(e.aggField.slice(-1)[0]);
-                    newFilters.push(f);
-                  }
-                });
-                // Hide the shape or show it
-                if (hide) {
-                  d3.select(this).style("opacity", 0.2);
-                } else {
-                  newFilters.push(e.aggField.slice(-1)[0]);
-                  d3.select(this).style("opacity", 0.8);
-                }
-                // Update the filters
-                filterValues = newFilters;
-                // Filter the data
-       //alert(JSON.stringify(newFilters));
-               chart.data = dimple.filterData(data, "API", filterValues);
-                // Passing a duration parameter makes the chart animate. Without
-                // it there is no transition
-                chart.draw(800);
-               });
-
-
+//     chart.legends = [];
+//
+//            // This block simply adds the legend title. I put it into a d3 data
+//            // object to split it onto 2 lines.  This technique works with any
+//            // number of lines, it isn't dimple specific.
+//            svg.selectAll("title_text")
+//              .data(["Click legend to","show/hide Apps:"])
+//              .enter()
+//              .append("text")
+//                .attr("x", 499)
+//                .attr("y", function (d, i) { return 80 + i * 14; })
+//                .style("font-family", "sans-serif")
+//                .style("font-size", "10px")
+//                .style("color", "Black")
+//                .text(function (d) { return d; });
+//
+//            // Get a unique list of Owner values to use when filtering
+//            var filterValues = dimple.getUniqueValues(data, "API");
+//            //alert(filterValues)
+//
+//
+//
+//     myLegend.shapes.selectAll("rect").on("click", function (e) {
+//                // This indicates whether the item is already visible or not
+//                var hide = false;
+//                var newFilters = [];
+//                // If the filters contain the clicked shape hide it
+//                filterValues.forEach(function (f) {
+//                  if (f === e.aggField.slice(-1)[0]) {
+//                    //alert(e.aggField.slice(-1)[0]);
+//                    hide = true;
+//                  } else {
+//                    //alert(e.aggField.slice(-1)[0]);
+//                    newFilters.push(f);
+//                  }
+//                });
+//                // Hide the shape or show it
+//                if (hide) {
+//                  d3.select(this).style("opacity", 0.2);
+//                } else {
+//                  newFilters.push(e.aggField.slice(-1)[0]);
+//                  d3.select(this).style("opacity", 0.8);
+//                }
+//                // Update the filters
+//                filterValues = newFilters;
+//                // Filter the data
+//       //alert(JSON.stringify(newFilters));
+//               chart.data = dimple.filterData(data, "API", filterValues);
+//                // Passing a duration parameter makes the chart animate. Without
+//                // it there is no transition
+//                chart.draw(800);
+//               });
 
 }
-
-
 
 var onDateSelected = function() {
     $('.graph-container').empty();
