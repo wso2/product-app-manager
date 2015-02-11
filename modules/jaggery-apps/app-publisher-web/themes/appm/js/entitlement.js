@@ -136,10 +136,9 @@ function continueAddingEntitlementPolicyPartialAfterValidation(response) {
         if (response.isValid) {
             savePolicyPartial();
             showEntitlementNotification("Policy is valid.", "alert-success");
-            console.log('hit me')
             $('.wr-overview-policies').css('display', 'block');
-            $('.wr-overview-policies').parent().find('i').removeClass('icon-chevron-sign-right');
-            $('.wr-overview-policies').parent().find('i').addClass('icon-chevron-sign-down');
+          //  $('.wr-overview-policies').parent().find('i').removeClass('icon-chevron-sign-right');
+          //  $('.wr-overview-policies').parent().find('i').addClass('icon-chevron-sign-down');
 
             if (saveAndClose) {
                 $("#entitlement-policy-editor").modal('hide');
