@@ -35,9 +35,9 @@ function drawGraphs() {
 
 var drawAPIUsageByUser = function(response) {
 
-    //var parsedResponse = JSON.parse(response);
+    var parsedResponse = JSON.parse(response);
 
-    var parsedResponse = [["Travel Claims", [["1", [["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"]]]]], ["Net Usage Analyser", [["1", [["admin", "30"]]]]], ["Leave Managment", [["1", [["admin", "30"]]]]], ["pizza", [["1", [["test", "29"]]]]], ["Travel Booking", [["1", [["admin", "29"]]]]], ["webappsample", [["1", [["test", "27"]]]]], ["sample", [["1", [["admin", "20"], ["test", "19"]]]]], ["Hardware Repo", [["1", [["admin", "18"]]]]], ["MyApp", [["1", [["test", "14"]]],["2", [["test", "14"]]]]]]
+   // var parsedResponse = [["Travel Claims", [["1", [["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"]]]]], ["Net Usage Analyser", [["1", [["admin", "30"]]]]], ["Leave Managment", [["1", [["admin", "30"]]]]], ["pizza", [["1", [["test", "29"]]]]], ["Travel Booking", [["1", [["admin", "29"]]]]], ["webappsample", [["1", [["test", "27"]]]]], ["sample", [["1", [["admin", "20"], ["test", "19"]]]]], ["Hardware Repo", [["1", [["admin", "18"]]]]], ["MyApp", [["1", [["test", "14"]]],["2", [["test", "14"]]]]]]
     length=parsedResponse.length;
     $("#tooltipTable").find("tr:gt(0)").remove();
     var data = [];
@@ -57,20 +57,42 @@ var drawAPIUsageByUser = function(response) {
             }
 
             var maximumUsers = parsedResponse[i][1][j][1].length;
+           // origLen=parsedResponse[i][1][j][1];
+
+
+
+
+
+ var newArr = [],
+                                  origLen = parsedResponse[i][1][j][1].length,
+                                  found, x, y;
             maxrowspan = parsedResponse[i][1][j][1].length;
             allcount = 0;
-
+ //alert(parsedResponse[i][1][j][1])
             for ( var k = 0; k < maximumUsers; k++) {
-                if (k != 0) {
-                    statement = statement + '<tr>'
-                }
+
+
+                                found = undefined;
+                                for (y = 0; y < newArr.length; y++) {
+                                    //alert(origArr[x][0])
+                                    if (parsedResponse[i][1][j][1][k][0] === newArr[y]) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                                if (!found) {
+                                    newArr.push(parsedResponse[i][1][j][1][k][0]);
+                                }
+
+                            //alert(newArr)
+
                 count++;
                 allcount = Number(allcount)+Number(parsedResponse[i][1][j][1][k][1]);
 
             }
             data.push({
                 API_name:app,
-                Subscriber_Count:maximumUsers,
+                Subscriber_Count:newArr.length,
                 Hits:allcount,
                 API:app
             });
