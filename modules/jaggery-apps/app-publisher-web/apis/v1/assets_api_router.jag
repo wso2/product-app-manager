@@ -1,48 +1,32 @@
 <%
 
-require('/modules/publisher.js').exec(function(ctx) {
+require('/modules/publisher.js').exec(function (ctx) {
 
-	var config = require('/config/publisher.json');
-	var caramel = require('caramel');
+    var config = require('/config/publisher.json');
+    var caramel = require('caramel');
 
-	var router = require('/modules/router-g.js').router();
-	var routeManager = new router.Router();
+    var router = require('/modules/router-g.js').router();
+    var routeManager = new router.Router();
 
-	var appmgtPublisher = require('appmgtpublisher');
+    var appmgtPublisher = require('appmgtpublisher');
 
-	var log = new Log();
+    var log = new Log();
 
-	routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{type}/{action}/', function (context) {
-		var type = context.params.type;
-		var action = context.params.action;
+    routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{type}/{action}/', function (context) {
+        var action = context.params.action;
 
-		var server  = require('store').server;
-		var username = server.current(session).username;
-		var tenantId = server.current(session).tenantId;
-		var startDate = context.post.startDate;
+        var server = require('store').server;
+        var username = server.current(session).username;
+        var startDate = context.post.startDate;
+        var endDate = context.post.endDate;
 
-		var endDate = context.post.endDate;
+        var appMgtProviderObj = new appmgtPublisher.APIProvider(stringify(username));
 
-		var appMgtProviderObj = new appmgtPublisher.APIProvider(stringify(username));
+        if (endDate != null) {
+           endDate = endDate.trim();
+        }
 
-
-		//manipulate endDate to overcome date-picker issue
-		var date = new Date(Date.parse(endDate.replace(/-/g,"/")));
-		date.setDate(date.getDate() + 1);
-		// The getMonth() method returns the month (from 0 to 11) for the specified date
-		var month = (date.getMonth() + 1);
-
-        		endDate = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate();
-        		//alert(endDate);
-
-                if (date.getMonth().toString().length < 2) {
-                    endDate = date.getFullYear() + '-' + '0' + month + '-' + date.getDate();
-                } else {
-                    endDate = date.getFullYear() + '-' + month + '-' + date.getDate();
-
-                }
-
-		var usage = [];
+var usage = [];
 		var obj, result;
 
 		/* Web Application Last Access Time Graph */
@@ -109,8 +93,7 @@ require('/modules/publisher.js').exec(function(ctx) {
 
 		} else  if (action == "getSubscribedAPIsByUsers") { /* Overall Web Application Usage Graph */
 			usage = appMgtProviderObj.getSubscribedAPIsByUsers("__all_providers__",startDate,endDate);
-			log.info((usage));
-//usage =[{"apiName" : "Net Usage Analyser", "version" : "1", "user" : "admin", "subscribeDate" : "2014-11-28"},{"apiName" : "Net Usage Analyser", "version" : "2", "user" : "admin", "subscribeDate" : "2014-11-28"}, {"apiName" : "Net Usage Analyser", "version" : "1", "user" : "john", "subscribeDate" : "2014-11-28"}, {"apiName" : "Net Usage Analyser", "version" : "1", "user" : "peter", "subscribeDate" : "2014-11-28"}, {"apiName" : "Event Management", "version" : "1", "user" : "admin", "subscribeDate" : "2014-11-28"}, {"apiName" : "Travel Claims", "version" : "1", "user" : "admin", "subscribeDate" : "2014-11-28"}, {"apiName" : "Travel Claims", "version" : "1", "user" : "john", "subscribeDate" : "2014-11-28"}, {"apiName" : "Travel Claims", "version" : "1", "user" : "peter", "subscribeDate" : "2014-11-28"}, {"apiName" : "pizza", "version" : "1", "user" : "test1", "subscribeDate" : "2014-11-21"}, {"apiName" : "pizza", "version" : "1", "user" : "admin", "subscribeDate" : "2014-11-17"}, {"apiName" : "pizza", "version" : "1", "user" : "test", "subscribeDate" : "2014-11-18"}, {"apiName" : "MyApp", "version" : "1", "user" : "test", "subscribeDate" : "2014-11-28"}, {"apiName" : "Hardware Repo", "version" : "1", "user" : "john", "subscribeDate" : "2014-11-28"}, {"apiName" : "Hardware Repo", "version" : "1", "user" : "peter", "subscribeDate" : "2014-11-28"}, {"apiName" : "Hardware Repo", "version" : "1", "user" : "admin", "subscribeDate" : "2014-11-28"}, {"apiName" : "test", "version" : "1", "user" : "admin", "subscribeDate" : "2014-11-28"}, {"apiName" : "loooooooooooooooooooongnaaaaaaaaaaaaaame", "version" : "1", "user" : "admin", "subscribeDate" : "2014-11-18"}, {"apiName" : "Travel Booking", "version" : "1", "user" : "peter", "subscribeDate" : "2014-11-28"}, {"apiName" : "Travel Booking", "version" : "1", "user" : "admin", "subscribeDate" : "2014-11-28"}, {"apiName" : "Travel Booking", "version" : "1", "user" : "john", "subscribeDate" : "2014-11-28"}, {"apiName" : "Leave Managment", "version" : "1", "user" : "admin", "subscribeDate" : "2014-11-28"}, {"apiName" : "Leave Managment", "version" : "1", "user" : "john", "subscribeDate" : "2014-11-28"}, {"apiName" : "Leave Managment", "version" : "1", "user" : "peter", "subscribeDate" : "2014-11-28"}, {"apiName" : "testapp12", "version" : "1", "user" : "admin", "subscribeDate" : "2014-11-28"}, {"apiName" : "Conference Booking", "version" : "1", "user" : "admin", "subscribeDate" : "2014-11-28"}, {"apiName" : "sample", "version" : "1", "user" : "test", "subscribeDate" : "2014-11-17"}, {"apiName" : "sample", "version" : "1", "user" : "test1", "subscribeDate" : "2014-11-21"}, {"apiName" : "sample", "version" : "1", "user" : "admin", "subscribeDate" : "2014-11-17"}, {"apiName" : "Sales Tracking Portal", "version" : "1", "user" : "admin", "subscribeDate" : "2014-11-28"}, {"apiName" : "testapp2", "version" : "1", "user" : "admin", "subscribeDate" : "2014-11-28"}, {"apiName" : "webappsample", "version" : "1", "user" : "admin", "subscribeDate" : "2014-11-17"}, {"apiName" : "webappsample", "version" : "1", "user" : "test", "subscribeDate" : "2014-11-17"}, {"apiName" : "webappsample", "version" : "1", "user" : "test1", "subscribeDate" : "2014-11-21"}]
+
 
 			var obj, result;
             var webapps = [];
@@ -177,10 +160,10 @@ require('/modules/publisher.js').exec(function(ctx) {
 
 		}else if (action == "getAPIUsageByUser") { /* Overall Web Application Usage Graph */
 			usage = appMgtProviderObj.getAPIUsageByUser("__all_providers__",startDate,endDate);
-log.info(usage)
+
 			usage = parse(stringify(usage));
 
-				
+
 			function orderByCountAscending(a, b) {
 				return b.count - a.count;
 			}
@@ -189,7 +172,7 @@ log.info(usage)
 			var webapps = [];
 
 			for(x=0;x<usage.length;x++){
-					
+
 				var webappIndex = -1;
 				var webappVersionIndex = -1;
 
@@ -225,7 +208,7 @@ log.info(usage)
 						webapps[webappIndex][1][webappVersionIndex][1].push([usage[x].userId,usage[x].count.toString()]);
 					}
 				}
-					
+
 			}
 
 			if (usage == null) {
@@ -262,15 +245,15 @@ log.info(usage)
 
 				var webappIndex = -1;
 				var webappVersionIndex = -1;
-				
+
 				for(y=0;y<webapps.length;y++){
 					if(webapps[y][0] == usage[x].apiName){
-							
+
 						webappIndex = y;
 						break;
 					}
 				}
-			
+
 				if(webappIndex == -1){
 					var page = [];
 					page.push([usage[x].referer,usage[x].serviceTime.toString()]);
@@ -407,7 +390,7 @@ log.info(usage)
 			print(webappObject);
 		}else if (action == "getUsageByContext") {
             usage = appMgtProviderObj.getAPIUsageByUser("__all_providers__",startDate,endDate);
-            log.info(usage)
+
             			usage = parse(stringify(usage));
 
 
@@ -520,23 +503,21 @@ log.info(usage)
                         			print(webapps);
 		}
 
-	});
+    });
 
 
+    var securityModule = require('/modules/security/security.manager.js').securityManagementModule();
+    var sm = securityModule.cached();
 
+    //This will short circuit the handling of the requests
+    var passed = sm.check(session, function () {
+        response.sendError(401);
+    });
 
-	var securityModule=require('/modules/security/security.manager.js').securityManagementModule();
-	var sm=securityModule.cached();
-
-	//This will short circuit the handling of the requests
-	var passed=sm.check(session,function(){
-		response.sendError(401);
-	});
-
-	//Stop servicing the request if the check failed
-	if(passed){
-		routeManager.handle(request, response);
-	}
+    //Stop servicing the request if the check failed
+    if (passed) {
+        routeManager.handle(request, response);
+    }
 
 }, request, response, session);
 %>
