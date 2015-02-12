@@ -36,8 +36,6 @@ function drawGraphs() {
 var drawAPIUsageByUser = function(response) {
 
     var parsedResponse = JSON.parse(response);
-
-   // var parsedResponse = [["Travel Claims", [["1", [["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"],["admin", "2"]]]]], ["Net Usage Analyser", [["1", [["admin", "30"]]]]], ["Leave Managment", [["1", [["admin", "30"]]]]], ["pizza", [["1", [["test", "29"]]]]], ["Travel Booking", [["1", [["admin", "29"]]]]], ["webappsample", [["1", [["test", "27"]]]]], ["sample", [["1", [["admin", "20"], ["test", "19"]]]]], ["Hardware Repo", [["1", [["admin", "18"]]]]], ["MyApp", [["1", [["test", "14"]]],["2", [["test", "14"]]]]]]
     length=parsedResponse.length;
     $("#tooltipTable").find("tr:gt(0)").remove();
     var data = [];
@@ -57,34 +55,26 @@ var drawAPIUsageByUser = function(response) {
             }
 
             var maximumUsers = parsedResponse[i][1][j][1].length;
-           // origLen=parsedResponse[i][1][j][1];
 
 
-
-
-
- var newArr = [],
-                                  origLen = parsedResponse[i][1][j][1].length,
-                                  found, x, y;
+            var newArr = [],
+            origLen = parsedResponse[i][1][j][1].length,
+            found, x, y;
             maxrowspan = parsedResponse[i][1][j][1].length;
             allcount = 0;
- //alert(parsedResponse[i][1][j][1])
+
             for ( var k = 0; k < maximumUsers; k++) {
+                found = undefined;
+                for (y = 0; y < newArr.length; y++) {
 
-
-                                found = undefined;
-                                for (y = 0; y < newArr.length; y++) {
-                                    //alert(origArr[x][0])
-                                    if (parsedResponse[i][1][j][1][k][0] === newArr[y]) {
-                                        found = true;
-                                        break;
-                                    }
-                                }
-                                if (!found) {
-                                    newArr.push(parsedResponse[i][1][j][1][k][0]);
-                                }
-
-                            //alert(newArr)
+                    if (parsedResponse[i][1][j][1][k][0] === newArr[y]) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    newArr.push(parsedResponse[i][1][j][1][k][0]);
+                }
 
                 count++;
                 allcount = Number(allcount)+Number(parsedResponse[i][1][j][1][k][1]);
@@ -124,17 +114,7 @@ var drawAPIUsageByUser = function(response) {
                         '</tr></thead>'));
     for(var n=0;n<filterValues.length;n++){
 
-       /*if(n<2){
-            $dataTable.append($('<tr><td >'
-                                 +'<input name="item_checkbox'+n+'" onchange="myFunction(this);" checked   id='+n+'  type="checkbox"  data-item='+filterValues[n] +' class="ccf"/>'
-                                 +'</td>'
-                                 +'<td style="text-align:left;"><label for='+n+'>'+filterValues[n] +'</label></td></tr>'));
-        }else{
-        $dataTable.append($('<tr><td >'
-                                 +'<input name="item_checkbox'+n+'" onchange="myFunction(this);"  id='+n+'  type="checkbox"  data-item='+filterValues[n] +' class="ccf"/>'
-                                 +'</td>'
-                                 +'<td style="text-align:left;"><label for='+n+'>'+filterValues[n] +'</label></td></tr>'));
-        }*/
+
 
         $dataTable.append($('<tr><td >'
                                 +'<input name="item_checkbox'+n+'" onchange="myFunction(this);" checked   id='+n+'  type="checkbox"  data-item='+filterValues[n] +' class="ccf"/>'
@@ -249,58 +229,7 @@ var drawAPIUsageByUser = function(response) {
     };
     chart.draw();
 
-//     chart.legends = [];
-//
-//            // This block simply adds the legend title. I put it into a d3 data
-//            // object to split it onto 2 lines.  This technique works with any
-//            // number of lines, it isn't dimple specific.
-//            svg.selectAll("title_text")
-//              .data(["Click legend to","show/hide Apps:"])
-//              .enter()
-//              .append("text")
-//                .attr("x", 499)
-//                .attr("y", function (d, i) { return 80 + i * 14; })
-//                .style("font-family", "sans-serif")
-//                .style("font-size", "10px")
-//                .style("color", "Black")
-//                .text(function (d) { return d; });
-//
-//            // Get a unique list of Owner values to use when filtering
-//            var filterValues = dimple.getUniqueValues(data, "API");
-//            //alert(filterValues)
-//
-//
-//
-//     myLegend.shapes.selectAll("rect").on("click", function (e) {
-//                // This indicates whether the item is already visible or not
-//                var hide = false;
-//                var newFilters = [];
-//                // If the filters contain the clicked shape hide it
-//                filterValues.forEach(function (f) {
-//                  if (f === e.aggField.slice(-1)[0]) {
-//                    //alert(e.aggField.slice(-1)[0]);
-//                    hide = true;
-//                  } else {
-//                    //alert(e.aggField.slice(-1)[0]);
-//                    newFilters.push(f);
-//                  }
-//                });
-//                // Hide the shape or show it
-//                if (hide) {
-//                  d3.select(this).style("opacity", 0.2);
-//                } else {
-//                  newFilters.push(e.aggField.slice(-1)[0]);
-//                  d3.select(this).style("opacity", 0.8);
-//                }
-//                // Update the filters
-//                filterValues = newFilters;
-//                // Filter the data
-//       //alert(JSON.stringify(newFilters));
-//               chart.data = dimple.filterData(data, "API", filterValues);
-//                // Passing a duration parameter makes the chart animate. Without
-//                // it there is no transition
-//                chart.draw(800);
-//               });
+
 
 }
 
