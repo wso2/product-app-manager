@@ -81,7 +81,7 @@
 			'selected': 'Selected:',
 			'day':'Day',
 			'days': 'Days',
-			'apply': 'Close',
+			'apply': 'Apply',
 			'week-1' : 'MO',
 			'week-2' : 'TU',
 			'week-3' : 'WE',
