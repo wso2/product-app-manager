@@ -186,10 +186,6 @@ function savePolicyGroupData(isSaveAndClose) {
         else {
             updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions), isSaveAndClose);
         }
-        // update policy partial values
-        policyGroupsArray=[];
-        policyPartialsArray=[];
-        loadPolicyGroupData($("#uuid").val());
     }
 }
 
