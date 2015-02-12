@@ -10,7 +10,7 @@
                             </div>
                 </div>
                 <div class="col-md-7 asset-details-box">
-                        <h4>{{{snoop "fields(name=overview_name).value" this.data}}}</h4>
+                        <h4 style="display: none;">{{{snoop "fields(name=overview_name).value" this.data}}}</h4>
                 </div>
                 <div id="addDoc" class="col-md-3">
                     <a type="button" class="btn btn-info btn-lg pull-right" href="#" onclick="newDocFormToggle()">
@@ -157,7 +157,7 @@
 				</div>
                 {{else}}
                 <div class="row-fluid">
-                    <h3 style="text-align: center;font-weight: 100;">No Document Found...</h3>
+                    <h3 style="text-align: center;font-weight: 100;">No documentation found for this app...</h3>
                     </div>
 				
 	       {{/if}}
