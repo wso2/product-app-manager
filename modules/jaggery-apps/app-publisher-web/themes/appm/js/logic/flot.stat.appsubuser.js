@@ -60,8 +60,8 @@ function drawGraphs() {
 }
 
 var drawSubscribedAPIsByUsers = function(response) {
-    var parsedResponse = JSON.parse(response);
-  //var parsedResponse =[["admin", [["Net Usage Analyser", [["1", "2014-11-28"], ["2", "2014-11-28"]]], ["Event Management", [["1", "2014-11-28"]]], ["Travel Claims", [["1", "2014-11-28"]]], ["pizza", [["1", "2014-11-17"]]], ["Hardware Repo", [["1", "2014-11-28"]]], ["test", [["1", "2014-11-28"]]], ["loooooooooooooooooooongnaaaaaaaaaaaaaame", [["1", "2014-11-18"]]], ["Travel Booking", [["1", "2014-11-28"]]], ["Leave Managment", [["1", "2014-11-28"]]], ["testapp12", [["1", "2014-11-28"]]], ["Conference Booking", [["1", "2014-11-28"]]], ["sample", [["1", "2014-11-17"]]], ["Sales Tracking Portal", [["1", "2014-11-28"]]], ["testapp2", [["1", "2014-11-28"]]], ["webappsample", [["1", "2014-11-17"]]]]], ["john", [["Net Usage Analyser", [["1", "2014-11-28"]]], ["Travel Claims", [["1", "2014-11-28"]]], ["Hardware Repo", [["1", "2014-11-28"]]], ["Travel Booking", [["1", "2014-11-28"]]], ["Leave Managment", [["1", "2014-11-28"]]]]], ["peter", [["Net Usage Analyser", [["1", "2014-11-28"]]], ["Travel Claims", [["1", "2014-11-28"]]], ["Hardware Repo", [["1", "2014-11-28"]]], ["Travel Booking", [["1", "2014-11-28"]]], ["Leave Managment", [["1", "2014-11-28"]]]]], ["test1", [["pizza", [["1", "2014-11-21"]]], ["sample", [["1", "2014-11-21"]]], ["webappsample", [["1", "2014-11-21"]]]]], ["test", [["pizza", [["1", "2014-11-18"]]], ["MyApp", [["1", "2014-11-28"]]], ["sample", [["1", "2014-11-17"]]], ["webappsample", [["1", "2014-11-17"]]]]]]    //search bar
+    //var parsedResponse = JSON.parse(response);
+  var parsedResponse =[["admin", [["Net Usage Analyser", [["1", "2014-11-28"], ["2", "2014-11-28"]]], ["Event Management", [["1", "2014-11-28"]]], ["Travel Claims", [["1", "2014-11-28"]]], ["pizza", [["1", "2014-11-17"]]], ["Hardware Repo", [["1", "2014-11-28"]]], ["test", [["1", "2014-11-28"]]], ["loooooooooooooooooooongnaaaaaaaaaaaaaame", [["1", "2014-11-18"]]], ["Travel Booking", [["1", "2014-11-28"]]], ["Leave Managment", [["1", "2014-11-28"]]], ["testapp12", [["1", "2014-11-28"]]], ["Conference Booking", [["1", "2014-11-28"]]], ["sample", [["1", "2014-11-17"]]], ["Sales Tracking Portal", [["1", "2014-11-28"]]], ["testapp2", [["1", "2014-11-28"]]], ["webappsample", [["1", "2014-11-17"]]]]], ["john", [["Net Usage Analyser", [["1", "2014-11-28"]]], ["Travel Claims", [["1", "2014-11-28"]]], ["Hardware Repo", [["1", "2014-11-28"]]], ["Travel Booking", [["1", "2014-11-28"]]], ["Leave Managment", [["1", "2014-11-28"]]]]], ["peter", [["Net Usage Analyser", [["1", "2014-11-28"]]], ["Travel Claims", [["1", "2014-11-28"]]], ["Hardware Repo", [["1", "2014-11-28"]]], ["Travel Booking", [["1", "2014-11-28"]]], ["Leave Managment", [["1", "2014-11-28"]]]]], ["test1", [["pizza", [["1", "2014-11-21"]]], ["sample", [["1", "2014-11-21"]]], ["webappsample", [["1", "2014-11-21"]]]]], ["test", [["pizza", [["1", "2014-11-18"]]], ["MyApp", [["1", "2014-11-28"]]], ["sample", [["1", "2014-11-17"]]], ["webappsample", [["1", "2014-11-17"]]]]]]    //search bar
     var substringMatcher = function (strs) {
         return function findMatches(q, cb) {
             var matches, substringRegex;
@@ -105,8 +105,8 @@ var drawSubscribedAPIsByUsers = function(response) {
         displayKey: 'value',
         source: substringMatcher(states)
     });
-    $('.typeahead.input-sm').siblings('input.tt-hint').addClass('hint-small');
     $('.typeahead.input-lg').siblings('input.tt-hint').addClass('hint-large');
+    //$('.typeahead.input-lg').siblings('input.tt-hint').addClass('hint-large');
 
 
 
@@ -129,8 +129,8 @@ var drawSubscribedAPIsByUsers = function(response) {
 
         //$('#placeholder2').remove();
         //$('#webAppTable2').find("tr:gt(0)").remove();
-var detailNumber = 0;
-var rawNumber = 0;
+    var detailNumber = 0;
+    var rawNumber = 0;
        for ( var i = 0; i < parsedResponse.length; i++) {
 
             if( parsedResponse[i][0] ==  $("#search").val()){
@@ -153,7 +153,7 @@ var rawNumber = 0;
 
        }
 
-                          if (parsedResponse.length == 0) {
+                                    if (parsedResponse.length == 0) {
 
                                               $('#webAppTable2').hide();
                                               //$('#tempLoadingSpace').html('');
@@ -161,6 +161,7 @@ var rawNumber = 0;
 
                                           }else{
                                        $('#placeholder2').append($dataTable);
+                                       $('#flot-placeholder').append($('<div id="lineWithFocusChart"><svg style="height:450px;"></svg></div>'));
                                        $('#placeholder2').show();
                                        $('#webAppTable2').dataTable();
                                        }
@@ -175,7 +176,17 @@ var rawNumber = 0;
     $("#placeholder2").on("click", ".trigger-ajax",function(){
     //alert( $("#search").val());
       $(this).parents('.widget').addClass('graph-maximized');
-            $('.backdrop').show();
+      $('.backdrop').show();
+      $('#placeholder2').hide();
+      $('#searchUserForm').hide();
+
+      $('.btn-remove').on('click',function(){
+        $('#placeholder2').show();
+        $('#searchUserForm').show();
+        var svg = d3.select("svg");
+        svg.selectAll("*").remove();
+
+      })
 
         var answerid = $(this).attr('id');
         var test= $(this).closest('tr').attr('id');
@@ -188,8 +199,8 @@ var rawNumber = 0;
         }
 
         alert(getCell('webApp', ''+test+'').html());
-var usageByContext=[["admin", [["Travel Claims", [["1", [["/travelclaims", [[22, "2014-11-28 09:22:00"],[29, "2014-11-28 10:22:00"],[1, "2014-11-28 09:22:00"] [19, "2014-11-28 09:20:00"], [1, "2014-11-28 09:19:00"]]]]]]], ["Leave Managment", [["1", [["/leavemanagement", [[17, "2014-11-28 09:20:00"], [11, "2014-11-28 09:22:00"], [1, "2014-11-28 09:21:00"], [1, "2014-11-28 09:18:00"]]]]]]], ["Travel Booking", [["1", [["/travelbooking", [[15, "2014-11-28 09:20:00"], [12, "2014-11-28 09:21:00"], [2, "2014-11-28 09:18:00"]]]]]]], ["Net Usage Analyser", [["1", [["/netusage", [[15, "2014-11-28 09:20:00"], [13, "2014-11-28 09:21:00"], [2, "2014-11-28 09:18:00"]]]]]]], ["Hardware Repo", [["1", [["/hardwarerepo", [[12, "2014-11-28 09:19:00"], [5, "2014-11-28 09:21:00"], [1, "2014-11-28 09:17:00"]]]]]]], ["Event Management", [["1", [["/eventmanagement", [[11, "2014-11-28 10:07:00"]]]]]]], ["Conference Booking", [["1", [["/conferencebooking", [[9, "2014-11-28 10:01:00"]]]]]]], ["sample", [["1", [["/sample", [[2, "2014-11-21 14:02:00"], [1, "2014-11-21 14:25:00"], [1, "2014-11-24 16:17:00"], [1, "2014-11-24 15:15:00"], [1, "2014-11-21 13:48:00"], [1, "2014-11-25 11:11:00"], [1, "2014-11-28 09:02:00"], [1, "2014-11-21 13:44:00"], [1, "2014-11-21 14:00:00"], [1, "2014-11-21 14:50:00"], [1, "2014-11-21 14:04:00"], [1, "2014-11-21 14:24:00"], [1, "2014-11-21 14:06:00"], [1, "2014-11-21 14:48:00"], [1, "2014-11-21 13:45:00"], [1, "2014-11-21 14:23:00"], [1, "2014-11-25 10:15:00"], [1, "2014-11-24 16:44:00"], [1, "2014-11-21 14:09:00"]]]]]]], ["Sales Tracking Portal", [["1", [["/salestrackingportal", [[2, "2014-11-28 09:59:00"]]]]]]], ["pizza", [["1", [["/pizza", [[1, "2014-11-25 11:13:00"], [1, "2014-11-26 11:40:00"]]]]]]]]], ["test", [["pizza", [["1", [["/pizza", [[14, "2014-11-21 15:09:00"], [8, "2014-11-21 15:08:00"], [7, "2014-11-21 15:07:00"]]]]]]], ["webappsample", [["1", [["/webappsample", [[12, "2014-11-21 15:08:00"], [10, "2014-11-21 15:09:00"], [5, "2014-11-21 15:07:00"]]]]]]], ["sample", [["1", [["/sample", [[7, "2014-11-21 15:06:00"], [6, "2014-11-21 15:07:00"], [4, "2014-11-21 15:10:00"], [2, "2014-11-21 15:09:00"]]]]]]], ["MyApp", [["1", [["/myapp", [[5, "2014-11-28 10:47:00"], [4, "2014-11-28 10:46:00"], [3, "2014-11-28 10:49:00"], [1, "2014-11-28 10:58:00"], [1, "2014-11-28 10:57:00"]]]]]]]]]]
-var data =[]
+        var usageByContext=[["admin", [["Travel Claims", [["1", [["/travelclaims", [[22, "2014-11-28 09:22:00"],[29, "2014-11-28 10:22:00"],[1, "2014-11-28 09:22:00"] [19, "2014-11-28 09:20:00"], [1, "2014-11-28 09:19:00"]]]]]]], ["Leave Managment", [["1", [["/leavemanagement", [[17, "2014-11-28 09:20:00"], [11, "2014-11-28 09:22:00"], [1, "2014-11-28 09:21:00"], [1, "2014-11-28 09:18:00"]]]]]]], ["Travel Booking", [["1", [["/travelbooking", [[15, "2014-11-28 09:20:00"], [12, "2014-11-28 09:21:00"], [2, "2014-11-28 09:18:00"]]]]]]], ["Net Usage Analyser", [["1", [["/netusage", [[15, "2014-11-28 09:20:00"], [13, "2014-11-28 09:21:00"], [2, "2014-11-28 09:18:00"]]]]]]], ["Hardware Repo", [["1", [["/hardwarerepo", [[12, "2014-11-28 09:19:00"], [5, "2014-11-28 09:21:00"], [1, "2014-11-28 09:17:00"]]]]]]], ["Event Management", [["1", [["/eventmanagement", [[11, "2014-11-28 10:07:00"]]]]]]], ["Conference Booking", [["1", [["/conferencebooking", [[9, "2014-11-28 10:01:00"]]]]]]], ["sample", [["1", [["/sample", [[2, "2014-11-21 14:02:00"], [1, "2014-11-21 14:25:00"], [1, "2014-11-24 16:17:00"], [1, "2014-11-24 15:15:00"], [1, "2014-11-21 13:48:00"], [1, "2014-11-25 11:11:00"], [1, "2014-11-28 09:02:00"], [1, "2014-11-21 13:44:00"], [1, "2014-11-21 14:00:00"], [1, "2014-11-21 14:50:00"], [1, "2014-11-21 14:04:00"], [1, "2014-11-21 14:24:00"], [1, "2014-11-21 14:06:00"], [1, "2014-11-21 14:48:00"], [1, "2014-11-21 13:45:00"], [1, "2014-11-21 14:23:00"], [1, "2014-11-25 10:15:00"], [1, "2014-11-24 16:44:00"], [1, "2014-11-21 14:09:00"]]]]]]], ["Sales Tracking Portal", [["1", [["/salestrackingportal", [[2, "2014-11-28 09:59:00"]]]]]]], ["pizza", [["1", [["/pizza", [[1, "2014-11-25 11:13:00"], [1, "2014-11-26 11:40:00"]]]]]]]]], ["test", [["pizza", [["1", [["/pizza", [[14, "2014-11-21 15:09:00"], [8, "2014-11-21 15:08:00"], [7, "2014-11-21 15:07:00"]]]]]]], ["webappsample", [["1", [["/webappsample", [[12, "2014-11-21 15:08:00"], [10, "2014-11-21 15:09:00"], [5, "2014-11-21 15:07:00"]]]]]]], ["sample", [["1", [["/sample", [[7, "2014-11-21 15:06:00"], [6, "2014-11-21 15:07:00"], [4, "2014-11-21 15:10:00"], [2, "2014-11-21 15:09:00"]]]]]]], ["MyApp", [["1", [["/myapp", [[5, "2014-11-28 10:47:00"], [4, "2014-11-28 10:46:00"], [3, "2014-11-28 10:49:00"], [1, "2014-11-28 10:58:00"], [1, "2014-11-28 10:57:00"]]]]]]]]]]
+        var data =[]
 
         for ( var i = 0; i < usageByContext.length; i++) {
 
@@ -250,26 +261,30 @@ var data =[]
 
 
                                                 nv.addGraph(function () {
-                                                    var chart = nv.models.lineWithFocusChart();
+                                                    var chart = nv.models.lineWithFocusChart().margin({right: 250});
+                                                    chart.margin({left:200});
                                                     chart.color(d3.scale.category20b().range());
-                                                    chart.yAxis.tickFormat(d3.format(',.2f'));
-                                                    chart.y2Axis.tickFormat(d3.format(',.2f'));
+                                                    chart.yAxis.tickFormat(d3.format(',d'));
+                                                    chart.y2Axis.tickFormat(d3.format(',d'));
                                                     chart.xAxis.tickFormat(function (d) {
-                                                        return d3.time.format('%d %b %Y %H:%M:%S')(new Date(d))
+                                                        return d3.time.format('%d %b %Y %H:%M')(new Date(d))
                                                     });
+
                                                     chart.x2Axis.tickFormat(function (d) {
-                                                        return d3.time.format('%d %b %Y %H:%M:%S')(new Date(d))
+                                                        return d3.time.format('%d %b %Y %H:%M')(new Date(d))
                                                     });
                                                     chart.tooltipContent(function (key, y, e, graph) {
                                                         var x = d3.time.format('%d %b %Y %H:%M:%S')(new Date(parseInt(graph.point.x)));
                                                         var y = String(graph.point.y);
-                                                        if (key == 'serie 1') {
+                                                        if (key == 'Hits') {
                                                             var y = 'There is ' + String(graph.point.y) + ' calls';
                                                         }
 
                                                         tooltip_str = '<center><b>' + key + '</b></center>' + y + ' on ' + x;
                                                         return tooltip_str;
                                                     });
+
+
                                                     d3.select('#lineWithFocusChart svg')
                                                         .datum(data_lineWithFocusChart)
                                                         .transition().duration(500)

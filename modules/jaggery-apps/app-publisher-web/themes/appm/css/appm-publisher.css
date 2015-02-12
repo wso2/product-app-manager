@@ -46,6 +46,14 @@ h2.exp_col i {
     display:inline-block;
 }
 
+
+.add-on-cal {
+    padding-top:5px;
+    margin-left:10px;
+    margin-right:-6px;
+    display:inline-block;
+}
+
 .ovrd-padd {
     padding:0px !important;
 }
@@ -68,4 +76,14 @@ h2.exp_col i {
     font: 12px sans-serif;
     padding: 5px;
     text-align: center;
+}
 
+#searchUserForm{
+    padding-top:30px;
+    padding-bottom:30px;
+}
+
+
+#flot-placeholder{
+
+}

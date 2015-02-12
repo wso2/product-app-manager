@@ -40,7 +40,7 @@
                                     <button id="week-btn" type="button" class="btn btn-default">Week</button>
                                     <div class="input-append" style="display:inline" >
                                         <input type="text" id="date-range" style="width: 270px;display:inline;" name="dateRange" class="form-control" value=""  />
-                                        <span class="add-on"><i style="margin-right:0px;" class="icon-calendar"></i></span>
+                                        <span class="add-on-cal"><i style="margin-right:0px;" class="icon-calendar"></i></span>
 
                                     </div>
 
@@ -87,10 +87,14 @@
                     <div class="widget-content">
                         <div class="container1">
 
-                            <label>State</label>
-                            <input type="text" class="typeahead form-control" id="search" />
-                            <input type="button"  id="target" value="search"/>
 
+                        <div class="form-group form-inline" id="searchUserForm" >
+                            <label>Subscriber</label>
+                            <input type="text" class="form-control" style="width: 200px; " id="search" />
+                            <button id="target" class="btn btn-default" >Search</button>
+
+
+                       </div>
                             <!--<div class="graph-container">-->
                             <div id="placeholder2" class="graph-placeholder"></div>
                             <!--</div>-->
@@ -98,7 +102,7 @@
 
                         <div class="graph-container widget-graph2">
 
-                            <div id="placeholder52" class="graph-placeholder"></div>
+                            <div id="flot-placeholder" class="graph-placeholder"></div>
                         </div>
 
                     </div>
