@@ -36,7 +36,7 @@ function drawGraphs() {
 }
 
 var drawAPIResponseTime = function(response) {
-    alert(response)
+
     var parsedResponse = JSON.parse(response);
 
     $('').append(
@@ -55,13 +55,11 @@ var drawAPIResponseTime = function(response) {
         for ( var j = 0; j < parsedResponse.webapps[i][1].length; j++) {
             responsetimeCount =Number(responsetimeCount)+ Number(parsedResponse.webapps[i][1][j][1]);
         }
-
         timedatastructure.push([responsetimeCount,i]);
         webappdatasructure.push([i,parsedResponse.webapps[i][0]]);
-
         responsetimeCount =0;
-
     }
+
     // BAR CHART
     var dataset = [{
         data: timedatastructure,
@@ -121,8 +119,6 @@ var drawAPIResponseTime = function(response) {
         }).appendTo("body").fadeIn(200);
     }
 
-
-
     $("body #placeholder41").bind("plotclick", function (event, pos, item) {
         $("#tooltip").remove();
         if (item!=null){
@@ -143,7 +139,6 @@ var drawAPIResponseTime = function(response) {
                             webappPageCount=parsedResponse.webapps[i][1][j][1]
                         }
                         arr.push({version:webappPage,count:webappPageCount});
-
                     }
                     showTooltip(item.pageX,
                     item.pageY,
@@ -154,13 +149,9 @@ var drawAPIResponseTime = function(response) {
                         var versionName=arr[l].version;
                         var versionCount=arr[l].count;
                         $('#tbody').append('<tr><td>'+versionName+'</td><td style="text-align:right">'+versionCount+'</td></tr>');
-
                     }
-
                 }
-
             }
-
         }
     });
 }

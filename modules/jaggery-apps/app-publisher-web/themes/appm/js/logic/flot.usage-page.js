@@ -1,6 +1,5 @@
 $(function () {
     drawGraphs();
-
 });
 
 function drawGraphs() {
@@ -53,10 +52,7 @@ function drawGraphs() {
 }
 
 var drawAPIUsageByPage = function(response) {
-alert(response)
 	var parsedResponse = JSON.parse(response);
-
-
 	var data = parsedResponse.totalPageCount;
 	var dataset = [ {
 		data : data,
@@ -151,14 +147,10 @@ alert(response)
 						axisLabel : "Accessed Page",
 
 					}
-
 				};
-
 				$.plot($("#placeholder52"), dataset, options);
 		}
-
 	});
-
 }
 
 var onDateSelected = function() {

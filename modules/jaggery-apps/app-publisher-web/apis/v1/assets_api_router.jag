@@ -26,7 +26,28 @@ require('/modules/publisher.js').exec(function (ctx) {
            endDate = endDate.trim();
         }
 
+
 var usage = [];
+
+
+		//manipulate endDate to overcome date-picker issue
+		var date = new Date(Date.parse(endDate.replace(/-/g,"/")));
+		date.setDate(date.getDate() + 1);
+		// The getMonth() method returns the month (from 0 to 11) for the specified date
+		var month = (date.getMonth() + 1);
+
+        		endDate = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate();
+
+
+                if (date.getMonth().toString().length < 2) {
+                    endDate = date.getFullYear() + '-' + '0' + month + '-' + date.getDate();
+                } else {
+                    endDate = date.getFullYear() + '-' + month + '-' + date.getDate();
+
+                }
+
+		var usage = [];
+
 		var obj, result;
 
 		/* Web Application Last Access Time Graph */
@@ -93,6 +114,8 @@ var usage = [];
 
 		} else  if (action == "getSubscribedAPIsByUsers") { /* Overall Web Application Usage Graph */
 			usage = appMgtProviderObj.getSubscribedAPIsByUsers("__all_providers__",startDate,endDate);
+
+
 
 
 			var obj, result;
@@ -391,6 +414,8 @@ var usage = [];
 		}else if (action == "getUsageByContext") {
             usage = appMgtProviderObj.getAPIUsageByUser("__all_providers__",startDate,endDate);
 
+
+
             			usage = parse(stringify(usage));
 
 
@@ -490,17 +515,17 @@ var usage = [];
 
 
             			if (usage == null) {
-                        				obj = {
-                        					error:true
-                        				};
-                        			} else {
-                        				obj = {
-                        					error:false,
-                        					webapps:webapps
-                        				};
-                        			}
+                            obj = {
+                                error:true
+                            };
+                        } else {
+                            obj = {
+                                error:false,
+                                webapps:webapps
+                            };
+                        }
 
-                        			print(webapps);
+                        print(webapps);
 		}
 
     });
