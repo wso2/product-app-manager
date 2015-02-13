@@ -1472,3 +1472,8 @@ input.apply-btn {
 .left-nav {
     margin-top: 18px;
 }
+
+.no-data-heading{
+    text-align: center;
+    margin-top: 120px;
+}
