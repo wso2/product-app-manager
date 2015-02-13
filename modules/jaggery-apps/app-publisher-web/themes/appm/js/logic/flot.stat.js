@@ -451,7 +451,7 @@ $('#pie-chart').empty();
             $("#pagination").pagination({
                 items: numItems,
                 itemsOnPage: perPage,
-                cssStyle: "compact-theme",
+                cssStyle: "dakshika-theme",
                 onPageClick: function(pageNumber) { // this is where the magic happens
                     // someone changed page, lets hide/show trs appropriately
                     var showFrom = perPage * (pageNumber - 1);
