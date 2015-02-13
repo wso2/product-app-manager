@@ -50,6 +50,7 @@ public class APPMStoreRestClient {
 	public HttpResponse login(String userName, String password)
 			throws Exception {
 
+		this.requestHeaders.put("Content-Type", "application/json");
 		HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
 				+ "/store/apis/user/login"), "{\"username\":" + "\"" + userName
 				+ "\"" + ",\"password\":" + "\"" + password + "\"" + "}",
@@ -83,24 +84,13 @@ public class APPMStoreRestClient {
 	 * @throws Exception
 	 */
 	public HttpResponse logout() throws Exception {
-        this.requestHeaders.put("Content-Type", "text/html");
+		this.requestHeaders.put("Content-Type", "text/html");
 
 		HttpResponse response = HttpRequestUtil.doGet(backEndUrl
 				+ "/store/logout", requestHeaders);
-		/*
-		 * On Success {"error" : false, "message" : null} status code 200 On
-		 * Failure {"error" : true, "message" : null} status code 200
-		 */
+
 		if (response.getResponseCode() == 200) {
-
-			// if error == true this will return an exception then test fail!
-			VerificationUtil.checkErrors(response);
-
-			session = getSession(response.getHeaders());
-			if (session == null) {
-				throw new Exception("No session cookie found with response");
-			}
-			setSession(session);
+			this.requestHeaders.clear();
 			return response;
 		} else {
 			System.out.println(response);
@@ -108,6 +98,7 @@ public class APPMStoreRestClient {
 		}
 
 	}
+
 
     /**
      * Subscribe application
@@ -229,6 +220,21 @@ public class APPMStoreRestClient {
 			throw new Exception("Get Api Information failed> "
 					+ response.getData());
 		}
+	}
+
+	/**
+	 * Rate a given application with a given rating value
+	 * @param id application id
+	 * @param appType application type
+	 * @param ratingValue rating value (0-5)
+	 * @return response with average rating value and user rating value
+	 * @throws Exception
+	 */
+	public HttpResponse rateApplication(String id, String appType, int ratingValue) throws Exception {
+		checkAuthentication();
+		HttpResponse response = HttpRequestUtil.doGet(backEndUrl + "/store/apis/rate?id=" +
+				id + "&type=" + appType + "&value=" + ratingValue, requestHeaders);
+		return response;
 	}
 
 
