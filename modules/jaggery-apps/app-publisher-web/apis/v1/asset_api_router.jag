@@ -481,7 +481,7 @@ require('/modules/publisher.js').exec(function(ctx) {
             var attributes = artifact.attributes;
 
             //Update entitlement policies of the web application
-            //updateEntitlementPolicies(attributes["overview_provider"], attributes["overview_name"], attributes["overview_version"]);
+            updateEntitlementPolicies(attributes["overview_provider"], attributes["overview_name"], attributes["overview_version"]);
 
             //update OAuth APIs consumer details per given web-app
             var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;

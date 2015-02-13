@@ -86,14 +86,12 @@ require('/modules/publisher.js').exec(function(ctx) {
 
     routeManager.register('POST', 'publisher', '/publisher/api/entitlement/policy/partial/policyGroup/save', function (context) {
         var policyGroupId = savePolicyGroup(context.post.policyGroupName, context.post.throttlingTier, context.post.userRoles, context.post.anonymousAccessToUrlPattern, context.post.objPartialMappings);
-        updateEntitlementPolicies(policyGroupId);
         var response = {"id": policyGroupId};
         print(createResponseObject(response));
     });
 
     routeManager.register('POST', 'publisher', '/publisher/api/entitlement/policy/partial/policyGroup/details/update', function (context) {
         updatePolicyGroup(context.post.policyGroupName, context.post.throttlingTier, context.post.userRoles, context.post.anonymousAccessToUrlPattern, context.post.policyGroupId, context.post.objPartialMappings);
-        updateEntitlementPolicies(context.post.policyGroupId);
     });
 
     routeManager.register('DELETE', 'publisher', '/publisher/api/entitlement/policy/partial/policyGroup/details/delete/{applicationId}/{policyGroupId}', function (context) {
@@ -229,17 +227,6 @@ require('/modules/publisher.js').exec(function(ctx) {
         } else {
             return {'success': false, 'response': object};
         }
-    }
-
-    /**
-     * Update entitlement policies.
-     * @param policyGroupId :Policy Group Id
-     */
-    function updateEntitlementPolicies(policyGroupId){
-        // Save external entitlement policies
-        var webappId={};
-        webappId.policyGroupId= policyGroupId;
-        apiProvider.generateEntitlementPolicies(webappId);
     }
 
 
