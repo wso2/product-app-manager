@@ -29,7 +29,7 @@ var merge = function(data){
      var sResult = result.toString();
       sResult = sResult.substr(1, sResult.length()-2);
 
-	var resultPolicy = JSON.parse(appMDAOObj.getPolicyGroupPoliciesApplicationWise(data.artifact.id));
+	var resultPolicy = JSON.parse(appMDAOObj.getPolicyGroupXACMLPoliciesByApplication(data.artifact.id));
 
 	 for(var i in data.data.fields) {
 
