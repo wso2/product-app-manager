@@ -337,7 +337,6 @@ $(document).on("click", ".policy-group-delete-button", function () {
     var uuid = $("#uuid").val();
     //Application Id
     var applicationId = getApplicationId(uuid);
-
     deletePolicyGroup(applicationId, policyGroupId, policyGroupName);
 });
 
