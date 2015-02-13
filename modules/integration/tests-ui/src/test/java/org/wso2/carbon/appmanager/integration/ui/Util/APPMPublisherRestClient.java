@@ -30,6 +30,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.AppCreateRequest;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.DocumentRequest;
+import org.wso2.carbon.appmanager.integration.ui.Util.Bean.GetStatisticRequest;
 import org.wso2.carbon.automation.core.BrowserManager;
 import org.wso2.carbon.automation.core.utils.HttpRequestUtil;
 import org.wso2.carbon.automation.core.utils.HttpResponse;
@@ -151,8 +152,118 @@ public class APPMPublisherRestClient {
 			throw new Exception("App creation failed> " + response.getData());
 		}
 	}
+	/**
+	 * Get total subscriber count by the web applications
+	 * @param getSubscriberCountByAppRequest payload to get the subscriber count by web applications
+	 * @return HTTP Response with subscriber count
+	 * @throws Exception
+	 */
+	public HttpResponse getSubscriberCountByApp(GetStatisticRequest getSubscriberCountByAppRequest) throws Exception {
+		checkAuthentication();
+		String payload = getSubscriberCountByAppRequest.generateRequestParameters();
+		this.requestHeaders.put("Content-Type", "application/x-www-form-urlencoded");
+		HttpResponse response =
+				HttpRequestUtil.doPost(new URL(backEndUrl +
+								"/publisher/api/assets/statistics/webapp/getSubscriberCountByAPIs/"), payload,
+						requestHeaders);
+		if (response.getResponseCode() == 200) {
 
-    /**
+			return response;
+		} else {
+			System.out.println(response);
+			throw new Exception("App creation failed> " + response.getData());
+		}
+	}
+
+	/**
+	 * Get subscribed web applications by store users
+	 * @param getSubscribedAppsByUsersRequest payload to get the subscribed web applications by store users
+	 * @return HTTP response with subscribed applications with users
+	 * @throws Exception
+	 */
+	public HttpResponse getSubscribedAppsByUsers(GetStatisticRequest getSubscribedAppsByUsersRequest) throws Exception {
+		checkAuthentication();
+		String payload = getSubscribedAppsByUsersRequest.generateRequestParameters();
+		this.requestHeaders.put("Content-Type", "application/x-www-form-urlencoded");
+		HttpResponse response =
+				HttpRequestUtil.doPost(new URL(backEndUrl +
+								"/publisher/api/assets/statistics/webapp/getSubscribedAPIsByUsers/"), payload,
+						requestHeaders);
+		if (response.getResponseCode() == 200) {
+
+			return response;
+		} else {
+			System.out.println(response);
+			throw new Exception("App creation failed> " + response.getData());
+		}
+	}
+
+	/**
+	 * Get web applications usage by store user
+	 * @param getAppUsageByUserRequest payload ro get web application usage by user
+	 * @return HTTP Response with web application usage
+	 * @throws Exception
+	 */
+	public HttpResponse getAppUsageByUser(GetStatisticRequest getAppUsageByUserRequest) throws Exception {
+		checkAuthentication();
+		String payload = getAppUsageByUserRequest.generateRequestParameters();
+		this.requestHeaders.put("Content-Type", "application/x-www-form-urlencoded");
+		HttpResponse response =
+				HttpRequestUtil.doPost(new URL(backEndUrl +
+								"/publisher/api/assets/statistics/webapp/getAPIUsageByUser/"), payload,
+						requestHeaders);
+		if (response.getResponseCode() == 200) {
+
+			return response;
+		} else {
+			System.out.println(response);
+			throw new Exception("App creation failed> " + response.getData());
+		}
+	}
+
+	/**
+	 * Get web application response time
+	 * @param getAppResponseTimeRequest payload to get web application response by time
+	 * @return HTTP Response with web application response time
+	 * @throws Exception
+	 */
+	public HttpResponse getAppResponseTime(GetStatisticRequest getAppResponseTimeRequest) throws Exception {
+		checkAuthentication();
+		String payload = getAppResponseTimeRequest.generateRequestParameters();
+		this.requestHeaders.put("Content-Type", "application/x-www-form-urlencoded");
+		HttpResponse response =
+				HttpRequestUtil.doPost(new URL(backEndUrl +
+								"/publisher/api/assets/statistics/webapp/getAPIResponseTime/"), payload,
+						requestHeaders);
+		if (response.getResponseCode() == 200) {
+
+			return response;
+		} else {
+			System.out.println(response);
+			throw new Exception("App creation failed> " + response.getData());
+		}
+	}
+
+	public String getWebappTrackingId(String appId) throws Exception {
+		checkAuthentication();
+		HttpResponse response =
+				HttpRequestUtil.doGet(backEndUrl +
+						"/publisher/api/asset/webapp/" +
+						appId, requestHeaders);
+		if (response.getResponseCode() == 200) {
+			JSONObject jsonObject = new JSONObject(response.getData());
+
+			org.json.JSONArray jsonArray = new org.json.JSONArray( jsonObject.get("fields").toString());
+			JSONObject trackingIdObj = new JSONObject(jsonArray.get(10).toString());
+			return trackingIdObj.get("value").toString();
+
+		} else {
+			System.out.println(response);
+			throw new Exception("Error occurred while retrieving tracking id of webapp with id :" + appId);
+		}
+	}
+
+	/**
      * this method validate the method
      * @param policyPartial
      * @return
