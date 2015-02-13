@@ -53,7 +53,7 @@ require('/modules/publisher.js').exec(function(ctx) {
     });
 
     routeManager.register('GET', 'publisher', '/publisher/api/entitlement/get/policy/Group/by/appId/{applicationId}', function (context) {
-        var policyGroupList = getPolicyGroupListForApplication(context.params.applicationId);
+        var policyGroupList = getPolicyGroupListByApplication(context.params.applicationId);
         print(policyGroupList);
     });
 
@@ -152,8 +152,8 @@ require('/modules/publisher.js').exec(function(ctx) {
      * Get the list of Policy Groups for a given application Id
      * @param applicationId : Application Id
      */
-    function  getPolicyGroupListForApplication(applicationId){
-         return apiProvider.getPolicyGroupListForApplication(applicationId);
+    function  getPolicyGroupListByApplication(applicationId){
+         return apiProvider.getPolicyGroupListByApplication(applicationId);
     }
 
     /**
