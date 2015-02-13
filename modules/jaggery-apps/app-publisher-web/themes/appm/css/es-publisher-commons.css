@@ -1540,3 +1540,8 @@ input.apply-btn {
     border-color: #ddd;
     cursor: pointer;
 }
+
+.dataTables_wrapper .dataTables_paginate .paginate_button{
+    padding:0 !important;
+    margin-left: 0 !important;
+}
