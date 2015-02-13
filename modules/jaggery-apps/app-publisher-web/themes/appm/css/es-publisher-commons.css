@@ -1477,4 +1477,18 @@ input.apply-btn {
 
 .date-range{
     height: 39px;
+
+}
+
+#date-range{
+    width: 270px;
+    display: inline;
+    border: none;
+    height: 25px;
+    background-color: whitesmoke;
+    cursor: pointer;
+}
+
+.date-picker-wrapper {
+    margin: 13px 23px;
 }
