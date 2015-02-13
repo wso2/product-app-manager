@@ -83,7 +83,7 @@ textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[ty
     box-shadow: none;
 }
 .btn {
-    background: none;
+  /*  background: none; */
 }
 .top-nav-container {
     height: 60px;
@@ -1464,4 +1464,9 @@ td#buttonTd a {
     margin-right: 10px;
     margin-left: 10px;
     padding: 2px;
+}
+
+
+.form-horizontal .control-label{
+    padding-top: 0px;
 }

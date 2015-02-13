@@ -185,11 +185,8 @@ function savePolicyGroupData(isSaveAndClose) {
         }
         else {
             updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions), isSaveAndClose);
+            updatePolicyGroupPartialXACMLPolicies($("#uuid").val());
         }
-        // update policy partial values
-        //policyGroupsArray=[];
-        //policyPartialsArray=[];
-        //loadPolicyGroupData($("#uuid").val());
     }
 }
 
@@ -289,6 +286,9 @@ $(document).on("click", "#btn-add-policy-group", function () {
     $('#policy-group-editor #throttlingTier').prop('selectedIndex', 0);
     $('#policy-group-editor #anonymousAccessToUrlPattern').prop('selectedIndex', 0);
     $('#policy-group-editor #userRoles').tokenInput("clear");
+    $('.policy-opt-val').each(function(){
+        $(this).prop('checked', false)
+    });
     hidePolicyGroupNotification();
 });
 
@@ -425,4 +425,41 @@ function drawPolicyGroupsDynamically() {
         strContent += "<option title='" + policyGroupsArray[i].policyGroupName + "' value='" + policyGroupsArray[i].policyGroupId + "' id='" + policyGroupsArray[i].policyGroupId + "'>" + policyGroupsArray[i].policyGroupName + "</option>";
     }
     return strContent;
+}
+
+function updatePolicyGroupPartialXACMLPolicies(uuid){
+    policyGroupsArray = [];
+    $.ajax({
+        url: '/publisher/api/entitlement/get/webapp/id/from/entitlements/uuid/' + uuid,
+        type: 'GET',
+        async: false,
+        contentType: 'application/json',
+        success: function (id) {
+            // get the entitlement policy groups
+            $.ajax({
+                url: '/publisher/api/entitlement/get/policy/Group/by/appId/' + id,
+                type: 'GET',
+                contentType: 'application/json',
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+
+                        policyGroupsArray.push({
+                            policyGroupId: data[i].policyGroupId,
+                            policyGroupName: data[i].policyGroupName,
+                            throttlingTier: data[i].throttlingTier,
+                            anonymousAccessToUrlPattern: data[i].allowAnonymous,
+                            userRoles: data[i].userRoles,
+                            policyPartials: data[i].policyPartials
+                        })
+                    }
+                },
+                error: function () {
+                }
+            });
+        },
+        error: function () {
+        }
+    });
 }
