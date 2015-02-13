@@ -73,6 +73,7 @@ var splitData = function(copyOfData){
                     var secondNamePart = uriTemplate[j].name.split(numberInAction)[0];
                     if(secondNamePart == "uritemplate_urlPattern"){
                         patternEntry.urlPattern = uriTemplate[j].value;
+                        patternEntry.policyUid = (uriTemplate[j].value).replace('/','-').replace('*','-');
                     } else if(secondNamePart == "uritemplate_httpVerb"){
                         patternEntry.httpVerb = uriTemplate[j].value;
                     }else if(secondNamePart == "uritemplate_tier"){
@@ -85,7 +86,15 @@ var splitData = function(copyOfData){
                         patternEntry.policy = uriTemplate[j].value;
                     }else if(secondNamePart == "uritemplate_allowanonymous"){
                         patternEntry.anonymous= uriTemplate[j].value;
+                    }else if(secondNamePart == "uritemplate_policygroupid") {
+                        patternEntry.policyGroupId = uriTemplate[j].value.id;
+                        patternEntry.policyGroupName = uriTemplate[j].value.name;
+                        patternEntry.policyGroupTire = uriTemplate[j].value.tire;
+                        patternEntry.policyGroupAnonymous = uriTemplate[j].value.anonymous;
+                        patternEntry.policyGroupRoles = uriTemplate[j].value.roles;
+                        patternEntry.policyGroupPartials = uriTemplate[j].value.partials;
                     }
+
                 }
             }
             if(!isEmpty(patternEntry)){

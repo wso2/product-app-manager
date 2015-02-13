@@ -71,7 +71,7 @@ $(function() {
         var appVersion = $("#oldversion").val();
         var uniqueAppName = appName+"-"+appVersion;
         $.ajax({
-            url: '/publisher/api/sso/' + y[0] + '/' + y[1] + '/' +'/' + appProvider + '/' + appName + '/' + appVersion,
+            url: '/publisher/api/sso/' + y[0] + '/' + y[1] + '/' + appProvider + '/' + appName + '/' + appVersion,
             type: 'GET',
             contentType: 'application/json',
             success: function(response) {
