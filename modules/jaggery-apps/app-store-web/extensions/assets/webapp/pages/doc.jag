@@ -18,6 +18,14 @@ var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
 var apiIdentifierObj = new apiIdentifier(webappProvider, webappName, webappVersion);
 
 var APIProviderImpl = Packages.org.wso2.carbon.appmgt.impl.APIProviderImpl;
+
+//In annonymous mode username = "". 
+//APIProviderImpl initializes annonymous registry if the username is null. 
+//Hence assigning username = null. 
+if ("".equals(username)) {
+	username = null;
+}
+
 var APIProviderImplObj = new APIProviderImpl(username);
 
 var content = APIProviderImplObj.getDocumentationContent(apiIdentifierObj,docName);

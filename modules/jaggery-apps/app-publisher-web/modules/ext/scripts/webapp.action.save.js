@@ -63,12 +63,10 @@ var module = function () {
         webAppObj.setUUID(uuid);
         webAppObj.setLogoutURL(logoutURL);
 
-        if (allowAnonymous=="TRUE")
-        {
+        if (allowAnonymous=="TRUE"){
             webAppObj.setAllowAnonymous(true);
         }
-        else
-        {
+        else{
             webAppObj.setAllowAnonymous(false);
         }
 

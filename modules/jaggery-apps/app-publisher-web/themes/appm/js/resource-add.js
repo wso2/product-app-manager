@@ -13,6 +13,9 @@ var RESOURCES = [
 
 $( document ).ready(function() {
 
+
+    $("#overview_context").attr('maxlength','200');
+
     //get Tier details from tier.xml
     $.ajax({
         url: '/publisher/api/entitlement/get/Tiers',
@@ -118,6 +121,7 @@ $( document ).ready(function() {
 
         var conf = confirm("Are you sure you want to delete the selected resource?");
         if (conf == true) {
+
             var i = $(this).attr("data-index");
             RESOURCES.splice(i, 1);
 
@@ -125,9 +129,8 @@ $( document ).ready(function() {
             invalidateEntitlementPolicy(i);
 
             $("#resource_tbody").trigger("draw");
+
         }
-
-
 
 
     });

@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.wso2.appmanager</groupId>
         <artifactId>eam-profile-gen-parent</artifactId>
-        <version>${appmanagerserver.version}</version>
+        <version>1.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -381,7 +381,7 @@
                                 <!--featureArtifactDef>org.wso2.carbon:org.wso2.carbon.rule.mediator.feature:${carbon.platform.version}</featureArtifactDef-->
 
                                 <featureArtifactDef>
-                                    org.wso2.appmanager:org.wso2.appmanager.styles.feature:${appmanagerserver.version}
+                                    org.wso2.appmanager:org.wso2.appmanager.styles.feature:1.0.0-SNAPSHOT
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.relay.feature:${carbon.platform.version}
@@ -435,13 +435,13 @@
                                 <!--API Management related feature-->
                                 <featureArtifactDef>org.jaggeryjs:org.jaggeryjs.feature:0.9.0.ALPHA4.wso2v4
                                 </featureArtifactDef>
-                                <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.appmgt.feature:${apim.version}
+                                <featureArtifactDef>org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.feature:1.0.0-SNAPSHOT
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.appmanager:org.wso2.stratos.appmgt.dashboard.ui.feature:${stratos.version}
+                                    org.wso2.appmanager:org.wso2.stratos.appmgt.dashboard.ui.feature:1.0.0-SNAPSHOT
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.appmgt.mobile.feature:4.2.0
+                                    org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.mobile.feature:1.0.0-SNAPSHOT
                                 </featureArtifactDef>
                                 <!--featureArtifactDef>org.wso2.am:org.wso2.stratos.apimgt.dashboard.ui.feature:${stratos.version}</featureArtifactDef-->
 
@@ -962,15 +962,15 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.appmanager.styles.feature.group</id>
-                                    <version>${appmanagerserver.version}</version>
+                                    <version>1.0.0-SNAPSHOT</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.stratos.appmgt.dashboard.ui.feature.group</id>
-                                    <version>${stratos.version}</version>
+                                    <version>1.0.0-SNAPSHOT</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.appmgt.mobile.feature.group</id>
-                                    <version>4.2.0</version>
+                                    <version>1.0.0-SNAPSHOT</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.event.feature.group</id>
@@ -1073,7 +1073,7 @@
                                 </feature>                               
                                 <feature>
                                     <id>org.wso2.carbon.appmgt.feature.group</id>
-                                    <version>${apim.version}</version>
+                                    <version>1.0.0-SNAPSHOT</version>
                                 </feature>
                                 <!---->
                                 <!--Registry Feature-->

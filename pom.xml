@@ -32,10 +32,17 @@
     <groupId>org.wso2.appmanager</groupId>
     <artifactId>wso2-enterprise-appmanager-parent</artifactId>
     <packaging>pom</packaging>
-    <version>${appmanagerserver.version}</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>WSO2 APP Manager - Aggregator Module</name>
     <url>http://wso2.com/products/api-manager</url>
     <description>WSO2 App Manager</description>
+
+    <scm>
+        <url>https://github.com/wso2/product-app-manager.git</url>
+        <developerConnection>scm:git:https://github.com/wso2/product-app-manager.git</developerConnection>
+        <connection>scm:git:https://github.com/wso2/product-app-manager.git</connection>
+        <tag>HEAD</tag>
+    </scm>
 
     <licenses>
         <license>
@@ -56,12 +63,6 @@
         <module>modules/distribution</module>
         <module>modules/integration</module>
     </modules>
-
-    <scm>
-        <connection>scm:svn:http://wso2.org/repos/wso2/trunk/carbon/products/esb</connection>
-        <developerConnection>scm:svn:https://wso2.org/repos/wso2/trunk/carbon/products/esb</developerConnection>
-        <url>https://wso2.org/repos/wso2/trunk/carbon/products/esb</url>
-    </scm>
 
     <repositories>
         <repository>
@@ -98,9 +99,7 @@
                 <enabled>false</enabled>
             </releases>
         </repository>
-
-
-    </repositories>
+    </repositories> 
 
     <pluginRepositories>
         <pluginRepository>
@@ -110,16 +109,16 @@
     </pluginRepositories>
 
 
-    <distributionManagement>
+     <distributionManagement>
         <repository>
-            <id>wso2-maven2-repository</id>
-            <name>WSO2 Maven2 Repository</name>
-            <url>scp://dist.wso2.org/home/httpd/dist.wso2.org/maven2/</url>
+            <id>nexus-releases</id>
+            <name>WSO2 Nexus Release Repository</name>
+            <url>http://maven.wso2.org/nexus/service/local/staging/deploy/maven2/</url>
         </repository>
         <snapshotRepository>
-            <id>wso2-maven2-snapshot-repository</id>
-            <name>WSO2 Maven2 Snapshot Repository</name>
-            <url>scp://dist.wso2.org/home/httpd/dist.wso2.org/snapshots/maven2/</url>
+            <id>wso2.snapshots</id>
+            <name>Internal Releases</name>
+            <url>http://maven.wso2.org/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -176,6 +175,18 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <plugin>
+                       <groupId>org.apache.maven.plugins</groupId>
+                       <artifactId>maven-release-plugin</artifactId>
+                       <configuration>
+                           <preparationGoals>clean install</preparationGoals>
+                           <autoVersionSubmodules>false</autoVersionSubmodules>
+                       </configuration>
+               	    </plugin>
+		    <plugin>
+		            <groupId>org.apache.maven.plugins</groupId>
+		            <artifactId>maven-deploy-plugin</artifactId>
+		    </plugin>
                 </plugins>
             </build>
         </profile>
@@ -339,7 +350,7 @@
                 <version>${version.javax.servlet.jsp}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon</groupId>
+                <groupId>org.wso2.carbon.automationutils</groupId>
                 <artifactId>org.wso2.carbon.integration.common.admin.client</artifactId>
                 <version>${automation.framework.utills.version}</version>
                 <scope>test</scope>
@@ -350,7 +361,7 @@
 
     <properties>
         <carbon.kernel.version>4.2.0</carbon.kernel.version>
-        <appmanagerserver.version>1.0.0</appmanagerserver.version>
+        <appmanagerserver.version>1.0.0-SNAPSHOT</appmanagerserver.version>
         <apimserver.version>1.6.0</apimserver.version>
         <apim.version>1.2.1</apim.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -383,7 +394,7 @@
         <stratos.version>2.2.0</stratos.version>
         <bcprov.jdk13.version>140</bcprov.jdk13.version>
         <bcprov.jdk15.version>132</bcprov.jdk15.version>
-        <automation.framework.utills.version>4.3.0-SNAPSHOT</automation.framework.utills.version>
+        <automation.framework.utills.version>4.3.0</automation.framework.utills.version>
     </properties>
 
 </project>

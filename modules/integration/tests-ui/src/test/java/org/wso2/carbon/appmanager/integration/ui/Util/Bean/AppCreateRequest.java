@@ -5,11 +5,11 @@ package org.wso2.carbon.appmanager.integration.ui.Util.Bean;
  */
 public class AppCreateRequest extends AbstractRequest {
     private String overview_provider = "admin";
-    private String overview_name = "fifa31";
-    private String overview_context = "/fifa31";
+    private String overview_name = "defaultAPP";
+    private String overview_context = "/defaultAPP";
     private String overview_version = "1.0.0";
     private String overview_transports = "http";
-    private String overview_webAppUrl = "www.fifa.com";
+    private String overview_webAppUrl = "www.defaultapp.com";
     private String overview_description = "TestCases description";
     private String images_icon;
     private String images_thumbnail;
@@ -41,9 +41,9 @@ public class AppCreateRequest extends AbstractRequest {
     private String uritemplate_tier0 = "Unlimited";
     private String uritemplate_skipthrottle0 = "False";
     private String overview_logoutUrl;
-    private String claimPropertyCounter = "0";
+    private String claimPropertyCounter = "1";
     private String sso_singleSignOn = "Enabled";
-    private String sso_idpProviderUrl = "";
+    private String sso_idpProviderUrl = "https://localhost:9444/samlsso/";
     private String sso_saml2SsoIssuer;
     private String oauthapis_apiTokenEndpoint1;
     private String oauthapis_apiConsumerKey1;
@@ -68,21 +68,27 @@ public class AppCreateRequest extends AbstractRequest {
     private String uritemplate_userRoles2;
     private String uritemplate_userRoles1;
     private String uritemplate_userRoles0;
-    private String entitlementPolicies;
+    private String entitlementPolicies = "[]";
     private String providers = "wso2is-5.0.0";
-    private String uritemplate_policyPartialIds;
-    private String uritemplate_entitlementPolicyPartialMappings0;
-    private String uritemplate_entitlementPolicyPartialMappings1;
-    private String uritemplate_entitlementPolicyPartialMappings2;
-    private String uritemplate_entitlementPolicyPartialMappings3;
-    private String uritemplate_entitlementPolicyPartialMappings4;
+    private String uritemplate_policyPartialIds = "[]";
+    private String uritemplate_entitlementPolicyPartialMappings0 = "[]";
+    private String uritemplate_entitlementPolicyPartialMappings1 = "[]";
+    private String uritemplate_entitlementPolicyPartialMappings2 = "[]";
+    private String uritemplate_entitlementPolicyPartialMappings3 = "[]";
+    private String uritemplate_entitlementPolicyPartialMappings4 = "[]";
 
 
 
     private String sso_ssoProvider = "wso2is-5.0.0";
-    private String autoConfig = "";
-    private String claims = "http%3A%2F%2Fwso2.org%2Fclaims%2Fotherphone";// "http://wso2.org/claims/otherphone";
+    private String autoConfig = "on";
+    private String claims = "http://wso2.org/claims/role";
 
+    private String overview_allowAnonymous="false";
+    private String uritemplate_allowAnonymous4="False";
+    private String uritemplate_allowAnonymous3="False";
+    private String uritemplate_allowAnonymous2="False";
+    private String uritemplate_allowAnonymous1="False";
+    private String uritemplate_allowAnonymous0="False";
 
     @Override
     public void init() {
@@ -160,8 +166,12 @@ public class AppCreateRequest extends AbstractRequest {
         addParameter("uritemplate_entitlementPolicyPartialMappings2",uritemplate_entitlementPolicyPartialMappings2);
         addParameter("uritemplate_entitlementPolicyPartialMappings3",uritemplate_entitlementPolicyPartialMappings3);
         addParameter("uritemplate_entitlementPolicyPartialMappings4",uritemplate_entitlementPolicyPartialMappings4);
-
-
+        addParameter("overview_allowAnonymous",overview_allowAnonymous);
+        addParameter("uritemplate_allowAnonymous4",uritemplate_allowAnonymous4);
+        addParameter("uritemplate_allowAnonymous4",uritemplate_allowAnonymous3);
+        addParameter("uritemplate_allowAnonymous4",uritemplate_allowAnonymous2);
+        addParameter("uritemplate_allowAnonymous4",uritemplate_allowAnonymous1);
+        addParameter("uritemplate_allowAnonymous4",uritemplate_allowAnonymous0);
     }
 
     @Override
@@ -768,6 +778,54 @@ public class AppCreateRequest extends AbstractRequest {
 
     public void setUritemplate_entitlementPolicyPartialMappings4(String uritemplate_entitlementPolicyPartialMappings4) {
         this.uritemplate_entitlementPolicyPartialMappings4 = uritemplate_entitlementPolicyPartialMappings4;
+    }
+
+    public String getVerview_allowAnonymous() {
+        return overview_allowAnonymous;
+    }
+
+    public void setVerview_allowAnonymous(String verview_allowAnonymous) {
+        this.overview_allowAnonymous = verview_allowAnonymous;
+    }
+
+    public String getUritemplate_allowAnonymous4() {
+        return uritemplate_allowAnonymous4;
+    }
+
+    public void setUritemplate_allowAnonymous4(String uritemplate_allowAnonymous4) {
+        this.uritemplate_allowAnonymous4 = uritemplate_allowAnonymous4;
+    }
+
+    public String getUritemplate_allowAnonymous3() {
+        return uritemplate_allowAnonymous3;
+    }
+
+    public void setUritemplate_allowAnonymous3(String uritemplate_allowAnonymous3) {
+        this.uritemplate_allowAnonymous3 = uritemplate_allowAnonymous3;
+    }
+
+    public String getUritemplate_allowAnonymous2() {
+        return uritemplate_allowAnonymous2;
+    }
+
+    public void setUritemplate_allowAnonymous2(String uritemplate_allowAnonymous2) {
+        this.uritemplate_allowAnonymous2 = uritemplate_allowAnonymous2;
+    }
+
+    public String getUritemplate_allowAnonymous1() {
+        return uritemplate_allowAnonymous1;
+    }
+
+    public void setUritemplate_allowAnonymous1(String uritemplate_allowAnonymous1) {
+        this.uritemplate_allowAnonymous1 = uritemplate_allowAnonymous1;
+    }
+
+    public String getUritemplate_allowAnonymous0() {
+        return uritemplate_allowAnonymous0;
+    }
+
+    public void setUritemplate_allowAnonymous0(String uritemplate_allowAnonymous0) {
+        this.uritemplate_allowAnonymous0 = uritemplate_allowAnonymous0;
     }
 
 

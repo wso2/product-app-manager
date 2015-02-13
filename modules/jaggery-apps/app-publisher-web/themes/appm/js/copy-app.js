@@ -52,7 +52,6 @@ $(function() {
 
     }
 
-
     function loadSelectedProviders(providers_data) {
         for (var i = 0; i < providers_data.length; i++) {
             var x = providers_data[i];
@@ -65,7 +64,6 @@ $(function() {
         loadSelectedClaims(sso_provider);
     }
 
-
     function loadSelectedClaims(selectedProvider) {
         var y = selectedProvider.split("-");
         var appProvider = $("#overview_provider").val();
@@ -73,7 +71,7 @@ $(function() {
         var appVersion = $("#oldversion").val();
         var uniqueAppName = appName+"-"+appVersion;
         $.ajax({
-            url: '/publisher/api/sso/' + y[0] + '/' + y[1] + '/' +'/' + appProvider + '/' + appName + '/' + appVersion,
+            url: '/publisher/api/sso/' + y[0] + '/' + y[1] + '/' + appProvider + '/' + appName + '/' + appVersion,
             type: 'GET',
             contentType: 'application/json',
             success: function(response) {

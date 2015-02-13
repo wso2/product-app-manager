@@ -130,64 +130,79 @@ require('/modules/publisher.js').exec(function(ctx) {
     }
   });
 
-  routeManager.register('PUT', 'publisher', '/publisher/api/lifecycle/{action}/{type}/{id}', function(context) {
-    var shortName = context.params.type;
+    routeManager.register('PUT', 'publisher', '/publisher/api/lifecycle/{action}/{type}/{id}', function(context) {
+        var shortName = context.params.type;
 
-     if(shortName === "mobileapp"){
+        if(shortName === "mobileapp"){
 
-         mobileAppsLifeCycleChange(context, rxtManager);
-         return;
-     }
+            mobileAppsLifeCycleChange(context, rxtManager);
+            return;
+        }
 
-    var action = context.params.action;
-    var id = context.params.id;
-    var comment = context.content.comment;
-    var roles = context.content.roles || [];
-    var artifactManager = rxtManager.getArtifactManager(shortName);
-    var artifact = artifactManager.get(id);
-    var currentState = artifactManager.getLifecycleState(artifact).toString();
-    var carbon = require('carbon');
-    var um = server.userManager(server.current(session).tenantId);
-    var validRoles = um.allRoles();
-    var commentNeeded = false;
-
-     if ( commentNeeded) {
-      	response.sendError(400, 'This change requires that you insert a comment');
-     } else {
-      try {
+        var action = context.params.action;
+        var id = context.params.id;
+        var comment = context.content.comment;
+        var roles = context.content.roles || [];
+        var artifactManager = rxtManager.getArtifactManager(shortName);
         var artifact = artifactManager.get(id);
-        var attributes = artifact.attributes;
-
-        var previourStatus = artifact['lifecycleState'];
-        log.info('Calling promoteLifecycleState for action : '+action);
-        
-        if (roles.length > 0) {
-		roles.forEach(function(role) {
-                    um.authorizeRole(role, artifact.path, carbon.registry.actions.GET);
-                });
-        }
-
-        artifactManager.promoteLifecycleState(action,artifact);
-		
-        if (comment) {
-          var lcHistory = artifactManager.getLifecycleHistory(artifact);
-          var lcHistoryXML = new XML(lcHistory.content);
-          lcHistoryJSON = utility.xml.convertE4XtoJSON(lcHistoryXML);
-          var newChangeOrder = lcHistoryJSON.item[0].order;
-
-          require('/modules/comment.js').addLifecycleComment(artifactManager, id, comment, newChangeOrder);
-        }
+        var currentState = artifactManager.getLifecycleState(artifact).toString();
+        var carbon = require('carbon');
+        var um = server.userManager(server.current(session).tenantId);
+        var validRoles = um.allRoles();
+        var commentNeeded = false;
+        appPublishWFExecutor = org.wso2.carbon.appmgt.impl.workflow.WorkflowExecutorFactory.getInstance().getWorkflowExecutor("AM_APPLICATION_PUBLISH");
+        var isAsynchronousFlow = appPublishWFExecutor.isAsynchronus();
+        log.info("IS ASYNCH : " + isAsynchronousFlow);
+        var isStateChangeable = true;
         var msg={};
-        msg['status']='ok';
+
+        if(!isAsynchronousFlow && action == "Approve"){
+            isStateChangeable = false;
+        }
+
+        if(isStateChangeable) {
+            if (commentNeeded) {
+                response.sendError(400, 'This change requires that you insert a comment');
+            } else {
+                try {
+                    var artifact = artifactManager.get(id);
+                    var attributes = artifact.attributes;
+
+                    var previourStatus = artifact['lifecycleState'];
+                    log.info('Calling promoteLifecycleState for action : ' + action);
+
+                    if (roles.length > 0) {
+                        roles.forEach(function (role) {
+                            um.authorizeRole(role, artifact.path, carbon.registry.actions.GET);
+                        });
+                    }
+
+                    artifactManager.promoteLifecycleState(action, artifact);
+
+                    if (comment) {
+                        var lcHistory = artifactManager.getLifecycleHistory(artifact);
+                        var lcHistoryXML = new XML(lcHistory.content);
+                        lcHistoryJSON = utility.xml.convertE4XtoJSON(lcHistoryXML);
+                        var newChangeOrder = lcHistoryJSON.item[0].order;
+
+                        require('/modules/comment.js').addLifecycleComment(artifactManager, id, comment, newChangeOrder);
+                    }
+
+                    msg['status'] = 'ok';
+                    msg['asynch'] = isAsynchronousFlow;
+
+                } catch (e) {
+                    log.debug('The asset with id: ' + id + ' could not be found.The following exception was thrown: ' + e);
+                    response.sendError(404, 'The asset with id: ' + id + ' could not be found.Please refer to the server log.');
+                }
+            }
+        }else{
+            msg['status'] = 'ok';
+            msg['asynch'] = isAsynchronousFlow;
+        }
         print(msg);
 
-    } catch (e) {
-        log.debug('The asset with id: '+id+' could not be found.The following exception was thrown: '+e);
-        response.sendError(404,'The asset with id: '+id+' could not be found.Please refer to the server log.');
-    }
-    }
-
-});
+    });
 
 /*
  The function returns the lifecycle structure of a given asset

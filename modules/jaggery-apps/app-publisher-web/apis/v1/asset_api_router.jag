@@ -306,6 +306,8 @@ require('/modules/publisher.js').exec(function(ctx) {
                 context.post['images_banner'] = '/publisher/config/defaults/img/banner.jpg';
             }
 
+
+
             model.import('form.importer',context.post);
 
             //Perform validations on the asset
@@ -397,6 +399,7 @@ require('/modules/publisher.js').exec(function(ctx) {
         if(context.post['images_banner'] instanceof Array){
             context.post['images_banner'] = context.post['images_banner'][0];
         }
+
 
         try {
             var modelA = modelManager.getModel(shortName);

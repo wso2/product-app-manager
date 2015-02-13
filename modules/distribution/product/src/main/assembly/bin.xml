@@ -43,6 +43,7 @@
                 <exclude>**/release-notes.html</exclude>
                 <exclude>**/carbon.xml</exclude>
                 <exclude>**/registry.xml</exclude>
+		<exclude>**/email/email-admin-config.xml</exclude>
                 <exclude>**/identity.xml</exclude>
                 <exclude>**/embedded-ldap.xml</exclude>
                 <exclude>**/master-datasources.xml</exclude>
@@ -98,7 +99,7 @@
         </fileSet>
 	<fileSet>
             <directory>
-                ../../jaggery-apps/enterprise-store/storage/
+                ../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/dbscripts/storage/
             </directory>
             <outputDirectory>wso2appm-${pom.version}/dbscripts/storage</outputDirectory>
             <includes>
@@ -633,11 +634,11 @@
             <source>../../p2-profile/product/target/wso2carbon-core-4.2.0/repository/data/is-default-schema.zip</source>
             <outputDirectory>wso2appm-${pom.version}/repository/data</outputDirectory>
         </file>
-        <!--file>
+        <file>
             <source>../../p2-profile/product/target/wso2carbon-core-4.2.0/repository/conf/email/email-admin-config.xml</source>
             <outputDirectory>wso2appm-${pom.version}/repository/conf/email</outputDirectory>
             <fileMode>644</fileMode>
-        </file-->
+        </file>
 
         <file>
             <source>../../p2-profile/product/target/wso2carbon-core-4.2.0/repository/conf/security/identity-mgt.properties</source>

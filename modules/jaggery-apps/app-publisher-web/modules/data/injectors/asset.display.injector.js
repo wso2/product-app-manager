@@ -88,7 +88,7 @@ var injector = function () {
                     }
                 }
                 else{
-                    log.warn('Not returning actions of asset as it does not have a lifecycle.Make sure that it has a lifecycle.Artifact: '+stringify(artifact));
+                    log.debug('Not returning actions of asset as it does not have a lifecycle.Make sure that it has a lifecycle.Artifact: '+stringify(artifact));
                 }
 
                 object['lifecycleAvailableActions'] = actions;
