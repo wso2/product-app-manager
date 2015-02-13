@@ -59,7 +59,8 @@ function validate(policyGroupName) {
  * @param objPartialMappings : Object which contains XACML policy partial details arrays
  * @param isSaveAndClose : check if the call is from the save and close button
  */
-function insertPolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, objPartialMappings, isSaveAndClose) {
+function insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, objPartialMappings, isSaveAndClose) {
+
     $.ajax({
         url: '/publisher/api/entitlement/policy/partial/policyGroup/save',
         type: 'POST',
@@ -72,12 +73,25 @@ function insertPolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrl
         },
         success: function (data) {
             editedPolicyGroup = JSON.parse(data).response.id;
+            var policyPartialsMapping = [];
+            var objPartialMappingsParsed = JSON.parse(objPartialMappings);
+
+            for(var i=0; i < objPartialMappingsParsed.length; i++){
+                var POLICY_PARTIAL_ID = objPartialMappingsParsed[i].entitlementPolicyPartialId;
+                var EFFECT = objPartialMappingsParsed[i].effect;
+                policyPartialsMapping.push({
+                    "POLICY_GRP_ID": editedPolicyGroup,
+                    "POLICY_PARTIAL_ID": POLICY_PARTIAL_ID,
+                    "EFFECT": EFFECT
+                });
+            }
             policyGroupsArray.push({
                 policyGroupId: editedPolicyGroup,
                 policyGroupName: policyGroupName,
                 throttlingTier: throttlingTier,
                 anonymousAccessToUrlPattern: anonymousAccessToUrlPattern,
-                userRoles: userRoles
+                userRoles: userRoles,
+                policyPartials: JSON.stringify(policyPartialsMapping)
 
             });
             //Policy Group partial update
@@ -162,7 +176,6 @@ function savePolicyGroupData(isSaveAndClose) {
 
     //contains XACML policy partial details arrays
     var objPartialMappings = {policyGroupOptions: []};
-
     //check the selected XACML policy partial options and add to array
     $('.policy-opt-val').each(function (index, obj) {
         //get checked value from list
@@ -181,7 +194,7 @@ function savePolicyGroupData(isSaveAndClose) {
     if (validate(policyGroupName)) {
         // editedPolicyGroup : 0 > then insert else update
         if (editedPolicyGroup == 0) {
-            insertPolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions), isSaveAndClose);
+            insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions), isSaveAndClose);
         }
         else {
             updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions), isSaveAndClose);
