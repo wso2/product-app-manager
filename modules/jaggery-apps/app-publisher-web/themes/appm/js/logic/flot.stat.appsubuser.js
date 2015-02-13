@@ -183,94 +183,101 @@ var drawSubscribedAPIsByUsers = function(response,usageByContext) {
         var data =[]
 
         for ( var i = 0; i < usageByContext.length; i++) {
-            if( usageByContext[i][0] ==  $("#search").val()){
-                for ( var j = 0; j < usageByContext[i][1].length; j++) {
-                    if( usageByContext[i][1][j][0] ==  getCell('webApp', ''+test+'').html()){
-                       numOfVersion = usageByContext[i][1][j][1].length;
-                        for( var t = 0; t < numOfVersion; t++) {
-                                if( usageByContext[i][1][j][1][t][0] ==  getCell('appVersion', ''+test+'').html()){
+            if (usageByContext[i][0] == $("#search").val()) {
+                for (var j = 0; j < usageByContext[i][1].length; j++) {
+                    if (usageByContext[i][1][j][0] == getCell('webApp', '' + test + '').html()) {
+                        numOfVersion = usageByContext[i][1][j][1].length;
+                        for (var t = 0; t < numOfVersion; t++) {
+                            if (usageByContext[i][1][j][1][t][0] == getCell('appVersion', '' + test + '').html()) {
 
-                                    for( var k = 0; k < usageByContext[i][1][j][1][t][1].length; k++) {
-                                    dataTest=[];
+                                for (var k = 0; k < usageByContext[i][1][j][1][t][1].length; k++) {
+                                    dataTest = [];
                                     function dateToUnix(year, month, day, hour, minute, second) {
-                                                        return ((new Date(year, month - 1, day, hour, minute, second)).getTime());
-                                                    }
-                                        for( var l = 0; l < usageByContext[i][1][j][1][t][1][k][1].length; l++) {
-
-                                            hits=usageByContext[i][1][j][1][t][1][k][1][l][0];
-
-                                                 var time=usageByContext[i][1][j][1][t][1][k][1][l][1];
-                                                 var str = time;
-                                                 var d=new Date(str.split(' ')[0].split('-').join(',') + ',' + str.split(' ')[1].split('-').join(','));
-                                                 var year= d.getFullYear();
-                                                 var month=d.getMonth();
-                                                 var date= d.getDate();
-                                                 var hour=d.getHours();
-                                                 var min= d.getMinutes();
-                                                 var second=d.getSeconds();
-
-                                                var dateInSeconds = dateToUnix(year,(month+1),date,hour,min, second);
-                                                var seconds=dateInSeconds+"";
-
-                                            dataTest.push({
-                                                     'y':hits,
-                                                     'x':seconds
-                                                 });
-
-                                        }
-
-
-                                dataTest.sort(function(obj1, obj2) {
-                                    return obj1.x - obj2.x;
-                                });
-
-                                nv.addGraph(function () {
-                                    var chart = nv.models.lineWithFocusChart().margin({right: 250});
-                                    chart.margin({left:200});
-
-                                    chart.color(d3.scale.category20b().range());
-                                    chart.yAxis.tickFormat(d3.format(',d'));
-                                    chart.y2Axis.tickFormat(d3.format(',d'));
-                                    chart.yAxis.axisLabel('Hits');
-                                    chart.xAxis.tickFormat(function (d) {
-                                        return d3.time.format('%d %b %Y %H:%M')(new Date(d))
-                                    });
-
-                                    chart.x2Axis.tickFormat(function (d) {
-                                        return d3.time.format('%d %b %Y %H:%M')(new Date(d))
-                                    });
-                                    chart.tooltipContent(function (key, y, e, graph) {
-                                        var x = d3.time.format('%d %b %Y %H:%M:%S')(new Date(parseInt(graph.point.x)));
-                                        var y = String(graph.point.y);
-                                        if (key == 'Hits') {
-                                            var y = 'There is ' + String(graph.point.y) + ' calls';
-                                        }
-
-                                        tooltip_str = '<center><b>' + key + '</b></center>' + y + ' on ' + x;
-                                        return tooltip_str;
-                                    });
-
-                                    d3.select('#lineWithFocusChart svg')
-                                        .datum(data_lineWithFocusChart)
-                                        .transition().duration(500)
-                                        .attr('height', 450)
-                                        .call(chart);
-
-                                    return chart;
-                                });
-
-                                data_lineWithFocusChart = [{
-                                    'values': dataTest,
-                                    'key': usageByContext[i][1][j][1][t][1][k][0],
-                                    'yAxis': '1'
-
-                                    }];
+                                        return ((new Date(year, month - 1, day, hour, minute, second)).getTime());
                                     }
+
+                                    for (var l = 0; l < usageByContext[i][1][j][1][t][1][k][1].length; l++) {
+
+                                        hits = usageByContext[i][1][j][1][t][1][k][1][l][0];
+
+                                        var time = usageByContext[i][1][j][1][t][1][k][1][l][1];
+                                        var str = time;
+                                        var d = new Date(str.split(' ')[0].split('-').join(',') + ',' + str.split(' ')[1].split('-').join(','));
+                                        var year = d.getFullYear();
+                                        var month = d.getMonth();
+                                        var date = d.getDate();
+                                        var hour = d.getHours();
+                                        var min = d.getMinutes();
+                                        var second = d.getSeconds();
+
+                                        var dateInSeconds = dateToUnix(year, (month + 1), date, hour, min, second);
+                                        var seconds = dateInSeconds + "";
+
+                                        dataTest.push({
+                                            'y': hits,
+                                            'x': seconds
+                                        });
+
+                                    }
+
+
+                                    dataTest.sort(function (obj1, obj2) {
+                                        return obj1.x - obj2.x;
+                                    });
+
+                                    nv.addGraph(function () {
+                                        var chart = nv.models.lineWithFocusChart().margin({right: 250});
+                                        chart.margin({left: 200});
+
+                                        chart.color(d3.scale.category20b().range());
+                                        chart.yAxis.tickFormat(d3.format(',d'));
+                                        chart.y2Axis.tickFormat(d3.format(',d'));
+                                        chart.yAxis.axisLabel('Hits');
+                                        chart.xAxis.tickFormat(function (d) {
+                                            return d3.time.format('%d %b %Y %H:%M')(new Date(d))
+                                        });
+
+                                        chart.x2Axis.tickFormat(function (d) {
+                                            return d3.time.format('%d %b %Y %H:%M')(new Date(d))
+                                        });
+                                        chart.tooltipContent(function (key, y, e, graph) {
+                                            var x = d3.time.format('%d %b %Y %H:%M:%S')(new Date(parseInt(graph.point.x)));
+                                            var y = String(graph.point.y);
+                                            if (key == 'Hits') {
+                                                var y = 'There is ' + String(graph.point.y) + ' calls';
+                                            }
+
+                                            tooltip_str = '<center><b>' + key + '</b></center>' + y + ' on ' + x;
+                                            return tooltip_str;
+                                        });
+
+                                        d3.select('#lineWithFocusChart svg')
+                                            .datum(data_lineWithFocusChart)
+                                            .transition().duration(500)
+                                            .attr('height', 450)
+                                            .call(chart);
+
+                                        return chart;
+                                    });
+
+                                    data_lineWithFocusChart = [
+                                        {
+                                            'values': dataTest,
+                                            'key': usageByContext[i][1][j][1][t][1][k][0],
+                                            'yAxis': '1'
+
+                                        }
+                                    ];
                                 }
                             }
-                            }
+                        }
+                    }
+                }
+            }
+        }
     });
-}
+
+
 
 var onDateSelected = function() {
     clearTables();
@@ -285,3 +292,4 @@ function clearTables() {
     $('#webAppTable5').remove();
 }
 
+}
