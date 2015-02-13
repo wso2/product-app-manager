@@ -5,10 +5,16 @@
         in conf/datasources directory.
     -->
     <DataSourceName>jdbc/WSO2AM_DB</DataSourceName>
+    
+    <!-- 
+    This parameter used in App Store. This data source is used to write/read UI Activity changes (eg: App Hit count) 
+    to seperate database. When using BAM to analyze the changes it needs to configure this data source appropriately.
+    -->
+    <UiActivityPublishDataSourceName>jdbc/WSO2AM_DB</UiActivityPublishDataSourceName>
 
     <!-- This parameter is used when adding api management capability to other products like GReg, AS, DSS etc.-->
     <GatewayType>Synapse</GatewayType>
-	
+
   <!-- This parameter is used to enable the securevault support when try to publish endpoint secured APIs. Values should be "true" or "false".
   By default secure vault is disabled.-->
 	<EnableSecureVault>false</EnableSecureVault>
@@ -67,14 +73,15 @@
         <!--
             Name of the security context header to be added to the validated requests.
         -->
+	<Authenticator>SAML2</Authenticator>
         <SecurityContextHeader>X-JWT-Assertion</SecurityContextHeader>
 
-	<!-- 
+	<!--
 		Fully qualified name of the class that will retrieve additional user claims
 		to be appended to the JWT. If not specified no claims will be appended.
 		The DefaultClaimsRetriever class adds user claims from the default carbon user store.
 	-->
-	<ClaimsRetrieverImplClass>org.wso2.carbon.apimgt.impl.token.DefaultClaimsRetriever</ClaimsRetrieverImplClass>
+	<!--ClaimsRetrieverImplClass>org.wso2.carbon.appmgt.impl.token.DefaultClaimsRetriever</ClaimsRetrieverImplClass-->
 
 	<!--
 		The dialectURI under which the claimURIs that need to be appended to the
@@ -82,22 +89,27 @@
 		same value is used in the keys for appending the default properties to the
 		JWT.
 	-->
-    	<ConsumerDialectURI>http://wso2.org/claims</ConsumerDialectURI>
-    	
-    	<!-- 
+    	<!--ConsumerDialectURI>http://wso2.org/claims</ConsumerDialectURI-->
+
+    	<!--
 		Signature algorithm. Accepts "SHA256withRSA" or "NONE". To disable signing explicitly specify "NONE".
 	-->
-	<SignatureAlgorithm>SHA256withRSA</SignatureAlgorithm>
+	<!--SignatureAlgorithm>SHA256withRSA</SignatureAlgorithm-->
 
     <!--
 		Enable/Disable JWT generation. Default is false.
 	-->
 	<EnableTokenGeneration>true</EnableTokenGeneration>
-	
-	<!-- 
+
+	<!--
 		Remove OAuth headers from outgoing message or keep with it.
 	-->
-	<RemoveOAuthHeadersFromOutMessage>true</RemoveOAuthHeadersFromOutMessage>
+	<!--RemoveOAuthHeadersFromOutMessage>true</RemoveOAuthHeadersFromOutMessage-->
+
+	<!-- 
+		Add SAML response as transport header in outgoing message.
+	-->
+	<AddSAMLResponseHeaderToOutMessage>true</AddSAMLResponseHeaderToOutMessage>
     </APIConsumerAuthentication>
 
     <!-- Primary/secondary login configuration for APIstore. If user likes to keep two login attributes in a distributed setup, to login the APIstore,
@@ -125,7 +137,7 @@
 		     An API deployed on a 'sandbox' type gateway will only support sandbox keys
 		     An API deployed on a 'hybrid' type gateway will support both production and sandbox keys -->
                 <Environment type="hybrid">
-                        <Name>Production and Sandbox</Name>
+                        <Name>Gateway Endpoint</Name>
 			<!--
             			Server URL of the API gateway.
         		-->
@@ -144,39 +156,57 @@
                         <GatewayEndpoint>http://${carbon.local.ip}:${http.nio.port},https://${carbon.local.ip}:${https.nio.port}</GatewayEndpoint>
                 </Environment>
         </Environments>
-        
+
         <!--
             Enable/Disable caching at gateway node.
         -->
         <EnableGatewayKeyCache>true</EnableGatewayKeyCache>
 
-	<!-- Header name can be configurable, as you preferred. When API invocation is restricted to access only for authorized domains, 
-		client request should send his domain, as the value of this header. 
+	<!-- Header name can be configurable, as you preferred. When API invocation is restricted to access only for authorized domains,
+		client request should send his domain, as the value of this header.
 	-->
 	<ClientDomainHeader>referer</ClientDomainHeader>
 
     </APIGateway>
+    
+	<APIStreamNameDefinition>
+		<ApiManagerRequestStreamName>org.wso2.appmgt.statistics.request</ApiManagerRequestStreamName>
+		<ApiManagerRequestStreamVersion>1.0.0</ApiManagerRequestStreamVersion>
+		<ApiManagerResponseStreamName>org.wso2.appmgt.statistics.response</ApiManagerResponseStreamName>
+		<ApiManagerResponseStreamVersion>1.0.0</ApiManagerResponseStreamVersion>
+		<ApiManagerFaultStreamName>org.wso2.appmgt.statistics.fault</ApiManagerFaultStreamName>
+		<ApiManagerFaultStreamVersion>1.0.0</ApiManagerFaultStreamVersion>
+   	   
+		<!-- Used when publishing AppManager UI activities to BAM   -->
+		<ApiManagerBamUiActivityStreamName>org.wso2.appmgt.bam.uiactivitypublish</ApiManagerBamUiActivityStreamName>
+		<ApiManagerBamUiActivityStreamVersion>1.0.0</ApiManagerBamUiActivityStreamVersion> 
+	</APIStreamNameDefinition>
 
      <!--
 	    Enable/Disable Usage metering and billing for api usage
      -->
-     <EnableBillingAndUsage>true</EnableBillingAndUsage>
+     <EnableBillingAndUsage>false</EnableBillingAndUsage>
 
     <!--
-        API usage tracker configuration used by the BAM data publisher and 
+        API usage tracker configuration used by the BAM data publisher and
         Google Analytics publisher in API gateway.
     -->
     <APIUsageTracking>
-	
+
+		<!--
+			Enable UI Activity Data publish to BAM
+		-->
+ 		<UIActivityBAMPublishEnabled>false</UIActivityBAMPublishEnabled>
+ 		
         <!--
             Enable/Disable the API usage tracker.
         -->
-        <Enabled>true</Enabled>
+        <Enabled>false</Enabled>
 
         <!--
             API Usage Data Publisher.
         -->
-        <PublisherClass>org.wso2.carbon.apimgt.usage.publisher.APIMgtUsageDataBridgeDataPublisher</PublisherClass>
+        <PublisherClass>org.wso2.carbon.appmgt.usage.publisher.APIMgtUsageDataBridgeDataPublisher</PublisherClass>
 
         <!--
             Thrift port of the remote BAM server.
@@ -191,8 +221,8 @@
             Groups are delimited by curly braces whereas receivers are delimited by commas.
 	    Ex - Multiple Receivers within a single group
 		 tcp://localhost:7612/,tcp://localhost:7613/,tcp://localhost:7614/
-	    Ex - Multiple Receiver Groups with two receivers each		
-                 {tcp://localhost:7612/,tcp://localhost:7613},{tcp://localhost:7712/,tcp://localhost:7713/} 
+	    Ex - Multiple Receiver Groups with two receivers each
+                 {tcp://localhost:7612/,tcp://localhost:7613},{tcp://localhost:7712/,tcp://localhost:7713/}
         -->
         <BAMServerURL>tcp://localhost:7612/</BAMServerURL>
 
@@ -214,21 +244,23 @@
 
 	<!--
             Google Analytics publisher configuration. Create Google Analytics account and obtain a
-            Tracking ID. 
+            Tracking ID.
 	    Reffer http://support.google.com/analytics/bin/answer.py?hl=en&answer=1009694
         -->
         <GoogleAnalyticsTracking>
              <!--
                  Enable/Disable Google Analytics Tracking
              -->
-             <Enabled>false</Enabled>
+             <Enabled>true</Enabled>
 
              <!--
-                Google Analytics Tracking ID    
+                Google Analytics Tracking ID
              -->
-             <TrackingID>UA-XXXXXXXX-X</TrackingID>
+             <TrackingID>UA-58940730-1</TrackingID>
+            <!--TrackingID>UA-58829572-1</TrackingID-->
 
        </GoogleAnalyticsTracking>
+       
 
     </APIUsageTracking>
 
@@ -255,24 +287,24 @@
         <!--
             Enable/Disable JWT caching.
         -->
-        <EnableJWTCache>true</EnableJWTCache>
+        <EnableJWTCache>false</EnableJWTCache>
 
         <!--
             Enable/Disable API key validation information caching at key-management server
         -->
 
-        <EnableKeyMgtValidationInfoCache>true</EnableKeyMgtValidationInfoCache>
+        <EnableKeyMgtValidationInfoCache>false</EnableKeyMgtValidationInfoCache>
 
         <!--
         Configurations related to enable thrift support for key-management related communication.
         If you want to switch back to Web Service Client, change the value of "KeyValidatorClientType" to "WSClient".
         In a distributed environment;
         -If you are at the Gateway node, you need to point "ThriftClientPort" value to the "ThriftServerPort" value given at KeyManager node.
-        -If you need to start two API Manager instances in the same machine, you need to give different ports to "ThriftServerPort" value in two nodes.
+        -If you need to start two APP Manager instances in the same machine, you need to give different ports to "ThriftServerPort" value in two nodes.
         -ThriftServerHost - Allows to configure a hostname for the thrift server. It uses the carbon hostname by default.
         -->
 
-        <KeyValidatorClientType>WSClient</KeyValidatorClientType>
+        <KeyValidatorClientType>ThriftClient</KeyValidatorClientType>
         <ThriftClientPort>10397</ThriftClientPort>
         <ThriftClientConnectionTimeOut>10000</ThriftClientConnectionTimeOut>
         <ThriftServerPort>10397</ThriftServerPort>
@@ -290,8 +322,8 @@
        <!-- <RemoveUserNameToJWTForApplicationToken>true</RemoveUserNameToJWTForApplicationToken>-->
 
 	<!-- Name of the token API -->
-	<TokenEndPointName>/oauth2/token</TokenEndPointName>
-	
+	<TokenEndPointName>oauth2/token</TokenEndPointName>
+
 	<!-- Whether to encrypt tokens when storing in the Database
 	Note: If changing this value to true, change the value of <TokenPersistenceProcessor> to
 	org.wso2.carbon.identity.oauth.tokenprocessor.EncryptionDecryptionProcessor in the identity.xml -->
@@ -326,7 +358,7 @@
             specified here must have the '/permission/admin/manage/api/subscribe'
             permission.
         -->
-        <SubscriberRoleName>subscriber</SubscriberRoleName>
+        <SubscriberRoleName>internal/subscriber</SubscriberRoleName>
 
         <!--
             This parameter specifies whether the subscriber role specified above
@@ -343,39 +375,36 @@
         Use this configuration to control the number of APIs shown in API store.
     -->
     <APIStore>
-
-        <DisplayURL>false</DisplayURL>
-        <URL>https://${carbon.local.ip}:${mgt.transport.https.port}/store</URL>
         <!--
             This parameter specifies whether to display multiple versions of same
             API or only showing the latest version of an API.
 
         -->
-        <DisplayMultipleVersions>true</DisplayMultipleVersions>
+        <DisplayMultipleVersions>false</DisplayMultipleVersions>
         <!--
             This parameter specifies whether to display all the APIs
             [which are having DEPRECATED/PUBLISHED status] or only display the APIs
             with having their status is as 'PUBLISHED'
 
         -->
-        <DisplayAllAPIs>true</DisplayAllAPIs>
-		
+        <DisplayAllAPIs>false</DisplayAllAPIs>
+
 		 <!--
             This parameter specifies whether to display the comment editing facility or not.
            Default is "true". If user wants to disable, he must set this param as "false"
 
         -->
 		<DisplayComments>true</DisplayComments>
-		
+
 		 <!--
             This parameter specifies whether to display the ratings  or not.
            Default is "true". If user wants to disable, he must set this param as "false"
 
         -->
 		<DisplayRatings>true</DisplayRatings>
-	      
+
               <!--
-                This parameter specifies the expiration time of the TagCache. TagCache will 
+                This parameter specifies the expiration time of the TagCache. TagCache will
                 only be created when this element is uncommented. When the specified
                 time duration gets elapsed ,tag cache will get re-generated.
                -->
@@ -384,11 +413,6 @@
 
     </APIStore>
 
-    <APIPublisher>
-        <DisplayURL>false</DisplayURL>
-        <URL>https://${carbon.local.ip}:${mgt.transport.https.port}/publisher</URL>
-    </APIPublisher>
-
     <!--
         Status observers can be registered against the API Publisher to listen for
         API status update events. Each observer must implement the APIStatusObserver
@@ -396,54 +420,10 @@
         they will be notified in the order they are defined here.
     -->
     <!--StatusObservers>
-        <Observer>org.wso2.carbon.apimgt.impl.observers.SimpleLoggingObserver</Observer>
+        <Observer>org.wso2.carbon.appmgt.impl.observers.SimpleLoggingObserver</Observer>
     </StatusObservers-->
 
     <!--
-        There are set of plugguble extensions for some operations related to API MAnager
-	operations such as self sign in, subscriptions and etc. For those operatios we can
-	trigger external work flow of business process server. Here are the configurations
-	related to those operations
-    -->
-    <WorkFlowExtensions>
-      <ApplicationCreation executor="org.wso2.carbon.apimgt.impl.workflow.ApplicationCreationSimpleWorkflowExecutor"/>
-	  <!--ApplicationCreation executor="org.wso2.carbon.apimgt.impl.workflow.ApplicationCreationWSWorkflowExecutor">
-           <Property name="serviceEndpoint">http://localhost:9765/services/ApplicationApprovalWorkFlowProcess/</Property>
-           <Property name="username">admin</Property>
-           <Property name="password">admin</Property>
-           <Property name="callbackURL">https://localhost:8243/services/WorkflowCallbackService</Property>
-      </ApplicationCreation-->
-      <!--ProductionApplicationRegistration executor="org.wso2.carbon.apimgt.impl.workflow.ApplicationRegistrationSimpleWorkflowExecutor"/-->
-      <ProductionApplicationRegistration executor="org.wso2.carbon.apimgt.impl.workflow.ApplicationRegistrationWSWorkflowExecutor">
-           <Property name="serviceEndpoint">http://localhost:9765/services/ApplicationRegistrationWorkFlowProcess/</Property>
-           <Property name="username">admin</Property>
-           <Property name="password">admin</Property>
-           <Property name="callbackURL">https://localhost:8243/services/WorkflowCallbackService</Property>
-      </ProductionApplicationRegistration>
-      <!--SandboxApplicationRegistration executor="org.wso2.carbon.apimgt.impl.workflow.ApplicationRegistrationSimpleWorkflowExecutor"/-->
-      <SandboxApplicationRegistration executor="org.wso2.carbon.apimgt.impl.workflow.ApplicationRegistrationWSWorkflowExecutor">
-           <Property name="serviceEndpoint">http://localhost:9765/services/ApplicationRegistrationWorkFlowProcess/</Property>
-           <Property name="username">admin</Property>
-           <Property name="password">admin</Property>
-           <Property name="callbackURL">https://localhost:8243/services/WorkflowCallbackService</Property>
-      </SandboxApplicationRegistration>
-      <SubscriptionCreation executor="org.wso2.carbon.apimgt.impl.workflow.SubscriptionCreationSimpleWorkflowExecutor"/>
-      <!--SubscriptionCreation executor="org.wso2.carbon.apimgt.impl.workflow.SubscriptionCreationWSWorkflowExecutor">
-           <Property name="serviceEndpoint">http://localhost:9765/services/SubscriptionApprovalWorkFlowProcess/</Property>
-           <Property name="username">admin</Property>
-           <Property name="password">admin</Property>
-           <Property name="callbackURL">https://localhost:8243/services/WorkflowCallbackService</Property>
-      </SubscriptionCreation-->
-      <UserSignUp executor="org.wso2.carbon.apimgt.impl.workflow.UserSignUpSimpleWorkflowExecutor"/>
-      <!--UserSignUp executor="org.wso2.carbon.apimgt.impl.workflow.UserSignUpWSWorkflowExecutor">
-           <Property name="serviceEndpoint">http://localhost:9765/services/UserSignupProcess/</Property>
-           <Property name="username">admin</Property>
-           <Property name="password">admin</Property>
-           <Property name="callbackURL">https://localhost:8243/services/WorkflowCallbackService</Property>
-      </UserSignUp-->
-    </WorkFlowExtensions>
-
-    <!-- 
 	Use this configuration Create APIs at the Server startup
     -->
     <StartupAPIPublisher>
@@ -451,18 +431,18 @@
 	<!--
             Enable/Disable the API Startup Publisher
         -->
-	
-	<Enabled>true</Enabled>
-	
+
+	<Enabled>false</Enabled>
+
 	<!--
-	Configuration to create APIs for local endpoints. 
+	Configuration to create APIs for local endpoints.
 	Endpoint will be computed as http://${carbon.local.ip}:${mgt.transport.http.port}/Context.
 	Define many LocalAPI elements as below to create many APIs
 	for local Endpoints.
 	IconPath should be relative to CARBON_HOME.
 	-->
 	<LocalAPIs>
-		<LocalAPI>	
+		<LocalAPI>
 			<Context>/resource</Context>
 			<Provider>admin</Provider>
 			<Version>1.0.0</Version>
@@ -473,14 +453,14 @@
 	</LocalAPIs>
 	<!--
 	Configuration to create APIs for remote endpoints.
-	When Endpoint need to be defined use this configuration.  
+	When Endpoint need to be defined use this configuration.
 	Define many API elements as below to create many APIs
 	for external Endpoints.
-	If you do not need to add Icon or Documentation set 
+	If you do not need to add Icon or Documentation set
 	'none' as the value for IconPath & DocumentURL.
 	-->
-	<APIs>
-		<API>	
+	<!--APIs>
+		<API>
 			<Context>/resource</Context>
 			<Endpoint>http://localhost:9764/resource</Endpoint>
 			<Provider>admin</Provider>
@@ -489,40 +469,59 @@
 			<DocumentURL>none</DocumentURL>
 			<AuthType>Any</AuthType>
 		</API>
-	</APIs>
-		
+	</APIs-->
+
     </StartupAPIPublisher>
 
     <!--
    Below are set of external APIStores which can be configured to publish an API from current running
    APIM server.-->
 
-    <ExternalAPIStores>
+    <!--<ExternalAPIStores>-->
+
+	<!--Configuration to set the store URL of the current running APIM deployment.
+	APIs published to external stores will be redirected to this URL-->
+
+	<!--<StoreURL>http://localhost:9763/store</StoreURL>
+
         <ExternalAPIStore id="Store1" type="wso2">
             <DisplayName>Store1</DisplayName>
-            <Endpoint>http://localhost:9763/store</Endpoint>
-            <Username>user1@tenantdomain1.com</Username>
-            <Password>test123</Password>
+            <Endpoint>http://localhost:9764/store</Endpoint>
+            <Username>xxxx</Username>
+            <Password>xxxx</Password>
         </ExternalAPIStore>
-    </ExternalAPIStores>
+
+        <ExternalAPIStore id="ProWeb" type="proWeb">
+            <Name>ProgrammableWeb</Name>
+            <Endpoint>xxxxx</Endpoint>
+        </ExternalAPIStore>
+
+        <ExternalAPIStore id="Store2" type="wso2">
+            <DisplayName>Store2</DisplayName>
+            <Endpoint>http://localhost:9764/store</Endpoint>
+            <Username>xxxx</Username>
+            <Password>xxxx</Password>
+        </ExternalAPIStore>
+
+    </ExternalAPIStores> -->
 
     <!--
 	When an API is invoked, a list of handlers get engaged to its execution flow. This
 	property defines the position of the Extension Handler.
 	Supported values: top, bottom
 	Defaults to: bottom
-    -->	
+    -->
     <!--ExtensionHandlerPosition>top|bottom</ExtensionHandlerPosition-->
 
 
     <!--Configuration to enable/disable sending CORS headers in the Gateway response
         and define the Access-Control-Allow-Origin header value.-->
     <CORSConfiguration>
-        
+
 	<!--Configuration to enable/disable sending CORS headers from the Gateway-->
 	<Enabled>true</Enabled>
 
-	<!--The value of the Access-Control-Allow-Origin header. Default values are 
+	<!--The value of the Access-Control-Allow-Origin header. Default values are
 	    API Store addresses, which is needed for swagger to function.-->
 	<Access-Control-Allow-Origin>https://localhost:9443,http://localhost:9763</Access-Control-Allow-Origin>
 
@@ -533,5 +532,55 @@
 	<Access-Control-Allow-Methods>GET,POST,PUT,DELETE,OPTIONS</Access-Control-Allow-Methods>
 
     </CORSConfiguration>
+
+    <!-- 
+	AppManager uses SAML SSO as default authentication mechanism for allowing web application access through gateway.
+	Following configuration defines the details of the IDP that use as SSO provider.
+    -->
+    <SSOConfiguration>
+        <!-- URL of the IDP use for SSO -->
+	    <IdentityProviderUrl>https://localhost:9443/samlsso</IdentityProviderUrl>
+
+        <Configurators>
+            <Configurator>
+                <name>wso2is</name>
+                <version>5.0.0</version>
+                <providerClass>org.wso2.carbon.appmgt.impl.idp.sso.configurator.IS500SAMLSSOConfigurator</providerClass>
+                <parameters>
+                    <providerURL>https://localhost:9443</providerURL>
+                    <username>admin</username>
+                    <password>admin</password>
+                </parameters>
+           </Configurator>                 
+           <!--Configurator>
+                <name>wso2is</name>
+                <version>4.6.0</version>
+                <providerClass>org.wso2.carbon.appmgt.impl.idp.sso.configurator.IS460SAMLSSOConfigurator</providerClass>
+                <parameters>
+                    <providerURL>https://localhost:9445</providerURL>
+                    <username>admin</username>
+                    <password>admin</password>
+                </parameters>
+           </Configurator-->          
+        </Configurators>
+
+    </SSOConfiguration>
+
+    <!--
+	Configuration to handle entitlement policy saving, policy decision etc.. for resources.	
+    -->
+    <EntitlementServiceConfiguration>
+
+	<!-- Only external WSO2 IS is supported as of now. -->
+	<ServiceType>external</ServiceType>
+
+	<Parameters>
+		<ServerUrl>https://localhost:9443</ServerUrl>
+		<Username>admin</Username>
+		<Password>admin</Password>
+	</Parameters>
+
+    </EntitlementServiceConfiguration>
+
 </APIManager>
 

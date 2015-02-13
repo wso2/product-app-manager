@@ -59,8 +59,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.*;
 import java.rmi.RemoteException;
 import java.util.*;
 
@@ -765,6 +764,37 @@ public abstract class APPManagerIntegrationTest {
 
     protected String getTestApplicationPublisherServerURLHttp() {
         return ProductUrlGeneratorUtil.prop.get("appm.test.application.publisher.http.url").toString();
+    }
+
+    protected String getNetworkIPAddress() {
+        String networkIpAddress = null;
+        try {
+            String localhost = InetAddress.getLocalHost().getHostAddress();
+            Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
+            while (e.hasMoreElements()) {
+                NetworkInterface ni = (NetworkInterface) e.nextElement();
+                if (ni.isLoopback())
+                    continue;
+                if (ni.isPointToPoint())
+                    continue;
+                Enumeration<InetAddress> addresses = ni.getInetAddresses();
+                while (addresses.hasMoreElements()) {
+                    InetAddress address = (InetAddress) addresses.nextElement();
+                    if (address instanceof Inet4Address) {
+                        String ip = address.getHostAddress();
+                        if (!ip.equals(localhost)) {
+                            networkIpAddress = ip;
+                        }
+
+                    }
+                }
+            }
+        } catch (UnknownHostException e) {
+            log.error("Error occurred due to an unknown host.", e);
+        } catch (SocketException e) {
+            log.error("Error occurred with Socket connections", e);
+        }
+        return networkIpAddress;
     }
 
     protected AppCreateRequest createSingleApp(String appName, String version, String transport,

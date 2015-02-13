@@ -50,10 +50,12 @@ var getAPISubscription = function (app, applicationName, subscriptionType, usern
             log = new Log(),
             store = jagg.module("manager").getAPIStoreObj();
     try {
-        subscription = store.getSubscription(app.provider, app.name, app.version, applicationName, subscriptionType, username);
-        if (log.isDebugEnabled()) {
-            log.debug("getSubscription : " + stringify(subscription));
-        }
+	if (username) {
+		subscription = store.getSubscription(app.provider, app.name, app.version, applicationName, subscriptionType, username);
+		if (log.isDebugEnabled()) {
+		    log.debug("getSubscription : " + stringify(subscription));
+		}
+	}
         return {
             error:false,
             subscription:subscription
