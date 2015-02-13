@@ -36,8 +36,11 @@ function drawGraphs() {
 var drawAPIUsageByUser = function(response) {
 
     var parsedResponse = JSON.parse(response);
+
     length=parsedResponse.length;
     $("#tooltipTable").find("tr:gt(0)").remove();
+    $("#tableContainer").empty();
+    $('#placeholder3').empty();
     var data = [];
     for ( var i = 0; i < parsedResponse.length; i++) {
 
@@ -72,7 +75,7 @@ var drawAPIUsageByUser = function(response) {
             });
 		}
 	}
-    var svg = dimple.newSvg(".graph-container", 1000, 700);
+    var svg = dimple.newSvg("#placeholder3", 1000, 500);
     chart = new dimple.chart(svg, data);
     chart.setBounds("10%", "10%", "75%", "60%");
     x = chart.addCategoryAxis("x", "API");
@@ -87,6 +90,7 @@ var drawAPIUsageByUser = function(response) {
 
     var filterValues = dimple.getUniqueValues(data, "API");
 
+
     var $dataTable =$('<table class="display" width="100%" cellspacing="0" id="apiSelectTable"></table>');
     $dataTable.append($('<thead class="tableHead"><tr>'+
                             '<th width="10%"></th>'+
@@ -95,7 +99,7 @@ var drawAPIUsageByUser = function(response) {
     for(var n=0;n<filterValues.length;n++){
 
         $dataTable.append($('<tr><td >'
-                                +'<input name="item_checkbox'+n+'" onchange="myFunction(this);" checked   id='+n+'  type="checkbox"  data-item='+filterValues[n] +' class="ccf"/>'
+                                +'<input name="item_checkbox'+n+'" checked   id='+n+'  type="checkbox"  data-item='+filterValues[n] +' class="ccf"/>'
                                 +'</td>'
                                 +'<td style="text-align:left;"><label for='+n+'>'+filterValues[n] +'</label></td></tr>'));
 
@@ -202,7 +206,7 @@ var drawAPIUsageByUser = function(response) {
 }
 
 var onDateSelected = function() {
-    $('.graph-container').empty();
+    $('#placeholder3').empty();
     drawGraphs();
     data = [];
 }
