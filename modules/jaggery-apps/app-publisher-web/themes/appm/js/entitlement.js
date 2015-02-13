@@ -7,13 +7,24 @@ var editedpolicyPartialId = 0;
 var saveAndClose = false;
 
 var tags =[];
-function showEntitlementError(text){
-    $('#notification-text').show();
+function showEntitlementNotification(text, alertType) {
+    var alerttype = alertType,
+        alerttext = $('#notification-text');
+
+    if (alerttext.hasClass('alert-danger')) {
+        alerttext.removeClass('alert-danger');
+    } else {
+        alerttext.removeClass('alert-success');
+    }
+
+    alerttext.addClass(alerttype);
+    alerttext.show();
     $('#notification-text-data').html(text);
 }
-function hideEntitlementError() {
+function hideEntitlementNotification() {
     $('#notification-text').hide();
 }
+
 function completeAfter(cm, pred) {
     var cur = cm.getCursor();
     if (!pred || pred()) setTimeout(function() {
@@ -65,7 +76,7 @@ $(document).on("click", "#btn-policy-save", function () {
     var policyName = $('#entitlement-policy-editor #policy-name').val();
 
     if(policyContent == "" || policyName == ""){
-        showEntitlementError("fields cannot be blank");
+        showEntitlementNotification("fields cannot be blank", "alert-danger");
         return;
     }
     validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation, displayValidationRequestException);
@@ -80,7 +91,7 @@ $(document).on("click", "#btn-policy-partial-validate", function () {
     var policyName = $('#entitlement-policy-editor #policy-name').val();
 
     if(policyContent == "" || policyName == ""){
-        showEntitlementError("fields cannot be blank");
+        showEntitlementNotification("fields cannot be blank", "alert-danger");
         return;
     }
 
@@ -98,7 +109,7 @@ $(document).on("click", "#btn-policy-save-and-close", function () {
     var policyName = $('#entitlement-policy-editor #policy-name').val();
 
     if(policyContent == "" || policyName == ""){
-        showEntitlementError("fields cannot be blank");
+        showEntitlementNotification("fields cannot be blank", "alert-danger");
         return;
     }
 
@@ -118,38 +129,28 @@ $(document).on("click", ".mclose-button", function () {
 });
 
 
-function continueAddingEntitlementPolicyPartialAfterValidation(response){
-
+function continueAddingEntitlementPolicyPartialAfterValidation(response) {
     var response = JSON.parse(response);
-
-    if(response.success){
+    if (response.success) {
         response = response.response; // Abusing the name response :-P
-
-        if(response.isValid){
+        if (response.isValid) {
             savePolicyPartial();
-
-            showEntitlementError("Policy is valid.");
-
+            showEntitlementNotification("Policy is valid.", "alert-success");
             $('.wr-overview-policies').css('display', 'block');
-            $('.wr-overview-policies').parent().find('i').removeClass('icon-chevron-sign-right');
-            $('.wr-overview-policies').parent().find('i').addClass('icon-chevron-sign-down');
+          //  $('.wr-overview-policies').parent().find('i').removeClass('icon-chevron-sign-right');
+          //  $('.wr-overview-policies').parent().find('i').addClass('icon-chevron-sign-down');
 
-
-            if(saveAndClose){
+            if (saveAndClose) {
                 $("#entitlement-policy-editor").modal('hide');
-                // alert("hi");
             }
-
             return;
-        }else{
-            showEntitlementError("Policy is not valid.");
+        } else {
+            showEntitlementNotification("Policy is not valid.", "alert-danger");
         }
 
-    }else{
-        showEntitlementError("Could not complete validation.");
+    } else {
+        showEntitlementNotification("Could not complete validation.", "alert-danger");
     }
-
-
 }
 
 function shouldCloseAfterSave(){
@@ -414,24 +415,21 @@ function getEntitlementPolicyPartial(policyPartialId){
 
 }
 
-function getApplicationPolicyPartialList(applicationId){
+function getApplicationPolicyPartialList(applicationId) {
+        $.ajax({
+            url: '/publisher/api/entitlement/policy/partialList/' + applicationId,
+            type: 'GET',
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function (response) {
 
+                showAlert(response)
 
-
-    $.ajax({
-        url: '/publisher/api/entitlement/policy/partialList/'+applicationId,
-        type: 'GET',
-        contentType: 'application/json',
-        dataType: 'json',
-        success: function(response) {
-
-            showAlert(response)
-
-        },
-        error: function(response) {
-            showAlert('Error occured while fetching entitlement policy content', 'error');
-        }
-    });
+            },
+            error: function (response) {
+                showAlert('Error occured while fetching entitlement policy content', 'error');
+            }
+        });
 }
 
 function deleteEntitlementPolicyPartial(policyPartialId){
@@ -496,7 +494,7 @@ function updatePolicyPartial() {
     var policyPartialIndexArray = [];
     var provider = $('#overview_provider').val();
 
-    var policyPartialDropdownText = "";
+    var policyPartialDropdownText, policyGroupPartialText = "";
 
     policyPartialDropdownText = ("\
                <li><table> \
@@ -523,8 +521,18 @@ function updatePolicyPartial() {
             policyPartialDropdownText += ("\
                <tr style='padding-bottom: 20px'> \
                <td style='padding-left:10px; width:80px'>" + obj.policyPartialName + "</td> \
-               <td style='padding-left: 30px;'><input class='policy-allow-cb policy-allow-cb"+ obj.id +"' data-policy-id='" + obj.id + "' type='checkbox'></td> \
-               <td style='padding-left: 30px;'> <input class='policy-deny-cb policy-deny-cb"+ obj.id +"' data-policy-id='" + obj.id + "'  type='checkbox'></td> \
+               <td style='padding-left: 30px;'><input class='policy-allow-cb policy-allow-cb' data-policy-id='" + obj.id + "' type='checkbox'></td> \
+               <td style='padding-left: 30px;'> <input class='policy-deny-cb policy-deny-cb' data-policy-id='" + obj.id + "'  type='checkbox'> </td> \
+               </tr>");
+
+            /*
+             * Add XACML Policies to Policy Group panel
+             */
+            policyGroupPartialText += ("\
+                <tr style='padding-bottom: 20px'> \
+                <td style='padding-left:10px; width:80px'>" + obj.policyPartialName + "</td> \
+                <td style='padding-left: 30px;'><input class='policy-opt-val policy-allow-cb' data-policy-id='" + obj.id + "' type='checkbox'></td> \
+                <td style='padding-left: 30px;'> <input class='policy-opt-val policy-deny-cb' data-policy-id='" + obj.id + "'  type='checkbox'> </td> \
                 </tr>");
 
             policyPartialIndexArray.push(obj.id);
@@ -532,12 +540,12 @@ function updatePolicyPartial() {
         }
 
 
-
-
     });
 
     policyPartialDropdownText += ("</table></li>");
     $(".policy-partial-dropdown").html(policyPartialDropdownText);
+    //update Policy Group panel
+    $(".xacml-policy-group").find('tbody').html(policyGroupPartialText);
 
 
 
@@ -597,7 +605,7 @@ $(document).on("click", "#btn-add-xacml-policy", function () {
     getXacmlPolicyTemplate();
 
     $('#entitlement-policy-editor #policy-name').val("");
-    hideEntitlementError();
+    hideEntitlementNotification();
 
 });
 
@@ -626,7 +634,7 @@ $(document).on("click", ".policy-edit-button", function () {
     var policyId = $(this).data("policyId");
     editor.setValue("");
     $('#entitlement-policy-editor #policy-name').val("");
-    hideEntitlementError();
+    hideEntitlementNotification();
 
 
     $.each(policyPartialsArray, function (index, obj) {
@@ -661,7 +669,7 @@ $(document).on("click", ".policy-edit-button", function () {
 
 
 $(document).on("click", ".policy-delete-button", function () {
-4
+
     var policyName = $(this).data("policyName");
     var policyId = $(this).data("policyId");
     var policyPartial;

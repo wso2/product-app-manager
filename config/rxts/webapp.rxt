@@ -116,8 +116,13 @@
 		<field type="text">
 			<name>Entitlement Policy Partial Mappings0</name>
 		</field>
-
-
+		<field type="options">
+        	<name label="Policy Group">policyGroupId0</name>
+        	<values>
+            	<value>False</value>
+            	<value>True</value>
+        	</values>
+        </field>
 
             <field type="text">
                 <name>URL Pattern1</name>
@@ -154,6 +159,13 @@
                 </field>
 		<field type="text">
                         <name>Entitlement Policy Partial Mappings1</name>
+                </field>
+		<field type="options">
+                	<name label="Policy Group">policyGroupId1</name>
+                	<values>
+                    	<value>False</value>
+                    	<value>True</value>
+                	</values>
                 </field>
 
              <field type="text">
@@ -192,7 +204,13 @@
 		<field type="text">
                         <name>Entitlement Policy Partial Mappings2</name>
                 </field>
-
+		<field type="options">
+                	<name label="Policy Group">policyGroupId2</name>
+                	<values>
+                    	<value>False</value>
+                    	<value>True</value>
+                	</values>
+                </field>
 
              <field type="text">
                 <name>URL Pattern3</name>
@@ -231,6 +249,13 @@
 		<field type="text">
                         <name>Entitlement Policy Partial Mappings3</name>
                 </field>
+		<field type="options">
+                	<name label="Policy Group">policyGroupId3</name>
+                	<values>
+                    	<value>False</value>
+                    	<value>True</value>
+                	</values>
+                </field>
 
              <field type="text">
                 <name>URL Pattern4</name>
@@ -268,6 +293,13 @@
 		<field type="text">
                         <name>Entitlement Policy Partial Mappings4</name>
                 </field>
+	<field type="options">
+            	<name label="Policy Group">policyGroupId4</name>
+            	<values>
+                	<value>False</value>
+                	<value>True</value>
+            	</values>
+            </field>
 
 	<field type="text">
                 <name>URL Pattern5</name>
@@ -305,6 +337,13 @@
 		<field type="text">
                         <name>Entitlement Policy Partial Mappings5</name>
                 </field>
+	<field type="options">
+            	<name label="Policy Group">policyGroupId5</name>
+            	<values>
+                	<value>False</value>
+                	<value>True</value>
+            	</values>
+            </field>
 
 	<field type="text">
                 <name>URL Pattern6</name>
@@ -342,6 +381,13 @@
 		<field type="text">
                         <name>Entitlement Policy Partial Mappings6</name>
                 </field>
+<field type="options">
+        	<name label="Policy Group">policyGroupId6</name>
+        	<values>
+            	<value>False</value>
+            	<value>True</value>
+        	</values>
+        </field>
 
 	<field type="text">
                 <name>URL Pattern7</name>
@@ -379,6 +425,13 @@
 		<field type="text">
                         <name>Entitlement Policy Partial Mappings7</name>
                 </field>
+	<field type="options">
+            	<name label="Policy Group">policyGroupId7</name>
+            	<values>
+                	<value>False</value>
+                	<value>True</value>
+            	</values>
+            </field>
 
     <field type="text">
                 <name>URL Pattern8</name>
@@ -416,6 +469,13 @@
         <field type="text">
                         <name>Entitlement Policy Partial Mappings8</name>
                 </field>
+	<field type="options">
+            	<name label="Policy Group">policyGroupId8</name>
+            	<values>
+                	<value>False</value>
+                	<value>True</value>
+            	</values>
+            </field>
 
     <field type="text">
                 <name>URL Pattern9</name>
@@ -453,7 +513,13 @@
         <field type="text">
                         <name>Entitlement Policy Partial Mappings9</name>
                 </field>
-
+	<field type="options">
+            	<name label="Policy Group">policyGroupId9</name>
+            	<values>
+                	<value>False</value>
+                	<value>True</value>
+            	</values>
+            </field>
 
     <field type="text">
                 <name>URL Pattern10</name>
@@ -491,6 +557,13 @@
         <field type="text">
                         <name>Entitlement Policy Partial Mappings10</name>
                 </field>
+	<field type="options">
+            	<name label="Policy Group">policyGroupId10</name>
+            	<values>
+                	<value>False</value>
+                	<value>True</value>
+            	</values>
+            </field>
 
     <field type="text">
                 <name>URL Pattern11</name>
@@ -528,7 +601,13 @@
         <field type="text">
                         <name>Entitlement Policy Partial Mappings11</name>
                 </field>
-
+	<field type="options">
+            	<name label="Policy Group">policyGroupId11</name>
+            	<values>
+                	<value>False</value>
+                	<value>True</value>
+            	</values>
+            </field>
 
     <field type="text">
                 <name>URL Pattern12</name>
@@ -566,6 +645,13 @@
         <field type="text">
                         <name>Entitlement Policy Partial Mappings12</name>
                 </field>
+	<field type="options">
+            	<name label="Policy Group">policyGroupId12</name>
+            	<values>
+                	<value>False</value>
+                	<value>True</value>
+            	</values>
+            </field>
 
     <field type="text">
                 <name>URL Pattern13</name>
@@ -603,6 +689,13 @@
         <field type="text">
                         <name>Entitlement Policy Partial Mappings13</name>
                 </field>
+	<field type="options">
+            	<name label="Policy Group">policyGroupId13</name>
+            	<values>
+                	<value>False</value>
+                	<value>True</value>
+            	</values>
+            </field>
 
     <field type="text">
                 <name>URL Pattern14</name>
@@ -640,7 +733,13 @@
         <field type="text">
                         <name>Entitlement Policy Partial Mappings14</name>
                 </field>
-
+	<field type="options">
+            	<name label="Policy Group">policyGroupId14</name>
+            	<values>
+                	<value>False</value>
+                	<value>True</value>
+            	</values>
+            </field>
 
     <field type="text">
                 <name>URL Pattern15</name>
@@ -678,7 +777,13 @@
         <field type="text">
                         <name>Entitlement Policy Partial Mappings15</name>
                 </field>
-
+	<field type="options">
+            	<name label="Policy Group">policyGroupId15</name>
+            	<values>
+                	<value>False</value>
+                	<value>True</value>
+            	</values>
+            </field>
 
     <field type="text">
                 <name>URL Pattern16</name>
@@ -716,7 +821,13 @@
         <field type="text">
                         <name>Entitlement Policy Partial Mappings16</name>
                 </field>
-
+	<field type="options">
+            	<name label="Policy Group">policyGroupId16</name>
+            	<values>
+                	<value>False</value>
+                	<value>True</value>
+            	</values>
+            </field>
 
     <field type="text">
                 <name>URL Pattern17</name>
@@ -754,7 +865,13 @@
         <field type="text">
                         <name>Entitlement Policy Partial Mappings17</name>
                 </field>
-
+		<field type="options">
+                	<name label="Policy Group">policyGroupId17</name>
+                	<values>
+                    	<value>False</value>
+                    	<value>True</value>
+                	</values>
+                </field>
 
     <field type="text">
                 <name>URL Pattern18</name>
@@ -792,6 +909,13 @@
         <field type="text">
                         <name>Entitlement Policy Partial Mappings18</name>
                 </field>
+	<field type="options">
+            	<name label="Policy Group">policyGroupId18</name>
+            	<values>
+                	<value>False</value>
+                	<value>True</value>
+            	</values>
+            </field>
 
     <field type="text">
                 <name>URL Pattern19</name>
@@ -829,6 +953,13 @@
         <field type="text">
                         <name>Entitlement Policy Partial Mappings19</name>
                 </field>
+	<field type="options">
+            	<name label="Policy Group">policyGroupId19</name>
+            	<values>
+                	<value>False</value>
+                	<value>True</value>
+            	</values>
+            </field>
 
     <field type="text">
                 <name>URL Pattern20</name>
@@ -866,6 +997,13 @@
         <field type="text">
                         <name>Entitlement Policy Partial Mappings20</name>
                 </field>
+<field type="options">
+        	<name label="Policy Group">policyGroupId20</name>
+        	<values>
+            	<value>False</value>
+            	<value>True</value>
+        	</values>
+        </field>
 
         </table>
 
