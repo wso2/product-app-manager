@@ -227,27 +227,6 @@
 }
 
 
-#rangeSliderWrapper{
-    height: 18px;
-    position: relative;
-    border: 2px solid #C8C8C8 !important;
-    margin-top:18px;
-}
-#rangeSliderWrapper #rangeSlider{
-    position: relative;
-    top: 40px;
-    width:96%;
-    left:10px;
-
-}
-
-#dateRangePickerContainer{
-    float:right;
-    margin-top:-16px;
-}
-
-
-
 
 
 

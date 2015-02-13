@@ -1439,3 +1439,36 @@ h2.first-h2{
 	align:center;
 	text-align:center;
 }
+
+
+
+#rangeSliderWrapper{
+    height: 18px;
+    position: relative;
+    border: 1px solid #C8C8C8 !important;
+    margin-top:18px;
+}
+#rangeSliderWrapper #rangeSlider{
+    position: relative;
+    top: 40px;
+    width:96%;
+    left:10px;
+
+}
+
+#dateRangePickerContainer{
+    float:right;
+    margin-top:-16px;
+}
+
+.date-picker-wrapper > .footer {
+    display: none;
+}
+
+input.apply-btn {
+    height: 32px;
+}
+
+.left-nav {
+    margin-top: 18px;
+}
