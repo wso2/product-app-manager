@@ -17,6 +17,25 @@ function drawGraphs() {
     var to = dateRange.split('to')[1].trim()+":00";
     var userParsedResponse;
 
+     $.ajax({
+            async : false,
+            url : '/publisher/api/assets/' + operation + '/' + type
+                + '/getUsageByContext/',
+            type : 'POST',
+            data : {
+                'startDate' : from,
+                'endDate' : to
+            },
+            success : function(response) {
+                   usageByContext= JSON.parse(response);
+
+            },
+            error : function(response) {
+                alert('Error occured at statistics graph rendering');
+            }
+        });
+
+
 
     $.ajax({
         async : false,
@@ -28,30 +47,14 @@ function drawGraphs() {
             'endDate' : to
         },
         success : function(response) {
-            drawSubscribedAPIsByUsers(response);
+
+            drawSubscribedAPIsByUsers(response,usageByContext);
         },
         error : function(response) {
 
         }
     });
-     $.ajax({
-                async : false,
-                url : '/publisher/api/assets/' + operation + '/' + type
-                    + '/getUsageByContext/',
-                type : 'POST',
-                data : {
-                    'startDate' : from,
-                    'endDate' : to
-                },
-                success : function(response) {
-                      usageByContext= response;
 
-
-                },
-                error : function(response) {
-                    alert('Error occured at statistics graph rendering');
-                }
-            });
 
             $('.btn-remove').on('click', function() {
                     $(this).parents('.graph-maximized').removeClass('graph-maximized');
@@ -60,7 +63,8 @@ function drawGraphs() {
 
 }
 
-var drawSubscribedAPIsByUsers = function(response) {
+var drawSubscribedAPIsByUsers = function(response,usageByContext) {
+
     var parsedResponse = JSON.parse(response);
 
     var substringMatcher = function (strs) {
@@ -121,8 +125,7 @@ var drawSubscribedAPIsByUsers = function(response) {
     	                                + '<th >History</th>'
    	                + '</tr></thead>'));
 
-        //$('#placeholder2').remove();
-        //$('#webAppTable2').find("tr:gt(0)").remove();
+
         var detailNumber = 0;
         var rawNumber = 0;
         for ( var i = 0; i < parsedResponse.length; i++) {
@@ -164,7 +167,7 @@ var drawSubscribedAPIsByUsers = function(response) {
 
     //ajax call to get hits
     $("#placeholder2").on("click", ".trigger-ajax",function(){
-    alert(usageByContext)
+
       $(this).parents('.widget').addClass('graph-maximized');
       $('.backdrop').show();
       $('#placeholder2').hide();
@@ -189,10 +192,11 @@ var drawSubscribedAPIsByUsers = function(response) {
         }
 
         var data =[]
+                for ( var i = 0; i < usageByContext.length; i++) {
 
-        for ( var i = 0; i < usageByContext.length; i++) {
 
                             if( usageByContext[i][0] ==  $("#search").val()){
+
 
                                 for ( var j = 0; j < usageByContext[i][1].length; j++) {
                                     if( usageByContext[i][1][j][0] ==  getCell('webApp', ''+test+'').html()){

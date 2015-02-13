@@ -3,6 +3,7 @@ $(function () {
 
 });
 
+
 function drawGraphs() {
 
     var url = window.location.pathname;
@@ -35,7 +36,7 @@ function drawGraphs() {
 }
 
 var drawAPIResponseTime = function(response) {
-
+    alert(response)
     var parsedResponse = JSON.parse(response);
 
     $('').append(

@@ -34,7 +34,6 @@ function drawGraphs() {
 }
 
 var drawAPIUsageByUser = function(response) {
-
     var parsedResponse = JSON.parse(response);
     length=parsedResponse.length;
     $("#tooltipTable").find("tr:gt(0)").remove();
@@ -46,10 +45,10 @@ var drawAPIUsageByUser = function(response) {
         var app ='';
 
 		for ( var j = 0; j < parsedResponse[i][1].length; j++) {
+		var newArr = [],found, x, y;
             app =(parsedResponse[i][0]);
-            //remove white spaces in app name
-            app = app.replace(/\s+/g, '');
 
+            app = app.replace(/\s+/g, '');
             if (j != 0) {
                 statement = statement + '<tr>'
             }
@@ -57,13 +56,14 @@ var drawAPIUsageByUser = function(response) {
             var maximumUsers = parsedResponse[i][1][j][1].length;
 
 
-            var newArr = [],
-            origLen = parsedResponse[i][1][j][1].length,
-            found, x, y;
+
+            var origLen = parsedResponse[i][1][j][1].length,
+
             maxrowspan = parsedResponse[i][1][j][1].length;
             allcount = 0;
 
             for ( var k = 0; k < maximumUsers; k++) {
+
                 found = undefined;
                 for (y = 0; y < newArr.length; y++) {
 
@@ -80,13 +80,15 @@ var drawAPIUsageByUser = function(response) {
                 allcount = Number(allcount)+Number(parsedResponse[i][1][j][1][k][1]);
 
             }
-            data.push({
-                API_name:app,
-                Subscriber_Count:newArr.length,
-                Hits:allcount,
-                API:app
-            });
+
+
 		}
+		data.push({
+                        API_name:app,
+                        Subscriber_Count:newArr.length,
+                        Hits:allcount,
+                        API:app
+                    });
 	}
     var svg = dimple.newSvg(".graph-container", 1000, 700);
     chart = new dimple.chart(svg, data);
