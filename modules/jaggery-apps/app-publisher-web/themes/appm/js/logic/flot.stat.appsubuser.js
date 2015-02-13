@@ -109,16 +109,22 @@ var drawSubscribedAPIsByUsers = function(response,usageByContext) {
     rawStatement='';
     /* Overall Web Application Usage Graph */
     $( "#target" ).click(function() {
+        getWebAppUsage();
+    });
 
-    $('div#webAppTable2_wrapper.dataTables_wrapper.no-footer').remove();
+    /**
+     * Get Web Application Usage
+     */
+    function getWebAppUsage(){
+        $('div#webAppTable2_wrapper.dataTables_wrapper.no-footer').remove();
 
-    	var $dataTable =$('<table class="display" width="100%" cellspacing="0" id="webAppTable2" ></table>');
-    	$dataTable.append($('<thead class="tableHead"><tr >'
-    	                                + '<th id ="webApp">Web App</th>'
-    	                                + '<th width="10%">App Version</th>'
-    	                                + '<th width="40%">Subscribe Date</th>'
-    	                                + '<th >History</th>'
-   	                + '</tr></thead>'));
+        var $dataTable =$('<table class="display" width="100%" cellspacing="0" id="webAppTable2" ></table>');
+        $dataTable.append($('<thead class="tableHead"><tr >'
+            + '<th id ="webApp">Web App</th>'
+            + '<th width="10%">App Version</th>'
+            + '<th width="40%">Subscribe Date</th>'
+            + '<th >History</th>'
+            + '</tr></thead>'));
 
 
         var detailNumber = 0;
@@ -131,12 +137,12 @@ var drawSubscribedAPIsByUsers = function(response,usageByContext) {
                     numOfVersion = parsedResponse[i][1][j][1].length;
 
                     for( var t = 0; t < numOfVersion; t++) {
-                         $dataTable.append(
+                        $dataTable.append(
                             $('<tr id='+rawNumber+'><td id="appName">' +parsedResponse[i][1][j][0] + '</td><td id="appVersion">' + parsedResponse[i][1][j][1][t][0]
-                            + '</td><td>' + parsedResponse[i][1][j][1][t][1] +'</td><td><a  href="#" class="trigger-ajax" id='+detailNumber+'>View History</a>'
-                            + '</td></tr>'));
-                            detailNumber++;
-                            rawNumber++;
+                                + '</td><td>' + parsedResponse[i][1][j][1][t][1] +'</td><td><a  href="#" class="trigger-ajax" id='+detailNumber+'>View History</a>'
+                                + '</td></tr>'));
+                        detailNumber++;
+                        rawNumber++;
                     }
                 }
             }
@@ -144,17 +150,19 @@ var drawSubscribedAPIsByUsers = function(response,usageByContext) {
 
         if (parsedResponse.length == 0) {
 
-                   $('#webAppTable2').hide();
-                   $('#placeholder2').append($('<span class="label label-info">No data available</span>'));
+            $('#webAppTable2').hide();
+            $('#placeholder2').append($('<span class="label label-info">No data available</span>'));
 
         }else{
-                   $('#placeholder2').append($dataTable);
-                   $('#flot-placeholder').append($('<div id="lineWithFocusChart"><svg style="height:450px;"></svg></div>'));
-                   $('#placeholder2').show();
-                   $('#webAppTable2').dataTable();
+            $('#placeholder2').append($dataTable);
+            $('#flot-placeholder').append($('<div id="lineWithFocusChart"><svg style="height:450px;"></svg></div>'));
+            $('#placeholder2').show();
+            $('#webAppTable2').dataTable();
         }
+    }
 
-    });
+    //init deafult
+    getWebAppUsage();
 
     //ajax call to get hits
     $("#placeholder2").on("click", ".trigger-ajax",function(){
@@ -183,7 +191,7 @@ var drawSubscribedAPIsByUsers = function(response,usageByContext) {
         var data =[]
 
         for ( var i = 0; i < usageByContext.length; i++) {
-            if (usageByContext[i][0] == $("#search").val()) {
+            if (usageByContext[i][0] == $("#search").val() || 'admin') {
                 for (var j = 0; j < usageByContext[i][1].length; j++) {
                     if (usageByContext[i][1][j][0] == getCell('webApp', '' + test + '').html()) {
                         numOfVersion = usageByContext[i][1][j][1].length;
