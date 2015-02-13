@@ -1,3 +1,4 @@
+var usageByContext;
 $(function () {
     drawGraphs();
 });
@@ -13,7 +14,26 @@ function drawGraphs() {
     var from = dateRange.split('to')[0].trim()+":00";
     var to = dateRange.split('to')[1].trim()+":00";
     var userParsedResponse;
-    var usageByContext;
+
+     $.ajax({
+            async : false,
+            url : '/publisher/api/assets/' + operation + '/' + type
+                + '/getUsageByContext/',
+            type : 'POST',
+            data : {
+                'startDate' : from,
+                'endDate' : to
+            },
+            success : function(response) {
+                   usageByContext= JSON.parse(response);
+
+            },
+            error : function(response) {
+                alert('Error occured at statistics graph rendering');
+            }
+        });
+
+
 
     $.ajax({
         async : false,
@@ -25,29 +45,14 @@ function drawGraphs() {
             'endDate' : to
         },
         success : function(response) {
-            drawSubscribedAPIsByUsers(response);
+
+            drawSubscribedAPIsByUsers(response,usageByContext);
         },
         error : function(response) {
 
         }
     });
-     $.ajax({
-                async : false,
-                url : '/publisher/api/assets/' + operation + '/' + type
-                    + '/getUsageByContext/',
-                type : 'POST',
-                data : {
-                    'startDate' : from,
-                    'endDate' : to
-                },
-                success : function(response) {
-                     var usageByContext= JSON.parse(response);
 
-                },
-                error : function(response) {
-                    alert('Error occured at statistics graph rendering');
-                }
-            });
 
             $('.btn-remove').on('click', function() {
                     $(this).parents('.graph-maximized').removeClass('graph-maximized');
@@ -55,7 +60,9 @@ function drawGraphs() {
                 });
 }
 
-var drawSubscribedAPIsByUsers = function(response) {
+
+var drawSubscribedAPIsByUsers = function(response,usageByContext) {
+
     var parsedResponse = JSON.parse(response);
 
     var substringMatcher = function (strs) {
@@ -119,6 +126,7 @@ var drawSubscribedAPIsByUsers = function(response) {
         for ( var i = 0; i < parsedResponse.length; i++) {
 
             if( parsedResponse[i][0] ==  $("#search").val()){
+
                 for ( var j = 0; j < parsedResponse[i][1].length; j++) {
                     numOfVersion = parsedResponse[i][1][j][1].length;
 
@@ -150,6 +158,7 @@ var drawSubscribedAPIsByUsers = function(response) {
 
     //ajax call to get hits
     $("#placeholder2").on("click", ".trigger-ajax",function(){
+
       $(this).parents('.widget').addClass('graph-maximized');
       $('.backdrop').show();
       $('#placeholder2').hide();
@@ -259,10 +268,7 @@ var drawSubscribedAPIsByUsers = function(response) {
                                     }
                                 }
                             }
-                        }
-                    }
-                }
-        }
+                            }
     });
 }
 

@@ -52,9 +52,7 @@ function drawGraphs() {
 }
 
 var drawAPIUsageByPage = function(response) {
-
 	var parsedResponse = JSON.parse(response);
-
 	var data = parsedResponse.totalPageCount;
 	var dataset = [ {
 		data : data,

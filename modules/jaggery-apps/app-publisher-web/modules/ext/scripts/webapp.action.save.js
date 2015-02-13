@@ -224,11 +224,11 @@ var module = function () {
                 return utility.assertEqual(adapter, predicate);
             }, null);
 
-            log.debug('Locating saved asset: ' + stringify(artifact) + ' to get the asset id.');
+            log.info('Locating saved asset: ' + stringify(artifact) + ' to get the asset id.');
 
             var id = artifact[0].id || ' ';
 
-            log.debug('Setting id of model to ' + id);
+            log.info('Setting id of model to ' + id);
 
             //adding asset to social
             addToSocialCache(id, template.shortName);

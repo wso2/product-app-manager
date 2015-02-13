@@ -3,6 +3,7 @@ $(function () {
 
 });
 
+
 function drawGraphs() {
 
     var url = window.location.pathname;

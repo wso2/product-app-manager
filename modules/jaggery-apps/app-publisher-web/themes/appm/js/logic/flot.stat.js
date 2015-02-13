@@ -1,5 +1,6 @@
 $(function () {
     drawGraphs();
+
 });
 
 function drawGraphs() {
@@ -26,6 +27,7 @@ function drawGraphs() {
         },
         success : function(response) {
             drawSubscriberCountByAPIs(response);
+
         },
         error : function(response) {
             alert('Error occured at statistics graph rendering');
@@ -38,6 +40,7 @@ var drawSubscriberCountByAPIs = function(response) {
 $('#pie-chart').empty();
 
     var parsedResponse = JSON.parse(response);
+
     if(parsedResponse.length>0){
         var chartColorScheme=[];
         var colorRangeArray=[];
@@ -80,7 +83,7 @@ $('#pie-chart').empty();
                 otherCount += Number(parsedResponse[i][1][j][1]);
                 dataStructure.push({
                     "itemLabel":"V "+parsedResponse[i][1][j][0],
-                    "itemValue":Number(parsedResponse[i][1][j][1]),
+                    "itemValue":Number(parsedResponse[i][1][j][1])
 
                 });
             }

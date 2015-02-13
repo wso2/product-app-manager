@@ -1,29 +1,33 @@
 <%
 
-require('/modules/publisher.js').exec(function(ctx) {
+require('/modules/publisher.js').exec(function (ctx) {
 
-	var config = require('/config/publisher.json');
-	var caramel = require('caramel');
+    var config = require('/config/publisher.json');
+    var caramel = require('caramel');
 
-	var router = require('/modules/router-g.js').router();
-	var routeManager = new router.Router();
+    var router = require('/modules/router-g.js').router();
+    var routeManager = new router.Router();
 
-	var appmgtPublisher = require('appmgtpublisher');
+    var appmgtPublisher = require('appmgtpublisher');
 
-	var log = new Log();
+    var log = new Log();
 
-	routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{type}/{action}/', function (context) {
-		var type = context.params.type;
-		var action = context.params.action;
+    routeManager.register('POST', 'publisher', '/publisher/api/assets/{operation}/{type}/{action}/', function (context) {
+        var action = context.params.action;
 
-		var server  = require('store').server;
-		var username = server.current(session).username;
-		var tenantId = server.current(session).tenantId;
-		var startDate = context.post.startDate;
+        var server = require('store').server;
+        var username = server.current(session).username;
+        var startDate = context.post.startDate;
+        var endDate = context.post.endDate;
 
-		var endDate = context.post.endDate;
+        var appMgtProviderObj = new appmgtPublisher.APIProvider(stringify(username));
 
-		var appMgtProviderObj = new appmgtPublisher.APIProvider(stringify(username));
+        if (endDate != null) {
+           endDate = endDate.trim();
+        }
+
+
+var usage = [];
 
 
 		//manipulate endDate to overcome date-picker issue
@@ -43,6 +47,7 @@ require('/modules/publisher.js').exec(function(ctx) {
                 }
 
 		var usage = [];
+
 		var obj, result;
 
 		/* Web Application Last Access Time Graph */
@@ -109,6 +114,9 @@ require('/modules/publisher.js').exec(function(ctx) {
 
 		} else  if (action == "getSubscribedAPIsByUsers") { /* Overall Web Application Usage Graph */
 			usage = appMgtProviderObj.getSubscribedAPIsByUsers("__all_providers__",startDate,endDate);
+
+
+
 
 			var obj, result;
             var webapps = [];
@@ -178,7 +186,7 @@ require('/modules/publisher.js').exec(function(ctx) {
 
 			usage = parse(stringify(usage));
 
-				
+
 			function orderByCountAscending(a, b) {
 				return b.count - a.count;
 			}
@@ -187,7 +195,7 @@ require('/modules/publisher.js').exec(function(ctx) {
 			var webapps = [];
 
 			for(x=0;x<usage.length;x++){
-					
+
 				var webappIndex = -1;
 				var webappVersionIndex = -1;
 
@@ -223,7 +231,7 @@ require('/modules/publisher.js').exec(function(ctx) {
 						webapps[webappIndex][1][webappVersionIndex][1].push([usage[x].userId,usage[x].count.toString()]);
 					}
 				}
-					
+
 			}
 
 			if (usage == null) {
@@ -260,15 +268,15 @@ require('/modules/publisher.js').exec(function(ctx) {
 
 				var webappIndex = -1;
 				var webappVersionIndex = -1;
-				
+
 				for(y=0;y<webapps.length;y++){
 					if(webapps[y][0] == usage[x].apiName){
-							
+
 						webappIndex = y;
 						break;
 					}
 				}
-			
+
 				if(webappIndex == -1){
 					var page = [];
 					page.push([usage[x].referer,usage[x].serviceTime.toString()]);
@@ -405,6 +413,9 @@ require('/modules/publisher.js').exec(function(ctx) {
 			print(webappObject);
 		}else if (action == "getUsageByContext") {
             usage = appMgtProviderObj.getAPIUsageByUser("__all_providers__",startDate,endDate);
+
+
+
             			usage = parse(stringify(usage));
 
 
@@ -517,23 +528,21 @@ require('/modules/publisher.js').exec(function(ctx) {
                         print(webapps);
 		}
 
-	});
+    });
 
 
+    var securityModule = require('/modules/security/security.manager.js').securityManagementModule();
+    var sm = securityModule.cached();
 
+    //This will short circuit the handling of the requests
+    var passed = sm.check(session, function () {
+        response.sendError(401);
+    });
 
-	var securityModule=require('/modules/security/security.manager.js').securityManagementModule();
-	var sm=securityModule.cached();
-
-	//This will short circuit the handling of the requests
-	var passed=sm.check(session,function(){
-		response.sendError(401);
-	});
-
-	//Stop servicing the request if the check failed
-	if(passed){
-		routeManager.handle(request, response);
-	}
+    //Stop servicing the request if the check failed
+    if (passed) {
+        routeManager.handle(request, response);
+    }
 
 }, request, response, session);
 %>

@@ -34,13 +34,9 @@ function drawGraphs() {
 }
 
 var drawAPIUsageByUser = function(response) {
-
     var parsedResponse = JSON.parse(response);
-
     length=parsedResponse.length;
     $("#tooltipTable").find("tr:gt(0)").remove();
-    $("#tableContainer").empty();
-    $('#placeholder3').empty();
     var data = [];
     for ( var i = 0; i < parsedResponse.length; i++) {
 
@@ -49,33 +45,52 @@ var drawAPIUsageByUser = function(response) {
         var app ='';
 
 		for ( var j = 0; j < parsedResponse[i][1].length; j++) {
+		var newArr = [],found, x, y;
             app =(parsedResponse[i][0]);
-            //remove white spaces in app name
-            app = app.replace(/\s+/g, '');
 
+            app = app.replace(/\s+/g, '');
             if (j != 0) {
+                statement = statement + '<tr>'
             }
 
             var maximumUsers = parsedResponse[i][1][j][1].length;
+
+
+
+            var origLen = parsedResponse[i][1][j][1].length,
+
             maxrowspan = parsedResponse[i][1][j][1].length;
             allcount = 0;
 
             for ( var k = 0; k < maximumUsers; k++) {
-                if (k != 0) {
+
+                found = undefined;
+                for (y = 0; y < newArr.length; y++) {
+
+                    if (parsedResponse[i][1][j][1][k][0] === newArr[y]) {
+                        found = true;
+                        break;
+                    }
                 }
+                if (!found) {
+                    newArr.push(parsedResponse[i][1][j][1][k][0]);
+                }
+
                 count++;
                 allcount = Number(allcount)+Number(parsedResponse[i][1][j][1][k][1]);
 
             }
-            data.push({
-                API_name:app,
-                Subscriber_Count:maximumUsers,
-                Hits:allcount,
-                API:app
-            });
+
+
 		}
+		data.push({
+                        API_name:app,
+                        Subscriber_Count:newArr.length,
+                        Hits:allcount,
+                        API:app
+                    });
 	}
-    var svg = dimple.newSvg("#placeholder3", 1000, 500);
+    var svg = dimple.newSvg(".graph-container", 1000, 700);
     chart = new dimple.chart(svg, data);
     chart.setBounds("10%", "10%", "75%", "60%");
     x = chart.addCategoryAxis("x", "API");
@@ -88,64 +103,72 @@ var drawAPIUsageByUser = function(response) {
     s = chart.addSeries("API", dimple.plot.bubble);
     var div = d3.select("body").append("div").attr("class", "toolTip");
 
+
+
+    //new code
     var filterValues = dimple.getUniqueValues(data, "API");
 
-
     var $dataTable =$('<table class="display" width="100%" cellspacing="0" id="apiSelectTable"></table>');
+
     $dataTable.append($('<thead class="tableHead"><tr>'+
                             '<th width="10%"></th>'+
                             '<th>API</th>'+
                         '</tr></thead>'));
     for(var n=0;n<filterValues.length;n++){
 
+
+
         $dataTable.append($('<tr><td >'
-                                +'<input name="item_checkbox'+n+'" checked   id='+n+'  type="checkbox"  data-item='+filterValues[n] +' class="ccf"/>'
+                                +'<input name="item_checkbox'+n+'" onchange="myFunction(this);" checked   id='+n+'  type="checkbox"  data-item='+filterValues[n] +' class="ccf"/>'
                                 +'</td>'
                                 +'<td style="text-align:left;"><label for='+n+'>'+filterValues[n] +'</label></td></tr>'));
 
      }
 
-    if (length == 0) {
+                    if (length == 0) {
 //                        $('.graph-container').html($('<span class="label label-info">No Data available</span>'));
-    } else {
 
-        $('#tableContainer').append($dataTable);
-        $('#tableContainer').show();
-        $('#apiSelectTable').DataTable({
-            retrieve: true,
-            "order": [[ 1, "asc" ]],
-            "aoColumns": [
-            { "bSortable": false },
-            null
-            ],
-        });
+                    } else {
 
-        $('#apiSelectTable').on( 'change', 'input.ccf', function () {
-                  var id =  $(this).attr('value');
-                  var check=$(this).is(':checked');
-                  var temp= $(this).attr('data-item');
+                        $('#tableContainer').append($dataTable);
+                        $('#tableContainer').show();
+                        $('#apiSelectTable').DataTable({
+                            retrieve: true,
+                            "order": [[ 1, "asc" ]],
+                            "aoColumns": [
+                            { "bSortable": false },
+                            null
+                            ],
 
-                  // This indicates whether the item is already visible or not
-                  var hide = false;
-                  var newFilters = [];
+                        });
 
-                     filterValues.forEach(function (f){
-                             if(f==temp){
-                                 hide = true;
-                             }
-                             else{
-                                 newFilters.push(f);
-                             }
-                     });
-                     if (hide) {
-                     } else {
-                               newFilters.push(temp);
-                     }
-                             filterValues = newFilters;
-                             chart.data = dimple.filterData(data, "API", filterValues);
-                             chart.draw();
-        });
-    }
+
+                        $('#apiSelectTable').on( 'change', 'input.ccf', function () {
+                                  var id =  $(this).attr('value');
+                                  var check=$(this).is(':checked');
+                                  var temp= $(this).attr('data-item');
+
+                                  // This indicates whether the item is already visible or not
+                                  var hide = false;
+                                  var newFilters = [];
+
+                                     filterValues.forEach(function (f){
+                                             if(f==temp){
+                                                 hide = true;
+                                             }
+                                             else{
+                                                 newFilters.push(f);
+                                             }
+                                     });
+                                     if (hide) {
+                                     } else {
+                                               newFilters.push(temp);
+                                     }
+                                             filterValues = newFilters;
+                                             chart.data = dimple.filterData(data, "API", filterValues);
+                                             chart.draw();
+                        } );
+                    }
 
 
     s.afterDraw = function (shp, d) {
@@ -193,9 +216,13 @@ var drawAPIUsageByUser = function(response) {
                         var versionName=arr[l].version;
                         var versionCount=arr[l].count;
                         $('#tooltipTable tbody').append('<tr><td>'+versionName+'</td><td>'+versionCount+'</td></tr>');
+
                     }
+
                 }
+
             }
+
         });
         circle.on("mouseout", function(d){
           div.style("display", "none");
@@ -203,10 +230,13 @@ var drawAPIUsageByUser = function(response) {
 
     };
     chart.draw();
+
+
+
 }
 
 var onDateSelected = function() {
-    $('#placeholder3').empty();
+    $('.graph-container').empty();
     drawGraphs();
     data = [];
 }
@@ -214,5 +244,6 @@ var onDateSelected = function() {
 function clearTables() {
     $('#tbody').empty();
     $('.chartContainer').remove();
+
 }
 
