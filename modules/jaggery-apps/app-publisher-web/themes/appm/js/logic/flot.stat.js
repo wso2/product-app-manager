@@ -453,7 +453,7 @@ $('#pie-chart').empty();
             $("#pagination").pagination({
                 items: numItems,
                 itemsOnPage: perPage,
-                cssStyle: "light-theme",
+                cssStyle: "dakshika-theme",
                 onPageClick: function(pageNumber) { // this is where the magic happens
                     // someone changed page, lets hide/show trs appropriately
                     var showFrom = perPage * (pageNumber - 1);
@@ -468,7 +468,7 @@ $('#pie-chart').empty();
     }else{
 //         $('#pagination').hide();
 //         $('#pie-chart').hide();
-//         $('#graphContainer').html($('<span class="label label-info">No data available</span>'));
+         $('#pie-chart').html($('<h1 class="no-data-heading">No data available</h1>'));
     }
 }
 

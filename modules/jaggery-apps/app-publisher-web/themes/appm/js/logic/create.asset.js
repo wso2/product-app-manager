@@ -89,6 +89,13 @@ $(function() {
 
 	$('#btn-create-asset').on('click', function(e) {
 		e.preventDefault();
+
+		//check if at least one policy is added.
+		if(JSON.parse($('#uritemplate_policyGroupIds').val()).length==0) {
+			alert('Failed to add asset. Need to add at least one Policy Group.');
+			return;
+		}
+
 		var context =  $('#overview_context').val();
 
 		if (context.charAt(0) !=  "/"){

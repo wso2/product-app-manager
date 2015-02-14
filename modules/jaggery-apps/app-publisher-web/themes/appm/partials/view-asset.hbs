@@ -5,7 +5,7 @@
 
                 <ul class="item-meta clearfix">
                     {{#each newViewData.meta}}
-                    <li><b>{{label}}</b>: {{value}}</li>
+                        <li><b>{{label}}</b>: {{value}}</li>
                     {{/each}}
                 </ul>
 
@@ -16,11 +16,11 @@
                 </div>
                 <div class="pull-left main-data-container">
                     {{#each newViewData.main}}
-                    <div>
-                        <label><b>{{label}}</b></label>
-                        <br />
-                        <span>{{value}}</span>
-                    </div>
+                        <div>
+                            <label><b>{{label}}</b></label>
+                            <br />
+                            <span>{{value}}</span>
+                        </div>
                     {{/each}}
 
                 </div>
@@ -45,31 +45,74 @@
                 <table style="margin-top: 10px;" class="table table-striped table-bordered table-condensed table-hover resource-table">
                     <thead>
                     <tr>
-                        <th>URL Pattern</th>
-                        <th>HTTP Verb</th>
-                        <th>Throttling Tier</th>
-                        <th>Skip Throttling</th>
-                        <th>Allow Anonymous Access</th>
-                        <th>Access Policy</th>
-                        <th>User Roles</th>
+                        <th class="col-md-7">URL Pattern</th>
+                      <th class="col-md-2">HTTP Verb</th>
+                        <th class="col-md-2">Policy Group</th>
                     </tr>
                     </thead>
                     <tbody>
-                        {{#each newViewData.uriTemplate}}
-                            {{#compare urlPattern "null" operator="!="}}
-                                {{#compare urlPattern "" operator="!="}}
+                    {{#each newViewData.uriTemplate}}
+                        {{#compare urlPattern "null" operator="!="}}
+                            {{#compare urlPattern "" operator="!="}}
                                 <tr>
                                     <td>{{urlPattern}}</td>
                                     <td>{{httpVerb}}</td>
-                                    <td>{{tire}}</td>
-                                    <td>{{skip}}</td>
-                                    <td>{{anonymous}}</td>
-                                    <td>{{policy}}</td>
-                                    <td>{{roles}}</td>
+                                    <td>{{policyGroupName}}
+                                        <a data-toggle="modal" data-target=".bs-example-modal-sm-{{policyGroupId}}-{{httpVerb}}{{policyUid}}"
+                                           class="policy-tool-tip">
+                                            <i class="icon-info-sign"></i>
+                                        </a>
+                                        <!-- add model for each policy -->
+                                        <div class="modal fade bs-example-modal-sm-{{policyGroupId}}-{{httpVerb}}{{policyUid}}"
+                                             tabindex="-1" role="dialog"
+                                             aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">
+                                                            <span aria-hidden="true">×</span>
+                                                            <span class="sr-only">Close</span>
+                                                        </button>
+                                                        <h4 class="modal-title" id="mySmallModalLabel">
+                                                            Policy Group Details - <b>{{policyGroupName}}</b>
+                                                        </h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <table class="table table-striped">
+                                                            <tr>
+                                                                <td>Throttling Tier:</td>
+                                                                <td>{{policyGroupTire}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Anonymous Access:</td>
+                                                                <td>
+                                                                {{#if policyGroupAnonymous}}
+                                                                   True
+                                                                {{else}}
+                                                                   False
+                                                                {{/if}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>User Roles:</td>
+                                                                <td>{{policyGroupRoles}}</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>XACML Policies:</td>
+                                                                <td>{{policyGroupPartials}}</td>
+                                                            </tr>
+
+                                                        </table>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
-                                {{/compare}}
                             {{/compare}}
-                        {{/each}}
+                        {{/compare}}
+                    {{/each}}
                     </tbody>
                 </table>
 
@@ -78,18 +121,18 @@
             </div>
             <div class="tab-pane fade" id="nav-pills-tab-2">
                 {{#each newViewData.sso}}
-                <div class="row">
-                    <div class="col-sm-2"><b>{{label}}</b></div>
-                    <div class="col-sm-10">{{value}}</div>
-                </div>
+                    <div class="row">
+                        <div class="col-sm-2"><b>{{label}}</b></div>
+                        <div class="col-sm-10">{{value}}</div>
+                    </div>
                 {{/each}}
             </div>
             <div class="tab-pane fade" id="nav-pills-tab-3">
                 {{#each newViewData.oauthapis}}
-                <div class="row">
-                    <div class="col-sm-2"><b>{{label}}</b></div>
-                    <div class="col-sm-10">{{value}}</div>
-                </div>
+                    <div class="row">
+                        <div class="col-sm-2"><b>{{label}}</b></div>
+                        <div class="col-sm-10">{{value}}</div>
+                    </div>
                 {{/each}}
             </div>
         </div>

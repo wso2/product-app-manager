@@ -1,6 +1,9 @@
 var tiers ={}; //contains Throttling tier details
 var throttlingTierControlBlock; //html formatted block for throttling tiers list
 
+
+
+
 $( document ).ready(function() {
 
     $("#overview_context").attr('maxlength','200');
@@ -93,70 +96,14 @@ $( document ).ready(function() {
                     author: data[i].author
                 });
             }
-
+            updatePolicyPartial();
         },
         error: function () {
         }
     });
 
     var uuid = $("#uuid").val();
-
-    $.ajax({
-        url: '/publisher/api/entitlement/get/webapp/id/from/entitlements/uuid/' + uuid,
-        type: 'GET',
-        contentType: 'application/json',
-        success: function(id){
-
-            //get partials of web app
-            $.ajax({
-                url: '/publisher/api/entitlement/policy/partialList/' + id,
-                type: 'GET',
-                contentType: 'application/json',
-                dataType: 'json',
-                success: function(data){
-
-                    for (var i = 0; i < data.length; i++) {
-                        var obj = {
-                            id: data[i].partialId,
-                            policyPartialName: data[i].partialName,
-                            policyPartial: data[i].partialContent,
-                            isShared: data[i].isShared,
-                            author: data[i].author
-                        };
-                        // avoid duplicating shared partials
-                        if (!obj.isShared) {
-                            policyPartialsArray.push(obj);
-                        }
-
-
-                    }
-                    updatePolicyPartial();
-
-
-                    for(var i=0; i< RESOURCES_1.length; i++){
-                        var resourcePolicies = JSON.parse(getValidatedEntitlementPolicyId(i));
-
-                        for(var j=0; j< resourcePolicies.length; j++){
-
-                            if(resourcePolicies[j].effect == "Permit"){
-                              $('#dropdown_entitlementPolicyPartialMappings' + i + " .policy-allow-cb" + resourcePolicies[j].entitlementPolicyPartialId).prop('checked', true);
-                            }else if (resourcePolicies[j].effect == "Deny"){
-                               $('#dropdown_entitlementPolicyPartialMappings' + i + " .policy-deny-cb" + resourcePolicies[j].entitlementPolicyPartialId).prop('checked', true);
-                            }
-                        }
-
-                    }
-
-
-                },
-                error: function(){}
-            });
-
-        },
-        error: function(){}
-    });
-
-
+    loadPolicyGroupData(uuid);
 
     $("#add_resource").click(function(){
         $(".http_verb").each(function(){
@@ -196,73 +143,25 @@ $( document ).ready(function() {
         console.log(RESOURCES_1);
     });
 
-    $("#resource_tbody").on("draw", function(){
+    $("#resource_tbody").on("draw", function () {
         $("#resource_tbody").html("");
-        for(var i=0; i< RESOURCES_1.length; i++){
+        for (var i = 0; i < RESOURCES_1.length; i++) {
             $("#resource_tbody").prepend(
-                    "<tr> \
-                      <td><span style='color:#999'>/{context}/{version}/</span>"+ RESOURCES_1[i].url_pattern +" <input type='hidden' value='"+RESOURCES_1[i].url_pattern+"' name='uritemplate_urlPattern"+i+"'/></td> \
-                  <td><strong>"+ RESOURCES_1[i].http_verb +"</strong><input type='hidden' value='"+RESOURCES_1[i].http_verb+"' name='uritemplate_httpVerb"+i+"'/></td> \
-                    <td style='padding:0px'><select name='uritemplate_tier" + i + "' onChange='updateDropdownThrottlingTier(" + i + ");' class='selectpicker' id='getThrottlingTier" + i + "' style='width:100%;border:none;'> "+ throttlingTierControlBlock +" </select></td> \
-                  <td style='padding:0px'><select name='uritemplate_skipthrottle" + i + "' onChange='updateDropDownSkipThrottle(" + i + ");' class='selectpicker' id='getSkipthrottle" + i + "' style='width:100%;border:none;'><option value='False' id='False'>False</option><option value='True' id='True'>True</option></select></td> \
-                     <td style='padding:0px'><select name='uritemplate_allowAnonymous" + i + "' onChange='updateDropDownAllowAnonymous(" + i + ");' class='selectpicker' id='getAllowAnonymous" + i + "' style='width:100%;border:none;'><option value='False' id='False'>False</option><option value='True' id='True'>True</option></select></td> \
-                   \
-                  <td> \
-                     \
-                <div class='dropdown'> \
-                    <a href='#' data-toggle='dropdown' class='dropdown-toggle'>Add<b class='caret'></b></a>\
-                    <div><ul  id='dropdown_entitlementPolicyPartialMappings"+i+"' class='dropdown-menu policy-partial-dropdown' onChange='updateAccessPolicyOptions(" + i + ");' data-resource-id='"+ i +"' style='margin: 0px;'>\
-                    \
-                    </ul></div>\
-                </div>\
-               \
-                 <input type='hidden' class='uritemplate_entitlementPolicyPartialMappings_text' id='uritemplate_entitlementPolicyPartialMappings"+i+"' name='uritemplate_entitlementPolicyPartialMappings"+i+"' value='"+ getValidatedEntitlementPolicyId(i) + "'/> \
-\
-                  </td> \
-                   \
-                   <td class='userRoles' style='padding:0px'><input  type='text' name='uritemplate_userRoles"+i+"' onChange='updateUserRoles("+i+");'  id='getUserRoles"+i+"' style='width:95%;border:none;'></input></td> \
-                  \
-                  <td> \
-                  	<a data-index='"+i+"' class='delete_resource'><i class='icon-remove-sign'></i>  Delete</a>&nbsp; \
+                "<tr> \
+                  <td><span style='color:#999'>/{context}/{version}/</span>" + RESOURCES_1[i].url_pattern + " <input type='hidden' value='" + RESOURCES_1[i].url_pattern + "' name='uritemplate_urlPattern" + i + "'/></td> \
+                  <td><strong>" + RESOURCES_1[i].http_verb + "</strong><input type='hidden' value='" + RESOURCES_1[i].http_verb + "' name='uritemplate_httpVerb" + i + "'/></td> \
+                     <td style='padding:0px'><select name='uritemplate_policyGroupId" + i + "' id='uritemplate_policyGroupId" + i + "' onChange='updateDropdownPolicyGroup(" + i + ");'   class='policy_groups form-control'>" + policyGroupBlock + "</select></td>\
+                   <td> \
+                  	<a data-index='" + i + "' class='delete_resource'><i class='icon-remove-sign'></i>  Delete</a>&nbsp; \
                   </td> \
                 </tr> \
 				"
             );
-            // roles autocomplete   
-            $('#getUserRoles'+i).tokenInput('/publisher/api/lifecycle/information/meta/' + $('#meta-asset-type').val() + '/roles', {
-                theme: 'facebook',
-                //prePopulate: $.parseJSON(json),
-                tokenDelimiter: ',',
-                preventDuplicates: true
-            });
-            if(RESOURCES_1[i].user_roles !== undefined && RESOURCES_1[i].user_roles.indexOf(',')>-1){
-                var res = RESOURCES_1[i].user_roles.split(",");
-                for(var j=0; j< res.length; ++j){
-                    $('#getUserRoles'+i).tokenInput("add", {id:res[j] , name:res[j]});
-                    console.log(res[j]);
-                }
-            }
-            else{
-                $('#getUserRoles'+i).tokenInput("add", {id:RESOURCES_1[i].user_roles , name: RESOURCES_1[i].user_roles});
-            }
-            if (RESOURCES_1[i].throttling_tier !== undefined) {
-                document.getElementById(RESOURCES_1[i].throttling_tier).selected="true";            }
-            if(RESOURCES_1[i].skipthrottle !== undefined) {
-                document.getElementById(RESOURCES_1[i].skipthrottle).selected="true";
-            }
 
-            //set Access Policy Options when adding a new resource
-            if (RESOURCES_1[i].accessPolicyOptions !== undefined && RESOURCES_1[i].accessPolicyOptions !== '') {
-                $('#uritemplate_entitlementPolicyPartialMappings' + i).val(RESOURCES_1[i].accessPolicyOptions);
-                updatePolicyPartial();
+            //set policy group id value
+            if (RESOURCES_1[i].policyGroupId !== undefined && RESOURCES_1[i].policyGroupId !== '') {
+                $('#uritemplate_policyGroupId' + i).val(RESOURCES_1[i].policyGroupId);
             }
-
-
-            //set Anonymous Allow option value
-            if(RESOURCES_1[i].allowAnonymous !== undefined && RESOURCES_1[i].allowAnonymous !== '') {
-                $('#getAllowAnonymous' + i).val(RESOURCES_1[i].allowAnonymous);
-            }
-
             updatePolicyPartial();
 
         }
@@ -307,59 +206,92 @@ function resetResource() {
     })
 }
 
-/*
- Fires when user change Throttling Tier
- @param index : row id
+/**
+ * Fires when user changes the policy group values
+ * @param index :row id
  */
-function updateDropdownThrottlingTier(index) {
-    var throttlingTierElement = document.getElementById("getThrottlingTier" + index);
-    RESOURCES_1[index].throttling_tier = throttlingTierElement.options[throttlingTierElement.selectedIndex].value;
+function updateDropdownPolicyGroup(index) {
+    var policyGroupIdElement = document.getElementById("uritemplate_policyGroupId" + index);
+    RESOURCES_1[index].policyGroupId = policyGroupIdElement.options[policyGroupIdElement.selectedIndex].value;
 }
 
-/*
- Fires when user change Skip Throttle
- @param index : row id
+/**
+ * set policy group id value
  */
-function updateDropDownSkipThrottle(index) {
-    var skipthrottleElement = document.getElementById("getSkipthrottle" + index);
-    RESOURCES_1[index].skipthrottle = skipthrottleElement.options[skipthrottleElement.selectedIndex].value;
-}
-
-/*
- Fires when user change user roles
- @param index : row id
- */
-function updateUserRoles(index) {
-    var userRolesElement = document.getElementById("getUserRoles" + index);
-    RESOURCES_1[index].user_roles = userRolesElement.value;
-}
-
-/*
- Create the html formatted block for throttling tier list
- */
-function drawThrottlingTiersDynamically() {
-    var strContent = "";
-    tiers.reverse();
-    for (var i = 0; i < tiers.length; i++) {
-        strContent += "<option title='" + tiers[i].tierDescription + "' value='" + tiers[i].tierName + "' id='" + tiers[i].tierName + "'>" + tiers[i].tierDisplayName + "</option>";
+function setPolicyGroupValue() {
+    for (var i = 0; i < RESOURCES_1.length; i++) {
+        if (RESOURCES_1[i].policyGroupId !== undefined && RESOURCES_1[i].policyGroupId !== '') {
+            $('#uritemplate_policyGroupId' + i).val(RESOURCES_1[i].policyGroupId);
+        }
     }
-    return strContent;
 }
 
-/*
- Fires when user change Access Policy Options
- @param index : row id
+/**
+ * load policy group details and policy partial details
+ * @param uuid
  */
-function updateAccessPolicyOptions(index) {
-    var entitlementPolicyPartialMappingsElement = document.getElementById("uritemplate_entitlementPolicyPartialMappings" + index);
-    RESOURCES_1[index].accessPolicyOptions = entitlementPolicyPartialMappingsElement.value;
-}
+function loadPolicyGroupData(uuid) {
+    $.ajax({
+        url: '/publisher/api/entitlement/get/webapp/id/from/entitlements/uuid/' + uuid,
+        type: 'GET',
+        async: false,
+        contentType: 'application/json',
+        success: function (id) {
+            //get partials of web app
+            $.ajax({
+                url: '/publisher/api/entitlement/policy/partialList/' + id,
+                type: 'GET',
+                contentType: 'application/json',
+                dataType: 'json',
+                async: false,
+                success: function (data) {
 
-/*
- Fires when user change Access Allow Anonymous option
- @param index : row id
- */
-function updateDropDownAllowAnonymous(index) {
-    var allowAnonymousElement = document.getElementById("getAllowAnonymous" + index);
-    RESOURCES_1[index].allowAnonymous = allowAnonymousElement.options[allowAnonymousElement.selectedIndex].value;
+                    for (var i = 0; i < data.length; i++) {
+                        var obj = {
+                            id: data[i].partialId,
+                            policyPartialName: data[i].partialName,
+                            policyPartial: data[i].partialContent,
+                            isShared: data[i].isShared,
+                            author: data[i].author
+                        };
+                        // avoid duplicating shared partials
+                        if (!obj.isShared) {
+                            policyPartialsArray.push(obj);
+                        }
+                    }
+                    updatePolicyPartial();
+                },
+                error: function () {
+                }
+            });
+
+            // get the entitlement policy groups
+            $.ajax({
+                url: '/publisher/api/entitlement/get/policy/Group/by/appId/' + id,
+                type: 'GET',
+                contentType: 'application/json',
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+
+                        policyGroupsArray.push({
+                            policyGroupId: data[i].policyGroupId,
+                            policyGroupName: data[i].policyGroupName,
+                            throttlingTier: data[i].throttlingTier,
+                            anonymousAccessToUrlPattern: data[i].allowAnonymous,
+                            userRoles: data[i].userRoles,
+                            policyPartials: data[i].policyPartials
+                        })
+                    }
+                    updatePolicyGroupPartial(policyGroupsArray);
+                },
+                error: function () {
+                }
+            });
+
+        },
+        error: function () {
+        }
+    });
 }

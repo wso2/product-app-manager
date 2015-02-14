@@ -48,10 +48,9 @@ h2.exp_col i {
 
 
 .add-on-cal {
-    padding-top:5px;
-    margin-left:10px;
-    margin-right:-6px;
-    display:inline-block;
+    right: 17px;
+    position: absolute;
+    top: 9px;
 }
 
 .ovrd-padd {

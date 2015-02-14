@@ -20,7 +20,7 @@
 	z-index:1;
 	border:1px solid #bfbfbf;
 	background-color:#efefef;
-	width:428px;
+	width:448px;
 	padding: 5px 12px;
 	font-size:12px;
 	line-height:20px;
@@ -225,27 +225,6 @@
 .hide {
 	display: none;
 }
-
-
-#rangeSliderWrapper{
-    height: 18px;
-    position: relative;
-    border: 2px solid #C8C8C8 !important;
-    margin-top:18px;
-}
-#rangeSliderWrapper #rangeSlider{
-    position: relative;
-    top: 40px;
-    width:96%;
-    left:10px;
-
-}
-
-#dateRangePickerContainer{
-    float:right;
-    margin-top:-16px;
-}
-
 
 
 
