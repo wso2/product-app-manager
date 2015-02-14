@@ -90,7 +90,7 @@ var usage = [];
                     if(webappVersionIndex == -1){
                         var requestCount = [];
 
-                        webapps[webappIndex][1].push([usage[x].version,usage[x].count]);
+                        webapps[webappIndex][1].push([usage[x].version,usage[x].count,,usage[x].uuid]);
                     }
                     else{
                         webapps[webappIndex][1][webappVersionIndex][1].push([usage[x].userId]);
@@ -109,7 +109,7 @@ var usage = [];
                     webapps:webapps
                 };
             }
-
+log.info(webapps)
             print(webapps);
 
 		} else  if (action == "getSubscribedAPIsByUsers") { /* Overall Web Application Usage Graph */

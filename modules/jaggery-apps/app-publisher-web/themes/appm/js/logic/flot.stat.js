@@ -253,7 +253,9 @@ $('#pie-chart').empty();
                     var val = i;
                     paths.on("click", function(d){
                     for ( var j = 0; j < parsedResponse[val][1].length; j++) {
+
                         if("V "+parsedResponse[val][1][j][0] == d.data.itemLabel ){
+
                         document.location.href="/publisher/asset/webapp/"+parsedResponse[val][1][j][2];
                         }
                     }
