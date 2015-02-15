@@ -26,174 +26,333 @@ require('/modules/publisher.js').exec(function (ctx) {
            endDate = endDate.trim();
         }
 
-        var usage = [];
 
-        /* Web Application Last Access Time Graph */
-        if (action == "getSubscriberCountByAPIs") {
-            usage = appMgtProviderObj.getSubscriberCountByAPIs("__all_providers__", startDate, endDate);
+var usage = [];
 
-            print(usage);
 
-        } else if (action == "getSubscribedAPIsByUsers") { /* Overall Web Application Usage Graph */
-            usage = appMgtProviderObj.getSubscribedAPIsByUsers("__all_providers__", startDate, endDate);
-            var output = [];
-            var users = [];
-            for (i = 0; i < usage.length; i++) {
-                if (users.indexOf(usage[i].user) == -1) {
-                    users.push(usage[i].user);
-                }
-            }
+		//manipulate endDate to overcome date-picker issue
+		var date = new Date(Date.parse(endDate.replace(/-/g,"/")));
+		date.setDate(date.getDate() + 1);
+		// The getMonth() method returns the month (from 0 to 11) for the specified date
+		var month = (date.getMonth() + 1);
 
-            for (j = 0; j < users.length; j++) {
-                var apps = [];
-                for (i = 0; i < usage.length; i++) {
-                    if (usage[i].user == users[j]) {
-                        apps.push(usage[i].apiName);
-                    }
+        		endDate = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate();
+
+
+                if (date.getMonth().toString().length < 2) {
+                    endDate = date.getFullYear() + '-' + '0' + month + '-' + date.getDate();
+                } else {
+                    endDate = date.getFullYear() + '-' + month + '-' + date.getDate();
+
                 }
 
-                var user = {
-                };
-                user['user'] = users[j];
-                user['apps'] = apps;
-                output.push(user);
+		var usage = [];
 
-            }
+		var obj, result;
 
-            print(output);
+		/* Web Application Last Access Time Graph */
+		if (action == "getSubscriberCountByAPIs") {
+			//output = stats.getHotAssetStats(startDate,endDate,tenantId);
+			usage = appMgtProviderObj.getSubscriberCountByAPIs("__all_providers__",startDate,endDate);
 
-        } else if (action == "getAPIUsageByUser") { /* Overall Web Application Usage Graph */
-            usage = appMgtProviderObj.getAPIUsageByUser("__all_providers__", startDate, endDate);
-
-            usage = parse(stringify(usage));
-
-            function orderByCountAscending(a, b) {
-                return b.count - a.count;
-            }
-
-            usage = usage.sort(orderByCountAscending);
+			var obj, result;
             var webapps = [];
 
-            for (x = 0; x < usage.length; x++) {
-
+            for(x=0;x<usage.length;x++){
                 var webappIndex = -1;
                 var webappVersionIndex = -1;
 
-                for (y = 0; y < webapps.length; y++) {
-                    if (webapps[y][0] == usage[x].apiName) {
+                for(y=0;y<webapps.length;y++){
+
+                    if(webapps[y][0] == usage[x].apiName){
+
                         webappIndex = y;
                         var z;
-                        for (z = 0; z < webapps[y][1].length; z++) {
-                            if (webapps[y][1][z][0] == usage[x].version) {
+                        for(z=0;z<webapps[y][1].length;z++){
+                            if(webapps[y][1][z][0] == usage[x].version){
                                 webappVersionIndex = z;
                                 break;
                             }
                         }
-                        if ((webappVersionIndex == -1) && (z == webapps[y].length)) {
+                        if((webappVersionIndex == -1) && (z == webapps[y].length)){
                             break;
                         }
                     }
                 }
 
-                if (webappIndex == -1) {
+                if(webappIndex == -1){
                     var version = [];
                     var requestCount = [];
-                    requestCount.push([usage[x].userId, usage[x].count.toString()]);
-                    version.push([usage[x].version, requestCount]);
-                    webapps.push([usage[x].apiName, version]);
-                } else {
-                    if (webappVersionIndex == -1) {
+
+                    version.push([usage[x].version,usage[x].count,usage[x].uuid]);
+                    webapps.push([usage[x].apiName,version]);
+                }else{
+                    if(webappVersionIndex == -1){
                         var requestCount = [];
-                        requestCount.push([usage[x].userId, usage[x].count.toString()]);
-                        webapps[webappIndex][1].push([usage[x].version, requestCount]);
+
+                        webapps[webappIndex][1].push([usage[x].version,usage[x].count]);
                     }
-                    else {
-                        webapps[webappIndex][1][webappVersionIndex][1].push([usage[x].userId, usage[x].count.toString()]);
+                    else{
+                        webapps[webappIndex][1][webappVersionIndex][1].push([usage[x].userId]);
                     }
                 }
 
+            }
+
+            if (usage == null) {
+                obj = {
+                    error:true
+                };
+            } else {
+                obj = {
+                    error:false,
+                    webapps:webapps
+                };
             }
 
             print(webapps);
 
-        } else if (action == "getAPIResponseTime") { /* Overall Web Application Usage Graph */
-            var output = {};
-            var apinameData = [], serviceTimeData = [], webApps = [];
-            usage = appMgtProviderObj.getProviderAPIServiceTime("__all_providers__", startDate, endDate);
-            usage = parse(stringify(usage));
+		} else  if (action == "getSubscribedAPIsByUsers") { /* Overall Web Application Usage Graph */
+			usage = appMgtProviderObj.getSubscribedAPIsByUsers("__all_providers__",startDate,endDate);
 
-            function sortByName(x, y) {
-                return ((x.apiName == y.apiName) ? 0 : ((y.apiName > x.apiName) ? 1 : -1 ));
-            }
 
-            usage = usage.sort(sortByName);
-            for (i = 0; i < usage.length; i++) {
-                webApps.push([i, usage[i].apiName]);
-                apinameData.push([i, usage[i].referer]);
-                serviceTimeData.push([parseInt(usage[i].serviceTime), i]);
-            }
+
+
+			var obj, result;
             var webapps = [];
-            for (x = 0; x < usage.length; x++) {
 
-                var webappIndex = -1;
-                var webappVersionIndex = -1;
 
-                for (y = 0; y < webapps.length; y++) {
-                    if (webapps[y][0] == usage[x].apiName) {
+ for(x=0;x<usage.length;x++){
+                var userIndex = -1;
+                var appIndex = -1;
 
-                        webappIndex = y;
-                        break;
+                for(y=0;y<webapps.length;y++){
+
+                    if(webapps[y][0] == usage[x].user){
+
+                        userIndex = y;
+                        var z;
+                        for(z=0;z<webapps[y][1].length;z++){
+                            if(webapps[y][1][z][0] == usage[x].apiName){
+                                appIndex = z;
+                                break;
+                            }
+                        }
+                        if((appIndex == -1) && (z == webapps[y].length)){
+                            break;
+                        }
                     }
                 }
 
-                if (webappIndex == -1) {
-                    var page = [];
-                    page.push([usage[x].referer, usage[x].serviceTime.toString()]);
-                    webapps.push([usage[x].apiName, page]);
-                } else {
-                    webapps[webappIndex][1].push([usage[x].referer, usage[x].serviceTime.toString()]);
+                if(userIndex == -1){
+
+                    var version = [];
+                    var app=[];
+
+
+                    version.push([usage[x].version,usage[x].subscribeDate]);
+                    app.push([usage[x].apiName,version])
+                    webapps.push([usage[x].user,app]);
+                }else{
+                    if(appIndex == -1){
+                         var version = [];
+                        var app=[];
+                       version.push([usage[x].version,usage[x].subscribeDate]);
+
+
+                        webapps[userIndex][1].push([usage[x].apiName,version]);
+                    }
+                    else{
+                        webapps[userIndex][1][appIndex][1].push([usage[x].version,usage[x].subscribeDate]);
+                    }
                 }
+
+            }
+			if (usage == null) {
+                obj = {
+                    error:true
+                };
+            } else {
+                obj = {
+                    error:false,
+                    webapps:webapps
+                };
             }
 
-            output['webapps'] = webapps;
-            output['referer'] = apinameData;
-            output['serviceTime'] = serviceTimeData;
+            print(webapps);
 
-            print(output);
+		}else if (action == "getAPIUsageByUser") { /* Overall Web Application Usage Graph */
+			usage = appMgtProviderObj.getAPIUsageByUser("__all_providers__",startDate,endDate);
 
-        } else if (action == "getAPIUsageByPage") { /* Overall Web Application Usage Graph */
-            usage = appMgtProviderObj.getAPIUsageByPage("__all_providers__", startDate, endDate);
+			usage = parse(stringify(usage));
 
-            var webapps = [];
-            var webappIndex = -1;
-            var webappDetailsIndex = -1;
-            var totalPageCount = [];
-            var webappDeatails = [];
-            var webappObject = {};
 
-            for (x = 0; x < usage.length; x++) {
-                for (y = 0; y < webapps.length; y++) {
-                    if (webapps[y][1] == usage[x].apiName) {
-                        webappIndex = y;
-                        break;
+			function orderByCountAscending(a, b) {
+				return b.count - a.count;
+			}
+
+			usage = usage.sort(orderByCountAscending);
+			var webapps = [];
+
+			for(x=0;x<usage.length;x++){
+
+				var webappIndex = -1;
+				var webappVersionIndex = -1;
+
+				for(y=0;y<webapps.length;y++){
+					if(webapps[y][0] == usage[x].apiName){
+						webappIndex = y;
+						var z;
+						for(z=0;z<webapps[y][1].length;z++){
+							if(webapps[y][1][z][0] == usage[x].version){
+								webappVersionIndex = z;
+								break;
+							}
+						}
+						if((webappVersionIndex == -1) && (z == webapps[y].length)){
+							break;
+						}
+					}
+				}
+
+				if(webappIndex == -1){
+					var version = [];
+					var requestCount = [];
+					requestCount.push([usage[x].userId,usage[x].count.toString()]);
+					version.push([usage[x].version,requestCount]);
+					webapps.push([usage[x].apiName,version]);
+				}else{
+					if(webappVersionIndex == -1){
+						var requestCount = [];
+						requestCount.push([usage[x].userId,usage[x].count.toString()]);
+						webapps[webappIndex][1].push([usage[x].version,requestCount]);
+					}
+					else{
+						webapps[webappIndex][1][webappVersionIndex][1].push([usage[x].userId,usage[x].count.toString()]);
+					}
+				}
+
+			}
+
+			if (usage == null) {
+				obj = {
+					error:true
+				};
+			} else {
+				obj = {
+					error:false,
+					webapps:webapps
+				};
+			}
+
+			print(webapps);
+		}else if (action == "getAPIResponseTime") { /* Overall Web Application Usage Graph */
+			var output  = {};
+			var apinameData = [],serviceTimeData=[],webApps = [],webappname = [],webapptime=[];
+			usage = appMgtProviderObj.getProviderAPIServiceTime("__all_providers__",startDate,endDate);
+			usage = parse(stringify(usage));
+
+			function SortByName(x,y) {
+				return ((x.apiName == y.apiName) ? 0 : ((y.apiName > x.apiName) ? 1 : -1 ));
+			}
+			usage  = usage.sort(SortByName);
+			for(i=0;i<usage.length;i++){
+				webApps.push([i,usage[i].apiName]);
+				apinameData.push([i,usage[i].referer]);
+				webappname.push([i,usage[i].apiName]);
+				serviceTimeData.push([parseInt(usage[i].serviceTime),i]);
+
+			}
+			var webapps = [];
+			for(x=0;x<usage.length;x++){
+
+				var webappIndex = -1;
+				var webappVersionIndex = -1;
+
+				for(y=0;y<webapps.length;y++){
+					if(webapps[y][0] == usage[x].apiName){
+
+						webappIndex = y;
+						break;
+					}
+				}
+
+				if(webappIndex == -1){
+					var page = [];
+					page.push([usage[x].referer,usage[x].serviceTime.toString()]);
+					webapps.push([usage[x].apiName,page]);
+				}else{
+					webapps[webappIndex][1].push([usage[x].referer,usage[x].serviceTime.toString()]);
+				}
+			}
+            for ( var i = 0; i < webapps.length; i++) {
+                responsetimeCount =0;
+                var count = 0;
+                for ( var j = 0; j < webapps[i][1].length; j++) {
+                    count++;
+                    for ( var l = 0; l < webapps[i][1][j].length; l++) {
+                        responsetimeCount = responsetimeCount+ webapps[i][1][j][1];
                     }
+                webapptime.push([i,responsetimeCount]);
+
                 }
 
-                if (webappIndex == -1) {
-                    var index = webapps.length;
-                    webapps.push([index, usage[x].apiName]);
-                    totalPageCount.push([index, usage[x].count]);
-                } else {
-                    var total = totalPageCount[webappIndex][1] + usage[x].count;
-                    totalPageCount[webappIndex][1] = total;
-                }
+            }
 
-                for (z = 0; z < webappDeatails.length; z++) {
-                    if (webappDeatails[z][0] == usage[x].apiName) {
-                        webappDetailsIndex = z;
-                        break;
-                    }
-                }
+			output['webapps'] = webapps;
+			output['referer'] = apinameData;
+			output['serviceTime'] = serviceTimeData;
+			output['webappname'] = webappname;
+			output['webapptime'] = webapptime;
+
+			if (usage == null) {
+				obj = {
+					error:true
+				};
+
+			} else {
+				obj = {
+					error:false,
+					output:output
+				};
+			}
+
+			print(output);
+		}else if (action == "getAPIUsageByPage") { /* Overall Web Application Usage Graph */
+			usage = appMgtProviderObj.getAPIUsageByPage("__all_providers__",startDate,endDate);
+
+			var webapps = [];
+			var webappIndex = -1;
+			var webappDetailsIndex = -1;
+			var totalPageCount = [];
+			var webappObject = {};
+			var appPage = [];
+			var apppageCount = [];
+			var webappDeatails = [];
+
+			for(x=0;x<usage.length;x++){
+				for(y=0;y<webapps.length;y++){
+					if(webapps[y][1] == usage[x].apiName){
+						webappIndex = y;
+						break;
+					}
+				}
+
+				if(webappIndex == -1){
+					var index = webapps.length;
+					webapps.push([index,usage[x].apiName]);
+					totalPageCount.push([index,usage[x].count]);
+				}else {
+					var total = totalPageCount[webappIndex][1] + usage[x].count ;
+					totalPageCount[webappIndex][1] = total;
+				}
+
+				for(z=0;z<webappDeatails.length;z++){
+					if(webappDeatails[z][0] == usage[x].apiName){
+						webappDetailsIndex = z;
+						break;
+					}
+				}
 
                 if (webappDetailsIndex == -1) {
 
@@ -235,13 +394,139 @@ require('/modules/publisher.js').exec(function (ctx) {
                 webappDetailsIndex = -1;
             }
 
-            webappObject['usage'] = usage;
-            webappObject['webapp'] = webapps;
-            webappObject['totalPageCount'] = totalPageCount;
-            webappObject['webappDeatails'] = webappDeatails;
+			webappObject['usage'] = usage;
+			webappObject['webapp'] = webapps;
+			webappObject['totalPageCount'] = totalPageCount;
+			webappObject['webappDeatails'] = webappDeatails;
 
-            print(webappObject);
-        }
+			if (usage == null) {
+				obj = {
+					error:true
+				};
+			} else {
+				obj = {
+					error:false,
+					webappObject:webappObject
+				};
+			}
+
+			print(webappObject);
+		}else if (action == "getUsageByContext") {
+            usage = appMgtProviderObj.getAPIUsageByUser("__all_providers__",startDate,endDate);
+
+
+
+            			usage = parse(stringify(usage));
+
+
+            			function orderByCountAscending(a, b) {
+            				return b.count - a.count;
+            			}
+
+            			usage = usage.sort(orderByCountAscending);
+            			var webapps = [];
+
+            			for(x=0;x<usage.length;x++){
+
+                                                var userIndex = -1;
+                                				var webappIndex = -1;
+                                				var webappVersionIndex = -1;
+                                                var webresourceIndex = -1;
+
+
+                                				for(y=0;y<webapps.length;y++){
+
+                                					if(webapps[y][0] == usage[x].userId){
+                                						userIndex = y;
+                                						var z;
+                                						for(z=0;z<webapps[y][1].length;z++){
+                                							if(webapps[y][1][z][0] == usage[x].apiName){
+                                								webappIndex = z;
+                                                                var t;
+                                                                for(t=0;t<webapps[y][1][z][1].length;t++){
+                                                                    if(webapps[y][1][z][1][t][0] == usage[x].version){
+                                                                        webappVersionIndex = t;
+                                                                        var r;
+                                                                            for(r=0;r<webapps[y][1][z][1][t][1].length;r++){
+                                                                                if(webapps[y][1][z][1][t][1][r][0] == usage[x].context){
+                                                                                    webresourceIndex = r;
+                                                                                    break;
+
+                                                                                }
+
+
+                                                                            }
+
+                                                                    }
+                                                                }
+                                							}
+                                						}
+                                						if((webappVersionIndex == -1) && (z == webapps[y].length)){
+                                							break;
+                                						}
+                                					}
+                                				}
+
+
+                                				if(userIndex == -1){
+                                                    var apps=[];
+                                					var version = [];
+                                					var requestCount = [];
+                                                    var resourse =[];
+
+                                                    requestCount.push([usage[x].count,usage[x].time]);
+                                                    resourse.push([usage[x].context,requestCount]);
+                                					version.push([usage[x].version,resourse]);
+                                                    apps.push([usage[x].apiName,version])
+                                					webapps.push([usage[x].userId,apps]);
+                                				}else{
+                                					if(webappIndex == -1){
+                                                        var version = [];
+                                						var requestCount = [];
+                                                        var resourse =[];
+                                                        requestCount.push([usage[x].count,usage[x].time]);
+                                                    resourse.push([usage[x].context,requestCount]);
+                                					version.push([usage[x].version,resourse]);
+                                						webapps[userIndex][1].push([usage[x].apiName,version]);
+                                                    }else{
+                                                        if(webappVersionIndex == -1){
+                                                            var requestCount = [];
+                                                        var resourse =[];
+                                                        requestCount.push([usage[x].count,usage[x].time]);
+                                                    resourse.push([usage[x].context,requestCount]);
+                                                            webapps[userIndex][1][webappIndex][1].push([usage[x].version,resourse]);
+                                                        }else{
+                                                            if(webresourceIndex == -1){
+                                                                 var requestCount = [];
+                                                                requestCount.push([usage[x].count,usage[x].time]);
+                                						    webapps[userIndex][1][webappIndex][1][webappVersionIndex][1].push([usage[x].context,requestCount]);
+
+                                                        }else{
+                                                             webapps[userIndex][1][webappIndex][1][webappVersionIndex][1][webresourceIndex][1].push([usage[x].count,usage[x].time]);
+
+                                                    }
+
+                                				}
+
+                                			}
+                                                }
+                                            }
+
+
+
+            			if (usage == null) {
+                            obj = {
+                                error:true
+                            };
+                        } else {
+                            obj = {
+                                error:false,
+                                webapps:webapps
+                            };
+                        }
+
+                        print(webapps);
+		}
 
     });
 
@@ -261,4 +546,3 @@ require('/modules/publisher.js').exec(function (ctx) {
 
 }, request, response, session);
 %>
-

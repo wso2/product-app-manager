@@ -158,9 +158,7 @@ textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[ty
     padding-bottom: 4px;
     padding-left: 0;
 }
-.btn-group > .btn:first-child {
-    border-radius: 0;
-}
+
 .context_menu .assetTypeSwitcher {
     color: #9F9F9F;
     padding: 4px 10px 4px 14px;
@@ -396,6 +394,15 @@ textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[ty
     font-size: 13px;
     text-shadow: none !important;
 }
+
+
+.highlighted{
+    background-color: #DADADA;
+
+}
+
+
+
 .nav-list > .active > a, .nav-list > .active > a:hover, .nav-list > .active > a:focus {
 
     background: none;
@@ -1423,6 +1430,122 @@ h2.first-h2{
     margin-top: 20px;
 }
 
+.center-wrapper{
+    margin:0 auto;
+	margin-left:auto;
+	margin-right:auto;
+	align:center;
+	text-align:center;
+}
+
+
+
+#rangeSliderWrapper{
+    height: 47px;
+    position: relative;
+    margin-top:18px;
+}
+#rangeSliderWrapper #rangeSlider{
+    position: relative;
+    top: 40px;
+    width:96%;
+    left:10px;
+
+}
+
+#dateRangePickerContainer{
+    float:right;
+    margin-top:-16px;
+}
+
+.date-picker-wrapper > .footer {
+    display: none;
+}
+
+input.apply-btn {
+    height: 32px;
+}
+
+.left-nav {
+    margin-top: 18px;
+}
+
+.no-data-heading{
+    text-align: center;
+    margin-top: 120px;
+}
+
+.date-range{
+    height: 39px;
+
+}
+
+#date-range{
+    width: 270px;
+    display: inline;
+    border: none;
+    height: 25px;
+    background-color: whitesmoke;
+    cursor: pointer;
+}
+
+.date-picker-wrapper {
+    margin: 13px 23px;
+}
+
+#pagination{
+    float: right;
+}
+
+/*------------------------------------*\
+	Dakshika Theme Styles
+\*------------------------------------*/
+
+.dakshika-theme ul{
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    display: inline-block !important;
+    padding-left: 0 !important;
+    margin: 20px 0 !important;
+    border-radius: 4px !important;
+}
+
+.dakshika-theme ul>li:first-child>a, .dakshika-theme ul>li:first-child>span {
+    margin-left: 0;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.dakshika-theme ul>li>a, .dakshika-theme ul>li>span {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #337ab7;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+
+.dakshika-theme ul>li:last-child>a, .dakshika-theme ul>li:last-child>span {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.dakshika-theme ul>li>a:focus, .dakshika-theme ul>li>a:hover, .dakshika-theme ul>li>span:focus, .dakshika-theme ul>li>span:hover {
+    color: #23527c;
+    background-color: #eee;
+    border-color: #ddd;
+    cursor: pointer;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 0 !important;
+    margin-left: 0 !important;
+}
+
 .group-role-search {
     float: left;
     margin-left: 378px;
@@ -1469,4 +1592,8 @@ td#buttonTd a {
 
 .form-horizontal .control-label{
     padding-top: 0px;
+}
+
+#dateRangePickerContainer .date-range, #dateRangePickerContainer .input-append {
+    background: none !important;
 }

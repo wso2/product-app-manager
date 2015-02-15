@@ -192,6 +192,54 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{operation}/{type}/',
          print(artifact.id+'<br/><br/>');
          }*/
     }
+    if (operation == 'apps') {
+            try {
+                caramel.render({op: operation,cuser: server.current(session),shortName: type,title: type});
+
+            } catch (e) {
+                response.sendError(404, 'Asset type not found'); //TODO: Replace
+            }
+
+            /*for each(var artifact in artifacts){
+             print(artifact.id+'<br/><br/>');
+             }*/
+        }
+    if (operation == 'app_sub_user') {
+                try {
+                    caramel.render({op: operation,cuser: server.current(session),shortName: type,title: type});
+
+                } catch (e) {
+                    response.sendError(404, 'Asset type not found'); //TODO: Replace
+                }
+
+                /*for each(var artifact in artifacts){
+                 print(artifact.id+'<br/><br/>');
+                 }*/
+    }
+    if (operation == 'response-time') {
+                            try {
+                                caramel.render({op: operation,cuser: server.current(session),shortName: type,title: type});
+
+                            } catch (e) {
+                                response.sendError(404, 'Asset type not found'); //TODO: Replace
+                            }
+
+                            /*for each(var artifact in artifacts){
+                             print(artifact.id+'<br/><br/>');
+                             }*/
+                        }
+    if (operation == 'usage-page') {
+            try {
+                caramel.render({op: operation,cuser: server.current(session),shortName: type,title: type});
+
+            } catch (e) {
+                response.sendError(404, 'Asset type not found'); //TODO: Replace
+            }
+
+            /*for each(var artifact in artifacts){
+             print(artifact.id+'<br/><br/>');
+             }*/
+        }
 });
 
 
