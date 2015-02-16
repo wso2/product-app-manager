@@ -86,7 +86,13 @@ var drawAPIUsageByPage = function(response) {
 		}
 	};
 
-	$.plot($("#placeholder51"), dataset, options);
+    if(parsedResponse.usage.length == 0){
+        $("#placeholder51").html('<h1 class="no-data-heading">No data available</h1>')
+    }else{
+        $("#placeholder51").html();
+        $.plot($("#placeholder51"), dataset, options);
+    }
+
 
 	$("#placeholder51").bind("plotclick", function(event, pos, item) {
 		if (item!=null){
