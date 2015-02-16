@@ -8,7 +8,8 @@ $('#today-btn').on('click',function(){
     var to = convertTimeString(currentDay);
     var from = convertTimeString(currentDay-86400000);
     var dateStr= from+" to "+to;
-    $("#date-range").val(dateStr);
+    $("#date-range").html(dateStr);
+    $('#date-range').data('dateRangePicker').setDateRange(from,to);
     drawGraphs();
 
 });
@@ -18,17 +19,29 @@ $('#hour-btn').on('click',function(){
     var to = convertTimeString(currentDay);
     var from = convertTimeString(currentDay-3600000);
     var dateStr= from+" to "+to;
-    $("#date-range").val(dateStr);
+    $("#date-range").html(dateStr);
+    $('#date-range').data('dateRangePicker').setDateRange(from,to);
     drawGraphs();
 })
 
 //week picker
 $('#week-btn').on('click',function(){
-console.log(currentDay)
     var to = convertTimeString(currentDay);
     var from = convertTimeString(currentDay-604800000);
     var dateStr= from+" to "+to;
-    $("#date-range").val(dateStr);
+    $("#date-range").html(dateStr);
+    $('#date-range').data('dateRangePicker').setDateRange(from,to);
+    drawGraphs();
+})
+
+//month picker
+$('#month-btn').on('click',function(){
+
+    var to = convertTimeString(currentDay);
+    var from = convertTimeString(currentDay-(604800000*4));
+    var dateStr= from+" to "+to;
+    $("#date-range").html(dateStr);
+    $('#date-range').data('dateRangePicker').setDateRange(from,to);
     drawGraphs();
 })
 
@@ -54,7 +67,7 @@ $('#date-range').dateRangePicker(
     {
          var from = convertDate(obj.date1);
          var to = convertDate(obj.date2);
-         $('#date-range').val(from + " to "+ to);
+         $('#date-range').html(from + " to "+ to);
          drawGraphs();
     })
     .bind('datepicker-close',function()
@@ -63,6 +76,7 @@ $('#date-range').dateRangePicker(
 
     //setting default date
     $('#date-range').data('dateRangePicker').setDateRange(from,to);
+    $('#date-range').html($('#date-range').val())
 
 
 $('#date-range').click(function (event) {
@@ -91,3 +105,8 @@ var formatTimeChunk = function (t) {
     }
     return t;
 };
+
+$('body').on('click', '.btn-group button', function (e) {
+    $(this).addClass('active');
+    $(this).siblings().removeClass('active');
+});

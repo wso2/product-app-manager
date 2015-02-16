@@ -94,7 +94,7 @@ var drawSubscribedAPIsByUsers = function(response,usageByContext) {
             states.push(parsedResponse[i][0]);
         }
 
-    $('input.typeahead').typeahead({
+    $('input.type-ahead').typeahead({
         hint: true,
         highlight: true,
         minLength: 1
@@ -103,7 +103,7 @@ var drawSubscribedAPIsByUsers = function(response,usageByContext) {
         displayKey: 'value',
         source: substringMatcher(states)
     });
-    $('.typeahead.input-lg').siblings('input.tt-hint').addClass('hint-large');
+    $('.type-ahead.input-lg').siblings('input.tt-hint').addClass('hint-large');
 
     tableStatement ='';
     rawStatement='';
@@ -151,7 +151,7 @@ var drawSubscribedAPIsByUsers = function(response,usageByContext) {
         if (parsedResponse.length == 0) {
 
             $('#webAppTable2').hide();
-            $('#placeholder2').append($('<span class="label label-info">No data available</span>'));
+            $('#placeholder2').html('<h1 class="no-data-heading">No data available</h1>');
 
         }else{
             $('#placeholder2').append($dataTable);
@@ -278,11 +278,13 @@ var drawSubscribedAPIsByUsers = function(response,usageByContext) {
                                     ];
                                 }
                             }
+
                         }
                     }
                 }
             }
         }
+
     });
 
 

@@ -48,9 +48,9 @@ h2.exp_col i {
 
 
 .add-on-cal {
-    right: 17px;
+    right: 26px;
     position: absolute;
-    top: 9px;
+    top: 14px;
 }
 
 .ovrd-padd {
@@ -78,8 +78,7 @@ h2.exp_col i {
 }
 
 #searchUserForm{
-    padding-top:30px;
-    padding-bottom:30px;
+    float: right;
 }
 
 

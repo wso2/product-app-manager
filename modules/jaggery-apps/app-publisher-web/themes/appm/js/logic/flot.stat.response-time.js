@@ -38,13 +38,31 @@ function drawGraphs() {
 var drawAPIResponseTime = function(response) {
 
     var parsedResponse = JSON.parse(response);
+    var length=parsedResponse.webapps.length;
 
-    $('').append(
-    $('<table class="table graphTable" id="webAppTable4">' + '<tr>'
-    + '<th>Web App</th>' + '<th>Page</th>'
-    + '<th>Response Time(ms)</th>' + '</tr>' + '</table>'));
+    $('#placeholder41').empty();
+    if(parsedResponse.webapps.length==0){
+            $('#placeholder41').html($('<h1 class="no-data-heading">No data available</h1>'));
+    }else{
 
-    var tableStatement = '';
+        var $dataTable =$('<table class="display" width="100%" cellspacing="0" id="apiSelectTable"></table>');
+        	    $dataTable.append($('<thead class="tableHead"><tr>'+
+        	                            '<th width="10%"></th>'+
+        	                            '<th>API</th>'+
+        	                            '<th>Response Time(ms)</th>'+
+
+        	                        '</tr></thead>'));
+
+    	var filterValues=[];
+        var filterData=[];
+        var defaultFilterValues=[];
+        var defaultChartData=[];
+
+        $('#checkboxContainer').append($dataTable);
+        $('#checkboxContainer').show();
+
+        var state_array =[];
+
 
     responsetimeCount =0;
     var timedatastructure=[];
@@ -60,9 +78,50 @@ var drawAPIResponseTime = function(response) {
         responsetimeCount =0;
     }
 
+
+    for(var n=0;n<webappdatasructure.length;n++){
+
+            if(n<20){
+                $dataTable.append($('<tr><td >'
+                                            +'<input name="item_checkbox"  checked   id='+n+'  type="checkbox"  data-item='+webappdatasructure[n][1] +' class="inputCheckbox" />'
+                                            +'</td>'
+                                            +'<td style="text-align:left;"><label for='+n+'>'+webappdatasructure[n][1] +'</label></td>'
+                                            +'<td style="text-align:left;"><label for='+n+'>'+timedatastructure[n][0] +'</label></td></tr>'));
+
+                filterValues.push(webappdatasructure[n][1]);
+                filterData.push(timedatastructure[n][0]);
+                state_array.push(true);
+                defaultFilterValues.push([n,webappdatasructure[n][1]]);
+                defaultChartData.push([timedatastructure[n][0],n]);
+
+            }else{
+
+                $dataTable.append($('<tr><td >'
+                                            +'<input name="item_checkbox" id='+n+'  type="checkbox"  data-item='+webappdatasructure[n][1] +' class="inputCheckbox" />'
+                                            +'</td>'
+                                            +'<td style="text-align:left;"><label for='+n+'>'+webappdatasructure[n][1] +'</label></td>'
+                                            +'<td style="text-align:left;"><label for='+n+'>'+timedatastructure[n][0] +'</label></td></tr>'));
+
+                filterValues.push(webappdatasructure[n][1]);
+                filterData.push(timedatastructure[n][0]);
+                state_array.push(false);
+            }
+        }
+    $('#checkboxContainer').append($dataTable);
+        $('#checkboxContainer').show();
+        $('#apiSelectTable').DataTable({
+
+            "order": [[ 2, "desc" ]],
+            "aoColumns": [
+            { "bSortable": false },
+            null,
+            null
+            ],
+        });
+
     // BAR CHART
     var dataset = [{
-        data: timedatastructure,
+        data: defaultChartData,
         color: "#5482FF"
     }];
 
@@ -79,29 +138,29 @@ var drawAPIResponseTime = function(response) {
             horizontal : true,
         },
         xaxis: {
-            axisLabel: "Response Time (ms)",
-            axisLabelUseCanvas: true,
+            axisLabel: "<b>Response Time (ms)</b>",
+            axisLabelUseCanvas: false,
             axisLabelFontSizePixels: 12,
             axisLabelFontFamily: 'Verdana, Arial',
-            axisLabelPadding: 10
+            axisLabelPadding: 20
         },
         yaxis: {
             axisLabel: "Web App",
             axisLabelUseCanvas: true,
             axisLabelFontSizePixels: 12,
-            axisLabelFontFamily: 'Verdana, Arial',
             axisLabelPadding: 3,
-            ticks: webappdatasructure
+            ticks: defaultFilterValues
         },
         grid: {
             clickable: true,
             hoverable: true,
-            borderWidth: 2,
+            borderWidth: 0.5,
+            borderColor: {left: "#bdbdbd", left: "#bdbdbd"},
             backgroundColor: { colors: ["#ffffff", "#EDF5FF"] }
         }
     });
 
-    //tooltip
+   // tooltip
     var previousPoint = null,
     previousLabel = null;
 
@@ -111,8 +170,9 @@ var drawAPIResponseTime = function(response) {
             display: 'none',
             top: y - 40,
             left: x - 120,
-            border: '2px solid ' ,
+            border: '1px solid #bdbdbd' ,
             color: 'black',
+            backgroundColor:'white',
             font: '12px sans-serif',
             padding: 5,
             opacity: 0.9
@@ -154,6 +214,76 @@ var drawAPIResponseTime = function(response) {
             }
         }
     });
+
+	$('#apiSelectTable').on( 'change', 'input.inputCheckbox', function () {
+
+          var id =  $(this).attr('id');
+          var check=$(this).is(':checked');
+          var tickValue= $(this).attr('data-item');
+          var draw_y_axis = []
+          var draw_x_axis = []
+
+            if(check){
+                state_array[id] =true;
+            }else{
+                state_array[id] =false;
+            }
+
+            var y_iter = 0
+            $.each( filterData ,function(index, value){
+                if(state_array[index]){
+                    draw_y_axis.push([value,y_iter]);
+                    y_iter++
+                }
+            });
+
+            var x_iter = 0
+            $.each( filterValues ,function(index, value){
+                if(state_array[index]){
+                    draw_x_axis.push([x_iter,value]);
+                    x_iter++
+                }
+            });
+
+            // BAR CHART
+            onCheckDataset = [{ data: draw_y_axis, color: "#5482FF" }];
+                $.plot($("#placeholder41"), onCheckDataset, {
+                    series: {
+                        bars: {
+                            show: true,
+                            clickable: true
+                        }
+                    },
+                    bars: {
+                        align: "center",
+                        barWidth : 0.5,
+                        horizontal : true,
+                    },
+                    xaxis: {
+                        axisLabel: "<b>Response Time (ms)</b>",
+                        axisLabelUseCanvas: false,
+                        axisLabelFontSizePixels: 12,
+                        axisLabelFontFamily: 'Verdana, Arial',
+                        axisLabelPadding: 20
+                    },
+                    yaxis: {
+                        axisLabel: "Web App",
+                        axisLabelUseCanvas: true,
+                        axisLabelFontSizePixels: 12,
+                        axisLabelFontFamily: 'Verdana, Arial',
+                        axisLabelPadding: 3,
+                        ticks: draw_x_axis
+                    },
+                    grid: {
+                        clickable: true,
+                        hoverable: true,
+                        borderWidth: 0.5,
+                        borderColor: {left: "#bdbdbd", left: "#bdbdbd"},
+                        backgroundColor: { colors: ["#ffffff", "#EDF5FF"] }
+                    }
+                });
+            });
+    }
 }
 
 var onDateSelected = function() {

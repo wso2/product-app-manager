@@ -133,6 +133,26 @@ function updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrl
             "objPartialMappings": objPartialMappings
         },
         success: function (data) {
+            var policyPartialsMapping = [];
+            var objPartialMappingsParsed = JSON.parse(objPartialMappings);
+
+            for(var i=0; i < objPartialMappingsParsed.length; i++){
+                var POLICY_PARTIAL_ID = objPartialMappingsParsed[i].entitlementPolicyPartialId;
+                var EFFECT = objPartialMappingsParsed[i].effect;
+                policyPartialsMapping.push({
+                    "POLICY_GRP_ID": editedPolicyGroup,
+                    "POLICY_PARTIAL_ID": POLICY_PARTIAL_ID,
+                    "EFFECT": EFFECT
+                });
+            }
+            for(var i=0; i<policyGroupsArray.length;i++){
+                if(policyGroupsArray[i].policyGroupId == editedPolicyGroup){
+                    policyGroupsArray[i].throttlingTier= throttlingTier;
+                    policyGroupsArray[i].anonymousAccessToUrlPattern=anonymousAccessToUrlPattern;
+                    policyGroupsArray[i].userRoles=userRoles;
+                    policyGroupsArray[i].policyPartials= JSON.stringify(policyPartialsMapping);
+                }
+            }
             updatePolicyGroupPartial(policyGroupsArray);
             showPolicyGroupNotification("Policy Group - " + policyGroupName + " updated successfully", "alert-success");
 
@@ -198,6 +218,7 @@ function savePolicyGroupData(isSaveAndClose) {
         }
         else {
             updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions), isSaveAndClose);
+
             updatePolicyGroupPartialXACMLPolicies($("#uuid").val());
         }
     }
@@ -440,7 +461,7 @@ function drawPolicyGroupsDynamically() {
 }
 
 function updatePolicyGroupPartialXACMLPolicies(uuid){
-    policyGroupsArray = [];
+    var policyGroupsArrayTemp = [];
     $.ajax({
         url: '/publisher/api/entitlement/get/webapp/id/from/entitlements/uuid/' + uuid,
         type: 'GET',
@@ -456,8 +477,7 @@ function updatePolicyGroupPartialXACMLPolicies(uuid){
                 async: false,
                 success: function (data) {
                     for (var i = 0; i < data.length; i++) {
-
-                        policyGroupsArray.push({
+                        policyGroupsArrayTemp.push({
                             policyGroupId: data[i].policyGroupId,
                             policyGroupName: data[i].policyGroupName,
                             throttlingTier: data[i].throttlingTier,
@@ -466,6 +486,7 @@ function updatePolicyGroupPartialXACMLPolicies(uuid){
                             policyPartials: data[i].policyPartials
                         })
                     }
+                    policyGroupsArray = policyGroupsArray.concat(policyGroupsArrayTemp).unique();
                 },
                 error: function () {
                 }
@@ -475,3 +496,19 @@ function updatePolicyGroupPartialXACMLPolicies(uuid){
         }
     });
 }
+
+/**
+ * Use to merge array with unique
+ * @returns {Array}
+ */
+Array.prototype.unique = function() {
+    var a = this.concat();
+    for(var i=0; i<a.length; ++i) {
+        for(var j=i+1; j<a.length; ++j) {
+            if(a[i].policyGroupId === a[j].policyGroupId)
+                a.splice(j--, 1);
+        }
+    }
+
+    return a;
+};
