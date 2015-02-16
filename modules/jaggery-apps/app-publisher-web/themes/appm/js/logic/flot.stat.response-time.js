@@ -42,7 +42,7 @@ var drawAPIResponseTime = function(response) {
     var length=parsedResponse.length;
 
     $('#placeholder41').empty();
-    if(length==0){
+    if(parsedResponse.webapps.length==0){
             $('#placeholder41').html($('<h1 class="no-data-heading">No data available</h1>'));
     }else{
 
