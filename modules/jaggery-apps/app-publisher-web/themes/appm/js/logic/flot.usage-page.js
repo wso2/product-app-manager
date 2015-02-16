@@ -48,6 +48,7 @@ function drawGraphs() {
     $('.btn-remove').on('click', function () {
         $(this).parents('.graph-maximized').removeClass('graph-maximized');
         $('.backdrop').hide();
+        $('.widget-head').hide();
     });
 
 }
@@ -172,6 +173,7 @@ var drawAPIUsageByPage = function (response) {
             var option
             $("#placeholder51").parents('.widget').addClass('graph-maximized');
             $('.backdrop').show();
+            $('.widget-head').show();
             $('#checkboxContainer').hide();
 
             $('.btn-remove').on('click', function () {
