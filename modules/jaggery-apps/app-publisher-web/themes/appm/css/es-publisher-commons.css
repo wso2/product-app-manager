@@ -1616,3 +1616,7 @@ td#buttonTd a {
 .menu-item {
     min-height: 70px;
 }
+
+.inner-level{
+    margin-left: 30px;
+}
