@@ -154,7 +154,8 @@ var drawAPIResponseTime = function(response) {
         grid: {
             clickable: true,
             hoverable: true,
-            borderWidth: 2,
+            borderWidth: 0.5,
+            borderColor: {left: "#bdbdbd", left: "#bdbdbd"},
             backgroundColor: { colors: ["#ffffff", "#EDF5FF"] }
         }
     });
@@ -169,8 +170,9 @@ var drawAPIResponseTime = function(response) {
             display: 'none',
             top: y - 40,
             left: x - 120,
-            border: '2px solid ' ,
+            border: '1px solid #bdbdbd' ,
             color: 'black',
+            backgroundColor:'white',
             font: '12px sans-serif',
             padding: 5,
             opacity: 0.9
@@ -275,7 +277,8 @@ var drawAPIResponseTime = function(response) {
                     grid: {
                         clickable: true,
                         hoverable: true,
-                        borderWidth: 2,
+                        borderWidth: 0.5,
+                        borderColor: {left: "#bdbdbd", left: "#bdbdbd"},
                         backgroundColor: { colors: ["#ffffff", "#EDF5FF"] }
                     }
                 });
