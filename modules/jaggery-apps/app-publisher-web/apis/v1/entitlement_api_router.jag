@@ -98,6 +98,11 @@ require('/modules/publisher.js').exec(function(ctx) {
         deletePolicyGroup(context.params.applicationId,context.params.policyGroupId);
     });
 
+    routeManager.register('GET', 'publisher', '/publisher/api/entitlement/get/all/available/java/policy/handlers/details/list', function (context) {
+        var javaPolicyList = getAvailableJavaPolicyList();
+        print(javaPolicyList);
+    });
+
     /**
      * Returns external entitlement policy for the given policy id.
      */
@@ -220,6 +225,15 @@ require('/modules/publisher.js').exec(function(ctx) {
     function deletePolicyGroup(applicationId,policyGroupId) {
         appMDAOObj.deletePolicyGroup(applicationId,policyGroupId);
     }
+
+    /**
+     * Get the list of all available Java Policies
+     */
+    function getAvailableJavaPolicyList() {
+        return appMDAOObj.getAvailableJavaPolicyList();
+    }
+
+
 
     function createResponseObject(object) {
         if (object !== null) {
