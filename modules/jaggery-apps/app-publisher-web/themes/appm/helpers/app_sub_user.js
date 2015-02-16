@@ -6,6 +6,6 @@ var resources = function (page,meta) {
             'flot/jquery.flot.orderBars.js','flot/excanvas.js','flot/jquery.flot.tooltip.js','jquery.dialogextend.js',
             'logic/left-nav.js', 'datatables/dataTables.bootstrap.js'],
         css: ['jquery.dataTables.css','flot-graphs.css','datepicker/daterangepicker.css','search-container.css',
-            'nv.d3.css', 'es_statistics.css', 'datatables/dataTables.bootstrap.css']
+            'nv.d3.css', 'datatables/dataTables.bootstrap.css','es_statistics.css']
     };
 };

@@ -328,7 +328,15 @@
 
 input#search {
     vertical-align: middle !important;
+    background-color:none
+
 }
 .tt-dropdown-menu {
     width: 272px !important;
+}
+
+#apiSelectTable thead .sorting_asc:after,#apiSelectTable thead .sorting_asc:before,
+#apiSelectTable thead .sorting_desc:after,#apiSelectTable thead .sorting_desc:before,
+#webAppTable2 thead .sorting_asc:after,#webAppTable2 thead .sorting_desc:after {
+    display:none;
 }
