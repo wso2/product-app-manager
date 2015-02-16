@@ -61,6 +61,10 @@ $( document ).ready(function() {
         }
     });
 
+    //load all available java policy list from DB
+    loadAvailableJavaPolicies();
+
+
 
     $("#add_resource").click(function () {
 
@@ -171,6 +175,7 @@ $( document ).ready(function() {
     })
 
     $("#resource_tbody").trigger("draw");
+
 
 });
 
