@@ -2,8 +2,6 @@ var tiers ={}; //contains Throttling tier details
 var throttlingTierControlBlock; //html formatted block for throttling tiers list
 
 
-
-
 $( document ).ready(function() {
 
     $("#overview_context").attr('maxlength','200');
@@ -140,7 +138,6 @@ $( document ).ready(function() {
         invalidateEntitlementPolicy(i);
 
         $("#resource_tbody").trigger("draw");
-        console.log(RESOURCES_1);
     });
 
     $("#resource_tbody").on("draw", function () {
@@ -167,6 +164,11 @@ $( document ).ready(function() {
         }
     });
 
+
+    //load all available java policy list from DB
+    loadAvailableJavaPolicies();
+
+
     $(document).on("click", ".add_entitlement_policy", function () {
         var resourceIndex = $(this).data('index');
         preparePolicyEditorInEditMode(resourceIndex);
@@ -183,6 +185,8 @@ $( document ).ready(function() {
     })
 
     $("#resource_tbody").trigger("draw");
+
+
 });
 
 // NOTE : This function is used as a workaround for a bug in registry model import and export.
@@ -228,7 +232,7 @@ function setPolicyGroupValue() {
 
 /**
  * load policy group details and policy partial details
- * @param uuid
+ * @param uuid : Application UUID
  */
 function loadPolicyGroupData(uuid) {
     $.ajax({
@@ -295,3 +299,4 @@ function loadPolicyGroupData(uuid) {
         }
     });
 }
+

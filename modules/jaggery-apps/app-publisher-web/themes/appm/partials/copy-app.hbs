@@ -65,6 +65,33 @@
                         </tbody>
                      </table>
                   </fieldset>
+
+		  <fieldset style="display:none;">
+		  <div class="wr-section">
+                         <button id="btn-add-policy-group" class="btn btn-default pull-right" data-toggle='modal' data-target='#policy-group-editor' type="button">Add Policy Group</button>
+                         <h2 class="exp_col"><i class="icon-chevron-sign-right icon"></i>Policy Groups <span
+                                 class="label-required">*</span></h2>
+                         <div id="wr-overview" style="display:block">
+
+                             <fieldset>
+                                 <input type='hidden' value="[]" name="uritemplate_policyPartialIdstemp" id="uritemplate_policyPartialIdstemp" />
+                                 <input type='hidden' value="[]" name="uritemplate_policyGroupIds" id="uritemplate_policyGroupIds" />
+                                 <table class="table table-striped" id="policyGroupsTable">
+                                     <thead>
+                                     <tr>
+                                         <th>Policy Group Name</th>
+                                         <th>Action</th>
+                                     </tr>
+                                     </thead>
+                                     <tbody>
+
+                                     </tbody>
+                                 </table>
+                             </fieldset>
+                         </div>
+                     </div>
+		    </fieldset>
+
                   <fieldset style="display:none;">
                      <legend style="padding-top: 40px;">Web Application
                         Resources
@@ -254,6 +281,7 @@
       </div>
    </div>
    {{> entitlement-policy-editor}}
+   {{> policy-group-editor}}
    <div class="modal fade" id="messageModal1" style="display:none;"></div>
    <div id="confirmation-data1" style="display:none;">
       <div class="modal-header">
