@@ -90,6 +90,7 @@ var drawAPIUsageByUser = function(response) {
                         API:app
                     });
 	}
+	$('.graph-container').html('');
     var svg = dimple.newSvg(".graph-container", 1000, 700);
     chart = new dimple.chart(svg, data);
     chart.setBounds("10%", "10%", "75%", "60%");
@@ -105,7 +106,7 @@ var drawAPIUsageByUser = function(response) {
 
 
 
-    //new code
+
     var filterValues = dimple.getUniqueValues(data, "API");
 
     var $dataTable =$('<table class="display" width="100%" cellspacing="0" id="apiSelectTable"></table>');
@@ -129,7 +130,8 @@ var drawAPIUsageByUser = function(response) {
                         $('.graph-container').html('<h1 class="no-data-heading">No data available</h1>');
 
                     } else {
-                        $('.graph-container').html('');
+
+                        $('.graph-container').show();
                         $('#tableContainer').append($dataTable);
                         $('#tableContainer').show();
                         $('#apiSelectTable').DataTable({
