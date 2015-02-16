@@ -158,76 +158,59 @@ var drawAPIUsageByPage = function(response) {
                }
             $("#placeholder51").UseTooltip();
 
+
 	$("#placeholder51").bind("plotclick", function(event, pos, item) {
 
 		if (item!=null){
-				$(this).parents('.widget').addClass('graph-maximized');
-				$('.backdrop').show();
-				$('#checkboxContainer').hide();
+        		                var numbers =[]
+                                var option
+                                $("#placeholder51").parents('.widget').addClass('graph-maximized');
+                                $('.backdrop').show();
+                                $('#checkboxContainer').hide();
 
-                $('.btn-remove').on('click',function(){
-                 $('#checkboxContainer').show();
-                });
+                                                $('.btn-remove').on('click',function(){
+                                                 $('#checkboxContainer').show();
+                                                });
 
-				var x = item.datapoint[0];
-				var label = item.series.xaxis.ticks[x].label;
-				var webappPage = [];
-				var webappPageCount = [];
+                                var x = item.datapoint[0];
 
-				for (t = 0; t < parsedResponse.webappDeatails.length; t++) {
-					if (label == parsedResponse.webappDeatails[t][0]) {
-						webappPage = parsedResponse.webappDeatails[t][1];
-						webappPageCount = parsedResponse.webappDeatails[t][2]
-					}
-				}
+                                 label = item.series.xaxis.ticks[x].label;
 
-				var max = 0;
-				for (t = 0; t < webappPageCount.length; t++) {
-					if (max < webappPageCount[t][0]) {
-						max = webappPageCount[t][0];
-					}
-				}
+                                for ( var i = 0; i < parsedResponse.webapp_.length; i++) {
+                                    var count = 0;
+                                    var app ='';
 
-				max = max + 10;
+                                    if(label == (parsedResponse.webapp_[i][0]).replace(/\s+/g, '')){
 
-				var data = webappPageCount;
-				var dataset = [ {
-					data : data,
-					color : "#5482FF"
-				} ];
-				var ticks = webappPage;
+                                        for ( var j = 0; j < parsedResponse.webapp_[i][1].length; j++) {
 
-				var options = {
-					series : {
-						bars : {
-							show : true,
-							horizontal : true,
+                                            numbers.push(parsedResponse.webapp_[i][1][j][0])
 
-						}
-					},
-					bars : {
-						align : "center",
-						barWidth : 0.5
-					},
-					xaxis : {
-		                axisLabelUseCanvas :false,
-		                axisLabel : "<b>Total Request Count</b>",
-						reserveSpace : true,
-						labelWidth : 150,
-						min : 0,
-						max : max
-					},
-					yaxis : {
-						ticks : ticks,
-						tickLength : 0,
-						axisLabel : "Accessed Page",
+                                        }
 
-					}
-				};
-				$.plot($("#placeholder52"), dataset, options);
-				//$('#checkboxContainer').hide();
-		}
+                                    }
+
+                                }
+                                var option ;
+
+                                for (i=0;i<numbers.length;i++){
+                                option += '<option value="'+ numbers[i] + '">' + numbers[i] + '</option>';
+                                }
+                                $('#items').html(option);
+                                 var e = document.getElementById("items");
+                                var strUser = e.options[e.selectedIndex].value;
+                    drawPopupChart(parsedResponse,label,strUser);
+
+                }
 	});
+
+	    $('#items').change(function(){
+
+                var e = document.getElementById("items");
+            var strUser = e.options[e.selectedIndex].value;
+            drawPopupChart(parsedResponse,label,strUser);
+
+            });
 
 	$('#apiSelectTable').on( 'change', 'input.inputCheckbox', function () {
           var id =  $(this).attr('id');
@@ -356,6 +339,129 @@ function clearTables() {
     $('#webAppTable3').remove();
     $('#webAppTable4').remove();
     $('#webAppTable5').remove();
+
+}
+function drawPopupChart(parsedResponse,label,strUser){
+
+            var webappPage = [];
+            var webappPageCount = [];
+            for ( var i = 0; i < parsedResponse.webapp_.length; i++) {
+
+                var app ='';
+
+                if(label == (parsedResponse.webapp_[i][0]).replace(/\s+/g, '')){
+
+                var arr=[];
+
+
+                    for ( var j = 0; j < parsedResponse.webapp_[i][1].length; j++) {
+
+                        if(strUser == (parsedResponse.webapp_[i][1][j][0]).replace(/\s+/g, '')){
+
+                            var newArr = [],found, x, y;
+
+                            var maximumUsers = parsedResponse.webapp_[i][1][j][1].length;
+
+                            var origLen = parsedResponse.webapp_[i][1][j][1].length,
+
+                            maxrowspan = parsedResponse.webapp_[i][1][j][1].length;
+
+
+                            for ( var k = 0; k < maximumUsers; k++) {
+
+                                found = undefined;
+
+                                for (y = 0; y < newArr.length; y++) {
+
+                                    if (parsedResponse.webapp_[i][1][j][1][k][0] === newArr[y]) {
+                                        found = true;
+
+                                        break;
+                                    }
+                                }
+                                if (!found) {
+                                    newArr.push(parsedResponse.webapp_[i][1][j][1][k][0]);
+                                }
+
+                            }
+                            for(var l = 0; l < newArr.length; l++){
+                            var allcount=0;
+                                for ( var k = 0; k < maximumUsers; k++) {
+                                    if(newArr[l] == parsedResponse.webapp_[i][1][j][1][k][0]){
+
+
+                                            allcount = Number(allcount)+Number(parsedResponse.webapp_[i][1][j][1][k][1]);
+                                        }
+
+                                }
+                                webappPageCount.push([allcount,l]);
+                            }
+
+
+
+                        }
+
+                    }
+
+
+                }
+
+            }
+
+            for(p = 0; p < newArr.length; p++){
+                webappPage.push([p,newArr[p]])
+            }
+
+
+
+            var max = 0;
+            for (t = 0; t < webappPageCount.length; t++) {
+                if (max < webappPageCount[t][0]) {
+                    max = webappPageCount[t][0];
+                }
+            }
+
+            max = max + 10;
+
+
+            var data = webappPageCount;
+
+            var dataset = [ {
+                data : data,
+                color : "#5482FF"
+            } ];
+
+            var ticks = webappPage;
+
+            var options = {
+                series : {
+                    bars : {
+                    show : true,
+                    horizontal : true,
+
+                    }
+                },
+                bars : {
+                    align : "center",
+                    barWidth : 0.5
+                },
+                xaxis : {
+                    axisLabelUseCanvas :false,
+                    axisLabel : "<b>Total Request Count</b>",
+                    reserveSpace : true,
+                    labelWidth : 150,
+                    min : 0,
+                    max : max
+                },
+                yaxis : {
+                    ticks : ticks,
+
+                    tickLength : 0,
+                    axisLabel : "Accessed Page",
+
+                }
+            };
+            $.plot($("#placeholder52"), dataset, options);
 
 }
 

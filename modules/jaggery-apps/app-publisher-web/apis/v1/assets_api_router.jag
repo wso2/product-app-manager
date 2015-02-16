@@ -90,7 +90,7 @@ var usage = [];
                     if(webappVersionIndex == -1){
                         var requestCount = [];
 
-                        webapps[webappIndex][1].push([usage[x].version,usage[x].count]);
+                        webapps[webappIndex][1].push([usage[x].version,usage[x].count,usage[x].uuid]);
                     }
                     else{
                         webapps[webappIndex][1][webappVersionIndex][1].push([usage[x].userId]);
@@ -185,6 +185,7 @@ var usage = [];
 			usage = appMgtProviderObj.getAPIUsageByUser("__all_providers__",startDate,endDate);
 
 			usage = parse(stringify(usage));
+
 
 
 			function orderByCountAscending(a, b) {
@@ -394,8 +395,67 @@ var usage = [];
                 webappDetailsIndex = -1;
             }
 
+
+
+
+            var webapp = [];
+            			for(x=0;x<usage.length;x++){
+
+            				var webappIndex = -1;
+            				var webappVersionIndex = -1;
+
+            				for(y=0;y<webapp.length;y++){
+            					if(webapp[y][0] == usage[x].apiName){
+            						webappIndex = y;
+            						var z;
+            						for(z=0;z<webapp[y][1].length;z++){
+            							if(webapp[y][1][z][0] == usage[x].version){
+            								webappVersionIndex = z;
+            								break;
+            							}
+            						}
+            						if((webappVersionIndex == -1) && (z == webapps[y].length)){
+            							break;
+            						}
+            					}
+            				}
+
+            				if(webappIndex == -1){
+            					var version = [];
+            					var requestCount = [];
+            					requestCount.push([usage[x].referer,usage[x].count.toString()]);
+            					version.push([usage[x].version,requestCount]);
+            					webapp.push([usage[x].apiName,version]);
+            				}else{
+            					if(webappVersionIndex == -1){
+            						var requestCount = [];
+            						requestCount.push([usage[x].referer,usage[x].count.toString()]);
+            						webapp[webappIndex][1].push([usage[x].version,requestCount]);
+            					}
+            					else{
+            						webapp[webappIndex][1][webappVersionIndex][1].push([usage[x].referer,usage[x].count.toString()]);
+            					}
+            				}
+
+            			}
+
+            			if (usage == null) {
+            				obj = {
+            					error:true
+            				};
+            			} else {
+            				obj = {
+            					error:false,
+            					webapp:webapp
+            				};
+            			}
+
+
+
+
 			webappObject['usage'] = usage;
 			webappObject['webapp'] = webapps;
+			webappObject['webapp_'] = webapp;
 			webappObject['totalPageCount'] = totalPageCount;
 			webappObject['webappDeatails'] = webappDeatails;
 
