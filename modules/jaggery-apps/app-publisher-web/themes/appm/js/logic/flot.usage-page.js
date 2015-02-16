@@ -143,9 +143,9 @@ var drawAPIUsageByPage = function(response) {
                 },
                 grid: {
                     hoverable: true,
-                    borderWidth: 2,
+                    borderWidth: 0.5,
+                     borderColor: {left: "#bdbdbd", left: "#bdbdbd"},
                     clickable : true,
-                    borderWidth : 1,
                     backgroundColor: { colors: ["#ffffff", "#EDF5FF"] }
                 }
             };
@@ -243,20 +243,21 @@ var drawAPIUsageByPage = function(response) {
 
             var options = {
                 series: {
+
                     bars: {
-                        show: true
+                        show: true,
+                        align: "center",
+                        barWidth: 0.3
                     }
                 },
-                bars: {
-                    align: "center",
-                    barWidth: 0.3
-                },
+
                 xaxis: {
 
                     axisLabelUseCanvas :false,
                     axisLabel : "<b>Web Apps</b>",
                     tickLength : 0,
                     axisLabelPadding: 10,
+
                     ticks: draw_x_axis
                 },
                 yaxis: {
@@ -271,9 +272,10 @@ var drawAPIUsageByPage = function(response) {
                 },
                 grid: {
                     hoverable: true,
-                    borderWidth: 2,
+                    borderWidth: 0.5,
+                    borderColor: {left: "#bdbdbd", left: "#bdbdbd"},
                     clickable : true,
-                    borderWidth : 1,
+
                     backgroundColor: { colors: ["#ffffff", "#EDF5FF"] }
                 }
             };
