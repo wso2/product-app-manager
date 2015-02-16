@@ -47,7 +47,9 @@ var module = function () {
 	}
 
     //TODO: Change this method to take WebAppObj as argument instead of passing properties separately.
-    function addToWebApp(uuid,webappProvider, webappName, webappVersion, webappContext, webappTrackingCode,asset, ssoEnabled, idpProviderUrl, saml2SsoIssuer, logoutURL,allowAnonymous) {
+    function addToWebApp(uuid,webappProvider, webappName, webappVersion, webappContext,
+                         webappTrackingCode,asset, ssoEnabled, idpProviderUrl, saml2SsoIssuer,
+                         logoutURL,allowAnonymous, skipGateway) {
 
         var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
         var apiIdentifierObj = new apiIdentifier(webappProvider, webappName, webappVersion);
@@ -70,6 +72,12 @@ var module = function () {
             webAppObj.setAllowAnonymous(false);
         }
 
+        if (skipGateway == "true") {
+            webAppObj.setSkipGateway(true);
+        }
+        else {
+            webAppObj.setSkipGateway(false);
+        }
 
         var appMDAO = Packages.org.wso2.carbon.appmgt.impl.dao.AppMDAO;
         var appMDAOObj = new appMDAO();
@@ -148,6 +156,7 @@ var module = function () {
             var version = model.getField('overview.version').value;
             var contextname = model.getField('overview.context').value;
             var allowAnonymous=model.getField('overview.allowAnonymous').value;
+            var skipGateway = model.getField('overview.skipGateway').value;
 
             if(contextname.charAt(0)!='/'){
                 contextname = '/'+contextname;
@@ -219,7 +228,9 @@ var module = function () {
 
 
             //adding to database
-            addToWebApp(id,provider, name, version, contextname, tracking_code,asset, attributes['sso_singleSignOn'], attributes['sso_idpProviderUrl'], attributes['sso_saml2SsoIssuer'],revisedURL,allowAnonymous);
+            addToWebApp(id,provider, name, version, contextname, tracking_code,asset,
+                        attributes['sso_singleSignOn'], attributes['sso_idpProviderUrl'],
+                        attributes['sso_saml2SsoIssuer'],revisedURL,allowAnonymous, skipGateway);
 
             //Save the id data to the model
             model.setField('*.id', id);

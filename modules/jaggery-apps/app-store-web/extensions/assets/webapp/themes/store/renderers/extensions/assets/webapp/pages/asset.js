@@ -30,6 +30,7 @@ var render = function(theme, data, meta, require) {
                 tenantId : data.tenantId,
                 inDashboard : data.inDashboard,
                 isSubscribed: data.isSubscribed,
+                skipGateway: data.skipGateway,
                 subscriptionInfo : data.subscriptionInfo,
                 isEnterpriseSubscriptionAllowed: data.isEnterpriseSubscriptionAllowed,
                 embedURL : data.embedURL,

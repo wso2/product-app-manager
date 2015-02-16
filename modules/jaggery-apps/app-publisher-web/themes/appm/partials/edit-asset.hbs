@@ -96,6 +96,16 @@
                                        class="col-lg-6 col-sm-12 col-xs-12" name="overview_allowAnonymous"
                                        id="overview_allowAnonymous">
 
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Skip Proxying WebApp:  </label>
+                                    <div class="col-sm-10">
+                                        <input type="checkbox" class="skip_gateway_checkbox">
+                                        </div>
+                                </div>
+
+                                <input type="hidden" required="" value="{{{snoop "fields(name=overview_skipGateway).value" data}}}"
+                                 class="col-lg-6 col-sm-12 col-xs-12" name="overview_skipGateway" id="overview_skipGateway">
+
 
                             </fieldset>
 

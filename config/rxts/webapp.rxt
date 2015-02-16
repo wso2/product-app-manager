@@ -45,6 +45,10 @@
                     <name>Allow Anonymous</name>
                 </field>
 
+	<field type="text">
+            <name>Skip Gateway</name>
+        </field>
+
         <field type="text-area">
             <name>Description</name>
        	</field>
