@@ -38,8 +38,7 @@ function drawGraphs() {
 var drawAPIResponseTime = function(response) {
 
     var parsedResponse = JSON.parse(response);
-    //var parsedResponse=[];
-    var length=parsedResponse.length;
+    var length=parsedResponse.webapps.length;
 
     $('#placeholder41').empty();
     if(parsedResponse.webapps.length==0){
