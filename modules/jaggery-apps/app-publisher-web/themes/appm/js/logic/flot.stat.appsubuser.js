@@ -11,57 +11,56 @@ function drawGraphs() {
     var operation = comps[comps.length - 3];
     var action = 'getSubscriberCountByAPIs';
     var dateRange = $('#date-range').val();
-    var from = dateRange.split('to')[0].trim()+":00";
-    var to = dateRange.split('to')[1].trim()+":00";
+    var from = dateRange.split('to')[0].trim() + ":00";
+    var to = dateRange.split('to')[1].trim() + ":00";
     var userParsedResponse;
 
-     $.ajax({
-            async : false,
-            url : '/publisher/api/assets/' + operation + '/' + type
-                + '/getUsageByContext/',
-            type : 'POST',
-            data : {
-                'startDate' : from,
-                'endDate' : to
-            },
-            success : function(response) {
-                   usageByContext= JSON.parse(response);
+    $.ajax({
+        async: false,
+        url: '/publisher/api/assets/' + operation + '/' + type
+            + '/getUsageByContext/',
+        type: 'POST',
+        data: {
+            'startDate': from,
+            'endDate': to
+        },
+        success: function (response) {
+            usageByContext = JSON.parse(response);
 
-            },
-            error : function(response) {
-                alert('Error occured at statistics graph rendering');
-            }
-        });
-
+        },
+        error: function (response) {
+            alert('Error occured at statistics graph rendering');
+        }
+    });
 
 
     $.ajax({
-        async : false,
-        url : '/publisher/api/assets/' + operation + '/' + type
+        async: false,
+        url: '/publisher/api/assets/' + operation + '/' + type
             + '/getSubscribedAPIsByUsers/',
-        type : 'POST',
-        data : {
-            'startDate' : from,
-            'endDate' : to
+        type: 'POST',
+        data: {
+            'startDate': from,
+            'endDate': to
         },
-        success : function(response) {
+        success: function (response) {
 
-            drawSubscribedAPIsByUsers(response,usageByContext);
+            drawSubscribedAPIsByUsers(response, usageByContext);
         },
-        error : function(response) {
+        error: function (response) {
 
         }
     });
 
 
-            $('.btn-remove').on('click', function() {
-                    $(this).parents('.graph-maximized').removeClass('graph-maximized');
-                    $('.backdrop').hide();
-                });
+    $('.btn-remove').on('click', function () {
+        $(this).parents('.graph-maximized').removeClass('graph-maximized');
+        $('.backdrop').hide();
+    });
 }
 
 
-var drawSubscribedAPIsByUsers = function(response,usageByContext) {
+var drawSubscribedAPIsByUsers = function (response, usageByContext) {
 
     var parsedResponse = JSON.parse(response);
 
@@ -89,10 +88,10 @@ var drawSubscribedAPIsByUsers = function(response,usageByContext) {
             cb(matches);
         };
     };
-    var states=[];
-    for ( var i = 0; i < parsedResponse.length; i++) {
-            states.push(parsedResponse[i][0]);
-        }
+    var states = [];
+    for (var i = 0; i < parsedResponse.length; i++) {
+        states.push(parsedResponse[i][0]);
+    }
 
     $('input.type-ahead').typeahead({
         hint: true,
@@ -105,20 +104,20 @@ var drawSubscribedAPIsByUsers = function(response,usageByContext) {
     });
     $('.type-ahead.input-lg').siblings('input.tt-hint').addClass('hint-large');
 
-    tableStatement ='';
-    rawStatement='';
+    tableStatement = '';
+    rawStatement = '';
     /* Overall Web Application Usage Graph */
-    $( "#target" ).click(function() {
+    $("#target").click(function () {
         getWebAppUsage();
     });
 
     /**
      * Get Web Application Usage
      */
-    function getWebAppUsage(){
+    function getWebAppUsage() {
         $('div#webAppTable2_wrapper.dataTables_wrapper.no-footer').remove();
 
-        var $dataTable =$('<table class="display" width="100%" cellspacing="0" id="webAppTable2" ></table>');
+        var $dataTable = $('<table class="display" width="100%" cellspacing="0" id="webAppTable2" ></table>');
         $dataTable.append($('<thead class="tableHead"><tr >'
             + '<th id ="webApp">Web App</th>'
             + '<th width="10%">App Version</th>'
@@ -129,17 +128,19 @@ var drawSubscribedAPIsByUsers = function(response,usageByContext) {
 
         var detailNumber = 0;
         var rawNumber = 0;
-        for ( var i = 0; i < parsedResponse.length; i++) {
+        for (var i = 0; i < parsedResponse.length; i++) {
 
-            if( parsedResponse[i][0] ==  $("#search").val()){
+            if (parsedResponse[i][0] == $("#search").val()) {
 
-                for ( var j = 0; j < parsedResponse[i][1].length; j++) {
+                for (var j = 0; j < parsedResponse[i][1].length; j++) {
                     numOfVersion = parsedResponse[i][1][j][1].length;
 
-                    for( var t = 0; t < numOfVersion; t++) {
+                    for (var t = 0; t < numOfVersion; t++) {
                         $dataTable.append(
-                            $('<tr id='+rawNumber+'><td id="appName">' +parsedResponse[i][1][j][0] + '</td><td id="appVersion">' + parsedResponse[i][1][j][1][t][0]
-                                + '</td><td>' + parsedResponse[i][1][j][1][t][1] +'</td><td><a  href="#" class="trigger-ajax" id='+detailNumber+'>View History</a>'
+                            $('<tr id=' + rawNumber + '><td id="appName">' + parsedResponse[i][1][j][0] +
+                                '</td><td id="appVersion">' + parsedResponse[i][1][j][1][t][0]
+                                + '</td><td>' + parsedResponse[i][1][j][1][t][1] +
+                                '</td><td><a  href="#" class="trigger-ajax" id=' + detailNumber + '>View History</a>'
                                 + '</td></tr>'));
                         detailNumber++;
                         rawNumber++;
@@ -153,7 +154,7 @@ var drawSubscribedAPIsByUsers = function(response,usageByContext) {
             $('#webAppTable2').hide();
             $('#placeholder2').html('<h1 class="no-data-heading">No data available</h1>');
 
-        }else{
+        } else {
             $('#placeholder2').append($dataTable);
             $('#flot-placeholder').append($('<div id="lineWithFocusChart"><svg style="height:450px;"></svg></div>'));
             $('#placeholder2').show();
@@ -165,22 +166,22 @@ var drawSubscribedAPIsByUsers = function(response,usageByContext) {
     getWebAppUsage();
 
     //ajax call to get hits
-    $("#placeholder2").on("click", ".trigger-ajax",function(){
+    $("#placeholder2").on("click", ".trigger-ajax", function () {
 
-      $(this).parents('.widget').addClass('graph-maximized');
-      $('.backdrop').show();
-      $('#placeholder2').hide();
-      $('#searchUserForm').hide();
+        $(this).parents('.widget').addClass('graph-maximized');
+        $('.backdrop').show();
+        $('#placeholder2').hide();
+        $('#searchUserForm').hide();
 
-      $('.btn-remove').on('click',function(){
-        $('#placeholder2').show();
-        $('#searchUserForm').show();
-        var svg = d3.select("svg");
-        svg.selectAll("*").remove();
-      })
+        $('.btn-remove').on('click', function () {
+            $('#placeholder2').show();
+            $('#searchUserForm').show();
+            var svg = d3.select("svg");
+            svg.selectAll("*").remove();
+        })
 
         var answerid = $(this).attr('id');
-        var test= $(this).closest('tr').attr('id');
+        var test = $(this).closest('tr').attr('id');
 
         function getCell(column, row) {
             var column = $('#' + column).index();
@@ -188,9 +189,9 @@ var drawSubscribedAPIsByUsers = function(response,usageByContext) {
             return row.find('td').eq(column);
         }
 
-        var data =[]
+        var data = []
 
-        for ( var i = 0; i < usageByContext.length; i++) {
+        for (var i = 0; i < usageByContext.length; i++) {
             if (usageByContext[i][0] == $("#search").val() || 'admin') {
                 for (var j = 0; j < usageByContext[i][1].length; j++) {
                     if (usageByContext[i][1][j][0] == getCell('webApp', '' + test + '').html()) {
@@ -210,7 +211,8 @@ var drawSubscribedAPIsByUsers = function(response,usageByContext) {
 
                                         var time = usageByContext[i][1][j][1][t][1][k][1][l][1];
                                         var str = time;
-                                        var d = new Date(str.split(' ')[0].split('-').join(',') + ',' + str.split(' ')[1].split('-').join(','));
+                                        var d = new Date(str.split(' ')[0].split('-').join(',') + ',' +
+                                            str.split(' ')[1].split('-').join(','));
                                         var year = d.getFullYear();
                                         var month = d.getMonth();
                                         var date = d.getDate();
@@ -288,18 +290,17 @@ var drawSubscribedAPIsByUsers = function(response,usageByContext) {
     });
 
 
+    var onDateSelected = function () {
+        clearTables();
+        drawGraphs();
+    }
 
-var onDateSelected = function() {
-    clearTables();
-    drawGraphs();
-}
-
-function clearTables() {
-    $('#webAppTable').remove();
-    $('#webAppTable2').remove();
-    $('#webAppTable3').remove();
-    $('#webAppTable4').remove();
-    $('#webAppTable5').remove();
-}
+    function clearTables() {
+        $('#webAppTable').remove();
+        $('#webAppTable2').remove();
+        $('#webAppTable3').remove();
+        $('#webAppTable4').remove();
+        $('#webAppTable5').remove();
+    }
 
 }
