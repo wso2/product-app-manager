@@ -151,7 +151,7 @@ var drawSubscribedAPIsByUsers = function(response,usageByContext) {
         if (parsedResponse.length == 0) {
 
             $('#webAppTable2').hide();
-            $('#placeholder2').append($('<span class="label label-info">No data available</span>'));
+            $('#placeholder2').html('<h1 class="no-data-heading">No data available</h1>');
 
         }else{
             $('#placeholder2').append($dataTable);

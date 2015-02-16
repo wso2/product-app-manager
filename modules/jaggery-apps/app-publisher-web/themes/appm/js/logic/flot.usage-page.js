@@ -53,100 +53,285 @@ function drawGraphs() {
 
 var drawAPIUsageByPage = function(response) {
 
+    $('#checkboxContainer').empty();
 	var parsedResponse = JSON.parse(response);
-
 	var data = parsedResponse.totalPageCount;
-	var dataset = [ {
-		data : data,
-		color : "#5482FF"
-	} ];
 	var ticks = parsedResponse.webapp;
 
+	var $dataTable =$('<table class="display" width="100%" cellspacing="0" id="apiSelectTable"></table>');
+    	    $dataTable.append($('<thead class="tableHead"><tr>'+
+    	                            '<th width="10%"></th>'+
+    	                            '<th>API</th>'+
+    	                        '</tr></thead>'));
+
+	var filterValues=[];
+    var filterData=[];
+    var defaultFilterValues=[];
+    var defaultChartData=[];
+
+    $('#checkboxContainer').append($dataTable);
+    $('#checkboxContainer').show();
+
+    var state_array =[];
+
+    for(var n=0;n<ticks.length;n++){
+
+        if(n<20){
+            $dataTable.append($('<tr><td >'
+                                        +'<input name="item_checkbox"  checked   id='+n+'  type="checkbox"  data-item='+ticks[n][1] +' class="inputCheckbox" />'
+                                        +'</td>'
+                                        +'<td style="text-align:left;"><label for='+n+'>'+ticks[n][1] +'</label></td></tr>'));
+            filterValues.push(ticks[n][1]);
+            filterData.push(data[n][1]);
+            state_array.push(true);
+            defaultFilterValues.push([n,ticks[n][1]]);
+            defaultChartData.push([n,data[n][1]]);
+        }else{
+
+            $dataTable.append($('<tr><td >'
+                                        +'<input name="item_checkbox" id='+n+'  type="checkbox"  data-item='+ticks[n][1] +' class="inputCheckbox" />'
+                                        +'</td>'
+                                        +'<td style="text-align:left;"><label for='+n+'>'+ticks[n][1] +'</label></td></tr>'));
+            filterValues.push(ticks[n][1]);
+            filterData.push(data[n][1]);
+            state_array.push(false);
+
+        }
+    }
+    $('#checkboxContainer').append($dataTable);
+                    $('#checkboxContainer').show();
+                    $('#apiSelectTable').DataTable({
+                        retrieve: true,
+                        "order": [[ 1, "asc" ]],
+                        "aoColumns": [
+                        { "bSortable": false },
+                        null
+                        ],
+                    });
 
 
-	var options = {
-		series : {
-			bars : {
-				show : true
-			}
-		},
-		bars : {
-			align : "center",
-			barWidth : 0.3
-		},
-		xaxis : {
-            axisLabelUseCanvas :false,
-			axisLabel : "<b>Web Apps</b>",
-			tickLength : 0,
-			ticks : ticks
-		},
-		yaxis : {
-			axisLabel : "Total Request"
 
-		},
-		grid : {
-			clickable : true,
-			borderWidth : 1
-		}
-	};
+    var defaultOptions = {
+                series: {
+                    bars: {
+                        show: true
+                    }
+                },
+                bars: {
+                    align: "center",
+                    barWidth: 0.3
+                },
+                xaxis: {
 
-	$.plot($("#placeholder51"), dataset, options);
-var label;
+                    axisLabelUseCanvas :false,
+                    axisLabel : "<b>Web Apps</b>",
+                    tickLength : 0,
+                    axisLabelPadding: 10,
+                    ticks: defaultFilterValues
+                },
+                yaxis: {
+                    axisLabelUseCanvas: true,
+                    axisLabelFontSizePixels: 12,
+                    axisLabelPadding: 3,
+                    axisLabel: "Total Request",
+
+                },
+                legend: {
+                    noColumns: 0,
+                    labelBoxBorderColor: "#000000",
+                    position: "nw"
+                },
+                grid: {
+                    hoverable: true,
+                    borderWidth: 2,
+                    clickable : true,
+                    borderWidth : 1,
+                    backgroundColor: { colors: ["#ffffff", "#EDF5FF"] }
+                }
+            };
+            defaultDataset = [{ data: defaultChartData, color: "#5482FF" }];
+           if(parsedResponse.usage.length == 0){
+                   $("#placeholder51").html('<h1 class="no-data-heading">No data available</h1>')
+               }else{
+                   $("#placeholder51").html();
+                   $.plot($("#placeholder51"), defaultDataset, defaultOptions);
+               }
+            $("#placeholder51").UseTooltip();
+
+
 	$("#placeholder51").bind("plotclick", function(event, pos, item) {
 
 		if (item!=null){
-		                var numbers =[]
-                        var option
-                        $("#placeholder51").parents('.widget').addClass('graph-maximized');
-                        $('.backdrop').show();
+        		                var numbers =[]
+                                var option
+                                $("#placeholder51").parents('.widget').addClass('graph-maximized');
+                                $('.backdrop').show();
+                                $('#checkboxContainer').hide();
 
-                        var x = item.datapoint[0];
+                                                $('.btn-remove').on('click',function(){
+                                                 $('#checkboxContainer').show();
+                                                });
 
-                         label = item.series.xaxis.ticks[x].label;
+                                var x = item.datapoint[0];
 
-                        for ( var i = 0; i < parsedResponse.webapp_.length; i++) {
-                            var count = 0;
-                            var app ='';
+                                 label = item.series.xaxis.ticks[x].label;
 
-                            if(label == (parsedResponse.webapp_[i][0]).replace(/\s+/g, '')){
+                                for ( var i = 0; i < parsedResponse.webapp_.length; i++) {
+                                    var count = 0;
+                                    var app ='';
 
-                                for ( var j = 0; j < parsedResponse.webapp_[i][1].length; j++) {
+                                    if(label == (parsedResponse.webapp_[i][0]).replace(/\s+/g, '')){
 
-                                    numbers.push(parsedResponse.webapp_[i][1][j][0])
+                                        for ( var j = 0; j < parsedResponse.webapp_[i][1].length; j++) {
+
+                                            numbers.push(parsedResponse.webapp_[i][1][j][0])
+
+                                        }
+
+                                    }
 
                                 }
+                                var option ;
 
-                            }
+                                for (i=0;i<numbers.length;i++){
+                                option += '<option value="'+ numbers[i] + '">' + numbers[i] + '</option>';
+                                }
+                                $('#items').html(option);
+                                 var e = document.getElementById("items");
+                                var strUser = e.options[e.selectedIndex].value;
+                    drawPopupChart(parsedResponse,label,strUser);
 
-                        }
-                        var option ;
+                }
+	});
 
-                        for (i=0;i<numbers.length;i++){
-                        option += '<option value="'+ numbers[i] + '">' + numbers[i] + '</option>';
-                        }
-                        $('#items').html(option);
-                         var e = document.getElementById("items");
-                        var strUser = e.options[e.selectedIndex].value;
+	    $('#items').change(function(){
+
+                var e = document.getElementById("items");
+            var strUser = e.options[e.selectedIndex].value;
             drawPopupChart(parsedResponse,label,strUser);
 
-        }
-    });
+            });
 
-    $('#items').change(function(){
+	$('#apiSelectTable').on( 'change', 'input.inputCheckbox', function () {
+          var id =  $(this).attr('id');
+          var check=$(this).is(':checked');
+          var tickValue= $(this).attr('data-item');
+          var draw_y_axis = []
+          var draw_x_axis = []
 
-        var e = document.getElementById("items");
-    var strUser = e.options[e.selectedIndex].value;
-    drawPopupChart(parsedResponse,label,strUser);
+            if(check){
+                state_array[id] =true;
+            }else{
+                state_array[id] =false;
+            }
 
-    });
+            var y_iter = 0
+            $.each( filterData ,function(index, value){
+                if(state_array[index]){
+                    draw_y_axis.push([y_iter,value]);
+                    y_iter++
+                }
+            });
+
+            var x_iter = 0
+            $.each( filterValues ,function(index, value){
+                if(state_array[index]){
+                    draw_x_axis.push([x_iter,value]);
+                    x_iter++
+                }
+            });
+
+            var options = {
+                series: {
+                    bars: {
+                        show: true
+                    }
+                },
+                bars: {
+                    align: "center",
+                    barWidth: 0.3
+                },
+                xaxis: {
+
+                    axisLabelUseCanvas :false,
+                    axisLabel : "<b>Web Apps</b>",
+                    tickLength : 0,
+                    axisLabelPadding: 10,
+                    ticks: draw_x_axis
+                },
+                yaxis: {
+                axisLabelUseCanvas :true,
+                    axisLabel: "Total Request",
+
+                },
+                legend: {
+                    noColumns: 0,
+                    labelBoxBorderColor: "#000000",
+                    position: "nw"
+                },
+                grid: {
+                    hoverable: true,
+                    borderWidth: 2,
+                    clickable : true,
+                    borderWidth : 1,
+                    backgroundColor: { colors: ["#ffffff", "#EDF5FF"] }
+                }
+            };
+                    dataset = [{ data: draw_y_axis, color: "#5482FF" }];
+
+            $.plot($("#placeholder51"), dataset, options);
+            $("#placeholder51").UseTooltip();
+            });
 
 
 }
+
+var previousPoint = null, previousLabel = null;
+
+$.fn.UseTooltip = function () {
+    $(this).bind("plothover", function (event, pos, item) {
+        if (item) {
+            if ((previousLabel != item.series.label) || (previousPoint != item.dataIndex)) {
+                previousPoint = item.dataIndex;
+                previousLabel = item.series.label;
+                $("#tooltip").remove();
+                var x = item.datapoint[0];
+                var y = item.datapoint[1];
+                var color = item.series.color;
+                showTooltip(item.pageX,
+                item.pageY,
+                color,
+                "<strong>" + item.series.xaxis.ticks[x].label+ " : " + y + "</strong>");
+            }
+        } else {
+            $("#tooltip").remove();
+            previousPoint = null;
+        }
+    });
+};
+
+function showTooltip(x, y, color, contents) {
+    $('<div id="tooltip">' + contents + '</div>').css({
+        position: 'absolute',
+        display: 'none',
+        top: y - 20,
+        left: x - 120,
+        border: '2px solid ' + color,
+        padding: '3px',
+        'font-size': '9px',
+        'border-radius': '5px',
+        'background-color': '#fff',
+        'font-family': 'Verdana, Arial, Helvetica, Tahoma, sans-serif',
+        opacity: 0.9
+    }).appendTo("body").fadeIn(200);
+}
+
 
 var onDateSelected = function() {
     clearTables();
     drawGraphs();
 }
+
 
 function clearTables() {
     $('#webAppTable').remove();

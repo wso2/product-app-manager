@@ -420,6 +420,7 @@ textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[ty
     border-bottom: 1px solid #DADADA;
     color: #828282;
     text-transform: capitalize;
+    min-height: 70px;
 }
 .widget-table {
     font-size: 13px;
@@ -1481,16 +1482,11 @@ input.apply-btn {
 }
 
 #date-range{
-    width: 270px;
-    display: inline;
-    border: none;
-    height: 25px;
-    background-color: whitesmoke;
-    cursor: pointer;
+    min-width: 300px;
 }
 
 .date-picker-wrapper {
-    margin: 13px 23px;
+    margin: 4px 16px;
 }
 
 #pagination{
@@ -1596,4 +1592,27 @@ td#buttonTd a {
 
 #dateRangePickerContainer .date-range, #dateRangePickerContainer .input-append {
     background: none !important;
+}
+
+.pull-left.heading {
+    margin-top: 20px;
+    margin-left: 15px;
+}
+
+.highlighted::after {
+    content: "";
+    position: absolute;
+    top: 22px;
+    right: -14px;
+    bottom: auto;
+    left: auto;
+    border-style: solid;
+    border-width: 15px 0 15px 15px;
+    border-color: transparent #DADADA;
+    display: block;
+    width: 0;
+}
+
+.menu-item {
+    min-height: 70px;
 }
