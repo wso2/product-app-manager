@@ -170,10 +170,12 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
 
         $(this).parents('.widget').addClass('graph-maximized');
         $('.backdrop').show();
+        $('.widget-head').show();
         $('#placeholder2').hide();
         $('#searchUserForm').hide();
 
         $('.btn-remove').on('click', function () {
+            $('.widget-head').hide();
             $('#placeholder2').show();
             $('#searchUserForm').show();
             var svg = d3.select("svg");
