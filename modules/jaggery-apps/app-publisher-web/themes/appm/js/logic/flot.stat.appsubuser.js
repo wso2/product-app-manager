@@ -283,7 +283,7 @@ var drawSubscribedAPIsByUsers = function(response,usageByContext) {
                     }
                 }
             }
-        }s
+        }
 
     });
 
