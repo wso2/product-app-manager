@@ -1482,16 +1482,11 @@ input.apply-btn {
 }
 
 #date-range{
-    width: 270px;
-    display: inline;
-    border: none;
-    height: 25px;
-    background-color: whitesmoke;
-    cursor: pointer;
+    min-width: 300px;
 }
 
 .date-picker-wrapper {
-    margin: 13px 23px;
+    margin: 4px 16px;
 }
 
 #pagination{
