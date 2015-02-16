@@ -58,8 +58,6 @@ var drawAPIUsageByPage = function(response) {
 	var data = parsedResponse.totalPageCount;
 	var ticks = parsedResponse.webapp;
 
-
-
 	var $dataTable =$('<table class="display" width="100%" cellspacing="0" id="apiSelectTable"></table>');
     	    $dataTable.append($('<thead class="tableHead"><tr>'+
     	                            '<th width="10%"></th>'+
@@ -152,7 +150,12 @@ var drawAPIUsageByPage = function(response) {
                 }
             };
             defaultDataset = [{ data: defaultChartData, color: "#5482FF" }];
-            $.plot($("#placeholder51"), defaultDataset, defaultOptions);
+           if(parsedResponse.usage.length == 0){
+                   $("#placeholder51").html('<h1 class="no-data-heading">No data available</h1>')
+               }else{
+                   $("#placeholder51").html();
+                   $.plot($("#placeholder51"), defaultDataset, defaultOptions);
+               }
             $("#placeholder51").UseTooltip();
 
 	$("#placeholder51").bind("plotclick", function(event, pos, item) {
