@@ -41,6 +41,7 @@ $('#month-btn').on('click',function(){
     var from = convertTimeString(currentDay-(604800000*4));
     var dateStr= from+" to "+to;
     $("#date-range").html(dateStr);
+    $('#date-range').data('dateRangePicker').setDateRange(from,to);
     drawGraphs();
 })
 
