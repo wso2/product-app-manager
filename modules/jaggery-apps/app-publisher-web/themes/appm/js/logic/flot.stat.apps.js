@@ -126,10 +126,10 @@ var drawAPIUsageByUser = function(response) {
      }
 
                     if (length == 0) {
-//                        $('.graph-container').html($('<span class="label label-info">No Data available</span>'));
+                        $('.graph-container').html('<h1 class="no-data-heading">No data available</h1>');
 
                     } else {
-
+                        $('.graph-container').html('');
                         $('#tableContainer').append($dataTable);
                         $('#tableContainer').show();
                         $('#apiSelectTable').DataTable({
