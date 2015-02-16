@@ -91,9 +91,10 @@ var drawAPIUsageByUser = function(response) {
                     });
 	}
 	$('.graph-container').html('');
-    var svg = dimple.newSvg(".graph-container", 1000, 700);
+    $('#tableContainer').html('');
+    var svg = dimple.newSvg(".graph-container", 1000, 500);
     chart = new dimple.chart(svg, data);
-    chart.setBounds("10%", "10%", "75%", "60%");
+    chart.setBounds("10%", "10%", "80%", "70%");
     x = chart.addCategoryAxis("x", "API");
 
     y = chart.addMeasureAxis("y", "Subscriber_Count");
