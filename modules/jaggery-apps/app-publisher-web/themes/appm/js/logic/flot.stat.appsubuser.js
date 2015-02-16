@@ -94,7 +94,7 @@ var drawSubscribedAPIsByUsers = function(response,usageByContext) {
             states.push(parsedResponse[i][0]);
         }
 
-    $('input.typeahead').typeahead({
+    $('input.type-ahead').typeahead({
         hint: true,
         highlight: true,
         minLength: 1
@@ -103,7 +103,7 @@ var drawSubscribedAPIsByUsers = function(response,usageByContext) {
         displayKey: 'value',
         source: substringMatcher(states)
     });
-    $('.typeahead.input-lg').siblings('input.tt-hint').addClass('hint-large');
+    $('.type-ahead.input-lg').siblings('input.tt-hint').addClass('hint-large');
 
     tableStatement ='';
     rawStatement='';

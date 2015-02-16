@@ -182,6 +182,7 @@
 
 #placeholder2 {
     height:auto;
+    margin-top: 30px;
 }
 
 #placeholder5 {
@@ -325,3 +326,9 @@
     position: relative;
 }
 
+input#search {
+    vertical-align: middle !important;
+}
+.tt-dropdown-menu {
+    width: 272px !important;
+}
