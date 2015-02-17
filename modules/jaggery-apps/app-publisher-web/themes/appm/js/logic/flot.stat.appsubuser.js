@@ -25,7 +25,9 @@ function drawGraphs() {
             'endDate': to
         },
         success: function (response) {
+
             usageByContext = JSON.parse(response);
+            $('#spinner').hide();
 
         },
         error: function (response) {

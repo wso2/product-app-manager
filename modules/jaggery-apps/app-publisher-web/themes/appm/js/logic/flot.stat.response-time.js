@@ -27,7 +27,9 @@ function drawGraphs() {
             'endDate': to
         },
         success: function (response) {
+
             drawAPIResponseTime(response);
+            $('#spinner').hide();
         },
         error: function (response) {
             alert('Error occured at statistics graph rendering');
