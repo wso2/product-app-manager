@@ -1621,4 +1621,6 @@ td#buttonTd a {
     margin-left: 30px;
 }
 
-
+.skip_gateway_checkbox, .anonymous_checkbox {
+    margin-top: 13px !important;
+}
