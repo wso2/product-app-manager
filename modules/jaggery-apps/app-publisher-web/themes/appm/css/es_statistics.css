@@ -328,7 +328,7 @@
 
 input#search {
     vertical-align: middle !important;
-    background-color:none
+    background:none !important;
 
 }
 .tt-dropdown-menu {
@@ -340,3 +340,21 @@ input#search {
 #webAppTable2 thead .sorting_asc:after,#webAppTable2 thead .sorting_desc:after {
     display:none;
 }
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: red;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+    color:red;
+}
+
+.nv-x .nv-axis, .nv-legend-text, .nv-y{
+    fill:#555
+}
+
