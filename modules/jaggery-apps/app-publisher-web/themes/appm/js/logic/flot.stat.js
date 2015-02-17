@@ -26,7 +26,9 @@ function drawGraphs() {
             'endDate': to
         },
         success: function (response) {
+
             drawSubscriberCountByAPIs(response);
+            $('#spinner').hide();
 
         },
         error: function (response) {
