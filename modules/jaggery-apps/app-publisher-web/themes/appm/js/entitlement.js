@@ -53,6 +53,7 @@ function completeIfInTag(cm) {
 var editor = CodeMirror.fromTextArea(document.getElementById("policy-content"), {
     mode: "xml",
     lineNumbers: true,
+    lineWrapping:true,
     extraKeys: {
         "'<'": completeAfter,
         "'/'": completeIfAfterLt,
