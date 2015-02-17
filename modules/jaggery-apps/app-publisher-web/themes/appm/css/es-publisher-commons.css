@@ -1624,3 +1624,10 @@ td#buttonTd a {
 .skip_gateway_checkbox, .anonymous_checkbox {
     margin-top: 13px !important;
 }
+
+.content-area-cont>.tool-bar-new {
+    background-color: rgb(120, 120, 120);
+    margin-top: -20px;
+    padding-top: 10px;
+    margin-bottom: 30px;
+}
