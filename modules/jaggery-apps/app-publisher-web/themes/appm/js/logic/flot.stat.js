@@ -39,8 +39,8 @@ var drawSubscriberCountByAPIs = function (response) {
 
     $('#pie-chart').empty();
 
-    //var parsedResponse = JSON.parse(response);
-    var parsedResponse= [["app1", [["1.1", 2, "0c22e775-0355-47fe-8070-62bcb05fba16"]]]];
+    var parsedResponse = JSON.parse(response);
+
 
     if (parsedResponse.length > 0) {
         var chartColorScheme = [];
