@@ -56,7 +56,8 @@ function drawGraphs() {
 var drawAPIUsageByPage = function (response) {
 
     $('#checkboxContainer').empty();
-    var parsedResponse = JSON.parse(response);
+    //var parsedResponse = JSON.parse(response);
+    var parsedResponse = {"usage" : [{"apiName" : "Conference Room Booking(alex@wso2.com)", "version" : "1.0.0", "userid" : "jacob@wso2.com", "referer" : "/conf-room-booking/1.0.0", "context" : "/conf-room-booking", "count" : 1}, {"apiName" : "TravelBooking(alex@wso2.com)", "version" : "1.0.0", "userid" : "amanda@wso2.com", "referer" : "/travelbooking/1.0.0", "context" : "/travelbooking", "count" : 1}, {"apiName" : "TravelBooking(alex@wso2.com)", "version" : "1.0.0", "userid" : "beth@wso2.com", "referer" : "/travelbooking/1.0.0", "context" : "/travelbooking", "count" : 2}, {"apiName" : "TravelBooking(alex@wso2.com)", "version" : "1.0.0", "userid" : "john@wso2.com", "referer" : "/travelbooking/1.0.0", "context" : "/travelbooking", "count" : 3}, {"apiName" : "Delivery Top Performer Dashboard(alex@wso2.com)", "version" : "1.0.0", "userid" : "nita@wso2.com", "referer" : "/top-performer-dashboard/1.0.0", "context" : "/top-performer-dashboard", "count" : 37}, {"apiName" : "TravelBooking(alex@wso2.com)", "version" : "1.0.0", "userid" : "amanda@wso2.com", "referer" : "/travelbooking/1.0.0/index.html", "context" : "/travelbooking", "count" : 5}, {"apiName" : "Conference Room Booking(alex@wso2.com)", "version" : "1.0.0", "userid" : "amanda@wso2.com", "referer" : "/conf-room-booking/1.0.0", "context" : "/conf-room-booking", "count" : 45}, {"apiName" : "TravelBooking(alex@wso2.com)", "version" : "1.0.0", "userid" : "john@wso2.com", "referer" : "/travelbooking/1.0.0/index.html", "context" : "/travelbooking", "count" : 4}], "webapp" : [[0.0, "Conference Room Booking(alex@wso2.com)"], [1.0, "TravelBooking(alex@wso2.com)"], [2.0, "Delivery Top Performer Dashboard(alex@wso2.com)"]], "webapp_" : [["Conference Room Booking(alex@wso2.com)", [["1.0.0", [["/conf-room-booking/1.0.0", "1"], ["/conf-room-booking/1.0.0", "45"]]]]], ["TravelBooking(alex@wso2.com)", [["1.0.0", [["/travelbooking/1.0.0", "1"], ["/travelbooking/1.0.0", "2"], ["/travelbooking/1.0.0", "3"], ["/travelbooking/1.0.0/index.html", "5"], ["/travelbooking/1.0.0/index.html", "4"]]]]], ["Delivery Top Performer Dashboard(alex@wso2.com)", [["1.0.0", [["/top-performer-dashboard/1.0.0", "37"]]]]]], "totalPageCount" : [[0.0, 46.0], [1.0, 15.0], [2.0, 37]], "webappDeatails" : [["Conference Room Booking(alex@wso2.com)", [[0.0, "/conf-room-booking/1.0.0"]], [[46.0, 0.0]]], ["TravelBooking(alex@wso2.com)", [[0.0, "/travelbooking/1.0.0"], [1.0, "/travelbooking/1.0.0/index.html"]], [[6.0, 0.0], [9.0, 1.0]]], ["Delivery Top Performer Dashboard(alex@wso2.com)", [[0.0, "/top-performer-dashboard/1.0.0"]], [[37, 0.0]]]]}
     var data = parsedResponse.totalPageCount;
     var ticks = parsedResponse.webapp;
 
@@ -165,8 +166,8 @@ var drawAPIUsageByPage = function (response) {
     }
     $("#placeholder51").UseTooltip();
 
-
     $("#placeholder51").bind("plotclick", function (event, pos, item) {
+
 
         if (item != null) {
             var numbers = []
@@ -184,15 +185,18 @@ var drawAPIUsageByPage = function (response) {
 
             label = item.series.xaxis.ticks[x].label;
 
+
             for (var i = 0; i < parsedResponse.webapp_.length; i++) {
                 var count = 0;
                 var app = '';
 
-                if (label == (parsedResponse.webapp_[i][0]).replace(/\s+/g, '')) {
+                if (label == (parsedResponse.webapp_[i][0])) {
+
 
                     for (var j = 0; j < parsedResponse.webapp_[i][1].length; j++) {
 
                         numbers.push(parsedResponse.webapp_[i][1][j][0])
+
 
                     }
 
@@ -205,8 +209,11 @@ var drawAPIUsageByPage = function (response) {
                 option += '<option value="' + numbers[i] + '">' + numbers[i] + '</option>';
             }
             $('#items').html(option);
+
             var e = document.getElementById("items");
+
             var strUser = e.options[e.selectedIndex].value;
+
             drawPopupChart(parsedResponse, label, strUser);
 
         }
@@ -215,6 +222,7 @@ var drawAPIUsageByPage = function (response) {
     $('#items').change(function () {
 
         var e = document.getElementById("items");
+
         var strUser = e.options[e.selectedIndex].value;
         drawPopupChart(parsedResponse, label, strUser);
 
@@ -361,14 +369,16 @@ function drawPopupChart(parsedResponse, label, strUser) {
 
         var app = '';
 
-        if (label == (parsedResponse.webapp_[i][0]).replace(/\s+/g, '')) {
+        if (label == (parsedResponse.webapp_[i][0])) {
+
 
             var arr = [];
 
 
             for (var j = 0; j < parsedResponse.webapp_[i][1].length; j++) {
 
-                if (strUser == (parsedResponse.webapp_[i][1][j][0]).replace(/\s+/g, '')) {
+
+                if (strUser == (parsedResponse.webapp_[i][1][j][0])) {
 
                     var newArr = [], found, x, y;
 
