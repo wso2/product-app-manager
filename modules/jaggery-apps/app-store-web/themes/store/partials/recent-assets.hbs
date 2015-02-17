@@ -6,6 +6,7 @@
                 <div class="row recently-added">
                     {{#attributes}}
                         <div class="span3 recent-asset-icon">
+			    <input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
                             <a href="{{url "/assets"}}/{{../type}}/{{../id}}"><img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}"></a>
                         </div>
                         <div class="span9 recent-asset-details">
