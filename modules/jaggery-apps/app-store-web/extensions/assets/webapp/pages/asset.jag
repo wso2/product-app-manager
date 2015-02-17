@@ -39,7 +39,9 @@ require('/modules/store.js').exec(function (ctx) {
             site = ctx.site,
             matcher = ctx.matcher,
             inDashboard = false,
-            isSubscribed = false;
+            isSubscribed = false,
+            skipGateway = false,
+            webAppEndpoint;
             utility = require('/modules/util.js');
             search = require('/modules/search.js');
                         
@@ -289,6 +291,12 @@ require('/modules/store.js').exec(function (ctx) {
         	subscriptionInfo.individualSubscription["OnHold"] = false;        	        	
         }
     }
+
+    if(asset.attributes.overview_skipGateway == "true") {
+        skipGateway = true;
+    } else {
+        skipGateway = false;
+    }
       
     caramel.render({
         title: 'Store | ' + type,
@@ -312,6 +320,8 @@ require('/modules/store.js').exec(function (ctx) {
         embedURL: configs.server.http + '/gadgets/ifr?url=' + asset.attributes.overview_url,
         inDashboard: inDashboard,
         isSubscribed:isSubscribed,
+        skipGateway:skipGateway,
+        webAppEndpoint:webAppEndpoint,
         subscriptionInfo : subscriptionInfo,
         isEnterpriseSubscriptionAllowed: isStoreAdmin,
         asset: asset,

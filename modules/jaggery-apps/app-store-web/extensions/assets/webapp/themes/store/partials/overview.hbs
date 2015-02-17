@@ -4,14 +4,24 @@
 	{{else}}
 		<input type="hidden" value="false" id="subscribed" name="subscribed">
 	{{/if}}
-	
-    	{{#with apiData.serverURL}}
+
+    {{#if skipGateway}}
+
+    		<legend>URLs:</legend>
+	    	<p><b>Web App Endpoint</b></p>
+	    	<ul>
+			<li><a class='icon-globe' id="gatewayURL" href="{{asset.attributes.overview_webAppUrl}}" target="_blank" >&nbsp;{{asset.attributes.overview_webAppUrl}}</a></li>
+	    	</ul>
+	   
+    {{else}}
+        {{#with apiData.serverURL}}
     		<legend>URLs:</legend>
 	    	<p><b>{{description}}</b></p>
 	    	<ul>
 			<li><a class='icon-globe' id="gatewayURL" href="{{productionURL}}" target="_blank" >&nbsp;{{productionURL}}</a></li>
 	    	</ul>
-	{{/with}}
+	    {{/with}}
+    {{/if}}
 
 	<div class="modal fade" id="messageModal2" style="display: none"></div>
 	<div id="confirmation-data2" style="display: none;">

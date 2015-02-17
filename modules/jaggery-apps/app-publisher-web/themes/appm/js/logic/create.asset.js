@@ -517,3 +517,21 @@ function removeClaimTable() {
 	$('#claimPropertyCounter').val(0);
 }
 
+/**
+ *
+ */
+$('.skip_gateway_checkbox').click(function(){
+    var isChecked;
+    if($(this).context.checked){
+        //$('.skip-gateway-on').show();
+        //$('.skip-gateway-off').hide();
+        isChecked = true;
+    }else{
+        //$('.skip-gateway-on').hide();
+        //$('.skip-gateway-off').show();
+        isChecked = false;
+    }
+    $('#overview_skipGateway').val(isChecked);
+});
+
+

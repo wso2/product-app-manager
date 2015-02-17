@@ -53,7 +53,7 @@
                     <tbody>
                     {{#each newViewData.uriTemplate}}
                         {{#compare urlPattern "null" operator="!="}}
-                            {{#compare urlPattern "" operator="!="}}
+                            {{#compare httpVerb "null" operator="!="}}
                                 <tr>
                                     <td>{{urlPattern}}</td>
                                     <td>{{httpVerb}}</td>
