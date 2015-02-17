@@ -39,7 +39,8 @@ var drawSubscriberCountByAPIs = function (response) {
 
     $('#pie-chart').empty();
 
-    var parsedResponse = JSON.parse(response);
+    //var parsedResponse = JSON.parse(response);
+    var parsedResponse= [["app1", [["1.1", 2, "0c22e775-0355-47fe-8070-62bcb05fba16"]]]];
 
     if (parsedResponse.length > 0) {
         var chartColorScheme = [];
@@ -118,12 +119,12 @@ var drawSubscriberCountByAPIs = function (response) {
             dataStructure.push({
                 "itemLabel": "other",
                 "itemValue": totalCount - otherCount,
-
             });
+
             var data;
             var div = d3.select("body").append("div").attr("class", "toolTip");
             var w = 250;
-            var h = 220;
+            var h = 270;
             var r = 60;
             var ir = 35;
             var textOffset = 24;
@@ -163,8 +164,9 @@ var drawSubscriberCountByAPIs = function (response) {
                 .attr("height", h);
             vis.append("text").attr("class", "title_text")
                 .attr("x", 125)
-                .attr("y", 200)
+                .attr("y", 265)
                 .style("font-size", "14px").style("font-weight", "10px")
+
                 .style("font-family", "'Helvetica Neue',Helvetica,Arial,sans-serif")
                 .style("z-index", "19")
                 .style("text-anchor", "middle")

@@ -471,6 +471,10 @@ function drawPopupChart(parsedResponse, label, strUser) {
             tickLength: 0,
             axisLabel: "Accessed Page",
 
+        },
+        grid:{
+            borderWidth: 0.7,
+            borderColor: {left: "#bdbdbd", left: "#bdbdbd"},
         }
     };
     $.plot($("#placeholder52"), dataset, options);
