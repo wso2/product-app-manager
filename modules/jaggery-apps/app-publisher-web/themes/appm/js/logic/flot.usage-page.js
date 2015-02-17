@@ -191,7 +191,7 @@ var drawAPIUsageByPage = function (response) {
                 var app = '';
 
                 if (label == (parsedResponse.webapp_[i][0])) {
-//alert(label+" "+parsedResponse.webapp_[i][0])
+
 
                     for (var j = 0; j < parsedResponse.webapp_[i][1].length; j++) {
 
