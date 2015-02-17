@@ -1,6 +1,6 @@
 var resources = function(page, meta) {
     return {
-        js: ['copy-app.js', '/logic/asset.tag.edit.js', 'bootstrap-select.min.js', 'options.text.js', 'codemirror/codemirror.js', 'codemirror/show-hint.js', 'codemirror/xml-hint.js', 'codemirror/xml.js', 'entitlement.js', 'resource-edit.js', 'policy.group.js']
+        js: ['copy-app.js', '/logic/asset.tag.edit.js', 'bootstrap-select.min.js', 'options.text.js', 'codemirror/codemirror.js', 'codemirror/show-hint.js', 'codemirror/xml-hint.js', 'codemirror/xml.js', 'entitlement.js', 'resource-edit.js', 'policy.group.js', 'java.policy.js']
     };
 };
 
