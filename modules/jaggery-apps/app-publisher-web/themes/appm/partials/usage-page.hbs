@@ -35,6 +35,8 @@
                 <div class="clearfix"></div>
 
                 <div class="widget">
+
+
                     <div class="widget-head" style="display: none">
                         <div class="pull-left">{{t "Usage by Page"}}</div>
                         <div class="widget-controls">
@@ -43,25 +45,31 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="widget-content">
+
+
                         <div class="container-fluid">
                             <div class="row-fluid">
                                 <div class="col-md-12">
+
+                                    <div id="spinner" class="center-wrapper">
+                                        <i id="icon-spinner" class="icon-spinner icon-spin icon-4x"></i>
+                                    </div>
                                     <div class="graph-container widget-graph pull-left clearfix">
                                         <div id="placeholder51" class="graph-placeholder"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="graph-container widget-graph2">
-
+                        <div class="graph-container widget-graph2" style="padding:30px 50px 30px 50px">
+                        <div class="pull-right" style="font-size:14px">
                             Version : <select id="items"></select>
-
-                            <div id="placeholder52" class="graph-placeholder"></div>
+                        </div>
+                            <div id="placeholder52" class="graph-placeholder" style="margin-top:40px"></div>
 
 
                         </div>
                         <div id="chartContainer">
-                            <div id="checkboxContainer" class="center-wrapper" style="max-width:77%;"></div>
+                            <div id="checkboxContainer" class="center-wrapper"></div>
                         </div>
                     </div>
                 </div>

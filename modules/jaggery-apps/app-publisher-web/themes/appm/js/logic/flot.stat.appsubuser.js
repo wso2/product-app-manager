@@ -25,7 +25,9 @@ function drawGraphs() {
             'endDate': to
         },
         success: function (response) {
+
             usageByContext = JSON.parse(response);
+            $('#spinner').hide();
 
         },
         error: function (response) {
@@ -194,7 +196,9 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
         var data = []
 
         for (var i = 0; i < usageByContext.length; i++) {
+
             if (usageByContext[i][0] == $("#search").val() || 'admin') {
+
                 for (var j = 0; j < usageByContext[i][1].length; j++) {
                     if (usageByContext[i][1][j][0] == getCell('webApp', '' + test + '').html()) {
                         numOfVersion = usageByContext[i][1][j][1].length;
@@ -238,7 +242,7 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
                                     });
 
                                     nv.addGraph(function () {
-                                        var chart = nv.models.lineWithFocusChart().margin({right: 250});
+                                        var chart = nv.models.lineWithFocusChart().margin({right: 200});
                                         chart.margin({left: 200});
 
                                         chart.color(d3.scale.category20b().range());
@@ -248,6 +252,7 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
                                         chart.xAxis.tickFormat(function (d) {
                                             return d3.time.format('%d %b %Y %H:%M')(new Date(d))
                                         });
+
 
                                         chart.x2Axis.tickFormat(function (d) {
                                             return d3.time.format('%d %b %Y %H:%M')(new Date(d))
@@ -272,21 +277,25 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
                                         return chart;
                                     });
 
+
                                     data_lineWithFocusChart = [
                                         {
                                             'values': dataTest,
                                             'key': usageByContext[i][1][j][1][t][1][k][0],
-                                            'yAxis': '1'
+                                            'yAxis': '1',
 
                                         }
                                     ];
+
                                 }
                             }
 
                         }
                     }
                 }
+
             }
+
         }
 
     });
