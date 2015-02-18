@@ -327,7 +327,7 @@ function savePolicyPartial() {
         if (policyPartialObj.isShared) {
             $.ajax({
                 async: false,
-                url: '/publisher/api/entitlement/get/apps/associated/to/policy/' + editedpolicyPartialId,
+                url: '/publisher/api/entitlement/get/apps/associated/to/xacml/policy/id/' + editedpolicyPartialId,
                 type: 'GET',
                 contentType: 'application/json',
                 dataType: 'json',
@@ -688,7 +688,7 @@ $(document).on("click", ".policy-delete-button", function () {
     if (policyPartial.isShared) {
         $.ajax({
             async: false,
-            url: '/publisher/api/entitlement/get/apps/associated/to/policy/' + policyId,
+            url: '/publisher/api/entitlement/get/apps/associated/to/xacml/policy/id/' + policyId,
             type: 'GET',
             contentType: 'application/json',
             dataType: 'json',

@@ -4,6 +4,8 @@ var throttlingTierControlBlock; //html formatted block for throttling tiers list
 
 $( document ).ready(function() {
 
+    var uuid = $("#uuid").val(); //Application UUID
+
     $("#overview_context").attr('maxlength','200');
 
     //get Tier details from tier.xml
@@ -100,7 +102,6 @@ $( document ).ready(function() {
         }
     });
 
-    var uuid = $("#uuid").val();
     loadPolicyGroupData(uuid);
 
     $("#add_resource").click(function(){
@@ -166,7 +167,7 @@ $( document ).ready(function() {
 
 
     //load all available java policy list from DB
-    loadAvailableJavaPolicies();
+    loadAvailableJavaPolicies(uuid);
 
 
     $(document).on("click", ".add_entitlement_policy", function () {
