@@ -64,6 +64,7 @@ var drawAPIUsageByPage = function (response) {
     var data = parsedResponse.totalPageCount;
     var ticks = parsedResponse.webapp;
 
+
     var $dataTable = $('<table class="display" width="100%" cellspacing="0" id="apiSelectTable"></table>');
     $dataTable.append($('<thead class="tableHead"><tr>' +
         '<th width="10%"></th>' +
@@ -92,7 +93,7 @@ var drawAPIUsageByPage = function (response) {
             filterData.push(data[n][1]);
             state_array.push(true);
             defaultFilterValues.push([n, ticks[n][1]]);
-            defaultChartData.push([n, data[n][1]]);
+            defaultChartData.push([data[n][1],n ]);
         } else {
 
             $dataTable.append($('<tr><td >'
@@ -128,21 +129,20 @@ var drawAPIUsageByPage = function (response) {
         },
         bars: {
             align: "center",
-            barWidth: 0.3
-        },
-        xaxis: {
-
-            axisLabelUseCanvas: false,
-            axisLabel: "<b>Web Apps</b>",
-            tickLength: 0,
-            axisLabelPadding: 10,
-            ticks: defaultFilterValues
+            barWidth: 0.3,
+            horizontal: true
         },
         yaxis: {
+
             axisLabelUseCanvas: true,
-            axisLabelFontSizePixels: 12,
-            axisLabelPadding: 3,
-            axisLabel: "Total Request",
+            axisLabel: "Web Apps",
+            tickLength: 0,
+            ticks: defaultFilterValues
+        },
+        xaxis: {
+            axisLabelUseCanvas: false,
+            axisLabel: "<b>Total Request</b>",
+            axisLabelPadding: 10
 
         },
         legend: {
@@ -184,9 +184,11 @@ var drawAPIUsageByPage = function (response) {
                 $('#checkboxContainer').show();
             });
 
-            var x = item.datapoint[0];
+            var x = item.datapoint[1];
+            //console.log(JSON.stringify(item.ticks));
 
-            label = item.series.xaxis.ticks[x].label;
+            label = item.series.yaxis.ticks[item.dataIndex].label;
+            //alert(label)
 
 
             for (var i = 0; i < parsedResponse.webapp_.length; i++) {
@@ -247,7 +249,7 @@ var drawAPIUsageByPage = function (response) {
         var y_iter = 0
         $.each(filterData, function (index, value) {
             if (state_array[index]) {
-                draw_y_axis.push([y_iter, value]);
+                draw_y_axis.push([value,y_iter]);
                 y_iter++
             }
         });
@@ -266,22 +268,22 @@ var drawAPIUsageByPage = function (response) {
                 bars: {
                     show: true,
                     align: "center",
-                    barWidth: 0.3
+                    barWidth: 0.3,
+                    horizontal: true,
                 }
             },
 
-            xaxis: {
+            yaxis: {
 
-                axisLabelUseCanvas: false,
-                axisLabel: "<b>Web Apps</b>",
+                axisLabelUseCanvas: true,
+                axisLabel: "Web Apps",
                 tickLength: 0,
-                axisLabelPadding: 10,
-
                 ticks: draw_x_axis
             },
-            yaxis: {
-                axisLabelUseCanvas: true,
-                axisLabel: "Total Request",
+            xaxis: {
+                axisLabelUseCanvas: false,
+                axisLabel: "<b>Total Request</b>",
+                axisLabelPadding: 10,
 
             },
             legend: {
@@ -305,8 +307,6 @@ var drawAPIUsageByPage = function (response) {
         $.plot($("#placeholder51"), dataset, options);
         $("#placeholder51").UseTooltip();
     });
-
-
 }
 
 var previousPoint = null, previousLabel = null;
@@ -324,7 +324,7 @@ $.fn.UseTooltip = function () {
                 showTooltip(item.pageX,
                     item.pageY,
                     color,
-                        "<strong>" + item.series.xaxis.ticks[x].label + " : " + y + "</strong>");
+                        "<strong>" +item.series.yaxis.ticks[item.dataIndex].label + " : " + x + "</strong>");
             }
         } else {
             $("#tooltip").remove();
@@ -463,7 +463,6 @@ function drawPopupChart(parsedResponse, label, strUser) {
             bars: {
                 show: true,
                 horizontal: true,
-
             }
         },
         bars: {

@@ -52,7 +52,7 @@ var drawAPIResponseTime = function (response) {
         $dataTable.append($('<thead class="tableHead"><tr>' +
             '<th width="10%"></th>' +
             '<th>API</th>' +
-            '<th>Response Time(ms)</th>' +
+            '<th style="text-align:right;">Response Time(ms)</th>' +
 
             '</tr></thead>'));
 
@@ -90,7 +90,7 @@ var drawAPIResponseTime = function (response) {
                     webappdatasructure[n][1] + ' class="inputCheckbox" />'
                     + '</td>'
                     + '<td style="text-align:left;"><label for=' + n + '>' + webappdatasructure[n][1] + '</label></td>'
-                    + '<td style="text-align:left;"><label for=' + n + '>' + timedatastructure[n][0] +
+                    + '<td style="text-align:right;"><label for=' + n + '>' + timedatastructure[n][0] +
                     '</label></td></tr>'));
 
                 filterValues.push(webappdatasructure[n][1]);
@@ -106,7 +106,7 @@ var drawAPIResponseTime = function (response) {
                     + ' class="inputCheckbox" />'
                     + '</td>'
                     + '<td style="text-align:left;"><label for=' + n + '>' + webappdatasructure[n][1] + '</label></td>'
-                    + '<td style="text-align:left;"><label for=' + n + '>' + timedatastructure[n][0]
+                    + '<td style="text-align:right;"><label for=' + n + '>' + timedatastructure[n][0]
                     + '</label></td></tr>'));
 
                 filterValues.push(webappdatasructure[n][1]);
