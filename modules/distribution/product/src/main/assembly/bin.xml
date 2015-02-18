@@ -157,8 +157,8 @@
 	</fileSet>
 	<fileSet>
             <directory>
-                ../../jaggery-apps/app-workflow-admin/</directory>
-            <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/jaggeryapps/workflow-admin</outputDirectory>
+                ../../jaggery-apps/app-admin-dashboard-web/</directory>
+            <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/jaggeryapps/admin-dashboard</outputDirectory>
             <!--<includes>-->
                 <!--<include>**/config/ext/webapp.json</include>-->
                 <!--<include>**/config/lifecycles/WebAppLifeCycle.xml</include>-->
