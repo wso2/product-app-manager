@@ -16,6 +16,8 @@ middlePage="subscription-task";
 middlePage="signup-task";
 }else if(pageName=="publishapp"){
 middlePage="publishapp-task";
+}else if(pageName=="xacmlpolicy"){
+middlePage="xacmlpolicy-task";
 }
 
 (function () {

@@ -18,13 +18,13 @@
 
 var javaPolicyArray = new Array(); //contains Java Polices list
 
-
 /**
- * Load all the available Java Policies List
+ * Load all the available Java Policies List and the Mapping for given Application Id
+ * @param applicationUUID
  */
-function loadAvailableJavaPolicies() {
+function loadAvailableJavaPolicies(applicationUUID) {
     $.ajax({
-        url: '/publisher/api/entitlement/get/all/available/java/policy/handlers/details/list',
+        url: '/publisher/api/entitlement/get/all/available/java/policy/handlers/details/list/' + applicationUUID,
         type: 'GET',
         contentType: 'application/json',
         dataType: 'json',
@@ -38,7 +38,8 @@ function loadAvailableJavaPolicies() {
                     description: data[i].description,
                     displayOrder: data[i].displayOrder,
                     isMandatory: data[i].isMandatory,
-                    policyProperties: data[i].policyProperties
+                    policyProperties: data[i].policyProperties,
+                    applicationId: data[i].applicationId
                 };
                 javaPolicyArray.push(obj);
             }
@@ -50,23 +51,55 @@ function loadAvailableJavaPolicies() {
     });
 }
 
-function updateJavaPolicyPartial(){
+/**
+ * draw java policies list
+ */
+function updateJavaPolicyPartial() {
+    var enabledStatus;  //if policy is mandatory make it wont allow user to un-tick the particular java policy
+    var checkedStatus; //if policy is mandatory always tick the java policy
 
-    //draw java policies list
     $.each(javaPolicyArray, function (index, obj) {
         if (obj != null) {
-            console.info(obj)
-            $('#javaPolicy_tbody').append(
-                '<tr>' +
-                '<td>' + obj.displayName + '</td>' +
-                '<td>' + obj.description + '</td>' +
-                '<td><input data-javaPolicy-id=' + obj.id + ' type=checkbox disabled checked></td>' +
-                '</tr>');
 
-            //policyGroupIndexArray.push(obj.policyGroupId);
+            if (obj.isMandatory) {
+                //always check and and disable the mandatory fields
+                enabledStatus = 'disabled';
+                checkedStatus = 'checked';
+            } else {
+                enabledStatus = 'enabled';
+
+                //tick the saved mappings
+                if (obj.applicationId == null) {
+                    checkedStatus = "";
+                }
+                else {
+                    checkedStatus = "checked";
+                }
+            }
+
+            $('#javaPolicy_tbody').append(
+                "<tr>" +
+                "<td>" + obj.displayName + "</td>" +
+                "<td>" + obj.description + "</td>" +
+                "<td><input  class='javaPolicy-opt-val' data-javaPolicy-id='" + obj.javaPolicyId +
+                "'  type='checkbox' " + enabledStatus +
+                " " + checkedStatus + "></td>" +
+                "</tr>");
+
         }
     });
 
     //draw java policy items
     $("#javaPolicy_tbody").trigger("draw");
+
+    //update the url pattern wise policy group drop downs
+    $('.javaPolicy-opt-val').each(function () {
+        if( $(this).prop('checked'))
+        {
+           // alert($(this).attr('data-javaPolicy-id'));
+            //todo: javaPolicyArray[index].isChecked =true and write the whole object to a data field
+
+        }
+    });
+
 }
