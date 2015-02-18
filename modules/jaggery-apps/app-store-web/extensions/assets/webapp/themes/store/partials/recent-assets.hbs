@@ -5,10 +5,12 @@
         {{#each .}}
         <div class="row-fluid recently-added">
             {{#attributes}}
-            <div class="span4">
+            <div class="span4 recent-asset-icon">
+		<input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
                 <a href="{{url "/assets"}}/{{../type}}/{{../id}}"><img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}"></a>
             </div>
-            <div class="span8">
+            <div class="span8 recent-asset-details">
+		<input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
                 <strong><a href="{{url "/assets"}}/{{../type}}/{{../id}}">{{overview_name}}</a></strong>
                 <small>by <a href="#">{{overview_provider}}</a></small>
                             <span class="star-rating">

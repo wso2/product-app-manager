@@ -6,7 +6,6 @@ var resources = function (page,meta) {
             'flot/jquery.flot.axislabels.js','flot/jquery.flot.orderBars.js','flot/excanvas.js',
             'flot/jquery.flot.tooltip.js','jquery.dialogextend.js','logic/left-nav.js','datatables/dataTables.bootstrap.js'],
         css: ['flot-graphs.css','date_picker/datepicker/base.css','date_picker/datepicker/custom-widget.css',
-            'date_picker/datepicker/clean.css','datepicker/daterangepicker.css','jquery.dataTables.css',
-            'es_statistics.css', 'datatables/dataTables.bootstrap.css']
+            'date_picker/datepicker/clean.css','datepicker/daterangepicker.css','jquery.dataTables.css', 'datatables/dataTables.bootstrap.css','es_statistics.css']
     };
 };

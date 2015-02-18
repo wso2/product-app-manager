@@ -10,6 +10,7 @@
 				{{#attributes}}
 				<a href="{{url "/assets"}}/{{../type}}/{{../id}}">
 				<div class="asset-icon">
+					<input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
 					{{#if ../indashboard}}
 						<i class="icon-bookmark store-bookmark-icon"></i>
 					{{/if}}
@@ -18,6 +19,7 @@
 
 				<div class="asset-details">
 					<div class="asset-name">
+						<input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
 						<a href="{{url "/assets"}}/{{../type}}/{{../id}}"> <h4>{{overview_name}}</h4> </a>
 					</div>
 					<div class="asset-rating">

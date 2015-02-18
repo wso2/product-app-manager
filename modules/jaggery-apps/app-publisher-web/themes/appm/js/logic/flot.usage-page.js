@@ -18,6 +18,7 @@ function drawGraphs() {
     var userParsedResponse;
 
     $.ajax({
+
         async: false,
         url: '/publisher/api/assets/' + operation + '/' + type
             + '/getAPIUsageByPage/',
@@ -27,7 +28,9 @@ function drawGraphs() {
             'endDate': to
         },
         success: function (response) {
+            $('#spinner').hide();
             drawAPIUsageByPage(response);
+
         },
         error: function (response) {
             alert('Error occured at statistics graph rendering');
@@ -57,6 +60,7 @@ var drawAPIUsageByPage = function (response) {
 
     $('#checkboxContainer').empty();
     var parsedResponse = JSON.parse(response);
+
     var data = parsedResponse.totalPageCount;
     var ticks = parsedResponse.webapp;
 
@@ -165,8 +169,8 @@ var drawAPIUsageByPage = function (response) {
     }
     $("#placeholder51").UseTooltip();
 
-
     $("#placeholder51").bind("plotclick", function (event, pos, item) {
+
 
         if (item != null) {
             var numbers = []
@@ -184,15 +188,18 @@ var drawAPIUsageByPage = function (response) {
 
             label = item.series.xaxis.ticks[x].label;
 
+
             for (var i = 0; i < parsedResponse.webapp_.length; i++) {
                 var count = 0;
                 var app = '';
 
-                if (label == (parsedResponse.webapp_[i][0]).replace(/\s+/g, '')) {
+                if (label == (parsedResponse.webapp_[i][0])) {
+
 
                     for (var j = 0; j < parsedResponse.webapp_[i][1].length; j++) {
 
                         numbers.push(parsedResponse.webapp_[i][1][j][0])
+
 
                     }
 
@@ -205,8 +212,11 @@ var drawAPIUsageByPage = function (response) {
                 option += '<option value="' + numbers[i] + '">' + numbers[i] + '</option>';
             }
             $('#items').html(option);
+
             var e = document.getElementById("items");
+
             var strUser = e.options[e.selectedIndex].value;
+
             drawPopupChart(parsedResponse, label, strUser);
 
         }
@@ -215,6 +225,7 @@ var drawAPIUsageByPage = function (response) {
     $('#items').change(function () {
 
         var e = document.getElementById("items");
+
         var strUser = e.options[e.selectedIndex].value;
         drawPopupChart(parsedResponse, label, strUser);
 
@@ -361,14 +372,16 @@ function drawPopupChart(parsedResponse, label, strUser) {
 
         var app = '';
 
-        if (label == (parsedResponse.webapp_[i][0]).replace(/\s+/g, '')) {
+        if (label == (parsedResponse.webapp_[i][0])) {
+
 
             var arr = [];
 
 
             for (var j = 0; j < parsedResponse.webapp_[i][1].length; j++) {
 
-                if (strUser == (parsedResponse.webapp_[i][1][j][0]).replace(/\s+/g, '')) {
+
+                if (strUser == (parsedResponse.webapp_[i][1][j][0])) {
 
                     var newArr = [], found, x, y;
 
@@ -471,6 +484,10 @@ function drawPopupChart(parsedResponse, label, strUser) {
             tickLength: 0,
             axisLabel: "Accessed Page",
 
+        },
+        grid:{
+            borderWidth: 0.7,
+            borderColor: {left: "#bdbdbd", left: "#bdbdbd"},
         }
     };
     $.plot($("#placeholder52"), dataset, options);
