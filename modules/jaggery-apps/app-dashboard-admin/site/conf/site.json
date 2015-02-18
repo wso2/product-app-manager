@@ -3,7 +3,7 @@
         "base" : "default",
         "subtheme" : "modern"
     },
-    "context" : "/workflow-admin",
+    "context" : "/dashboard-admin",
     "tasksPerPage": 10,
     "allowedRole":"admin",
     "workflows":{

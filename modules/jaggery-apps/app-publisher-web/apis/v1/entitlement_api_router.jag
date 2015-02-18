@@ -32,7 +32,7 @@ require('/modules/publisher.js').exec(function(ctx) {
     });
 
     routeManager.register('PUT', 'publisher', '/publisher/api/entitlement/policy/partial/update', function (context) {
-        var isSuccess = updateEntitlementPolicyPartial(context.content.id, context.content.policyPartial, context.content.isSharedPartial,context.post.policyPartialDesc);
+        var isSuccess = updateEntitlementPolicyPartial(context.content.id, context.content.policyPartial, context.content.isSharedPartial,context.content.policyPartialDesc);
         print(isSuccess);
     });
 
