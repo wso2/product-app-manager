@@ -1,0 +1,48 @@
+<% jagg.template("xacmlpolicy-task", function (inputs, outputs, jagg) {
+    var tasks = outputs.tasks;
+    %>
+     <div class="title-section">
+       <h2><%=i18n.localize("addXACMLPolicyHeader")
+    %></h2>
+          </div>
+
+          <div class="content-section shadow-up">
+                                <label>Name:</label>
+                                <input id="policy-name" type="text" class="form-control" style="width: 30%"/>
+                                <label>Description:</label>
+                                <input id="policy-desc" type="text" class="form-control" style="width: 60%; height: 100px;"/>
+                                 <label>Policy:</label>
+                                    <div id="policy-content-container">
+                            <textarea id="policy-content" style="width:80%;height:200px;border: 1px solid #eee;" class="form-control"></textarea>
+                        </div>
+                                     <br>
+
+    <a id="btn-policy-new" class="btn btn-primary">New</a>
+                             <a id="btn-policy-partial-validate" class="btn btn-primary">Validate</a>
+                            <a id="btn-policy-save" class="btn btn-primary">Save</a>
+
+
+                             <div id="wr-overview" class="wr-overview-policies" style="display:block">
+                                            <fieldset>
+
+
+                                                <input type='hidden' value="[]" name="uritemplate_policyPartialIds"
+                                                       id="uritemplate_policyPartialIds"/>
+                                                <table class="table table-striped" id="policyPartialsTable">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Policy Name</th>
+                                                        <th>Description</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                    </tbody>
+                                                </table>
+                                            </fieldset>
+                                        </div>
+
+                     </div>
+            <%
+}); %>
