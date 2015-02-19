@@ -6,7 +6,7 @@
             <div class="modal-header">
                 <button type="button" class="close mclose-button" data-dismiss="modal"
                         aria-hidden="true">&times;</button>
-                <h3>Policy Group Editor</h3>
+                <h3>Add New Resource Policy</h3>
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" role="alert" id="policyGroup-notification-text">
@@ -16,17 +16,22 @@
                 </div>
 
                 <div class="form-group">
-                    <label id="lblPolicyGroupName">Policy group name:</label>
+                    <label id="lblPolicyGroupName">Resource policy name:</label>
                     <input id="policyGroupName" type="text" class="form-control"/>
                 </div>
 
                 <div class="form-group">
-                    <label id="lblThrottlingTier">Throttling Tier:</label>
+                    <label id="lblpolicyGroupDescription">Description:</label>
+                    <input id="policyGroupDescription" type="text" class="form-control"/>
+                </div>
+
+                <div class="form-group">
+                    <label id="lblThrottlingTier">Apply Throttling Tier: </label>
                     <select id="throttlingTier"></select>
                 </div>
 
                 <div class="form-group">
-                    <label id="lblAnonymousAccessToUrlPattern">Anonymous Access:</label>
+                    <label id="lblAnonymousAccessToUrlPattern">Allow Anonymous Access:</label>
                     <select id="anonymousAccessToUrlPattern">
                         <option value='false' id='False'>False</option>
                         <option value='true' id='True'>True</option>
@@ -35,7 +40,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label id="lblUserRoles">User Roles:</label>
+                    <label id="lblUserRoles">Accessible User Roles:</label>
                     <input id="userRoles" type="text" class="form-control"/>
                     <i class="icon-search icon-2 group-role-search"></i>
                 </div>
@@ -46,6 +51,7 @@
                         <thead>
                         <tr>
                             <th style='padding-left:10px; width:80px'>Policy</th>
+                            <th style='padding-left:10px; width:200px'>Description</th>
                             <th style='padding-left:10px; width:50px'>Permit</th>
                             <th style='padding-left:10px; width:50px'>Deny</th>
                         </tr>
