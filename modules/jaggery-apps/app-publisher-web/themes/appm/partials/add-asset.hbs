@@ -11,13 +11,14 @@
                     <fieldset>
                         {{{ form_render "overview_provider" data.fields }}}
                         {{{ form_render "overview_name" data.fields }}}
+                        {{{ form_render "overview_displayName" data.fields }}}
                         {{{ form_render "overview_context" data.fields }}}
                         {{{ form_render "overview_version" data.fields }}}
 
                         <div class="form-group">
                             <label class="control-label col-sm-2">Transports:  <span class="label-required">*</span></label>
                             <div class="col-sm-10">
-                                
+
                                 <div class="radio">
                                     <label>
                                         <input type="radio" data-value="http" class="trans_checkbox" name="optradio">
