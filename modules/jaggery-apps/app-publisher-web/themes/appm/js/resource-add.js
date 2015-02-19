@@ -85,7 +85,9 @@ $( document ).ready(function() {
         $("#resource_tbody").trigger("draw");
     });
 
-
+    /**
+     * this will collect trasport radio values and pushinto hidden input filed
+     */
     $(".trans_checkbox").click(function(){
         var output = [];
         $( ".trans_checkbox" ).each(function( index ) {
@@ -94,7 +96,6 @@ $( document ).ready(function() {
                 output.push(value);
             }
         });
-
         $('#overview_transports').val(output);
 
 
