@@ -85,7 +85,9 @@ $( document ).ready(function() {
         $("#resource_tbody").trigger("draw");
     });
 
-
+    /**
+     * this will collect trasport radio values and pushinto hidden input filed
+     */
     $(".trans_checkbox").click(function(){
         var output = [];
         $( ".trans_checkbox" ).each(function( index ) {
@@ -94,13 +96,14 @@ $( document ).ready(function() {
                 output.push(value);
             }
         });
-
         $('#overview_transports').val(output);
 
 
     });
 
-
+    /**
+     * this will collect trasport radio values and pushinto hidden input filed
+     */
     $(".anonymous_checkbox").click(function () {
         var output = [];
         $(".anonymous_checkbox").each(function (index) {
@@ -176,6 +179,25 @@ $( document ).ready(function() {
 
     $("#resource_tbody").trigger("draw");
 
+    //handle global policies checkbox logic
+    $(document).on("click", '.controll_visibility', function () {
+        if($(this).context.checked){
+            $('#token-input-roles').show();
+            $('.global_role>ul.token-input-list-facebook').css('border','1px solid #ccc');
+        }else{
+            $('#token-input-roles').hide();
+            $('#roles').tokenInput("clear");
+            $('.global_role>ul.token-input-list-facebook').css('border','none');
+        }
+    });
+
+    $(document).on("click", '.controll_overview_logoutUrl', function () {
+        $(this).context.checked ? $('#overview_logoutUrl').show() : $('#overview_logoutUrl').hide();
+    })
+    //set default on loading
+    $('#token-input-roles').hide();
+    $('#overview_logoutUrl').hide();
+    $('.global_role>ul.token-input-list-facebook').css('border','none');
 
 });
 
