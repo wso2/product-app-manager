@@ -209,7 +209,7 @@ public class WorkFlowTestCase extends APPManagerIntegrationTest {
      * login to work flow admin app as admin
      */
     private void loginToWorkFlowApp() {
-        driver.get(baseUrl + "/workflow-admin");
+        driver.get(baseUrl + "/admin-dashboard");
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("username")));
         driver.findElement(By.id("username")).clear();
         driver.findElement(By.id("username")).sendKeys("admin");
