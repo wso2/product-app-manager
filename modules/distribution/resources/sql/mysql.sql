@@ -230,21 +230,19 @@ FOREIGN KEY (APP_ID) REFERENCES APM_APP(APP_ID) ON UPDATE CASCADE ON DELETE CASC
 )ENGINE INNODB;
 
 
-
 INSERT INTO APM_APP_JAVA_POLICY(DISPLAY_NAME, FULL_QUALIFI_NAME, DESCRIPTION, DISPLAY_ORDER_SEQ_NO,IS_MANDATORY)
-SELECT 'Reverse Proxy Handler','org.wso2.carbon.appmgt.gateway.handlers.proxy.ReverseProxyHandler','',1,TRUE
-WHERE NOT EXISTS (SELECT * FROM APM_APP_JAVA_POLICY WHERE  FULL_QUALIFI_NAME ='org.wso2.carbon.appmgt.gateway.handlers.proxy.ReverseProxyHandler') ;
+SELECT * FROM ( SELECT 'Reverse Proxy Handler','org.wso2.carbon.appmgt.gateway.handlers.proxy.ReverseProxyHandler','',1,TRUE) AS temp
+WHERE NOT EXISTS (SELECT DISPLAY_NAME FROM APM_APP_JAVA_POLICY WHERE  FULL_QUALIFI_NAME ='org.wso2.carbon.appmgt.gateway.handlers.proxy.ReverseProxyHandler');
  
 INSERT INTO APM_APP_JAVA_POLICY(DISPLAY_NAME, FULL_QUALIFI_NAME, DESCRIPTION, DISPLAY_ORDER_SEQ_NO,IS_MANDATORY)
-SELECT 'SAML2 Authentication Handler','org.wso2.carbon.appmgt.gateway.handlers.security.saml2.SAML2AuthenticationHandler','',2,TRUE
+SELECT * FROM ( SELECT 'SAML2 Authentication Handler','org.wso2.carbon.appmgt.gateway.handlers.security.saml2.SAML2AuthenticationHandler','',2,TRUE) AS temp
 WHERE NOT EXISTS (SELECT * FROM APM_APP_JAVA_POLICY WHERE  FULL_QUALIFI_NAME ='org.wso2.carbon.appmgt.gateway.handlers.security.saml2.SAML2AuthenticationHandler');
 
 INSERT INTO APM_APP_JAVA_POLICY(DISPLAY_NAME, FULL_QUALIFI_NAME, DESCRIPTION, DISPLAY_ORDER_SEQ_NO,IS_MANDATORY, POLICY_PROPERTIES )
-SELECT 'API Throttle Handler','org.wso2.carbon.appmgt.gateway.handlers.throttling.APIThrottleHandler','',3,TRUE,'[{"id":"A"},{"policyKey":"gov:/apimgt/applicationdata/tiers.xml"}]'
-WHERE NOT EXISTS (SELECT * FROM APM_APP_JAVA_POLICY WHERE  FULL_QUALIFI_NAME ='org.wso2.carbon.appmgt.gateway.handlers.throttling.APIThrottleHandler');
+SELECT * FROM ( SELECT 'API Throttle Handler','org.wso2.carbon.appmgt.gateway.handlers.throttling.APIThrottleHandler','',3,FALSE,'[{"id":"A"},{"policyKey":"gov:/apimgt/applicationdata/tiers.xml"}]') AS temp WHERE NOT EXISTS (SELECT * FROM APM_APP_JAVA_POLICY WHERE  FULL_QUALIFI_NAME ='org.wso2.carbon.appmgt.gateway.handlers.throttling.APIThrottleHandler');
 
 INSERT INTO APM_APP_JAVA_POLICY(DISPLAY_NAME, FULL_QUALIFI_NAME, DESCRIPTION, DISPLAY_ORDER_SEQ_NO,IS_MANDATORY)
-SELECT 'APPMgt Usage Handler','org.wso2.carbon.appmgt.usage.publisher.APPMgtUsageHandler','',4,FALSE 
+SELECT * FROM ( SELECT 'APPMgt Usage Handler','org.wso2.carbon.appmgt.usage.publisher.APPMgtUsageHandler','',4,FALSE) AS temp 
 WHERE NOT EXISTS (SELECT * FROM APM_APP_JAVA_POLICY WHERE  FULL_QUALIFI_NAME ='org.wso2.carbon.appmgt.usage.publisher.APPMgtUsageHandler');
 
 
