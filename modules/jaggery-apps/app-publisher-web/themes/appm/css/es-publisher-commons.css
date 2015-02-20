@@ -1637,3 +1637,5 @@ td#buttonTd a {
 ul.token-input-list-facebook{
     width: 475px;
 }
+
+#inp_searchAsset{border-top-left-radius: 4px;border-bottom-left-radius: 4px;}
