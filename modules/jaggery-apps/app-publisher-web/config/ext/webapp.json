@@ -54,7 +54,17 @@
         {
             "field": "overview.provider",
             "name": "readOnly",
-            "value": "true"
+            "value": true
+        },
+        {
+            "field": "overview.displayName",
+            "name": "readOnly",
+            "value": false
+        },
+        {
+            "field": "overview.displayName",
+            "name": "editable",
+            "value": true
         },
         {
             "field":"overview.provider",

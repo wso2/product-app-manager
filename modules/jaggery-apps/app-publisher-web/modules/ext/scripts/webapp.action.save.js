@@ -170,6 +170,7 @@ var module = function () {
             var logoutURL = model.getField('overview.logoutUrl').value;
 
             var webappURL = model.getField('overview.webAppUrl').value;
+            var displayName = model.getField('overview.displayName').value;
             var revisedURL = logoutURL.replace(webappURL,"");
 
             var shortName = template.shortName;

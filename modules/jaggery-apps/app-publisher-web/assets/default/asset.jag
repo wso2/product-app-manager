@@ -211,8 +211,8 @@ routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/
     output.fields[1]['isEditable'] = false;
     output.fields[1]['isReadOnly'] = true;
 
-    output.fields[2]['isEditable'] = false;
-    output.fields[2]['isReadOnly'] = true;
+    <!--output.fields[2]['isEditable'] = false;-->
+    <!--output.fields[2]['isReadOnly'] = true;-->
 
     output.fields[3]['isEditable'] = false;
     output.fields[3]['isReadOnly'] = true;
