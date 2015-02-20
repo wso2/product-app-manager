@@ -166,9 +166,6 @@ $( document ).ready(function() {
     });
 
 
-    //load all available java policy list from DB
-    loadAvailableJavaPolicies(uuid);
-
 
     $(document).on("click", ".add_entitlement_policy", function () {
         var resourceIndex = $(this).data('index');
@@ -186,6 +183,42 @@ $( document ).ready(function() {
     })
 
     $("#resource_tbody").trigger("draw");
+
+    //handle global policies checkbox logic
+    $(document).on("click", '.controll_visibility', function () {
+        if($(this).context.checked){
+            $('#token-input-roles').show();
+            $('.global_role>ul.token-input-list-facebook').css('border','1px solid #ccc');
+        }else{
+            $('#token-input-roles').hide();
+            $('#roles').tokenInput("clear");
+            $('.global_role>ul.token-input-list-facebook').css('border','none');
+        }
+    });
+
+    if($('#roles').attr("data-roles")){
+        $('.controll_visibility').prop('checked', true);
+        $('#token-input-roles').show();
+    }else{
+        $('#token-input-roles').hide();
+        $('.global_role>ul.token-input-list-facebook').css('border','none');
+    }
+
+    $(document).on("click", '.controll_overview_logoutUrl', function () {
+        if($(this).context.checked){
+            $('#overview_logoutUrl').show();
+        } else{
+            $('#overview_logoutUrl').val("");
+            $('#overview_logoutUrl').hide();
+        }
+    })
+    //set default on loading
+    if($('#overview_logoutUrl').val){
+        $('.controll_overview_logoutUrl').prop('checked', true);
+        $('#overview_logoutUrl').show()
+    }else{
+        $('#overview_logoutUrl').hide()
+    }
 
 
 });

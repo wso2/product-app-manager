@@ -1589,6 +1589,7 @@ td#buttonTd a {
 
 .form-horizontal .control-label{
     padding-top: 0px;
+    text-align: left;
 }
 
 #dateRangePickerContainer .date-range, #dateRangePickerContainer .input-append {
@@ -1622,7 +1623,7 @@ td#buttonTd a {
     margin-left: 30px;
 }
 
-.skip_gateway_checkbox, .anonymous_checkbox {
+.skip_gateway_checkbox, .anonymous_checkbox, .publish_statistics, .controll_visibility, .controll_overview_logoutUrl{
     margin-top: 13px !important;
 }
 
@@ -1631,4 +1632,8 @@ td#buttonTd a {
     margin-top: -20px;
     padding-top: 10px;
     margin-bottom: 30px;
+}
+
+ul.token-input-list-facebook{
+    width: 475px;
 }

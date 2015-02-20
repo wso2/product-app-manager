@@ -345,7 +345,7 @@ function updatePolicyGroupPartial(policyGroupsArray) {
     $.each(policyGroupsArray, function (index, obj) {
         if (obj != null) {
             $('#policyGroupsTable tbody').append('<tr><td>' + obj.policyGroupName +
-            '</td><td><a data-target="#policy-group-editor" data-toggle="modal" data-policy-id="'
+            '</td><td>'+ obj.description +'</td><td><a data-target="#policy-group-editor" data-toggle="modal" data-policy-id="'
             + obj.policyGroupId + '" class="policy-group-edit-button"><i class="icon-edit"></i></a> &nbsp;' +
             '<a  data-policy-name="' + obj.policyGroupName + '"  data-policy-id="' + obj.policyGroupId +
             '" class="policy-group-delete-button"><i class="icon-trash"></i></a></td></tr>');

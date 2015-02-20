@@ -37,6 +37,10 @@
             <name>Version</name>
         </field>
 
+        <field type="text" required="true">
+            <name>Display Name</name>
+        </field>
+
 	<field type="text" required="true">
             <name>Transports</name>
         </field>

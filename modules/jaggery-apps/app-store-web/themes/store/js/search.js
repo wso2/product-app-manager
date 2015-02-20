@@ -148,7 +148,7 @@ $(function () {
             });
             theme.loading($('#assets-container').parent());
         } else if (searchVal.length > 0 && searchVal != undefined) {
-            url = caramel.url('/?' + buildParams(searchVal));
+            /*url = caramel.url('/?' + buildParams(searchVal));
             caramel.data({
                 title: null,
                 header: ['header'],
@@ -170,7 +170,8 @@ $(function () {
                     theme.loaded($('#assets-container').parent(), '<p>Error while retrieving data.</p>');
                 }
             });
-            theme.loading($('#assets-container').parent());
+            theme.loading($('#assets-container').parent());*/
+            window.location.reload();
         }
 
         $('.search-bar h2').find('.page').text(' / Search: "' + searchVal + '"');
