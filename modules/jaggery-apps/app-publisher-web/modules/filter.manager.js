@@ -95,6 +95,7 @@ var filterManagementModule = function () {
         context['data'] = getData(data);
         context['roles'] = user.getRoles();
         context['username'] = user.username;
+        context['tenantId'] = user.tenantId;
 
         //Obtain the configuration
         assetType = getConfigType(context['data']);
