@@ -20,13 +20,13 @@ var getAdminCookie = function() {
 
 var getAPIProviderObj = function() {
     var user = jagg.getUser();
-        
-   
     var store;
     if (user == null) {
+        log.info("user is null");
         store = require('appmgtpublisher');
         return new store.APIProvider();
     } else {
+        log.info("user is "+user.username)
         store = require('appmgtpublisher');
         return new store.APIProvider(String(user.username));
     }

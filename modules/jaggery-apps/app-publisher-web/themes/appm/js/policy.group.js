@@ -57,9 +57,10 @@ function validate(policyGroupName) {
  * @param anonymousAccessToUrlPattern : if anonymous access allowed for the related url pattern/verb
  * @param userRoles : User Roles
  * @param objPartialMappings : Object which contains XACML policy partial details arrays
+ * @param policyGroupDesc : Policy Group DEscription
  * @param isSaveAndClose : check if the call is from the save and close button
  */
-function insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, objPartialMappings, isSaveAndClose) {
+function insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, objPartialMappings, isSaveAndClose ,policyGroupDesc) {
 
     $.ajax({
         url: '/publisher/api/entitlement/policy/partial/policyGroup/save',
@@ -69,7 +70,8 @@ function insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUr
             "throttlingTier": throttlingTier,
             "userRoles": userRoles,
             "anonymousAccessToUrlPattern": anonymousAccessToUrlPattern,
-            "objPartialMappings": objPartialMappings
+            "objPartialMappings": objPartialMappings,
+            "policyGroupDesc" :policyGroupDesc
         },
         success: function (data) {
             editedPolicyGroup = JSON.parse(data).response.id;
@@ -91,7 +93,8 @@ function insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUr
                 throttlingTier: throttlingTier,
                 anonymousAccessToUrlPattern: anonymousAccessToUrlPattern,
                 userRoles: userRoles,
-                policyPartials: JSON.stringify(policyPartialsMapping)
+                policyPartials: JSON.stringify(policyPartialsMapping),
+                policyGroupDesc: policyGroupDesc
 
             });
             //Policy Group partial update
@@ -120,7 +123,7 @@ function insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUr
  * @param objPartialMappings : Object which contains XACML policy partial details arrays
  * @param isSaveAndClose : check if the call is from the save and close button
  */
-function updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, objPartialMappings, isSaveAndClose) {
+function updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, objPartialMappings, isSaveAndClose, policyGroupDesc) {
     $.ajax({
         url: '/publisher/api/entitlement/policy/partial/policyGroup/details/update',
         type: 'POST',
@@ -130,7 +133,8 @@ function updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrl
             "userRoles": userRoles,
             "anonymousAccessToUrlPattern": anonymousAccessToUrlPattern,
             "policyGroupId": editedPolicyGroup,
-            "objPartialMappings": objPartialMappings
+            "objPartialMappings": objPartialMappings,
+            "policyGroupDesc" :policyGroupDesc
         },
         success: function (data) {
             var policyPartialsMapping = [];
@@ -151,6 +155,7 @@ function updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrl
                     policyGroupsArray[i].anonymousAccessToUrlPattern=anonymousAccessToUrlPattern;
                     policyGroupsArray[i].userRoles=userRoles;
                     policyGroupsArray[i].policyPartials= JSON.stringify(policyPartialsMapping);
+                    policyGroupsArray[i].policyGroupDesc= policyGroupDesc;
                 }
             }
             updatePolicyGroupPartial(policyGroupsArray);
@@ -192,6 +197,8 @@ function savePolicyGroupData(isSaveAndClose) {
     //User Roles
     var userRoles = $('#policy-group-editor #userRoles').val();
 
+    var policyGroupDesc="";
+
     hidePolicyGroupNotification();
 
     //contains XACML policy partial details arrays
@@ -214,10 +221,10 @@ function savePolicyGroupData(isSaveAndClose) {
     if (validate(policyGroupName)) {
         // editedPolicyGroup : 0 > then insert else update
         if (editedPolicyGroup == 0) {
-            insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions), isSaveAndClose);
+            insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions), isSaveAndClose , policyGroupDesc);
         }
         else {
-            updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions), isSaveAndClose);
+            updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions), isSaveAndClose, policyGroupDesc);
 
             updatePolicyGroupPartialXACMLPolicies($("#uuid").val());
         }

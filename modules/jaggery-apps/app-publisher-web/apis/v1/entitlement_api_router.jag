@@ -85,13 +85,13 @@ require('/modules/publisher.js').exec(function(ctx) {
 
 
     routeManager.register('POST', 'publisher', '/publisher/api/entitlement/policy/partial/policyGroup/save', function (context) {
-        var policyGroupId = savePolicyGroup(context.post.policyGroupName, context.post.throttlingTier, context.post.userRoles, context.post.anonymousAccessToUrlPattern, context.post.objPartialMappings);
+        var policyGroupId = savePolicyGroup(context.post.policyGroupName, context.post.throttlingTier, context.post.userRoles, context.post.anonymousAccessToUrlPattern, context.post.objPartialMappings, context.post.policyGroupDesc);
         var response = {"id": policyGroupId};
         print(createResponseObject(response));
     });
 
     routeManager.register('POST', 'publisher', '/publisher/api/entitlement/policy/partial/policyGroup/details/update', function (context) {
-        updatePolicyGroup(context.post.policyGroupName, context.post.throttlingTier, context.post.userRoles, context.post.anonymousAccessToUrlPattern, context.post.policyGroupId, context.post.objPartialMappings);
+        updatePolicyGroup(context.post.policyGroupName, context.post.throttlingTier, context.post.userRoles, context.post.anonymousAccessToUrlPattern, context.post.policyGroupId, context.post.objPartialMappings, context.post.policyGroupDesc);
     });
 
     routeManager.register('DELETE', 'publisher', '/publisher/api/entitlement/policy/partial/policyGroup/details/delete/{applicationId}/{policyGroupId}', function (context) {
@@ -200,8 +200,8 @@ require('/modules/publisher.js').exec(function(ctx) {
      * @param objPartialMappings : XACML policy partials
      * @returns {*} Policy Id
      */
-    function savePolicyGroup(policyGroupName, throttlingTier, userRoles, anonymousAccessToUrlPattern, objPartialMappings) {
-        return appMDAOObj.savePolicyGroup(policyGroupName, throttlingTier, userRoles, anonymousAccessToUrlPattern, JSON.parse(objPartialMappings));
+    function savePolicyGroup(policyGroupName, throttlingTier, userRoles, anonymousAccessToUrlPattern, objPartialMappings, policyGroupDesc) {
+        return appMDAOObj.savePolicyGroup(policyGroupName, throttlingTier, userRoles, anonymousAccessToUrlPattern, JSON.parse(objPartialMappings), policyGroupDesc);
     }
 
     /**
@@ -213,8 +213,8 @@ require('/modules/publisher.js').exec(function(ctx) {
      * @param policyGroupId : Policy Group Id
      * @param objPartialMappings : XACML policy partials
      */
-    function updatePolicyGroup(policyGroupName, throttlingTier, userRoles, anonymousAccessToUrlPattern, policyGroupId, objPartialMappings) {
-        appMDAOObj.updatePolicyGroup(policyGroupName, throttlingTier, userRoles, anonymousAccessToUrlPattern, policyGroupId, JSON.parse(objPartialMappings));
+    function updatePolicyGroup(policyGroupName, throttlingTier, userRoles, anonymousAccessToUrlPattern, policyGroupId, objPartialMappings, policyGroupDesc) {
+        appMDAOObj.updatePolicyGroup(policyGroupName, throttlingTier, userRoles, anonymousAccessToUrlPattern, policyGroupId, JSON.parse(objPartialMappings), policyGroupDesc);
     }
 
     /**
