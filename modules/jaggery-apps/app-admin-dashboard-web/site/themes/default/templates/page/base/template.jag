@@ -36,6 +36,10 @@ i18n.init(request,localeResourcesBasePath);
     <link href="<%=jagg.getAbsoluteUrl(jagg.getThemeFile("lib/bootstrap/css/bootstrap.css"))%>" rel="stylesheet">
     <link href="<%=jagg.getAbsoluteUrl(jagg.getThemeFile("lib/bootstrap/css/bootstrap-responsive.css"))%>" rel="stylesheet">
 
+    <link href="<%=jagg.getAbsoluteUrl(jagg.getThemeFile("css/codemirror/codemirror.css"))%>" rel="stylesheet">
+
+
+
     <!-- Le fav and touch icons -->
     <link rel="shortcut icon" href="http://wso2.com/files/favicon.ico">
     <link rel="apple-touch-icon" href="<%=jagg.getAbsoluteUrl(jagg.getThemeFile("images/apple-touch-icon.png"))%>">
@@ -111,6 +115,14 @@ var editUrl="info";
     <script type="text/javascript" src="<%=jagg.getAbsoluteUrl(jagg.getThemeFile("lib/bootstrap/js/bootstrap-carousel.js"))%>"></script>
     <script type="text/javascript" src="<%=jagg.getAbsoluteUrl(jagg.getThemeFile("lib/bootstrap/js/bootstrap-typeahead.js"))%>"></script>
     <script type="text/javascript" src="<%=jagg.getAbsoluteUrl(jagg.getThemeFile("lib/bootstrap/js/bootstrap-affix.js"))%>"></script>
+
+    <script type="text/javascript" src="<%=jagg.getAbsoluteUrl(jagg.getThemeFile("js/codemirror/codemirror.js"))%>"></script>
+    <script type="text/javascript" src="<%=jagg.getAbsoluteUrl(jagg.getThemeFile("js/codemirror/show-hint.js"))%>"></script>
+    <script type="text/javascript" src="<%=jagg.getAbsoluteUrl(jagg.getThemeFile("js/codemirror/xml.js"))%>"></script>
+    <script type="text/javascript" src="<%=jagg.getAbsoluteUrl(jagg.getThemeFile("js/codemirror/xml-hint.js"))%>"></script>
+
+
+
 </body>
 </html>
 <% }); %>

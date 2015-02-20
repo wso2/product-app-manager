@@ -10,10 +10,10 @@
                                 <label>Name:</label>
                                 <input id="policy-name" type="text" class="form-control" style="width: 30%"/>
                                 <label>Description:</label>
-                                <input id="policy-desc" type="text" class="form-control" style="width: 60%; height: 100px;"/>
+                                <textarea id="policy-desc" style="width:80%;height:100px;border: 1px solid #eee;" class="form-control"></textarea>
                                  <label>Policy:</label>
                                     <div id="policy-content-container">
-                            <textarea id="policy-content" style="width:80%;height:200px;border: 1px solid #eee;" class="form-control"></textarea>
+        <textarea id="policy-content" style="width:80%;height:200px;border: 1px solid #eee;" class="form-control"></textarea>
                         </div>
                                      <br>
 
