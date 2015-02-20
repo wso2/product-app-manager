@@ -208,12 +208,12 @@ $( document ).ready(function() {
         if($(this).context.checked){
             $('#overview_logoutUrl').show();
         } else{
-            $('#overview_logoutUrl').val("");
+            $('#overview_logoutUrl').val('');
             $('#overview_logoutUrl').hide();
         }
     })
     //set default on loading
-    if($('#overview_logoutUrl').val){
+    if($('#overview_logoutUrl').val() !=' '){
         $('.controll_overview_logoutUrl').prop('checked', true);
         $('#overview_logoutUrl').show()
     }else{
