@@ -189,6 +189,8 @@ $( document ).ready(function() {
     $('#overview_logoutUrl').hide();
     $('.global_role>ul.token-input-list-facebook').css('border','none');
 
+    savePolicyGroupData();
+    //forced commit by team
 });
 
 function resetResource() {
