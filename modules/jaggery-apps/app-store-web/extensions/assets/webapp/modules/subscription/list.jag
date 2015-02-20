@@ -98,7 +98,7 @@ var getAPISubscriptionsForApplication = function (username,appname) {
     Returns IDPs for the service provider counterpart of the web app, as enterprises.
 */
 var getEnterprisesForApplication = function(appName, ssoProviderName, ssoProviderVersion){
-
+    var log = new Log();
     var enterprises;
 
     try {
