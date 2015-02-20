@@ -1,0 +1,32 @@
+<%
+
+    var log = new Log('apis-router');
+
+    var uriMatcher = new URIMatcher(request.getRequestURI());
+
+    var pattern = '/{context}/apis/{resource}/{+suffix}';
+    var base = '/{context}/apis/{resource}';
+
+    var API_LOCATIONS='/apis/v1/';
+    log.info('apis router hit');
+    if((uriMatcher.match(pattern))|| (uriMatcher.match(base)) ){
+        var options = uriMatcher.elements();
+        var resource = options.resource;
+
+        var apiDir = new File(API_LOCATIONS+resource+'.jag');
+        log.info('Looking for directory '+API_LOCATIONS+resource+'.jag');
+        if(apiDir.isExists()){
+            log.info('Loading '+API_LOCATIONS+resource+'.jag');
+            include(API_LOCATIONS+resource+'.jag');
+        }
+        else{
+            log.info('Failed to locate resource');
+            response.sendError(404,'Resource does not exist');
+        }
+    }
+    else{
+        log.info('Failed');
+        response.sendError(404,'Resource does not exist');
+    }
+
+%>
