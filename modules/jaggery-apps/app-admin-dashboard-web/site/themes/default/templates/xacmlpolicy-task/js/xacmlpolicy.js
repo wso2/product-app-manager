@@ -19,14 +19,58 @@
 
 policyPartialsArray = new Array(); // xacml policy details array
 var editedpolicyPartialId = 0; //if 1 then edit else save
+var context = "/admin-dashboard";
+var tags =[];
+var editor;
+
+function completeAfter(cm, pred) {
+    var cur = cm.getCursor();
+    if (!pred || pred()) setTimeout(function() {
+        if (!cm.state.completionActive)
+            cm.showHint({completeSingle: false});
+    }, 100);
+    return CodeMirror.Pass;
+}
+
+function completeIfAfterLt(cm) {
+    return completeAfter(cm, function() {
+        var cur = cm.getCursor();
+        return cm.getRange(CodeMirror.Pos(cur.line, cur.ch - 1), cur) == "<";
+    });
+}
+
+function completeIfInTag(cm) {
+    return completeAfter(cm, function() {
+        var tok = cm.getTokenAt(cm.getCursor());
+        if (tok.type == "string" && (!/['"]/.test(tok.string.charAt(tok.string.length - 1)) || tok.string.length == 1)) return false;
+        var inner = CodeMirror.innerMode(cm.getMode(), tok.state).state;
+        return inner.tagName;
+    });
+}
+
+
 
 $(document).ready(function () {
+
+     editor = CodeMirror.fromTextArea(document.getElementById("policy-content"), {
+        mode: "xml",
+        lineNumbers: true,
+        lineWrapping:true,
+        extraKeys: {
+            "'<'": completeAfter,
+            "'/'": completeIfAfterLt,
+            "' '": completeIfInTag,
+            "'='": completeIfInTag,
+            "Ctrl-Space": "autocomplete"
+        },
+        hintOptions: {schemaInfo: tags}
+    });
     //load default xacml policy condition
     getXacmlPolicyTemplate();
 
     // Get shared partials
     $.ajax({
-        url: '/publisher/api/entitlement/get/shared/policy/partial/list',
+        url: context + '/apis/xacmlpolicies/list',
         type: 'GET',
         contentType: 'application/json',
         dataType: 'json',
@@ -64,12 +108,13 @@ function resetControls() {
 //load XACML template
 function getXacmlPolicyTemplate() {
     $.ajax({
-        url: '/publisher/api/xacmlpolicy',
+        url: context + '/apis/xacmlpolicies/template',
         type: 'GET',
 
         dataType: "text",
         success: function (response) {
             if (response != null) {
+                editor.setValue(response);
                 $('#policy-content').val(response);
             }
         },
@@ -86,7 +131,7 @@ $(document).on("click", "#btn-policy-new", function () {
 
 //validate event
 $(document).on("click", "#btn-policy-partial-validate", function () {
-    var policyContent = $('#policy-content').val();
+    var policyContent = editor.getValue();
     var policyName = $('#policy-name').val();
 
     if (policyName == "") {
@@ -103,7 +148,7 @@ $(document).on("click", "#btn-policy-partial-validate", function () {
 
 //save event
 $(document).on("click", "#btn-policy-save", function () {
-    var policyContent = $('#policy-content').val();
+    var policyContent = editor.getValue();
     var policyName = $('#policy-name').val();
 
     if (policyName == "") {
@@ -122,7 +167,7 @@ $(document).on("click", "#btn-policy-save", function () {
 function validatePolicyPartial(policyPartial, onSuccess, onError) {
 
     $.ajax({
-        url: '/publisher/api/entitlement/policy/validate',
+        url: context + '/apis/xacmlpolicies/validate',
         type: 'POST',
         async: false,
         contentType: 'application/x-www-form-urlencoded',
@@ -173,7 +218,7 @@ function displayValidationRequestException() {
 
 function savePolicyPartial() {
 
-    var policyPartial = $('#policy-content').val();
+    var policyPartial = editor.getValue();
     var policyPartialName = $('#policy-name').val();
     var policyPartialDesc = $('#policy-desc').val();
 
@@ -182,7 +227,7 @@ function savePolicyPartial() {
     if (editedpolicyPartialId == 0) { //add
 
         $.ajax({
-            url: '/publisher/api/entitlement/policy/partial/save',
+            url: context + '/apis/xacmlpolicies/save',
             type: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             async: false,
@@ -224,13 +269,13 @@ function savePolicyPartial() {
 
         $.ajax({
             async: false,
-            url: '/publisher/api/entitlement/get/apps/associated/to/xacml/policy/id/' + editedpolicyPartialId,
+            url: context + '/apis/xacmlpolicies/associated/apps',
+            data: {"policyId": editedpolicyPartialId},
             type: 'GET',
             contentType: 'application/json',
             dataType: 'json',
             success: function (response) {
 
-                console.info(JSON.stringify(response));
                 var apps = "";
                 if (response.length != 0) {
                     // construct and show the  the warning message with app names which use this partial before update
@@ -267,17 +312,16 @@ function savePolicyPartial() {
 
 function updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, policyPartial, isSharedPartial, policyPartialDesc) {
     $.ajax({
-        url: '/publisher/api/entitlement/policy/partial/update',
-        type: 'PUT',
-        contentType: 'application/json',
-        dataType: 'json',
+        url: context + '/apis/xacmlpolicies/update',
+        type: 'POST',
+        contentType: 'application/x-www-form-urlencoded',
         async: false,
-        data: JSON.stringify({
+        data: {
             "id": editedpolicyPartialId,
             "policyPartial": policyPartial,
             "isSharedPartial": isSharedPartial,
             "policyPartialDesc": policyPartialDesc
-        }),
+        },
         success: function (data) {
             if (JSON.parse(data)) {
                 $.each(policyPartialsArray, function (index, obj) {
@@ -330,10 +374,11 @@ function updatePolicyPartial() {
 //edit event
 $(document).on("click", ".policy-edit-button", function () {
     var policyId = $(this).data("policyId");
-    editedpolicyPartialId=policyId;
+    editedpolicyPartialId = policyId;
     $('#policy-content').val("");
     $('#policy-name').val("");
     $('#policy-desc').val("");
+    editor.setValue("");
 
     $.each(policyPartialsArray, function (index, obj) {
         if (obj != null && obj.id == policyId) {
@@ -341,7 +386,7 @@ $(document).on("click", ".policy-edit-button", function () {
             $('#policy-name').prop("readonly", true);
             $('#policy-desc').val(obj.description);
             $('#policy-content').val(obj.policyPartial);
-
+            editor.setValue(obj.policyPartial);
 
         }
     });
@@ -370,12 +415,12 @@ $(document).on("click", ".policy-delete-button", function () {
     if (policyPartial.isShared) {
         $.ajax({
             async: false,
-            url: '/publisher/api/entitlement/get/apps/associated/to/xacml/policy/id/' + policyId,
+            url: context + '/apis/xacmlpolicies/associated/apps',
+            data: {"policyId": policyId},
             type: 'GET',
             contentType: 'application/json',
             dataType: 'json',
             success: function (response) {
-
                 var apps = "";
                 if (response.length != 0) {
                     // construct and show the  the warning message with app names which use this partial before delete
@@ -405,7 +450,7 @@ $(document).on("click", ".policy-delete-button", function () {
 
         $.ajax({
 
-            url: '/publisher/api/entitlement/policy/partial/' + policyId,
+            url: context + '/apis/xacmlpolicies/delete/' + policyId,
             type: 'DELETE',
             contentType: 'application/json',
             dataType: 'json',
