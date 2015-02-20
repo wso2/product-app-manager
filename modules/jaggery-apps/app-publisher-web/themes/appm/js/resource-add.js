@@ -167,16 +167,6 @@ $( document ).ready(function() {
         }
     });
 
-    $(document).on("click", ".add_entitlement_policy", function () {
-        var resourceIndex = $(this).data('index');
-        preparePolicyEditor(resourceIndex);
-    })
-
-    $(document).on("click", ".delete_entitlement_policy", function () {
-        var resourceIndex = $(this).data('index');
-        deleteEntitlementPolicy(resourceIndex);
-    })
-
     $("#resource_tbody").trigger("draw");
 
     //handle global policies checkbox logic
