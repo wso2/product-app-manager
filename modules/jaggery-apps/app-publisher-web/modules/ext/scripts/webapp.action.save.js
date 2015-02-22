@@ -88,7 +88,10 @@ var module = function () {
         var attributes = asset.attributes;
         var urlPattern = attributes["uritemplate_urlPattern" + index];
         var policyGroups = attributes["uritemplate_policyGroupIds"];
+        var javaPolicies = attributes["uritemplate_javaPolicyIds"];
+
         webAppObj.setPolicyGroups(policyGroups); //set policy group id list
+        webAppObj.setJavaPolicies(javaPolicies); //set java policies id list
 
         while(urlPattern != null && trim(urlPattern).length > 0){
 
