@@ -129,12 +129,14 @@ var drawAPIResponseTime = function (response) {
         });
 
         // BAR CHART
-        var dataset = [
-            {
-                data: defaultChartData,
-                color: "#5482FF"
-            }
-        ];
+
+        var dataset=[];
+        for(var i=0;i<defaultChartData.length;i++){
+        var randomColor = getRandomColor();
+            dataset.push({data: [defaultChartData[i]], color: randomColor});
+        }
+
+
 
         $.plot($("#placeholder41"), dataset, {
             series: {
@@ -186,7 +188,7 @@ var drawAPIResponseTime = function (response) {
                 backgroundColor: 'white',
                 font: '12px sans-serif',
                 padding: 5,
-                opacity: 0.9
+                opacity: 1
             }).appendTo("body").fadeIn(200);
         }
 
@@ -262,10 +264,14 @@ var drawAPIResponseTime = function (response) {
                 }
             });
 
-            // BAR CHART
-            onCheckDataset = [
-                { data: draw_y_axis, color: "#5482FF" }
-            ];
+
+            //color bar chart
+            var onCheckDataset=[];
+            for(var i=0;i<draw_y_axis.length;i++){
+                var randomColor = getRandomColor();
+                onCheckDataset.push({data: [draw_y_axis[i]], color: randomColor});
+            }
+
             $.plot($("#placeholder41"), onCheckDataset, {
                 series: {
                     bars: {
@@ -317,5 +323,16 @@ function clearTables() {
     $('#webAppTable4').remove();
     $('#webAppTable5').remove();
 
+}
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+
+    return color;
 }
 

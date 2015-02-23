@@ -56,6 +56,7 @@ function drawGraphs() {
 
 }
 
+var colorScheme=[];
 var drawAPIUsageByPage = function (response) {
 
     $('#checkboxContainer').empty();
@@ -158,9 +159,13 @@ var drawAPIUsageByPage = function (response) {
             backgroundColor: { colors: ["#ffffff", "#EDF5FF"] }
         }
     };
-    defaultDataset = [
-        { data: defaultChartData, color: "#5482FF" }
-    ];
+
+    var defaultDataset=[];
+    for(var i=0;i<defaultChartData.length;i++){
+        var randomColor = getRandomColor();
+        defaultDataset.push({data: [defaultChartData[i]], color: randomColor});
+    }
+
     if (parsedResponse.usage.length == 0) {
         $("#placeholder51").html('<h1 class="no-data-heading">No data available</h1>')
     } else {
@@ -188,7 +193,7 @@ var drawAPIUsageByPage = function (response) {
             //console.log(JSON.stringify(item.ticks));
 
             label = item.series.yaxis.ticks[item.dataIndex].label;
-            //alert(label)
+
 
 
             for (var i = 0; i < parsedResponse.webapp_.length; i++) {
@@ -300,9 +305,15 @@ var drawAPIUsageByPage = function (response) {
                 backgroundColor: { colors: ["#ffffff", "#EDF5FF"] }
             }
         };
-        dataset = [
-            { data: draw_y_axis, color: "#5482FF" }
-        ];
+
+        //color bar chart
+        var dataset=[];
+
+        for(var i=0;i<draw_y_axis.length;i++){
+            var randomColor = getRandomColor();
+            colorScheme.push(randomColor);
+            dataset.push({data: [draw_y_axis[i]], color: randomColor});
+        }
 
         $.plot($("#placeholder51"), dataset, options);
         $("#placeholder51").UseTooltip();
@@ -491,5 +502,16 @@ function drawPopupChart(parsedResponse, label, strUser) {
     };
     $.plot($("#placeholder52"), dataset, options);
 
+}
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+
+    return color;
 }
 
