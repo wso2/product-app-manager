@@ -190,7 +190,7 @@ var drawAPIResponseTime = function (response) {
             }).appendTo("body").fadeIn(200);
         }
 
-        $("body #placeholder41").bind("plotclick", function (event, pos, item) {
+        $("body #placeholder41").bind("plothover", function (event, pos, item) {
             $("#tooltip").remove();
             if (item != null) {
 
@@ -198,7 +198,9 @@ var drawAPIResponseTime = function (response) {
                 tableStatement = '<table class="table graphTable"><thead><tr><th>page</th><th>response time(ms)' +
                     '</th></tr></thead><tbody id="tbody"></tbody></table>';
                 var x = item.datapoint[0];
+
                 var label = item.series.yaxis.ticks[item.dataIndex].label;
+
                 var webappPage = [];
                 var webappPageCount = [];
 
@@ -226,6 +228,8 @@ var drawAPIResponseTime = function (response) {
                     }
                 }
             }
+
+
         });
 
         $('#apiSelectTable').on('change', 'input.inputCheckbox', function () {
