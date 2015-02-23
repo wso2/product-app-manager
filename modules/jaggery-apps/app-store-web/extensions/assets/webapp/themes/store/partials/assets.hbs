@@ -16,7 +16,7 @@
 			<div class="span3 asset" data-id="{{id}}" data-type="{{type}}" id="asset">
 				{{#attributes}}
 					{{#if ../isSubscribed}}
-                        <span class="icon-bookmark store-bookmark-icon"> </span>
+                        <div class="ribbon-wrapper-green"><div class="ribbon-green">Subscribed</div></div>
 					{{/if}}
 
 				<a href="{{url "/assets"}}/{{../type}}/{{../id}}" id="assetsLink">
