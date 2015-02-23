@@ -1568,3 +1568,7 @@ h2.first-h2{
 .mobile-search-fix{
     padding: 6px 7px;
 }
+
+.btn-mob-cancel{
+    background-color: #DDDDDD;
+}

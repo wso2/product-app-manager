@@ -118,7 +118,7 @@ $(function() {
 			var selectedProvider = $('#providers').val();
 			$('#sso_ssoProvider').val(selectedProvider);
 		 }
-		
+
 		 // Add entitlement policies.
 		 $('#entitlementPolicies').val(JSON.stringify(entitlementPolicies));
 
@@ -292,8 +292,6 @@ $(function() {
 	function loadProviders(providers_data){
 		 for(var i=0;i<providers_data.length;i++){
 			  var x = providers_data[i];
-			  console.log(providers_data.length + "i:"+i);
-			  console.log(x);
 			  $("#providers").append($("<option></option>").val(x).text(x));
 		  }
 		 
