@@ -69,7 +69,7 @@ function updateJavaPolicyPartial() {
             }
 
             //draw div's to each policy
-            $('#divJavaPolicies').append(
+            $('#divJavaPolicies').empty().append(
                 "<div class='form-group'> " +
                 "<label class='control-label col-sm-4'> " + obj.displayName + "</label> " +
                 "<div class='col-md-1'>" +
