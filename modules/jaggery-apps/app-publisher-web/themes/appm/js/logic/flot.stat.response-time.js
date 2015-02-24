@@ -52,7 +52,7 @@ var drawAPIResponseTime = function (response) {
         $dataTable.append($('<thead class="tableHead"><tr>' +
             '<th width="10%"></th>' +
             '<th>API</th>' +
-            '<th>Response Time(ms)</th>' +
+            '<th style="text-align:right;">Response Time(ms)</th>' +
 
             '</tr></thead>'));
 
@@ -90,7 +90,7 @@ var drawAPIResponseTime = function (response) {
                     webappdatasructure[n][1] + ' class="inputCheckbox" />'
                     + '</td>'
                     + '<td style="text-align:left;"><label for=' + n + '>' + webappdatasructure[n][1] + '</label></td>'
-                    + '<td style="text-align:left;"><label for=' + n + '>' + timedatastructure[n][0] +
+                    + '<td style="text-align:right;"><label for=' + n + '>' + timedatastructure[n][0] +
                     '</label></td></tr>'));
 
                 filterValues.push(webappdatasructure[n][1]);
@@ -106,7 +106,7 @@ var drawAPIResponseTime = function (response) {
                     + ' class="inputCheckbox" />'
                     + '</td>'
                     + '<td style="text-align:left;"><label for=' + n + '>' + webappdatasructure[n][1] + '</label></td>'
-                    + '<td style="text-align:left;"><label for=' + n + '>' + timedatastructure[n][0]
+                    + '<td style="text-align:right;"><label for=' + n + '>' + timedatastructure[n][0]
                     + '</label></td></tr>'));
 
                 filterValues.push(webappdatasructure[n][1]);
@@ -129,12 +129,14 @@ var drawAPIResponseTime = function (response) {
         });
 
         // BAR CHART
-        var dataset = [
-            {
-                data: defaultChartData,
-                color: "#5482FF"
-            }
-        ];
+
+        var dataset=[];
+        for(var i=0;i<defaultChartData.length;i++){
+        var randomColor = getRandomColor();
+            dataset.push({data: [defaultChartData[i]], color: randomColor});
+        }
+
+
 
         $.plot($("#placeholder41"), dataset, {
             series: {
@@ -186,11 +188,11 @@ var drawAPIResponseTime = function (response) {
                 backgroundColor: 'white',
                 font: '12px sans-serif',
                 padding: 5,
-                opacity: 0.9
+                opacity: 1
             }).appendTo("body").fadeIn(200);
         }
 
-        $("body #placeholder41").bind("plotclick", function (event, pos, item) {
+        $("body #placeholder41").bind("plothover", function (event, pos, item) {
             $("#tooltip").remove();
             if (item != null) {
 
@@ -198,7 +200,9 @@ var drawAPIResponseTime = function (response) {
                 tableStatement = '<table class="table graphTable"><thead><tr><th>page</th><th>response time(ms)' +
                     '</th></tr></thead><tbody id="tbody"></tbody></table>';
                 var x = item.datapoint[0];
+
                 var label = item.series.yaxis.ticks[item.dataIndex].label;
+
                 var webappPage = [];
                 var webappPageCount = [];
 
@@ -226,6 +230,8 @@ var drawAPIResponseTime = function (response) {
                     }
                 }
             }
+
+
         });
 
         $('#apiSelectTable').on('change', 'input.inputCheckbox', function () {
@@ -258,10 +264,14 @@ var drawAPIResponseTime = function (response) {
                 }
             });
 
-            // BAR CHART
-            onCheckDataset = [
-                { data: draw_y_axis, color: "#5482FF" }
-            ];
+
+            //color bar chart
+            var onCheckDataset=[];
+            for(var i=0;i<draw_y_axis.length;i++){
+                var randomColor = getRandomColor();
+                onCheckDataset.push({data: [draw_y_axis[i]], color: randomColor});
+            }
+
             $.plot($("#placeholder41"), onCheckDataset, {
                 series: {
                     bars: {
@@ -313,5 +323,16 @@ function clearTables() {
     $('#webAppTable4').remove();
     $('#webAppTable5').remove();
 
+}
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+
+    return color;
 }
 
