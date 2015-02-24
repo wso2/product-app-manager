@@ -62,7 +62,7 @@ $( document ).ready(function() {
     });
 
     //load all available java policy list from DB
-    loadAvailableJavaPolicies(null);
+    loadAvailableJavaPolicies(null,true);
 
 
 

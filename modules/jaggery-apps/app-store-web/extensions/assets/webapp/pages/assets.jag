@@ -37,8 +37,7 @@ require('/modules/store.js').exec(function (ctx) {
             search = require('/modules/search.js'),
             subscriptions = {},
             subscription = false,
-            isSubscribed = false,
-            avaliablePages;
+            avaliablePages,isSubscribed;
 
     caramel = require('caramel');
     process = require('process'),
@@ -300,6 +299,7 @@ require('/modules/store.js').exec(function (ctx) {
 
     var subscriptionInfo;
     assets.forEach(function (asset) {
+        isSubscribed = false;
         //set subscription details for each asset
         subscriptionInfo = getSubscriptionInfo(asset)
         if (subscriptionInfo.individualSubscription) {

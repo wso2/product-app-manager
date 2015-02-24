@@ -98,8 +98,8 @@ require('/modules/publisher.js').exec(function(ctx) {
         deletePolicyGroup(context.params.applicationId,context.params.policyGroupId);
     });
 
-    routeManager.register('GET', 'publisher', '/publisher/api/entitlement/get/all/available/java/policy/handlers/details/list/{applicationUUID}', function (context) {
-        var javaPolicyList = getAvailableJavaPolicyList(context.params.applicationUUID);
+    routeManager.register('GET', 'publisher', '/publisher/api/entitlement/get/all/available/java/policy/handlers/details/list/{applicationUUID}/{isGlobalPolicy}', function (context) {
+         var javaPolicyList = getAvailableJavaPolicyList(context.params.applicationUUID,context.params.isGlobalPolicy);
         print(javaPolicyList);
     });
 
@@ -229,10 +229,17 @@ require('/modules/publisher.js').exec(function(ctx) {
     /**
      * Get the list of all available Java Policies
      * @param applicationUUID
+     * @param isGlobalPolicy :if application level policy - true else if resource level policy - false
      * @returns list of available java policies with the mapping AppId
      */
-    function getAvailableJavaPolicyList(applicationUUID) {
-        return appMDAOObj.getAvailableJavaPolicyList(applicationUUID);
+    function getAvailableJavaPolicyList(applicationUUID, isGlobalPolicy) {
+        if (isGlobalPolicy == "true") {
+            return appMDAOObj.getAvailableJavaPolicyList(applicationUUID, true);
+        }
+        else {
+            return appMDAOObj.getAvailableJavaPolicyList(applicationUUID, false);
+        }
+
     }
 
 
