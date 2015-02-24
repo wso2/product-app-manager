@@ -1545,7 +1545,7 @@ input.apply-btn {
 
 .group-role-search {
     float: left;
-    margin-left: 378px;
+    margin-left: 451px;
     font-size: 17px;
     margin-top: -26px;
 }
@@ -1637,3 +1637,5 @@ td#buttonTd a {
 ul.token-input-list-facebook{
     width: 475px;
 }
+
+#inp_searchAsset{border-top-left-radius: 4px;border-bottom-left-radius: 4px;}

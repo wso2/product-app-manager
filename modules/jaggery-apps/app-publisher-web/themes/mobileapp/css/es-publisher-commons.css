@@ -799,7 +799,7 @@ td.asset-listing-btn {
 .emptyAssets-MsgDiv {
     text-align: center;
     font-size: 18px;
-    padding: 40px 0;
+    padding: 55px 0;
 }
 .emptyAssets-MsgDiv .largeMsgIcon {
     font-size: 200px;
@@ -1567,4 +1567,8 @@ h2.first-h2{
 
 .mobile-search-fix{
     padding: 6px 7px;
+}
+
+.btn-mob-cancel{
+    background-color: #DDDDDD;
 }

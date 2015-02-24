@@ -165,18 +165,6 @@ $( document ).ready(function() {
         }
     });
 
-
-
-    $(document).on("click", ".add_entitlement_policy", function () {
-        var resourceIndex = $(this).data('index');
-        preparePolicyEditorInEditMode(resourceIndex);
-    })
-
-    $(document).on("click", ".delete_entitlement_policy", function () {
-        var resourceIndex = $(this).data('index');
-        deleteEntitlementPolicy(resourceIndex);
-    })
-
     $(document).on("click", "#btn-policy-save", function () {
         addEntitlementPolicy();
        // $("#entitlement-policy-editor").modal('hide');
@@ -208,12 +196,12 @@ $( document ).ready(function() {
         if($(this).context.checked){
             $('#overview_logoutUrl').show();
         } else{
-            $('#overview_logoutUrl').val("");
+            $('#overview_logoutUrl').val('');
             $('#overview_logoutUrl').hide();
         }
     })
     //set default on loading
-    if($('#overview_logoutUrl').val){
+    if($('#overview_logoutUrl').val() !=' '){
         $('.controll_overview_logoutUrl').prop('checked', true);
         $('#overview_logoutUrl').show()
     }else{

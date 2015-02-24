@@ -285,10 +285,8 @@ $(function() {
 
 			    		var readPermission = new Array();
             			readPermission.push("GET");
-
-                    			// Get roles from the UI
-            			var rolesInUI = $('#roles').tokenInput("get");	
-
+                    	// Get roles from the UI
+            			var rolesInUI = $('#roles').tokenInput("get");
             			for(var i = 0; i < rolesInUI.length; i++){
             				rolePermissions.push({
                     				role: rolesInUI[i].id,

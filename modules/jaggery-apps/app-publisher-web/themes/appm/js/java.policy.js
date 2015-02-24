@@ -21,10 +21,11 @@ var javaPolicyArray = new Array(); //contains Java Polices list
 /**
  * Load all the available Java Policies List and the Mapping for given Application Id
  * @param applicationUUID
+ * @param isGlobalPolicy :if application level policy - true else if resource level policy - false
  */
-function loadAvailableJavaPolicies(applicationUUID) {
+function loadAvailableJavaPolicies(applicationUUID, isGlobalPolicy) {
     $.ajax({
-        url: '/publisher/api/entitlement/get/all/available/java/policy/handlers/details/list/' + applicationUUID,
+        url: '/publisher/api/entitlement/get/all/available/java/policy/handlers/details/list/' + applicationUUID + '/' + isGlobalPolicy,
         type: 'GET',
         contentType: 'application/json',
         dataType: 'json',
@@ -92,14 +93,6 @@ function updateJavaPolicyPartial() {
     //draw java policy items
     $("#javaPolicy_tbody").trigger("draw");
 
-    //update the url pattern wise policy group drop downs
-    $('.javaPolicy-opt-val').each(function () {
-        if( $(this).prop('checked'))
-        {
-           // alert($(this).attr('data-javaPolicy-id'));
-            //todo: javaPolicyArray[index].isChecked =true and write the whole object to a data field
 
-        }
-    });
 
 }

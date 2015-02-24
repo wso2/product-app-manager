@@ -15,6 +15,10 @@
 		{{#each .}}
 			<div class="span3 asset" data-id="{{id}}" data-type="{{type}}" id="asset">
 				{{#attributes}}
+					{{#if ../isSubscribed}}
+                        <div class="ribbon-wrapper-green"><div class="ribbon-green">Subscribed</div></div>
+					{{/if}}
+
 				<a href="{{url "/assets"}}/{{../type}}/{{../id}}" id="assetsLink">
 	                		<div class="asset-icon">
                                 <input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
@@ -33,7 +37,17 @@
 	                		<div class="asset-rating">
 						<div class="asset-rating-{{../rating/average}}star"></div>
 					</div>
-	                		<div class="asset-author-category">
+							{{#if ../overview_skipGateway}}
+                                <style>.meta-gw-info {
+                                    position: absolute;
+                                    top: 25px;
+                                    right: 5px;
+                                    font-size: 10px;
+                                    color: red;
+                                }</style>
+                                <div class="meta-gw-info"><i class="icon-remove"></i>Skipped Proxying</div>
+							{{/if}}
+                            <div class="asset-author-category">
 						<ul>
 							<li>
 								<h4>{{t "Version"}}</h4>
