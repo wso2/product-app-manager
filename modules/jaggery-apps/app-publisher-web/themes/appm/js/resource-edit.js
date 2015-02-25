@@ -211,6 +211,30 @@ $( document ).ready(function() {
     }
 
 
+    //set skip gateway checkbox value in edit mode
+    var skipGateway = $('#overview_skipGateway').val();
+    if (skipGateway == "true") {
+        $('.skip_gateway_checkbox').prop('checked', true);
+    }
+    else {
+        $('.skip_gateway_checkbox').prop('checked', false);
+    }
+
+
+    //when skip gateway checkbox value in changed, adjust the hidden field value which used in save operation
+    $(".skip_gateway_checkbox").click(function () {
+        var output = [];
+        if ($('.skip_gateway_checkbox').is(':checked')) {
+            output.push("true");
+        }
+        else {
+            output.push("false");
+        }
+        $('#overview_skipGateway').val(output);
+    });
+
+
+
 });
 
 // NOTE : This function is used as a workaround for a bug in registry model import and export.
