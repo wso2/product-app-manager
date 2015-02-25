@@ -17,6 +17,7 @@
  */
 
 var javaPolicyArray = new Array(); //contains Java Polices list
+var javaPolicyIndexArray = []; //used to maintain the selected Java Policy ID's list
 
 /**
  * Load all the available Java Policies List and the Mapping for given Application Id
@@ -56,43 +57,58 @@ function loadAvailableJavaPolicies(applicationUUID, isGlobalPolicy) {
  * draw java policies list
  */
 function updateJavaPolicyPartial() {
-    var enabledStatus;  //if policy is mandatory make it wont allow user to un-tick the particular java policy
-    var checkedStatus; //if policy is mandatory always tick the java policy
-
+    var checkedStatus = "";
     $.each(javaPolicyArray, function (index, obj) {
         if (obj != null) {
 
-            if (obj.isMandatory) {
-                //always check and and disable the mandatory fields
-                enabledStatus = 'disabled';
-                checkedStatus = 'checked';
-            } else {
-                enabledStatus = 'enabled';
-
-                //tick the saved mappings
-                if (obj.applicationId == null) {
-                    checkedStatus = "";
-                }
-                else {
-                    checkedStatus = "checked";
-                }
+            //if policy is saved, tick the java policy checkbox
+            if (obj.applicationId != null) {
+                checkedStatus = "checked";
+                //push the id's of saved policies to array
+                javaPolicyIndexArray.push(obj.javaPolicyId);
             }
 
-            $('#javaPolicy_tbody').append(
-                "<tr>" +
-                "<td>" + obj.displayName + "</td>" +
-                "<td>" + obj.description + "</td>" +
-                "<td><input  class='javaPolicy-opt-val' data-javaPolicy-id='" + obj.javaPolicyId +
-                "'  type='checkbox' " + enabledStatus +
-                " " + checkedStatus + "></td>" +
-                "</tr>");
-
+            //draw div's to each policy
+            $('#divJavaPolicies').empty().append(
+                "<div class='form-group'> " +
+                "<label class='control-label col-sm-4'> " + obj.displayName + "</label> " +
+                "<div class='col-md-1'>" +
+                "<input  class='javaPolicy-opt-val' data-javaPolicy-id='" + obj.javaPolicyId + "'  type='checkbox' "
+                + checkedStatus + ">" +
+                "</div>" +
+                "</div>");
         }
     });
+
+    //store the list of Java Policy id's (used in save operation to map the application wise assigned java policies)
+    $('#uritemplate_javaPolicyIds').val(JSON.stringify(javaPolicyIndexArray));
 
     //draw java policy items
     $("#javaPolicy_tbody").trigger("draw");
 
 
-
 }
+
+
+//this event triggers when an dynamic optional java policy get clicked. Need to maintain the selected policy id list
+$(document).on("click", ".javaPolicy-opt-val", function () {
+    var javaPolicyId = parseInt($(this).attr("data-javaPolicy-id"));
+    var itemIndex = javaPolicyIndexArray.indexOf(javaPolicyId); //index of clicked (current) item
+
+    if ($(this).prop("checked")) {
+        //add item if checked and if not exists in the array
+        if (itemIndex == -1) {
+            javaPolicyIndexArray.push(javaPolicyId);
+        }
+    }
+    else {
+        //remove item if unchecked and if exists in the array
+        if (itemIndex > -1) {
+            javaPolicyIndexArray.splice(itemIndex, 1);
+        }
+    }
+
+    //update hidden field which used in save operation to get the mapped java policies
+    $('#uritemplate_javaPolicyIds').val(JSON.stringify(javaPolicyIndexArray));
+
+});
