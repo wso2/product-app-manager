@@ -46,13 +46,11 @@ $(function() {
             $this.after('<i class="icon-check-appname"></i>');
             flag = $('.icon-check-appname');
         }
+
+		if(context.charAt(0) == '/'){
+			context = context.substr(1);
+		}
         if(context !== '') {
-
-            if(context.charAt(0) == '/'){
-                context = context.substr(1);
-            }
-
-
             //check if the asset name available as user types in
             $.ajax({
                 url : '/publisher/api/validations/assets/' + type + '/overview_context/' + context,
