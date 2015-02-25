@@ -137,7 +137,8 @@ $(function() {
                         messageText = "User account awaiting Administrator approval.";
 
                     }else{
-                        messageText = "User added successfully. You can now sign into the APP store using the new user account.";
+                        messageText = "Account for user '"+username+"' created successfully. You can now signin to " +
+                            "APP store using login name '"+username+"'.";
                     }
 
                     $('#messageModal').html($('#confirmation-data').html());
