@@ -3,19 +3,19 @@ $(function() {
 	var showError = function (message) {
 		var msg = message.replace(/[0-9a-z.+]+:\s/i, '');
 		$('#register-alert').html(msg).fadeIn('fast');
-		$('#btn-signin').text('Sign in').removeClass('disabled');
+		$('#btn-signin').text('Sign In').removeClass('disabled');
 	};
 
     var showLoginError = function (message) {
         var msg = message.replace(/[0-9a-z.+]+:\s/i, '');
         $('#login-alert').html(msg).fadeIn('fast');
-        $('#btn-signin').text('Sign in').removeClass('disabled');
+        $('#btn-signin').text('Sign In').removeClass('disabled');
     };
 
     	var login = function() {
 		if (!$("#form-login").valid())
 			return;
-		$('#btn-signin').addClass('disabled').text('Signing in');
+		$('#btn-signin').addClass('disabled').text('Signing In');
 
 		var username = $('#inp-username').val();
 		var password = $('#inp-password').val();
