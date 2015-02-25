@@ -61,8 +61,8 @@ $( document ).ready(function() {
         }
     });
 
-    //load all available java policy list from DB
-    loadAvailableJavaPolicies(null,true);
+    //load all available global (applicaiton level) java policy list from DB
+    loadAvailableJavaPolicies(null, true);
 
 
 
