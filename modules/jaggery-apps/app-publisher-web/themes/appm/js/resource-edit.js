@@ -23,6 +23,9 @@ $( document ).ready(function() {
         }
     });
 
+    //load throttling tiers
+    $("#throttlingTier").empty().append(throttlingTierControlBlock);
+
     $(".trans_checkbox").click(function(){
         var output = [];
         $( ".trans_checkbox" ).each(function( index ) {
@@ -333,7 +336,8 @@ function loadPolicyGroupData(uuid) {
                             throttlingTier: data[i].throttlingTier,
                             anonymousAccessToUrlPattern: data[i].allowAnonymous,
                             userRoles: data[i].userRoles,
-                            policyPartials: data[i].policyPartials
+                            policyPartials: data[i].policyPartials,
+                            policyGroupDesc: data[i].policyGroupDesc
                         })
                     }
                     updatePolicyGroupPartial(policyGroupsArray);

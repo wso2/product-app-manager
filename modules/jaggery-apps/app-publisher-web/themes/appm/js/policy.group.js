@@ -21,11 +21,6 @@ var editedPolicyGroup = 0; //contains status (if edit or save)
 var policyGroupsArray = new Array(); //policy group related details array
 var policyGroupBlock; //contains html formatted options list of Policy Groups
 
-$(document).ready(function () {
-    //load throttling tiers
-    $("#throttlingTier").empty().append(throttlingTierControlBlock);
-});
-
 
 $('#userRoles').tokenInput('/publisher/api/lifecycle/information/meta/' + $('#meta-asset-type').val() + '/roles', {
     theme: 'facebook',
@@ -197,7 +192,7 @@ function savePolicyGroupData(isSaveAndClose) {
     //User Roles
     var userRoles = $('#policy-group-editor #userRoles').val();
 
-    var policyGroupDesc="";
+    var policyGroupDesc = $('#policy-group-editor #policyGroupDescription').val();
 
     hidePolicyGroupNotification();
 
@@ -241,6 +236,7 @@ $(document).on("click", ".policy-group-edit-button", function () {
     $.each(policyGroupsArray, function (index, obj) {
         if (obj != null && obj.policyGroupId == policyGroupId) {
             $('#policy-group-editor #policyGroupName').val(obj.policyGroupName);
+            $('#policy-group-editor #policyGroupDescription').val(obj.policyGroupDesc);
             $("#policy-group-editor #throttlingTier option[value=" + obj.throttlingTier +
             "]").attr("selected", "selected");
             $("#policy-group-editor #anonymousAccessToUrlPattern option[value=" + obj.anonymousAccessToUrlPattern +
@@ -324,6 +320,7 @@ $(document).on("click", "#btn-add-policy-group", function () {
     editedPolicyGroup = 0;
     $('#policy-group-editor #policyGroupName').val("");
     $('#policy-group-editor #policyGroupName').prop("readonly", false);
+    $('#policy-group-editor #policyGroupDescription').val("");
     $('#policy-group-editor #throttlingTier').prop('selectedIndex', 0);
     $('#policy-group-editor #anonymousAccessToUrlPattern').prop('selectedIndex', 0);
     $('#policy-group-editor #userRoles').tokenInput("clear");
@@ -345,7 +342,7 @@ function updatePolicyGroupPartial(policyGroupsArray) {
     $.each(policyGroupsArray, function (index, obj) {
         if (obj != null) {
             $('#policyGroupsTable tbody').append('<tr><td>' + obj.policyGroupName +
-            '</td><td>'+ obj.description +'</td><td><a data-target="#policy-group-editor" data-toggle="modal" data-policy-id="'
+            '</td><td>'+ obj.policyGroupDesc +'</td><td><a data-target="#policy-group-editor" data-toggle="modal" data-policy-id="'
             + obj.policyGroupId + '" class="policy-group-edit-button"><i class="icon-edit"></i></a> &nbsp;' +
             '<a  data-policy-name="' + obj.policyGroupName + '"  data-policy-id="' + obj.policyGroupId +
             '" class="policy-group-delete-button"><i class="icon-trash"></i></a></td></tr>');
@@ -490,7 +487,8 @@ function updatePolicyGroupPartialXACMLPolicies(uuid){
                             throttlingTier: data[i].throttlingTier,
                             anonymousAccessToUrlPattern: data[i].allowAnonymous,
                             userRoles: data[i].userRoles,
-                            policyPartials: data[i].policyPartials
+                            policyPartials: data[i].policyPartials,
+                            policyGroupDesc: data[i].policyGroupDesc
                         })
                     }
                     policyGroupsArray = policyGroupsArray.concat(policyGroupsArrayTemp).unique();
