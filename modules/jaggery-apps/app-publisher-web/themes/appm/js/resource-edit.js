@@ -109,7 +109,8 @@ $( document ).ready(function() {
     $("#add_resource").click(function(){
         $(".http_verb").each(function(){
             var resource = {};
-            resource.url_pattern = $("#url_pattern").val();
+            var url_pattern = $("#url_pattern").val();
+            resource.url_pattern =  url_pattern.indexOf('/') == 0 ? url_pattern : '/' + url_pattern;
             resource.http_verb = $(this).val();
             resource.user_roles = $("#user_roles").val();
             if($(this).is(':checked')){
@@ -148,7 +149,7 @@ $( document ).ready(function() {
         for (var i = 0; i < RESOURCES_1.length; i++) {
             $("#resource_tbody").prepend(
                 "<tr> \
-                  <td><span style='color:#999'>/{context}/{version}/</span>" + RESOURCES_1[i].url_pattern + " <input type='hidden' value='" + RESOURCES_1[i].url_pattern + "' name='uritemplate_urlPattern" + i + "'/></td> \
+                  <td><span style='color:#999'>/{context}/{version}</span>" + RESOURCES_1[i].url_pattern + " <input type='hidden' value='" + RESOURCES_1[i].url_pattern + "' name='uritemplate_urlPattern" + i + "'/></td> \
                   <td><strong>" + RESOURCES_1[i].http_verb + "</strong><input type='hidden' value='" + RESOURCES_1[i].http_verb + "' name='uritemplate_httpVerb" + i + "'/></td> \
                      <td style='padding:0px'><select name='uritemplate_policyGroupId" + i + "' id='uritemplate_policyGroupId" + i + "' onChange='updateDropdownPolicyGroup(" + i + ");'   class='policy_groups form-control'>" + policyGroupBlock + "</select></td>\
                    <td> \
@@ -323,4 +324,5 @@ function loadPolicyGroupData(uuid) {
         }
     });
 }
+
 
