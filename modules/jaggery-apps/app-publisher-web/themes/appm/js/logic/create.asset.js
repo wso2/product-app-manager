@@ -47,9 +47,7 @@ $(function() {
             flag = $('.icon-check-appname');
         }
 
-		if(context.charAt(0) == '/'){
-			context = context.substr(1);
-		}
+		context = context.indexOf('/') == 0 ? context.substring(1) : context;
         if(context !== '') {
             //check if the asset name available as user types in
             $.ajax({
@@ -94,12 +92,10 @@ $(function() {
 			return;
 		}
 
-		var context =  $('#overview_context').val();
+		var context = $('#overview_context').val();
+		context = context.indexOf('/') == 0 ? context : '/' + context;
 
-		if (context.charAt(0) !=  "/"){
-			context = "/" + context;
-			$('#overview_context').val(context);
-		}
+		$('#overview_context').val(context);
 
         var name =  $('#overview_name').val()
 		var version =  $('#overview_version').val();
