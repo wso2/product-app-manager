@@ -51,7 +51,6 @@ function completeIfInTag(cm) {
 
 
 $(document).ready(function () {
-
      editor = CodeMirror.fromTextArea(document.getElementById("policy-content"), {
         mode: "xml",
         lineNumbers: true,
@@ -155,12 +154,12 @@ $(document).on("click", "#btn-policy-save", function () {
         alert("Policy name cannot be blank", "alert-danger");
         return;
     }
-    if (policyContent == "") {
+    if (editor.getValue() == "") {
         alert("Policy content cannot be blank", "alert-danger");
         return;
     }
+
     validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation, displayValidationRequestException);
-    resetControls();
 });
 
 //validate the condition
@@ -184,7 +183,6 @@ function continueAddingEntitlementPolicyPartialAfterValidation(response) {
         response = response.response;
         if (response.isValid) {
             savePolicyPartial();
-            //alert("Policy is valid.", "alert-success");
         } else {
             alert("Policy is not valid.", "alert-danger");
         }
@@ -225,6 +223,18 @@ function savePolicyPartial() {
     var provider = "";
     var isSharedPartial = true;
     if (editedpolicyPartialId == 0) { //add
+
+        //check if the name is already saved
+        if (policyPartialsArray.length > 0) {
+            for (var i = 0; i < policyPartialsArray.length; i++) {
+                if (policyPartialsArray[i].policyPartialName == policyPartialName) {
+                    //if policy group name is already saved show an warning and return
+                    alert("Cannot save Policy Group Name " + policyPartialName + " as it is already been saved. " +
+                    "Please select a different name");
+                    return;
+                }
+            }
+        }
 
         $.ajax({
             url: context + '/apis/xacmlpolicies/save',
@@ -306,6 +316,7 @@ function savePolicyPartial() {
 
     }
 
+    resetControls();
 
 }
 

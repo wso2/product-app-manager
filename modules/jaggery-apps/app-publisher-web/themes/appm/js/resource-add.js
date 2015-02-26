@@ -31,6 +31,9 @@ $( document ).ready(function() {
         }
     });
 
+    //load throttling tiers
+    $("#throttlingTier").empty().append(throttlingTierControlBlock);
+
     //fixed chrome issue with file paths
     $('input[type=file]').on('change', function(e) {
         var filename = $(e.currentTarget).val().replace(/^.*\\/, "");
