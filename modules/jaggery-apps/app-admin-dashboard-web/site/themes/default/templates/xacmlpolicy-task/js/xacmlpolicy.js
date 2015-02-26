@@ -183,7 +183,6 @@ function continueAddingEntitlementPolicyPartialAfterValidation(response) {
         response = response.response;
         if (response.isValid) {
             savePolicyPartial();
-            resetControls();
         } else {
             alert("Policy is not valid.", "alert-danger");
         }
@@ -224,6 +223,18 @@ function savePolicyPartial() {
     var provider = "";
     var isSharedPartial = true;
     if (editedpolicyPartialId == 0) { //add
+
+        //check if the name is already saved
+        if (policyPartialsArray.length > 0) {
+            for (var i = 0; i < policyPartialsArray.length; i++) {
+                if (policyPartialsArray[i].policyPartialName == policyPartialName) {
+                    //if policy group name is already saved show an warning and return
+                    alert("Cannot save Policy Group Name " + policyPartialName + " as it is already been saved. " +
+                    "Please select a different name");
+                    return;
+                }
+            }
+        }
 
         $.ajax({
             url: context + '/apis/xacmlpolicies/save',
@@ -305,6 +316,7 @@ function savePolicyPartial() {
 
     }
 
+    resetControls();
 
 }
 
