@@ -155,12 +155,12 @@ $(document).on("click", "#btn-policy-save", function () {
         alert("Policy name cannot be blank", "alert-danger");
         return;
     }
-    if (policyContent == "") {
+    if (editor.getValue() == "") {
         alert("Policy content cannot be blank", "alert-danger");
         return;
     }
+
     validatePolicyPartial(policyContent, continueAddingEntitlementPolicyPartialAfterValidation, displayValidationRequestException);
-    resetControls();
 });
 
 //validate the condition
@@ -184,7 +184,7 @@ function continueAddingEntitlementPolicyPartialAfterValidation(response) {
         response = response.response;
         if (response.isValid) {
             savePolicyPartial();
-            //alert("Policy is valid.", "alert-success");
+            resetControls();
         } else {
             alert("Policy is not valid.", "alert-danger");
         }
