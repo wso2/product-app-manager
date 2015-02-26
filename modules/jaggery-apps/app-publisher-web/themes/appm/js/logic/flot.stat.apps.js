@@ -1,4 +1,6 @@
+var usageByContext;
 $(function () {
+
     drawGraphs();
 });
 
@@ -14,6 +16,27 @@ function drawGraphs() {
     var to = dateRange.split('to')[1].trim() + ":00";
 
     $.ajax({
+            /* Web Application Last Access Time Graph */
+            async: false,
+            url: '/publisher/api/assets/' + operation + '/' + type + '/' + action
+                + '/',
+            type: 'POST',
+            data: {
+                'startDate': from,
+                'endDate': to
+            },
+            success: function (response) {
+
+                usageByContext = JSON.parse(response);
+                $('#spinner').hide();
+
+            },
+            error: function (response) {
+                alert('Error occured at statistics graph rendering');
+            }
+        });
+
+    $.ajax({
         async: false,
         url: '/publisher/api/assets/' + operation + '/' + type
             + '/getAPIUsageByUser/',
@@ -24,7 +47,7 @@ function drawGraphs() {
         },
         success: function (response) {
 
-            drawAPIUsageByUser(response);
+            drawAPIUsageByUser(response,usageByContext);
             $('#spinner').hide();
         },
         error: function (response) {
@@ -34,7 +57,23 @@ function drawGraphs() {
 
 }
 
-var drawAPIUsageByUser = function (response) {
+var drawAPIUsageByUser = function (response,usageByContext) {
+
+    var dataStructure = [];
+    for (var i = 0; i < usageByContext.length; i++) {
+
+        for (var j = 0; j < usageByContext[i][1].length; j++) {
+
+            dataStructure.push({
+                "appName": usageByContext[i][0],
+                "subCount": Number(usageByContext[i][1][j][1]),
+                "checked" : false
+
+            });
+        }
+    }
+
+
     var parsedResponse = JSON.parse(response);
     length = parsedResponse.length;
     $("#tooltipTable").find("tr:gt(0)").remove();
@@ -49,7 +88,7 @@ var drawAPIUsageByUser = function (response) {
             var newArr = [], found, x, y;
             app = (parsedResponse[i][0]);
 
-            app = app.replace(/\s+/g, '');
+           // app = app.replace(/\s+/g, '');
             if (j != 0) {
                 statement = statement + '<tr>'
             }
@@ -83,13 +122,36 @@ var drawAPIUsageByUser = function (response) {
 
 
         }
-        data.push({
-            API_name: app,
-            Subscriber_Count: newArr.length,
-            Hits: allcount,
-            API: app
-        });
+
+        for(var z = 0; z < dataStructure.length; z++){
+
+            if(app == dataStructure[z].appName){
+            alert(dataStructure[z].appName+"   "+dataStructure[z].subCount)
+                dataStructure[z].checked = true;
+                data.push({
+                    API_name: app,
+                    Subscriber_Count: dataStructure[z].subCount,
+                    Hits: allcount,
+                    API: app
+                });
+            }
+        }
+
     }
+
+    for(var p = 0; p < dataStructure.length; p++){
+
+        if(dataStructure[p].checked == false){
+
+            data.push({
+                API_name: dataStructure[p].appName,
+                Subscriber_Count: dataStructure[p].subCount,
+                Hits: 0,
+                API: dataStructure[p].appName
+            });
+        }
+    }
+
     $('.graph-container').html('');
     $('#tableContainer').html('');
     var svg = dimple.newSvg(".graph-container", 1000, 500);
