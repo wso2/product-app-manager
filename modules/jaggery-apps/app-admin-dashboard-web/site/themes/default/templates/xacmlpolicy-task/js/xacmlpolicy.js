@@ -51,7 +51,6 @@ function completeIfInTag(cm) {
 
 
 $(document).ready(function () {
-
      editor = CodeMirror.fromTextArea(document.getElementById("policy-content"), {
         mode: "xml",
         lineNumbers: true,
