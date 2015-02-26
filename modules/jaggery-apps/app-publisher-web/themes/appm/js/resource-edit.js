@@ -109,7 +109,8 @@ $( document ).ready(function() {
     $("#add_resource").click(function(){
         $(".http_verb").each(function(){
             var resource = {};
-            resource.url_pattern = getValidatedURLPattern($("#url_pattern").val());
+            var url_pattern = $("#url_pattern").val();
+            resource.url_pattern =  url_pattern.indexOf('/') == 0 ? url_pattern : '/' + url_pattern;
             resource.http_verb = $(this).val();
             resource.user_roles = $("#user_roles").val();
             if($(this).is(':checked')){
@@ -324,16 +325,4 @@ function loadPolicyGroupData(uuid) {
     });
 }
 
-/**
- * Validate the input url pattern according to gateway requirements
- * @param urlPattern input url pattern
- * @returns {*}
- */
-function getValidatedURLPattern(urlPattern){
-    if(urlPattern && urlPattern.charAt(0) != '/' ){
-        return '/' + urlPattern;
-    }else{
-        return urlPattern;
-    }
-}
 
