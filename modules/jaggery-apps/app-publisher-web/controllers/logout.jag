@@ -47,8 +47,8 @@
                     <%
         }
     }else {
-        session.invalidate(); //Clear the session
-        response.sendRedirect('/portal');
+        //this block executes when the session is expired so redirect user to login page
+        response.sendRedirect('/publisher');
     }
 }());
 %>
