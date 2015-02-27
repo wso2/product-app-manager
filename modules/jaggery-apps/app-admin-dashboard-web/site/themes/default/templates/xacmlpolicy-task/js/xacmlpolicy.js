@@ -172,11 +172,11 @@ function validatePolicyPartial(policyPartial, onSuccess, onError) {
         contentType: 'application/x-www-form-urlencoded',
         data: {"policyPartial": policyPartial},
         success: onSuccess,
-        error: function(response){
-            if (response.status==500){
+        error: function (response) {
+            if (response.status == 500) {
                 alert('Sorry, your session has expired');
                 location.reload();
-            }else{
+            } else {
                 onError(respond);
             }
         }
