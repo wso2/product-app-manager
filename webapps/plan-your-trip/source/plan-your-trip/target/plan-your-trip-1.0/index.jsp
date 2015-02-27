@@ -95,7 +95,10 @@
       </button>
       <a class="navbar-brand" href="#">Your Flight Itinerary</a>
     </div>
-
+    <% if (headerMap!=null && headerMap.get(userName) != null) {
+    %>
+		<input type="hidden" id="username" value="<%=headerMap.get(userName).replace("\"","")%>">
+	<%} %>
     <input type="hidden" id="route_plan" value="<% out.println(route); %>">
 
     <!-- Collect the nav links, forms, and other content for toggling -->
