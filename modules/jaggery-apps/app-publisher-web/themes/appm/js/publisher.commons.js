@@ -231,6 +231,11 @@ $(document).ready(function() {
 		var searchAssetString = $('#inp_searchAsset').val();
 		var searchPrefix = $('#search-prefix').val();
 
+		//set default when empty
+		if (searchPrefix.trim() == "") {
+			searchPrefix = "webapp";
+		}
+
 		if (searchAssetString != "") {
 			var link = '/publisher/assets/' + searchPrefix + '/?query=' + searchAssetString;
 			window.location = link;
