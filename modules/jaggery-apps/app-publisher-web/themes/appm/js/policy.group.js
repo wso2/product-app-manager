@@ -387,7 +387,42 @@ $(document).on("click", ".policy-group-delete-button", function () {
 function deletePolicyGroup(applicationId, policyGroupId, policyGroupName) {
     var arrayIndex; //deleted index of the array
     var groupPartial;
-    var conf = confirm("Are you sure you want to delete the policy " + policyGroupName + "?");
+    var conf = false;
+
+    $.ajax({
+        async: false,
+        url: '/publisher/api/entitlement/policyGroup/associate/url/pattern/list/to/avoid/delete/' + policyGroupId,
+        type: 'GET',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (response) {
+            var urlPattern = "";
+            if (response.length != 0) {
+
+                // construct and show the  the warning message with app names which use this partial before delete
+                for (var i = 0; i < response.length; i++) {
+                    var j = i + 1;
+                    urlPattern = urlPattern + j + ". URL Pattern: " + response[i].urlPattern + " , HTTP Verb: "
+                    + response[i].httpMethod + "\n";
+
+                }
+                var msg = "You cannot delete the policy group " + policyGroupName +
+                    " because it is been used in following URl patterns \n\n" +
+                    urlPattern;
+                alert(msg);
+                return;
+
+            } else {
+                conf = confirm("Are you sure you want to delete the policy " + policyGroupName + "?");
+            }
+
+        },
+        error: function (response) {
+
+        }
+    });
+
+
     if (conf) {
         $.each(policyGroupsArray, function (index, obj) {
             if (obj != null && obj.policyGroupId == policyGroupId) {
