@@ -53,7 +53,7 @@
 
 				{{#if sso}}
 				<li>
-					<a href="#" id="sso-login">{{t "Sign in"}}</a>
+					<a href="#" id="sso-login">{{t "Sign In"}}</a>
 					<form id="sso-login-form" method="post" action="{{ssoIdpURL}}" style="display: none;">
 						<input type="hidden" name="SAMLRequest" value="{{ssoEncodedRequest}}"/>
 						<input type="hidden" name="RelayState" value="{{ssoRelayState}}"/>
@@ -65,7 +65,7 @@
 				</li>
 				{{else}}
 				<li>
-					<a href="#" data-toggle="modal" data-target="#modal-login" >{{t "Sign in"}}</a>
+					<a href="#" data-toggle="modal" data-target="#modal-login" >{{t "Sign In"}}</a>
 				</li>
 				<li>
 					<a id="btn-register" class="btn btn-primary"  data-toggle="modal" data-target="#modal-register">{{t "Register"}}</a>
