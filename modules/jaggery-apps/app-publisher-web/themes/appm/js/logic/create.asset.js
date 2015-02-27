@@ -92,6 +92,22 @@ $(function() {
 			return;
 		}
 
+		//check if there are any url which doesn't have a policy group
+		var countResourcePolicies = 0;
+		var result = true;
+		$('.policy_groups').each(function () {
+			if ($("#uritemplate_policyGroupId" + countResourcePolicies + " option:selected").text() == "") {
+				result = false;
+			}
+			countResourcePolicies++;
+		});
+		if (result == false) {
+			alert('Failed to add asset. Need to assign a Resource Policy for each URL Pattern.');
+			return;
+		}
+
+
+
 		var context = $('#overview_context').val();
 		context = context.indexOf('/') == 0 ? context : '/' + context;
 

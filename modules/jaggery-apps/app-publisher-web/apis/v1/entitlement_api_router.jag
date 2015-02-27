@@ -103,6 +103,12 @@ require('/modules/publisher.js').exec(function(ctx) {
         print(javaPolicyList);
     });
 
+    routeManager.register('GET', 'publisher', '/publisher/api/entitlement/policyGroup/associate/url/pattern/list/to/avoid/delete/{policyGroupId}', function (context) {
+        var urlPatternList = getPolicyGroupAssociatedApps(parseInt(context.params.policyGroupId));
+        print(urlPatternList);
+    });
+
+
     /**
      * Returns external entitlement policy for the given policy id.
      */
@@ -242,7 +248,14 @@ require('/modules/publisher.js').exec(function(ctx) {
 
     }
 
-
+    /**
+     * Get the url patterns/http verbs mapped with the given policy group
+     * @param policyGroupId
+     * @returns array of url patterns/ http verbs
+     */
+    function getPolicyGroupAssociatedApps(policyGroupId) {
+        return appMDAOObj.getPolicyGroupAssociatedApps(policyGroupId);
+    }
 
     function createResponseObject(object) {
         if (object !== null) {
