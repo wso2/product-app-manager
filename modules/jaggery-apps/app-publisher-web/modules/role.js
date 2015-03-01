@@ -27,9 +27,7 @@ var checkeRole = function (username, session) {
         return true;
     }
 
-
-
-  	if (!( usr.hasRoles(["Internal/publisher"]) || usr.hasRoles(["Internal/creator"]) || usr.hasRoles(["Internal/reviewer"])      ) ) {
+  	if (!( usr.hasRoles(["Internal/publisher"]) || usr.hasRoles(["Internal/creator"]))) {
            return false;
   	}
   	return true;
