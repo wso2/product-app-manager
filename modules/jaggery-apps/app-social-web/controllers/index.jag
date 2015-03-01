@@ -49,10 +49,7 @@ var caramel;
             for (var i = 0; i < reviewsJSON.length; i++) {
                 //Remove carbon.super tenant domain from username
                 var user = reviewsJSON[i].actor.id;
-                var pieces = user.split(/[\s@]+/);
-                if (pieces[pieces.length - 1] == 'carbon.super') {
-                    reviewsJSON[i].actor.id = pieces[pieces.length - 2];
-                }
+                reviewsJSON[i].actor.id = user.replace("@carbon.super", "");
                 var review = reviewsJSON[i];
                 review.iLike = social.isUserliked(username, review.object.id, 1);
                 review.iDislike = social.isUserliked(username, review.object.id, 0);
