@@ -6,6 +6,7 @@
  */
 
 (function () {
+    var log = new Log();
     var config = require('/config/publisher.json');
 
     var DEFAULT_ROUTER_NAME = '/assets.jag';
@@ -25,6 +26,18 @@
 
     //Stop servicing the request if the check failed
     if(!passed){
+        return;
+    }
+
+
+    //check if the user roles has relevant permissions to log in as a publisher
+    var username = require('store').server.current(session).username;
+    var role = require('/modules/role.js').checkeRole(username, session);
+    if (role == false) {
+        log.warn('User ' + username + ' does not have permission to access the publisher application.' +
+        'Make sure the user has the publisher role.');
+        response.sendError(401, 'You do not have permission to login to this application.' +
+        'Please contact your administrator and request permission.');
         return;
     }
 
