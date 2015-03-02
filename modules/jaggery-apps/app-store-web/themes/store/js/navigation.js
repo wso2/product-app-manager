@@ -147,6 +147,7 @@ $(function() {
                     $('#messageModal a.btn-primary').html('OK');
                     $('#messageModal div.modal-body').html();
                     $('#messageModal').modal();
+                    clearFields();
                     $('#modal-register').modal('hide');
                     $('#messageModal a.btn-primary').click(function () {
                         $('#messageModal').modal('hide');
@@ -226,5 +227,17 @@ $(function() {
 		window.location = $(this).attr('href');
 	});
 
+    $('#btn-register-close').click(function () {
+        clearFields();
+    });
+
 });
 
+
+//clear input fields
+function clearFields() {
+    $('#inp-username-register').val(""); //clear username field
+    $('#inp-password-register').val(""); //clear password field
+    $('#inp-password-confirm').val(""); //clear confirm password field
+    $('#register-alert').hide(); //hide validation messages
+}
