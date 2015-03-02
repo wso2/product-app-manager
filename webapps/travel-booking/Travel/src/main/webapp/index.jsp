@@ -36,6 +36,7 @@
 
 	<%@ page import="org.wso2.carbon.appmgt.sample.jwt.JWTProcessor"%>
 	<%
+		String userName = "Subject";
 		Map<String, String> map = null;
 		String header = request.getHeader("X-JWT-Assertion");
 		if (header != null) {
@@ -55,6 +56,12 @@
 	<!--header-->
 	<header>
 		<div class="wrap clearfix">
+			<%
+				if (map != null && map.get(userName) != null) {
+			%>
+			<input type="hidden" id="username"
+				value="<%=map.get(userName).replace("\"", "")%>">
+			<%} %>
 			<!--logo-->
 			<h1 class="logo">
 				<a href="index.jsp" title="Book Your Travel - home"><img

@@ -4,7 +4,7 @@ $(function(){
     var login = function() {
         if (!$("#form-login").valid())
             return;
-        $('#btn-signin').addClass('disabled').text('Signing in');
+        $('#btn-signin').addClass('disabled').text('Signing In');
 
         var username = $('#username').val();
         var password = $('#password').val();

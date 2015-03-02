@@ -176,6 +176,9 @@
 		<ApiManagerResponseStreamVersion>1.0.0</ApiManagerResponseStreamVersion>
 		<ApiManagerFaultStreamName>org.wso2.appmgt.statistics.fault</ApiManagerFaultStreamName>
 		<ApiManagerFaultStreamVersion>1.0.0</ApiManagerFaultStreamVersion>
+
+		<ApiManagerCacheStatStreamName>org.wso2.appmgt.statistics.cache</ApiManagerCacheStatStreamName>
+		<ApiManagerCacheStatStreamVersion>1.0.0</ApiManagerCacheStatStreamVersion>
    	   
 		<!-- Used when publishing AppManager UI activities to BAM   -->
 		<ApiManagerBamUiActivityStreamName>org.wso2.appmgt.bam.uiactivitypublish</ApiManagerBamUiActivityStreamName>
@@ -202,6 +205,11 @@
             Enable/Disable the API usage tracker.
         -->
         <Enabled>false</Enabled>
+
+	<!--
+            Enable/Disable Publishing Cache Hit/Miss Statistics
+        -->
+        <CacheStatsEnabled>false</CacheStatsEnabled>
 
         <!--
             API Usage Data Publisher.

@@ -27,7 +27,7 @@ $(function () {
                 var msg = data.message.replace(/[0-9a-z.+]+:\s/i, '');
 
                 $('#login-alert').html(msg).fadeIn('fast');
-                $('#btn-login').text('Sign in').removeClass('disabled');
+                $('#btn-login').text('Sign In').removeClass('disabled');
             }
         }, "json");
 

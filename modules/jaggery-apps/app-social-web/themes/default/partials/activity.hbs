@@ -1,4 +1,4 @@
-<div class="row com-review" data-target-id="{{id}}">
+<div class="row com-review" data-target-id="{{object.id}}">
    <!--
     <div class="com-left">
            <img class="img-avatar" src="{{url "/themes/default/img/avatar.png"}}">
@@ -19,13 +19,20 @@
             <div class="com-thumbs">
                 <ul>
                     <li>
-                        <a href="#"><i class="icon icon-thumbs-up {{#if iLike}}selected{{/if}}"></i><span class="com-like-count">{{#if likes.totalItems}} {{likes.totalItems}} {{/if}}</span></a>
+                        <a href="#"><i class="icon icon-thumbs-up {{#if iLike}}selected{{/if}}"></i><span class="com-like-count">{{#if object.likes.totalItems}} {{object.likes.totalItems}} {{/if}}</span></a>
                     </li>
                     <li>
-                        <a href="#"><i class="icon icon-thumbs-down {{#if iDislike}}selected{{/if}}"></i><span class="com-dislike-count">{{#if dislikes.totalItems}} {{dislikes.totalItems}} {{/if}}</span></a>
+                        <a href="#"><i class="icon icon-thumbs-down {{#if iDislike}}selected{{/if}}"></i><span class="com-dislike-count">{{#if object.dislikes.totalItems}} {{object.dislikes.totalItems}} {{/if}}</span></a>
                     </li>
                 </ul>
             </div>
+            {{#if isMyComment}} 
+            <div class="com-delete txt-right">
+                <button id="btn-delete">
+                    Delete
+                </button>
+            </div>
+            {{/if}}
         </div>
 
     </div>

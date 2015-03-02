@@ -4,64 +4,74 @@
  Created Date: 29/7/2013
  */
 
+var server = require('store').server;
+var permissions=require('/modules/permissions.js').permissions;
+
 var render = function (theme, data, meta, require) {
 
 
 
-
-    var lifecycleColors = {"Create": "btn-green", "Demote": "btn-blue", "Re-Submit": "btn-blue", "Submit": "btn-blue", "Publish": "btn-blue", "Unpublish": "btn-orange", "Deprecate": "btn-danger", "Retire": "btn-danger", "Approve": "btn-blue", "Reject": "btn-orange"};
-
+    var lifecycleColors = {"Create": "btn-green", "Recycle": "btn-blue", "Re-Publish": "btn-blue", "Publish": "btn-blue", "Unpublish": "btn-orange", "Deprecate": "btn-danger", "Retire": "btn-danger", "Approve": "btn-blue", "Reject": "btn-orange"};
 
     if(data.artifacts){
 
+        var user=server.current(session);
+        var um=server.userManager(user.tenantId);
+        var deleteButtonAvailability = false;
+
+
         for(var i = 0; i < data.artifacts.length; i++){
             var lifecycleAvailableActionsButtons = new Array();
-            for(var j = 0; j < data.artifacts[i].lifecycleAvailableActions.length; j++){
-                var name = data.artifacts[i].lifecycleAvailableActions[j];
+            if(permissions.isLCActionsPermitted(user.username,data.artifacts[i].path,um)) {
+                for (var j = 0; j < data.artifacts[i].lifecycleAvailableActions.length; j++) {
+                    var name = data.artifacts[i].lifecycleAvailableActions[j];
 
-                for(var k = 0; k < data.roles.length; k++){
-                    //	print(data.roles[k]);
-                    if(data.roles[k] == "admin" || data.roles[k] == "Internal/publisher" || data.roles[k] == "Internal/reviewer"){
-                        if(name == "Approve"){
+                    for(var k = 0; k < data.roles.length; k++){
+
+                        if (name == "Approve") {
                             lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
                         }
-                        if(name == "Reject"){
+                        if (name == "Reject") {
                             lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
                         }
-                        if(name == "Publish"){
+                        if (name == "Publish") {
                             lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
                         }
-                        if(name == "Submit"){
+                        if(name == "Recycle"){
                             lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
                         }
-                        if(name == "Create"){
+                        if (name == "Deprecate") {
                             lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
                         }
-                        if(name == "Deprecate"){
+                        if (name == "Re-Publish") {
                             lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
                         }
-                        if(name == "Re-Submit"){
+                        if (name == "Unpublish") {
                             lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
                         }
-                        if(name == "Unpublish"){
+                        if (name == "Depreicate") {
                             lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
                         }
-                        if(name == "Depreicate"){
-                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                        }
-                        if(name == "Retire"){
+                        if (name == "Retire") {
                             lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
                         }
 
                         break;
+
                     }
 
+
                 }
-
-
             }
 
             data.artifacts[i].lifecycleAvailableActions = lifecycleAvailableActionsButtons;
+
+            //Adding the delete button
+            if (permissions.isDeletePermitted(user.username,data.artifacts[i].path,um)) {
+                deleteButtonAvailability = true;
+            }
+
+            data.artifacts[i].deleteButtonAvailability = deleteButtonAvailability;
         }
 
 

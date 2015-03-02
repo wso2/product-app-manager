@@ -1,4 +1,22 @@
 <%
+/*
+ *  Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ *  WSO2 Inc. licenses this file to you under the Apache License,
+ *  Version 2.0 (the "License"); you may not use this file except
+ *  in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ *
+ */
 var caramel;
 (function () {
     caramel = require('caramel');
@@ -6,18 +24,6 @@ var caramel;
     var user = request.getParameter('user');
     var userModule = require('/modules/user.js');
     var logged = userModule.current(session);
-
-    var isUserInList = function (lists, username) {
-        if (lists) {
-            for (var j = 0; j < lists.length; j++) {
-                var like = lists[j];
-                if (like.id == username) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    };
 
     if (user && !logged) {
         include('login.jag');
@@ -28,31 +34,39 @@ var caramel;
     var social = carbon.server.osgiService('org.wso2.carbon.social.core.service.SocialActivityService');
     var target = request.getParameter('target');
     var obj, reviewsJSON;
+
+    var urlDomain = request.getParameter('urlDomain') || "carbon.super";
+
     if (target) {
         try {
-            var tenantDomain = logged ? logged.tenantDomain : "carbon.super";
-            obj = JSON.parse(String(social.getSocialObjectJson(target, tenantDomain, "POPULAR")));
+            obj = JSON.parse(String(social.getSocialObjectJson(target, "POPULAR", 0, 10)));
             reviewsJSON = obj.attachments;
         } catch (e) {
             log.error(e);
         }
         var username = logged ? String(logged.username) + '@' + logged.tenantDomain : "anonymous";
-
-
         if (reviewsJSON) {
             for (var i = 0; i < reviewsJSON.length; i++) {
+                //Remove carbon.super tenant domain from username
+                var user = reviewsJSON[i].actor.id;
+                reviewsJSON[i].actor.id = user.replace("@carbon.super", "");
                 var review = reviewsJSON[i];
-                review.iLike = isUserInList(review.likes && review.likes.items, username);
-                review.iDislike = isUserInList(review.dislikes && review.dislikes.items, username);
+                review.iLike = social.isUserliked(username, review.object.id, 1);
+                review.iDislike = social.isUserliked(username, review.object.id, 0);
+                if(user == username){
+                    review.isMyComment = true;
+                }
             }
         }
 
         caramel.render({
             isLogged: Boolean(logged),
+            isAuthorized: Boolean(logged && (urlDomain == logged.tenantDomain)),
+            urlDomain: urlDomain,
             input_param: {
                 user: username
             },
-            stream: {reviews: reviewsJSON, id: target, user: username}
+            stream: {reviews: reviewsJSON, id: target, user: username, lastReviewID: 10}
         });
     } else {
         print('please use the target URL parameter as the asset id, eg: http://localhost:9763/social/?target=33530252-rer-w345325');
