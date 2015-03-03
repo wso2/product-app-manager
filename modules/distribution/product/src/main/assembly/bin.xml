@@ -229,7 +229,7 @@
             <directory>
                 ../resources/sql/
             </directory>
-            <outputDirectory>wso2appm-${pom.version}/dbscripts/apimgt</outputDirectory>
+            <outputDirectory>wso2appm-${pom.version}/dbscripts/appmgt</outputDirectory>
             <includes>
                 <include>**/**.sql</include>
             </includes>
