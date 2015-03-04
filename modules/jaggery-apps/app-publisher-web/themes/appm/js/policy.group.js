@@ -526,7 +526,7 @@ function updatePolicyGroupPartialXACMLPolicies(uuid){
                             policyGroupDesc: data[i].policyGroupDesc
                         })
                     }
-                    policyGroupsArray = policyGroupsArray.concat(policyGroupsArrayTemp).unique();
+                    policyGroupsArray = arrayUnique(policyGroupsArray.concat(policyGroupsArrayTemp));
                 },
                 error: function () {
                 }
@@ -541,11 +541,11 @@ function updatePolicyGroupPartialXACMLPolicies(uuid){
  * Use to merge array with unique
  * @returns {Array}
  */
-Array.prototype.unique = function() {
-    var a = this.concat();
+function arrayUnique(array) {
+    var a = array.concat();
     for(var i=0; i<a.length; ++i) {
         for(var j=i+1; j<a.length; ++j) {
-            if(a[i].policyGroupId === a[j].policyGroupId)
+            if(a[i] === a[j])
                 a.splice(j--, 1);
         }
     }
