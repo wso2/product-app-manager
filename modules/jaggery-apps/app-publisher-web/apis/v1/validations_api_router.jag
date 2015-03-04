@@ -43,8 +43,26 @@ routeManager.register('GET', 'publisher', '/publisher/api/validations/assets/{ty
     }
 
 });
+    
+    routeManager.register('POST', 'publisher', '/publisher/api/validations/assets/webapp/overview_context', function (context) {
+        var contextVal = context.post.overview_context;
 
-/**
+        try {
+
+            var oldContextVal = '';
+            var isContextExists = isContextExist(contextVal, oldContextVal);
+            print(isContextExists);
+
+        }
+        catch (e) {
+            log.debug('An asset of type: ' + shortName + ' could not be created.The following exception was thrown: ' + e);
+            response.sendError(500, 'An asset of type: ' + shortName + ' could not be created.Please check the server logs.');
+        }
+
+    });
+
+
+    /**
 * Validate whether the context already exists
 */
 function isContextExist(fieldValue,oldContext){
