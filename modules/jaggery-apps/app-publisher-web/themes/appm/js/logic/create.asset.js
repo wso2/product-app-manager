@@ -62,7 +62,7 @@ $(function() {
                         btnCreate.attr('disabled', 'disabled');
                         showAlert("Duplicate context value.", 'error');
                     } else {
-
+                        $('.asset-view-container').html('')
                         flag.removeClass().addClass('icon-ok icon-check-appname').show();
                         btnCreate.removeAttr('disabled');
                         $(".alert-error");
@@ -75,7 +75,7 @@ $(function() {
                 }
             });
         }else{
-            showAlert('Context Cannot be null.');
+            showAlert('Context Cannot be null.','error' );
         }
 
     });
@@ -133,7 +133,7 @@ $(function() {
 		 $('#entitlementPolicies').val(JSON.stringify(entitlementPolicies));
 
 		// AJAX request options.
- 		var options = { 
+ 		var options = {
       
 			success: function(response) {
 
@@ -232,10 +232,10 @@ $(function() {
         	
 		}; 
     
-    	$('#form-asset-create').ajaxSubmit(options); 
-		
+    	$('#form-asset-create').ajaxSubmit(options);
+
 	});
-	
+
 
 	// Visibility roles
 	$('#roles').tokenInput('/publisher/api/lifecycle/information/meta/' + $('#meta-asset-type').val() + '/roles', {
