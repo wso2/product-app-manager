@@ -122,9 +122,9 @@
 
             "lifecycle": {
                 "created": ["Internal/private_{overview_provider}"],
-                "in-review": ["Internal/reviewer", "Internal/private_{overview_provider}"],
-                "published": ["Internal/everyone", "Internal/private_{overview_provider}", "Internal/reviewer"],
-                "unpublished": ["Internal/private_{overview_provider}"]
+                "in-review": ["Internal/creator","Internal/publisher", "Internal/private_{overview_provider}"],
+                "published": ["Internal/everyone", "Internal/private_{overview_provider}", "Internal/publisher"],
+                "unpublished": ["Internal/private_{overview_provider}", "Internal/publisher"]
             }
         },
 
@@ -132,9 +132,9 @@
 
             "lifecycle": {
                 "created": ["Internal/private_{overview_provider}"],
-                "in-review": ["Internal/reviewer", "Internal/private_{overview_provider}"],
-                "published": ["Internal/everyone", "Internal/private_{overview_provider}", "Internal/reviewer"],
-                "unpublished": ["Internal/private_{overview_provider}"]
+                "in-review": ["Internal/creator", "Internal/private_{overview_provider}"],
+                "published": ["Internal/everyone", "Internal/private_{overview_provider}", "Internal/publisher"],
+                "unpublished": ["Internal/private_{overview_provider}", "Internal/publisher"]
             }
         }
 
