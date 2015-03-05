@@ -170,7 +170,6 @@ require('/modules/publisher.js').exec(function(ctx) {
     });
 
     routeManager.register('POST', 'publisher', '/publisher/api/asset/delete/{type}/{id}', function (context) {
-
         var shortName = context.params.type;
         var id = context.params.id;
         var msg={};
@@ -178,67 +177,77 @@ require('/modules/publisher.js').exec(function(ctx) {
         var server  = require('store').server;
         var username = jagg.getUser().username;
 
-        try {
-            //Get the original artifact
-            var originalArtifact = artifactManager.get(id);
-            var attributes = originalArtifact.attributes;
+        var um = server.userManager(server.current(session).tenantId);
+        var deleteAuthorized = permissions.isAuthorized(username, config.permissions.webapp_delete, um);
+        log.debug("## Delete Authorized Check : " + deleteAuthorized);
 
-            var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
-            var webApp = Packages.org.wso2.carbon.appmgt.api.model.WebApp;
+        if(deleteAuthorized) {
+            try {
+                //Get the original artifact
+                var originalArtifact = artifactManager.get(id);
+                var attributes = originalArtifact.attributes;
 
-            var ssoProvider = Packages.org.wso2.carbon.appmgt.api.model.SSOProvider;
-            //Create SSOProvider Object
-            var ssoProviderObj = new ssoProvider();
+                var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
+                var webApp = Packages.org.wso2.carbon.appmgt.api.model.WebApp;
 
-            var appProvider = attributes["overview_provider"];
-            var appName = attributes["overview_name"];
-            var appVersion = attributes["overview_version"];
-            var ssoProvider = attributes["sso_ssoProvider"];
-            var result = null;
-            var issuerName = null;
-            var store = jagg.module("manager").getAPIStoreObj();
-            var isEmailLoginEnabled = store.isEnableEmailUsername();
+                var ssoProvider = Packages.org.wso2.carbon.appmgt.api.model.SSOProvider;
+                //Create SSOProvider Object
+                var ssoProviderObj = new ssoProvider();
 
-            //Check whether application author is a tenant
-            if (!isEmailLoginEnabled && appProvider != null && appProvider.indexOf("-AT-") != -1) {
-                result = appProvider.split("-AT-");
+                var appProvider = attributes["overview_provider"];
+                var appName = attributes["overview_name"];
+                var appVersion = attributes["overview_version"];
+                var ssoProvider = attributes["sso_ssoProvider"];
+                var result = null;
+                var issuerName = null;
+                var store = jagg.module("manager").getAPIStoreObj();
+                var isEmailLoginEnabled = store.isEnableEmailUsername();
+
+                //Check whether application author is a tenant
+                if (!isEmailLoginEnabled && appProvider != null && appProvider.indexOf("-AT-") != -1) {
+                    result = appProvider.split("-AT-");
+                }
+                if (result != null) {
+                    issuerName = appName + "-" + result[1] + "-" + appVersion;
+                } else {
+                    issuerName = appName + "-" + appVersion;
+                }
+
+                var apiIdentifierObj = new apiIdentifier(appProvider, appName, appVersion);
+                if (ssoProvider != " ") {
+                    ssoProviderObj.setProviderName(ssoProvider.split("-")[0]);
+                    ssoProviderObj.setProviderVersion(ssoProvider.split("-")[1]);
+                    ssoProviderObj.setIssuerName(issuerName);
+                } else {
+                    ssoProviderObj = null;
+                }
+
+                var webAppObj = new webApp(apiIdentifierObj);
+
+                var isDeleted = apiProvider.deleteApp(apiIdentifierObj, username, ssoProviderObj);
+
+                if (isDeleted == true) {
+                    msg['isDeleted'] = true;
+                    msg['message'] = 'asset delete';
+                    print(msg);
+                } else if (isDeleted == false) {
+                    msg['isDeleted'] = false;
+                    msg['message'] = 'asset subscribed';
+                    print(msg);
+                } else {
+                    msg['ok'] = null;
+                    msg['message'] = 'asset error';
+                    print(msg);
+                }
+
+            } catch (e) {
+                log.debug('The asset ' + id + ' could not be deleted.The following exception was thrown: ' + e);
+                response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
             }
-            if (result != null) {
-                issuerName = appName + "-" + result[1] + "-" + appVersion;
-            } else {
-                issuerName = appName + "-" + appVersion;
-            }
-
-            var apiIdentifierObj = new apiIdentifier(appProvider, appName, appVersion);
-            if (ssoProvider != " ") {
-                ssoProviderObj.setProviderName(ssoProvider.split("-")[0]);
-                ssoProviderObj.setProviderVersion(ssoProvider.split("-")[1]);
-                ssoProviderObj.setIssuerName(issuerName);
-            } else {
-                ssoProviderObj = null;
-            }
-
-            var webAppObj = new webApp(apiIdentifierObj);
-
-            var isDeleted = apiProvider.deleteApp(apiIdentifierObj, username, ssoProviderObj);
-
-            if(isDeleted == true){
-                msg['isDeleted']=true;
-                msg['message'] = 'asset delete';
-                print(msg);
-            }else if (isDeleted == false){
-                msg['isDeleted'] = false;
-                msg['message'] = 'asset subscribed';
-                print(msg);
-            }else{
-                msg['ok']=null;
-                msg['message']='asset error';
-                print(msg);
-            }
-
-        } catch (e) {
-            log.debug('The asset ' + id + ' could not be deleted.The following exception was thrown: ' + e);
-            response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
+        }else{
+            msg['ok'] = false;
+            msg['message'] = 'Delete not permitted. Insufficient privilages.';
+            print(msg);
         }
     });
 
