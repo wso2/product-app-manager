@@ -333,6 +333,8 @@ $(function() {
 
                     window.location = "/publisher/assets/webapp/";
 				} else {
+                    var result = JSON.parse(response);
+                    alert(result.message);
 					var report = processErrorReport(result.report);
 					createMessage(MSG_CONTAINER, ERROR_CSS, report);
 				}

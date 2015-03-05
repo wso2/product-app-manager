@@ -48,7 +48,22 @@ var permissions={};
         return false;
     };
 
+    /**
+     * The function checks whether a user can delete an asset
+     * @param  {[type]}  username     The name of the user for which the check must be performed
+     * @param  {[type]}  resourcePath The registry resource path
+     * @param  {[type]}  userManager
+     * @return {Boolean}			  True if the user can perform life-cycle actions
+     */
+    var isAuthorized = function(username, permission, userManager) {
+        log.info('### CHECKING PERMISSINON! ###');
+        var action = "ui.execute"
+        var user = userManager.getUser(username);
+        log.info("Authorization Check : "+user.isAuthorized(permission,action));
+        return  user.isAuthorized(permission,action);
+    };
 
+    permissions.isAuthorized = isAuthorized;
     permissions.isLCActionsPermitted = isLCActionsPermitted;
     permissions.isDeletePermitted = isDeletePermitted;
 

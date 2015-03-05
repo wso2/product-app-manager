@@ -1,12 +1,4 @@
 {
-    "roles": {
-        "Internal/publisher": {
-            "/permission/admin/login": ["ui.execute"]
-        },
-        "Internal/creator": {
-            "/permission/admin/login": ["ui.execute"]
-        }
-    },
     "user": {
         "username": "admin",
         "password": "admin"

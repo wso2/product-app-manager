@@ -215,6 +215,7 @@ $(function() {
 					}
 
 				} else {
+                    alert(result.message);
                     if(result.isexists){
                         showAlert(result.msg, 'error');
 

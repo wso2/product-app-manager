@@ -28,6 +28,7 @@ require('/modules/publisher.js').exec(function(ctx) {
   var router = require('/modules/router-g.js').router();
   var routeManager = new router.Router();
   var log = new Log();
+  var permissions=require('/modules/permissions.js').permissions;
 
   routeManager.register('POST', 'publisher', '/publisher/api/lifecycle/{type}/{id}', function(context) {
     var shortName = context.params.type;
@@ -152,53 +153,66 @@ require('/modules/publisher.js').exec(function(ctx) {
         var commentNeeded = false;
         appPublishWFExecutor = org.wso2.carbon.appmgt.impl.workflow.WorkflowExecutorFactory.getInstance().getWorkflowExecutor("AM_APPLICATION_PUBLISH");
         var isAsynchronousFlow = appPublishWFExecutor.isAsynchronus();
-        log.info("IS ASYNCH : " + isAsynchronousFlow);
+        log.debug("IS ASYNCH : " + isAsynchronousFlow);
         var isStateChangeable = true;
+        var publishAuthorized = true;
         var msg={};
+
+        if(action == "Approve") {
+            var user = server.current(session);
+            var um = server.userManager(server.current(session).tenantId);
+            var publishAuthorized = permissions.isAuthorized(user.username, config.permissions.webapp_publish, um);
+            log.info("## Publish Authorized Check : " + publishAuthorized);
+        }
 
         if(!isAsynchronousFlow && action == "Approve"){
             isStateChangeable = false;
         }
 
-        if(isStateChangeable) {
-            if (commentNeeded) {
-                response.sendError(400, 'This change requires that you insert a comment');
-            } else {
-                try {
-                    var artifact = artifactManager.get(id);
-                    var attributes = artifact.attributes;
+        if(publishAuthorized) {
+            if (isStateChangeable) {
+                if (commentNeeded) {
+                    response.sendError(400, 'This change requires that you insert a comment');
+                } else {
+                    try {
+                        var artifact = artifactManager.get(id);
+                        var attributes = artifact.attributes;
 
-                    var previourStatus = artifact['lifecycleState'];
-                    log.info('Calling promoteLifecycleState for action : ' + action);
+                        var previourStatus = artifact['lifecycleState'];
+                        log.info('Calling promoteLifecycleState for action : ' + action);
 
-                    if (roles.length > 0) {
-                        roles.forEach(function (role) {
-                            um.authorizeRole(role, artifact.path, carbon.registry.actions.GET);
-                        });
+                        if (roles.length > 0) {
+                            roles.forEach(function (role) {
+                                um.authorizeRole(role, artifact.path, carbon.registry.actions.GET);
+                            });
+                        }
+
+                        artifactManager.promoteLifecycleState(action, artifact);
+
+                        if (comment) {
+                            var lcHistory = artifactManager.getLifecycleHistory(artifact);
+                            var lcHistoryXML = new XML(lcHistory.content);
+                            lcHistoryJSON = utility.xml.convertE4XtoJSON(lcHistoryXML);
+                            var newChangeOrder = lcHistoryJSON.item[0].order;
+
+                            require('/modules/comment.js').addLifecycleComment(artifactManager, id, comment, newChangeOrder);
+                        }
+
+                        msg['status'] = 'ok';
+                        msg['asynch'] = isAsynchronousFlow;
+
+                    } catch (e) {
+                        log.debug('The asset with id: ' + id + ' could not be found.The following exception was thrown: ' + e);
+                        response.sendError(404, 'The asset with id: ' + id + ' could not be found.Please refer to the server log.');
                     }
-
-                    artifactManager.promoteLifecycleState(action, artifact);
-
-                    if (comment) {
-                        var lcHistory = artifactManager.getLifecycleHistory(artifact);
-                        var lcHistoryXML = new XML(lcHistory.content);
-                        lcHistoryJSON = utility.xml.convertE4XtoJSON(lcHistoryXML);
-                        var newChangeOrder = lcHistoryJSON.item[0].order;
-
-                        require('/modules/comment.js').addLifecycleComment(artifactManager, id, comment, newChangeOrder);
-                    }
-
-                    msg['status'] = 'ok';
-                    msg['asynch'] = isAsynchronousFlow;
-
-                } catch (e) {
-                    log.debug('The asset with id: ' + id + ' could not be found.The following exception was thrown: ' + e);
-                    response.sendError(404, 'The asset with id: ' + id + ' could not be found.Please refer to the server log.');
                 }
+            } else {
+                msg['status'] = 'ok';
+                msg['asynch'] = isAsynchronousFlow;
             }
         }else{
-            msg['status'] = 'ok';
-            msg['asynch'] = isAsynchronousFlow;
+            msg['status'] = 'error';
+            msg['message'] = 'Publish Action not permitted. Insufficient privileges.';
         }
         print(msg);
 

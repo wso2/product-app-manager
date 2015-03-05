@@ -39,6 +39,7 @@ require('/modules/publisher.js').exec(function(ctx) {
     var router = require('/modules/router-g.js').router();
     var routeManager = new router.Router();
     var utility=require('/modules/utility.js').rxt_utility();
+    var permissions=require('/modules/permissions.js').permissions;
 
 
     var checkNonSpecial = function(value){
@@ -393,6 +394,11 @@ require('/modules/publisher.js').exec(function(ctx) {
         var server  = require('store').server;
         var username = server.current(session).username;
 
+        var user = server.current(session);
+        var um = server.userManager(server.current(session).tenantId);
+        var updateAuthorized = permissions.isAuthorized(username, config.permissions.webapp_update, um);
+        log.info("## Update Authorized Check : " + updateAuthorized);
+
         if(context.post['images_thumbnail'] instanceof Array){
             context.post['images_thumbnail'] = context.post['images_thumbnail'][0];
         }
@@ -400,8 +406,8 @@ require('/modules/publisher.js').exec(function(ctx) {
             context.post['images_banner'] = context.post['images_banner'][0];
         }
 
-
-        try {
+        if(updateAuthorized) {
+            try {
             var modelA = modelManager.getModel(shortName);
             var modelB = modelManager.getModel(shortName);
 
@@ -523,10 +529,16 @@ require('/modules/publisher.js').exec(function(ctx) {
             print(msg);
 
 
-        } catch (e) {
-            log.warn(e)
-            log.debug('The asset ' + id + ' could not be updated.The following exception was thrown: ' + e);
-            response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
+            } catch (e) {
+                log.warn(e)
+                log.debug('The asset ' + id + ' could not be updated.The following exception was thrown: ' + e);
+                response.sendError(404, 'The asset ' + id + ' could not be updated.Please check the server logs.');
+            }
+        }else{
+            msg['ok'] = false;
+            msg['message'] = 'Update Failed. Insufficient privilages.';
+            print(msg);
+            return;
         }
     });
 

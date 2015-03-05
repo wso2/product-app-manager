@@ -65,6 +65,11 @@
     "paginationConfig" :{
     	"PAGE_SIZE" : 20
     },
-    "excludedRolesList":["admin","Internal/subscriber","publisher"]
+    "excludedRolesList":["admin","Internal/subscriber","publisher"],
+    "permissions" : {
+        "webapp_create" : "/permission/admin/manage/webapp/create",
+        "webapp_update" : "/permission/admin/manage/webapp/update",
+        "webapp_publish" : "/permission/admin/manage/webapp/publish"
+    }
 
 }
