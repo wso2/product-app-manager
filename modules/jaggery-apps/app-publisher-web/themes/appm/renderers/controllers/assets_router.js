@@ -7,6 +7,8 @@
 var server = require('store').server;
 var permissions=require('/modules/permissions.js').permissions;
 var config = require('/config/publisher.json');
+var user=server.current(session);
+var um=server.userManager(user.tenantId);
 
 var render = function (theme, data, meta, require) {
 
@@ -16,8 +18,6 @@ var render = function (theme, data, meta, require) {
 
     if(data.artifacts){
 
-        var user=server.current(session);
-        var um=server.userManager(user.tenantId);
         var deleteButtonAvailability = false;
 
 

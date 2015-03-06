@@ -29,10 +29,15 @@
         return;
     }
 
-
+    var storeModule = require('store');
+    var carbon = require('carbon');
     //check if the user roles has relevant permissions to log in as a publisher
-    var username = require('store').server.current(session).username;
-    var role = require('/modules/role.js').checkeRole(username, session);
+    var userDetails = storeModule.server.current(session);
+    var username = userDetails.username;
+    var tenantId = userDetails.tenantId;
+    var tenantDomain = carbon.server.tenantDomain({tenantId:tenantId});
+    var fullUsername = username + '@'+tenantDomain;
+    var role = require('/modules/role.js').checkeRole(fullUsername, session);
     if (role == false) {
         log.warn('User ' + username + ' does not have permission to access the publisher application.' +
         'Make sure the user has the publisher role.');

@@ -174,7 +174,7 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 		caramel.render({op : 'list',cuser : server.current(session), roles : server.current(session).getRoles(),shortName : type,artifacts : artifacts,query : query,title : type, pageIndices:pageIndices, leftNav:leftnav, rightNav:rightnav, createPermission:createActionAuthorized});
 	} catch (e) {
 		response.sendError(400, "Your request is malformed");
-		log.debug(e);
+		log.error(e);
 	}
 
 	/*for each(var artifact in artifacts){
