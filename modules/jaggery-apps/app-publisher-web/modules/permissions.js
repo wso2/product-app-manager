@@ -57,8 +57,9 @@ var permissions={};
      */
     var isAuthorized = function(username, permission, userManager) {
         log.debug('### CHECKING PERMISSINON! ###');
-        var action = "ui.execute"
-        var user = userManager.getUser(username);
+        var uname = username.split('@')[0];
+        var action = "ui.execute";
+        var user = userManager.getUser(uname);
         log.debug("Authorization Check : "+user.isAuthorized(permission,action));
         return  user.isAuthorized(permission,action);
     };
