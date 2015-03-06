@@ -178,33 +178,35 @@ require('/modules/store.js').exec(function (ctx) {
         authenticator=new AuthService.Authenticator();
         authenticator.init(jagg,session);
         user=authenticator.getLoggedInUser();
+        if(type == "webapp") {
 
-        var subscriptionInfo;
-        assets.forEach(function (asset) {
-            isSubscribed = false;
-            //set subscription details for each asset
-            subscriptionInfo = getSubscriptionInfo(asset)
-            if (subscriptionInfo.individualSubscription) {
-                if (subscriptionInfo.individualSubscription.subscriptionStatus === "UNBLOCKED") {
-                    isSubscribed = true;
-                    subscriptionInfo.individualSubscription["OnHold"] = false;
-                } else if (subscriptionInfo.individualSubscription.subscriptionStatus === "ON_HOLD") {
-                    subscriptionInfo.individualSubscription["OnHold"] = true;
-                } else {
-                    subscriptionInfo.individualSubscription["OnHold"] = false;
+            var subscriptionInfo;
+            assets.forEach(function (asset) {
+                isSubscribed = false;
+                //set subscription details for each asset
+                subscriptionInfo = getSubscriptionInfo(asset)
+                if (subscriptionInfo.individualSubscription) {
+                    if (subscriptionInfo.individualSubscription.subscriptionStatus === "UNBLOCKED") {
+                        isSubscribed = true;
+                        subscriptionInfo.individualSubscription["OnHold"] = false;
+                    } else if (subscriptionInfo.individualSubscription.subscriptionStatus === "ON_HOLD") {
+                        subscriptionInfo.individualSubscription["OnHold"] = true;
+                    } else {
+                        subscriptionInfo.individualSubscription["OnHold"] = false;
+                    }
                 }
-            }
-            asset.isSubscribed = isSubscribed;
+                asset.isSubscribed = isSubscribed;
 
-            //to support skip gateway label visibility
-            if (asset.overview_skipGateway == "true") {
-                asset.overview_skipGateway = true;
-            }
-            else {
-                asset.overview_skipGateway = false;
-            }
+                //to support skip gateway label visibility
+                if (asset.overview_skipGateway == "true") {
+                    asset.overview_skipGateway = true;
+                }
+                else {
+                    asset.overview_skipGateway = false;
+                }
 
-        });
+            });
+        }
 
         items.push({
             assets: assets,
