@@ -3,9 +3,17 @@
  Filename:asset.js
  Created Date: 29/7/2013
  */
+var server = require('store').server;
+var permissions=require('/modules/permissions.js').permissions;
+var config = require('/config/publisher.json');
+
 var render=function(theme,data,meta,require){
 
     var log = new Log();
+
+    var user=server.current(session);
+    var um=server.userManager(user.tenantId);
+    var createActionAuthorized = permissions.isAuthorized(user.username, config.permissions.webapp_create, um);
 
     //var _url = "/publisher/asset/"  + data.meta.shortName + "/" + data.info.id + "/edit"
     var listPartial='view-asset';
@@ -73,7 +81,7 @@ var render=function(theme,data,meta,require){
             ribbon: [
                 {
                     partial: 'ribbon',
-                    context: {active:listPartial}
+                    context: {active:listPartial, createPermission : createActionAuthorized}
                 }
             ],
             leftnav: [

@@ -6,6 +6,7 @@
 
 var server = require('store').server;
 var permissions=require('/modules/permissions.js').permissions;
+var config = require('/config/publisher.json');
 
 var render = function (theme, data, meta, require) {
 
@@ -108,7 +109,9 @@ var render = function (theme, data, meta, require) {
 
 
     var breadCrumbData = require('/helpers/breadcrumb.js').generateBreadcrumbJson(data);
+    var createActionAuthorized = permissions.isAuthorized(user.username, config.permissions.webapp_create, um);
     breadCrumbData.activeRibbonElement = listPartial;
+    breadCrumbData.createPermission = createActionAuthorized;
     //var addAssetUrl = "/publisher/asset/" + data.meta.shortName +"";
     theme('single-col-fluid', {
         title: data.title,
