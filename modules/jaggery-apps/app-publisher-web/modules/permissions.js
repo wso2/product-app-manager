@@ -56,10 +56,10 @@ var permissions={};
      * @return {Boolean}			  True if the user can perform life-cycle actions
      */
     var isAuthorized = function(username, permission, userManager) {
-        log.info('### CHECKING PERMISSINON! ###');
+        log.debug('### CHECKING PERMISSINON! ###');
         var action = "ui.execute"
         var user = userManager.getUser(username);
-        log.info("Authorization Check : "+user.isAuthorized(permission,action));
+        log.debug("Authorization Check : "+user.isAuthorized(permission,action));
         return  user.isAuthorized(permission,action);
     };
 
