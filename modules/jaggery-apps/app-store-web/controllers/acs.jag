@@ -62,7 +62,8 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
                         	var user = require('store').user;
                             log.debug('user is set :::' + sessionObj.loggedInUser);
 
-                        	response.sendRedirect(relayState);
+                        	response.sendRedirect('/store');
+
 
 						
                         } else {
