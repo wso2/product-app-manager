@@ -586,7 +586,115 @@ var usage = [];
                         }
 
                         print(webapps);
-		}
+		}else if (action == "getCacheHit") { /* Overall Web Application Usage Graph */
+         			usage = appMgtProviderObj.getcashHitMiss("__all_providers__",startDate,endDate);
+
+         			usage = parse(stringify(usage));
+
+                    var webapps = [];
+
+                    for(x=0;x<usage.length;x++){
+
+                        var userIndex = -1;
+                        var webappIndex = -1;
+                        var webappVersionIndex = -1;
+                        var webresourceIndex = -1;
+
+
+                        for(y=0;y<webapps.length;y++){
+
+                            if(webapps[y][0] == usage[x].time){
+                                userIndex = y;
+                                var z;
+                                for(z=0;z<webapps[y][1].length;z++){
+                                    if(webapps[y][1][z][0] == usage[x].cachetHit){
+                                        webappIndex = z;
+                                        var t;
+                                        for(t=0;t<webapps[y][1][z][1].length;t++){
+                                            if(webapps[y][1][z][1][t][0] == usage[x].apiName){
+                                                webappVersionIndex = t;
+                                                var r;
+                                                    for(r=0;r<webapps[y][1][z][1][t][1].length;r++){
+                                                        if(webapps[y][1][z][1][t][1][r][0] == usage[x].version){
+                                                            webresourceIndex = r;
+                                                            break;
+
+                                                        }
+
+
+                                                    }
+
+                                            }
+                                        }
+                                    }
+                                }
+                                if((webappVersionIndex == -1) && (z == webapps[y].length)){
+                                    break;
+                                }
+                            }
+                        }
+
+
+                        if(userIndex == -1){
+                            var apps=[];
+                            var version = [];
+                            var requestCount = [];
+                            var resourse =[];
+
+                            requestCount.push([usage[x].fullRequestPath,usage[x].totalRequestCount]);
+                            resourse.push([usage[x].version,requestCount]);
+                            version.push([usage[x].apiName,resourse]);
+                            apps.push([usage[x].cachetHit,version])
+                            webapps.push([usage[x].time,apps]);
+                        }else{
+                            if(webappIndex == -1){
+                                var version = [];
+                                var requestCount = [];
+                                var resourse =[];
+                                requestCount.push([usage[x].fullRequestPath,usage[x].totalRequestCount]);
+                            resourse.push([usage[x].version,requestCount]);
+                            version.push([usage[x].apiName,resourse]);
+                                webapps[userIndex][1].push([usage[x].cachetHit,version]);
+                            }else{
+                                if(webappVersionIndex == -1){
+                                    var requestCount = [];
+                                var resourse =[];
+                                requestCount.push([usage[x].fullRequestPath,usage[x].totalRequestCount]);
+                            resourse.push([usage[x].version,requestCount]);
+                                    webapps[userIndex][1][webappIndex][1].push([usage[x].apiName,resourse]);
+                                }else{
+                                    if(webresourceIndex == -1){
+                                         var requestCount = [];
+                                        requestCount.push([usage[x].fullRequestPath,usage[x].totalRequestCount]);
+                                    webapps[userIndex][1][webappIndex][1][webappVersionIndex][1].push([usage[x].version,requestCount]);
+
+                                }else{
+                                     webapps[userIndex][1][webappIndex][1][webappVersionIndex][1][webresourceIndex][1].push([usage[x].fullRequestPath,usage[x].totalRequestCount]);
+
+                            }
+
+                        }
+
+                    }
+                        }
+                    }
+
+
+
+                    if (usage == null) {
+                        obj = {
+                            error:true
+                        };
+                    } else {
+                        obj = {
+                            error:false,
+                            webapps:webapps
+                        };
+                    }
+
+                    print(webapps);
+
+         		}
 
     });
 

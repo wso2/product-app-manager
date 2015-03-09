@@ -2,9 +2,15 @@ var to = new Date();
 var from = new Date(to.getTime() - 1000 * 60 * 60 * 24 * 30);
 var currentDay = new Date(to.getFullYear(), to.getMonth(), to.getDate(),to.getHours(),to.getMinutes());
 
-
+var today =false;
+var hour = false;
+var week = false;
+var month = false;
+var dateRange = false;
 //day picker
 $('#today-btn').on('click',function(){
+    today =true;
+    hour,week,month,dateRange = false;
     var to = convertTimeString(currentDay);
     var from = convertTimeString(currentDay-86400000);
     var dateStr= from+" to "+to;
@@ -16,6 +22,8 @@ $('#today-btn').on('click',function(){
 
 //hour picker
 $('#hour-btn').on('click',function(){
+    hour =true;
+    today,week,month,dateRange = false;
     var to = convertTimeString(currentDay);
     var from = convertTimeString(currentDay-3600000);
     var dateStr= from+" to "+to;
@@ -26,6 +34,8 @@ $('#hour-btn').on('click',function(){
 
 //week picker
 $('#week-btn').on('click',function(){
+    week =true;
+    today,hour,month,dateRange = false;
     var to = convertTimeString(currentDay);
     var from = convertTimeString(currentDay-604800000);
     var dateStr= from+" to "+to;
@@ -36,7 +46,8 @@ $('#week-btn').on('click',function(){
 
 //month picker
 $('#month-btn').on('click',function(){
-
+    month =true;
+    today,hour,week,dateRange = false;
     var to = convertTimeString(currentDay);
     var from = convertTimeString(currentDay-(604800000*4));
     var dateStr= from+" to "+to;
@@ -80,6 +91,8 @@ $('#date-range').dateRangePicker(
 
 
 $('#date-range').click(function (event) {
+    dateRange =true;
+    today,hour,week,month = false;
     event.stopPropagation();
 });
 
