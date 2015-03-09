@@ -7,6 +7,7 @@ var hour = false;
 var week = false;
 var month = false;
 var dateRange = false;
+
 //day picker
 $('#today-btn').on('click',function(){
     today =true;
@@ -30,6 +31,7 @@ $('#hour-btn').on('click',function(){
     $("#date-range").html(dateStr);
     $('#date-range').data('dateRangePicker').setDateRange(from,to);
     drawGraphs();
+
 })
 
 //week picker
@@ -42,6 +44,7 @@ $('#week-btn').on('click',function(){
     $("#date-range").html(dateStr);
     $('#date-range').data('dateRangePicker').setDateRange(from,to);
     drawGraphs();
+
 })
 
 //month picker
@@ -54,6 +57,7 @@ $('#month-btn').on('click',function(){
     $("#date-range").html(dateStr);
     $('#date-range').data('dateRangePicker').setDateRange(from,to);
     drawGraphs();
+
 })
 
 
@@ -87,8 +91,9 @@ $('#date-range').dateRangePicker(
 
     //setting default date
     $('#date-range').data('dateRangePicker').setDateRange(from,to);
-    $('#date-range').html($('#date-range').val())
-
+    $('#date-range').html($('#date-range').val());
+    month=true;
+    week,today,dateRange,hour=false;
 
 $('#date-range').click(function (event) {
     dateRange =true;

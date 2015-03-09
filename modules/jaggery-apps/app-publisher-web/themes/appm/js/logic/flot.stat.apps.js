@@ -126,7 +126,6 @@ var drawAPIUsageByUser = function (response,usageByContext) {
         for(var z = 0; z < dataStructure.length; z++){
 
             if(app == dataStructure[z].appName){
-            alert(dataStructure[z].appName+"   "+dataStructure[z].subCount)
                 dataStructure[z].checked = true;
                 data.push({
                     API_name: app,
