@@ -340,6 +340,10 @@ input#search {
 #webAppTable2 thead .sorting_asc:after,#webAppTable2 thead .sorting_desc:after {
     display:none;
 }
+#casheStatTable thead .sorting_asc:after,#webAppTable2 thead .sorting_desc:after {
+    display:none;
+}
+
 
 .axis path,
 .axis line {
