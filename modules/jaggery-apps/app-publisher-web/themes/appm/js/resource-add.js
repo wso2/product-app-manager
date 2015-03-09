@@ -31,6 +31,9 @@ $( document ).ready(function() {
         }
     });
 
+    //load throttling tiers
+    $("#throttlingTier").empty().append(throttlingTierControlBlock);
+
     //fixed chrome issue with file paths
     $('input[type=file]').on('change', function(e) {
         var filename = $(e.currentTarget).val().replace(/^.*\\/, "");
@@ -61,8 +64,8 @@ $( document ).ready(function() {
         }
     });
 
-    //load all available java policy list from DB
-    loadAvailableJavaPolicies();
+    //load all available global (applicaiton level) java policy list from DB
+    loadAvailableJavaPolicies(null, true);
 
 
 
@@ -70,7 +73,8 @@ $( document ).ready(function() {
 
         $(".http_verb").each(function () {
             var resource = {};
-            resource.url_pattern = $("#url_pattern").val();
+            var url_pattern = $("#url_pattern").val();
+            resource.url_pattern =  url_pattern.indexOf('/') == 0 ? url_pattern : '/' + url_pattern;
             resource.http_verb = $(this).val();
             resource.user_roles = $("#user_roles").val();
             if ($(this).is(':checked')) {
@@ -85,7 +89,9 @@ $( document ).ready(function() {
         $("#resource_tbody").trigger("draw");
     });
 
-
+    /**
+     * this will collect trasport radio values and pushinto hidden input filed
+     */
     $(".trans_checkbox").click(function(){
         var output = [];
         $( ".trans_checkbox" ).each(function( index ) {
@@ -94,13 +100,26 @@ $( document ).ready(function() {
                 output.push(value);
             }
         });
-
         $('#overview_transports').val(output);
 
 
     });
 
+    /**
+     * This enable/disable role based authorization adhere with anonymous access property value
+     */
+    $('#anonymousAccessToUrlPattern').change(function(){
+        var selectedVal = $('#anonymousAccessToUrlPattern').val();
+        if(selectedVal == "true"){
+            $('.authPolicies').hide(200);
+        }else{
+            $('.authPolicies').show(200);
+        }
+    });
 
+    /**
+     * this will collect trasport radio values and pushinto hidden input filed
+     */
     $(".anonymous_checkbox").click(function () {
         var output = [];
         $(".anonymous_checkbox").each(function (index) {
@@ -144,7 +163,7 @@ $( document ).ready(function() {
         for (var i = 0; i < RESOURCES.length; i++) {
             $("#resource_tbody").prepend(
                 "<tr> \
-                  <td><span style='color:#999'>/{context}/{version}/</span>" + RESOURCES[i].url_pattern + " <input type='hidden' value='" + RESOURCES[i].url_pattern + "' name='uritemplate_urlPattern" + i + "'/></td> \
+                  <td><span style='color:#999'>/{context}/{version}</span>" + RESOURCES[i].url_pattern + " <input type='hidden' value='" + RESOURCES[i].url_pattern + "' name='uritemplate_urlPattern" + i + "'/></td> \
                   <td><strong>" + RESOURCES[i].http_verb + "</strong><input type='hidden' value='" + RESOURCES[i].http_verb + "' name='uritemplate_httpVerb" + i + "'/></td> \
                     <td style='padding:0px'><select name='uritemplate_policyGroupId" + i + "' id='uritemplate_policyGroupId" + i + "' onChange='updateDropdownPolicyGroup(" + i + ");'   class='policy_groups form-control'>" + policyGroupBlock + "</select></td>\
                      <td> \
@@ -164,19 +183,30 @@ $( document ).ready(function() {
         }
     });
 
-    $(document).on("click", ".add_entitlement_policy", function () {
-        var resourceIndex = $(this).data('index');
-        preparePolicyEditor(resourceIndex);
-    })
-
-    $(document).on("click", ".delete_entitlement_policy", function () {
-        var resourceIndex = $(this).data('index');
-        deleteEntitlementPolicy(resourceIndex);
-    })
-
     $("#resource_tbody").trigger("draw");
 
+    //handle global policies checkbox logic
+    $(document).on("click", '.controll_visibility', function () {
+        if($(this).context.checked){
+            $('#token-input-roles').show();
+            $('.global_role>ul.token-input-list-facebook').css('border','1px solid #ccc');
+        }else{
+            $('#token-input-roles').hide();
+            $('#roles').tokenInput("clear");
+            $('.global_role>ul.token-input-list-facebook').css('border','none');
+        }
+    });
 
+    $(document).on("click", '.controll_overview_logoutUrl', function () {
+        $(this).context.checked ? $('#overview_logoutUrl').show() : $('#overview_logoutUrl').hide();
+    })
+    //set default on loading
+    $('#token-input-roles').hide();
+    $('#overview_logoutUrl').hide();
+    $('.global_role>ul.token-input-list-facebook').css('border','none');
+
+    savePolicyGroupData();
+    //forced commit by team
 });
 
 function resetResource() {
@@ -206,4 +236,6 @@ function setPolicyGroupValue() {
             }
         }
 }
+
+
 

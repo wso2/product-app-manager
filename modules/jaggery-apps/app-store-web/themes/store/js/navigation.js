@@ -3,19 +3,19 @@ $(function() {
 	var showError = function (message) {
 		var msg = message.replace(/[0-9a-z.+]+:\s/i, '');
 		$('#register-alert').html(msg).fadeIn('fast');
-		$('#btn-signin').text('Sign in').removeClass('disabled');
+		$('#btn-signin').text('Sign In').removeClass('disabled');
 	};
 
     var showLoginError = function (message) {
         var msg = message.replace(/[0-9a-z.+]+:\s/i, '');
         $('#login-alert').html(msg).fadeIn('fast');
-        $('#btn-signin').text('Sign in').removeClass('disabled');
+        $('#btn-signin').text('Sign In').removeClass('disabled');
     };
 
     	var login = function() {
 		if (!$("#form-login").valid())
 			return;
-		$('#btn-signin').addClass('disabled').text('Signing in');
+		$('#btn-signin').addClass('disabled').text('Signing In');
 
 		var username = $('#inp-username').val();
 		var password = $('#inp-password').val();
@@ -137,7 +137,8 @@ $(function() {
                         messageText = "User account awaiting Administrator approval.";
 
                     }else{
-                        messageText = "User added successfully. You can now sign into the APP store using the new user account.";
+                        messageText = "Account for user '"+username+"' created successfully. You can now signin to " +
+                            "APP store using login name '"+username+"'.";
                     }
 
                     $('#messageModal').html($('#confirmation-data').html());
@@ -146,6 +147,7 @@ $(function() {
                     $('#messageModal a.btn-primary').html('OK');
                     $('#messageModal div.modal-body').html();
                     $('#messageModal').modal();
+                    clearFields();
                     $('#modal-register').modal('hide');
                     $('#messageModal a.btn-primary').click(function () {
                         $('#messageModal').modal('hide');
@@ -225,5 +227,17 @@ $(function() {
 		window.location = $(this).attr('href');
 	});
 
+    $('#btn-register-close').click(function () {
+        clearFields();
+    });
+
 });
 
+
+//clear input fields
+function clearFields() {
+    $('#inp-username-register').val(""); //clear username field
+    $('#inp-password-register').val(""); //clear password field
+    $('#inp-password-confirm').val(""); //clear confirm password field
+    $('#register-alert').hide(); //hide validation messages
+}

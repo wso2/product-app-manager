@@ -44,10 +44,11 @@
                                  <a  data-action="{{name}}" data-app="{{../this.id}}" class="btn {{style}} btn-action" name="addNewAssetButton">{{name}}</a>
                              {{/this.lifecycleAvailableActions}}
 
+                             {{#this.deleteButtonAvailability}}
+                                 <input type="button" value="Delete" class="btn btn-danger btn-delete"
+                                        name="deleteAsset"  data-app-id={{this.id}} />
+                             {{/this.deleteButtonAvailability}}
 
-
-                             <input type="button" value="Delete" class="btn btn-danger btn-delete"
-								name="deleteAsset"  data-app-id={{this.id}} />
 						<input
 								type="hidden" value="{{../shortName}}" name="{{../shortName}}"
 								id="meta-asset-type" />
@@ -80,7 +81,9 @@
             <br />
             Nothing added yet.
             <br />
+            {{#if createPermission}}
             <a type="button" class="btn btn-addNewAssetLarge" href="/publisher/asset/{{shortName}}"><i class="icon-plus-sign-alt"></i>Add New Web App</a>
+            {{/if}}
         </div>
 	{{/if}}
 

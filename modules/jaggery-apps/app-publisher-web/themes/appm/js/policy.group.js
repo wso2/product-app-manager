@@ -21,11 +21,6 @@ var editedPolicyGroup = 0; //contains status (if edit or save)
 var policyGroupsArray = new Array(); //policy group related details array
 var policyGroupBlock; //contains html formatted options list of Policy Groups
 
-$(document).ready(function () {
-    //load throttling tiers
-    $("#throttlingTier").empty().append(throttlingTierControlBlock);
-});
-
 
 $('#userRoles').tokenInput('/publisher/api/lifecycle/information/meta/' + $('#meta-asset-type').val() + '/roles', {
     theme: 'facebook',
@@ -57,9 +52,10 @@ function validate(policyGroupName) {
  * @param anonymousAccessToUrlPattern : if anonymous access allowed for the related url pattern/verb
  * @param userRoles : User Roles
  * @param objPartialMappings : Object which contains XACML policy partial details arrays
+ * @param policyGroupDesc : Policy Group DEscription
  * @param isSaveAndClose : check if the call is from the save and close button
  */
-function insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, objPartialMappings, isSaveAndClose) {
+function insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, objPartialMappings, isSaveAndClose ,policyGroupDesc) {
 
     $.ajax({
         url: '/publisher/api/entitlement/policy/partial/policyGroup/save',
@@ -69,7 +65,8 @@ function insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUr
             "throttlingTier": throttlingTier,
             "userRoles": userRoles,
             "anonymousAccessToUrlPattern": anonymousAccessToUrlPattern,
-            "objPartialMappings": objPartialMappings
+            "objPartialMappings": objPartialMappings,
+            "policyGroupDesc" :policyGroupDesc
         },
         success: function (data) {
             editedPolicyGroup = JSON.parse(data).response.id;
@@ -91,7 +88,8 @@ function insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUr
                 throttlingTier: throttlingTier,
                 anonymousAccessToUrlPattern: anonymousAccessToUrlPattern,
                 userRoles: userRoles,
-                policyPartials: JSON.stringify(policyPartialsMapping)
+                policyPartials: JSON.stringify(policyPartialsMapping),
+                policyGroupDesc: policyGroupDesc
 
             });
             //Policy Group partial update
@@ -120,7 +118,7 @@ function insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUr
  * @param objPartialMappings : Object which contains XACML policy partial details arrays
  * @param isSaveAndClose : check if the call is from the save and close button
  */
-function updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, objPartialMappings, isSaveAndClose) {
+function updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, objPartialMappings, isSaveAndClose, policyGroupDesc) {
     $.ajax({
         url: '/publisher/api/entitlement/policy/partial/policyGroup/details/update',
         type: 'POST',
@@ -130,7 +128,8 @@ function updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrl
             "userRoles": userRoles,
             "anonymousAccessToUrlPattern": anonymousAccessToUrlPattern,
             "policyGroupId": editedPolicyGroup,
-            "objPartialMappings": objPartialMappings
+            "objPartialMappings": objPartialMappings,
+            "policyGroupDesc" :policyGroupDesc
         },
         success: function (data) {
             var policyPartialsMapping = [];
@@ -151,6 +150,7 @@ function updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrl
                     policyGroupsArray[i].anonymousAccessToUrlPattern=anonymousAccessToUrlPattern;
                     policyGroupsArray[i].userRoles=userRoles;
                     policyGroupsArray[i].policyPartials= JSON.stringify(policyPartialsMapping);
+                    policyGroupsArray[i].policyGroupDesc= policyGroupDesc;
                 }
             }
             updatePolicyGroupPartial(policyGroupsArray);
@@ -192,6 +192,8 @@ function savePolicyGroupData(isSaveAndClose) {
     //User Roles
     var userRoles = $('#policy-group-editor #userRoles').val();
 
+    var policyGroupDesc = $('#policy-group-editor #policyGroupDescription').val();
+
     hidePolicyGroupNotification();
 
     //contains XACML policy partial details arrays
@@ -214,10 +216,10 @@ function savePolicyGroupData(isSaveAndClose) {
     if (validate(policyGroupName)) {
         // editedPolicyGroup : 0 > then insert else update
         if (editedPolicyGroup == 0) {
-            insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions), isSaveAndClose);
+            insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions), isSaveAndClose , policyGroupDesc);
         }
         else {
-            updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions), isSaveAndClose);
+            updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions), isSaveAndClose, policyGroupDesc);
 
             updatePolicyGroupPartialXACMLPolicies($("#uuid").val());
         }
@@ -234,6 +236,7 @@ $(document).on("click", ".policy-group-edit-button", function () {
     $.each(policyGroupsArray, function (index, obj) {
         if (obj != null && obj.policyGroupId == policyGroupId) {
             $('#policy-group-editor #policyGroupName').val(obj.policyGroupName);
+            $('#policy-group-editor #policyGroupDescription').val(obj.policyGroupDesc);
             $("#policy-group-editor #throttlingTier option[value=" + obj.throttlingTier +
             "]").attr("selected", "selected");
             $("#policy-group-editor #anonymousAccessToUrlPattern option[value=" + obj.anonymousAccessToUrlPattern +
@@ -317,6 +320,7 @@ $(document).on("click", "#btn-add-policy-group", function () {
     editedPolicyGroup = 0;
     $('#policy-group-editor #policyGroupName').val("");
     $('#policy-group-editor #policyGroupName').prop("readonly", false);
+    $('#policy-group-editor #policyGroupDescription').val("");
     $('#policy-group-editor #throttlingTier').prop('selectedIndex', 0);
     $('#policy-group-editor #anonymousAccessToUrlPattern').prop('selectedIndex', 0);
     $('#policy-group-editor #userRoles').tokenInput("clear");
@@ -338,7 +342,7 @@ function updatePolicyGroupPartial(policyGroupsArray) {
     $.each(policyGroupsArray, function (index, obj) {
         if (obj != null) {
             $('#policyGroupsTable tbody').append('<tr><td>' + obj.policyGroupName +
-            '</td><td><a data-target="#policy-group-editor" data-toggle="modal" data-policy-id="'
+            '</td><td>'+ obj.policyGroupDesc +'</td><td><a data-target="#policy-group-editor" data-toggle="modal" data-policy-id="'
             + obj.policyGroupId + '" class="policy-group-edit-button"><i class="icon-edit"></i></a> &nbsp;' +
             '<a  data-policy-name="' + obj.policyGroupName + '"  data-policy-id="' + obj.policyGroupId +
             '" class="policy-group-delete-button"><i class="icon-trash"></i></a></td></tr>');
@@ -383,7 +387,42 @@ $(document).on("click", ".policy-group-delete-button", function () {
 function deletePolicyGroup(applicationId, policyGroupId, policyGroupName) {
     var arrayIndex; //deleted index of the array
     var groupPartial;
-    var conf = confirm("Are you sure you want to delete the policy " + policyGroupName + "?");
+    var conf = false;
+
+    $.ajax({
+        async: false,
+        url: '/publisher/api/entitlement/policyGroup/associate/url/pattern/list/to/avoid/delete/' + policyGroupId,
+        type: 'GET',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (response) {
+            var urlPattern = "";
+            if (response.length != 0) {
+
+                // construct and show the  the warning message with app names which use this partial before delete
+                for (var i = 0; i < response.length; i++) {
+                    var j = i + 1;
+                    urlPattern = urlPattern + j + ". URL Pattern: " + response[i].urlPattern + " , HTTP Verb: "
+                    + response[i].httpMethod + "\n";
+
+                }
+                var msg = "You cannot delete the policy group " + policyGroupName +
+                    " because it is been used in following URl patterns \n\n" +
+                    urlPattern;
+                alert(msg);
+                return;
+
+            } else {
+                conf = confirm("Are you sure you want to delete the policy " + policyGroupName + "?");
+            }
+
+        },
+        error: function (response) {
+
+        }
+    });
+
+
     if (conf) {
         $.each(policyGroupsArray, function (index, obj) {
             if (obj != null && obj.policyGroupId == policyGroupId) {
@@ -483,10 +522,11 @@ function updatePolicyGroupPartialXACMLPolicies(uuid){
                             throttlingTier: data[i].throttlingTier,
                             anonymousAccessToUrlPattern: data[i].allowAnonymous,
                             userRoles: data[i].userRoles,
-                            policyPartials: data[i].policyPartials
+                            policyPartials: data[i].policyPartials,
+                            policyGroupDesc: data[i].policyGroupDesc
                         })
                     }
-                    policyGroupsArray = policyGroupsArray.concat(policyGroupsArrayTemp).unique();
+                    policyGroupsArray = arrayUnique(policyGroupsArray.concat(policyGroupsArrayTemp));
                 },
                 error: function () {
                 }
@@ -501,11 +541,11 @@ function updatePolicyGroupPartialXACMLPolicies(uuid){
  * Use to merge array with unique
  * @returns {Array}
  */
-Array.prototype.unique = function() {
-    var a = this.concat();
+function arrayUnique(array) {
+    var a = array.concat();
     for(var i=0; i<a.length; ++i) {
         for(var j=i+1; j<a.length; ++j) {
-            if(a[i].policyGroupId === a[j].policyGroupId)
+            if(a[i] === a[j])
                 a.splice(j--, 1);
         }
     }

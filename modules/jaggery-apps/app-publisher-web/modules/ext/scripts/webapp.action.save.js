@@ -87,11 +87,11 @@ var module = function () {
         var index = 0;
         var attributes = asset.attributes;
         var urlPattern = attributes["uritemplate_urlPattern" + index];
-        var policyPartials = attributes["uritemplate_policyPartialIds"];
         var policyGroups = attributes["uritemplate_policyGroupIds"];
+        var javaPolicies = attributes["uritemplate_javaPolicyIds"];
 
-        webAppObj.setPolicyPartials(policyPartials);
         webAppObj.setPolicyGroups(policyGroups); //set policy group id list
+        webAppObj.setJavaPolicies(javaPolicies); //set java policies id list
 
         while(urlPattern != null && trim(urlPattern).length > 0){
 
@@ -173,6 +173,7 @@ var module = function () {
             var logoutURL = model.getField('overview.logoutUrl').value;
 
             var webappURL = model.getField('overview.webAppUrl').value;
+            var displayName = model.getField('overview.displayName').value;
             var revisedURL = logoutURL.replace(webappURL,"");
 
             var shortName = template.shortName;

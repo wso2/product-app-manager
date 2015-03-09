@@ -11,11 +11,15 @@ var action = $(this).data("action");
         success: function (response) {
             //Convert the response to a JSON object
             var statInfo = JSON.parse(response);
-            var isAsynch = statInfo.asynch;
-            if (isAsynch == false && action == 'Approve') {
-                showMessageModel("Your request to publish the application is awaiting administrator approval.", "Awaiting administrator approval", "webapp");
-            } else {
-                location.reload();
+            if(statInfo.status != "error") {
+                var isAsynch = statInfo.asynch;
+                if (isAsynch == false && action == 'Approve') {
+                    showMessageModel("Your request to publish the application is awaiting administrator approval.", "Awaiting administrator approval", "webapp");
+                } else {
+                    location.reload();
+                }
+            }else{
+                alert(statInfo.message);
             }
         },
         error: function (response) {

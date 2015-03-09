@@ -1,26 +1,12 @@
 {
-    "roles": {
-        "Internal/publisher": {
-            "/permission/admin/login": ["ui.execute"],
-            "/permission/admin/manage/api/create": ["ui.execute"],
-            "/permission/admin/manage/api/publish": ["ui.execute"],
-            "/permission/admin/manage/resources/govern": ["ui.execute"]
-        },
-        "Internal/reviewer": {
-            "/permission/admin/login": ["ui.execute"]
-        }
-    },
     "user": {
         "username": "admin",
         "password": "admin"
     },
-    "userRoles": ["Internal/publisher"],
+    "userRoles": ["Internal/creator"],
     "permissions": {
         "login": {
-            "/permission/admin/login": ["ui.execute"],
-            "/permission/admin/manage/api/create": ["ui.execute"],
-            "/permission/admin/manage/api/publish": ["ui.execute"],
-            "/permission/admin/manage/resources/govern": ["ui.execute"]
+            "/permission/admin/login": ["ui.execute"]
         }
     },
     "userSpace": "/_system/governance/users",

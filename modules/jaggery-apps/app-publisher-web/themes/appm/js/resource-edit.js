@@ -4,6 +4,8 @@ var throttlingTierControlBlock; //html formatted block for throttling tiers list
 
 $( document ).ready(function() {
 
+    var uuid = $("#uuid").val(); //Application UUID
+
     $("#overview_context").attr('maxlength','200');
 
     //get Tier details from tier.xml
@@ -20,6 +22,9 @@ $( document ).ready(function() {
         error: function () {
         }
     });
+
+    //load throttling tiers
+    $("#throttlingTier").empty().append(throttlingTierControlBlock);
 
     $(".trans_checkbox").click(function(){
         var output = [];
@@ -71,6 +76,8 @@ $( document ).ready(function() {
         }
     });
 
+    //load global (application level) dynamic optional java policies
+    loadAvailableJavaPolicies(uuid, true);
 
    //fixed chrome issue with file paths
     $('input[type=file]').on('change', function(e) {
@@ -100,13 +107,13 @@ $( document ).ready(function() {
         }
     });
 
-    var uuid = $("#uuid").val();
     loadPolicyGroupData(uuid);
 
     $("#add_resource").click(function(){
         $(".http_verb").each(function(){
             var resource = {};
-            resource.url_pattern = $("#url_pattern").val();
+            var url_pattern = $("#url_pattern").val();
+            resource.url_pattern =  url_pattern.indexOf('/') == 0 ? url_pattern : '/' + url_pattern;
             resource.http_verb = $(this).val();
             resource.user_roles = $("#user_roles").val();
             if($(this).is(':checked')){
@@ -145,7 +152,7 @@ $( document ).ready(function() {
         for (var i = 0; i < RESOURCES_1.length; i++) {
             $("#resource_tbody").prepend(
                 "<tr> \
-                  <td><span style='color:#999'>/{context}/{version}/</span>" + RESOURCES_1[i].url_pattern + " <input type='hidden' value='" + RESOURCES_1[i].url_pattern + "' name='uritemplate_urlPattern" + i + "'/></td> \
+                  <td><span style='color:#999'>/{context}/{version}</span>" + RESOURCES_1[i].url_pattern + " <input type='hidden' value='" + RESOURCES_1[i].url_pattern + "' name='uritemplate_urlPattern" + i + "'/></td> \
                   <td><strong>" + RESOURCES_1[i].http_verb + "</strong><input type='hidden' value='" + RESOURCES_1[i].http_verb + "' name='uritemplate_httpVerb" + i + "'/></td> \
                      <td style='padding:0px'><select name='uritemplate_policyGroupId" + i + "' id='uritemplate_policyGroupId" + i + "' onChange='updateDropdownPolicyGroup(" + i + ");'   class='policy_groups form-control'>" + policyGroupBlock + "</select></td>\
                    <td> \
@@ -164,27 +171,72 @@ $( document ).ready(function() {
         }
     });
 
-
-    //load all available java policy list from DB
-    loadAvailableJavaPolicies();
-
-
-    $(document).on("click", ".add_entitlement_policy", function () {
-        var resourceIndex = $(this).data('index');
-        preparePolicyEditorInEditMode(resourceIndex);
-    })
-
-    $(document).on("click", ".delete_entitlement_policy", function () {
-        var resourceIndex = $(this).data('index');
-        deleteEntitlementPolicy(resourceIndex);
-    })
-
     $(document).on("click", "#btn-policy-save", function () {
         addEntitlementPolicy();
        // $("#entitlement-policy-editor").modal('hide');
     })
 
     $("#resource_tbody").trigger("draw");
+
+    //handle global policies checkbox logic
+    $(document).on("click", '.controll_visibility', function () {
+        if($(this).context.checked){
+            $('#token-input-roles').show();
+            $('.global_role>ul.token-input-list-facebook').css('border','1px solid #ccc');
+        }else{
+            $('#token-input-roles').hide();
+            $('#roles').tokenInput("clear");
+            $('.global_role>ul.token-input-list-facebook').css('border','none');
+        }
+    });
+
+    if($('#roles').attr("data-roles")){
+        $('.controll_visibility').prop('checked', true);
+        $('#token-input-roles').show();
+    }else{
+        $('#token-input-roles').hide();
+        $('.global_role>ul.token-input-list-facebook').css('border','none');
+    }
+
+    $(document).on("click", '.controll_overview_logoutUrl', function () {
+        if($(this).context.checked){
+            $('#overview_logoutUrl').show();
+        } else{
+            $('#overview_logoutUrl').val('');
+            $('#overview_logoutUrl').hide();
+        }
+    })
+    //set default on loading
+    if($('#overview_logoutUrl').val() !=' '){
+        $('.controll_overview_logoutUrl').prop('checked', true);
+        $('#overview_logoutUrl').show()
+    }else{
+        $('#overview_logoutUrl').hide()
+    }
+
+
+    //set skip gateway checkbox value in edit mode
+    var skipGateway = $('#overview_skipGateway').val();
+    if (skipGateway == "true") {
+        $('.skip_gateway_checkbox').prop('checked', true);
+    }
+    else {
+        $('.skip_gateway_checkbox').prop('checked', false);
+    }
+
+
+    //when skip gateway checkbox value in changed, adjust the hidden field value which used in save operation
+    $(".skip_gateway_checkbox").click(function () {
+        var output = [];
+        if ($('.skip_gateway_checkbox').is(':checked')) {
+            output.push("true");
+        }
+        else {
+            output.push("false");
+        }
+        $('#overview_skipGateway').val(output);
+    });
+
 
 
 });
@@ -285,7 +337,8 @@ function loadPolicyGroupData(uuid) {
                             throttlingTier: data[i].throttlingTier,
                             anonymousAccessToUrlPattern: data[i].allowAnonymous,
                             userRoles: data[i].userRoles,
-                            policyPartials: data[i].policyPartials
+                            policyPartials: data[i].policyPartials,
+                            policyGroupDesc: data[i].policyGroupDesc
                         })
                     }
                     updatePolicyGroupPartial(policyGroupsArray);
@@ -299,4 +352,5 @@ function loadPolicyGroupData(uuid) {
         }
     });
 }
+
 

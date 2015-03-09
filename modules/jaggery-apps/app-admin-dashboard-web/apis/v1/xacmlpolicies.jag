@@ -1,0 +1,98 @@
+<%
+/*
+ *  Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ *  WSO2 Inc. licenses this file to you under the Apache License,
+ *  Version 2.0 (the "License"); you may not use this file except
+ *  in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+include('/jagg/jagg.jag');
+var method = request.getMethod();
+var policyApi = require('/modules/policies-api.js');
+var uriMatcher = new URIMatcher(request.getRequestURI());
+
+//GET patterns
+var retrievePolicyList = '/{context}/apis/xacmlpolicies/list';
+var retrievePolicyTemplate = '/{context}/apis/xacmlpolicies/template';
+var retrieveAssociatedAppNames = '/{context}/apis/xacmlpolicies/associated/apps';
+
+//POST patterns
+var validatePolicy = '/{context}/apis/xacmlpolicies/validate';
+var savePolicy = '/{context}/apis/xacmlpolicies/save';
+var updatePolicy = '/{context}/apis/xacmlpolicies/update';
+
+//DELETE patterns
+var deletePolicy = '/{context}/apis/xacmlpolicies/delete/{policyId}';
+
+
+if (method == 'GET') {
+    if (uriMatcher.match(retrievePolicyList)) {
+        ///get policy list
+        print(policyApi.getSharedPolicyList());
+    }
+    else if (uriMatcher.match(retrievePolicyTemplate)) {
+        //get policy template
+        print(policyApi.getXACMLPolicyTemplate());
+    }
+    else if (uriMatcher.match(retrieveAssociatedAppNames)) {
+        //get app names related to policy
+        print(policyApi.getAssociatedApps(request.getParameter("policyId")));
+    }
+
+}
+else if (method == 'POST') {
+    if (uriMatcher.match(validatePolicy)) {
+        //validate policy
+        print(createResponseObject(policyApi.validateResult(request.getParameter("policyPartial"))));
+    }
+    else if (uriMatcher.match(savePolicy)) {
+        //save policy
+        var policyPartialName = request.getParameter("policyPartialName");
+        var policyPartial = request.getParameter("policyPartial");
+        var isSharedPartial = request.getParameter("isSharedPartial");
+        var policyPartialDesc = request.getParameter("policyPartialDesc");
+        print(createResponseObject(policyApi.savePolicy(policyPartialName, policyPartial, isSharedPartial, policyPartialDesc)));
+    }
+    else if (uriMatcher.match(updatePolicy)) {
+        //update policy
+        var id = request.getParameter("id");
+        var policyPartial = request.getParameter("policyPartial");
+        var isSharedPartial = request.getParameter("isSharedPartial");
+        var policyPartialDesc = request.getParameter("policyPartialDesc");
+        print(policyApi.updatePolicy(id, policyPartial, isSharedPartial, policyPartialDesc));
+    }
+
+}
+else if (method == 'PUT') {
+
+}
+else if (method == 'DELETE') {
+    if (uriMatcher.match(deletePolicy)) {
+        //delete policy
+        print(policyApi.deletePolicy(uriMatcher.elements().policyId));
+    }
+}
+else {
+    response.sendError(402, 'Method not supported by this endpoint');
+}
+
+
+function createResponseObject(object) {
+    if (object !== null) {
+        return {'success': true, 'response': object};
+    } else {
+        return {'success': false, 'response': object};
+    }
+}
+%>

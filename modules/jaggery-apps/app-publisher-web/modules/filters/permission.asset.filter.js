@@ -40,6 +40,7 @@ var filterModule = function () {
     function execute(context) {
         var data = context['data'];
         var userRoles = context['roles'];
+        var tenantId = context['tenantId'];
         var item;
         var items = [];
 
@@ -55,7 +56,7 @@ var filterModule = function () {
                 permissableRoles = obtainPermissibleRoles(context, item.lifecycleState);
 
                 //Fill in dynamic values
-                permissableRoles = fillDynamicPermissibleRoles(item, permissableRoles);
+                permissableRoles = fillDynamicPermissibleRoles(item, tenantId, permissableRoles);
 
                 //Check if the user has any of the roles specified for the state
                 var commonRoles = utility.intersect(userRoles, permissableRoles, function (a, b) {
@@ -84,12 +85,17 @@ var filterModule = function () {
      @context: The context of the request (username)
      @permissions: A list of permissions
      */
-    function fillDynamicPermissibleRoles(item, permissions) {
+    function fillDynamicPermissibleRoles(item, tenantId, permissions) {
         var list = [];
+        var overviewProvider = item.attributes.overview_provider;
         for (var index in permissions) {
-            list.push(permissions[index].replace('{overview_provider}', item.attributes.overview_provider));
+            if(tenantId == '-1234') {
+                list.push(permissions[index].replace('{overview_provider}', overviewProvider));
+            } else {
+                var providerDetails = overviewProvider.split("-AT-");
+                list.push(permissions[index].replace('{overview_provider}', providerDetails[0]));
+            }
         }
-
         return list;
     }
 

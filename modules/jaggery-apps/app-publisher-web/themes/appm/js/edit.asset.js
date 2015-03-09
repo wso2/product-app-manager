@@ -220,6 +220,21 @@ $(function() {
 
 	$('#editAssetButton').on('click', function() {
 
+		//check if there are any url which doesn't have a policy group
+		var countResourcePolicies = 0;
+		var result = true;
+		$('.policy_groups').each(function () {
+			if ($("#uritemplate_policyGroupId" + countResourcePolicies + " option:selected").text() == "") {
+				result = false;
+			}
+			countResourcePolicies++;
+		});
+		if (result == false) {
+			alert('Failed to add asset. Need to assign a Resource Policy for each URL Pattern.');
+			return;
+		}
+
+
 		var data = {};
 		//var formData=new FormData();
 
@@ -285,10 +300,8 @@ $(function() {
 
 			    		var readPermission = new Array();
             			readPermission.push("GET");
-
-                    			// Get roles from the UI
-            			var rolesInUI = $('#roles').tokenInput("get");	
-
+                    	// Get roles from the UI
+            			var rolesInUI = $('#roles').tokenInput("get");
             			for(var i = 0; i < rolesInUI.length; i++){
             				rolePermissions.push({
                     				role: rolesInUI[i].id,
@@ -320,6 +333,8 @@ $(function() {
 
                     window.location = "/publisher/assets/webapp/";
 				} else {
+                    var result = JSON.parse(response);
+                    alert(result.message);
 					var report = processErrorReport(result.report);
 					createMessage(MSG_CONTAINER, ERROR_CSS, report);
 				}

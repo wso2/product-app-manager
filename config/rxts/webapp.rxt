@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<artifactType type="application/vnd.wso2-webapp+xml" shortName="webapp" singularLabel="webapp" pluralLabel="webapps" hasNamespace="false" iconSet="7">
-	<storagePath>/apimgt/applicationdata/provider/@{overview_provider}/@{overview_name}/@{overview_version}/webapp</storagePath>
+<artifactType type="application/vnd.wso2-webapp+xml" shortName="webapp" singularLabel="Web App" pluralLabel="Web Apps" hasNamespace="false" iconSet="7">
+	<storagePath>/appmgt/applicationdata/provider/@{overview_provider}/@{overview_name}/@{overview_version}/webapp</storagePath>
 	<!--storagePath>/gadgets/@{overview_provider}/@{overview_name}/@{overview_version}</storagePath-->
 	<nameAttribute>overview_name</nameAttribute>
 	<ui>
@@ -35,6 +35,10 @@
 
         <field type="text" required="true">
             <name>Version</name>
+        </field>
+
+        <field type="text" required="true">
+            <name>Display Name</name>
         </field>
 
 	<field type="text" required="true">

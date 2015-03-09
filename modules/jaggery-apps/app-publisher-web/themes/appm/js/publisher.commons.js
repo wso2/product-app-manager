@@ -231,6 +231,11 @@ $(document).ready(function() {
 		var searchAssetString = $('#inp_searchAsset').val();
 		var searchPrefix = $('#search-prefix').val();
 
+		//set default when empty
+		if (searchPrefix.trim() == "") {
+			searchPrefix = "webapp";
+		}
+
 		if (searchAssetString != "") {
 			var link = '/publisher/assets/' + searchPrefix + '/?query=' + searchAssetString;
 			window.location = link;
@@ -239,7 +244,15 @@ $(document).ready(function() {
 
     /* expand collapse container */
     $("h2.exp_col").click(function() {
-        $(this).find("i").toggleClass("icon-chevron-sign-down");
+        if($(this).find("i").hasClass('icon-chevron-sign-down')){
+            $(this).find("i").removeClass("icon-chevron-sign-down");
+            $(this).find("i").addClass("icon-chevron-sign-right");
+        }else{
+            $(this).find("i").removeClass("icon-chevron-sign-right");
+            $(this).find("i").addClass('icon-chevron-sign-down');
+
+        }
+
         var c = $(this).next();
         $(c).slideToggle();
     });

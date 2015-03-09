@@ -157,8 +157,8 @@
 	</fileSet>
 	<fileSet>
             <directory>
-                ../../jaggery-apps/app-workflow-admin/</directory>
-            <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/jaggeryapps/workflow-admin</outputDirectory>
+                ../../jaggery-apps/app-admin-dashboard-web/</directory>
+            <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/jaggeryapps/admin-dashboard</outputDirectory>
             <!--<includes>-->
                 <!--<include>**/config/ext/webapp.json</include>-->
                 <!--<include>**/config/lifecycles/WebAppLifeCycle.xml</include>-->
@@ -229,7 +229,7 @@
             <directory>
                 ../resources/sql/
             </directory>
-            <outputDirectory>wso2appm-${pom.version}/dbscripts/apimgt</outputDirectory>
+            <outputDirectory>wso2appm-${pom.version}/dbscripts/appmgt</outputDirectory>
             <includes>
                 <include>**/**.sql</include>
             </includes>
@@ -414,7 +414,7 @@
             </directory>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/webapps</outputDirectory>
             <includes>
-                <include>oauth2.war</include>
+                <include>appmoauth2.war</include>
             </includes>
         </fileSet>
 

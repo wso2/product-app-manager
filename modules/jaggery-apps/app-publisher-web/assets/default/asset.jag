@@ -12,6 +12,8 @@
  Created Date: 29/7/2013
  */
 include("/extensions/webapp/modules/jagg/jagg.jag");
+var permissions=require('/modules/permissions.js').permissions;
+var config = require('/config/publisher.json');
 
 
 require('/modules/publisher.js').exec(function(ctx) {
@@ -211,8 +213,8 @@ routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/
     output.fields[1]['isEditable'] = false;
     output.fields[1]['isReadOnly'] = true;
 
-    output.fields[2]['isEditable'] = false;
-    output.fields[2]['isReadOnly'] = true;
+    <!--output.fields[2]['isEditable'] = false;-->
+    <!--output.fields[2]['isReadOnly'] = true;-->
 
     output.fields[3]['isEditable'] = false;
     output.fields[3]['isReadOnly'] = true;
@@ -243,81 +245,94 @@ routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/
 });
 
 routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (context) {
-    var shortName = context.params.type;
-    var artifactManager = rxtManager.getArtifactManager(shortName);
-    var model = modelManager.getModel(shortName);
-    var assetCacheManager=new assetCachingModule.AssetCacheManager(session);
+    var log = new Log();
 
-    //context.post['tag-container'] = ['tag1', 'tag2'];
+    var server = require('store').server;
+    var user=server.current(session);
+    var um = server.userManager(server.current(session).tenantId);
 
-    //Check if the type is valid
-    try {
+    if (permissions.isAuthorized(user.username, config.permissions.webapp_create, um)) {
 
-        //Process and add any files in the request
-        inspectFiles(request, context.post);
+        var shortName = context.params.type;
+        var artifactManager = rxtManager.getArtifactManager(shortName);
+        var model = modelManager.getModel(shortName);
+        var assetCacheManager = new assetCachingModule.AssetCacheManager(session);
 
-        model.import('form.importer', context.post);
+        //context.post['tag-container'] = ['tag1', 'tag2'];
+
+        //Check if the type is valid
+        try {
+
+            //Process and add any files in the request
+            inspectFiles(request, context.post);
+
+            model.import('form.importer', context.post);
 
 
-        //Perform validation on the model
+            //Perform validation on the model
 
-        var report=model.validate();
+            var report = model.validate();
 
-        if((report)&&(report.failed)){
+            if ((report) && (report.failed)) {
 
-          print({ok:false,message:'Validation failure',report:report});
-         return;
+                print({ok: false, message: 'Validation failure', report: report});
+                return;
+            }
+
+            var name = model.get('overview.name').value;
+            var provider = model.get('overview.provider').value;
+            var version = model.get('overview.version').value;
+
+            if (context.post['overview_context'].length > 200) {
+                print({ok: false, message: 'Context value length is more than 200', report: report});
+                return;
+            }
+
+            //Check whether duplicate webapp exists
+            var isexists = isWebappExists(name, provider, version);
+
+            //If exists, return an error message
+            if (isexists == true) {
+                print({ok: false, isexists: true, msg: 'Error occurred while adding the WebApp. A duplicate WebApp already exists for ' +
+                                                       name + "-" + version});
+                return;
+            }
+
+            //log.debug(context.post);
+
+            model.save();
+
+            //Obtain the asset id in order to retrieve the asset again
+            var assetId = model.get('*.id').value;
+
+            //Convert the model to an artifact
+            var asset = model.export('asset.exporter');
+            //Cache the asset
+            assetCacheManager.add(asset, shortName);
+
+            var reg = rxtManager.registry;
+
+            //Add the tags
+            addTags(context.post, assetId, artifactManager, reg);
+
+            // Save external entitlement policies
+            var webappId = {};
+            webappId.provider = model.get('overview.provider').value;
+            webappId.name = model.get('overview.name').value;
+            webappId.version = model.get('overview.version').value;
+            generateEntitlementPolicies(webappId);
+
+            print({ok: true, message: 'asset added', id: assetId});
         }
-
-        var name = model.get('overview.name').value;
-        var provider = model.get('overview.provider').value;
-        var version = model.get('overview.version').value;
-
-        if(context.post['overview_context'].length > 200){
-            print({ok:false,message:'Context value length is more than 200',report:report});
-            return;
+        catch (e) {
+            log.error(e);
+            log.debug('An instance could not be created for asset with type :' + shortName + '.The following exception was recorded: ' + e);
+            response.sendError(500, 'The asset instance could not be created.Please check the server log.');
         }
-
-        //Check whether duplicate webapp exists
-        var isexists = isWebappExists(name, provider, version);
-
-        //If exists, return an error message
-        if(isexists == true){
-            print({ok:false,isexists:true, msg:'Error occurred while adding the WebApp. A duplicate WebApp already exists for ' +
-                    name + "-" + version});
-            return;
-        }
-
-        //log.debug(context.post);
-
-        model.save();
-
-        //Obtain the asset id in order to retrieve the asset again
-        var assetId=model.get('*.id').value;
-
-        //Convert the model to an artifact
-        var asset=model.export('asset.exporter');
-        //Cache the asset
-        assetCacheManager.add(asset,shortName);
-
-        var reg=rxtManager.registry;
-
-        //Add the tags
-        addTags(context.post,assetId,artifactManager,reg);
-
-        // Save external entitlement policies
-        var webappId = {};
-        webappId.provider = model.get('overview.provider').value;
-        webappId.name = model.get('overview.name').value;
-        webappId.version = model.get('overview.version').value;
-        generateEntitlementPolicies(webappId);
-
-        print({ok:true,message:'asset added',id:assetId});
-    }
-    catch (e) {
-        log.error(e);
-        log.debug('An instance could not be created for asset with type :' + shortName + '.The following exception was recorded: ' + e);
-        response.sendError(500, 'The asset instance could not be created.Please check the server log.');
+    }else{
+        print({ok: false, message: 'Failed to add Asset. Insufficient privileges.'});
+        return;
+        //response.sendError(401, 'Failed to add Asset : Insufficient Privilages.');
     }
 
 });

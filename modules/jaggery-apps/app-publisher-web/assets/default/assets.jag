@@ -25,6 +25,7 @@ var modelManager = publisher.modelManager;
 var dataInjector=publisher.dataInjector;
 var DataInjectorModes=publisher.DataInjectorModes;
 var filterManager=publisher.filterManager;
+var permissions=require('/modules/permissions.js').permissions;
 
 var log=new Log();
 
@@ -98,6 +99,12 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 	var sort = request.getParameter("sort");
     var page = request.getParameter("page");
 	var type = context.params.type;
+
+    var server  = require('store').server;
+    var user = server.current(session);
+	var um = server.userManager(server.current(session).tenantId);
+    var createActionAuthorized = permissions.isAuthorized(user.username, config.permissions.webapp_create, um);
+
 	try {
 		//TODO: Check for valid asset types
 		var artifactManager = rxtManager.getArtifactManager(type);
@@ -164,10 +171,10 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
             var rightnav = currentPage+1;
         }
 
-		caramel.render({op : 'list',cuser : server.current(session), roles : server.current(session).getRoles(),shortName : type,artifacts : artifacts,query : query,title : type, pageIndices:pageIndices, leftNav:leftnav, rightNav:rightnav});
+		caramel.render({op : 'list',cuser : server.current(session), roles : server.current(session).getRoles(),shortName : type,artifacts : artifacts,query : query,title : type, pageIndices:pageIndices, leftNav:leftnav, rightNav:rightnav, createPermission:createActionAuthorized});
 	} catch (e) {
 		response.sendError(400, "Your request is malformed");
-		log.debug(e);
+		log.error(e);
 	}
 
 	/*for each(var artifact in artifacts){

@@ -37,11 +37,14 @@ var login = function (username, password,tenantMode) {
     	jagg.setUser({username:result.user, isSuperTenant:isSuperTenant, cookie:cookie});
 
 	var api = jagg.module("api");
-	var isCreatePermitted=api.hasCreatePermission();
+
+    /*These permission checks have been removed because we are moving away from the APIM, permission
+    * based access control mechanism and making use of the registry SCXML lifecycle permissions*/
+	//var isCreatePermitted=api.hasCreatePermission();
 	var isManageTierPermitted=api.hasManageTierPermission();
-	var isPublishPermitted=api.hasPublishPermission();
-	jagg.setCreatePermitted(isCreatePermitted);
-	jagg.setPublishPermitted(isPublishPermitted);
+	//var isPublishPermitted=api.hasPublishPermission();
+	//jagg.setCreatePermitted(isCreatePermitted);
+	//jagg.setPublishPermitted(isPublishPermitted);
 	jagg.setManageTierPermitted(isManageTierPermitted);
 
     	return {

@@ -38,51 +38,50 @@ $(function() {
 
 
 
-    $('#overview_context').on('blur', function() {
-        var $this = $(this), flag = $('.icon-check-appname'), btnCreate = $('#btn-create-asset');
-        var context = $this.val();
+	$('#overview_context').on('blur', function () {
+		var $this = $(this), flag = $('.icon-check-appname'), btnCreate = $('#btn-create-asset');
+		var context = $this.val();
 
-        if (!flag.length) {
-            $this.after('<i class="icon-check-appname"></i>');
-            flag = $('.icon-check-appname');
-        }
-        if(context !== '') {
+		if (!flag.length) {
+			$this.after('<i class="icon-check-appname"></i>');
+			flag = $('.icon-check-appname');
+		}
 
-            if(context.charAt(0) == '/'){
-                context = context.substr(1);
-            }
+		if (context !== '' && context != '/') {
 
+			context = context.indexOf('/') == 0 ? context : '/' + context;
+			//check if the asset name available as user types in
+			$.ajax({
+				url: '/publisher/api/validations/assets/webapp/overview_context',
+				type: 'POST',
+				contentType: 'application/x-www-form-urlencoded',
+				data: {"overview_context": context},
+				success: function (response) {
 
-            //check if the asset name available as user types in
-            $.ajax({
-                url : '/publisher/api/validations/assets/' + type + '/overview_context/' + context,
-                type : 'GET',
-                success : function(response) {
+					//Check if the context already exists
+					if (response == 'true') {
 
-                    //Check if the context already exists
-                    if (response == 'true') {
+						flag.removeClass().addClass('icon-ban-circle icon-check-appname').show();
+						btnCreate.attr('disabled', 'disabled');
+						showAlert("Duplicate context value.", 'error');
+					} else {
 
-                        flag.removeClass().addClass('icon-ban-circle icon-check-appname').show();
-                        btnCreate.attr('disabled', 'disabled');
-                        showAlert("Duplicate context value.", 'error');
-                    } else {
+						flag.removeClass().addClass('icon-ok icon-check-appname').show();
+						btnCreate.removeAttr('disabled');
+						$(".alert-error");
+					}
 
-                        flag.removeClass().addClass('icon-ok icon-check-appname').show();
-                        btnCreate.removeAttr('disabled');
-                        $(".alert-error");
-                    }
+				},
+				error: function (response) {
+					flag.removeClass().addClass('icon-ok icon-check-appname').hide();
+					showAlert('Unable to auto check Asset name availability', 'error');
+				}
+			});
+		} else {
+			showAlert('Context Cannot be null.');
+		}
 
-                },
-                error : function(response) {
-                    flag.removeClass().addClass('icon-ok icon-check-appname').hide();
-                    showAlert('Unable to auto check Asset name availability', 'error');
-                }
-            });
-        }else{
-            showAlert('Context Cannot be null.');
-        }
-
-    });
+	});
 
 
 
@@ -92,16 +91,30 @@ $(function() {
 
 		//check if at least one policy is added.
 		if(JSON.parse($('#uritemplate_policyGroupIds').val()).length==0) {
-			alert('Failed to add asset. Need to add at least one Policy Group.');
+			alert('Failed to add asset. Need to add at least one Resource Policy.');
 			return;
 		}
 
-		var context =  $('#overview_context').val();
-
-		if (context.charAt(0) !=  "/"){
-			context = "/" + context;
-			$('#overview_context').val(context);
+		//check if there are any url which doesn't have a policy group
+		var countResourcePolicies = 0;
+		var result = true;
+		$('.policy_groups').each(function () {
+			if ($("#uritemplate_policyGroupId" + countResourcePolicies + " option:selected").text() == "") {
+				result = false;
+			}
+			countResourcePolicies++;
+		});
+		if (result == false) {
+			alert('Failed to add asset. Need to assign a Resource Policy for each URL Pattern.');
+			return;
 		}
+
+
+
+		var context = $('#overview_context').val();
+		context = context.indexOf('/') == 0 ? context : '/' + context;
+
+		$('#overview_context').val(context);
 
         var name =  $('#overview_name').val()
 		var version =  $('#overview_version').val();
@@ -118,12 +131,12 @@ $(function() {
 			var selectedProvider = $('#providers').val();
 			$('#sso_ssoProvider').val(selectedProvider);
 		 }
-		
+
 		 // Add entitlement policies.
 		 $('#entitlementPolicies').val(JSON.stringify(entitlementPolicies));
 
 		// AJAX request options.
- 		var options = { 
+ 		var options = {
       
 			success: function(response) {
 
@@ -202,6 +215,7 @@ $(function() {
 					}
 
 				} else {
+                    alert(result.message);
                     if(result.isexists){
                         showAlert(result.msg, 'error');
 
@@ -222,10 +236,10 @@ $(function() {
         	
 		}; 
     
-    	$('#form-asset-create').ajaxSubmit(options); 
-		
+    	$('#form-asset-create').ajaxSubmit(options);
+
 	});
-	
+
 
 	// Visibility roles
 	$('#roles').tokenInput('/publisher/api/lifecycle/information/meta/' + $('#meta-asset-type').val() + '/roles', {
@@ -292,8 +306,6 @@ $(function() {
 	function loadProviders(providers_data){
 		 for(var i=0;i<providers_data.length;i++){
 			  var x = providers_data[i];
-			  console.log(providers_data.length + "i:"+i);
-			  console.log(x);
 			  $("#providers").append($("<option></option>").val(x).text(x));
 		  }
 		 

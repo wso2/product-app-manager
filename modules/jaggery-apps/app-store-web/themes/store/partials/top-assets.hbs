@@ -66,6 +66,11 @@
 					{{#each assets}} 
 					{{#attributes}}
 						<div class="slide asset" data-id="{{../id}}" data-type="{{../type}}" id="slideAsset">
+							{{#if ../isSubscribed}}
+                                <div class="ribbon-wrapper-green">
+                                    <div class="ribbon-green">Subscribed</div>
+                                </div>
+							{{/if}}
 							<a href="#">
 								<div class="asset-icon">
                                 <input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
@@ -78,11 +83,23 @@
 		
 							<div class="asset-details">
 								<div class="asset-name">
+									<input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
 									<a href="{{url "/assets"}}/{{../type}}/{{../id}}"><h4>{{overview_name}}</h4></a>
 								</div>
 								<div class="asset-rating">
 									<div class="asset-rating-{{../rating/average}}star"></div>
 								</div>
+
+								{{#if ../overview_skipGateway}}
+                                    <style>.meta-gw-info {
+                                        position: absolute;
+                                        top: 25px;
+                                        right: 5px;
+                                        font-size: 10px;
+                                        color: red;
+                                    }</style>
+                                    <div class="meta-gw-info"><i class="icon-remove"></i>Skipped Proxying</div>
+								{{/if}}
 								<div class="asset-author-category">
 									<ul>
 										<li>

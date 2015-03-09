@@ -327,7 +327,7 @@ function savePolicyPartial() {
         if (policyPartialObj.isShared) {
             $.ajax({
                 async: false,
-                url: '/publisher/api/entitlement/get/apps/associated/to/policy/' + editedpolicyPartialId,
+                url: '/publisher/api/entitlement/get/apps/associated/to/xacml/policy/id/' + editedpolicyPartialId,
                 type: 'GET',
                 contentType: 'application/json',
                 dataType: 'json',
@@ -490,99 +490,31 @@ function setPolicyContent(policyContent){
 
 
 function updatePolicyPartial() {
-    $('#policyPartialsTable tbody').html("");
     $(".policy-partial-dropdown").html("");
-    var policyPartialIndexArray = [];
     var provider = $('#overview_provider').val();
 
-    var policyPartialDropdownText, policyGroupPartialText = "";
-
-    policyPartialDropdownText = ("\
-               <li><table> \
-               <tr> \
-               <th  style='padding-left:10px; width:80px'>Policy</th> \
-               <th  style='padding-left:10px; width:50px'>Permit</th> \
-               <th  style='padding-left:10px; width:50px'>Deny</th> \
-               </tr> \
-              ");
-
+    var policyGroupPartialText = "";
 
     $.each(policyPartialsArray, function (index, obj) {
         if (obj != null) {
-
-            if (obj.isShared) {
-                if (provider == obj.author) {
-                    $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td>YES</td><td>' + obj.author + '</td><td><a data-target="#entitlement-policy-editor" data-toggle="modal" data-policy-id="' + obj.id + '" class="policy-edit-button"><i class="icon-edit"></i></a> &nbsp;<a  data-policy-name="' + obj.policyPartialName + '"  data-policy-id="' + obj.id + '" class="policy-delete-button"><i class="icon-trash"></i></a></td></tr>');
-                } else {
-                    $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td>YES</td><td>' + obj.author + '</td><td><a data-target="#entitlement-policy-editor" data-toggle="modal" data-policy-id="' + obj.id + '" class="policy-edit-button"><i class="icon-info-sign"></i></td></tr>');
-                }
-            } else {
-                $('#policyPartialsTable tbody').append('<tr><td>' + obj.policyPartialName + '</td><td>NO</td><td>' + obj.author + '</td><td><a data-target="#entitlement-policy-editor" data-toggle="modal" data-policy-id="' + obj.id + '" class="policy-edit-button"><i class="icon-edit"></i></a> &nbsp;<a  data-policy-name="' + obj.policyPartialName + '"  data-policy-id="' + obj.id + '" class="policy-delete-button"><i class="icon-trash"></i></a></td></tr>');
-            }
-            policyPartialDropdownText += ("\
-               <tr style='padding-bottom: 20px'> \
-               <td style='padding-left:10px; width:80px'>" + obj.policyPartialName + "</td> \
-               <td style='padding-left: 30px;'><input class='policy-allow-cb policy-allow-cb' data-policy-id='" + obj.id + "' type='checkbox'></td> \
-               <td style='padding-left: 30px;'> <input class='policy-deny-cb policy-deny-cb' data-policy-id='" + obj.id + "'  type='checkbox'> </td> \
-               </tr>");
-
             /*
              * Add XACML Policies to Policy Group panel
              */
             policyGroupPartialText += ("\
                 <tr style='padding-bottom: 20px'> \
                 <td style='padding-left:10px; width:80px'>" + obj.policyPartialName + "</td> \
+                <td style='padding-left:10px; width:200px'>" + obj.description + "</td> \
                 <td style='padding-left: 30px;'><input class='policy-opt-val policy-allow-cb' data-policy-id='" + obj.id + "' type='checkbox'></td> \
                 <td style='padding-left: 30px;'> <input class='policy-opt-val policy-deny-cb' data-policy-id='" + obj.id + "'  type='checkbox'> </td> \
                 </tr>");
-
-            policyPartialIndexArray.push(obj.id);
 
         }
 
 
     });
 
-    policyPartialDropdownText += ("</table></li>");
-    $(".policy-partial-dropdown").html(policyPartialDropdownText);
     //update Policy Group panel
     $(".xacml-policy-group").find('tbody').html(policyGroupPartialText);
-
-
-
-
-    $.each(policyPartialsArray, function (index, obj) {
-        var uriTemplates = $('.uritemplate_entitlementPolicyPartialMappings_text').length
-
-
-
-        $('.uritemplate_entitlementPolicyPartialMappings_text').each(function(i, obj) {
-            var values = JSON.parse($(this).val());
-
-            if(values) {
-                for (var j = 0; j < values.length; j++) {
-                    if(values[j]){
-
-                        if (values[j].effect == "Permit") {
-                            $('#dropdown_entitlementPolicyPartialMappings' + (uriTemplates - i - 1) + " .policy-allow-cb" + values[j].entitlementPolicyPartialId).prop('checked', true);
-                        } else if (values[j].effect == "Deny") {
-
-                            $('#dropdown_entitlementPolicyPartialMappings' + (uriTemplates - i - 1) + " .policy-deny-cb" + values[j].entitlementPolicyPartialId).prop('checked', true);
-                        }
-
-                    }
-
-                }
-            }
-
-        });
-
-
-    });
-
-
-
-
 
     if(policyPartialsArray ==  null || policyPartialsArray.length == 0 ){
         $(".dropdown").hide();
@@ -590,12 +522,9 @@ function updatePolicyPartial() {
         $(".dropdown").show()
     }
 
-    $('#uritemplate_policyPartialIds').val(JSON.stringify(policyPartialIndexArray));
-
-
 }
 
-
+//this will no longer USE
 $(document).on("click", "#btn-add-xacml-policy", function () {
 
     editedpolicyPartialId = 0;
@@ -688,7 +617,7 @@ $(document).on("click", ".policy-delete-button", function () {
     if (policyPartial.isShared) {
         $.ajax({
             async: false,
-            url: '/publisher/api/entitlement/get/apps/associated/to/policy/' + policyId,
+            url: '/publisher/api/entitlement/get/apps/associated/to/xacml/policy/id/' + policyId,
             type: 'GET',
             contentType: 'application/json',
             dataType: 'json',

@@ -53,6 +53,7 @@
                     <tbody>
                     {{#each newViewData.uriTemplate}}
                         {{#compare urlPattern "null" operator="!="}}
+                        {{#compare urlPattern "" operator="!="}}
                             {{#compare httpVerb "null" operator="!="}}
                                 <tr>
                                     <td>{{urlPattern}}</td>
@@ -112,6 +113,7 @@
                                 </tr>
                             {{/compare}}
                         {{/compare}}
+                        {{/compare}}
                     {{/each}}
                     </tbody>
                 </table>
@@ -122,17 +124,19 @@
             <div class="tab-pane fade" id="nav-pills-tab-2">
                 {{#each newViewData.sso}}
                     <div class="row">
-                        <div class="col-sm-2"><b>{{label}}</b></div>
-                        <div class="col-sm-10">{{value}}</div>
+                        <div class="col-sm-3"><b>{{label}}</b></div>
+                        <div class="col-sm-9">{{value}}</div>
                     </div>
                 {{/each}}
             </div>
             <div class="tab-pane fade" id="nav-pills-tab-3">
                 {{#each newViewData.oauthapis}}
-                    <div class="row">
-                        <div class="col-sm-2"><b>{{label}}</b></div>
-                        <div class="col-sm-10">{{value}}</div>
-                    </div>
+                    {{#compare value " " operator="!="}}
+                        <div class="row">
+                            <div class="col-sm-3"><b>{{label}}</b></div>
+                            <div class="col-sm-9">{{value}}</div>
+                        </div>
+                    {{/compare}}
                 {{/each}}
             </div>
         </div>
