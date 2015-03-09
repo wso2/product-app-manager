@@ -83,12 +83,35 @@ var drawAPIUsageByUser = function (response) {
 
 
         }
-        data.push({
-            API_name: app,
-            Subscriber_Count: newArr.length,
-            Hits: allcount,
-            API: app
-        });
+
+
+        for(var z = 0; z < dataStructure.length; z++){
+
+            if(app == dataStructure[z].appName){
+                dataStructure[z].checked = true;
+                data.push({
+                    API_name: app,
+                    Subscriber_Count: dataStructure[z].subCount,
+                    Hits: allcount,
+                    API: app
+                });
+            }
+        }
+
+    }
+
+    for(var p = 0; p < dataStructure.length; p++){
+
+        if(dataStructure[p].checked == false){
+
+            data.push({
+                API_name: dataStructure[p].appName,
+                Subscriber_Count: dataStructure[p].subCount,
+                Hits: 0,
+                API: dataStructure[p].appName
+            });
+        }
+
     }
     $('.graph-container').html('');
     $('#tableContainer').html('');

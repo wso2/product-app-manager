@@ -250,13 +250,41 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
                                         chart.y2Axis.tickFormat(d3.format(',d'));
                                         chart.yAxis.axisLabel('Hits');
                                         chart.xAxis.tickFormat(function (d) {
-                                            return d3.time.format('%d %b %Y %H:%M')(new Date(d))
-                                        });
+                                        if(isToday){
+                                            return d3.time.format('%d %b %H:%M')(new Date(d))
+                                        }else if(isHour){
+                                            return d3.time.format('%H:%M')(new Date(d))
+                                        }else if(isWeek){
+                                            return d3.time.format('%d %b')(new Date(d))
+                                        }else if(isMonth){
+                                            return d3.time.format('%d %b')(new Date(d))
+                                        }else if(isDefault){
+                                            return d3.time.format('%d %b %Y')(new Date(d))
 
+                                        }else{
+                                            return d3.time.format('%d %b %Y %H:%M')(new Date(d))
+
+                                        }
+
+                                        });
 
                                         chart.x2Axis.tickFormat(function (d) {
+                                        if(isToday){
+                                            return d3.time.format('%d %b %H:%M')(new Date(d))
+                                        }else if(isHour){
+                                            return d3.time.format('%H:%M')(new Date(d))
+                                        }else if(isWeek){
+                                            return d3.time.format('%d %b')(new Date(d))
+
+                                        } else if(isMonth){
+                                            return d3.time.format('%d %b')(new Date(d))
+                                        }else if(isDefault){
+                                            return d3.time.format('%d %b %Y')(new Date(d))
+                                        }else{
                                             return d3.time.format('%d %b %Y %H:%M')(new Date(d))
+                                        }
                                         });
+
                                         chart.tooltipContent(function (key, y, e, graph) {
                                             var x = d3.time.format('%d %b %Y %H:%M:%S')(new Date(parseInt(graph.point.x)));
                                             var y = String(graph.point.y);
@@ -268,12 +296,18 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
                                             return tooltip_str;
                                         });
 
+                                        //adding default focus area
+                                        var dataLength=0;
+                                        dataLength=dataTest.length-1;
+                                        chart.brushExtent([dataTest[0].x,dataTest[dataLength].x]);
+
                                         d3.select('#lineWithFocusChart svg')
                                             .datum(data_lineWithFocusChart)
                                             .transition().duration(500)
                                             .attr('height', 450)
                                             .call(chart);
 
+                                        nv.utils.windowResize(chart.update);
                                         return chart;
                                     });
 
