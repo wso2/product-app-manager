@@ -68,33 +68,16 @@ function drawGraphs() {
 }
    var drawCacheHit = function (response) {
 
-
-
-
     var usageByContext = JSON.parse(response);
     if(usageByContext.length>0){
     $('#tableContainer').empty();
-
-
-//
-//   var usageByContext =
-//    [
-//    ["2015-02-27 10:45:00", [[1.0, [["app1", [["1.0.0", [["/app1.1/1/", 4]]]]],["app2.1", [["1.0.0", [["/app2.1/2/", 5]]]]]]],[0.0, [["app4", [["1.0.0", [["/app4/1/", 4]]]]],["admin--app2:v1", [["1.0.0", [["/app2/1/", 20],["/app2/2/", 5]]]]]]]]],
-//    ["2015-03-27 10:45:00", [[0.0, [["app4", [["1.0.0", [["/app4/1/", 4]]]]],["app2.2", [["1.0.0", [["/app2/1/", 20],["/app2/2/", 5]]]]]]]]],
-//    ["2015-04-27 10:45:00", [[1.0, [["app3", [["1.0.0", [["/app3.1/1/", 2]]]]],["app2.3", [["1.0.0", [["/app2.3/1/", 4],["/app2.3/2/", 6]]]]]]],[0.0, [["app4", [["1.0.0", [["/app4/1/", 6]]]]],["app2", [["1.0.0", [["/app2/1/", 2],["/app2/2/", 5]]]]]]]]],
-//    ["2015-05-27 10:45:00", [[1.0, [["app4", [["1.0.0", [["/app4.1/1/", 13]]]]],["app2.4", [["1.0.0", [["/app2.4/1/", 9],["/app2.4/2/", 5]]]]]]],[0.0, [["app4", [["1.0.0", [["/app4/1/", 9]]]]],["app2", [["1.0.0", [["/app2/1/", 14],["/app2/2/", 2]]]]]]]]],
-//    ["2015-06-27 10:45:00", [[1.0, [["app5", [["1.0.0", [["/app5.1/1/", 4]]]]],["app2.5", [["1.0.0", [["/app2.5/1/", 2]]]]]]],[0.0, [["app4", [["1.0.0", [["/app4/1/", 14]]]]],["admin--app2:v1", [["1.0.0", [["/app2/1/", 14],["/app2/2/", 12]]]]]]]]]]
-
-
-
-
     volumeData =[];
     values =[];
     for (var i = 0; i < usageByContext.length; i++) {
         function dateToUnix(year, month, day, hour, minute, second) {
             return ((new Date(year, month - 1, day, hour, minute, second)).getTime());
         }
-var hits =0 ;
+            var hits =0 ;
             for (var j = 0; j < 1; j++) {
 
                 var time = usageByContext[i][0];
@@ -128,7 +111,7 @@ var hits =0 ;
                     }
 
                 }else{
-                //alert(time)
+
                    hits = 0;
                 }
 
@@ -196,7 +179,7 @@ var hits =0 ;
                                          }
 
                                      }else{
-                                     //alert(time)
+
                                         hits = 0;
                                      }
 
@@ -282,7 +265,7 @@ volumeData.push({"key":"Miss","values":values});
                     var seconds = dateInSeconds ;
 
             if (seconds == unixTime) {
-            //alert("time")
+
              var hitOrMiss;
              var hitMissVal;
 
@@ -294,7 +277,7 @@ volumeData.push({"key":"Miss","values":values});
                                 hitMissVal = "Miss"
 
                             }
-                          //  alert(hitOrMiss)
+
 
                             $('div#casheStatTable_wrapper.dataTables_wrapper.no-footer').remove();
 
@@ -446,10 +429,7 @@ volumeData.push({"key":"Miss","values":values});
         });
 
 
-
-
-
-        circle.on("mouseout", function (d) {
+       circle.on("mouseout", function (d) {
                     div.style("display", "none");
                 });
 
