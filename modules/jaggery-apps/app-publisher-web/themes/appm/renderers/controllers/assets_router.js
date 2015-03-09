@@ -91,6 +91,9 @@ var render = function (theme, data, meta, require) {
         case 'usage-page':
             listPartial = 'usage-page';
             break;
+        case 'cache-stat':
+            listPartial = 'cache-stat';
+            break;
 
         default:
             break;

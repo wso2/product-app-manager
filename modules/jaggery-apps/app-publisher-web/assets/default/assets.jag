@@ -240,6 +240,18 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{operation}/{type}/',
              print(artifact.id+'<br/><br/>');
              }*/
         }
+         if (operation == 'cache-stat') {
+                    try {
+                        caramel.render({op: operation,cuser: server.current(session),shortName: type,title: type});
+
+                    } catch (e) {
+                        response.sendError(404, 'Asset type not found'); //TODO: Replace
+                    }
+
+                    /*for each(var artifact in artifacts){
+                     print(artifact.id+'<br/><br/>');
+                     }*/
+                }
 });
 
 
