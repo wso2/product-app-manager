@@ -92,8 +92,7 @@ $('#date-range').dateRangePicker(
     //setting default date
     $('#date-range').data('dateRangePicker').setDateRange(from,to);
     $('#date-range').html($('#date-range').val());
-    month=true;
-    week,today,dateRange,hour=false;
+
 
 $('#date-range').click(function (event) {
     dateRange =true;
