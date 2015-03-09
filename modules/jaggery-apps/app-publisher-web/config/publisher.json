@@ -70,7 +70,8 @@
         "webapp_create" : "/permission/admin/manage/webapp/create",
         "webapp_update" : "/permission/admin/manage/webapp/update",
         "webapp_publish" : "/permission/admin/manage/webapp/publish",
-        "webapp_delete" : "/permission/admin/manage/webapp/delete"
+        "webapp_delete" : "/permission/admin/manage/webapp/delete",
+        "view_statistics" : "/permission/admin/manage/appm/view_stats"
     }
 
 }

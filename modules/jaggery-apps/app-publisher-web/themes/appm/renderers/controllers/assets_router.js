@@ -110,8 +110,10 @@ var render = function (theme, data, meta, require) {
 
     var breadCrumbData = require('/helpers/breadcrumb.js').generateBreadcrumbJson(data);
     var createActionAuthorized = permissions.isAuthorized(user.username, config.permissions.webapp_create, um);
+    var viewStatsAuthorized = permissions.isAuthorized(user.username, config.permissions.view_statistics, um);
     breadCrumbData.activeRibbonElement = listPartial;
     breadCrumbData.createPermission = createActionAuthorized;
+    breadCrumbData.viewStats = viewStatsAuthorized;
     //var addAssetUrl = "/publisher/asset/" + data.meta.shortName +"";
     theme('single-col-fluid', {
         title: data.title,

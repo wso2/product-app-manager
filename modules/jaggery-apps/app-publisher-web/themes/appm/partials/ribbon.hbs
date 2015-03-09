@@ -5,7 +5,9 @@
             <li {{#ifCond activeRibbonElement "==" "add-asset"}}class="active"{{/ifCond}}><a href="{{url "/asset/webapp"}}"><i class="icon-plus-sign-alt"></i> Add New Web Application</a></li>
 {{/if}}
             <li {{#ifCond activeRibbonElement "==" "list-assets"}}class="active"{{/ifCond}}><a href="{{url "/assets/webapp/"}}">All Web Applications</a></li>
+{{#if viewStats}}
             <li  {{#ifCond activeRibbonElement "==" "statistics"}}class="active"{{/ifCond}}><a href="{{url "/assets/statistics/webapp/"}}">Statistics</a></li>
+{{/if}}
         </ul>
     </div>
     <div class="col-md-3 col-sm-12 col-xs-12">
