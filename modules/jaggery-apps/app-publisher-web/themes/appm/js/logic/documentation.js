@@ -192,7 +192,11 @@ var updateDocumentation = function (rowId, docName, docType, summary, sourceType
         }
     }else {
             $('#optionsRadios9').attr('checked', true);
-	    $('#sourceFile').show('slow');	
+	    $('#sourceFile').show('slow');
+        if(filePath){
+            $('#fileNameDiv').text(filePath.split("documentation/files/")[1]);
+            $('#fileNameDiv').show('slow');
+        }
 	}
 
     for (var i = 1; i <= 6; i++) {
