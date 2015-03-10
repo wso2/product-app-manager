@@ -70,6 +70,7 @@ var drawAPIUsageByPage = function (response) {
     $dataTable.append($('<thead class="tableHead"><tr>' +
         '<th width="10%"></th>' +
         '<th>API</th>' +
+        '<th style="text-align:right">Request Count</th>' +
         '</tr></thead>'));
 
     var filterValues = [];
@@ -79,33 +80,46 @@ var drawAPIUsageByPage = function (response) {
 
     $('#checkboxContainer').append($dataTable);
     $('#checkboxContainer').show();
+    data.sort(function(obj1, obj2) {
+        return obj2[1] - obj1[1];
+    });
+
+    //sorting request count data according to descending order
+    var chartData=[];
+    var chartTicks=[];
+    for(var i=0;i<data.length;i++){
+        chartData.push([i,data[i][1]]);
+        chartTicks.push([i, ticks[data[i][0]][1]]);
+    }
+
 
     var state_array = [];
 
     for (var n = 0; n < ticks.length; n++) {
 
-        if (n < 20) {
+        if (n < 15) {
             $dataTable.append($('<tr><td >'
-                + '<input name="item_checkbox"  checked   id=' + n + '  type="checkbox"  data-item=' + ticks[n][1]
+                + '<input name="item_checkbox"  checked   id=' + n + '  type="checkbox"  data-item=' + chartTicks[n][1]
                 + ' class="inputCheckbox" />'
                 + '</td>'
-                + '<td style="text-align:left;"><label for=' + n + '>' + ticks[n][1] + '</label></td></tr>'));
-            filterValues.push(ticks[n][1]);
-            filterData.push(data[n][1]);
+                + '<td style="text-align:left;"><label for=' + n + '>' + chartTicks[n][1] + '</label></td>'
+                +'<td style="text-align:right;"><label for=' + n + '>' + chartData[n][1] + '</label></td></tr>'));
+            filterValues.push(chartTicks[n][1]);
+            filterData.push(chartData[n][1]);
             state_array.push(true);
-            defaultFilterValues.push([n, ticks[n][1]]);
-            defaultChartData.push([data[n][1],n ]);
+            defaultFilterValues.push([n, chartTicks[n][1]]);
+            defaultChartData.push([chartData[n][1],n ]);
         } else {
 
             $dataTable.append($('<tr><td >'
-                + '<input name="item_checkbox" id=' + n + '  type="checkbox"  data-item=' + ticks[n][1]
+                + '<input name="item_checkbox" id=' + n + '  type="checkbox"  data-item=' + chartTicks[n][1]
                 + ' class="inputCheckbox" />'
                 + '</td>'
-                + '<td style="text-align:left;"><label for=' + n + '>' + ticks[n][1] + '</label></td></tr>'));
-            filterValues.push(ticks[n][1]);
-            filterData.push(data[n][1]);
+                + '<td style="text-align:left;"><label for=' + n + '>' + chartTicks[n][1] + '</label></td>'
+                + '<td style="text-align:right;"><label for=' + n + '>' + chartData[n][1] + '</label></td></tr>'));
+            filterValues.push(chartTicks[n][1]);
+            filterData.push(chartData[n][1]);
             state_array.push(false);
-
         }
     }
     $('#checkboxContainer').append($dataTable);
@@ -113,10 +127,11 @@ var drawAPIUsageByPage = function (response) {
     $('#apiSelectTable').DataTable({
         retrieve: true,
         "order": [
-            [ 1, "asc" ]
+            [ 2, "desc" ]
         ],
         "aoColumns": [
             { "bSortable": false },
+            null,
             null
         ],
     });
@@ -190,9 +205,10 @@ var drawAPIUsageByPage = function (response) {
             });
 
             var x = item.datapoint[1];
+            var y = item.datapoint[0];
             //console.log(JSON.stringify(item.ticks));
 
-            label = item.series.yaxis.ticks[item.dataIndex].label;
+            label = item.series.yaxis.ticks[x].label;
 
 
 
@@ -238,6 +254,9 @@ var drawAPIUsageByPage = function (response) {
 
     });
 
+
+    var count=15;
+    //on checkbox check and uncheck event
     $('#apiSelectTable').on('change', 'input.inputCheckbox', function () {
         var id = $(this).attr('id');
         var check = $(this).is(':checked');
@@ -246,10 +265,23 @@ var drawAPIUsageByPage = function (response) {
         var draw_x_axis = []
 
         if (check) {
-            state_array[id] = true;
+           $('#displayMsg').html('');
+           count++;
+           //limiting to show 15 entries at a time
+           if(count>15){
+               $('#displayMsg').html('<h5 style="color:#555">Please Note that the graph will be showing only 15 entries</h5>');
+               state_array[id] = false;
+               $(this).prop("checked", "");
+               count--;
+           }else{
+           state_array[id] = true;
+           }
         } else {
-            state_array[id] = false;
+           $('#displayMsg').html('');
+           state_array[id] = false;
+           count--;
         }
+
 
         var y_iter = 0
         $.each(filterData, function (index, value) {
@@ -335,7 +367,7 @@ $.fn.UseTooltip = function () {
                 showTooltip(item.pageX,
                     item.pageY,
                     color,
-                        "<strong>" +item.series.yaxis.ticks[item.dataIndex].label + " : " + x + "</strong>");
+                        "<strong>" +item.series.yaxis.ticks[y].label + " : " + x + "</strong>");
             }
         } else {
             $("#tooltip").remove();

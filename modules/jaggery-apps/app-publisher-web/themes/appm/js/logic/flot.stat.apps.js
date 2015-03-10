@@ -1,3 +1,4 @@
+var usageByContext;
 $(function () {
     drawGraphs();
 });
@@ -13,6 +14,28 @@ function drawGraphs() {
     var from = dateRange.split('to')[0].trim() + ":00";
     var to = dateRange.split('to')[1].trim() + ":00";
 
+     $.ajax({
+        /* Web Application Last Access Time Graph */
+        async: false,
+        url: '/publisher/api/assets/' + operation + '/' + type + '/' + action
+            + '/',
+        type: 'POST',
+        data: {
+            'startDate': from,
+            'endDate': to
+        },
+        success: function (response) {
+
+            usageByContext = JSON.parse(response);
+            $('#spinner').hide();
+
+        },
+        error: function (response) {
+            alert('Error occured at statistics graph rendering');
+        }
+    });
+
+
     $.ajax({
         async: false,
         url: '/publisher/api/assets/' + operation + '/' + type
@@ -24,7 +47,7 @@ function drawGraphs() {
         },
         success: function (response) {
 
-            drawAPIUsageByUser(response);
+            drawAPIUsageByUser(response,usageByContext);
             $('#spinner').hide();
         },
         error: function (response) {
@@ -34,8 +57,25 @@ function drawGraphs() {
 
 }
 
-var drawAPIUsageByUser = function (response) {
+
+var drawAPIUsageByUser = function (response,usageByContext) {
+
+    var dataStructure = [];
+    for (var i = 0; i < usageByContext.length; i++) {
+
+        for (var j = 0; j < usageByContext[i][1].length; j++) {
+
+            dataStructure.push({
+                "appName": usageByContext[i][0],
+                "subCount": Number(usageByContext[i][1][j][1]),
+                "checked" : false
+
+            });
+        }
+    }
+
     var parsedResponse = JSON.parse(response);
+
     length = parsedResponse.length;
     $("#tooltipTable").find("tr:gt(0)").remove();
     var data = [];
@@ -49,7 +89,7 @@ var drawAPIUsageByUser = function (response) {
             var newArr = [], found, x, y;
             app = (parsedResponse[i][0]);
 
-            app = app.replace(/\s+/g, '');
+            //app = app.replace(/\s+/g, '');
             if (j != 0) {
                 statement = statement + '<tr>'
             }
@@ -83,18 +123,42 @@ var drawAPIUsageByUser = function (response) {
 
 
         }
-        data.push({
-            API_name: app,
-            Subscriber_Count: newArr.length,
-            Hits: allcount,
-            API: app
-        });
+
+
+        for(var z = 0; z < dataStructure.length; z++){
+
+            if(app == dataStructure[z].appName){
+                dataStructure[z].checked = true;
+                data.push({
+                    API_name: app,
+                    Subscriber_Count: dataStructure[z].subCount,
+                    Hits: allcount,
+                    API: app
+                });
+            }
+        }
+
+    }
+
+    for(var p = 0; p < dataStructure.length; p++){
+
+        if(dataStructure[p].checked == false){
+
+            data.push({
+                API_name: dataStructure[p].appName,
+                Subscriber_Count: dataStructure[p].subCount,
+                Hits: 0,
+                API: dataStructure[p].appName
+            });
+        }
+
     }
     $('.graph-container').html('');
     $('#tableContainer').html('');
-    var svg = dimple.newSvg(".graph-container", 1000, 500);
+    var svg = dimple.newSvg(".graph-container", "100%", 500);
     chart = new dimple.chart(svg, data);
-    chart.setBounds("10%", "10%", "80%", "70%");
+
+    chart.setBounds("10%", "10%", "75%", "60%");
     x = chart.addCategoryAxis("x", "API");
 
     y = chart.addMeasureAxis("y", "Subscriber_Count");
@@ -107,22 +171,47 @@ var drawAPIUsageByUser = function (response) {
 
 
     var filterValues = dimple.getUniqueValues(data, "API");
+    var state_array = [];
+    var defaultFilterValues=[];
+    var sortData=[];
+    var chartData=[];
 
     var $dataTable = $('<table class="display" width="100%" cellspacing="0" id="apiSelectTable"></table>');
 
     $dataTable.append($('<thead class="tableHead"><tr>' +
         '<th width="10%"></th>' +
         '<th>API</th>' +
+        '<th style="text-align:right" width="30%" >Subscriber Count</th>'+
         '</tr></thead>'));
-    for (var n = 0; n < filterValues.length; n++) {
 
+    sortData = dimple.filterData(data, "API", filterValues);
+    sortData.sort(function(obj1, obj2) {
+        return obj2.Hits - obj1.Hits;
+    });
 
-        $dataTable.append($('<tr><td >'
-            + '<input name="item_checkbox' + n + '" onchange="myFunction(this);" checked   id=' + n +
-            '  type="checkbox"  data-item=' + filterValues[n] + ' class="ccf"/>'
-            + '</td>'
-            + '<td style="text-align:left;"><label for=' + n + '>' + filterValues[n] + '</label></td></tr>'));
+    //default display of 20 checked entries on table
+    for (var n = 0; n < sortData.length; n++) {
 
+        if(n<20){
+            $dataTable.append($('<tr><td >'
+                + '<input name="item_checkbox' + n + '"  checked   id=' + n +
+                '  type="checkbox"  data-item=' + sortData[n].API_name  + ' class="inputCheckbox"/>'
+                + '</td>'
+                + '<td style="text-align:left;"><label for=' + n + '>' + sortData[n].API_name + '</label></td>'
+                +'<td style="text-align:right;"><label for='+n+'>'+sortData[n].Subscriber_Count +'</label></td></tr>'));
+            state_array.push(true);
+            defaultFilterValues.push(sortData[n].API_name);
+            chartData.push(sortData[n].API_name);
+        }else{
+            $dataTable.append($('<tr><td >'
+                +'<input name="item_checkbox'+n+'"  id='+n+'  type="checkbox"  data-item='+sortData[n].API_name +' class="inputCheckbox"/>'
+                +'</td>'
+                +'<td style="text-align:left;"><label for='+n+'>'+sortData[n].API_name +'</label></td>'
+                +'<td style="text-align:right;"><label for='+n+'>'+sortData[n].Subscriber_Count +'</label></td></tr>'));
+            state_array.push(false);
+            chartData.push(sortData[n].API_name);
+
+        }
     }
 
     if (length == 0) {
@@ -136,39 +225,57 @@ var drawAPIUsageByUser = function (response) {
         $('#apiSelectTable').DataTable({
             retrieve: true,
             "order": [
-                [ 1, "asc" ]
+                [ 2, "desc" ]
             ],
+            "fnDrawCallback": function(){
+                if(this.fnSettings().fnRecordsDisplay()<=$("#apiSelectTable_length option:selected" ).val()
+                || $("#apiSelectTable_length option:selected" ).val()==-1)
+                    $('#apiSelectTable_paginate').hide();
+                else
+                    $('#apiSelectTable_paginate').show();
+            },
             "aoColumns": [
                 { "bSortable": false },
+                null,
                 null
             ],
 
         });
 
+        chart.data = dimple.filterData(data, "API", defaultFilterValues);
+        var count=20;
 
-        $('#apiSelectTable').on('change', 'input.ccf', function () {
-            var id = $(this).attr('value');
+        $('#apiSelectTable').on('change', 'input.inputCheckbox', function () {
+            var id = $(this).attr('id');
             var check = $(this).is(':checked');
             var temp = $(this).attr('data-item');
+            var draw_chart=[];
 
-            // This indicates whether the item is already visible or not
-            var hide = false;
-            var newFilters = [];
+            if (check) {
+              $('#displayMsg').html('');
+              count++;
+                //limiting to show 20 entries at a time
+                if(count>20){
+                    $('#displayMsg').html('<h5 style="color:#555" >Please Note that the graph will be showing only 20 entries</h5>');
+                    state_array[id] = false;
+                    $(this).prop("checked", "");
+                    count--;
+                  }else{
+                    state_array[id] = true;
+                  }
+              } else {
+                    $('#displayMsg').html('');
+                    state_array[id] = false;
+                    count--;
+              }
 
-            filterValues.forEach(function (f) {
-                if (f == temp) {
-                    hide = true;
-                }
-                else {
-                    newFilters.push(f);
-                }
-            });
-            if (hide) {
-            } else {
-                newFilters.push(temp);
-            }
-            filterValues = newFilters;
-            chart.data = dimple.filterData(data, "API", filterValues);
+              $.each(chartData, function (index, value) {
+                    if (state_array[index]){
+                        draw_chart.push(value);
+                    }
+              });
+
+              chart.data = dimple.filterData(data, "API", draw_chart);
             chart.draw();
         });
     }
@@ -235,6 +342,10 @@ var drawAPIUsageByUser = function (response) {
 
     };
     chart.draw();
+    window.onresize = function () {
+
+    chart.draw(0, true);
+    };
 
 
 }

@@ -268,12 +268,18 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
                                             return tooltip_str;
                                         });
 
+                                        //adding default focus area
+                                        var dataLength=0;
+                                        dataLength=dataTest.length-1;
+                                        chart.brushExtent([dataTest[0].x,dataTest[dataLength].x]);
+
                                         d3.select('#lineWithFocusChart svg')
                                             .datum(data_lineWithFocusChart)
                                             .transition().duration(500)
                                             .attr('height', 450)
                                             .call(chart);
 
+                                        nv.utils.windowResize(chart.update);
                                         return chart;
                                     });
 

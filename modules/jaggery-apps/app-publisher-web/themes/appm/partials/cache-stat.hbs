@@ -1,16 +1,17 @@
-<input type="hidden" id="page" value="2">
+<input type="hidden" id="page" value="6">
 <div class="content-div">
     <div class="row-fluid">
         <div class="row">
-            <div class="pull-left heading" align="left"><h1>Web Application Statistics - Response Time</h1></div>
+            <div class="pull-left heading" align="left"><h1>Web Application Statistics - Cache Miss/hits</h1></div>
         </div>
         <div class="row">
             <div class="col-md-2 left-nav">
                 {{>left-nav}}
             </div>
             <div class="col-md-10 asset-view-container">
+
                 <div>
-                    <div id="rangeSliderWrapper" class="well" style="display: none">
+                    <div id="rangeSliderWrapper" class="well">
                         <div class="row-fluid">
                             <div id="dateRangePickerContainer">
                                 <div class="btn-group" role="group">
@@ -37,19 +38,16 @@
                         <div id="spinner" class="center-wrapper">
                             <i id="icon-spinner" class="icon-spinner icon-spin icon-4x"></i>
                         </div>
-                        <div class="graph-container widget-table">
-                            <div id="placeholder4" class="graph-placeholder"></div>
-                        </div>
-                        <div class="graph-container  widget-graph">
-                            <div id="placeholder41" class="graph-placeholder"></div>
+                        <div class="graph-container pull-left">
+
                         </div>
                     </div>
-                    <div id="chartContainer">
-                        <div id="displayMsg" style="height:20px;margin-bottom:5px;"></div>
-                        <div id="checkboxContainer" style="max-width:100%; margin-top:30px;"></div>
-                    </div>
+                    <div class="clearfix"></div>
+                    <div id="chartContainer"></div>
+                    <div id="dateLabel" style="margin-bottom:30px;"></div>
+                    <div id="tableContainer" ></div>
+
                 </div>
-                <div class="clearfix"></div>
             </div>
         </div>
     </div>
