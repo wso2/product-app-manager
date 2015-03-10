@@ -11,14 +11,16 @@ var user=server.current(session);
 var um=server.userManager(user.tenantId);
 
 var render = function (theme, data, meta, require) {
+    var log = new Log();
 
 
-
-    var lifecycleColors = {"Create": "btn-green", "Recycle": "btn-blue", "Re-Publish": "btn-blue", "Publish": "btn-blue", "Unpublish": "btn-orange", "Deprecate": "btn-danger", "Retire": "btn-danger", "Approve": "btn-blue", "Reject": "btn-orange"};
+    var lifecycleColors = {"Create": "btn-green", "Recycle": "btn-blue", "Re-Publish": "btn-blue", "Submit for Review": "btn-blue", "Unpublish": "btn-orange", "Deprecate": "btn-danger", "Retire": "btn-danger", "Publish": "btn-blue", "Reject": "btn-orange"};
 
     if(data.artifacts){
 
         var deleteButtonAvailability = false;
+        var pubActions = config.publisherActions;
+        var publishActionAuthorized = permissions.isAuthorized(user.username, config.permissions.webapp_publish, um);
 
 
         for(var i = 0; i < data.artifacts.length; i++){
@@ -27,38 +29,47 @@ var render = function (theme, data, meta, require) {
                 for (var j = 0; j < data.artifacts[i].lifecycleAvailableActions.length; j++) {
                     var name = data.artifacts[i].lifecycleAvailableActions[j];
 
+
                     for(var k = 0; k < data.roles.length; k++){
+                        var skipFlag = false;
 
-                        if (name == "Approve") {
-                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                        }
-                        if (name == "Reject") {
-                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                        }
-                        if (name == "Publish") {
-                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                        }
-                        if(name == "Recycle"){
-                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                        }
-                        if (name == "Deprecate") {
-                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                        }
-                        if (name == "Re-Publish") {
-                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                        }
-                        if (name == "Unpublish") {
-                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                        }
-                        if (name == "Depreicate") {
-                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                        }
-                        if (name == "Retire") {
-                            lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                        if(pubActions.indexOf(String(name)) > -1){
+                            if(!publishActionAuthorized) {
+                                skipFlag = true;
+                            }
                         }
 
-                        break;
+                        if(!skipFlag) {
+                            if (name == "Publish") {
+                                lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                            }
+                            if (name == "Reject") {
+                                lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                            }
+                            if (name == "Submit for Review") {
+                                lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                            }
+                            if (name == "Recycle") {
+                                lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                            }
+                            if (name == "Deprecate") {
+                                lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                            }
+                            if (name == "Re-Publish") {
+                                lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                            }
+                            if (name == "Unpublish") {
+                                lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                            }
+                            if (name == "Depreicate") {
+                                lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                            }
+                            if (name == "Retire") {
+                                lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                            }
 
+                            break;
+                        }
                     }
 
 

@@ -72,6 +72,6 @@
         "webapp_publish" : "/permission/admin/manage/webapp/publish",
         "webapp_delete" : "/permission/admin/manage/webapp/delete",
         "view_statistics" : "/permission/admin/manage/appm/view_stats"
-    }
-
+    },
+    "publisherActions":["Publish","Reject","Unpublish","Deprecate","Retire","Recycle","Re-Publish"]
 }

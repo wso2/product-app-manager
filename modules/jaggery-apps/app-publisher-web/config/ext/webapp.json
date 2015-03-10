@@ -105,14 +105,14 @@
 
     ],
     "permissions": {
-        "created": ["Internal/creator","Internal/private_{overview_provider}"],
-        "in-review": ["Internal/creator","Internal/publisher", "Internal/private_{overview_provider}"],
+        "created": ["Internal/private_{overview_provider}"],
+        "in-review": ["Internal/publisher", "Internal/private_{overview_provider}"],
         "published": ["Internal/publisher","Internal/private_{overview_provider}"],
         "unpublished": ["Internal/publisher","Internal/private_{overview_provider}"],
         "approved":["Internal/private_{overview_provider}"],
         "rejected":["Internal/creator","Internal/private_{overview_provider}"],
-        "retired":["Internal/creator","Internal/private_{overview_provider}"],
-        "deprecated":["Internal/creator","Internal/private_{overview_provider}"]
+        "retired":["Internal/private_{overview_provider}"],
+        "deprecated":["Internal/private_{overview_provider}"]
     },
 
 
