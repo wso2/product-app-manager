@@ -15,6 +15,8 @@ var render=function(theme,data,meta,require){
     var um=server.userManager(user.tenantId);
     var createActionAuthorized = permissions.isAuthorized(user.username, config.permissions.webapp_create, um);
 
+    var viewStatsAuthorized = permissions.isAuthorized(user.username, config.permissions.view_statistics, um);
+
     //var _url = "/publisher/asset/"  + data.meta.shortName + "/" + data.info.id + "/edit"
     var listPartial='view-asset';
     var heading = "";
@@ -81,7 +83,7 @@ var render=function(theme,data,meta,require){
             ribbon: [
                 {
                     partial: 'ribbon',
-                    context: {active:listPartial, createPermission : createActionAuthorized}
+                    context: {active:listPartial, createPermission : createActionAuthorized, viewStats : viewStatsAuthorized}
                 }
             ],
             leftnav: [
