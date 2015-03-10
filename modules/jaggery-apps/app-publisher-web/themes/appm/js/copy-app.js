@@ -203,7 +203,7 @@ $(function() {
                     }
 
                 } else {
-                    var msg = processErrorReport(result.report);
+                    var msg = result.message;
                     showAlert(msg, 'error');
                 }
 

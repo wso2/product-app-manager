@@ -294,8 +294,8 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
 
             //If exists, return an error message
             if (isexists == true) {
-                print({ok: false, isexists: true, msg: 'Error occurred while adding the WebApp. A duplicate WebApp already exists for ' +
-                                                       name + "-" + version});
+                print({ok: false, isexists: true, message: "Error occurred while adding the WebApp. A duplicate WebApp already exists with name - '" +
+                                                       name + "' and version - '" + version +"'"});
                 return;
             }
 
