@@ -214,9 +214,8 @@ $(function() {
             },
 
             url: '/publisher/asset/' + type,
-            type: 'POST'
-
-
+            type: 'POST',
+            data:{oldVersion : $("#oldversion").val()}
         };
 
         $('#form-asset-copy').ajaxSubmit(options);

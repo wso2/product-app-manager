@@ -246,6 +246,7 @@ routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/
 
 routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (context) {
     var log = new Log();
+    var oldVersion = context.post.oldVersion;
 
     var server = require('store').server;
     var user=server.current(session);
@@ -320,6 +321,11 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
             webappId.provider = model.get('overview.provider').value;
             webappId.name = model.get('overview.name').value;
             webappId.version = model.get('overview.version').value;
+            if(oldVersion != null && oldVersion != '') {
+                webappId.oldVersion = oldVersion;
+                //Copy web app documentation
+                copyDocuments(webappId);
+            }
             generateEntitlementPolicies(webappId);
 
             print({ok: true, message: 'asset added', id: assetId});
@@ -360,6 +366,10 @@ function generateEntitlementPolicies(webappId){
 function isWebappExists(webappName,provider,version){
     return apiProvider.isWebappExists(webappName,provider,version);
 }
+
+   function copyDocuments(webappId){
+       apiProvider.copyWebappDocumentations(webappId);
+   }
 
 /*
 The function is used to add tags to the provided asset id
