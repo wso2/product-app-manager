@@ -1648,3 +1648,4 @@ ul.token-input-list-facebook{
 
 .load-seperator{margin-right: 20px;}
 .policy-group-edit-button,.policy-group-delete-button,.delete_resource{cursor: pointer}
+.wr-section > h2 {cursor: pointer;}
