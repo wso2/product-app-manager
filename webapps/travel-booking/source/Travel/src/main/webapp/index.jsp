@@ -56,6 +56,7 @@
 	<!--header-->
 	<header>
 		<div class="wrap clearfix">
+
 			<%
 				if (map != null && map.get(userName) != null) {
 			%>
