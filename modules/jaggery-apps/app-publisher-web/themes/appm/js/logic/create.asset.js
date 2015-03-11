@@ -91,7 +91,7 @@ $(function() {
 
 		//check if at least one policy is added.
 		if(JSON.parse($('#uritemplate_policyGroupIds').val()).length==0) {
-			alert('Failed to add asset. Need to add at least one Resource Policy.');
+            showAlert('Failed to add asset. Need to add at least one Resource Policy.');
 			return;
 		}
 
@@ -105,7 +105,7 @@ $(function() {
 			countResourcePolicies++;
 		});
 		if (result == false) {
-			alert('Failed to add asset. Need to assign a Resource Policy for each URL Pattern.');
+            showAlert('Failed to add asset. Need to assign a Resource Policy for each URL Pattern.');
 			return;
 		}
 
@@ -215,7 +215,6 @@ $(function() {
 					}
 
 				} else {
-                    alert(result.message);
                     if(result.isexists){
                         showAlert(result.msg, 'error');
 

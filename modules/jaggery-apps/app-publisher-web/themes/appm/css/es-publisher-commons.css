@@ -1645,3 +1645,7 @@ ul.token-input-list-facebook{
     border-color: #eed3d7;
     color: #b94a48;
 }
+
+.load-seperator{margin-right: 20px;}
+.policy-group-edit-button,.policy-group-delete-button,.delete_resource{cursor: pointer}
+.wr-section > h2 {cursor: pointer;}
