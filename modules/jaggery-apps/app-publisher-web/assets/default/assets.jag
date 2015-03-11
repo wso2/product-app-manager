@@ -170,11 +170,17 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
         if(currentPage+1 <= availablePages){
             var rightnav = currentPage+1;
         }
+        var sortOpposite = (sort == 'asc'? 'desc': 'asc');
+        var sortIcon = (sort == 'asc'? 'down': 'up');
 
-		caramel.render({op : 'list',cuser : server.current(session), roles : server.current(session).getRoles(),shortName : type,artifacts : artifacts,query : query,title : type, pageIndices:pageIndices, leftNav:leftnav, rightNav:rightnav, createPermission:createActionAuthorized});
+		caramel.render({op : 'list',cuser : server.current(session), roles : server.current(session).getRoles(),
+		shortName : type,artifacts : artifacts,query : query,title : type, pageIndices:pageIndices,
+		leftNav:leftnav, rightNav:rightnav, createPermission:createActionAuthorized,
+		sortOptions:{sortBy: sortby, sort: sortOpposite, icon: sortIcon}
+		});
 	} catch (e) {
 		response.sendError(400, "Your request is malformed");
-		log.error(e);
+		log.error(e.message);
 	}
 
 	/*for each(var artifact in artifacts){

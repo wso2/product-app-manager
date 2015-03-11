@@ -1,4 +1,7 @@
-
+<div class="row">
+    <div class="pull-left heading" align="left"><h1>Web Applications</h1>
+    </div>
+</div>
 <div class="asset-being-added">
 </div>
 
@@ -7,10 +10,39 @@
         <div class="row-fluid">
             <table class="table table-striped list-asset-table">
                 <thead>
-                <th colspan="2"><a href="?sortby=name&sort=asc">Name <i class="icon-caret-down"></i></a></th>
-                <th><a href="?sortby=version&sort=asc">Version <i class="icon-caret-down"></i></a></th>
-                <th><a href="?sortby=owner&sort=asc">Owner <i class="icon-caret-down"></i></a></th>
-                <th><a href="?sortby=createdtime&sort=desc">Created <i class="icon-caret-down"></i></a></th>
+                <th colspan="2">
+                    {{#ifCond sortOptions.sortBy "==" "name"}}
+                        <a href="?sortby=name&sort={{sortOptions.sort}}" class="sort-list">Name
+                            <i class="icon-caret-{{sortOptions.icon}}"></i></a>
+                        {{else}}
+                        <a href="?sortby=name&sort=asc" class="sort-list">Name <i class="icon-caret-down"></i></a>
+                    {{/ifCond}}
+
+                </th>
+                <th>
+                    {{#ifCond sortOptions.sortBy "==" "version"}}
+                        <a href="?sortby=version&sort={{sortOptions.sort}}" class="sort-list">Version
+                            <i class="icon-caret-{{sortOptions.icon}}"></i></a>
+                    {{else}}
+                        <a href="?sortby=version&sort=asc" class="sort-list">Version <i class="icon-caret-down"></i></a>
+                    {{/ifCond}}
+                </th>
+                <th>
+                    {{#ifCond sortOptions.sortBy "==" "owner"}}
+                        <a href="?sortby=owner&sort={{sortOptions.sort}}" class="sort-list">Owner
+                            <i class="icon-caret-{{sortOptions.icon}}"></i></a>
+                    {{else}}
+                        <a href="?sortby=owner&sort=asc" class="sort-list">Owner <i class="icon-caret-down"></i></a>
+                    {{/ifCond}}
+                </th>
+                <th>
+                    {{#ifCond sortOptions.sortBy "==" "createdtime"}}
+                        <a href="?sortby=createdtime&sort={{sortOptions.sort}}" class="sort-list">Created
+                            <i class="icon-caret-{{sortOptions.icon}}"></i></a>
+                    {{else}}
+                        <a href="?sortby=createdtime&sort=asc" class="sort-list">Created <i class="icon-caret-down"></i></a>
+                    {{/ifCond}}
+                </th>
                 <th><a href="#">Status</a></th>
                 <th><a href="#">Actions</a></th>
                 </thead>
