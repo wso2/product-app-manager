@@ -12,12 +12,13 @@
                 <div class="col-md-7 asset-details-box">
                         <h4 style="display: none;">{{{snoop "fields(name=overview_name).value" this.data}}}</h4>
                 </div>
-                <div id="addDoc" class="col-md-3">
-                    <a type="button" class="btn btn-info btn-lg pull-right" href="#" onclick="newDocFormToggle()">
-                        <i class="icon-plus-sign-alt"></i>  Add New Document
-                    </a>
-                </div>
-
+				{{#if permissions.canEdit}}
+                    <div id="addDoc" class="col-md-3">
+                        <a type="button" class="btn btn-info btn-lg pull-right" href="#" onclick="newDocFormToggle()">
+                            <i class="icon-plus-sign-alt"></i> Add New Document
+                        </a>
+                    </div>
+				{{/if}}
             </div>
 
 

@@ -52,6 +52,7 @@ var engine = caramel.engine('handlebars', (function () {
             	
             	data = output.data.fields;
             	var log =  new Log();
+                var docPermissions = output.permissions;
           	
             	
             	var provider;
@@ -66,43 +67,55 @@ var engine = caramel.engine('handlebars', (function () {
                     	version = data[index].value;
                     }
                 }
-            	
-            	
-            	var out = "";
-            	 for (index = 0; index < items.length; ++index) {
 
- 			var docLastUpdated = items[index].docLastUpdated;
-            		var date  = new Date(parseInt(docLastUpdated));
-            		var row = '<tr id ='+ apiName +'-'+ items[index].docName.replace(/ /g,'__')+'><td>' + items[index].docName + '</td><td>' + items[index].docType +'</td><td>'+  date.toString() +'</td><td id="buttonTd">';
-            		 
-            		var source = "";
-            		var urlPostfix;
-            		var tenantDomain =output.cuser.tenantDomain ;
-            		if(tenantDomain = "carbon.super"){
-            			 urlPostfix='';
-            		}else {
-            			urlPostfix = tenantDomain;
-            		}
-            		
-            		if(items[index].sourceType == "URL"){
-            			source =  '<a href="' + items[index].sourceUrl+  urlPostfix + '" target="_blank" ><i class="icon-check"></i> View</a>';
-            		}else if(items[index].sourceType == "FILE"){
-            			source =  '<a href="' + items[index].filePath+  urlPostfix + '" target="_blank" download><i class="icon-check"></i> Open</a>';
 
-            		}else if(items[index].sourceType == "INLINE"){
-            			source = '<a href="javascript:editInlineContent(\'' + output.artifact.id + '\',\'' + output.shortName + '\',\''+ items[index].docName + '\',\'edit\'' + ',\''+ urlPostfix + '\')"><i class="icon-edit"></i>EditContent</a>';
-            		}
-            		
-            		
-            		 var update = '<a href="javascript:updateDocumentation(\'' + apiName + '-' + items[index].docName + '\',\'' + items[index].docName + '\',\'' + items[index].docType + '\',\'' + items[index].summary + '\',\'' + items[index].sourceType + '\',\'' +  items[index].sourceUrl + '\',\'' + items[index].filePath + '\',\'' + items[index].otherTypeName +  '\')"><i class="icon-retweet"></i> Update</a>';
-         			
-                     var remove =   '<a href="javascript:removeDocumentation(\'' + provider + '\',\'' + apiName + '\',\'' + version + '\',\'' +  items[index].docName + '\',\'' + items[index].docType + '\')"><i class="icon-trash"></i>  Delete</a>';
-            		 var end = '</td></tr>';
-                   
-                   out = out + row + source + '|'  + update + '|'+ remove + end;
-                 }  
+                var out = "";
+                for (index = 0; index < items.length; ++index) {
 
-            	return out;
+                    var docLastUpdated = items[index].docLastUpdated;
+                    var date = new Date(parseInt(docLastUpdated));
+                    var row = '<tr id =' + apiName + '-' + items[index].docName.replace(/ /g, '__') + '><td>' + items[index].docName + '</td><td>' + items[index].docType + '</td><td>' + date.toString() + '</td><td id="buttonTd">';
+
+                    var source = "";
+                    var urlPostfix;
+                    var tenantDomain = output.cuser.tenantDomain;
+                    if (tenantDomain = "carbon.super") {
+                        urlPostfix = '';
+                    } else {
+                        urlPostfix = tenantDomain;
+                    }
+
+                    if (items[index].sourceType == "URL") {
+                        source = '<a href="' + items[index].sourceUrl + urlPostfix + '" target="_blank" ><i class="icon-check"></i> View</a>';
+                    } else if (items[index].sourceType == "FILE") {
+                        source = '<a href="' + items[index].filePath + urlPostfix + '" target="_blank" download><i class="icon-check"></i> Open</a>';
+
+                    } else if (items[index].sourceType == "INLINE") {
+                        if (docPermissions.canEdit) {
+                            source = '<a href="javascript:editInlineContent(\'' + output.artifact.id + '\',\'' + output.shortName + '\',\'' + items[index].docName + '\',\'edit\'' + ',\'' + urlPostfix + '\')"><i class="icon-edit"></i>Edit Content</a>';
+                        }else{
+                            source = '<a href="javascript:editInlineContent(\'' + output.artifact.id + '\',\'' + output.shortName + '\',\'' + items[index].docName + '\',\'edit\'' + ',\'' + urlPostfix + '\')"><i class="icon-edit"></i>View Content</a>';
+                        }
+                    }
+
+
+                    var update = '<a href="javascript:updateDocumentation(\'' + apiName + '-' + items[index].docName + '\',\'' + items[index].docName + '\',\'' + items[index].docType + '\',\'' + items[index].summary + '\',\'' + items[index].sourceType + '\',\'' + items[index].sourceUrl + '\',\'' + items[index].filePath + '\',\'' + items[index].otherTypeName + '\')"><i class="icon-retweet"></i> Update</a>';
+
+                    var remove = '<a href="javascript:removeDocumentation(\'' + provider + '\',\'' + apiName + '\',\'' + version + '\',\'' + items[index].docName + '\',\'' + items[index].docType + '\')"><i class="icon-trash"></i>  Delete</a>';
+                    var end = '</td></tr>';
+                    out = out + row + source;
+
+                    if (docPermissions.canEdit) {
+                        out = out + '|' + update;
+                    }
+                    if (docPermissions.canDelete) {
+                        out = out + '|' + remove;
+                    }
+
+                    out = out + end;
+                }
+
+                return out;
             	  
            });
 

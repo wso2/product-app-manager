@@ -140,109 +140,135 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
 });
 
 
+    routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/{type}/{id}', function (context) {
+        var shortName = context.params.type;
+        var permissions = require('/modules/permissions.js').permissions;
 
-routeManager.register('GET', 'publisher', '/publisher/asset/operations/{opType}/{type}/{id}', function (context) {
-   var shortName = context.params.type;
-
-
-
-    if(shortName === "mobileapp"){
-        editMobileApp(context, rxtManager, modelManager, dataInjector, DataInjectorModes);
-        return;
-    }
-
-    //print(context.params);
-    var id = context.params.id;
-    var operation = context.params.opType;
-    var artifactManager = rxtManager.getArtifactManager(shortName);
-
-    //If the id is not found it will throw a conversion exception
-    //TODO: Return an empty artifact or null
-    try {
-        var artifact = artifactManager.get(id);
-
-        //Get the template
-        var rxtTemplate = rxtManager.findAssetTemplate(function (template) {
-            return (template.shortName == shortName) ? true : false;
-        });
-
-        var model = modelManager.getModel(shortName);
-
-        //Customize the asset for the app
-        dataInjector.inject(artifact, DataInjectorModes.DISPLAY);
-
-        model.import('asset', artifact);
-
-        var output = model.export('form');
-
-        var assetName = model.get('overview.name').value;
-
-        //Get the list of versions
-        var versionList = artifactManager.getAllAssetVersions(assetName);
-
-        var apiData={};
-        apiData.provider= model.get('overview.provider').value;
-    apiData.name= model.get('overview.name').value;
-        apiData.version= model.get('overview.version').value;
-        var result = mod.getAllDocumentation(apiData);
-
-    //Get tags
-    var path = artifact.path;
-    var tags = rxtManager.registry.tags(path);
-    var title = assetName;
-
-    // getting the user roles
-        var server = require('store').server,
-        um = server.userManager(server.current(session).tenantId);
-
-        var registry = new carbon.registry.Registry(server, {
-            username: server.current(session).username,
-            tenantId: server.current(session).tenantId
-        });
-
-        var overridenPermissions = null;
-
-        if(registry.properties(path)['overridden_permissions']) {
-            overridenPermissions = registry.properties(path)['overridden_permissions'][0];
+        if (shortName === "mobileapp") {
+            editMobileApp(context, rxtManager, modelManager, dataInjector, DataInjectorModes);
+            return;
         }
 
-        if (overridenPermissions) {
-            output.permissions = JSON.parse(overridenPermissions.replace('\\', ''));
-        }
+        //print(context.params);
+        var id = context.params.id;
+        var operation = context.params.opType;
+        var artifactManager = rxtManager.getArtifactManager(shortName);
 
-    output.fields[1]['isEditable'] = false;
-    output.fields[1]['isReadOnly'] = true;
+        //If the id is not found it will throw a conversion exception
+        //TODO: Return an empty artifact or null
+        try {
+            var artifact = artifactManager.get(id);
 
-    <!--output.fields[2]['isEditable'] = false;-->
-    <!--output.fields[2]['isReadOnly'] = true;-->
+            //Get the template
+            var rxtTemplate = rxtManager.findAssetTemplate(function (template) {
+                return (template.shortName == shortName) ? true : false;
+            });
 
-    output.fields[3]['isEditable'] = false;
-    output.fields[3]['isReadOnly'] = true;
+            var model = modelManager.getModel(shortName);
 
-        if(operation == "edit" || operation == "view" || operation == "copyapp"){
-            var uriTemplate = 0;
-            for(index = 0; index < output.fields.length; index++){
-                    if(output.fields[index].name == "uritemplate_urlPattern"+uriTemplate){
-                        if(output.fields[index].value == "" ||output.fields[index].value == "null"){
+            //Customize the asset for the app
+            dataInjector.inject(artifact, DataInjectorModes.DISPLAY);
+
+            model.import('asset', artifact);
+
+            var output = model.export('form');
+
+            var assetName = model.get('overview.name').value;
+
+            //Get the list of versions
+            var versionList = artifactManager.getAllAssetVersions(assetName);
+
+            var apiData = {};
+            apiData.provider = model.get('overview.provider').value;
+            apiData.name = model.get('overview.name').value;
+            apiData.version = model.get('overview.version').value;
+            var result = mod.getAllDocumentation(apiData);
+
+            //Get tags
+            var path = artifact.path;
+            var tags = rxtManager.registry.tags(path);
+            var title = assetName;
+
+            // getting the user roles
+            var server = require('store').server;
+            var user = server.current(session);
+            var um = server.userManager(user.tenantId);
+
+            var registry = new carbon.registry.Registry(server, {
+                username: user.username,
+                tenantId: user.tenantId
+            });
+
+            var overridenPermissions = null;
+
+            if (registry.properties(path)['overridden_permissions']) {
+                overridenPermissions = registry.properties(path)['overridden_permissions'][0];
+            }
+
+            if (overridenPermissions) {
+                output.permissions = JSON.parse(overridenPermissions.replace('\\', ''));
+            }
+
+            output.fields[1]['isEditable'] = false;
+            output.fields[1]['isReadOnly'] = true;
+
+            <!--output.fields[2]['isEditable'] = false;-->
+            <!--output.fields[2]['isReadOnly'] = true;-->
+
+            output.fields[3]['isEditable'] = false;
+            output.fields[3]['isReadOnly'] = true;
+
+            if (operation == "edit" || operation == "view" || operation == "copyapp") {
+                var uriTemplate = 0;
+                for (index = 0; index < output.fields.length; index++) {
+                    if (output.fields[index].name == "uritemplate_urlPattern" + uriTemplate) {
+                        if (output.fields[index].value == "" || output.fields[index].value == "null") {
                             output.fields.splice(index, 1);
                         }
                         uriTemplate++;
                     }
+                }
             }
+
+
+            if (operation == "documentation") {
+                var docCreateAuth = permissions.isAuthorized(user.username, config.permissions.document_add, um);
+                var docEditAuth = permissions.isAuthorized(user.username, config.permissions.document_edit, um);
+                var docDeleteAuth = permissions.isAuthorized(user.username, config.permissions.document_delete, um);
+
+                caramel.render({
+                    op: operation,
+                    cuser: user,
+                    shortName: shortName,
+                    artifact: artifact,
+                    rxtTemplate: rxtTemplate,
+                    data: output,
+                    versions: versionList,
+                    tags: tags,
+                    title: title,
+                    docs: result.docs,
+                    permissions: {canCreate: docCreateAuth, canEdit: docEditAuth, canDelete:docDeleteAuth}
+                });
+            } else {
+                caramel.render({
+                    op: operation,
+                    cuser: user,
+                    shortName: shortName,
+                    artifact: artifact,
+                    rxtTemplate: rxtTemplate,
+                    data: output,
+                    versions: versionList,
+                    tags: tags,
+                    title: title
+                });
+            }
+
+        } catch (e) {
+            log.debug('The asset with id ' + id + ' could not be found due to : ' + e);
+            response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check server log.');
         }
 
-    if(operation == "documentation"){
-        caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title,docs:result.docs});
-    }else{
-        caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title});
-    }
-
-      } catch (e) {
-        log.debug('The asset with id ' + id + ' could not be found due to : ' + e);
-        response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check server log.');
-    }
-
-});
+    });
 
 routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (context) {
     var log = new Log();

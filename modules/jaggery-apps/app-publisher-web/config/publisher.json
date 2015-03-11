@@ -71,7 +71,10 @@
         "webapp_update" : "/permission/admin/manage/webapp/update",
         "webapp_publish" : "/permission/admin/manage/webapp/publish",
         "webapp_delete" : "/permission/admin/manage/webapp/delete",
-        "view_statistics" : "/permission/admin/manage/appm/view_stats"
+        "view_statistics": "/permission/admin/manage/appm/view_stats",
+        "document_add": "/permission/admin/manage/document/add",
+        "document_edit": "/permission/admin/manage/document/edit",
+        "document_delete": "/permission/admin/manage/document/delete"
     },
     "publisherActions":["Publish","Reject","Unpublish","Deprecate","Retire","Recycle","Re-Publish"]
 }

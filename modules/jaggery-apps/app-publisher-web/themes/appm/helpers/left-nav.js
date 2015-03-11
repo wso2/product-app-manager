@@ -78,6 +78,12 @@ var generateLeftNavJson = function(data, listPartial) {
                     iconClass: "icon-list-alt",
                     additionalClasses: (listPartial == "view-asset" ) ? "active" : null,
                     url: "/publisher/asset/operations/view/" + data.shortName + "/" + data.artifact.id + ""
+                },
+                {
+                    name: "Documentation",
+                    iconClass: "icon-file-alt",
+                    additionalClasses: (listPartial == "documentation" ) ? "active" : null,
+                    url: "/publisher/asset/operations/documentation/" + data.shortName + "/" + data.artifact.id + ""
                 }
             ]
             };
