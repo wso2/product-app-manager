@@ -12,11 +12,12 @@ require('/modules/store.js').exec(function (ctx) {
             site = ctx.site,
             matcher = ctx.matcher,
             inDashboard = false,
-            utility = require('/modules/util.js');
+            utility = require('/modules/util.js'),
+            mdmConfig = new Packages.org.wso2.carbon.appmgt.mobile.store.MDMConfig();
 
     caramel = require('caramel');
 
-
+    var mdmUIConfig  = {enabled : mdmConfig.isMDMEnabled()};
 
 
     var isEnterpriseInstallEnabled = false;
@@ -51,20 +52,7 @@ require('/modules/store.js').exec(function (ctx) {
 
     var rxtAttributes = utility.getRXTAttributes(tenantId, type);
     var devices = [];
-    if(!configs.mobile.is_catalog){
-
-        if(user!=null){
-            var emm = require('/modules/emm.js').emm;
-            var emmServer = new emm();
-            try{
-                var result = emmServer.getDevices(user.username+"@"+user.tenantDomain);
-                devices = parse(result);
-            }catch(e){
-                log.debug(e);
-            }
-        }
-
-    }
+    //TODO Implement devices
 
     caramel.render({
         title: 'Store | ' + type,
@@ -89,7 +77,7 @@ require('/modules/store.js').exec(function (ctx) {
         embedURL: configs.server.http + '/gadgets/ifr?url=' + asset.attributes.overview_url,
         inDashboard: inDashboard,
         asset: asset,
-        config : configs.mobile,
+        config : mdmUIConfig,
         tags: [
             {
                 url: '/assets/' + type + '/?page=1&tag=',

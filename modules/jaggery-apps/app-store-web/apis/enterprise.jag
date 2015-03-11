@@ -63,7 +63,7 @@ require('/modules/store.js').exec(function (ctx) {
 
         if(action && type && app && data){
             enterpriseInstall.performAction(action, tenantId, type, app, data);
-            print('{"status" : "sucess"}');
+            print('{"status" : "success"}');
             return;
         }
 

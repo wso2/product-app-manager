@@ -12,26 +12,19 @@ require('/modules/store.js').exec(function (ctx) {
             site = ctx.site,
             matcher = ctx.matcher,
             types = store.assetTypes(),
-            utility = require('/modules/util.js');
+            utility = require('/modules/util.js'),
+            mdmConfig = new Packages.org.wso2.carbon.appmgt.mobile.store.MDMConfig();
 
+    var mdmUIConfig  = {enabled : mdmConfig.isMDMEnabled()};
 
-    if(configs.mobile.is_catalog) {
+    if(!mdmUIConfig.enabled) {
         response.sendRedirect(404);
         return;
     }
 
 
         var devices = [];
-    if(user!=null){
-        var emm = require('/modules/emm.js').emm;
-        var emmServer = new emm();
-        try{
-            var result = emmServer.getDevices(user.username+"@"+user.tenantDomain);
-            devices = parse(result);
-        }catch(e){
-            log.debug(e);
-        }
-    }
+        //TODO Devices logic
 
     caramel = require('caramel');
 

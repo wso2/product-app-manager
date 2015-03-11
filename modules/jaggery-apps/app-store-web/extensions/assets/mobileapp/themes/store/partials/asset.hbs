@@ -106,9 +106,9 @@
                         {{/if}}
 
                     </span>
-                           {{#unless ../../config.is_catalog}}
+                           {{#if ../../config.enabled}}
                                 {{>asset-utilization ../../../.}}
-                           {{/unless}}
+                           {{/if}}
                          </div>
 
                     </div>
