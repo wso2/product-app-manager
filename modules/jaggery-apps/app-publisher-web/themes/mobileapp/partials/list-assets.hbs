@@ -33,16 +33,58 @@
     <div class="row-fluid">
         <table class="table table-striped list-asset-table">
             <thead>
-                <th colspan="2"><a href="?sortby=name&sort=asc">Name <i class="icon-caret-down"></i></a></th>
+                <th colspan="2">
+                    {{#ifCond sortOptions.sortBy "==" "name"}}
+                        <a href="?sortby=name&sort={{sortOptions.sort}}">Name
+                            <i class="icon-caret-{{sortOptions.icon}}"></i></a>
+                    {{else}}
+                        <a href="?sortby=name&sort=asc">Name <i class="icon-caret-down"></i></a>
+                    {{/ifCond}}
+                </th>
                 {{#if ../this.isReviwer}}><th></th>{{/if}} {{#if ../this.isAdmin}}<th></th>{{/if}}
-                <th><a href="?sortby=os&sort=asc">Platform</i></a></th>                
-        <th><a href="?sortby=type&sort=asc">Type<i class="icon-caret-down"></i></a></th>
-        <th><a href="?sortby=owner&sort=asc">Owner <i class="icon-caret-down"></i></a></th>   
-        <th><a href="?sortby=version&sort=asc">Version <i class="icon-caret-down"></i></a></th>             
-        <th><a href="?sortby=createdDate&sort=asc">Created</i></a></th>
-<th><a href="?sortby=status&sort=asc">Status</a></th>
-<th><a href="?sortby=createdDate&sort=asc">Action</i></a></th>
-<th></th>
+                <th>
+                    {{#ifCond sortOptions.sortBy "==" "os"}}
+                        <a href="?sortby=os&sort={{sortOptions.sort}}">Platform
+                            <i class="icon-caret-{{sortOptions.icon}}"></i></a>
+                    {{else}}
+                        <a href="?sortby=os&sort=asc">Platform<i class="icon-caret-down"></i></a>
+                    {{/ifCond}}
+                </th>
+                <th>
+                    {{#ifCond sortOptions.sortBy "==" "type"}}
+                        <a href="?sortby=type&sort={{sortOptions.sort}}">Type
+                            <i class="icon-caret-{{sortOptions.icon}}"></i></a>
+                    {{else}}
+                        <a href="?sortby=type&sort=asc">Type<i class="icon-caret-down"></i></a>
+                    {{/ifCond}}
+                </th>
+                <th>
+                    {{#ifCond sortOptions.sortBy "==" "owner"}}
+                        <a href="?sortby=owner&sort={{sortOptions.sort}}">Owner
+                            <i class="icon-caret-{{sortOptions.icon}}"></i></a>
+                    {{else}}
+                        <a href="?sortby=owner&sort=asc">Owner <i class="icon-caret-down"></i></a>
+                    {{/ifCond}}
+                </th>
+                <th>
+                    {{#ifCond sortOptions.sortBy "==" "version"}}
+                        <a href="?sortby=version&sort={{sortOptions.sort}}">Version
+                            <i class="icon-caret-{{sortOptions.icon}}"></i></a>
+                    {{else}}
+                        <a href="?sortby=version&sort=asc">Version <i class="icon-caret-down"></i></a>
+                    {{/ifCond}}
+                </th>
+                <th>
+                    {{#ifCond sortOptions.sortBy "==" "createdDate"}}
+                        <a href="?sortby=createdDate&sort={{sortOptions.sort}}">Created
+                            <i class="icon-caret-{{sortOptions.icon}}"></i></a>
+                    {{else}}
+                        <a href="?sortby=createdDate&sort=asc">Created<i class="icon-caret-down"></i></a>
+                    {{/ifCond}}
+                </th>
+                <th><a href="?sortby=status&sort=asc">Status</a></th>
+                <th><a href="?sortby=createdDate&sort=asc">Action</a></th>
+                <th></th>
 </thead>
 <tbody>
     {{#each artifacts}}
