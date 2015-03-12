@@ -169,6 +169,15 @@ require('/modules/publisher.js').exec(function(ctx) {
         }
     });
 
+    routeManager.register('GET', 'publisher', '/publisher/api/asset/trackingid/{uuid}', function (context) {
+        var response={}
+        var uuid = context.params.uuid;
+        log.info(uuid);
+        var trackinID= apiProvider.getTrackingID(uuid);
+        response["TrackingID"] = trackinID;
+        print(response);
+    });
+
     routeManager.register('POST', 'publisher', '/publisher/api/asset/delete/{type}/{id}', function (context) {
         var shortName = context.params.type;
         var id = context.params.id;
