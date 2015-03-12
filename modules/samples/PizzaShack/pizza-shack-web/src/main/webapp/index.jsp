@@ -14,7 +14,7 @@
 
     for (int i = 0; i < cookies.length; i++) {
         System.out.println("cookie_" + i + "=" + cookies[i].getName());
-        if ("samlssoTokenId".equals(cookies[i].getName())) {
+        if ("appmSamlSsoTokenId".equals(cookies[i].getName())) {
             samlssoTokenId = cookies[i].getValue();
             break;
         }
