@@ -39,7 +39,7 @@ $(function () {
     function fetchTagsOfType(assetType) {
 
         $.ajax({
-            url: TAG_API + assetType + 's',
+            url: TAG_API + assetType,
             type: 'GET',
             success: function (response) {
 

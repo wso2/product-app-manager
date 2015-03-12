@@ -8,7 +8,7 @@ $(function() {
 	var type = $('#meta-asset-type').val();
 
 	var TAG_API_URL = '/publisher/api/tag/';
-	var tagType = $('#meta-asset-type').val() + 's';
+	var tagType = $('#meta-asset-type').val();
 
 	var tagUrl = TAG_API_URL + tagType;
 	var THEME = 'facebook';
