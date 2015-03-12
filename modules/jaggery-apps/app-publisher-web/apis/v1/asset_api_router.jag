@@ -169,10 +169,9 @@ require('/modules/publisher.js').exec(function(ctx) {
         }
     });
 
-    routeManager.register('GET', 'publisher', '/publisher/api/asset/trackingid/{uuid}', function (context) {
+    routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}/trackingid/{uuid}', function (context) {
         var response={}
         var uuid = context.params.uuid;
-        log.info(uuid);
         var trackinID= apiProvider.getTrackingID(uuid);
         response["TrackingID"] = trackinID;
         print(response);
