@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- # Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+        # # Licensed under the Apache License, Version 2.0 (the "License"); # you
+        may not use this file except in compliance with the License. # You may obtain
+        a copy of the License at # # http://www.apache.org/licenses/LICENSE-2.0 #
+        # Unless required by applicable law or agreed to in writing, software # distributed
+        under the License is distributed on an "AS IS" BASIS, # WITHOUT WARRANTIES
+        OR CONDITIONS OF ANY KIND, either express or implied. # See the License for
+        the specific language governing permissions and # limitations under the License. -->
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.wso2.carbon.appmgt.webapp.sample</groupId>
+  <artifactId>travel-booking</artifactId>
+  <packaging>war</packaging>
+  <version>1.0</version>
+  <name>Book your Travel Webapp</name>
+<dependencies>
+        <dependency>
+            
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>7.0</version>
+            <scope>provided</scope>
+        
+        </dependency>
+<dependency>
+	<groupId>com.google.code.gson</groupId>
+	<artifactId>gson</artifactId>
+	<version>2.2.4</version>
+</dependency>
+<dependency>
+	<groupId>commons-codec</groupId>
+	<artifactId>commons-codec</artifactId>
+	<version>1.10</version>
+</dependency>
+<dependency>
+	<groupId>commons-codec</groupId>
+	<artifactId>commons-codec</artifactId>
+	<version>1.6</version>
+</dependency>
+<dependency>
+	<groupId>com.google.collections</groupId>
+	<artifactId>google-collections</artifactId>
+	<version>1.0</version>
+</dependency>
+<dependency>
+	<groupId>com.google.code.gson</groupId>
+	<artifactId>gson</artifactId>
+	<version>2.2.2</version>
+</dependency>
+<dependency>
+	<groupId>joda-time</groupId>
+	<artifactId>joda-time</artifactId>
+	<version>2.1</version>
+</dependency>
+<dependency>
+	<groupId>com.googlecode.json-simple</groupId>
+	<artifactId>json-simple</artifactId>
+	<version>1.1.1</version>
+</dependency>
+<dependency>
+	<groupId>com.googlecode.jsontoken</groupId>
+	<artifactId>jsontoken</artifactId>
+	<version>1.1</version>
+</dependency>
+
+
+
+
+
+</dependencies>
+<repositories>
+        <repository>
+            <id>wso2-nexus</id>
+            <name>WSO2 internal Repository</name>
+            <url>http://maven.wso2.org/nexus/content/groups/wso2-public/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </releases>
+        </repository>
+    </repositories>
+    <build>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.1</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
