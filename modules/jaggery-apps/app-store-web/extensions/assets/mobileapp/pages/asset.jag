@@ -14,6 +14,7 @@ require('/modules/store.js').exec(function (ctx) {
             inDashboard = false,
             utility = require('/modules/util.js'),
             mdmConfig = new Packages.org.wso2.carbon.appmgt.mobile.store.MDMConfig();
+            devicesClass = new Packages.org.wso2.carbon.appmgt.mobile.store.Devices();
 
     caramel = require('caramel');
 
@@ -52,7 +53,9 @@ require('/modules/store.js').exec(function (ctx) {
 
     var rxtAttributes = utility.getRXTAttributes(tenantId, type);
     var devices = [];
-    //TODO Implement devices
+    if(user != null){
+        devices = parse(String(devicesClass.getDevicesList("user", [user.username])));
+    }
 
     caramel.render({
         title: 'Store | ' + type,
