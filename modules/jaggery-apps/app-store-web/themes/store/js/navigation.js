@@ -151,7 +151,7 @@ $(function() {
                     $('#modal-register').modal('hide');
                     $('#messageModal a.btn-primary').click(function () {
                         $('#messageModal').modal('hide');
-                        $('#modal-login').modal('show');
+                        location.href = "/store/login";
                     });
 
 
