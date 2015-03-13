@@ -7,8 +7,11 @@
 var server = require('store').server;
 var permissions=require('/modules/permissions.js').permissions;
 var config = require('/config/publisher.json');
+var lcModule = require('/modules/comment.js');
 var user=server.current(session);
 var um=server.userManager(user.tenantId);
+var publisher = require('/modules/publisher.js').publisher(request, session);
+var rxtManager = publisher.rxtManager;
 
 var render = function (theme, data, meta, require) {
     var log = new Log();
@@ -21,6 +24,9 @@ var render = function (theme, data, meta, require) {
         var deleteButtonAvailability = false;
         var pubActions = config.publisherActions;
         var publishActionAuthorized = permissions.isAuthorized(user.username, config.permissions.webapp_publish, um);
+
+        var shortName = "webapp";
+        var artifactManager = rxtManager.getArtifactManager(shortName);
 
 
         for(var i = 0; i < data.artifacts.length; i++){
@@ -84,6 +90,10 @@ var render = function (theme, data, meta, require) {
             }
 
             data.artifacts[i].deleteButtonAvailability = deleteButtonAvailability;
+
+            if(data.artifacts[i].lifecycleState == "Rejected"){
+                var lcComments = lcModule.getlatestLCComment(artifactManager, data.artifacts[i].path);
+            }
         }
 
 
