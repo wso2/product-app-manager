@@ -136,13 +136,13 @@ public class JSONClient {
             Object obj = parser.parse(orderJson);
             JSONObject jsonObject = (JSONObject)obj;
             order.setAddress((String)jsonObject.get("address"));
-            //int quantity = ((Long)jsonObject.get("quantity")).intValue();
-            int quantity = Integer.parseInt((String)jsonObject.get("quantity"));
+            int quantity = ((Long)jsonObject.get("quantity")).intValue();
+            //int quantity = Integer.parseInt((String)jsonObject.get("quantity"));
             order.setQuantity(quantity);
             order.setCustomerName((String) jsonObject.get("customerName"));
             order.setCreditCardNumber((String) jsonObject.get("creditCardNumber"));
-            //boolean delivered = Boolean.valueOf((Boolean)jsonObject.get("delivered"));
-            boolean delivered = Boolean.parseBoolean((String)jsonObject.get("delivered"));
+            boolean delivered = Boolean.valueOf((Boolean)jsonObject.get("delivered"));
+            //boolean delivered = Boolean.parseBoolean((String)jsonObject.get("delivered"));
             order.setDelivered(delivered);
             order.setPizzaType((String)jsonObject.get("pizzaType"));
             order.setOrderId((String) jsonObject.get("orderId"));
