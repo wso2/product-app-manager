@@ -26,7 +26,7 @@ require('/modules/store.js').exec(function (ctx) {
 
     var devices = [];
     if(user != null){
-        devices = parse(String(devicesClass.getDevicesList("user", [user.username])));
+        devices = parse(String(devicesClass.getDevicesList(user.tenantId, "user", [user.username])));
     }
 
     caramel = require('caramel');
