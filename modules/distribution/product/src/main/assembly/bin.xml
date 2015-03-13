@@ -44,6 +44,7 @@
                 <exclude>**/carbon.xml</exclude>
                 <exclude>**/registry.xml</exclude>
 		<exclude>**/email/email-admin-config.xml</exclude>
+		<exclude>**/user-mgt.xml</exclude>
                 <exclude>**/identity.xml</exclude>
                 <exclude>**/embedded-ldap.xml</exclude>
                 <exclude>**/master-datasources.xml</exclude>
