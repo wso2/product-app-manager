@@ -6,7 +6,7 @@ Filename: asset.tag.add.js
 $(function(){
 
     var TAG_API_URL='/publisher/api/tag/';
-    var type=$('#meta-asset-type').val()+'s';
+    var type=$('#meta-asset-type').val();
 
     var url=TAG_API_URL+type;
     var THEME='facebook';

@@ -96,14 +96,6 @@
                        name="overview_skipGateway" id="overview_skipGateway">
 
                 <div class="form-group">
-                    <label class="control-label col-sm-4">Publish Statistics: </label>
-
-                    <div class="col-sm-8">
-                        <input type="checkbox" class="publish_statistics">
-                    </div>
-                </div>
-
-                <div class="form-group">
                     <label class="control-label col-sm-4">Restrict Visibility: </label>
 
                     <div class="col-md-1">
@@ -359,6 +351,7 @@
     <div class="col-sm-10" id="saveButtons">
         <button id="btn-create-asset" class="btn btn-primary" name="addNewAssetButton">Create</button>
         <button class="btn btn-reset" type="reset">Reset</button>
+        <button class="btn btn-cancel" onclick="window.location='/publisher';return false;">Cancel</button>
         <input type="hidden" value="{{shortName}}" name="{{shortName}}" id="meta-asset-type">
     </div>
 </div>

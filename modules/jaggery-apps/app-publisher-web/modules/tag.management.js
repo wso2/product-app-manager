@@ -34,7 +34,8 @@ var tagModule=function(){
             var urlComponents=url.split('/');
 
             //Get the type
-            var type=urlComponents[3];
+            var typeComponent=urlComponents[9] || '';
+            var type = typeComponent.substring(0, typeComponent.indexOf(';'));
 
             //Get the tag name
             var tagName=tagComponent;

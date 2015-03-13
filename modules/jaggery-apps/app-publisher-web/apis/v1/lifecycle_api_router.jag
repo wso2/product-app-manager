@@ -157,12 +157,13 @@ require('/modules/publisher.js').exec(function(ctx) {
         var isStateChangeable = true;
         var publishAuthorized = true;
         var msg={};
+        var publisherActions = config.publisherActions;
 
-        if(action == "Approve") {
+        if(publisherActions.indexOf(action) > -1) {
             var user = server.current(session);
             var um = server.userManager(server.current(session).tenantId);
             var publishAuthorized = permissions.isAuthorized(user.username, config.permissions.webapp_publish, um);
-            log.info("## Publish Authorized Check : " + publishAuthorized);
+            log.debug("## Publish Authorized Check : " + publishAuthorized);
         }
 
         if(!isAsynchronousFlow && action == "Approve"){
@@ -212,7 +213,7 @@ require('/modules/publisher.js').exec(function(ctx) {
             }
         }else{
             msg['status'] = 'error';
-            msg['message'] = 'Publish Action not permitted. Insufficient privileges.';
+            msg['message'] = 'Action not permitted. Insufficient privileges.';
         }
         print(msg);
 

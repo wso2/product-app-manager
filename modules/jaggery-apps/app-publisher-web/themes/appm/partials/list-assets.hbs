@@ -1,4 +1,7 @@
-
+<div class="row">
+    <div class="pull-left heading" align="left"><h1>Web Applications</h1>
+    </div>
+</div>
 <div class="asset-being-added">
 </div>
 
@@ -7,10 +10,39 @@
         <div class="row-fluid">
             <table class="table table-striped list-asset-table">
                 <thead>
-                <th colspan="2"><a href="?sortby=name&sort=asc">Name <i class="icon-caret-down"></i></a></th>
-                <th><a href="?sortby=version&sort=asc">Version <i class="icon-caret-down"></i></a></th>
-                <th><a href="?sortby=owner&sort=asc">Owner <i class="icon-caret-down"></i></a></th>
-                <th><a href="?sortby=createdtime&sort=desc">Created <i class="icon-caret-down"></i></a></th>
+                <th colspan="2">
+                    {{#ifCond sortOptions.sortBy "==" "name"}}
+                        <a href="?sortby=name&sort={{sortOptions.sort}}" class="sort-list">Name
+                            <i class="icon-caret-{{sortOptions.icon}}"></i></a>
+                        {{else}}
+                        <a href="?sortby=name&sort=asc" class="sort-list">Name <i class="icon-caret-down"></i></a>
+                    {{/ifCond}}
+
+                </th>
+                <th>
+                    {{#ifCond sortOptions.sortBy "==" "version"}}
+                        <a href="?sortby=version&sort={{sortOptions.sort}}" class="sort-list">Version
+                            <i class="icon-caret-{{sortOptions.icon}}"></i></a>
+                    {{else}}
+                        <a href="?sortby=version&sort=asc" class="sort-list">Version <i class="icon-caret-down"></i></a>
+                    {{/ifCond}}
+                </th>
+                <th>
+                    {{#ifCond sortOptions.sortBy "==" "owner"}}
+                        <a href="?sortby=owner&sort={{sortOptions.sort}}" class="sort-list">Owner
+                            <i class="icon-caret-{{sortOptions.icon}}"></i></a>
+                    {{else}}
+                        <a href="?sortby=owner&sort=asc" class="sort-list">Owner <i class="icon-caret-down"></i></a>
+                    {{/ifCond}}
+                </th>
+                <th>
+                    {{#ifCond sortOptions.sortBy "==" "createdtime"}}
+                        <a href="?sortby=createdtime&sort={{sortOptions.sort}}" class="sort-list">Created
+                            <i class="icon-caret-{{sortOptions.icon}}"></i></a>
+                    {{else}}
+                        <a href="?sortby=createdtime&sort=asc" class="sort-list">Created <i class="icon-caret-down"></i></a>
+                    {{/ifCond}}
+                </th>
                 <th><a href="#">Status</a></th>
                 <th><a href="#">Actions</a></th>
                 </thead>
@@ -107,4 +139,25 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="messageModal3" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                <textarea id="commentText" style="width: 100%" rows="2" placeholder="Please add comment here.&hellip;"></textarea>
+                <input type="hidden" value="" name="webappName" id="webappName" />
+                <input type="hidden" value="" name="action" id="action" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-reject-proceed">Proceed</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </div>

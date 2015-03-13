@@ -39,7 +39,6 @@ function drawGraphs() {
 }
 
 var drawAPIResponseTime = function (response) {
-
     var parsedResponse = JSON.parse(response);
     var length = parsedResponse.webapps.length;
 
@@ -81,36 +80,47 @@ var drawAPIResponseTime = function (response) {
             responsetimeCount = 0;
         }
 
+        timedatastructure.sort(function(obj1, obj2) {
+            return obj2[0] - obj1[0];
+        });
 
-        for (var n = 0; n < webappdatasructure.length; n++) {
+        //sorting response time data according to descending order
+        var chartData=[];
+        var chartTicks=[];
+        for(var i=0;i<timedatastructure.length;i++){
+            chartData.push([timedatastructure[i][0],i]);
+            chartTicks.push([i, webappdatasructure[timedatastructure[i][1]][1]]);
+        }
 
-            if (n < 20) {
+        for (var n = 0; n < chartTicks.length; n++) {
+
+            if (n < 15) {
                 $dataTable.append($('<tr><td >'
                     + '<input name="item_checkbox"  checked   id=' + n + '  type="checkbox"  data-item=' +
-                    webappdatasructure[n][1] + ' class="inputCheckbox" />'
+                    chartTicks[n][1] + ' class="inputCheckbox" />'
                     + '</td>'
-                    + '<td style="text-align:left;"><label for=' + n + '>' + webappdatasructure[n][1] + '</label></td>'
-                    + '<td style="text-align:right;"><label for=' + n + '>' + timedatastructure[n][0] +
+                    + '<td style="text-align:left;"><label for=' + n + '>' + chartTicks[n][1] + '</label></td>'
+                    + '<td style="text-align:right;"><label for=' + n + '>' + chartData[n][0] +
                     '</label></td></tr>'));
 
-                filterValues.push(webappdatasructure[n][1]);
-                filterData.push(timedatastructure[n][0]);
+                filterValues.push(chartTicks[n][1]);
+                filterData.push(chartData[n][0]);
                 state_array.push(true);
-                defaultFilterValues.push([n, webappdatasructure[n][1]]);
-                defaultChartData.push([timedatastructure[n][0], n]);
+                defaultFilterValues.push([n, chartTicks[n][1]]);
+                defaultChartData.push([chartData[n][0], n]);
 
             } else {
 
                 $dataTable.append($('<tr><td >'
-                    + '<input name="item_checkbox" id=' + n + '  type="checkbox"  data-item=' + webappdatasructure[n][1]
+                    + '<input name="item_checkbox" id=' + n + '  type="checkbox"  data-item=' + chartTicks[n][1]
                     + ' class="inputCheckbox" />'
                     + '</td>'
-                    + '<td style="text-align:left;"><label for=' + n + '>' + webappdatasructure[n][1] + '</label></td>'
-                    + '<td style="text-align:right;"><label for=' + n + '>' + timedatastructure[n][0]
+                    + '<td style="text-align:left;"><label for=' + n + '>' + chartTicks[n][1] + '</label></td>'
+                    + '<td style="text-align:right;"><label for=' + n + '>' + chartData[n][0]
                     + '</label></td></tr>'));
 
-                filterValues.push(webappdatasructure[n][1]);
-                filterData.push(timedatastructure[n][0]);
+                filterValues.push(chartTicks[n][1]);
+                filterData.push(chartData[n][0]);
                 state_array.push(false);
             }
         }
@@ -135,8 +145,6 @@ var drawAPIResponseTime = function (response) {
         var randomColor = getRandomColor();
             dataset.push({data: [defaultChartData[i]], color: randomColor});
         }
-
-
 
         $.plot($("#placeholder41"), dataset, {
             series: {
@@ -200,8 +208,10 @@ var drawAPIResponseTime = function (response) {
                 tableStatement = '<table class="table graphTable"><thead><tr><th>page</th><th>response time(ms)' +
                     '</th></tr></thead><tbody id="tbody"></tbody></table>';
                 var x = item.datapoint[0];
+                var y = item.datapoint[1];
 
-                var label = item.series.yaxis.ticks[item.dataIndex].label;
+
+                var label = item.series.yaxis.ticks[y].label;
 
                 var webappPage = [];
                 var webappPageCount = [];
@@ -234,6 +244,8 @@ var drawAPIResponseTime = function (response) {
 
         });
 
+        var count=15;
+        //on checkbox check and uncheck event
         $('#apiSelectTable').on('change', 'input.inputCheckbox', function () {
 
             var id = $(this).attr('id');
@@ -243,9 +255,21 @@ var drawAPIResponseTime = function (response) {
             var draw_x_axis = []
 
             if (check) {
-                state_array[id] = true;
+               $('#displayMsg').html('');
+               count++;
+               //limiting to show 15 entries at a time
+               if(count>15){
+                   $('#displayMsg').html('<h5 style="color:#555">Please Note that the graph will be showing only 15 entries</h5>');
+                   state_array[id] = false;
+                   $(this).prop("checked", "");
+                   count--;
+               }else{
+               state_array[id] = true;
+               }
             } else {
-                state_array[id] = false;
+               $('#displayMsg').html('');
+               state_array[id] = false;
+               count--;
             }
 
             var y_iter = 0

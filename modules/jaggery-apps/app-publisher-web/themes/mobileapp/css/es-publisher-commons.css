@@ -1572,3 +1572,8 @@ h2.first-h2{
 .btn-mob-cancel{
     background-color: #DDDDDD;
 }
+
+.pull-left.heading {
+    margin-top: 13px;
+    margin-left: 15px;
+}

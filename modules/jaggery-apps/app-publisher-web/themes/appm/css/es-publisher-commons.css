@@ -1378,6 +1378,9 @@ h2.first-h2{
     color: #efefef;
 }
 
+.secondary-pills{
+    margin-top: -43px;
+}
 .secondary-pills > li > a{
     background: #fff;
     color:#428bca;
@@ -1597,8 +1600,12 @@ td#buttonTd a {
 }
 
 .pull-left.heading {
-    margin-top: 20px;
+    margin-top: 13px;
     margin-left: 15px;
+}
+
+.map-heading{
+    margin-top: 41px;
 }
 
 .highlighted::after {
@@ -1645,3 +1652,7 @@ ul.token-input-list-facebook{
     border-color: #eed3d7;
     color: #b94a48;
 }
+
+.load-seperator{margin-right: 20px;}
+.policy-group-edit-button,.policy-group-delete-button,.delete_resource{cursor: pointer}
+.wr-section > h2 {cursor: pointer;}

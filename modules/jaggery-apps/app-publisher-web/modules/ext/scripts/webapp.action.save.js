@@ -176,6 +176,16 @@ var module = function () {
             var displayName = model.getField('overview.displayName').value;
             var revisedURL = logoutURL.replace(webappURL,"");
 
+            var result = null;
+            var saml2SsoIssuer = null;
+
+            if (tenantIdVal != '-1234') {
+                saml2SsoIssuer = name + "-" + tenantDomain + "-" + version;
+            } else {
+                saml2SsoIssuer = name + "-" + version;
+            }
+
+
             var shortName = template.shortName;
 
             log.debug('Artifact name: ' + name);
@@ -231,7 +241,7 @@ var module = function () {
             //adding to database
             addToWebApp(id,provider, name, version, contextname, tracking_code,asset,
                         attributes['sso_singleSignOn'], attributes['sso_idpProviderUrl'],
-                        attributes['sso_saml2SsoIssuer'],revisedURL,allowAnonymous, skipGateway);
+                        saml2SsoIssuer,revisedURL,allowAnonymous, skipGateway);
 
             //Save the id data to the model
             model.setField('*.id', id);
