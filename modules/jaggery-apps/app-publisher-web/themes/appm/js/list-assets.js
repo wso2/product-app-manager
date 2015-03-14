@@ -40,6 +40,11 @@ var action = $(this).data("action");
 
 $( ".btn-reject-proceed" ).click(function() {
     var comment = $("#commentText").val();
+    if (comment.trim() == "") {
+        alert("Please provide a comment.");
+        return false;
+    }
+
     var app = $("#webappName").val();
     var action = $("#action").val();
     $.ajax({
@@ -61,7 +66,12 @@ $( ".btn-reject-proceed" ).click(function() {
             }
         },
         error: function (response) {
-            showMessageModel("Error occured while updating life-cycle state : " + action, "Lify-cycle update failed", "webapp");
+            if (response.status == 403) {
+                alert('Sorry, your session has expired');
+                location.reload();
+            } else {
+                showMessageModel("Error occured while updating life-cycle state : " + action, "Lify-cycle update failed", "webapp");
+            }
         }
     });
 

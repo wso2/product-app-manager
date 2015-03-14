@@ -307,6 +307,13 @@ require('/modules/store.js').exec(function (ctx) {
         skipGateway = false;
     }
 
+
+    var process = require('process');
+    //set local ip
+    asset.attributes.localIP = "https://" + process.getProperty('server.host');
+    //set http port
+    asset.attributes.httpsPort = process.getProperty('https.port');
+
     for(var i = 0; i < assetsByProvider.assets.length; i++){
         assetsByProvider.assets[i].rating = {average : Math.floor(JSON.parse(social.getRating("webapp:" + assetsByProvider.assets[i].id)))};
     }
@@ -316,7 +323,7 @@ require('/modules/store.js').exec(function (ctx) {
     for(var i = 0; i < recentAssets.length; i++){
         recentAssets[i].rating = {average : Math.floor(JSON.parse(social.getRating("webapp:" + recentAssets[i].id)))};
     }
-      
+    
     caramel.render({
         title: 'Store | ' + type,
         user: user,
