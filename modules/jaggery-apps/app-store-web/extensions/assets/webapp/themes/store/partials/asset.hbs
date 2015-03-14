@@ -20,6 +20,10 @@
                     <small> {{t "by"}} {{overview_provider}}</small>
                     <small> {{t "status"}} : {{../lifecycleState}}</small>
                     <small>{{t "updated"}} : {{../../apiData.updatedDate}}</small>
+                    <input type="hidden" value="{{localIP}}" id="assetsLocalIP" name="assetsLocalIP">
+                    <input type="hidden" value="{{httpsPort}}" id="assetshttpsPort" name="assetshttpsPort">
+                    <input type="hidden" value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
+
 					<span class="asset-rating">
                             <div class="asset-rating-{{../rating}}star"></div>
                     </span>
@@ -96,7 +100,6 @@
                 <a href="#" class="btn btn-other" data-dismiss="modal">Close</a>
             </div>
          </div>
-
     </div>
 </div>
 

@@ -48,3 +48,19 @@ $(function () {
         }
     });
 });
+
+$(document).ready(function () {
+    //if user directly access the overview page, check the anonymous condition.
+    //if anonymous mode is not allowed and user is not authenticated, prompt the login page
+    var loggedUser = $("#hdnUsertId").val();
+    var allowAnonymous = $("#allowAnonymous").val();
+    if (loggedUser == "" || loggedUser == null) {
+        if (allowAnonymous.toUpperCase() != "TRUE") {
+            var localIP = $("#assetsLocalIP").val();
+            var port = $("#assetshttpsPort").val()
+            location.href = localIP + ":" + port + "/store/login";
+        }
+        e.preventDefault();
+        e.stopPropagation();
+    }
+});

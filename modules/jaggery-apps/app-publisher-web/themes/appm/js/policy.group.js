@@ -58,6 +58,7 @@ function validate(policyGroupName) {
 function insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, objPartialMappings, isSaveAndClose ,policyGroupDesc) {
 
     $.ajax({
+        async: false,
         url: '/publisher/api/entitlement/policy/partial/policyGroup/save',
         type: 'POST',
         data: {
@@ -120,6 +121,7 @@ function insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUr
  */
 function updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, objPartialMappings, isSaveAndClose, policyGroupDesc) {
     $.ajax({
+        async: false,
         url: '/publisher/api/entitlement/policy/partial/policyGroup/details/update',
         type: 'POST',
         data: {
@@ -221,7 +223,7 @@ function savePolicyGroupData(isSaveAndClose) {
         else {
             updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions), isSaveAndClose, policyGroupDesc);
 
-            updatePolicyGroupPartialXACMLPolicies($("#uuid").val());
+           // updatePolicyGroupPartialXACMLPolicies($("#uuid").val());
         }
     }
 }
