@@ -125,7 +125,7 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
 
 			//TODO need proper way to distinguish search and parameter search
 			if(options.attributes.length != null){
-				options.attributes = {"overview_name":options.attributes,"lcState":configs.lifeCycleBehaviour.visibleIn};
+				options.attributes = {"overview_displayName":options.attributes,"lcState":configs.lifeCycleBehaviour.visibleIn};
 			}else{
 				options.attributes["lcState"] = configs.lifeCycleBehaviour.visibleIn;
 			}
@@ -213,14 +213,14 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
 
     Sorter.prototype.az = function (items) {
         items.sort(function (l, r) {
-            return l['overview_name'] > r['overview_name'];
+            return l['overview_displayName'] > r['overview_displayName'];
         });
         return items;
     };
 
     Sorter.prototype.za = function (items) {
         items.sort(function (l, r) {
-            return l['overview_name'] < r['overview_name'];
+            return l['overview_displayName'] < r['overview_displayName'];
         });
         return items;
     };

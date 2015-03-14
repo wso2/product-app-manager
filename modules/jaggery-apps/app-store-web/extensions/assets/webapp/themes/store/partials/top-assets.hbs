@@ -11,19 +11,19 @@
                         	<div class="asset-intro-box">
                             	<div><img src="{{images_thumbnail}}"></div>
                             	<div class="asset-intro-inner">
-	                            	<h3><span>{{overview_name}}</span>
+	                            	<h3><span>{{overview_displayName}}</span>
 	                               		<small>{{overview_version}}</small>
 	                            	</h3>
 	                            	<div class="star-rating">
 										<div class="asset-rating">
 				                            <div class="asset-rating-{{../rating/average}}star">
-				
+
 				                            </div>
 				                        </div>
 										<small> by {{overview_provider}} </small>
 									</div>
                             	</div>
-							
+
 								<a data-type="gadget" class="btn btn-primary" id="btn-add-gadget"
                            href="{{url "/assets"}}/{{../type}}/{{../id}}">View</a>
 							</div>
@@ -61,7 +61,7 @@
                                     <a href="#">
                                         <div class="asset-icon">
                                             {{#if ../indashboard}}
-                                               
+
                                             {{/if}}
                                             <a href="{{url "/assets"}}/{{../type}}/{{../id}}"><img
                                                     src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}"></a>
@@ -70,7 +70,7 @@
 
                                     <div class="asset-details">
                                         <div class="asset-name">
-                                            <a href="{{url "/assets"}}/{{../type}}/{{../id}}"><h4>{{overview_name}}</h4>
+                                            <a href="{{url "/assets"}}/{{../type}}/{{../id}}"><h4>{{overview_displayName}}</h4>
                                             </a>
                                         </div>
                                         <div class="asset-rating">
@@ -90,7 +90,7 @@
                                                 </li>
 
                                             </ul>
-                                          
+
                                         </div>
                                     </div>
                                 </div>

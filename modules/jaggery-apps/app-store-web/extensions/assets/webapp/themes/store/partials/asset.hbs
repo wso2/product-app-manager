@@ -6,7 +6,6 @@
 
     {{#with asset}}
     {{#attributes}}
-    <h4>{{overview_displayName}}</h4>
     <div class="asset-description-header">
         <div class="row">
             <div class="span9">
@@ -16,7 +15,7 @@
                 <div class="asset-introduction-box">
                     <img class="web-asset-img" src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}">
 
-                    <h3>{{overview_name}}</h3>
+                    <h3>{{overview_displayName}}</h3>
                     <small class="web-asset-clear"> {{t "Version"}} {{overview_version}}</small>
                     <small> {{t "by"}} {{overview_provider}}</small>
                     <small> {{t "status"}} : {{../lifecycleState}}</small>
@@ -26,7 +25,7 @@
                     <input type="hidden" value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
 
 					<span class="asset-rating">
-                            <div style="width:{{../rating.ratingPx}}px"></div>
+                            <div class="asset-rating-{{../rating}}star"></div>
                     </span>
                     <!--The subscription option should only be visible if the user is logged in-->
                     {{>asset-utilization ../../.}}
