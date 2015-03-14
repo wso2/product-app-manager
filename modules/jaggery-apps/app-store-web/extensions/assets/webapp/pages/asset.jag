@@ -310,6 +310,12 @@ require('/modules/store.js').exec(function (ctx) {
     for(var i = 0; i < assetsByProvider.assets.length; i++){
         assetsByProvider.assets[i].rating = {average : Math.floor(JSON.parse(social.getRating("webapp:" + assetsByProvider.assets[i].id)))};
     }
+
+    var recentAssets = store.recentAssets(type);
+
+    for(var i = 0; i < recentAssets.length; i++){
+        recentAssets[i].rating = {average : Math.floor(JSON.parse(social.getRating("webapp:" + recentAssets[i].id)))};
+    }
       
     caramel.render({
         title: 'Store | ' + type,
@@ -346,7 +352,7 @@ require('/modules/store.js').exec(function (ctx) {
             }
         ],
         myAssets: { user: user, type: type, title: title },
-        recentAssets: store.recentAssets(type),
+        recentAssets: recentAssets,
         assetsByProvider: assetsByProvider,
         documentation: docs,
         apiData:apiData ,
