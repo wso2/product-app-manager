@@ -142,7 +142,7 @@ require('/modules/publisher.js').exec(function(ctx) {
 
         var action = context.params.action;
         var id = context.params.id;
-        var comment = context.content.comment;
+
         var roles = context.content.roles || [];
         var artifactManager = rxtManager.getArtifactManager(shortName);
         var artifact = artifactManager.get(id);
@@ -189,14 +189,14 @@ require('/modules/publisher.js').exec(function(ctx) {
                         }
 
                         artifactManager.promoteLifecycleState(action, artifact);
-
-                        if (comment) {
+                        var comment;
+                        if (context.content && (comment=parse(context.content).comment) ) {
                             var lcHistory = artifactManager.getLifecycleHistory(artifact);
                             var lcHistoryXML = new XML(lcHistory.content);
                             lcHistoryJSON = utility.xml.convertE4XtoJSON(lcHistoryXML);
                             var newChangeOrder = lcHistoryJSON.item[0].order;
 
-                            require('/modules/comment.js').addLifecycleComment(artifactManager, id, comment, newChangeOrder);
+                            require('/modules/comment.js').addLifecycleComment(artifactManager, artifact.path, comment, newChangeOrder);
                         }
 
                         msg['status'] = 'ok';

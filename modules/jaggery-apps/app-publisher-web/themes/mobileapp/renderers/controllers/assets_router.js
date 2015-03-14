@@ -4,94 +4,87 @@
  Created Date: 29/7/2013
  */
 
+var permissions=require('/modules/permissions.js').permissions;
+var config = require('/config/publisher.json');
+var server = require('store').server;
+var user=server.current(session);
+var um=server.userManager(user.tenantId);
+
 var render = function (theme, data, meta, require) {
 
 	data.isNotReviwer = true;
     data.isReviwer = false;
     data.isAdmin = false;
 
-   for(var k = 0; k < data.roles.length; k++){
-		if(data.roles[k] == "Internal/reviewer"){
-					data.isNotReviwer = false;
-                    data.isReviwer = true;
-		}
+    var publishActionAuthorized = permissions.isAuthorized(user.username, config.permissions.mobileapp_publish, um);
+    var createMobileAppAuthorized = permissions.isAuthorized(user.username, config.permissions.mobileapp_create, um);
 
+    if(publishActionAuthorized){
+        data.isNotReviwer = false;
+        data.isReviwer = true;
+    }
+
+   for(var k = 0; k < data.roles.length; k++){
        if(data.roles[k] == "admin"){
            data.isAdmin = true;
        }
 
 	}
 
-	var lifecycleColors = {"Demote": "btn-blue", "Re-Submit": "btn-blue", "Submit": "btn-blue", "Publish": "btn-blue", "Unpublish": "btn-orange", "Deprecate": "btn-danger", "Retire": "btn-danger", "Approve": "btn-blue", "Reject": "btn-danger"};
+	var lifecycleColors = {"Demote": "btn-blue", "Submit for Review": "btn-blue", "Publish": "btn-blue", "Unpublish": "btn-orange", "Deprecate": "btn-danger", "Retire": "btn-danger", "Approve": "btn-blue", "Reject": "btn-danger"};
 	if(data.artifacts){
-
+        var log = new Log();
 		for(var i = 0; i < data.artifacts.length; i++){
 		var lifecycleAvailableActionsButtons = new Array();
+
+            var pubActions = config.publisherActions;
+
 		for(var j = 0; j < data.artifacts[i].lifecycleAvailableActions.length; j++){
 			var name = data.artifacts[i].lifecycleAvailableActions[j];
 
 			for(var k = 0; k < data.roles.length; k++){
-			//	print(data.roles[k]);
-				if(data.roles[k] == "admin"){
-					if(name == "Approve"){
-						lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-					}
-					if(name == "Reject"){
-						lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-					}
-					if(name == "Publish"){
-						lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-					}
-					if(name == "Submit"){
-						lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-					}
-					if(name == "Re-Submit"){
-						lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-					}
-					if(name == "Unpublish"){
-						lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-					}
-					if(name == "Depreicate"){
-						lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-					}
-					if(name == "Retire"){
-						lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-					}
+                var skipFlag = false;
 
-					break;
-				}
+                if(pubActions.indexOf(String(name)) > -1){
+                    log.info("## Skip called!!! for name : "+name);
+                    if(!publishActionAuthorized) {
+                        skipFlag = true;
+                    }
+                }
 
-				if(data.roles[k] == "Internal/reviewer"){
-					data.isNotReviwer = false;
-                    data.isReviwer = true;
-					if(name == "Approve"){
-						lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-					}
-					if(name == "Reject"){
-						lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-					}
-				}
-
-				if(data.roles[k] == "Internal/publisher"){
-					if(name == "Publish"){
-						lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-					}
-					if(name == "Submit"){
-						lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-					}
-					if(name == "Re-Submit"){
-						lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-					}
-					if(name == "Unpublish"){
-						lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-					}
-					if(name == "Depreicate"){
-						lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-					}
-					if(name == "Retire"){
-						lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-					}
-				}
+                if(!skipFlag) {
+                    if (name == "Publish") {
+                        lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                    }
+                    if (name == "Reject") {
+                        lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                    }
+                    if (name == "Submit for Review") {
+                        lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                    }
+                    if (name == "Recycle") {
+                        lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                    }
+                    if (name == "Deprecate") {
+                        lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                    }
+                    if (name == "Re-Publish") {
+                        lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                    }
+                    if (name == "Unpublish") {
+                        lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                    }
+                    if (name == "Depreicate") {
+                        lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                    }
+                    if (name == "Retire") {
+                        lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                    }
+                    if (name == "Approve") {
+                        lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                    }
+                    break;
+                }
 			}
 
 
@@ -132,7 +125,7 @@ var render = function (theme, data, meta, require) {
         ribbon: [
             {
                 partial: 'ribbon',
-                context: {active:listPartial,isNotReviwer:data.isNotReviwer}
+                context: {active:listPartial,isNotReviwer:data.isNotReviwer,createMobileAppPerm:createMobileAppAuthorized}
             }
         ],
         leftnav: [

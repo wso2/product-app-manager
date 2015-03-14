@@ -212,17 +212,15 @@
     <br />
     No mobile applications added yet.
     <br />
+    {{#if mobileAppCreatePermission}}
     <a type="button" class="btn btn-addNewAssetLarge" href="/publisher/asset/{{shortName}}"><i class="icon-plus-sign-alt"></i>Add New Mobile App</a>
+    {{/if}}
 </div>
 {{/if}}
 {{/if}}
 </div>
 
-<style>
-    .btn-action{
-        width: 80px;
-    }
-</style>
+
 
 
 <div id="appModal" class="modal  fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

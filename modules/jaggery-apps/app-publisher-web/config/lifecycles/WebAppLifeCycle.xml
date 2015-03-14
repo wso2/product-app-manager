@@ -46,7 +46,7 @@
                 <state id="In-Review">
                     <datamodel>
                         <data name="transitionExecution">
-                            <execution forEvent="Publish" class="org.wso2.carbon.appmgt.impl.extensions.custom.ApprovalActionEventExecutor">
+                            <execution forEvent="Approve" class="org.wso2.carbon.appmgt.impl.extensions.custom.ApprovalActionEventExecutor">
                                 <parameter name="PERMISSION:get"
                                            value="http://www.wso2.org/projects/registry/actions/get"/>
                                 <parameter name="PERMISSION:add"
@@ -55,10 +55,9 @@
                                            value="http://www.wso2.org/projects/registry/actions/delete"/>
                                 <parameter name="PERMISSION:authorize" value="authorize"/>
 
-                                <parameter name="STATE_RULE1:Published" value="Internal/private_{asset_author}:+get,-add,+delete,-authorize"/>
-                                <parameter name="STATE_RULE2:Published" value="Internal/everyone:-add,-delete,-authorize"/>
-				                <parameter name="STATE_RULE3:Published" value="system/wso2.anonymous.role:+get,-add,-delete,-authorize"/>
-                                <parameter name="STATE_RULE4:Published" value="Internal/publisher:+get,+add,-delete,+authorize"/>
+                                <parameter name="STATE_RULE1:Approved" value="Internal/publisher:+get,+add,-delete,+authorize"/>
+                                <parameter name="STATE_RULE2:Approved" value="Internal/everyone:-add,-delete,-authorize"/>
+                                <parameter name="STATE_RULE3:Approved" value="Internal/private_{asset_author}:+get,-add,+delete,-authorize"/>
                             </execution>
                             <execution forEvent="Reject" class="org.wso2.jaggery.scxml.generic.GenericExecutor">
                                 <parameter name="PERMISSION:get"
@@ -76,6 +75,27 @@
                         </data>	
                     </datamodel>
 		            <transition event="Reject" target="Rejected"/>
+                    <transition event="Approve" target="Approved"/>
+                </state>
+                <state id="Approved">
+                    <datamodel>
+                        <data name="transitionExecution">
+                            <execution forEvent="Publish" class="org.wso2.carbon.appmgt.impl.extensions.custom.PublishActionEventExecutor">
+                                <parameter name="PERMISSION:get"
+                                           value="http://www.wso2.org/projects/registry/actions/get"/>
+                                <parameter name="PERMISSION:add"
+                                           value="http://www.wso2.org/projects/registry/actions/add"/>
+                                <parameter name="PERMISSION:delete"
+                                           value="http://www.wso2.org/projects/registry/actions/delete"/>
+                                <parameter name="PERMISSION:authorize" value="authorize"/>
+
+                                <parameter name="STATE_RULE1:Published" value="Internal/private_{asset_author}:+get,-add,+delete,-authorize"/>
+                                <parameter name="STATE_RULE2:Published" value="Internal/everyone:-add,-delete,-authorize"/>
+                                <parameter name="STATE_RULE3:Published" value="system/wso2.anonymous.role:+get,-add,-delete,-authorize"/>
+                                <parameter name="STATE_RULE4:Published" value="Internal/publisher:+get,+add,-delete,+authorize"/>
+                            </execution>
+                        </data>
+                    </datamodel>
                     <transition event="Publish" target="Published"/>
                 </state>
                 <state id="Rejected">
@@ -159,8 +179,8 @@
                                 <parameter name="PERMISSION:authorize" value="authorize"/>
 
                                 <parameter name="STATE_RULE1:Retired" value="Internal/private_{asset_author}:+get,-add,+delete,-authorize"/>
-                                <parameter name="STATE_RULE2:Retired" value="Internal/publisher:-get,-add,-delete,-authorize"/>
-                                <parameter name="STATE_RULE3:Retired" value="Internal/everyone:-add,-delete,-authorize"/>
+                                <parameter name="STATE_RULE2:Retired" value="Internal/publisher:+get,+add,-delete,+authorize"/>
+                                <parameter name="STATE_RULE3:Retired" value="Internal/everyone:-get,-add,-delete,-authorize"/>
                             </execution>
                             <execution forEvent="Recycle" class="org.wso2.jaggery.scxml.generic.GenericExecutor">
                                 <parameter name="PERMISSION:get"
@@ -194,33 +214,14 @@
                                 <parameter name="PERMISSION:authorize" value="authorize"/>
 
                                 <parameter name="STATE_RULE1:Retired" value="Internal/private_{asset_author}:+get,-add,+delete,-authorize"/>
-                                <parameter name="STATE_RULE2:Retired" value="Internal/publisher:-get,-add,-delete,-authorize"/>
+                                <parameter name="STATE_RULE2:Retired" value="Internal/publisher:+get,+add,-delete,+authorize"/>
                                 <parameter name="STATE_RULE3:Retired" value="Internal/everyone:-get,-add,-delete,-authorize"/>
                             </execution>
                         </data>
                     </datamodel>
                     <transition event="Retire" target="Retired"/>
                 </state>
-                <state id="Retired">
-                    <datamodel>
-                        <data name="transitionExecution">
-                            <execution forEvent="Retire" class="org.wso2.jaggery.scxml.generic.GenericExecutor">
-                                <parameter name="PERMISSION:get"
-                                           value="http://www.wso2.org/projects/registry/actions/get"/>
-                                <parameter name="PERMISSION:add"
-                                           value="http://www.wso2.org/projects/registry/actions/add"/>
-                                <parameter name="PERMISSION:delete"
-                                           value="http://www.wso2.org/projects/registry/actions/delete"/>
-                                <parameter name="PERMISSION:authorize" value="authorize"/>
-
-                                <parameter name="STATE_RULE1:Retired" value="Internal/private_{asset_author}:+get,-add,+delete,-authorize"/>
-                                <parameter name="STATE_RULE2:Retired" value="Internal/publisher:-add,-delete,-authorize"/>
-                                <parameter name="STATE_RULE3:Retired" value="Internal/everyone:-add,-delete,-authorize"/>
-                            </execution>
-                        </data>
-                    </datamodel>
-                    <transition event="Retire" target="Retired"/>
-                </state>
+                <state id="Retired"/>
             </scxml>
         </lifecycle>
     </configuration>

@@ -66,15 +66,16 @@
     	"PAGE_SIZE" : 20
     },
     "excludedRolesList":["admin","Internal/subscriber","publisher"],
-    "permissions" : {
-        "webapp_create" : "/permission/admin/manage/webapp/create",
-        "webapp_update" : "/permission/admin/manage/webapp/update",
-        "webapp_publish" : "/permission/admin/manage/webapp/publish",
-        "webapp_delete" : "/permission/admin/manage/webapp/delete",
-        "view_statistics": "/permission/admin/manage/appm/view_stats",
-        "document_add": "/permission/admin/manage/document/add",
-        "document_edit": "/permission/admin/manage/document/edit",
-        "document_delete": "/permission/admin/manage/document/delete"
+    "permissions": {
+      "webapp_create": "/permission/admin/manage/webapp/create",
+      "webapp_update": "/permission/admin/manage/webapp/update",
+      "webapp_publish": "/permission/admin/manage/webapp/publish",
+      "webapp_delete": "/permission/admin/manage/webapp/delete",
+      "view_statistics": "/permission/admin/manage/appm/view_stats",
+      "mobileapp_create": "/permission/admin/manage/mobileapp/create",
+      "mobileapp_update": "/permission/admin/manage/mobileapp/update",
+      "mobileapp_publish": "/permission/admin/manage/mobileapp/publish",
+      "mobileapp_delete": "/permission/admin/manage/mobileapp/delete"
     },
-    "publisherActions":["Publish","Reject","Unpublish","Deprecate","Retire","Recycle","Re-Publish"]
+    "publisherActions":["Publish","Approve","Reject","Unpublish","Deprecate","Retire","Recycle","Re-Publish"]
 }

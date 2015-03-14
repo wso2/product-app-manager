@@ -104,6 +104,7 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
     var user = server.current(session);
 	var um = server.userManager(server.current(session).tenantId);
     var createActionAuthorized = permissions.isAuthorized(user.username, config.permissions.webapp_create, um);
+    var createMobileAppAuthorized = permissions.isAuthorized(user.username, config.permissions.mobileapp_create, um);
 
 	try {
 		//TODO: Check for valid asset types
@@ -175,7 +176,7 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 
 		caramel.render({op : 'list',cuser : server.current(session), roles : server.current(session).getRoles(),
 		shortName : type,artifacts : artifacts,query : query,title : type, pageIndices:pageIndices,
-		leftNav:leftnav, rightNav:rightnav, createPermission:createActionAuthorized,
+		leftNav:leftnav, rightNav:rightnav, createPermission:createActionAuthorized, mobileAppCreatePermission:createMobileAppAuthorized,
 		sortOptions:{sortBy: sortby, sort: sortOpposite, icon: sortIcon}
 		});
 	} catch (e) {

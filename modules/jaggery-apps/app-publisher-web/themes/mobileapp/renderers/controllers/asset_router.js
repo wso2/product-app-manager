@@ -3,8 +3,17 @@
 	Filename:asset.js
 	Created Date: 29/7/2013
 */
+var server = require('store').server;
+var permissions=require('/modules/permissions.js').permissions;
+var config = require('/config/publisher.json');
+
 var render=function(theme,data,meta,require){
     //var _url = "/publisher/asset/"  + data.meta.shortName + "/" + data.info.id + "/edit"
+
+    var user=server.current(session);
+    var um=server.userManager(user.tenantId);
+    var createMobileAppAuthorized = permissions.isAuthorized(user.username, config.permissions.mobileapp_create, um);
+
 	var listPartial='view-asset';
     var heading = "";
 	//Determine what view to show
@@ -48,6 +57,7 @@ var render=function(theme,data,meta,require){
 
     var breadCrumbData = require('/helpers/breadcrumb.js').generateBreadcrumbJson(data);
     breadCrumbData.activeRibbonElement = listPartial;
+    breadCrumbData.createMobileAppPerm = createMobileAppAuthorized;
 
 	theme('single-col-fluid', {
         title: data.title,

@@ -17,7 +17,7 @@ var render = function (theme, data, meta, require) {
     var log = new Log();
 
 
-    var lifecycleColors = {"Create": "btn-green", "Recycle": "btn-blue", "Re-Publish": "btn-blue", "Submit for Review": "btn-blue", "Unpublish": "btn-orange", "Deprecate": "btn-danger", "Retire": "btn-danger", "Publish": "btn-blue", "Reject": "btn-orange"};
+    var lifecycleColors = {"Create": "btn-green", "Recycle": "btn-blue", "Re-Publish": "btn-blue", "Submit for Review": "btn-blue", "Unpublish": "btn-orange", "Deprecate": "btn-danger", "Retire": "btn-danger", "Publish": "btn-blue", "Approve": "btn-blue", "Reject": "btn-orange"};
 
     if(data.artifacts){
 
@@ -73,7 +73,9 @@ var render = function (theme, data, meta, require) {
                             if (name == "Retire") {
                                 lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
                             }
-
+                            if (name == "Approve") {
+                                lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                            }
                             break;
                         }
                     }
