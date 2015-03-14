@@ -61,7 +61,12 @@ $( ".btn-reject-proceed" ).click(function() {
             }
         },
         error: function (response) {
-            showMessageModel("Error occured while updating life-cycle state : " + action, "Lify-cycle update failed", "webapp");
+            if (response.status == 403) {
+                alert('Sorry, your session has expired');
+                location.reload();
+            } else {
+                showMessageModel("Error occured while updating life-cycle state : " + action, "Lify-cycle update failed", "webapp");
+            }
         }
     });
 
