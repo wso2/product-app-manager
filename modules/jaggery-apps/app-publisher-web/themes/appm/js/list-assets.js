@@ -40,6 +40,11 @@ var action = $(this).data("action");
 
 $( ".btn-reject-proceed" ).click(function() {
     var comment = $("#commentText").val();
+    if (comment.trim() == "") {
+        alert("Please provide a comment.");
+        return false;
+    }
+
     var app = $("#webappName").val();
     var action = $("#action").val();
     $.ajax({
