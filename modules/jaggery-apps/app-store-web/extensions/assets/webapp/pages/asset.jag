@@ -43,7 +43,8 @@ require('/modules/store.js').exec(function (ctx) {
             skipGateway = false,
             webAppEndpoint;
             utility = require('/modules/util.js');
-            search = require('/modules/search.js');
+            search = require('/modules/search.js'),
+            social = carbon.server.osgiService('org.wso2.carbon.social.core.service.SocialActivityService');
                         
     caramel = require('caramel');
 
@@ -56,6 +57,10 @@ require('/modules/store.js').exec(function (ctx) {
         response.sendError(404, 'Requested page cannot be found');
         return;
     }
+
+
+
+    asset.rating = Math.floor(JSON.parse(social.getRating("webapp:" + aid)));
 
     //check asset LC state
     //if (configs.lifeCycleBehaviour.visibleIn.indexOf(String(asset.lifecycleState), 0) < 0) {

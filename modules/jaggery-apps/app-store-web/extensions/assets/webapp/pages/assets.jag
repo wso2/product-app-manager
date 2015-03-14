@@ -37,7 +37,8 @@ require('/modules/store.js').exec(function (ctx) {
             search = require('/modules/search.js'),
             subscriptions = {},
             subscription = false,
-            avaliablePages,isSubscribed;
+            avaliablePages,isSubscribed,
+            social = carbon.server.osgiService('org.wso2.carbon.social.core.service.SocialActivityService');
 
     caramel = require('caramel');
     process = require('process'),
@@ -299,6 +300,10 @@ require('/modules/store.js').exec(function (ctx) {
 
     var subscriptionInfo;
     assets.forEach(function (asset) {
+
+        //set rating
+        asset.rating = Math.floor(JSON.parse(social.getRating("webapp:" + asset.id)));
+
         isSubscribed = false;
         //set subscription details for each asset
         subscriptionInfo = getSubscriptionInfo(asset)
