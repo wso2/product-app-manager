@@ -290,8 +290,10 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
         //Check if the type is valid
         try {
 
-            //Process and add any files in the request
-            inspectFiles(request, context.post);
+            //Process and add any files in the request if the application is not in the copy mode
+            if(oldVersion == null || oldVersion == '') {
+                inspectFiles(request, context.post);
+            }
 
             model.import('form.importer', context.post);
 
