@@ -297,6 +297,12 @@ require('/modules/store.js').exec(function (ctx) {
     } else {
         skipGateway = false;
     }
+
+    var process = require('process');
+    //set local ip
+    asset.attributes.localIP = "https://" + process.getProperty('server.host');
+    //set http port
+    asset.attributes.httpsPort = process.getProperty('https.port');
       
     caramel.render({
         title: 'Store | ' + type,
