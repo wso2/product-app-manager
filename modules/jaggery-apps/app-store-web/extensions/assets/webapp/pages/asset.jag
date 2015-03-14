@@ -251,6 +251,10 @@ require('/modules/store.js').exec(function (ctx) {
 
     var assetsByProvider = getAssetsFromProvider(asset, store);
 
+
+
+
+
     var docs;
     if (authenticator.getLoggedInUser()) {
         docs = docsManager.getAllDocumentation(asset.attributes.overview_provider,
@@ -301,6 +305,10 @@ require('/modules/store.js').exec(function (ctx) {
         skipGateway = true;
     } else {
         skipGateway = false;
+    }
+
+    for(var i = 0; i < assetsByProvider.assets.length; i++){
+        assetsByProvider.assets[i].rating = {average : Math.floor(JSON.parse(social.getRating("webapp:" + assetsByProvider.assets[i].id)))};
     }
       
     caramel.render({
