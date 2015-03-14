@@ -453,6 +453,8 @@ Store.prototype.comment = function (aid, comment) {
 };
 
 Store.prototype.rating = function (aid) {
+
+
     var username, registry,
         carbon = require('carbon'),
         usr = this.user;
