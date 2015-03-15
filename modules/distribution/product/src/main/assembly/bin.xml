@@ -734,6 +734,11 @@
             <outputDirectory>wso2appm-${pom.version}/repository/conf</outputDirectory>
             <destName>identity.xml</destName>
         </file>
+	<file>
+            <source>src/main/conf/user-mgt.xml</source>
+            <outputDirectory>wso2appm-${pom.version}/repository/conf</outputDirectory>
+            <destName>user-mgt.xml</destName>
+        </file>
         <file>
             <source>src/main/conf/embedded-ldap.xml</source>
             <outputDirectory>wso2appm-${pom.version}/repository/conf</outputDirectory>
