@@ -66,6 +66,11 @@ var generateLeftNavJson = function(data, listPartial) {
             };
         }
     }
+
+    if(listPartial == "edit-asset" || listPartial == "copy-app"){
+        leftNavItems ={};
+    }
+
     return leftNavItems;
 };
 
