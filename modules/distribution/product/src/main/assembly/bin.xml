@@ -566,6 +566,14 @@
              </includes>
         </fileSet>
 
+	<fileSet>
+             <directory>../../p2-profile/product/target/WSO2-CARBON-PATCH-4.2.0-0010</directory>
+             <outputDirectory>wso2appm-${pom.version}/repository/components/patches/</outputDirectory>
+             <includes>
+                  <include>**/patch0010/*.*</include>
+             </includes>
+        </fileSet>
+
         <!--End of  APP Manager related -->
 
     </fileSets>
