@@ -2,9 +2,9 @@
     <div class="col-md-9 col-sm-12 col-xs-12">
         <ul class="nav nav-pills pull-left">
             {{#if createMobileAppPerm}}
-            <li {{#ifCond activeRibbonElement "==" "add-asset"}}class="active"{{/ifCond}}><a href="{{url "/asset/mobileapp"}}"><i class="icon-plus-sign-alt"></i> Add New Mobile Application</a></li>
+            <li {{#ifCond activeRibbonElement "==" "add-mobileapp"}}class="active"{{/ifCond}}><a href="{{url "/asset/mobileapp"}}"><i class="icon-plus-sign-alt"></i> Add New Mobile Application</a></li>
             {{/if}}
-            <li {{#ifCond activeRibbonElement "==" "list-assets"}}class="active"{{/ifCond}}><a href="{{url "/assets/mobileapp/"}}">All Mobile Applications</a></li>
+            <li {{#ifCond active "==" "list-assets"}}class="active"{{/ifCond}}><a href="{{url "/assets/mobileapp/"}}">All Mobile Applications</a></li>
         </ul>
     </div>
     <div class="col-md-3 col-sm-12 col-xs-12">
@@ -33,4 +33,3 @@
 		</button>
 	</div>
 </div>
-
