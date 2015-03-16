@@ -41,6 +41,9 @@ public class SSOTestCase extends APPManagerIntegrationTest {
     @BeforeClass(alwaysRun = true)
     public void init() throws Exception {
         super.init(0);
+        ApplicationInitializingUtil baseUtil;
+        baseUtil = new ApplicationInitializingUtil();
+        baseUtil.init();
         username = userInfo.getUserName();
         password = userInfo.getPassword();
         driver = BrowserManager.getWebDriver();

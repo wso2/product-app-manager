@@ -69,6 +69,7 @@ public class AppDeleteTestCase extends APPManagerIntegrationTest {
 
     @AfterClass(alwaysRun = true)
     public void destroy() throws Exception {
+        appMStore.logout();
         super.cleanup();
     }
 
