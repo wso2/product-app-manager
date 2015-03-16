@@ -74,9 +74,6 @@ var render = function (theme, data, meta, require) {
                     if (name == "Unpublish") {
                         lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
                     }
-                    if (name == "Depreicate") {
-                        lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                    }
                     if (name == "Retire") {
                         lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
                     }

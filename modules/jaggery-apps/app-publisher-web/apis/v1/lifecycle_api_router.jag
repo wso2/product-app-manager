@@ -136,7 +136,7 @@ require('/modules/publisher.js').exec(function(ctx) {
 
         if(shortName === "mobileapp"){
 
-            mobileAppsLifeCycleChange(context, rxtManager);
+            mobileAppsLifeCycleChange(context, rxtManager, utility);
             return;
         }
 
@@ -195,6 +195,8 @@ require('/modules/publisher.js').exec(function(ctx) {
                             var lcHistoryXML = new XML(lcHistory.content);
                             lcHistoryJSON = utility.xml.convertE4XtoJSON(lcHistoryXML);
                             var newChangeOrder = lcHistoryJSON.item[0].order;
+
+
 
                             require('/modules/comment.js').addLifecycleComment(artifactManager, artifact.path, comment, newChangeOrder);
                         }
@@ -477,7 +479,7 @@ var passed=sm.check(session,function(){
 
 
 
-function mobileAppsLifeCycleChange(context, rxtManager){
+function mobileAppsLifeCycleChange(context, rxtManager, utility){
 
 
     var log = new Log();
@@ -491,8 +493,28 @@ function mobileAppsLifeCycleChange(context, rxtManager){
 
     try {
         var artifact = artifactManager.get(id);
-        log.debug('Calling promoteLifecycleState for action : '+action);
+        var attributes = artifact.attributes;
+
+        var previourStatus = artifact['lifecycleState'];
+        log.info('Calling promoteLifecycleState for action mobile : ' + action);
+
         artifactManager.promoteLifecycleState(action,artifact);
+
+
+
+        var comment;
+        if (context.content && (comment=parse(context.content).comment) ) {
+            var lcHistory = artifactManager.getLifecycleHistory(artifact);
+            var lcHistoryXML = new XML(lcHistory.content);
+
+            lcHistoryJSON = utility.xml.convertE4XtoJSON(lcHistoryXML);
+            log.info("lcHistryJSON" + lcHistoryJSON);
+            var newChangeOrder = lcHistoryJSON.item[0].order;
+            require('/modules/comment.js').addLifecycleComment(artifactManager, artifact.path, comment, newChangeOrder);
+        }
+
+
+
         var msg={};
         msg['status']='ok';
         print(msg);
