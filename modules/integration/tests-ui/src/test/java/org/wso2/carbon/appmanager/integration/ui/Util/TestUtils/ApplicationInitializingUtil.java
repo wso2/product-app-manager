@@ -45,8 +45,14 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
     public static String appId;
     public static String version;
     public static String appName;
+    public static String appDisplayName;
     public static String appURL;
     public static String transport;
+    public static String anonymousAccessToUrlPattern;
+    public static String policyGroupName;
+    public static String throttlingTier;
+    public static String objPartialMappings;
+    public static String policyGroupDesc;
     public static boolean appSubscriptionStatus;
     private APPMStoreRestClient appMStore;
     private APPMPublisherRestClient appMPublisher;
@@ -72,8 +78,14 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
         appMPublisher = new APPMPublisherRestClient(publisherURLHttp);
         appURL = appProp.getAppURL();
         appName = appProp.getAppName();
+        appDisplayName = appProp.getAppDisplayName();
         version = appProp.getVersion();
         transport = appProp.getTransports();
+        anonymousAccessToUrlPattern = appProp.getAnonymousAccessToUrlPattern();
+        policyGroupName = appProp.getPolicyGroupName();
+        throttlingTier = appProp.getThrottlingTier();
+        objPartialMappings = appProp.getObjPartialMappings();
+        policyGroupDesc = appProp.getPolicyGroupDesc();
         storeUIClient = new APPMStoreUIClient();
         driver = BrowserManager.getWebDriver();
     }
@@ -100,9 +112,12 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
             policyPartialId = responseId.getString("id");
         }
 
+        String policyGropuId = appMPublisher.savePolicyGroup(xml, anonymousAccessToUrlPattern, policyGroupName,
+                throttlingTier, objPartialMappings, policyGroupDesc);
+
         int hostPort = 8080;
-        AppCreateRequest appCreateRequest = createSingleApp(appName+prefix, version, transport, appURL, hostPort,
-                appProp.getTier(), policyPartialId);
+        AppCreateRequest appCreateRequest = createSingleApp(appName+prefix, appDisplayName, version, transport, appURL, hostPort,
+                appProp.getTier(), policyPartialId, policyGropuId);
         appName = appCreateRequest.getOverview_name();
         version = appCreateRequest.getOverview_version();
         HttpResponse appCreateResponse = appMPublisher.createApp(appCreateRequest);
