@@ -25,7 +25,7 @@ require('/modules/store.js').exec(function (ctx) {
 
 
     var devices = [];
-    if(user != null){
+    if(user != null && mdmConfig.isMDMEnabled()){
         devices = parse(String(devicesClass.getDevicesList(user.tenantId, "user", [user.username])));
     }
 

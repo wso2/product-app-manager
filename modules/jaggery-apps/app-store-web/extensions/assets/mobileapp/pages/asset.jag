@@ -53,7 +53,7 @@ require('/modules/store.js').exec(function (ctx) {
 
     var rxtAttributes = utility.getRXTAttributes(tenantId, type);
     var devices = [];
-    if(user != null){
+    if(user != null && mdmConfig.isMDMEnabled()){
         devices = parse(String(devicesClass.getDevicesList(user.tenantId, "user", [user.username])));
     }
 
