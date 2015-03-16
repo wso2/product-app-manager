@@ -128,7 +128,7 @@ $( ".btn-view-app" ).click(function(e) {
 });
 
 var showMessageModel = function (msg, head, type) {
-
+    $('#messageModal2 #commentText').html('');
     $('#messageModal2').html($('#confirmation-data1').html());
     $('#messageModal2 h3.modal-title').html((head));
     $('#messageModal2 div.modal-body').html('\n\n' + (msg) + '</b>');

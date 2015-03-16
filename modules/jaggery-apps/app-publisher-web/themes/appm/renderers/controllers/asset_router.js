@@ -21,6 +21,8 @@ var render=function(theme,data,meta,require){
     var listPartial='view-asset';
     var heading = "";
     var newViewData;
+    var notifications = session.get('notifications');
+    var notificationCount = session.get('notificationCount');
     //Determine what view to show
     switch(data.op){
 
@@ -40,7 +42,7 @@ var render=function(theme,data,meta,require){
             listPartial='edit-asset';
             var copyOfData = parse(stringify(data));
             data.newViewData =  require('/helpers/splitter.js').splitData(copyOfData);
-            heading = data.newViewData.name.value;
+            heading = data.newViewData.displayName.value;
             break;
         case 'lifecycle':
             listPartial='lifecycle-asset';
@@ -59,7 +61,7 @@ var render=function(theme,data,meta,require){
             listPartial='copy-app';
             var copyOfData = parse(stringify(data));
             data.newViewData =  require('/helpers/splitter.js').splitData(copyOfData);
-            heading = data.newViewData.name.value;
+            heading = data.newViewData.displayName.value;
             break;
         default:
             break;
@@ -77,7 +79,13 @@ var render=function(theme,data,meta,require){
             ribbon: [
                 {
                     partial: 'ribbon',
-                    context: {active:listPartial, createPermission : createActionAuthorized, viewStats : viewStatsAuthorized}
+                    context: {
+                        active:listPartial,
+                        createPermission : createActionAuthorized,
+                        viewStats : viewStatsAuthorized,
+                        notifications : notifications,
+                        notificationCount: notificationCount
+                    }
                 }
             ],
             leftnav: [
