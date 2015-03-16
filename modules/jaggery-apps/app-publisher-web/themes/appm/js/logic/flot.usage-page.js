@@ -146,7 +146,7 @@ var drawAPIUsageByPage = function (response) {
         },
         bars: {
             align: "center",
-            barWidth: 0.3,
+            barWidth: 0.5,
             horizontal: true
         },
         yaxis: {
@@ -155,7 +155,7 @@ var drawAPIUsageByPage = function (response) {
             axisLabel: "Web Apps",
             tickLength: 0,
             ticks: defaultFilterValues,
-            show:false
+            //show:false
         },
         xaxis: {
             axisLabelUseCanvas: false,
@@ -236,7 +236,7 @@ var drawAPIUsageByPage = function (response) {
             var y = item.datapoint[0];
             //console.log(JSON.stringify(item.ticks));
 
-            label = item.series.yaxis.ticks[x].label;
+            label = defaultFilterValues[x].label;
 
 
 
@@ -334,7 +334,7 @@ var drawAPIUsageByPage = function (response) {
                 bars: {
                     show: true,
                     align: "center",
-                    barWidth: 0.3,
+                    barWidth: 0.5,
                     horizontal: true,
                 }
             },
