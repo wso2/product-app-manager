@@ -519,23 +519,35 @@ require('/modules/publisher.js').exec(function(ctx) {
             var appMDAO = Packages.org.wso2.carbon.appmgt.impl.dao.AppMDAO;
             var appMDAOObj = new appMDAO();
 
-            appMDAOObj.updateOAuthAPIAccessInfo(webAppObj);
+	    var tenantId = server.current(session).tenantId;
+
+            appMDAOObj.updateOAuthAPIAccessInfo(webAppObj, tenantId);
 
             var count = 1;
             var tokenEndpoint = attributes["oauthapis_apiTokenEndpoint" + count];
 
-            while (tokenEndpoint != null && tokenEndpoint.length > 0) {
+	    var tenantId = server.current(session).tenantId;
+	    var tenantDomain = carbon.server.tenantDomain({tenantId:tenantId});
+	    var saml2SsoIssuer = null;
+	    if (tenantId == -1234) {
+		saml2SsoIssuer = attributes["overview_name"] + "-" + attributes["overview_version"];
+	    } else {
+		saml2SsoIssuer = attributes["overview_name"] + "-" + tenantDomain + "-" + attributes["overview_version"];
+	    }
+
+            while (tokenEndpoint != null && tokenEndpoint.trim().length > 0) {
 
                 webAppObj.setTokenEndpoint(attributes["oauthapis_apiTokenEndpoint" + count]);
                 webAppObj.setApiConsumerKey(attributes["oauthapis_apiConsumerKey" + count]);
                 webAppObj.setApiConsumerSecret(attributes["oauthapis_apiConsumerSecret" + count]);
                 webAppObj.setApiName(attributes["oauthapis_apiName" + count]);
+		webAppObj.setSaml2SsoIssuer(saml2SsoIssuer);
 
                 count++;
                 tokenEndpoint = attributes["oauthapis_apiTokenEndpoint" + count];
 
                 //Save OAuth APIs consumer details per given web-app
-                appMDAOObj.addOAuthAPIAccessInfo(webAppObj);
+                appMDAOObj.addOAuthAPIAccessInfo(webAppObj, tenantId);
             }
 
             saveExternalEntitlementPolicies(context.post);

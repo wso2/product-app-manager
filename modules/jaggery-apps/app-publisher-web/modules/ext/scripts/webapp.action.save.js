@@ -108,7 +108,7 @@ var module = function () {
         appMDAOObj.addWebApp(webAppObj);
 
         //Generate consumer/secret for web-app
-        var tenantId = identityUtil.getTenantIdOFUser(webappProvider);
+        var tenantId = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantId();
         appMDAOObj.addOAuthConsumer(webappProvider, tenantId, webappName, "");
 
         var count = 1;
@@ -124,7 +124,7 @@ var module = function () {
             tokenEndpoint = attributes["oauthapis_apiTokenEndpoint" + count];
 
             //Save OAuth APIs consumer details per given web-app
-            appMDAOObj.addOAuthAPIAccessInfo(webAppObj);
+            appMDAOObj.addOAuthAPIAccessInfo(webAppObj, tenantId);
         }
 
     }
