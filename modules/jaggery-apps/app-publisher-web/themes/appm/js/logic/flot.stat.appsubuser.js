@@ -126,7 +126,7 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
     function getWebAppUsage() {
         $('div#webAppTable2_wrapper.dataTables_wrapper.no-footer').remove();
 
-        var $dataTable = $('<table class="display" width="100%" cellspacing="0" id="webAppTable2" ></table>');
+        var $dataTable = $('<table class="display" width="100%" cellspacing="0" id="webAppTable2"  ></table>');
         $dataTable.append($('<thead class="tableHead"><tr >'
             + '<th id ="webApp">Web App</th>'
             + '<th width="10%">App Version</th>'
@@ -169,7 +169,9 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
             $('#placeholder2').html($dataTable);
            // $('#flot-placeholder').append($('<div id="lineWithFocusChart"><svg style="height:450px;"></svg></div>'));
             $('#placeholder2').show();
-            $('#webAppTable2').dataTable();
+            $('#webAppTable2').dataTable({
+                                             "bFilter": false
+                                           });
         }
     }
 
