@@ -23,7 +23,7 @@ var format = function (context) {
     }else{
         context.asset_css = "link";
     }
-    
+
     context.asset.rating.ratingPx = ratingToPixels(avg);
     
     return context;

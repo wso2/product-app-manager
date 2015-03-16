@@ -106,6 +106,9 @@ $(function() {
             context = "/" + context;
             $('#overview_context').val(context);
         }
+        if ($('#newDisplayName').val() != '') {
+            $('#overview_displayName').val($('#newDisplayName').val());
+        }
 
         var version = $('#overview_version').val();
 
@@ -126,97 +129,101 @@ $(function() {
         $('#entitlementPolicies').val(JSON.stringify(entitlementPolicies));
 
         // AJAX request options.
-        var options = {
-            success: function(response) {
+        if(version != '') {
+            var options = {
+                success: function (response) {
 
-                var result = JSON.parse(response);
+                    var result = JSON.parse(response);
 
-                //Check if the asset was added
-                if (result.ok) {
+                    //Check if the asset was added
+                    if (result.ok) {
 
-                    showAlert('Asset added successfully.', 'success');
+                        showAlert('Asset added successfully.', 'success');
 
-                    (function setupPermissions() {
+                        (function setupPermissions() {
 
-                        var rolePermissions = [];
+                            var rolePermissions = [];
 
-                        // 'GET' permission to be applied to the selected roles.
-                        var readPermission = new Array();
-                        readPermission.push("GET");
+                            // 'GET' permission to be applied to the selected roles.
+                            var readPermission = new Array();
+                            readPermission.push("GET");
 
-                        // Get roles from the UI
-                        var rolesInUI = $('#roles').tokenInput("get");
+                            // Get roles from the UI
+                            var rolesInUI = $('#roles').tokenInput("get");
 
-                        for (var i = 0; i < rolesInUI.length; i++) {
-                            rolePermissions.push({
-                                role: rolesInUI[i].id,
-                                permissions: readPermission
-                            });
+                            for (var i = 0; i < rolesInUI.length; i++) {
+                                rolePermissions.push({
+                                    role: rolesInUI[i].id,
+                                    permissions: readPermission
+                                });
+                            }
+
+                            if (rolePermissions.length > 0) {
+                                $.ajax({
+                                    url: '/publisher/asset/' + type + '/id/' + result.id + '/permissions',
+                                    type: 'POST',
+                                    processData: false,
+                                    contentType: 'application/json',
+                                    data: JSON.stringify(rolePermissions),
+                                    success: function (response) {
+                                        window.location = '/publisher/assets/' + type + '/';
+                                    },
+                                    error: function (response) {
+                                        showAlert('Error adding permissions.', 'error');
+                                    }
+                                });
+                            } else {
+                                window.location = '/publisher/assets/' + type + '/';
+                            }
+                        })();
+
+                        /**adding tags**/
+
+                        var data = {};
+                        var tags = [];
+                        var selectedTags;
+                        selectedTags = $('#tag-test').tokenInput('get');
+
+                        for (var index in selectedTags) {
+                            tags.push(selectedTags[index].name);
                         }
 
-                        if (rolePermissions.length > 0) {
+                        data['tags'] = tags
+                        if (selectedTags.length > 0) {
                             $.ajax({
-                                url: '/publisher/asset/' + type + '/id/' + result.id + '/permissions',
-                                type: 'POST',
-                                processData: false,
-                                contentType: 'application/json',
-                                data: JSON.stringify(rolePermissions),
-                                success: function(response) {
-                                    window.location = '/publisher/assets/' + type + '/';
-                                },
-                                error: function(response) {
-                                    showAlert('Error adding permissions.', 'error');
+                                url: TAG_API_URL + $('#meta-asset-type').val() + '/' + result.id,
+                                type: 'PUT',
+                                data: JSON.stringify(data),
+                                contentType: 'application/json; charset=utf-8',
+                                dataType: 'json',
+                                error: function () {
+                                    showAlert('Unable to add the selected tag.', 'error');
                                 }
                             });
-                        } else {
-                            window.location = '/publisher/assets/' + type + '/';
                         }
-                    })();
 
-                    /**adding tags**/
+                        if ($('#autoConfig').is(':checked')) {
+                            createServiceProvider();
+                        }
 
-                    var data = {};
-                    var tags = [];
-                    var selectedTags;
-                    selectedTags = $('#tag-test').tokenInput('get');
-
-                    for (var index in selectedTags) {
-                        tags.push(selectedTags[index].name);
+                    } else {
+                        var msg = result.message;
+                        showAlert(msg, 'error');
                     }
 
-                    data['tags'] = tags
-                    if (selectedTags.length > 0) {
-                        $.ajax({
-                            url: TAG_API_URL + $('#meta-asset-type').val() + '/' + result.id,
-                            type: 'PUT',
-                            data: JSON.stringify(data),
-                            contentType: 'application/json; charset=utf-8',
-                            dataType: 'json',
-                            error: function() {
-                                showAlert('Unable to add the selected tag.', 'error');
-                            }
-                        });
-                    }
+                }, // post-submit callback
 
-                    if ($('#autoConfig').is(':checked')) {
-                        createServiceProvider();
-                    }
+                error: function (response) {
+                    showAlert('Failed to add asset.', 'error');
+                },
 
-                } else {
-                    var msg = result.message;
-                    showAlert(msg, 'error');
-                }
-
-            }, // post-submit callback 
-
-            error: function(response) {
-                showAlert('Failed to add asset.', 'error');
-            },
-
-            url: '/publisher/asset/' + type,
-            type: 'POST',
-            data:{oldVersion : $("#oldversion").val()}
-        };
+                url: '/publisher/asset/' + type,
+                type: 'POST',
+                data: {oldVersion: $("#oldversion").val()}
+            };
+        }else{
+            showAlert('Mandatory field \'New Version\' has not been filled in.', 'error');
+        }
 
         $('#form-asset-copy').ajaxSubmit(options);
 

@@ -24,7 +24,7 @@
 								</div>
 								<div class="asset-intro-inner">
 									<h3>
-										<span>{{overview_name}}</span> <small>{{overview_version}}</small>
+										<span>{{overview_displayName}}</span> <small>{{overview_version}}</small>
 									</h3>
 									<div class="star-rating">
 										<div class="asset-rating">
@@ -84,10 +84,10 @@
 							<div class="asset-details">
 								<div class="asset-name">
 									<input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
-									<a href="{{url "/assets"}}/{{../type}}/{{../id}}"><h4>{{overview_name}}</h4></a>
+									<a href="{{url "/assets"}}/{{../type}}/{{../id}}"><h4>{{overview_displayName}}</h4></a>
 								</div>
 								<div class="asset-rating">
-									<div class="asset-rating-{{../rating/average}}star"></div>
+									<div class="asset-rating-{{../rating}}star"></div>
 								</div>
 
 								{{#if ../overview_skipGateway}}

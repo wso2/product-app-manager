@@ -66,7 +66,7 @@ document.lazy_load.addItemsToPage = function(){
                 $newElem.attr("data-id" , data[i].id);
                 $(".assetsLink" , $newElem).attr("href", "assets/"+data[i].type+"/"+data[i].id);
                 $("img" , $newElem).attr("src", data[i].attributes.images_thumbnail);
-                $("h4" , $newElem).html(data[i].attributes.overview_name);
+                $("h4" , $newElem).html(data[i].attributes.overview_displayName);
                 $(".asset-rating div" , $newElem).attr("class", "asset-rating-"+data[i].rating.average+"star");
 
 

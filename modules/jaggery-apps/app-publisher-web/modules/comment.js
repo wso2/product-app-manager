@@ -71,6 +71,7 @@ var getlatestLCComment = function (artifactManager, rid) {
 	Adds a comment about a lifecycle change
 **/
 var addLifecycleComment = function (artifactManager, rid, commentText, changeOrder) {
+
 		var registry = artifactManager.registry;
 
 		var comment = {

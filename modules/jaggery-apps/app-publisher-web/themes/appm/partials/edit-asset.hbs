@@ -400,7 +400,7 @@
     <input type="button" value="Update" class="btn btn-primary"
            name="editAssetButton" id="editAssetButton"> <input
         type="reset" value="Reset" class="btn">
-    <button class="btn btn-cancel" onclick="window.location='/publisher';return false;">Cancel</button>
+    <button class="btn btn-cancel" onclick="history.go(-1);">Cancel</button>
     <input
         type="hidden" value="{{shortName}}" name="{{shortName}}"
         id="meta-asset-type">

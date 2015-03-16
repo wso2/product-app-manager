@@ -37,7 +37,8 @@ require('/modules/store.js').exec(function (ctx) {
             search = require('/modules/search.js'),
             subscriptions = {},
             subscription = false,
-            avaliablePages,isSubscribed;
+            avaliablePages,isSubscribed,
+            social = carbon.server.osgiService('org.wso2.carbon.social.core.service.SocialActivityService');
 
     caramel = require('caramel');
     process = require('process'),
@@ -116,84 +117,14 @@ require('/modules/store.js').exec(function (ctx) {
             individualSubscription = subscriptionService.getSubscription(appInfo, defaultApplicationName, "INDIVIDUAL", null).subscription;
         }
 
-
-        // Get all available IDPs (enterprises)
-        var enterprises = getEnterprises(asset);
-
         var subscriptionInfo = {};
-
         subscriptionInfo["enterpriseSubscription"] = enterpriseSubscription;
         subscriptionInfo["individualSubscription"] = individualSubscription;
-        subscriptionInfo["enterprises"] = enterprises;
-        subscriptionInfo["viewData"] = getSubscriptionViewData(enterpriseSubscription, enterprises);
-
         return subscriptionInfo;
 
     }
 
-    // Returns HBS friendly subscription info.
-    var getSubscriptionViewData = function (enterpriseSubscription, enterprises) {
 
-        var viewData = new Array();
-
-        if (!enterprises) {
-            return viewData;
-        }
-
-        // Create a Set of trusted IDPs in the enterprise subscription.
-        var trustedIdpsSet = {};
-
-        if (enterpriseSubscription) {
-
-            var trustedIdps = JSON.parse(enterpriseSubscription.trustedIdps);
-
-            for (var i = 0; i < trustedIdps.length; i++) {
-                trustedIdpsSet[trustedIdps[i]] = true;
-            }
-        }
-
-        for (var i = 0; i < enterprises.length; i++) {
-            var viewEntry = {};
-            viewEntry["enterprise"] = enterprises[i];
-            viewEntry["subscribed"] = enterprises[i] in trustedIdpsSet;
-            viewData.push(viewEntry);
-        }
-
-        return viewData;
-    }
-
-    var getEnterprises = function (asset) {
-        var store = jagg.module("manager").getAPIStoreObj();
-        var isEmailLoginEnabled = store.isEnableEmailUsername();
-
-        var appName = asset.attributes.overview_name;
-        var appVersion = asset.attributes.overview_version;
-        var appProvider = asset.attributes.overview_provider;
-        var result = null;
-        var issuerName = null;
-        var store = jagg.module("manager").getAPIStoreObj();
-        var isEmailLoginEnabled = store.isEnableEmailUsername();
-
-        //Check whether application author is a tenant
-        if (!isEmailLoginEnabled && appProvider != null && appProvider.indexOf("-AT-") != -1) {
-            result = appProvider.split("-AT-");
-        }
-        if (result != null) {
-            issuerName = appName + "-" + result[1] + "-" + appVersion;
-        } else {
-            issuerName = appName + "-" + appVersion;
-        }
-
-        var ssoProviderInfo = asset.attributes.sso_ssoProvider.split("-");
-
-
-        var authResult = subscriptionService.getEnterprisesForApplication(
-                {appName: issuerName, ssoProviderName: ssoProviderInfo[0], ssoProviderVersion: ssoProviderInfo[1]});
-
-        return authResult.enterprises;
-
-    }
-    
     if (tag) {
         subPage = '/ Tag: "' + tag + '"';
         assets = store.tagged(type, tag, paging);
@@ -299,6 +230,10 @@ require('/modules/store.js').exec(function (ctx) {
 
     var subscriptionInfo;
     assets.forEach(function (asset) {
+
+        //set rating
+        asset.rating = Math.floor(JSON.parse(social.getRating("webapp:" + asset.id)));
+
         isSubscribed = false;
         //set subscription details for each asset
         subscriptionInfo = getSubscriptionInfo(asset)
@@ -322,6 +257,12 @@ require('/modules/store.js').exec(function (ctx) {
             asset.overview_skipGateway = false;
         }
     });
+
+    var recentAssets = store.recentAssets(type);
+
+    for(var i = 0; i < recentAssets.length; i++){
+        recentAssets[i].rating = {average : Math.floor(JSON.parse(social.getRating("webapp:" + recentAssets[i].id)))};
+    }
 
     caramel.render({
         title: 'Store | Assets',
@@ -364,7 +305,7 @@ require('/modules/store.js').exec(function (ctx) {
         },
 
         myAssets : { user:user, type: type, title: title, subscriptions: subscriptions[type], subscription : subscription, pageIndices : pageIndices, leftNav:leftnav, rightNav:rightnav},
-        recentAssets: store.recentAssets(type)
+        recentAssets: recentAssets
 
     });
 }, request, response, session);

@@ -46,22 +46,10 @@ var generateLeftNavJson = function(data, listPartial) {
         if(createActionAuthorized) {
             leftNavItems = { leftNavLinks: [
                 {
-                    name: "Overview",
-                    iconClass: "icon-list-alt",
-                    additionalClasses: (listPartial == "view-asset" ) ? "active" : null,
-                    url: "/publisher/asset/operations/view/" + data.shortName + "/" + data.artifact.id + ""
-                },
-                {
                     name: "Edit",
                     iconClass: "icon-edit",
                     additionalClasses: (listPartial == "edit-asset" ) ? "active" : null,
                     url: "/publisher/asset/operations/edit/" + data.shortName + "/" + data.artifact.id + ""
-                },
-                {
-                    name: "Documentation",
-                    iconClass: "icon-file-alt",
-                    additionalClasses: (listPartial == "documentation" ) ? "active" : null,
-                    url: "/publisher/asset/operations/documentation/" + data.shortName + "/" + data.artifact.id + ""
                 },
                 {
                     name: "Copy",
@@ -73,22 +61,16 @@ var generateLeftNavJson = function(data, listPartial) {
             };
         }else{
             leftNavItems = { leftNavLinks: [
-                {
-                    name: "Overview",
-                    iconClass: "icon-list-alt",
-                    additionalClasses: (listPartial == "view-asset" ) ? "active" : null,
-                    url: "/publisher/asset/operations/view/" + data.shortName + "/" + data.artifact.id + ""
-                },
-                {
-                    name: "Documentation",
-                    iconClass: "icon-file-alt",
-                    additionalClasses: (listPartial == "documentation" ) ? "active" : null,
-                    url: "/publisher/asset/operations/documentation/" + data.shortName + "/" + data.artifact.id + ""
-                }
+
             ]
             };
         }
     }
+
+    if(listPartial == "edit-asset" || listPartial == "copy-app"){
+        leftNavItems ={};
+    }
+
     return leftNavItems;
 };
 
