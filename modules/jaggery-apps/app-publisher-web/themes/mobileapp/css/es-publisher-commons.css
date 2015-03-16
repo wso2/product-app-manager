@@ -1584,3 +1584,6 @@ ul.dropdown-menu.notifications {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+button.btn.btn-reject-proceed {
+    background-color: #ccc;
+}
