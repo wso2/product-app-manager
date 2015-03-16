@@ -40,7 +40,7 @@ var render=function(theme,data,meta,require){
             listPartial='edit-asset';
             var copyOfData = parse(stringify(data));
             data.newViewData =  require('/helpers/splitter.js').splitData(copyOfData);
-            heading = data.newViewData.name.value;
+            heading = data.newViewData.displayName.value;
             break;
         case 'lifecycle':
             listPartial='lifecycle-asset';
@@ -59,7 +59,7 @@ var render=function(theme,data,meta,require){
             listPartial='copy-app';
             var copyOfData = parse(stringify(data));
             data.newViewData =  require('/helpers/splitter.js').splitData(copyOfData);
-            heading = data.newViewData.name.value;
+            heading = data.newViewData.displayName.value;
             break;
         default:
             break;
