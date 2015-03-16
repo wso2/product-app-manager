@@ -21,6 +21,8 @@ var render = function (theme, data, meta, require) {
 
     var publishActionAuthorized = permissions.isAuthorized(user.username, config.permissions.mobileapp_publish, um);
     var createMobileAppAuthorized = permissions.isAuthorized(user.username, config.permissions.mobileapp_create, um);
+    var updateMobileAppAuthorized = permissions.isAuthorized(user.username, config.permissions.mobileapp_update, um);
+
 
     if(publishActionAuthorized){
         data.isNotReviwer = false;
@@ -57,7 +59,7 @@ var render = function (theme, data, meta, require) {
                 var skipFlag = false;
 
                 if(pubActions.indexOf(String(name)) > -1){
-                    log.info("## Skip called!!! for name : "+name);
+                   // log.info("## Skip called!!! for name : "+name);
                     if(!publishActionAuthorized) {
                         skipFlag = true;
                     }
@@ -132,6 +134,7 @@ var render = function (theme, data, meta, require) {
         case 'list':
             listPartial = 'list-assets';
              data = require('/helpers/view-asset.js').format(data);
+            data.updateMobileAppAuthorized = updateMobileAppAuthorized;
             break;
         case 'statistics':
             listPartial = 'statistics';

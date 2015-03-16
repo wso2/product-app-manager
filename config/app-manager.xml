@@ -589,5 +589,18 @@
 
     </EntitlementServiceConfiguration>
 
+
+	<!--
+		Configuration to handle Mobile apps and MDM.	
+    	-->
+	<MobileAppsConfiguration>
+		<MDM>
+	           <Enabled>false</Enabled>
+		   <ServerUrl>https://localhost:9450</ServerUrl>
+		   <OperationsClass>org.wso2.carbon.appmgt.mobile.wso2mdm.WSO2MDMOperations</OperationsClass>
+		   <EnableSampleDevices>false</EnableSampleDevices>
+                </MDM>
+	</MobileAppsConfiguration>	
+
 </APIManager>
 

@@ -13,6 +13,12 @@ var render=function(theme,data,meta,require){
     var user=server.current(session);
     var um=server.userManager(user.tenantId);
     var createMobileAppAuthorized = permissions.isAuthorized(user.username, config.permissions.mobileapp_create, um);
+    var updateMobileAppAuthorized = permissions.isAuthorized(user.username, config.permissions.mobileapp_update, um);
+
+    if(!updateMobileAppAuthorized){
+        response.sendError(400);
+        return;
+    }
 
 	var listPartial='view-asset';
     var heading = "";
