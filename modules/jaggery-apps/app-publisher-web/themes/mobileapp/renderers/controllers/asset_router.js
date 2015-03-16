@@ -16,6 +16,8 @@ var render=function(theme,data,meta,require){
 
 	var listPartial='view-asset';
     var heading = "";
+    var mobileNotifications = session.get('mobileNotifications');
+    var mobileNotificationCount = session.get('mobileNotificationCount');
 	//Determine what view to show
 	switch(data.op){
 	case 'create':
@@ -70,7 +72,13 @@ var render=function(theme,data,meta,require){
         ribbon: [
             {
                 partial: 'ribbon',
-		        context:breadCrumbData
+		        context:{
+                    active:listPartial,
+                    isNotReviwer:data.isNotReviwer,
+                    createMobileAppPerm:createMobileAppAuthorized,
+                    mobileNotifications : mobileNotifications,
+                    mobileNotificationCount: mobileNotificationCount
+                }
             }
         ],
         leftnav: [
