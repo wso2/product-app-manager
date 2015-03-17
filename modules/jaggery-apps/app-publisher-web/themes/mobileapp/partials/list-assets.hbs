@@ -6,6 +6,8 @@
 <div class="asset-being-added">
 </div>
 
+
+
     {{#if artifacts}}
     <div class="row-fluid">
         <table class="table table-striped list-asset-table">
@@ -18,7 +20,7 @@
                         <a href="?sortby=name&sort=asc">Name <i class="icon-caret-down"></i></a>
                     {{/ifCond}}
                 </th>
-                {{#if ../this.isReviwer}}><th></th>{{/if}}
+                {{#if ../this.isReviwer}}<th></th>{{/if}}
                 <th>
                     {{#ifCond sortOptions.sortBy "==" "os"}}
                         <a href="?sortby=os&sort={{sortOptions.sort}}">Platform
@@ -70,7 +72,12 @@
             <img src="{{this.attributes.images_thumbnail}}" class="" />
         </td>
         <td class="asset-listing-name">
-            <a href='/publisher/asset/operations/edit/mobileapp/{{this.id}}'>
+            {{#if ../updateMobileAppAuthorized}}
+                <a href='/publisher/asset/operations/edit/mobileapp/{{this.id}}'>
+             {{else}}
+            <a href='#'>
+            {{/if}}
+
                     {{this.attributes.overview_name}}
             </a>
         </td>
