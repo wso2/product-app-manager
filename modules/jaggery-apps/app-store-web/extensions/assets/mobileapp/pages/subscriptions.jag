@@ -27,7 +27,11 @@ require('/modules/store.js').exec(function (ctx) {
 
     var devices = [];
     if(user != null && mdmConfig.isMDMEnabled()){
-        devices =  mdm.formatDevicesList(parse(String(devicesClass.getDevicesList(user.tenantId, "user", [user.username]))));
+        if(mdmConfig.isSampleDevicesEnabled()){
+            devices =  parse(String(devicesClass.getDevicesList(user.tenantId, "user", [user.username])));
+        }else{
+            devices =  mdm.formatDevicesList(parse(String(devicesClass.getDevicesList(user.tenantId, "user", [user.username]))));
+        }
     }
 
     caramel = require('caramel');
