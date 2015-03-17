@@ -21,7 +21,7 @@
 				<a href="#" id="newest">Newest</a>
 			</li>
 			<li>
-				<a href="# id="oldest">Oldest</a>
+				<a href="#" id="oldest">Oldest</a>
 			</li>
 			<li>
 				<a href="#" class="selected" id="popular">Popular</a>
@@ -40,12 +40,12 @@
 			</p>
 		{{/if}}
 	</div>
-	<div id="more">
-		{{#if reviews}}
-			<p class="load-more" value="{{lastReviewID}}">
+	{{#if more}}
+		<div id="more">
+			<p class="load-more" value="{{offset}}">
 			<a href="#" >More</a>
 			</p>
-		{{/if}}
-	</div>
+		</div>
+	{{/if}}
 	<div id="empty_list"></div>
 </div>

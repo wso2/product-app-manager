@@ -27,7 +27,7 @@ response.addHeader("Content-Type", "application/json");
     var target = request.getParameter('target');
     var sortBy = request.getParameter('sortBy') || "NEWEST";
     var limit = 10;
-    var offset = request.getParameter('PreviousActivityID') || 0;
+    var offset = request.getParameter('offset') || 0;
     var obj = JSON.parse(String(social.getSocialObjectJson(target, sortBy.toUpperCase(), offset, limit)));
     var log = new Log();
     reviewsJSON = obj.attachments;
