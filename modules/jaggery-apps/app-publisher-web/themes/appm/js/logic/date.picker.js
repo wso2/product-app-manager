@@ -82,6 +82,9 @@ $('#date-range').dateRangePicker(
     })
     .bind('datepicker-apply',function(event,obj)
     {
+        if(obj.date2 == 'Invalid Date'){
+            return false;
+        }
          var from = convertDate(obj.date1);
          var to = convertDate(obj.date2);
          $('#date-range').html(from + " to "+ to);
