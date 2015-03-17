@@ -2,11 +2,11 @@ var to = new Date();
 var from = new Date(to.getTime() - 1000 * 60 * 60 * 24 * 30);
 var currentDay = new Date(to.getFullYear(), to.getMonth(), to.getDate(),to.getHours(),to.getMinutes());
 
-var isToday=false;
-var isMonth=false;
-var isHour=false;
-var isDefault=false;
-var isWeek=false;
+var today=false;
+var month=false;
+var hour=false;
+var dateRange=false;
+var week=false;
 
 //day picker
 $('#today-btn').on('click',function(){
@@ -33,8 +33,7 @@ $('#hour-btn').on('click',function(){
     $("#date-range").html(dateStr);
     $('#date-range').data('dateRangePicker').setDateRange(from,to);
     drawGraphs();
-    isHour=true;
-    isWeek,isMonth,isDefault,isToday=false;
+
 })
 
 //week picker
@@ -47,8 +46,7 @@ $('#week-btn').on('click',function(){
     $("#date-range").html(dateStr);
     $('#date-range').data('dateRangePicker').setDateRange(from,to);
     drawGraphs();
-    isWeek=true;
-    isToday,isMonth,isDefault,isHour=false;
+
 })
 
 //month picker
@@ -61,8 +59,7 @@ $('#month-btn').on('click',function(){
     $("#date-range").html(dateStr);
     $('#date-range').data('dateRangePicker').setDateRange(from,to);
     drawGraphs();
-    isMonth=true;
-    isWeek,isToday,isDefault,isHour=false;
+
 })
 
 
@@ -90,8 +87,7 @@ $('#date-range').dateRangePicker(
          $('#date-range').html(from + " to "+ to);
          drawGraphs();
          $('.apply-btn').on('click',function(){
-         isDefault=true;
-         isWeek,isMonth,isToday,isHour=false;
+
          });
     })
     .bind('datepicker-close',function()
@@ -102,8 +98,7 @@ $('#date-range').dateRangePicker(
     $('#date-range').data('dateRangePicker').setDateRange(from,to);
     $('#date-range').html($('#date-range').val());
 
-    isMonth=true;
-    isWeek,isToday,isDefault,isHour=false;
+
 
 $('#date-range').click(function (event) {
     dateRange =true;
