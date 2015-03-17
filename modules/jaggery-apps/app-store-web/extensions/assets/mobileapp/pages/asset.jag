@@ -13,6 +13,7 @@ require('/modules/store.js').exec(function (ctx) {
             matcher = ctx.matcher,
             inDashboard = false,
             utility = require('/modules/util.js'),
+            mdm = require('/extensions/assets/mobileapp/modules/mdm.js').module,
             mdmConfig = new Packages.org.wso2.carbon.appmgt.mobile.store.MDMConfig();
             devicesClass = new Packages.org.wso2.carbon.appmgt.mobile.store.Devices();
 
@@ -52,10 +53,12 @@ require('/modules/store.js').exec(function (ctx) {
     }
 
     var rxtAttributes = utility.getRXTAttributes(tenantId, type);
+
     var devices = [];
     if(user != null && mdmConfig.isMDMEnabled()){
-        devices = parse(String(devicesClass.getDevicesList(user.tenantId, "user", [user.username])));
+        devices =  mdm.formatDevicesList(parse(String(devicesClass.getDevicesList(user.tenantId, "user", [user.username]))));
     }
+
 
     caramel.render({
         title: 'Store | ' + type,
