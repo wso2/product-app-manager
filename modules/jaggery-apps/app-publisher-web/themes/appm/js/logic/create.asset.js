@@ -78,7 +78,7 @@ $(function() {
 				}
 			});
 		} else {
-			showAlert('Context Cannot be null.');
+			showAlert('Context Cannot be null.', 'error');
 		}
 
 	});
@@ -112,7 +112,12 @@ $(function() {
 
 
 		var context = $('#overview_context').val();
-		context = context.indexOf('/') == 0 ? context : '/' + context;
+		if(context != null && context != '') {
+			context = context.indexOf('/') == 0 ? context : '/' + context;
+		}else{
+			showAlert('Context Cannot be null.', 'error');
+			return;
+		}
 
 		$('#overview_context').val(context);
 
