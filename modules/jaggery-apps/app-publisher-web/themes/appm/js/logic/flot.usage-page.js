@@ -107,7 +107,8 @@ var drawAPIUsageByPage = function (response) {
             filterValues.push(chartTicks[n][1]);
             filterData.push(chartData[n][1]);
             state_array.push(true);
-            defaultFilterValues.push([n, chartTicks[n][1]]);
+            defaultFilterValues.push(
+             {"v":n,"label":chartTicks[n][1] } );
             defaultChartData.push([chartData[n][1],n ]);
         } else {
 
@@ -145,7 +146,7 @@ var drawAPIUsageByPage = function (response) {
         },
         bars: {
             align: "center",
-            barWidth: 0.3,
+            barWidth: 0.5,
             horizontal: true
         },
         yaxis: {
@@ -153,7 +154,8 @@ var drawAPIUsageByPage = function (response) {
             axisLabelUseCanvas: true,
             axisLabel: "Web Apps",
             tickLength: 0,
-            ticks: defaultFilterValues
+            ticks: defaultFilterValues,
+            //show:false
         },
         xaxis: {
             axisLabelUseCanvas: false,
@@ -185,7 +187,33 @@ var drawAPIUsageByPage = function (response) {
         $("#placeholder51").html('<h1 class="no-data-heading">No data available</h1>')
     } else {
         $("#placeholder51").html();
-        $.plot($("#placeholder51"), defaultDataset, defaultOptions);
+      somePlot=  $.plot($("#placeholder51"), defaultDataset, defaultOptions);
+            //y axis labeling inside the bar
+            var ctx = somePlot.getCanvas().getContext("2d");
+            var data =(defaultFilterValues);
+            var data1 = somePlot.getData()[0].data;
+            var xaxis = somePlot.getXAxes()[0];
+            var yaxis = somePlot.getYAxes()[0];
+            var offset = somePlot.getPlotOffset();
+            ctx.font = "12px 'Verdana, Arial'";defaultFilterValues
+            ctx.fillStyle = "black";
+            for (var i = 0; i < data.length; i++){
+
+                var text = data[i].label + '';
+
+                var metrics = ctx.measureText(text);
+                var dataPoint = somePlot.getData()[i].datapoints.points; // one point per series
+                var x = dataPoint[0];
+
+                var y = dataPoint[1];
+
+                var xPos =  0+offset.left  // place at end of bar
+                var yPos = yaxis.p2c(y) + offset.top +3;
+                ctx.fillText(text, xPos, yPos);
+                ctx.save();
+
+                ctx.restore();
+            }
     }
     $("#placeholder51").UseTooltip();
 
@@ -208,7 +236,7 @@ var drawAPIUsageByPage = function (response) {
             var y = item.datapoint[0];
             //console.log(JSON.stringify(item.ticks));
 
-            label = item.series.yaxis.ticks[x].label;
+            label = defaultFilterValues[x].label;
 
 
 
@@ -294,7 +322,8 @@ var drawAPIUsageByPage = function (response) {
         var x_iter = 0
         $.each(filterValues, function (index, value) {
             if (state_array[index]) {
-                draw_x_axis.push([x_iter, value]);
+                draw_x_axis.push({"v":x_iter,"label":value }
+               );
                 x_iter++
             }
         });
@@ -305,7 +334,7 @@ var drawAPIUsageByPage = function (response) {
                 bars: {
                     show: true,
                     align: "center",
-                    barWidth: 0.3,
+                    barWidth: 0.5,
                     horizontal: true,
                 }
             },
@@ -315,7 +344,8 @@ var drawAPIUsageByPage = function (response) {
                 axisLabelUseCanvas: true,
                 axisLabel: "Web Apps",
                 tickLength: 0,
-                ticks: draw_x_axis
+                ticks: draw_x_axis,
+                show:false
             },
             xaxis: {
                 axisLabelUseCanvas: false,
@@ -347,7 +377,33 @@ var drawAPIUsageByPage = function (response) {
             dataset.push({data: [draw_y_axis[i]], color: randomColor});
         }
 
-        $.plot($("#placeholder51"), dataset, options);
+        somePlot=$.plot($("#placeholder51"), dataset, options);
+         //y axis labeling inside the bar
+                    var ctx = somePlot.getCanvas().getContext("2d");
+                    var data =(draw_x_axis);
+                    var data1 = somePlot.getData()[0].data;
+                    var xaxis = somePlot.getXAxes()[0];
+                    var yaxis = somePlot.getYAxes()[0];
+                    var offset = somePlot.getPlotOffset();
+                    ctx.font = "12px 'Verdana, Arial'";defaultFilterValues
+                    ctx.fillStyle = "black";
+                    for (var i = 0; i < data.length; i++){
+
+                        var text = data[i].label + '';
+
+                        var metrics = ctx.measureText(text);
+                        var dataPoint = somePlot.getData()[i].datapoints.points; // one point per series
+                        var x = dataPoint[0];
+
+                        var y = dataPoint[1];
+
+                        var xPos =  0+offset.left  // place at end of bar
+                        var yPos = yaxis.p2c(y) + offset.top +3;
+                        ctx.fillText(text, xPos, yPos);
+                        ctx.save();
+
+                        ctx.restore();
+                    }
         $("#placeholder51").UseTooltip();
     });
 }

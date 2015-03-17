@@ -4,7 +4,9 @@ $(function () {
 });
 
 function drawGraphs() {
-
+$('.twitter-typeahead').remove();
+$('#searchUserForm label').append("<input type='text' class='form-control type-ahead' style='width: 200px; ' id='search' placeholder='Enter Subscribed User name'/>")
+ $('#webAppTable2').hide();
     var url = window.location.pathname;
     var comps = url.split('/');
     var type = comps[comps.length - 2];
@@ -90,6 +92,7 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
             cb(matches);
         };
     };
+
     var states = [];
     for (var i = 0; i < parsedResponse.length; i++) {
         states.push(parsedResponse[i][0]);
@@ -104,12 +107,16 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
         displayKey: 'value',
         source: substringMatcher(states)
     });
-    $('.type-ahead.input-lg').siblings('input.tt-hint').addClass('hint-large');
+
+
+    //$('.type-ahead.input-lg').siblings('input.tt-hint').addClass('hint-large');
+
 
     tableStatement = '';
     rawStatement = '';
     /* Overall Web Application Usage Graph */
     $("#target").click(function () {
+
         getWebAppUsage();
     });
 
@@ -119,7 +126,7 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
     function getWebAppUsage() {
         $('div#webAppTable2_wrapper.dataTables_wrapper.no-footer').remove();
 
-        var $dataTable = $('<table class="display" width="100%" cellspacing="0" id="webAppTable2" ></table>');
+        var $dataTable = $('<table class="display" width="100%" cellspacing="0" id="webAppTable2"  ></table>');
         $dataTable.append($('<thead class="tableHead"><tr >'
             + '<th id ="webApp">Web App</th>'
             + '<th width="10%">App Version</th>'
@@ -156,11 +163,15 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
             $('#webAppTable2').hide();
             $('#placeholder2').html('<h1 class="no-data-heading">No data available</h1>');
 
+
         } else {
-            $('#placeholder2').append($dataTable);
-            $('#flot-placeholder').append($('<div id="lineWithFocusChart"><svg style="height:450px;"></svg></div>'));
+            $('#searchUserForm').show();
+            $('#placeholder2').html($dataTable);
+           // $('#flot-placeholder').append($('<div id="lineWithFocusChart"><svg style="height:450px;"></svg></div>'));
             $('#placeholder2').show();
-            $('#webAppTable2').dataTable();
+            $('#webAppTable2').dataTable({
+                                             "bFilter": false
+                                           });
         }
     }
 
@@ -170,11 +181,15 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
     //ajax call to get hits
     $("#placeholder2").on("click", ".trigger-ajax", function () {
 
+
+        $('#lineWithFocusChart').html($('<svg style="height:450px;"></svg></div>'));
+
         $(this).parents('.widget').addClass('graph-maximized');
         $('.backdrop').show();
         $('.widget-head').show();
         $('#placeholder2').hide();
         $('#searchUserForm').hide();
+
 
         $('.btn-remove').on('click', function () {
             $('.widget-head').hide();
@@ -183,6 +198,7 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
             var svg = d3.select("svg");
             svg.selectAll("*").remove();
         })
+
 
         var answerid = $(this).attr('id');
         var test = $(this).closest('tr').attr('id');
@@ -195,12 +211,17 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
 
         var data = []
 
+
+var check;
         for (var i = 0; i < usageByContext.length; i++) {
+       //  $('#lineWithFocusChart').html('');
 
             if (usageByContext[i][0] == $("#search").val() || 'admin') {
 
                 for (var j = 0; j < usageByContext[i][1].length; j++) {
+
                     if (usageByContext[i][1][j][0] == getCell('webApp', '' + test + '').html()) {
+check =true;
                         numOfVersion = usageByContext[i][1][j][1].length;
                         for (var t = 0; t < numOfVersion; t++) {
                             if (usageByContext[i][1][j][1][t][0] == getCell('appVersion', '' + test + '').html()) {
@@ -210,6 +231,8 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
                                     function dateToUnix(year, month, day, hour, minute, second) {
                                         return ((new Date(year, month - 1, day, hour, minute, second)).getTime());
                                     }
+
+
 
                                     for (var l = 0; l < usageByContext[i][1][j][1][t][1][k][1].length; l++) {
 
@@ -293,7 +316,9 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
                                         }
                                     ];
 
+
                                 }
+
                             }
 
                         }
@@ -303,6 +328,12 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
             }
 
         }
+       // alert(check)
+    if(check != true){
+
+        $('#lineWithFocusChart').html('<h1 class="no-data-heading">No data available</h1>');
+
+        }
 
     });
 
@@ -310,6 +341,7 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
     var onDateSelected = function () {
         clearTables();
         drawGraphs();
+
     }
 
     function clearTables() {

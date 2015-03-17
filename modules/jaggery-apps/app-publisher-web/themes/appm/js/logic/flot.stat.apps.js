@@ -89,7 +89,7 @@ var drawAPIUsageByUser = function (response,usageByContext) {
             var newArr = [], found, x, y;
             app = (parsedResponse[i][0]);
 
-            //app = app.replace(/\s+/g, '');
+            app = app.replace(/\s+/g, '');
             if (j != 0) {
                 statement = statement + '<tr>'
             }
@@ -127,7 +127,7 @@ var drawAPIUsageByUser = function (response,usageByContext) {
 
         for(var z = 0; z < dataStructure.length; z++){
 
-            if(app == dataStructure[z].appName){
+            if(app == dataStructure[z].appName.replace(/\s+/g, '')){
                 dataStructure[z].checked = true;
                 data.push({
                     API_name: app,
