@@ -122,3 +122,55 @@
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
 }
+.ribbon-wrapper-red {
+    font-family: "Open Sans";
+    font-size: 12px;
+    width: 88px;
+    height: 122px;
+    overflow: hidden;
+    position: absolute;
+    top: 0px;
+    right: -3px;
+    z-index: 99;
+}
+
+.ribbon-red {
+    font: bold 12px "Open Sans";
+    text-align: center;
+    text-shadow: rgba(255,255,255,0.5) 0px 1px 0px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform:    rotate(45deg);
+    -ms-transform:     rotate(45deg);
+    -o-transform:      rotate(45deg);
+    position: relative;
+    padding: 7px 0;
+    left: -5px;
+    top: 15px;
+    width: 120px;
+    background-color: #DC7A7A;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#DC7A7A), to(#BF4545));
+    background-image: -webkit-linear-gradient(top, #DC7A7A, #BF4545);
+    background-image:    -moz-linear-gradient(top, #DC7A7A, #BF4545);
+    background-image:     -ms-linear-gradient(top, #DC7A7A, #BF4545);
+    background-image:      -o-linear-gradient(top, #DC7A7A, #BF4545);
+    color: #fff;
+    -webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.3);
+    -moz-box-shadow:    0px 0px 3px rgba(0,0,0,0.3);
+    box-shadow:         0px 0px 3px rgba(0,0,0,0.3);
+}
+
+.ribbon-red:before, .ribbon-red:after {
+    content: "";
+    border-top:   3px solid #6e8900;
+    border-left:  3px solid transparent;
+    border-right: 3px solid transparent;
+    position:absolute;
+    bottom: -3px;
+}
+
+.ribbon-red:before {
+    left: 0;
+}
+.ribbon-red:after {
+    right: 0;
+}
