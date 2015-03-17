@@ -216,7 +216,7 @@ $(function() {
 
 				} else {
                     if(result.isexists){
-                        showAlert(result.msg, 'error');
+                        showAlert(result.message, 'error');
 
                     }else {
                         var msg = processErrorReport(result.report);
