@@ -170,10 +170,11 @@ $stream.on('click', '.icon-thumbs-up', function (e) {
 
 $more.on('click', '.load-more', function (e) {
     e.preventDefault();
+    var offset = parseInt($('.load-more').attr("value"));
         $.get('apis/object.jag', {
             target: target,
             sortBy : $('.com-sort .selected').attr('id'),
-            PreviousActivityID: $('.load-more').attr("value"),
+            offset: offset,
             limit: 10
         }, function (obj) {
             var reviews = obj || [];
@@ -188,12 +189,11 @@ $more.on('click', '.load-more', function (e) {
                 for (var i = 0; i < reviews.length; i++) {
                     var review = reviews[i];
                     str += template(review);
-                    var lastReviewID = review.id;
                 }
                 $stream.append(str);
                 //callback && callback();
                 adjustHeight();
-                $('.load-more').attr("value", lastReviewID);
+                $('.load-more').attr("value", parseInt(offset) + 10);
             });
         })
 
