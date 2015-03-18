@@ -54,11 +54,11 @@
                     {{/ifCond}}
                 </th>
                 <th>
-                    {{#ifCond sortOptions.sortBy "==" "createdDate"}}
-                        <a href="?sortby=createdDate&sort={{sortOptions.sort}}">Created
+                    {{#ifCond sortOptions.sortBy "==" "createdtime"}}
+                        <a href="?sortby=createdtime&sort={{sortOptions.sort}}">Created
                             <i class="icon-caret-{{sortOptions.icon}}"></i></a>
                     {{else}}
-                        <a href="?sortby=createdDate&sort=asc">Created<i class="icon-caret-down"></i></a>
+                        <a href="?sortby=createdtime&sort=asc">Created<i class="icon-caret-down"></i></a>
                     {{/ifCond}}
                 </th>
                 <th><a href="#">Status</a></th>
