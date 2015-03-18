@@ -100,7 +100,7 @@
         {
             "name":"description",
             "table":"overview",
-            "value":"The provider has not given a description."
+            "value":""
         }
 
     ],
