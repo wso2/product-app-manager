@@ -11,7 +11,7 @@
             <table class="table table-striped list-asset-table">
                 <thead>
                 <th colspan="2">
-                    {{#ifCond sortOptions.sortBy "==" "name"}}
+                    {{#ifCond sortOptions.sortBy "==" "displayName"}}
                         <a href="?sortby=displayName&sort={{sortOptions.sort}}" class="sort-list">Name
                             <i class="icon-caret-{{sortOptions.icon}}"></i></a>
                         {{else}}
