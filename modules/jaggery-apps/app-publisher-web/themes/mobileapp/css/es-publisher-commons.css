@@ -1592,3 +1592,7 @@ button.btn.btn-view-app {
     font-size: 18px;
     padding: 0px;
 }
+
+textarea#txtDescription, textarea#txtRecentChanges {
+    padding: 7px;
+}
