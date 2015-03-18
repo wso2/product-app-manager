@@ -65,7 +65,9 @@
         }
 
         function unsubscribe(path){
-            registry.remove(path);
+            if (registry.exists(path)) {
+                registry.remove(path);
+            }
         }
 
 
