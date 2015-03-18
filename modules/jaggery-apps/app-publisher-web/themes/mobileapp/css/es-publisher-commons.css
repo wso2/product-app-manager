@@ -1588,3 +1588,7 @@ button.btn.btn-reject-proceed {
     background-color: #ccc;
 }
 .load-seperator{margin-right: 20px;}
+button.btn.btn-view-app {
+    font-size: 18px;
+    padding: 0px;
+}
