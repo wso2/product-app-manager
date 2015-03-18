@@ -1,9 +1,12 @@
 {{#with asset}}
     {{#attributes}}
         {{#if ../../inDashboard}}
-            <a id="btn-add-gadget" class="btn disabled" href="#modal-add-gadget"
+
+            <a id="btn-add-gadget" class="btn btn-primary" href="#modal-add-gadget"
                data-toggle="modal"
-               data-aid="{{../../id}}" data-type="{{../../type}}"> {{t "Installed"}} </a>
+               data-app="{{../../id}}"
+               data-platform="{{../../attributes.overview_platform}}"
+               data-aid="{{../../id}}" data-type="{{../../type}}"> {{t "Installed"}}</a>
 
             {{#if ../../../isEnterpriseInstallEnabled}}
                 <a id="btn-ent-install" class="btn btn-primary" href="#modal-ent-install"
@@ -11,7 +14,7 @@
                    data-app="{{../../../id}}"
                    data-aid="{{../../../id}}"
                    data-platform="{{../../../attributes.overview_platform}}"
-                   data-type="{{../../../type}}"> {{t "Enterprise Install"}}</a>
+                   data-type="{{../../../type}}"> {{t "Ent. Install"}}</a>
             {{/if}}
 
         {{else}}
@@ -39,7 +42,7 @@
                        data-app="{{../../../../id}}"
                        data-aid="{{../../../../id}}"
                        data-platform="{{../../../../attributes.overview_platform}}"
-                       data-type="{{../../../../type}}"> {{t "Enterprise Install"}}</a>
+                       data-type="{{../../../../type}}"> {{t "Ent. Install"}}</a>
                  {{/if}}
 
             {{else}}

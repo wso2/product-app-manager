@@ -80,8 +80,12 @@ function performInstalltion(device, app){
             text : 'Application is provisioned to the device',
             'layout' : 'center',
             'timeout': 1500,
-            'modal': false
+            'modal': false,
+             'onClose': function() {
+                 location.reload();
+            }
         });
+
 
     });
 

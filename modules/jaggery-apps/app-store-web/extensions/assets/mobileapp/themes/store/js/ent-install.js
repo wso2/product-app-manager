@@ -161,7 +161,10 @@ $(document).ready( function () {
                                     text : 'App is installed to the selected role',
                                     'layout' : 'center',
                                     'modal' : true,
-                                    timeout: 1000
+                                    timeout: 1000,
+                                    'onClose': function() {
+                                        location.reload();
+                                    }
                                 });
                         });
 
@@ -227,7 +230,10 @@ $(document).ready( function () {
                                     text : 'App is uninstalled from the selected role',
                                     'layout' : 'center',
                                     'modal' : true,
-                                    timeout: 1000
+                                    timeout: 1000,
+                                    'onClose': function() {
+                                        location.reload();
+                                    }
                                 });
                          });
 
