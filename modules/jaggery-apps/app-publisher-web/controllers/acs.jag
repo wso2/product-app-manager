@@ -10,6 +10,7 @@ include("/extensions/webapp/modules/jagg/jagg.jag");
             relayState = request.getParameter('RelayState'),
             cookie= request.getHeader("Cookie"),
             sso = require('sso'),
+	        server = require('carbon').server,
             samlRespObj,
             keyStoreProps = {
                 KEY_STORE_NAME: process.getProperty('carbon.home') + configs.ssoConfiguration.keyStoreName,
@@ -39,6 +40,14 @@ include("/extensions/webapp/modules/jagg/jagg.jag");
                         	session.put("Loged", "true");
 
                         	//sso_sessions[sessionObj.sessionIndex] = sessionObj.sessionId;
+
+                        	var identityUtil = Packages.org.wso2.carbon.identity.core.util.IdentityUtil;
+				            var tenantId = identityUtil.getTenantIdOFUser(sessionObj.loggedInUser);
+
+				            var registryService = server.osgiService('org.wso2.carbon.registry.core.service.RegistryService');
+				            var commonUtil = Packages.org.wso2.carbon.governance.lcm.util.CommonUtil;
+				            commonUtil.addDefaultLifecyclesIfNotAvailable(registryService.getConfigSystemRegistry(tenantId),
+                                                          commonUtil.getRootSystemRegistry(tenantId), false);
 
                         	log.debug("session index :: " + sessionObj.sessionIndex);
                         	log.debug("session :: " + sessionObj.sessionId);
