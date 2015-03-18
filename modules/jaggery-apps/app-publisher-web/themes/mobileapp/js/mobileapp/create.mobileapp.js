@@ -15,8 +15,8 @@ $("#txtName").change(function() {
         success: function (data) {
             var data = JSON.parse(data);
             if(data.isExist){
-                $("#name_is_ok").css("color", "#ff0000");
-                $("#name_is_ok").addClass("icon-remove");
+                $("#name_is_ok").css("color", "#ffa500");
+                $("#name_is_ok").text("App name with version " + data.versions +  " already exists.");
                 $("#name_is_ok").removeClass("icon-ok");
                 $("#name_is_ok").css("padding-left", "15px");
                 $("#name_is_ok").attr("title", "Mobile app name already exists");
@@ -310,8 +310,6 @@ $('#btn-app-upload').click(function () {
         });
         return;
     }
-
-
 
 
       if(appMetaData == null){

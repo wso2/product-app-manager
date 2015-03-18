@@ -18,8 +18,20 @@ require('/modules/publisher.js').exec(function(ctx) {
         var artifactManager = rxtManager.getArtifactManager("mobileapp");
 
         var versionList=artifactManager.getAllAssetVersions(name);
+        log.info("version l " + stringify(versionList));
+
+
+
         if(versionList.length > 0){
-            print({isExist: true});
+            var versions = "";
+            for( i = 0; i < versionList.length; i++){
+                versions += versionList[i].version
+                if(i < versionList){
+                    version += ",";
+                }
+            }
+
+            print({isExist: true, versions : versions});
         }else{
             print({isExist: false});
         }
