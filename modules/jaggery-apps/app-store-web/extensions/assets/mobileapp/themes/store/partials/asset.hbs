@@ -116,12 +116,14 @@
                 </div>
 
             </div>
-
             <div class="assetp-properties">
 
                 <ul class="nav nav-tabs" id="assetp-tabs" data-aid="{{../path}}">
                     <li class="active">
                         <a href="#tab-properties" data-toggle="tab" data-type="basic">{{t "Description"}}</a>
+                    </li>
+                    <li>
+                        <a href="#tab-changes" data-toggle="tab" data-type="basic">{{t "Recent Changes"}}</a>
                     </li>
                     <li style="display:none">
                         <a  href="#tab-reviews" data-toggle="tab" data-type="comments">{{t "User Reviews"}}</a>
@@ -134,6 +136,12 @@
                             {{>overview .}}
                         </div>
                     </div>
+                    <div class="tab-pane" id="tab-changes">
+                        <div class="content">
+                            {{overview_recentchanges}}
+                        </div>
+                    </div>
+
 
                       <div class="tab-pane" id="tab-reviews">
                             <iframe name="socialIfr" id="socialIfr"
