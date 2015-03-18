@@ -54,11 +54,11 @@
                     {{/ifCond}}
                 </th>
                 <th>
-                    {{#ifCond sortOptions.sortBy "==" "createdDate"}}
-                        <a href="?sortby=createdDate&sort={{sortOptions.sort}}">Created
+                    {{#ifCond sortOptions.sortBy "==" "createdtime"}}
+                        <a href="?sortby=createdtime&sort={{sortOptions.sort}}">Created
                             <i class="icon-caret-{{sortOptions.icon}}"></i></a>
                     {{else}}
-                        <a href="?sortby=createdDate&sort=asc">Created<i class="icon-caret-down"></i></a>
+                        <a href="?sortby=createdtime&sort=asc">Created<i class="icon-caret-down"></i></a>
                     {{/ifCond}}
                 </th>
                 <th><a href="#">Status</a></th>
@@ -85,7 +85,13 @@
 
         {{#if ../this.isReviwer}}
             <td>
-            <button  class="btn btn-view-app" data-url="{{../this.attributes.overview_url}}"  data-appid="{{../this.attributes.overview_appid}}" data-type="{{../this.attributes.overview_type}}"  data-package="{{../this.attributes.overview_packagename}}" data-category="{{../this.attributes.overview_category}}"  data-id="{{../this.id}}" ><i class="icon-download"></i></button>
+            <button  class="btn btn-view-app" data-url="{{../this.attributes.overview_url}}"
+                     data-appid="{{../this.attributes.overview_appid}}" data-type="{{../this.attributes.overview_type}}"
+                     data-package="{{../this.attributes.overview_packagename}}"
+                     title="Get Download link or QR code"
+                     data-category="{{../this.attributes.overview_category}}"  data-id="{{../this.id}}" >
+                <i class="icon-download"></i>
+            </button>
             </td>
         {{/if}}
 

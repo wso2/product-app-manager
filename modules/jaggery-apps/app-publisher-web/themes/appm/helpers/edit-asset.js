@@ -2,7 +2,9 @@ var resources = function(page, meta) {
 	var log = new Log('edit-asset');
 	log.debug('resource called');
 	return {
-		js : ['edit.asset.js', '/logic/asset.tag.edit.js', 'bootstrap-select.min.js','options.text.js',  'codemirror/codemirror.js', 'codemirror/show-hint.js', 'codemirror/xml-hint.js', 'codemirror/xml.js', 'entitlement.js', 'resource-edit.js', 'policy.group.js', 'java.policy.js'],
+		js : ['edit.asset.js', '/logic/asset.tag.edit.js', 'bootstrap-select.min.js','options.text.js',
+            'codemirror/codemirror.js', 'codemirror/show-hint.js', 'codemirror/xml-hint.js', 'codemirror/xml.js',
+            'entitlement.js', 'resource-edit.js', 'policy.group.js', 'java.policy.js', 'publisher.placeholder.js'],
 		css : ['bootstrap-select.min.css',  'codemirror/codemirror.css']
 	};
 
