@@ -83,12 +83,15 @@ $(document).on('click', '#myasset-container .asset-uninstall-btn', function() {
 $(document).on('click', '#myasset-container .asset-reinstall-btn', function() {
 	appToReinstall = $(this).data("aid");
 	   devicePlatform = $(this).data("platform").toLowerCase();
-	
-		
+
+
 		$(".device-image-block-modal").each(function(index) {	
 			var platform = $(this).data("platform").toLowerCase();
-			if(devicePlatform == 'webapp'){ 
-				
+
+            $(this).css("display", "block");
+
+			if(devicePlatform == 'webapp'){
+
 			}else if(devicePlatform != platform){
 				$(this).css("display", "none");
 			}

@@ -205,6 +205,7 @@ $(document).ready(function(){
         done: function (e, data) {
             var data = data._response.result;
             $('#txtVersion').val(data.version);
+            $("#version").val(data.version);
 
             if (data.ok == false) {
                 var validationErrors = "";
@@ -216,7 +217,6 @@ $(document).ready(function(){
                     }
                 }
                 $("#modal-upload-progress").hide();
-
 
               //  window.location.replace("/publisher/assets/mobileapp/");
 
@@ -330,6 +330,7 @@ $('#btn-app-upload').click(function () {
 
 
 jQuery("#form-asset-create").submit(function(e) {
+
 	$("#txtMarketHidden").val($("#txtMarket").val());
 	$("#txtOSHidden").val($("#txtOS").val());
 
