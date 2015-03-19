@@ -192,7 +192,6 @@ CREATE TABLE IF NOT EXISTS APM_API_CONSUMER_APPS (
  API_CONSUMER_SECRET VARCHAR(512),
  APP_NAME VARCHAR(512),
  PRIMARY KEY (ID, APP_CONSUMER_KEY),
- FOREIGN KEY (SAML2_SSO_ISSUER) REFERENCES APM_APP(SAML2_SSO_ISSUER),
  FOREIGN KEY (APP_CONSUMER_KEY) REFERENCES IDN_OAUTH_CONSUMER_APPS(CONSUMER_KEY) ON UPDATE CASCADE
 )ENGINE INNODB;
 
@@ -235,22 +234,16 @@ FOREIGN KEY (APP_ID) REFERENCES APM_APP(APP_ID) ON UPDATE CASCADE ON DELETE CASC
 )ENGINE INNODB;
 
 INSERT INTO APM_APP_JAVA_POLICY(DISPLAY_NAME, FULL_QUALIFI_NAME, DESCRIPTION, DISPLAY_ORDER_SEQ_NO,IS_MANDATORY, IS_GLOBAL )
-SELECT 'Reverse Proxy Handler','org.wso2.carbon.appmgt.gateway.handlers.proxy.ReverseProxyHandler','',1,TRUE,TRUE
-WHERE NOT EXISTS (SELECT * FROM APM_APP_JAVA_POLICY WHERE  FULL_QUALIFI_NAME ='org.wso2.carbon.appmgt.gateway.handlers.proxy.ReverseProxyHandler') ;
+VALUES ('Reverse Proxy Handler','org.wso2.carbon.appmgt.gateway.handlers.proxy.ReverseProxyHandler','',1,TRUE,TRUE);
  
 INSERT INTO APM_APP_JAVA_POLICY(DISPLAY_NAME, FULL_QUALIFI_NAME, DESCRIPTION, DISPLAY_ORDER_SEQ_NO,IS_MANDATORY,IS_GLOBAL)
-SELECT 'SAML2 Authentication Handler','org.wso2.carbon.appmgt.gateway.handlers.security.saml2.SAML2AuthenticationHandler','',2,TRUE,TRUE
-WHERE NOT EXISTS (SELECT * FROM APM_APP_JAVA_POLICY WHERE  FULL_QUALIFI_NAME ='org.wso2.carbon.appmgt.gateway.handlers.security.saml2.SAML2AuthenticationHandler');
+VALUES ('SAML2 Authentication Handler','org.wso2.carbon.appmgt.gateway.handlers.security.saml2.SAML2AuthenticationHandler','',2,TRUE,TRUE);
 
 INSERT INTO APM_APP_JAVA_POLICY(DISPLAY_NAME, FULL_QUALIFI_NAME, DESCRIPTION, DISPLAY_ORDER_SEQ_NO,IS_MANDATORY, POLICY_PROPERTIES,IS_GLOBAL )
-SELECT 'API Throttle Handler','org.wso2.carbon.appmgt.gateway.handlers.throttling.APIThrottleHandler','',3,TRUE,'{ "id": "A",  "policyKey": "gov:/appmgt/applicationdata/tiers.xml"}',TRUE
-WHERE NOT EXISTS (SELECT * FROM APM_APP_JAVA_POLICY WHERE  FULL_QUALIFI_NAME ='org.wso2.carbon.appmgt.gateway.handlers.throttling.APIThrottleHandler');
+VALUES ('API Throttle Handler','org.wso2.carbon.appmgt.gateway.handlers.throttling.APIThrottleHandler','',3,TRUE,'{ "id": "A",  "policyKey": "gov:/appmgt/applicationdata/tiers.xml"}',TRUE);
 
 INSERT INTO APM_APP_JAVA_POLICY(DISPLAY_NAME, FULL_QUALIFI_NAME, DESCRIPTION, DISPLAY_ORDER_SEQ_NO,IS_MANDATORY,IS_GLOBAL)
-SELECT 'Publish Statistics:','org.wso2.carbon.appmgt.usage.publisher.APPMgtUsageHandler','',4,FALSE,TRUE
-WHERE NOT EXISTS (SELECT * FROM APM_APP_JAVA_POLICY WHERE  FULL_QUALIFI_NAME ='org.wso2.carbon.appmgt.usage.publisher.APPMgtUsageHandler');
-
-
+VALUES ('Publish Statistics:','org.wso2.carbon.appmgt.usage.publisher.APPMgtUsageHandler','',4,FALSE,TRUE);
 
 
 CREATE INDEX IDX_SUB_APP_ID ON APM_SUBSCRIPTION (APPLICATION_ID, SUBSCRIPTION_ID);
