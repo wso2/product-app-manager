@@ -426,21 +426,18 @@ CREATE TABLE APM_APP_JAVA_POLICY_MAPPING(
 
 
 INSERT INTO APM_APP_JAVA_POLICY(DISPLAY_NAME, FULL_QUALIFI_NAME, DESCRIPTION, DISPLAY_ORDER_SEQ_NO,IS_MANDATORY, IS_GLOBAL )
-SELECT 'Reverse Proxy Handler','org.wso2.carbon.appmgt.gateway.handlers.proxy.ReverseProxyHandler','',1,1,1 FROM dual
-WHERE NOT EXISTS (SELECT * FROM APM_APP_JAVA_POLICY WHERE  FULL_QUALIFI_NAME ='org.wso2.carbon.appmgt.gateway.handlers.proxy.ReverseProxyHandler')
+VALUES ('Reverse Proxy Handler','org.wso2.carbon.appmgt.gateway.handlers.proxy.ReverseProxyHandler','',1,TRUE,TRUE)
 /
  
 INSERT INTO APM_APP_JAVA_POLICY(DISPLAY_NAME, FULL_QUALIFI_NAME, DESCRIPTION, DISPLAY_ORDER_SEQ_NO,IS_MANDATORY,IS_GLOBAL)
-SELECT 'SAML2 Authentication Handler','org.wso2.carbon.appmgt.gateway.handlers.security.saml2.SAML2AuthenticationHandler','',2,1,1 FROM dual
-WHERE NOT EXISTS (SELECT * FROM APM_APP_JAVA_POLICY WHERE  FULL_QUALIFI_NAME ='org.wso2.carbon.appmgt.gateway.handlers.security.saml2.SAML2AuthenticationHandler')
+VALUES ('SAML2 Authentication Handler','org.wso2.carbon.appmgt.gateway.handlers.security.saml2.SAML2AuthenticationHandler','',2,TRUE,TRUE)
 /
 
 INSERT INTO APM_APP_JAVA_POLICY(DISPLAY_NAME, FULL_QUALIFI_NAME, DESCRIPTION, DISPLAY_ORDER_SEQ_NO,IS_MANDATORY, POLICY_PROPERTIES,IS_GLOBAL )
-SELECT 'API Throttle Handler','org.wso2.carbon.appmgt.gateway.handlers.throttling.APIThrottleHandler','',3,1,'{ "id": "A",  "policyKey": "gov:/appmgt/applicationdata/tiers.xml"}',1 FROM dual
-WHERE NOT EXISTS (SELECT * FROM APM_APP_JAVA_POLICY WHERE  FULL_QUALIFI_NAME ='org.wso2.carbon.appmgt.gateway.handlers.throttling.APIThrottleHandler')
+VALUES ('API Throttle Handler','org.wso2.carbon.appmgt.gateway.handlers.throttling.APIThrottleHandler','',3,TRUE,'{ "id": "A",  "policyKey": "gov:/appmgt/applicationdata/tiers.xml"}',TRUE)
 /
 
 INSERT INTO APM_APP_JAVA_POLICY(DISPLAY_NAME, FULL_QUALIFI_NAME, DESCRIPTION, DISPLAY_ORDER_SEQ_NO,IS_MANDATORY,IS_GLOBAL)
-SELECT 'Publish Statistics:','org.wso2.carbon.appmgt.usage.publisher.APPMgtUsageHandler','',4,0,1 FROM dual
-WHERE NOT EXISTS (SELECT * FROM APM_APP_JAVA_POLICY WHERE  FULL_QUALIFI_NAME ='org.wso2.carbon.appmgt.usage.publisher.APPMgtUsageHandler')
+VALUES ('Publish Statistics:','org.wso2.carbon.appmgt.usage.publisher.APPMgtUsageHandler','',4,FALSE,TRUE)
 /
+
