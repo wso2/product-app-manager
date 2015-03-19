@@ -19,6 +19,7 @@ var getAdminCookie = function() {
 };
 
 var getAPIProviderObj = function() {
+    log = new Log();
     var user = jagg.getUser();
     var store;
     if (user == null) {

@@ -30,6 +30,7 @@ include("/jagg/jagg.jag");
         print(obj);
     } else if (action === "logout") {
         jagg.setUser(null);
+	jagg.setWorkflowCookie(null);
         print({
             error:false
         });

@@ -22,7 +22,7 @@ jagg.block("xacmlpolicy-task", {
 
         mod = jagg.module("taskmanager");
 
-        result = mod.getTasks(filterCategory,taskType);
+        //result = mod.getTasks(filterCategory,taskType);
         if(result==null){
             tasks=null;
         }
