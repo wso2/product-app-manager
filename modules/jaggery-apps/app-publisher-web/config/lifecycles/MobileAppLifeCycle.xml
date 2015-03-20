@@ -102,7 +102,7 @@
                                 <parameter name="STATE_RULE2:Published"
                                            value="Internal/publisher:+get,+add,-delete,+authorize"/>
                                 <parameter name="STATE_RULE3:Published"
-                                           value="Internal/everyone:-get,-add,-delete,-authorize"/>
+                                           value="Internal/everyone:+get,-add,-delete,-authorize"/>
 								<parameter name="STATE_RULE4:Published" value="system/wso2.anonymous.role:+get" />
                                 <parameter name="STATE_RULE5:Published" value="Internal/creator:-get,-add,-delete,-authorize"/>
                             </execution>
@@ -124,7 +124,7 @@
 
                                 <parameter name="STATE_RULE1:In-Review"
                                            value="Internal/private_{asset_author}:+get,-add,-delete,-authorize"/>
-                                <parameter name="STATE_RULE2:In-Review" value="Internal/publisher:+add,-delete,+authorize"/>
+                                <parameter name="STATE_RULE2:In-Review" value="Internal/publisher:+get,+add,-delete,+authorize"/>
                                 <parameter name="STATE_RULE3:In-Review" value="Internal/everyone:-get,-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE4:In-Review" value="Internal/creator:-get,-add,-delete,-authorize"/>
                             </execution>
@@ -168,7 +168,7 @@
                                            value="Internal/publisher:+get,+add,-delete,+authorize"/>
                                 <parameter name="STATE_RULE3:Deprecated"
                                            value="Internal/everyone:-get,-add,-delete,-authorize"/>
-                                <parameter name="STATE_RULE4:Published" value="system/wso2.anonymous.role:-get" />
+                                <parameter name="STATE_RULE4:Deprecated" value="system/wso2.anonymous.role:-get" />
                                 <parameter name="STATE_RULE4:Deprecated" value="Internal/creator:-get,-add,-delete,-authorize"/>
                             </execution>
                         </data>
@@ -193,7 +193,7 @@
                                 <parameter name="STATE_RULE2:Published"
                                            value="Internal/publisher:+get,+add,-delete,+authorize"/>
                                 <parameter name="STATE_RULE3:Published"
-                                           value="Internal/everyone:-get,-add,-delete,-authorize"/>
+                                           value="Internal/everyone:+get,-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE4:Published" value="system/wso2.anonymous.role:+get" />
                                 <parameter name="STATE_RULE5:Published" value="Internal/creator:-get,-add,-delete,-authorize"/>
                             </execution>

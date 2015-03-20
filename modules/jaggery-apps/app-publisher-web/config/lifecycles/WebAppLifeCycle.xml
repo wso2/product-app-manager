@@ -16,8 +16,8 @@
                                            value="http://www.wso2.org/projects/registry/actions/delete"/>
                                 <parameter name="PERMISSION:authorize" value="authorize"/>
 
-                                <parameter name="STATE_RULE1:Created" value="Internal/everyone:+add,+delete,+authorize"/>
-                                <parameter name="STATE_RULE2:Created" value="Internal/private_{asset_author}:+get,-add,-delete,-authorize"/>
+                                <parameter name="STATE_RULE1:Created" value="Internal/everyone:-get,-add,-delete,-authorize"/>
+                                <parameter name="STATE_RULE2:Created" value="Internal/private_{asset_author}:+get,+add,+delete,+authorize"/>
                                 <parameter name="STATE_RULE3:Created" value="Internal/everyone:-get,-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE4:Created" value="Internal/creator:-get,-add,-delete,-authorize"/>
                             </execution>
@@ -39,7 +39,7 @@
 
                                 <parameter name="STATE_RULE1:In-Review" value="Internal/publisher:+get,+add,-delete,+authorize"/>
                                 <parameter name="STATE_RULE2:In-Review" value="Internal/everyone:-get,-add,-delete,-authorize"/>
-                                <parameter name="STATE_RULE3:In-Review" value="Internal/private_{asset_author}:+get,-add,+delete,-authorize"/>
+                                <parameter name="STATE_RULE3:In-Review" value="Internal/private_{asset_author}:+get,+add,+delete,-authorize"/>
                                 <parameter name="STATE_RULE4:In-Review" value="Internal/creator:-get,-add,-delete,-authorize"/>
                             </execution>
                         </data>
@@ -60,7 +60,7 @@
 
                                 <parameter name="STATE_RULE1:Approved" value="Internal/publisher:+get,+add,-delete,+authorize"/>
                                 <parameter name="STATE_RULE2:Approved" value="Internal/everyone:-get,-add,-delete,-authorize"/>
-                                <parameter name="STATE_RULE3:Approved" value="Internal/private_{asset_author}:+get,-add,+delete,-authorize"/>
+                                <parameter name="STATE_RULE3:Approved" value="Internal/private_{asset_author}:+get,+add,+delete,-authorize"/>
                                 <parameter name="STATE_RULE4:Approved" value="Internal/creator:-get,-add,-delete,-authorize"/>
                             </execution>
                             <execution forEvent="Reject" class="org.wso2.jaggery.scxml.generic.GenericExecutor">
@@ -94,8 +94,8 @@
                                            value="http://www.wso2.org/projects/registry/actions/delete"/>
                                 <parameter name="PERMISSION:authorize" value="authorize"/>
 
-                                <parameter name="STATE_RULE1:Published" value="Internal/private_{asset_author}:+get,-add,+delete,-authorize"/>
-                                <parameter name="STATE_RULE2:Published" value="Internal/everyone:-get,-add,-delete,-authorize"/>
+                                <parameter name="STATE_RULE1:Published" value="Internal/private_{asset_author}:+get,+add,+delete,-authorize"/>
+                                <parameter name="STATE_RULE2:Published" value="Internal/everyone:+get,-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE3:Published" value="system/wso2.anonymous.role:+get,-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE4:Published" value="Internal/publisher:+get,+add,-delete,+authorize"/>
                                 <parameter name="STATE_RULE5:Published" value="Internal/creator:-get,-add,-delete,-authorize"/>
@@ -116,9 +116,9 @@
                                            value="http://www.wso2.org/projects/registry/actions/delete"/>
                                 <parameter name="PERMISSION:authorize" value="authorize"/>
 
-                                <parameter name="STATE_RULE1:In-Review" value="Internal/publisher:+add,-delete,+authorize"/>
+                                <parameter name="STATE_RULE1:In-Review" value="Internal/publisher:+get,+add,-delete,+authorize"/>
                                 <parameter name="STATE_RULE2:In-Review" value="Internal/everyone:-get,-add,-delete,-authorize"/>
-                                <parameter name="STATE_RULE3:In-Review" value="Internal/private_{asset_author}:+get,-add,+delete,-authorize"/>
+                                <parameter name="STATE_RULE3:In-Review" value="Internal/private_{asset_author}:+get,+add,+delete,-authorize"/>
                                 <parameter name="STATE_RULE4:In-Review" value="Internal/creator:-get,-add,-delete,-authorize"/>
                             </execution>
                         </data>
@@ -139,7 +139,7 @@
 
                                 <parameter name="STATE_RULE1:Unpublished" value="Internal/publisher:+get,+add,-delete,+authorize"/>
                                 <parameter name="STATE_RULE2:Unpublished" value="Internal/everyone:-get,-add,-delete,-authorize"/>
-                                <parameter name="STATE_RULE3:Unpublished" value="Internal/private_{asset_author}:+get,-add,+delete,-authorize"/>
+                                <parameter name="STATE_RULE3:Unpublished" value="Internal/private_{asset_author}:+get,+add,+delete,-authorize"/>
                                 <parameter name="STATE_RULE4:Unpublished" value="Internal/creator:-get,-add,-delete,-authorize"/>
                             </execution>
                             <execution forEvent="Deprecate" class="org.wso2.jaggery.scxml.generic.GenericExecutor">
@@ -153,7 +153,7 @@
 
                                 <parameter name="STATE_RULE1:Deprecated" value="Internal/publisher:+get,+add,-delete,+authorize"/>
                                 <parameter name="STATE_RULE2:Deprecated" value="Internal/everyone:-get,-add,-delete,-authorize"/>
-                                <parameter name="STATE_RULE3:Deprecated" value="Internal/private_{asset_author}:+get,-add,+delete,-authorize"/>
+                                <parameter name="STATE_RULE3:Deprecated" value="Internal/private_{asset_author}:+get,+add,+delete,-authorize"/>
                                 <parameter name="STATE_RULE4:Deprecated" value="Internal/creator:-get,-add,-delete,-authorize"/>
                             </execution>
                         </data>
@@ -174,8 +174,8 @@
                                 <parameter name="PERMISSION:authorize" value="authorize"/>
 
                                 <parameter name="STATE_RULE1:Published" value="Internal/publisher:+get,+add,-delete,+authorize"/>
-                                <parameter name="STATE_RULE2:Published" value="Internal/everyone:-get,-add,-delete,-authorize"/>
-                                <parameter name="STATE_RULE3:Published" value="Internal/private_{asset_author}:+get,-add,+delete,-authorize"/>
+                                <parameter name="STATE_RULE2:Published" value="Internal/everyone:+get,-add,-delete,-authorize"/>
+                                <parameter name="STATE_RULE3:Published" value="Internal/private_{asset_author}:+get,+add,+delete,-authorize"/>
                                 <parameter name="STATE_RULE4:Published" value="system/wso2.anonymous.role:+get,-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE5:Published" value="Internal/creator:-get,-add,-delete,-authorize"/>
                             </execution>
@@ -188,8 +188,8 @@
                                            value="http://www.wso2.org/projects/registry/actions/delete"/>
                                 <parameter name="PERMISSION:authorize" value="authorize"/>
 
-                                <parameter name="STATE_RULE1:Retired" value="Internal/private_{asset_author}:+get,-add,+delete,-authorize"/>
-                                <parameter name="STATE_RULE2:Retired" value="Internal/publisher:+get,+add,-delete,+authorize"/>
+                                <parameter name="STATE_RULE1:Retired" value="Internal/private_{asset_author}:+get,+add,+delete,+authorize"/>
+                                <parameter name="STATE_RULE2:Retired" value="Internal/publisher:-get,-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE3:Retired" value="Internal/everyone:-get,-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE4:Retired" value="Internal/creator:-get,-add,-delete,-authorize"/>
                             </execution>
@@ -225,8 +225,8 @@
                                            value="http://www.wso2.org/projects/registry/actions/delete"/>
                                 <parameter name="PERMISSION:authorize" value="authorize"/>
 
-                                <parameter name="STATE_RULE1:Retired" value="Internal/private_{asset_author}:+get,-add,+delete,-authorize"/>
-                                <parameter name="STATE_RULE2:Retired" value="Internal/publisher:+get,+add,-delete,+authorize"/>
+                                <parameter name="STATE_RULE1:Retired" value="Internal/private_{asset_author}:+get,+add,+delete,+authorize"/>
+                                <parameter name="STATE_RULE2:Retired" value="Internal/publisher:-get,-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE3:Retired" value="Internal/everyone:-get,-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE4:Retired" value="Internal/creator:-get,-add,-delete,-authorize"/>
                             </execution>
