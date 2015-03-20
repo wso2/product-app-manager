@@ -597,7 +597,7 @@
 		<MDM>
 	           <Enabled>false</Enabled>
 		   <ServerUrl>https://localhost:9450</ServerUrl>
-		   <OperationsClass>org.wso2.carbon.appmgt.mobile.wso2mdm.WSO2MDMOperations</OperationsClass>
+		   <OperationsClass>org.wso2.carbon.appmgt.mdm.wso2mdm.WSO2MDMOperations</OperationsClass>
 		   <EnableSampleDevices>false</EnableSampleDevices>
 		   <AppDownloadURLHost>%http%</AppDownloadURLHost>	
                 </MDM>
