@@ -43,17 +43,17 @@ var tagModule=function(){
             //Check if the tag cloud has the type
             if(!this.tagCloud.hasOwnProperty(type)){
 
-                 this.tagCloud[type]={tags:{},totalTagCount:0};
+                 this.tagCloud[type]={tags_val:{},totalTagCount:0};
             }
 
             //Check if the tag cloud has the tag name
             if(!this.tagCloud[type].hasOwnProperty(tagName)){
-                this.tagCloud[type].tags[tagName]={ count:1};
+                this.tagCloud[type].tags_val[tagName]={ count:1};
                 this.tagCloud[type].totalTagCount++;
             }
 
             //Increase the tag count for tag
-            this.tagCloud[type].tags[tagName].count++;
+            this.tagCloud[type].tags_val[tagName].count++;
 
         }
     };
@@ -68,7 +68,7 @@ var tagModule=function(){
     TagManager.prototype.get=function(type,predicate,formatter){
 
         var tagType=this.tagCloud[type]||{};
-        var tags=tagType.tags||{};
+        var tags=tagType.tags_val||{};
         var formatter=formatter||defaultFormatter;
         var predicate=predicate||defaultPredicate;
         var output=[];
