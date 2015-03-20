@@ -48,6 +48,30 @@ var permissions={};
         return false;
     };
 
+
+    /**
+     * The function checks whether a user can Edit an asset
+     * @param  {[type]}  username     The name of the user for which the check must be performed
+     * @param  {[type]}  resourcePath The registry resource path
+     * @param  {[type]}  userManager
+     * @return {Boolean}			  True if the user can perform life-cycle actions
+     */
+    var isEditPermitted = function(username, resourcePath, userManager) {
+        log.debug('###Checking delete permissions ###');
+        var roles = userManager.getRoleListOfUser(username);;
+        var action = 'add';
+        var role;
+        for (var index in roles) {
+            role=roles[index];
+            var isAuthorized = userManager.isAuthorized(role, resourcePath, action);
+            log.debug('Role: '+role+' resource: '+resourcePath+'action: '+action);
+            if (isAuthorized) {
+                return true;
+            }
+        }
+        return false;
+    };
+
     /**
      * The function checks whether a user can delete an asset
      * @param  {[type]}  username     The name of the user for which the check must be performed
