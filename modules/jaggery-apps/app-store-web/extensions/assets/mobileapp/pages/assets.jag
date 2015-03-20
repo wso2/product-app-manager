@@ -20,12 +20,18 @@ require('/modules/store.js').exec(function (ctx) {
 
 
 
-
+        if(configs.mobile.enable_emm){
+            //for wso2emm
+            var mdmUIConfig  = {enabled : !configs.mobile.is_catalog};
+        }else{
+            //for wso2mdm
+            var mdmUIConfig  = {enabled : mdmConfig.isMDMEnabled()};
+        }
 
 
     caramel = require('caramel');
 
-    var mdmUIConfig  = {enabled : mdmConfig.isMDMEnabled()};
+    
 
     url = '/assets/' + type + '/?' + (tag ? 'tag=' + tag + '&' : '') + (query ? 'query=' + query + '&' : '');
 
