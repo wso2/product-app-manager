@@ -28,11 +28,6 @@ var action = $(this).data("action");
             showMessageModel("Error occured while updating life-cycle state : " + action, "Lify-cycle update failed", "webapp");
         }
     });
-	
-	$( document ).ajaxComplete(function() {
-		 location.reload();
-	});
-
     }
     e.stopPropagation();
 });
