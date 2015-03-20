@@ -31,7 +31,7 @@
         "api": "https://localhost:9450/emm/api",
         "archieve_location_ios": "%https.ip%",
         "archieve_location_android": "%http.ip%",
-        "enterprise_installation" : false,
+        "enterprise_installation" : true,
         "enterprise_installation_role" : "admin"
     },
     "pagination": {

@@ -51,9 +51,9 @@ require('/modules/store.js').exec(function (ctx) {
         //for wso2mdm
         if(user != null && mdmConfig.isMDMEnabled()){
             if(mdmConfig.isSampleDevicesEnabled()){
-                devices =  parse(String(devicesClass.getDevicesList(user.tenantId, "user", [user.username])));
+                devices =  parse(String(devicesClass.getDevicesList(stringify(user), user.tenantId, "user", [user.username])));
             }else{
-                devices =  mdm.formatDevicesList(parse(String(devicesClass.getDevicesList(user.tenantId, "user", [user.username]))));
+                devices =  mdm.formatDevicesList(parse(String(devicesClass.getDevicesList(stringify(user), user.tenantId, "user", [user.username]))));
             }
         }
     }
