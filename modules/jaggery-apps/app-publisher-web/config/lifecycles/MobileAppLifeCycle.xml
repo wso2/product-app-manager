@@ -38,7 +38,7 @@
                                 <parameter name="PERMISSION:authorize" value="authorize"/>
 
                                 <parameter name="STATE_RULE1:In-Review"
-                                           value="Internal/private_{asset_author}:+get,-add,-delete,-authorize"/>
+                                           value="Internal/private_{asset_author}:+get,+add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE2:In-Review" value="Internal/publisher:+get,+add,-delete,+authorize"/>
                                 <parameter name="STATE_RULE3:In-Review" value="Internal/everyone:-get,-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE4:In-Review" value="Internal/creator:-get,-add,-delete,-authorize"/>
@@ -61,7 +61,7 @@
 
                                 <parameter name="STATE_RULE1:Approved"
                                            value="Internal/private_{asset_author}:+get,-add,-delete,-authorize"/>
-                                <parameter name="STATE_RULE2:Approved" value="Internal/publisher:+get,+add,-delete,+authorize"/>
+                                <parameter name="STATE_RULE2:Approved" value="Internal/publisher:+get,-add,-delete,+authorize"/>
                                 <parameter name="STATE_RULE3:Approved" value="Internal/everyone:-get,-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE4:Approved" value="Internal/creator:-get,-add,-delete,-authorize"/>
                             </execution>
@@ -123,7 +123,7 @@
                                 <parameter name="PERMISSION:authorize" value="authorize"/>
 
                                 <parameter name="STATE_RULE1:In-Review"
-                                           value="Internal/private_{asset_author}:+get,-add,-delete,-authorize"/>
+                                           value="Internal/private_{asset_author}:+get,+add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE2:In-Review" value="Internal/publisher:+get,+add,-delete,+authorize"/>
                                 <parameter name="STATE_RULE3:In-Review" value="Internal/everyone:-get,-add,-delete,-authorize"/>
                                 <parameter name="STATE_RULE4:In-Review" value="Internal/creator:-get,-add,-delete,-authorize"/>
