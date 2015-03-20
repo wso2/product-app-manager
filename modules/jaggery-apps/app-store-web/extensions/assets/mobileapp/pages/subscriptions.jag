@@ -26,7 +26,7 @@ require('/modules/store.js').exec(function (ctx) {
     }
 
     if(!mdmUIConfig.enabled) {
-        response.sendRedirect(404);
+        response.sendRedirect("404");
         return;
     }
 
