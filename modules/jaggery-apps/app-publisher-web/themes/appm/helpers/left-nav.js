@@ -15,8 +15,10 @@ var generateLeftNavJson = function(data, listPartial) {
     var user=server.current(session);
     var um=server.userManager(user.tenantId);
     var createActionAuthorized = permissions.isAuthorized(user.username, config.permissions.webapp_create, um);
-	
-	var currentTypeObj = getTypeObj(data.shortName);
+
+    var editEnabled = true;
+
+    var currentTypeObj = getTypeObj(data.shortName);
 	
     var leftNavItems = { leftNavLinks :
         [
@@ -43,22 +45,45 @@ var generateLeftNavJson = function(data, listPartial) {
     };
     if(data.artifact){
 
+        editEnabled = permissions.isEditPermitted(user.username, data.artifact.path, um);
+
         if(createActionAuthorized) {
-            leftNavItems = { leftNavLinks: [
-                {
-                    name: "Edit",
-                    iconClass: "icon-edit",
-                    additionalClasses: (listPartial == "edit-asset" ) ? "active" : null,
-                    url: "/publisher/asset/operations/edit/" + data.shortName + "/" + data.artifact.id + ""
-                },
-                {
-                    name: "Copy",
-                    iconClass: "icon-file",
-                    additionalClasses: (listPartial == "copy-app" ) ? "active" : null,
-                    url: "/publisher/asset/operations/copyapp/" + data.shortName + "/" + data.artifact.id + ""
-                }
-            ]
-            };
+            if(editEnabled) {
+                leftNavItems = {
+                    leftNavLinks: [
+                        {
+                            name: "Edit",
+                            iconClass: "icon-edit",
+                            additionalClasses: (listPartial == "edit-asset" ) ? "active" : null,
+                            url: "/publisher/asset/operations/edit/" + data.shortName + "/" + data.artifact.id + ""
+                        },
+                        {
+                            name: "Copy",
+                            iconClass: "icon-file",
+                            additionalClasses: (listPartial == "copy-app" ) ? "active" : null,
+                            url: "/publisher/asset/operations/copyapp/" + data.shortName + "/" + data.artifact.id + ""
+                        }
+                    ]
+                };
+            }else{
+                leftNavItems = {
+                    leftNavLinks: [
+                        {
+                            name: "Edit",
+                            iconClass: "icon-edit",
+                            additionalClasses: (listPartial == "edit-asset" ) ? "active" : false,
+                            url: "#",
+                            title: "Edit Action not permitted."
+                        },
+                        {
+                            name: "Copy",
+                            iconClass: "icon-file",
+                            additionalClasses: (listPartial == "copy-app" ) ? "active" : null,
+                            url: "/publisher/asset/operations/copyapp/" + data.shortName + "/" + data.artifact.id + ""
+                        }
+                    ]
+                };
+            }
         }else{
             leftNavItems = { leftNavLinks: [
 

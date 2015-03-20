@@ -552,6 +552,15 @@ require('/modules/publisher.js').exec(function(ctx) {
 
             saveExternalEntitlementPolicies(context.post);
 
+            var artifactManagerForUpdate = rxtManager.getSystemArtifactManager(shortName,session);
+
+            if(originalArtifact.lifecycleState=="Approved") {
+                log.info("Before Calling update");
+                var updateLCArtifact = artifactManager.get(id);
+                artifactManagerForUpdate.promoteLifecycleState("Revert", updateLCArtifact);
+                log.info("After Calling update");
+            }
+
             msg['ok']=true;
             msg['message']='asset updated';
             msg['asset']=artifact;
