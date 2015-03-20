@@ -125,6 +125,9 @@ $(function() {
             $('#sso_ssoProvider').val(selectedProvider);
         }
 
+        processImageURLs('images_thumbnail');
+        processImageURLs('images_banner');
+
         // Add entitlement policies.
         $('#entitlementPolicies').val(JSON.stringify(entitlementPolicies));
 
@@ -445,7 +448,13 @@ function isContainRaw(tbody) {
     return false;
 }
 
-
+function processImageURLs(element){
+    var imageURL = $('#'+element).val();
+    if(imageURL.indexOf('/') != -1) {
+        var spilttedArray = imageURL.split("/");
+        $('#' + element).val(spilttedArray[spilttedArray.length - 2] + '/' + spilttedArray[spilttedArray.length - 1]);
+    }
+}
 
 function populateVisibleRoles() {
 
