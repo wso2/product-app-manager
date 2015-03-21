@@ -886,6 +886,9 @@ require('/modules/publisher.js').exec(function(ctx) {
                 model.set('overview.provider', username);
                 model.set('overview.description',ctx.description);
                 model.set('overview.type',ctx.markettype);
+                if(ctx.recentChanges == ""){
+                    ctx.recentChanges = "-";
+                }
                 model.set('overview.recentchanges',ctx.recentChanges);
                 model.set('images.thumbnail',icon);
                 model.set('images.banner',banner);
