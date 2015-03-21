@@ -113,7 +113,13 @@ $(function() {
 
 		var context = $('#overview_context').val();
 		if(context != null && context != '') {
-			context = context.indexOf('/') == 0 ? context : '/' + context;
+			//context cannot contain spaces
+			if (context.indexOf(" ") == -1) {
+				context = context.indexOf('/') == 0 ? context : '/' + context;
+			} else {
+				showAlert('Context Cannot be contain spaces.', 'error');
+				return;
+			}
 		}else{
 			showAlert('Context Cannot be null.', 'error');
 			return;
