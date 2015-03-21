@@ -88,6 +88,7 @@ var permissions={};
         return  user.isAuthorized(permission,action);
     };
 
+    permissions.isEditPermitted = isEditPermitted;
     permissions.isAuthorized = isAuthorized;
     permissions.isLCActionsPermitted = isLCActionsPermitted;
     permissions.isDeletePermitted = isDeletePermitted;
