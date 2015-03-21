@@ -105,12 +105,19 @@ require('/modules/store.js').exec(function (ctx) {
         authenticator=new AuthService.Authenticator();
         authenticator.init(jagg,session);
         user=authenticator.getLoggedInUser();
+
+
+
+
         if(type == "webapp") {
 
             var subscriptionInfo;
             assets.forEach(function (asset) {
 
                 //set rating
+
+
+
                 asset.rating = Math.floor(JSON.parse(social.getRating("webapp:" + asset.id)));
 
                 isSubscribed = false;
