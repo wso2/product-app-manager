@@ -85,6 +85,25 @@ require('/modules/store.js').exec(function (ctx) {
         return subscriptionInfo;
 
     }
+
+    AuthService=require(getServiceDir('authentication.js')).serviceModule;
+    authenticator=new AuthService.Authenticator();
+    authenticator.init(jagg,session);
+    user=authenticator.getLoggedInUser();
+	
+	
+    //Validate user's role and send error if user is not a subscriber. 
+    if (user != null) {
+	var role = require('/modules/role.js').checkeRole(user.username, session);
+	if (role == false) {
+		log.warn('User ' + user.username + ' does not have permission to access the store application. ' +
+		'Make sure the user has the subscriber role.');
+		response.sendError(401, 'You do not have permission to login to this application.' +
+		'Please contact your administrator and request permission.');
+		return false;
+	}
+    }
+
     types.forEach(function (type) {
         manager = store.rxtManager(type, session);
         if (query) {
@@ -101,13 +120,6 @@ require('/modules/store.js').exec(function (ctx) {
 
 
         var rxtAttributes = require('/modules/util.js').getRXTAttributes(tenantId, type);
-        AuthService=require(getServiceDir('authentication.js')).serviceModule;
-        authenticator=new AuthService.Authenticator();
-        authenticator.init(jagg,session);
-        user=authenticator.getLoggedInUser();
-
-
-
 
         if(type == "webapp") {
 
