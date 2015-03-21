@@ -133,6 +133,9 @@
             {{#compare this.lifecycleState "Retired"}}	
             <span class="lifecycle-state"><small><i class="icon-circle text-red"></i> {{this.lifecycleState}}</small></span>
             {{/compare}}
+            {{#compare this.lifecycleState "Deprecated"}}
+                <span class="lifecycle-state"><small><i class="icon-circle text-red"></i> {{this.lifecycleState}}</small></span>
+            {{/compare}}
 
 
 
