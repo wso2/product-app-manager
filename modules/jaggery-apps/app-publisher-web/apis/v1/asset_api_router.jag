@@ -1001,10 +1001,19 @@ require('/modules/publisher.js').exec(function(ctx) {
                 var screenshot3 = files['screenshot3File'];
                 screenshot3 = saveFile(screenshot3);
 
+
                 var screenshots = screenshot1+","+screenshot2+","+screenshot3;
 
+
+               var ssValues =  modelA.get('images.screenshots').value;
+                ssValues = ssValues.split(",");
+                if(screenshot1 != "") ssValues[0] = screenshot1;
+                if(screenshot2 != "" ) ssValues[1] = screenshot2;
+                if(screenshot3 != "") ssValues[2] = screenshot3;
+
+
                 if(screenshots!=",,"){
-                    modelA.set('images.screenshots',screenshots);
+                    modelA.set('images.screenshots',ssValues.join());
                 }
                 if(!checkNonSpecial(ctx.name)){
                     print({"ok" : false, "message" : "Validation failure", "report" : {"failed" : true, "name" : ["Special characters found in name"]}});
