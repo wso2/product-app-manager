@@ -20,7 +20,10 @@ require('/modules/publisher.js').exec(function (ctx) {
         var startDate = context.post.startDate;
         var endDate = context.post.endDate;
 
-        var appMgtProviderObj = new appmgtPublisher.APIProvider(stringify(username));
+	var tenantDomain = Packages.org.wso2.carbon.context.PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantDomain();
+	username = username + "@" + tenantDomain;
+
+        var appMgtProviderObj = new appmgtPublisher.APIProvider(username);
 
         if (endDate != null) {
            endDate = endDate.trim();

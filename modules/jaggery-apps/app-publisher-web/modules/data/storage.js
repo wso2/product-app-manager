@@ -123,17 +123,18 @@ var storageModule = function () {
         //log.debug('filename :'+file.getName());
 
         //Generate a uuid for the resource
+        var uniqueImageFileName = generateImageId(value.contentType)
         resource.uuid = uuid.generate();
         resource.contentType = value.contentType;
         resource.contentLength = file.getLength();
         resource.content = file;
-        resource.fileName =file.getName();
+        resource.fileName = uniqueImageFileName;
         resource.tenantId = value.tenantId||'super';
 
         //Save the resource
         resource.save();
 
-        fileName=parseFileName(file.getName());
+        fileName = parseFileName(uniqueImageFileName);
 
         return resource.uuid+'/'+fileName;
     };
@@ -174,6 +175,21 @@ function obtainFromWindowsPath(path){
    var fileName=path[path.length-1];
    return fileName;
 }
+
+    /**
+     * Generate a unique id for image file name
+     * @param type image content type
+     * @returns {string} unique image file name
+     */
+    function generateImageId(type) {
+        var fileName = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (var i = 0; i < 15; i++)
+            fileName += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return fileName + '.' + type.split('/').pop();
+    }
 
 /*
 The function is used to extract a file name from a non windows path
