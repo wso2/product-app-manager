@@ -577,7 +577,10 @@
                                 </featureArtifactDef>
 				<featureArtifactDef>org.jaggeryjs.modules:caramel.feature:1.0.1
                                 </featureArtifactDef>
-
+                                <featureArtifactDef>org.wso2.store.modules:lifecycle.feature:${snapshot.feature.version}T
+                                </featureArtifactDef>
+                                <featureArtifactDef>org.wso2.store.modules:utils.feature:${snapshot.feature.version}
+                                </featureArtifactDef>
 				<featureArtifactDef>org.jaggeryjs.modules:carbon.feature:1.0.0
                                 </featureArtifactDef>
 				<featureArtifactDef>org.jaggeryjs.modules:email.feature:1.0.0
@@ -1234,6 +1237,14 @@
                                 </feature>
 				<feature>
                                     <id>org.wso2.store.modules.registration.feature.group</id>
+                                    <version>${snapshot.feature.version}</version>
+                                </feature>
+				<feature>
+                                    <id>org.wso2.store.modules.lifecycle.feature.group</id>
+                                    <version>${snapshot.feature.version}</version>
+                                </feature>
+				<feature>
+                                    <id>org.wso2.store.modules.utils.feature.group</id>
                                     <version>${snapshot.feature.version}</version>
                                 </feature>
 				<feature>

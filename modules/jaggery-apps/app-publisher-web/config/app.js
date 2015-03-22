@@ -32,6 +32,9 @@ process.setProperty('server.host', hostName);
 process.setProperty('http.port', httpPort.toString());
 process.setProperty('https.port', httpsPort.toString());
 
+var lifecycle = require('lifecycle');
+lifecycle.core.init();
+
 var pubConfig = require('/config/publisher.js').config();
 
 var mod = require('store');
