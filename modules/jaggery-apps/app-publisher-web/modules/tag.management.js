@@ -47,7 +47,7 @@ var tagModule=function(){
             }
 
             //Check if the tag cloud has the tag name
-            if(!this.tagCloud[type].hasOwnProperty(tagName)){
+            if(!this.tagCloud[type].tags_val.hasOwnProperty(tagName)){
                 this.tagCloud[type].tags_val[tagName]={ count:1};
                 this.tagCloud[type].totalTagCount++;
             }
