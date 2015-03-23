@@ -600,7 +600,17 @@
 		   <EnableSampleDevices>false</EnableSampleDevices>
 		   <AppDownloadURLHost>%http%</AppDownloadURLHost>	
                 </MDM>
-	</MobileAppsConfiguration>	
+	</MobileAppsConfiguration>
+
+	
+
+	<!--
+		Configuration to handle Services.	
+    	-->
+
+	<ServicesAPI>
+		<AuthorizedRole>admin</AuthorizedRole>
+	</ServicesAPI>
 
 </APIManager>
 
