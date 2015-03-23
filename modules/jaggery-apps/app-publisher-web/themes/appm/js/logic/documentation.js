@@ -175,6 +175,7 @@ var disableInline = function(type) {
 };
 
 var isAvailableDoc = function(id) {
+    id = id.replace(/ /g,'__');
     var docEntry = $("#docTable #" + id).text();
     if (docEntry != "") {
         return true;
