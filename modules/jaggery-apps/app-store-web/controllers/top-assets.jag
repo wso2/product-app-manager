@@ -127,10 +127,13 @@ require('/modules/store.js').exec(function (ctx) {
             assets.forEach(function (asset) {
 
                 //set rating
+                
+                if(JSON.parse(social.getRating("webapp:" + asset.id))){
+                    asset.rating = Math.floor(JSON.parse(social.getRating("webapp:" + asset.id)).rating);
+                }else{
+                    asset.rating = 0;
+                }
 
-
-
-                asset.rating = Math.floor(JSON.parse(social.getRating("webapp:" + asset.id)));
 
                 isSubscribed = false;
                 //set subscription details for each asset
