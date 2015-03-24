@@ -577,10 +577,6 @@
                                 </featureArtifactDef>
 				<featureArtifactDef>org.jaggeryjs.modules:caramel.feature:1.0.1
                                 </featureArtifactDef>
-                                <featureArtifactDef>org.wso2.carbon.store:lifecycle.feature:2.0.0
-                                </featureArtifactDef>
-                                <featureArtifactDef>org.wso2.carbon.store:utils.feature:2.0.0
-                                </featureArtifactDef>
 				<featureArtifactDef>org.jaggeryjs.modules:carbon.feature:1.0.0
                                 </featureArtifactDef>
 				<featureArtifactDef>org.jaggeryjs.modules:email.feature:1.0.0
@@ -1238,14 +1234,6 @@
 				<feature>
                                     <id>org.wso2.store.modules.registration.feature.group</id>
                                     <version>${snapshot.feature.version}</version>
-                                </feature>
-				<feature>
-                                    <id>org.wso2.carbon.store.lifecycle.feature.group</id>
-                                    <version>2.0.0</version>
-                                </feature>
-				<feature>
-                                    <id>org.wso2.carbon.store.utils.feature.group</id>
-                                    <version>2.0.0</version>
                                 </feature>
 				<feature>
                                     <id>org.wso2.store.modules.permission.feature.group</id>
