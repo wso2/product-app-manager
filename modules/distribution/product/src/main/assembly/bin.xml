@@ -419,6 +419,7 @@
             </includes>
         </fileSet>
 
+	
         <!-- App Manager keeps authenticationendpoint.war itself, since login page has customized. -->
         <fileSet>
             <directory>

@@ -577,9 +577,9 @@
                                 </featureArtifactDef>
 				<featureArtifactDef>org.jaggeryjs.modules:caramel.feature:1.0.1
                                 </featureArtifactDef>
-                                <featureArtifactDef>org.wso2.store.modules:lifecycle.feature:${snapshot.feature.version}T
+                                <featureArtifactDef>org.wso2.carbon.store:lifecycle.feature:2.0.0
                                 </featureArtifactDef>
-                                <featureArtifactDef>org.wso2.store.modules:utils.feature:${snapshot.feature.version}
+                                <featureArtifactDef>org.wso2.carbon.store:utils.feature:2.0.0
                                 </featureArtifactDef>
 				<featureArtifactDef>org.jaggeryjs.modules:carbon.feature:1.0.0
                                 </featureArtifactDef>
@@ -1240,12 +1240,12 @@
                                     <version>${snapshot.feature.version}</version>
                                 </feature>
 				<feature>
-                                    <id>org.wso2.store.modules.lifecycle.feature.group</id>
-                                    <version>${snapshot.feature.version}</version>
+                                    <id>org.wso2.carbon.store.lifecycle.feature.group</id>
+                                    <version>2.0.0</version>
                                 </feature>
 				<feature>
-                                    <id>org.wso2.store.modules.utils.feature.group</id>
-                                    <version>${snapshot.feature.version}</version>
+                                    <id>org.wso2.carbon.store.utils.feature.group</id>
+                                    <version>2.0.0</version>
                                 </feature>
 				<feature>
                                     <id>org.wso2.store.modules.permission.feature.group</id>
