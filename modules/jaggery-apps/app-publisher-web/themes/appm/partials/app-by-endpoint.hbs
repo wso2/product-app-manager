@@ -1,0 +1,73 @@
+<input type="hidden" id="page" value="7">
+<div class="content-div">
+    <div class="row-fluid">
+        <div class="row">
+            <div class="pull-left heading" align="left"><h1>Web Application Statistics - Apps By End Point</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 left-nav">
+                {{>left-nav}}
+            </div>
+            <div class="col-md-10 asset-view-container">
+
+                <div>
+                    <div id="rangeSliderWrapper" class="well">
+                        <div class="row-fluid">
+                            <div id="dateRangePickerContainer">
+                                <div class="btn-group" role="group">
+                                    <button id="hour-btn" type="button" class="btn btn-default date-range">Hour</button>
+                                    <button id="today-btn" type="button" class="btn btn-default date-range">Today
+                                    </button>
+                                    <button id="week-btn" type="button" class="btn btn-default date-range">Week</button>
+                                    <button id="month-btn" type="button" class="btn btn-default date-range active">
+                                        Month
+                                    </button>
+                                    <button id="date-range" type="button" class="btn btn-default date-range last-child"
+                                            data-toggle="popup" title="Click to set custom date range">
+                                    </button>
+                                </div>
+                                <span class="add-on-cal"><i style="margin-right:0px;" class="icon-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="clearfix"></div>
+                <!--<div class="form-group form-inline" id="searchUserForm">-->
+                    <!--<label>Subscriber</label>-->
+                    <!--<input type="text" class="form-control type-ahead" style="width: 200px; " id="search" value="admin"-->
+                           <!--placeholder="Enter Subscribed User name"/>-->
+                    <!--<button id="target" class="btn btn-info">Search</button>-->
+                <!--</div>-->
+                <div id="spinner" class="center-wrapper">
+                    <i id="icon-spinner" class="icon-spinner icon-spin icon-4x"></i>
+                </div>
+                <div class="widget">
+
+                    <div class="widget-head" style="display: none">
+                        <div class="pull-left">{{t "Usage by Page"}}</div>
+                        <div class="widget-controls">
+                            <a href="#" class="btn-remove"><i class="icon icon-remove"></i></a>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="widget-content">
+
+
+                        <div class="container1">
+                            <div id="placeholder2" class="graph-placeholder"></div>
+                        </div>
+                        <div class="graph-container widget-graph2">
+                            <div id="flot-placeholder" class="graph-placeholder"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="backdrop"></div>

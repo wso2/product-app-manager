@@ -180,8 +180,9 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 		sortOptions:{sortBy: sortby, sort: sortOpposite, icon: sortIcon}
 		});
 	} catch (e) {
-		response.sendError(400, "Your request is malformed");
+		response.sendError(400, "Your request is malformed...");
 		log.error(e.message);
+		log.error(e.stack);
 	}
 
 	/*for each(var artifact in artifacts){
@@ -230,6 +231,18 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{operation}/{type}/',
                  print(artifact.id+'<br/><br/>');
                  }*/
     }
+    if (operation == 'app-by-endpoint') {
+                    try {
+                        caramel.render({op: operation,cuser: server.current(session),shortName: type,title: type});
+
+                    } catch (e) {
+                        response.sendError(404, 'Asset type not found'); //TODO: Replace
+                    }
+
+                    /*for each(var artifact in artifacts){
+                     print(artifact.id+'<br/><br/>');
+                     }*/
+        }
     if (operation == 'response-time') {
                             try {
                                 caramel.render({op: operation,cuser: server.current(session),shortName: type,title: type});
