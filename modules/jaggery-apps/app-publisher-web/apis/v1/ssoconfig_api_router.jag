@@ -100,7 +100,10 @@ require('/modules/publisher.js').exec(function(ctx) {
 	}
         //ssoProvider.setAssertionConsumerURL();
         ssoProvider.setClaims(params.claims);
-        ssoProvider.setLogoutUrl(params.logout_url);
+
+        if(params.logout_url != null && params.logout_url != ' '){
+            ssoProvider.setLogoutUrl(params.logout_url);
+        }
 
         webApp.setSsoProviderDetails(ssoProvider);
         webApp.setContext(params.app_context);
@@ -111,7 +114,7 @@ require('/modules/publisher.js').exec(function(ctx) {
 			ssoConfigUtil.createSSOProvider(webApp, true);
         }else {
         	ssoConfigUtil.createSSOProvider(webApp, false);
-        } 
+        }
         
     }
     
