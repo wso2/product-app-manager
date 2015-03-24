@@ -123,8 +123,7 @@ public class APPMPublisherRestClient {
 		String payload = appRequest.generateRequestParameters();
 		String roles = appRequest.getRoles();
 		this.requestHeaders.put("Content-Type", "application/x-www-form-urlencoded");
-		HttpResponse response =
-		                        HttpRequestUtil.doPost(new URL(backEndUrl +
+		HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl +
 		                                                       "/publisher/asset/webapp"), payload,
 		                                               requestHeaders);
 		if (response.getResponseCode() == 200) {
@@ -337,7 +336,46 @@ public class APPMPublisherRestClient {
 		}
 	}
 
-    /**
+	/**
+	 * this method add the policy group for the app and return the policy group id
+	 * @param policyPartial
+	 * @param anonymousAccessToUrlPattern
+	 * @param policyGroupName
+	 * @param throttlingTier
+	 * @param objPartialMappings
+	 * @param policyGroupDesc
+	 * @return policyGroupId
+	 * @throws Exception
+	 */
+	public String savePolicyGroup(String policyPartial, String anonymousAccessToUrlPattern, String policyGroupName,
+								  String throttlingTier, String objPartialMappings, String policyGroupDesc) throws Exception {
+
+		String payLoad = "policyPartial="+ URLEncoder.encode(policyPartial,"UTF-8") +
+				"anonymousAccessToUrlPattern=" + anonymousAccessToUrlPattern +
+				"&policyGroupName=" + policyGroupName +
+				"&throttlingTier=" + throttlingTier +
+				"&objPartialMappings=" + objPartialMappings +
+				"&policyGroupDesc=" + policyGroupDesc +
+				"&userRoles";
+
+		this.requestHeaders.put("Content-Type", "application/x-www-form-urlencoded");
+
+		HttpResponse response =
+				HttpRequestUtil.doPost(new URL(backEndUrl +
+								"/publisher/api/entitlement/policy/partial/policyGroup/save"), payLoad,
+						requestHeaders);
+		if (response.getResponseCode() == 200) {
+			JSONObject saveObject = new JSONObject(response.getData());
+			String policyGroupId = saveObject.optJSONObject("response").getString("id");
+			return policyGroupId;
+		} else {
+			System.out.println(response);
+			throw new Exception("App creation failed> " + response.getData());
+		}
+	}
+
+
+	/**
      * this method adds the ssoprovider for the app
      * @param appCreateRequest
      * @return
@@ -386,7 +424,7 @@ public class APPMPublisherRestClient {
 	 */
 	public HttpResponse publishApp(String appId) throws Exception {
 		// created to in-review
-		changeState(appId, "Submit");
+		changeState(appId, "Publish");
 		// in-review to publish
 		HttpResponse response = changeState(appId, "Approve");
 		return response;

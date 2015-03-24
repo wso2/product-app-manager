@@ -797,8 +797,8 @@ public abstract class APPManagerIntegrationTest {
         return networkIpAddress;
     }
 
-    protected AppCreateRequest createSingleApp(String appName, String version, String transport,
-                                               String hostURL, int hostPort, String tier, String partialId)
+    protected AppCreateRequest createSingleApp(String appName, String appDisplayName, String version, String transport,
+                                               String hostURL, int hostPort, String tier, String partialId, String policyGroupId)
             throws Exception {
 
         AppCreateRequest appRequest = new AppCreateRequest();
@@ -808,6 +808,7 @@ public abstract class APPManagerIntegrationTest {
         appRequest.setOverview_webAppUrl(webAppUrl);
         appRequest.setOverview_transports(transport);
         appRequest.setOverview_name(appName);
+        appRequest.setOverview_displayName(appDisplayName);
         appRequest.setOverview_version(version);
         appRequest.setOverview_context("/" + appName);
         appRequest.setEntitlementPolicies("[]");
@@ -847,6 +848,15 @@ public abstract class APPManagerIntegrationTest {
         appRequest.setClaims("http://wso2.org/claims/role");
         appRequest.setClaimPropertyCounter("1");
         appRequest.setSso_idpProviderUrl("http://localhost:9773/samlsso/");
+
+        appRequest.setUritemplate_policygroupid0(policyGroupId);
+        appRequest.setUritemplate_policygroupid1(policyGroupId);
+        appRequest.setUritemplate_policygroupid2(policyGroupId);
+        appRequest.setUritemplate_policygroupid3(policyGroupId);
+        appRequest.setUritemplate_policygroupid4(policyGroupId);
+
+        appRequest.setUritemplate_policyGroupIds("[" + policyGroupId + "]");
+        appRequest.setUritemplate_javaPolicyIds("[1]");
 
         return appRequest;
     }

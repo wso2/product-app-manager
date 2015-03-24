@@ -6,6 +6,7 @@ package org.wso2.carbon.appmanager.integration.ui.Util.Bean;
 public class AppCreateRequest extends AbstractRequest {
     private String overview_provider = "admin";
     private String overview_name = "defaultAPP";
+    private String overview_displayName = "defaultAPP";
     private String overview_context = "/defaultAPP";
     private String overview_version = "1.0.0";
     private String overview_transports = "http";
@@ -20,6 +21,13 @@ public class AppCreateRequest extends AbstractRequest {
     private String overview_trackingCode = "AM_-1305386558";
     private String roles = "";
     private String tags = "";
+    private String uritemplate_policyGroupIds;
+    private String uritemplate_javaPolicyIds;
+    private String uritemplate_policygroupid0="1";
+    private String uritemplate_policygroupid1="1";
+    private String uritemplate_policygroupid2="1";
+    private String uritemplate_policygroupid3="1";
+    private String uritemplate_policygroupid4="1";
     private String uritemplate_urlPattern4 = "/*";
     private String uritemplate_httpVerb4 = "OPTIONS";
     private String uritemplate_tier4 = "Unlimited";
@@ -76,13 +84,9 @@ public class AppCreateRequest extends AbstractRequest {
     private String uritemplate_entitlementPolicyPartialMappings2 = "[]";
     private String uritemplate_entitlementPolicyPartialMappings3 = "[]";
     private String uritemplate_entitlementPolicyPartialMappings4 = "[]";
-
-
-
     private String sso_ssoProvider = "wso2is-5.0.0";
     private String autoConfig = "on";
     private String claims = "http://wso2.org/claims/role";
-
     private String overview_allowAnonymous="false";
     private String uritemplate_allowAnonymous4="False";
     private String uritemplate_allowAnonymous3="False";
@@ -94,6 +98,7 @@ public class AppCreateRequest extends AbstractRequest {
     public void init() {
         addParameter("overview_provider", overview_provider);
         addParameter("overview_name", overview_name);
+        addParameter("overview_displayName", overview_displayName);
         addParameter("overview_context", overview_context);
         addParameter("overview_version", overview_version);
         addParameter("overview_transports", overview_transports);
@@ -107,7 +112,13 @@ public class AppCreateRequest extends AbstractRequest {
         addParameter("overview_tier", overview_tier);
         addParameter("overview_trackingCode", overview_trackingCode);
         addParameter("roles", roles);
-        addParameter("tags", tags);
+        addParameter("uritemplate_javaPolicyIds", uritemplate_javaPolicyIds);
+        addParameter("uritemplate_policyGroupIds", uritemplate_policyGroupIds);
+        addParameter("uritemplate_policygroupid0", uritemplate_policygroupid0);
+        addParameter("uritemplate_policygroupid1", uritemplate_policygroupid1);
+        addParameter("uritemplate_policygroupid2", uritemplate_policygroupid2);
+        addParameter("uritemplate_policygroupid3", uritemplate_policygroupid3);
+        addParameter("uritemplate_policygroupid4", uritemplate_policygroupid4);
         addParameter("uritemplate_urlPattern4", uritemplate_urlPattern4);
         addParameter("uritemplate_httpVerb4", uritemplate_httpVerb4);
         addParameter("uritemplate_tier4", uritemplate_tier4);
@@ -194,6 +205,14 @@ public class AppCreateRequest extends AbstractRequest {
 
     public void setOverview_name(String overview_name) {
         this.overview_name = overview_name;
+    }
+
+    public String getOverview_displayName() {
+        return overview_displayName;
+    }
+
+    public void setOverview_displayName(String overview_displayName) {
+        this.overview_displayName = overview_displayName;
     }
 
     public String getOverview_context() {
@@ -827,6 +846,59 @@ public class AppCreateRequest extends AbstractRequest {
     public void setUritemplate_allowAnonymous0(String uritemplate_allowAnonymous0) {
         this.uritemplate_allowAnonymous0 = uritemplate_allowAnonymous0;
     }
+    public String getUritemplate_policygroupid0() {
+        return uritemplate_policygroupid0;
+    }
 
+    public void setUritemplate_policygroupid0(String uritemplate_policygroupid0) {
+        this.uritemplate_policygroupid0 = uritemplate_policygroupid0;
+    }
 
+    public String getUritemplate_policygroupid1() {
+        return uritemplate_policygroupid1;
+    }
+
+    public void setUritemplate_policygroupid1(String uritemplate_policygroupid1) {
+        this.uritemplate_policygroupid1 = uritemplate_policygroupid1;
+    }
+
+    public String getUritemplate_policygroupid2() {
+        return uritemplate_policygroupid2;
+    }
+
+    public void setUritemplate_policygroupid2(String uritemplate_policygroupid2) {
+        this.uritemplate_policygroupid2 = uritemplate_policygroupid2;
+    }
+
+    public String getUritemplate_policygroupid3() {
+        return uritemplate_policygroupid3;
+    }
+
+    public void setUritemplate_policygroupid3(String uritemplate_policygroupid3) {
+        this.uritemplate_policygroupid3 = uritemplate_policygroupid3;
+    }
+
+    public String getUritemplate_policygroupid4() {
+        return uritemplate_policygroupid4;
+    }
+
+    public void setUritemplate_policygroupid4(String uritemplate_policygroupid4) {
+        this.uritemplate_policygroupid4 = uritemplate_policygroupid4;
+    }
+
+    public String getUritemplate_policyGroupIds() {
+        return uritemplate_policyGroupIds;
+    }
+
+    public void setUritemplate_policyGroupIds(String uritemplate_policyGroupIds) {
+        this.uritemplate_policyGroupIds = uritemplate_policyGroupIds;
+    }
+
+    public String getUritemplate_javaPolicyIds() {
+        return uritemplate_javaPolicyIds;
+    }
+
+    public void setUritemplate_javaPolicyIds(String uritemplate_javaPolicyIds) {
+        this.uritemplate_javaPolicyIds = uritemplate_javaPolicyIds;
+    }
 }
