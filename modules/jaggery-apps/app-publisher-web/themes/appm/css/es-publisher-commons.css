@@ -1695,3 +1695,4 @@ ul.dropdown-menu.notifications {
 textarea#overview_description {
     padding: 7px;
 }
+#commentText{resize: none}

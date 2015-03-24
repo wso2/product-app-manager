@@ -18,7 +18,11 @@
 						</li>
 						{{#each categories}}
 						<li>
-							<a href='{{url "/assets"}}/{{../../type}}?query=category:"{{this}}"'>{{this}}</a>
+							<a href='{{url "/assets"}}/{{../../type}}?query=category:"{{this}}"'
+                               {{#compare ../selectedCategory this operator="=="}}
+                               class="os-active"
+                               {{/compare}}
+                              > {{this}}</a>
 						</li>
 						{{/each}}
 					</ul>

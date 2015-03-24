@@ -138,6 +138,14 @@ $('#saveDoc').click(function() {
            	}
         });
     });
+
+    //handle documentation tab open after delete
+    var currentPath = window.location.search.substring(1);
+    var currentPathArray = currentPath.split("=");
+    if((currentPathArray[0] == 'docs') && (currentPathArray[1] == 'true')){
+        $('.nav-tabs a[href=#documentation]').tab('show');
+    }
+
 });
 
 
@@ -262,7 +270,7 @@ var removeDocumentation = function (provider, apiName, version, docName, docType
 	                if ($('#docTable tr').length == 1) {
 	                	$('#docTable').append($('<tr><td colspan="6">'+('resultMsgs.noDocs')+'</td></tr>'));
 	                }
-	                window.location.reload();
+                    window.location.href = window.location.href + "?docs=true";
 	 				}
 	 			else{
 	 		 	     console.log("error occurred while deleting");
