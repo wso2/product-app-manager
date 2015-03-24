@@ -67,6 +67,12 @@ var jagg = jagg || (function () {
     var setManageTierPermitted = function (permission) {
         return session.put("manageTierPermitted",permission);
     };
+    var getWorkflowCookie = function () {
+        return session.get("workflowCookie");
+    };
+    var setWorkflowCookie = function (workflowCookie) {
+        return session.put("workflowCookie",workflowCookie);
+    };
 
 var getThemeFile = function (path) {
         var p, index, theme = getUserTheme();
@@ -543,6 +549,8 @@ return getThemePath() + path;
         getPublishPermitted:getPublishPermitted,
 	setManageTierPermitted:setManageTierPermitted,
 	getManageTierPermitted:getManageTierPermitted,
+	setWorkflowCookie:setWorkflowCookie,
+	getWorkflowCookie:getWorkflowCookie,
         block:block,
         module:module,
         initializer:initializer,

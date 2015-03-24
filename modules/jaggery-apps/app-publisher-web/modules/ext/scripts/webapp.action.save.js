@@ -21,27 +21,6 @@ var module = function () {
     var configs = require('/config/publisher.json');
     var log = new Log();
 
-    /*
-     adding asset details to Social Cache DB.
-     */
-    function addToSocialCache(id, type) {
-        if (id) {
-            var logged = require('store').server.current(session);
-            var domain = (logged && logged.tenantDomain) ? logged.tenantDomain : "carbon.super";
-
-            var CREATE_QUERY = "CREATE TABLE IF NOT EXISTS SOCIAL_CACHE (id VARCHAR(255) NOT NULL,tenant VARCHAR(255),type VARCHAR(255), " +
-                "body VARCHAR(5000), rating DOUBLE,  PRIMARY KEY ( id ))";
-            var server = require('store').server;
-            server.privileged(function () {
-                var db = new Database("SOCIAL_CACHE");
-                db.query(CREATE_QUERY);
-                var combinedId = type + ':' + id;
-                db.query("INSERT INTO SOCIAL_CACHE (id,tenant,type,body,rating) VALUES('" + combinedId + "','" + domain + "','" + type + "','',0)");
-                db.close();
-            });
-        }
-    }
-
 	function trim (str) {
 		return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 	}
@@ -108,7 +87,7 @@ var module = function () {
         appMDAOObj.addWebApp(webAppObj);
 
         //Generate consumer/secret for web-app
-        var tenantId = identityUtil.getTenantIdOFUser(webappProvider);
+        var tenantId = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantId();
         appMDAOObj.addOAuthConsumer(webappProvider, tenantId, webappName, "");
 
         var count = 1;
@@ -124,7 +103,7 @@ var module = function () {
             tokenEndpoint = attributes["oauthapis_apiTokenEndpoint" + count];
 
             //Save OAuth APIs consumer details per given web-app
-            appMDAOObj.addOAuthAPIAccessInfo(webAppObj);
+            appMDAOObj.addOAuthAPIAccessInfo(webAppObj, tenantId);
         }
 
     }
@@ -230,9 +209,6 @@ var module = function () {
             var id = artifact[0].id || ' ';
 
             log.debug('Setting id of model to ' + id);
-
-            //adding asset to social
-            addToSocialCache(id, template.shortName);
 
             var artifact1 = artifactManager.get(id);
             var attributes = artifact1.attributes;

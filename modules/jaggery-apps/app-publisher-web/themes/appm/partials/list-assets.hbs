@@ -11,11 +11,11 @@
             <table class="table table-striped list-asset-table">
                 <thead>
                 <th colspan="2">
-                    {{#ifCond sortOptions.sortBy "==" "name"}}
-                        <a href="?sortby=name&sort={{sortOptions.sort}}" class="sort-list">Name
+                    {{#ifCond sortOptions.sortBy "==" "displayName"}}
+                        <a href="?sortby=displayName&sort={{sortOptions.sort}}" class="sort-list">Name
                             <i class="icon-caret-{{sortOptions.icon}}"></i></a>
                         {{else}}
-                        <a href="?sortby=name&sort=asc" class="sort-list">Name <i class="icon-caret-down"></i></a>
+                        <a href="?sortby=displayName&sort=asc" class="sort-list">Name <i class="icon-caret-down"></i></a>
                     {{/ifCond}}
 
                 </th>
@@ -53,9 +53,9 @@
                         <td>
                         <img src="{{this.attributes.images_thumbnail}}" class="" />
                         </td>
-                        <td class="asset-listing-name">
+                        <td class="asset-listing-name col-md-3">
                             <a href='/publisher/asset/{{../shortName}}/{{this.id}}'>
-                                {{this.attributes.overview_name}}
+                                {{this.attributes.overview_displayName}}
                             </a>
                         </td>
                         <td>
@@ -111,10 +111,10 @@
         <div class="emptyAssets-MsgDiv">
             <i class="icon-inbox largeMsgIcon"></i>
             <br />
-            Nothing added yet.
+            No web applications added yet.
             <br />
             {{#if createPermission}}
-            <a type="button" class="btn btn-addNewAssetLarge" href="/publisher/asset/{{shortName}}"><i class="icon-plus-sign-alt"></i>Add New Web App</a>
+            <a type="button" class="btn btn-addNewAssetLarge" href="/publisher/asset/{{shortName}}"><i class="icon-plus-sign-alt"></i>Add New Web Application</a>
             {{/if}}
         </div>
 	{{/if}}

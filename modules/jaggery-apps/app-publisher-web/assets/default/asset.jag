@@ -130,8 +130,35 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
         var tags = rxtManager.registry.tags(path);
         var title = assetName;
 
+        //get document related data
+        var apiData = {};
+        apiData.provider = model.get('overview.provider').value;
+        apiData.name = model.get('overview.name').value;
+        apiData.version = model.get('overview.version').value;
+        var result = mod.getAllDocumentation(apiData);
 
-        caramel.render({op: operation, cuser: server.current(session), shortName: shortName, artifact: artifact, rxtTemplate: rxtTemplate, data: output, versions: versionList, tags:tags, title:title});
+        // getting the user roles
+        var server = require('store').server;
+        var user = server.current(session);
+        var um = server.userManager(user.tenantId);
+
+        var docCreateAuth = permissions.isAuthorized(user.username, config.permissions.document_add, um);
+        var docEditAuth = permissions.isAuthorized(user.username, config.permissions.document_edit, um);
+        var docDeleteAuth = permissions.isAuthorized(user.username, config.permissions.document_delete, um);
+
+        caramel.render({
+            op: operation,
+            cuser: server.current(session),
+            shortName: shortName,
+            artifact: artifact,
+            rxtTemplate: rxtTemplate,
+            data: output,
+            versions: versionList,
+            tags:tags,
+            title:title,
+            docs: result.docs,
+            permissions: {canCreate: docCreateAuth, canEdit: docEditAuth, canDelete:docDeleteAuth}
+        });
     } catch (e) {
         log.debug('The asset with id ' + id + ' could not be found due to : ' + e);
         response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check server log.');
@@ -290,8 +317,10 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
         //Check if the type is valid
         try {
 
-            //Process and add any files in the request
-            inspectFiles(request, context.post);
+            //Process and add any files in the request if the application is not in the copy mode
+            if(oldVersion == null || oldVersion == '') {
+                inspectFiles(request, context.post);
+            }
 
             model.import('form.importer', context.post);
 
@@ -439,28 +468,72 @@ function addTags(params,assetId,artifactManager,reg){
         var artifact = artifactManager.get(assetId);
         // artifactManager.detachLifecycle(artifact);
 
+        var lifecycle = require('lifecycle').api;
+        var lc = lifecycle.getLifecycle(artifact.lifecycle,server.current(session).tenantId);
+
+        var currentState = artifact.lifecycleState;
+        var transitionExecution = [];
+        if(currentState=="Created") {
+            transitionExecution = lc.transitionExecution("Initial", "Create");
+        }else if(currentState=="In-Review"){
+            transitionExecution = lc.transitionExecution("Created", "Submit for Review");
+        }else if(currentState=="Rejected"){
+            transitionExecution = lc.transitionExecution("In-Review", "Reject");
+        }
+
+        var tenantId = server.current(session).tenantId;
+
         // remove all the current permissions from the asset
         var um = server.userManager(server.current(session).tenantId);
         um.clearResourceAuthorizations(artifact.path);
 
+        var permissionDeny = [];
+
+        //Build roles with denied permission
+        transitionExecution.forEach(function(element) {
+            var name = element.name;
+            if(name.indexOf("STATE_RULE")===0){
+                if(filterActions(element.value.split(":")[1],"deny").length > 0) {
+                    permissionDeny.push({
+                     role: constructDynamicRoles(element.value.split(":")[0], tenantId, artifact),
+                     permissions: filterActions(element.value.split(":")[1],"deny")
+                 });
+            }
+            }
+        });
+
+        permissionDeny.forEach(function (rolePermissions) {
+            var role = rolePermissions.role;
+
+            rolePermissions.permissions.forEach(function (permission) {
+
+                permission = carbon.registry.actions[permission];
+
+                um.denyRole(role, artifact.path, permission);
+            });
+        });
+
+        if(denyEveryone){
+            um.denyRole('Internal/everyone', artifact.path, carbon.registry.actions.GET);
+        }
+
+
         // But, there's an internal_everyone coming up with +GET. Let's nuke it.
         //um.denyRole('Internal/everyone', artifact.path, carbon.registry.actions.GET);
+        //remove Internal/everyone role if there are roles added only.
+        var denyEveryone = false;
+        permissions.forEach(function (rolePermissions) {
+            var role = rolePermissions.role;
+            if (role != 'Internal/private_admin' && role != 'admin') {
+                if (rolePermissions.permissions.length > 0) {
+                    denyEveryone = true;
+                }
+            }
+        });
 
-    //remove Internal/everyone role if there are roles added only.
-        permissions.forEach(function(rolePermissions) {
-                    var role = rolePermissions.role;
-
-                    if(role != 'Internal/private_admin' && role != 'admin' ){
-                        var x = rolePermissions;
-                        if(rolePermissions.permissions.length>0){
-                            um.denyRole('Internal/everyone', artifact.path, carbon.registry.actions.GET);
-
-                        }
-
-
-                    }
-
-         });
+        if(denyEveryone){
+            um.denyRole('Internal/everyone', artifact.path, carbon.registry.actions.GET);
+        }
 
 
         var username = server.current(session).username;
@@ -475,8 +548,21 @@ function addTags(params,assetId,artifactManager,reg){
             }
         };
 
+        //Build Permissions to be added.
+        transitionExecution.forEach(function(element) {
+            var name = element.name;
+            if(name.indexOf("STATE_RULE")===0){
+                if(filterActions(element.value.split(":")[1]).length > 0) {
+                    permissions.push({
+                     role: constructDynamicRoles(element.value.split(":")[0], tenantId, artifact),
+                     permissions: filterActions(element.value.split(":")[1])
+                 });
+                }
+            }
+        });
+
         //  1. +get +edit +delete +authorize for asset_{owner}
-        permissions.push({
+        /**permissions.push({
             role: currentUserRole,
             permissions: ['GET', 'PUT', 'DELETE', 'AUTHORIZE']
         });
@@ -484,14 +570,13 @@ function addTags(params,assetId,artifactManager,reg){
         permissions.push({
             role: 'admin',
             permissions: ['GET', 'PUT', 'DELETE', 'AUTHORIZE']
-        });
+        });*/
 
         // add the permissions as passed
         permissions.forEach(function(rolePermissions) {
             var role = rolePermissions.role;
 
             rolePermissions.permissions.forEach(function(permission) {
-                var permission;
 
                 permission = carbon.registry.actions[permission];
 
@@ -510,6 +595,48 @@ function addTags(params,assetId,artifactManager,reg){
         }
 
         registry.addProperty(artifact.path, 'overridden_permissions', JSON.stringify(permissions));
+    }
+
+
+    function constructDynamicRoles(role,tenantId,item){
+        var revisedRole;
+        var overviewProvider = item.attributes.overview_provider;
+        if(tenantId == '-1234') {
+            revisedRole = role.replace('{asset_author}', overviewProvider);
+        } else {
+            var providerDetails = overviewProvider.split("-AT-");
+            revisedRole = role.replace('{asset_author}', providerDetails[0]);
+        }
+        return revisedRole;
+    }
+
+    function filterActions(actions,operation){
+        var symbol = "+";
+        if(operation=="deny"){
+            symbol = "-";
+        }
+        var actions = actions.split(",");
+        var filteredActions = [];
+        log.info(actions);
+        actions.forEach(function (value) {
+            if(value.indexOf(symbol)===0){
+                switch(value){
+                    case symbol+"get" :
+                        filteredActions.push("GET");
+                        break;
+                    case symbol+"add" :
+                        filteredActions.push("PUT");
+                        break;
+                    case symbol+"delete" :
+                        filteredActions.push("DELETE");
+                        break;
+                    case symbol+"authorize" :
+                        filteredActions.push("AUTHORIZE");
+                        break;
+                }
+            }
+        });
+        return filteredActions;
     }
 
 /*

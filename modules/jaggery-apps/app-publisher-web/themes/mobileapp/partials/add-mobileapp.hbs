@@ -42,7 +42,7 @@
 
             <input type="hidden" id="appmeta" name="appmeta" value="">
 
-            <input type="hidden" name="version" value="1.0">
+            <input type="hidden" name="version" id="version" value="1.0">
             <input
                     type="hidden" name="provider" value="1WSO2Mobile">
 
@@ -53,7 +53,8 @@
             <div class="form-group">
                 <label class="control-label col-sm-2" for="txtName">Title <span style="color:#FF0000">*</span></label>
                 <div class="col-sm-10 inner-addon">
-                    <input autocomplete='off' class="field span6" type="text" name="name" id="txtName" title="Enter the full name of the app">
+                    <input autocomplete='off' class="field span6" type="text" name="name" id="txtName"
+                           placeholder="Enter the full name of the app" title="Enter the full name of the app">
                     <i id="name_is_ok"  class="icon"></i>
                 </div>
 
@@ -70,7 +71,9 @@
                 <label class="control-label col-sm-2" for="txtDescription">Description  <span style="color:#FF0000">*</span><br><small>(Max. 1000 characters)</small></label>
                 <div class="col-sm-10">
                     <textarea class="field span6" id="txtDescription"
-                              name="description" maxlength="1000" rows="12" style="width:90%" title="Enter description of the app. less than 1000 words." > </textarea>
+                              name="description" maxlength="1000" rows="12" style="width:90%"
+                              placeholder="Enter description of the app. less than 1000 characters"
+                              title="Enter description of the app. less than 1000 characters." ></textarea>
                 </div>
             </div>
 
@@ -79,7 +82,9 @@
                     Changes <br><small>(Max. 700 characters)</small></label>
                 <div class="col-sm-10">
                     <textarea class="field span6" id="txtRecentChanges" maxlength="700"
-                              name="recentChanges" rows="6" style="width:90%" title="Enter recent changes you have done to the app. less than 500 words."> </textarea>
+                              name="recentChanges" rows="6" style="width:90%"
+                              placeholder="Enter recent changes you have done to the app. less than 700 characters."
+                              title="Enter recent changes you have done to the app. less than 700 characters."></textarea>
                 </div>
             </div>
 
@@ -282,7 +287,7 @@
 
                                 <div class="col-sm-10">
                                     <input class="field span6" style="width: 450px" type="text" name="packagename"
-                                           id="txtPackagename">
+                                           id="txtPackagename" placeholder="Package Name E.g: com.companyname.applicationname">
                                 </div>
                             </div>
 
@@ -296,7 +301,8 @@
                         <label class="control-label col-sm-2" for="txtName">Web App URL <span style="color:#FF0000">*</span></label>
 
                         <div class="col-sm-10">
-                            <input class="field" style="width: 450px" type="text" name="url" id="txtWebapp" />
+                            <input class="field" style="width: 450px" type="text" name="url" id="txtWebapp"
+                                   placeholder="Enter URL: http://mobile.com/webapp "/>
                             <div style="font-size: xx-small">Please enter a valid url</div>
                         </div>
                     </div>

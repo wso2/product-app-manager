@@ -23,5 +23,11 @@ var checkeRole = function (username, session) {
   	if (!usr.hasRoles([role[0]])) {
       		return false;
   	}
+
+	
+	if (!( usr.hasRoles(["Internal/subscriber"]))) {
+           return false;
+  	}
+
   	return true;
 };

@@ -21,6 +21,8 @@ var render=function(theme,data,meta,require){
     var listPartial='view-asset';
     var heading = "";
     var newViewData;
+    var notifications = session.get('notifications');
+    var notificationCount = session.get('notificationCount');
     //Determine what view to show
     switch(data.op){
 
@@ -33,39 +35,33 @@ var render=function(theme,data,meta,require){
             listPartial='view-asset';
             var copyOfData = parse(stringify(data));
             data.newViewData =  require('/helpers/splitter.js').splitData(copyOfData);
-            heading = data.newViewData.name.value;
+            heading = data.newViewData.displayName.value;
             break;
         case 'edit':
             data = require('/helpers/edit-asset.js').processData(data);
             listPartial='edit-asset';
             var copyOfData = parse(stringify(data));
             data.newViewData =  require('/helpers/splitter.js').splitData(copyOfData);
-            heading = data.newViewData.name.value + " - Edit";
+            heading = data.newViewData.displayName.value;
             break;
         case 'lifecycle':
             listPartial='lifecycle-asset';
             var copyOfData = parse(stringify(data));
             data.newViewData =  require('/helpers/splitter.js').splitData(copyOfData);
-            heading = data.newViewData.name.value + " - Lifecycle";
+            heading = data.newViewData.displayName.value + " - Lifecycle";
             break;
         case 'versions':
             listPartial='versions-asset';
             var copyOfData = parse(stringify(data));
             data.newViewData =  require('/helpers/splitter.js').splitData(copyOfData);
-            heading = data.newViewData.name.value + " - Versions";
-            break;
-        case 'documentation':
-            listPartial='documentation';
-            var copyOfData = parse(stringify(data));
-            data.newViewData =  require('/helpers/splitter.js').splitData(copyOfData);
-            heading = data.newViewData.name.value + " - Documentation";
+            heading = data.newViewData.displayName.value + " - Versions";
             break;
         case 'copyapp':
             data = require('/helpers/copy-app.js').processData(data);
             listPartial='copy-app';
             var copyOfData = parse(stringify(data));
             data.newViewData =  require('/helpers/splitter.js').splitData(copyOfData);
-            heading = data.newViewData.name.value + " - Copy";
+            heading = data.newViewData.displayName.value;
             break;
         default:
             break;
@@ -83,7 +79,13 @@ var render=function(theme,data,meta,require){
             ribbon: [
                 {
                     partial: 'ribbon',
-                    context: {active:listPartial, createPermission : createActionAuthorized, viewStats : viewStatsAuthorized}
+                    context: {
+                        active:listPartial,
+                        createPermission : createActionAuthorized,
+                        viewStats : viewStatsAuthorized,
+                        notifications : notifications,
+                        notificationCount: notificationCount
+                    }
                 }
             ],
             leftnav: [

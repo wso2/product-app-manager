@@ -589,5 +589,28 @@
 
     </EntitlementServiceConfiguration>
 
+
+	<!--
+		Configuration to handle Mobile apps and MDM.	
+    	-->
+	<MobileAppsConfiguration>
+		<MDM>
+	           <Enabled>false</Enabled>
+		   <ServerUrl>https://localhost:9450</ServerUrl>
+		   <EnableSampleDevices>false</EnableSampleDevices>
+		   <AppDownloadURLHost>%http%</AppDownloadURLHost>	
+                </MDM>
+	</MobileAppsConfiguration>
+
+	
+
+	<!--
+		Configuration to handle Services.	
+    	-->
+
+	<ServicesAPI>
+		<AuthorizedRole>admin</AuthorizedRole>
+	</ServicesAPI>
+
 </APIManager>
 

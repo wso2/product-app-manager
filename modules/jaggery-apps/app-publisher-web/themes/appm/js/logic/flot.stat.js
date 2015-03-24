@@ -480,6 +480,7 @@ var drawSubscriberCountByAPIs = function (response) {
 
     } else {
         $('#pie-chart').html($('<h1 class="no-data-heading">No data available</h1>'));
+        $('#pagination').empty();
     }
 }
 

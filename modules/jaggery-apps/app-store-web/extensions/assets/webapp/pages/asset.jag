@@ -43,7 +43,8 @@ require('/modules/store.js').exec(function (ctx) {
             skipGateway = false,
             webAppEndpoint;
             utility = require('/modules/util.js');
-            search = require('/modules/search.js');
+            search = require('/modules/search.js'),
+            social = carbon.server.osgiService('org.wso2.carbon.social.core.service.SocialActivityService');
                         
     caramel = require('caramel');
 
@@ -55,6 +56,12 @@ require('/modules/store.js').exec(function (ctx) {
     } catch (e) {
         response.sendError(404, 'Requested page cannot be found');
         return;
+    }
+
+    if (JSON.parse(social.getRating("webapp:" + aid))) {
+        asset.rating = Math.floor(JSON.parse(social.getRating("webapp:" + aid)).rating);
+    } else {
+        asset.rating = 0.0;
     }
 
     //check asset LC state
@@ -246,6 +253,10 @@ require('/modules/store.js').exec(function (ctx) {
 
     var assetsByProvider = getAssetsFromProvider(asset, store);
 
+
+
+
+
     var docs;
     if (authenticator.getLoggedInUser()) {
         docs = docsManager.getAllDocumentation(asset.attributes.overview_provider,
@@ -297,7 +308,32 @@ require('/modules/store.js').exec(function (ctx) {
     } else {
         skipGateway = false;
     }
-      
+
+
+    var process = require('process');
+    //set local ip
+    asset.attributes.localIP = "https://" + process.getProperty('server.host');
+    //set http port
+    asset.attributes.httpsPort = process.getProperty('https.port');
+
+    for(var i = 0; i < assetsByProvider.assets.length; i++){
+        if(JSON.parse(social.getRating("webapp:" + assetsByProvider.assets[i].id))) {
+            assetsByProvider.assets[i].rating = {average: Math.floor(JSON.parse(social.getRating("webapp:" + assetsByProvider.assets[i].id)).rating)};
+        }else{
+            assetsByProvider.assets[i].rating = 0;
+        }
+    }
+
+    var recentAssets = store.recentAssets(type);
+
+    for(var i = 0; i < recentAssets.length; i++){
+        if(JSON.parse(social.getRating("webapp:" + recentAssets[i].id))) {
+            recentAssets[i].rating = {average: Math.floor(JSON.parse(social.getRating("webapp:" + recentAssets[i].id)).rating)};
+        }else{
+            recentAssets[i].rating = 0;
+        }
+    }
+    
     caramel.render({
         title: 'Store | ' + type,
         user: user,
@@ -333,7 +369,7 @@ require('/modules/store.js').exec(function (ctx) {
             }
         ],
         myAssets: { user: user, type: type, title: title },
-        recentAssets: store.recentAssets(type),
+        recentAssets: recentAssets,
         assetsByProvider: assetsByProvider,
         documentation: docs,
         apiData:apiData ,

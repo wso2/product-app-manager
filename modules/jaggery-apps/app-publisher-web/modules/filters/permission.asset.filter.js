@@ -110,6 +110,11 @@ var filterModule = function () {
         var roles = [];
         var state = state.toLowerCase();
 
+        log.debug("#### Config : "+ stringify(config));
+        log.debug("#### State : "+state);
+
+
+
         //Check if any roles are specified for the state
         if (config.hasOwnProperty(state)) {
             roles = config[state];

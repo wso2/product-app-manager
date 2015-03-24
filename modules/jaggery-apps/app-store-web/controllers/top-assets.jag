@@ -28,7 +28,8 @@ require('/modules/store.js').exec(function (ctx) {
             options = {},
             types = store.assetTypes(),
             search = require('/modules/search.js'),
-            utility = require('/modules/util.js'),isSubscribed;
+            utility = require('/modules/util.js'),isSubscribed,
+            social = carbon.server.osgiService('org.wso2.carbon.social.core.service.SocialActivityService');
 
     caramel = require('caramel');
     process = require('process'),
@@ -78,85 +79,30 @@ require('/modules/store.js').exec(function (ctx) {
             individualSubscription = subscriptionService.getSubscription(appInfo, defaultApplicationName, "INDIVIDUAL", null).subscription;
         }
 
-
-        // Get all available IDPs (enterprises)
-        var enterprises = getEnterprises(asset);
-
         var subscriptionInfo = {};
-
         subscriptionInfo["enterpriseSubscription"] = enterpriseSubscription;
         subscriptionInfo["individualSubscription"] = individualSubscription;
-        subscriptionInfo["enterprises"] = enterprises;
-        subscriptionInfo["viewData"] = getSubscriptionViewData(enterpriseSubscription, enterprises);
-
         return subscriptionInfo;
 
     }
 
-    // Returns HBS friendly subscription info.
-    var getSubscriptionViewData = function (enterpriseSubscription, enterprises) {
-
-        var viewData = new Array();
-
-        if (!enterprises) {
-            return viewData;
-        }
-
-        // Create a Set of trusted IDPs in the enterprise subscription.
-        var trustedIdpsSet = {};
-
-        if (enterpriseSubscription) {
-
-            var trustedIdps = JSON.parse(enterpriseSubscription.trustedIdps);
-
-            for (var i = 0; i < trustedIdps.length; i++) {
-                trustedIdpsSet[trustedIdps[i]] = true;
-            }
-        }
-
-        for (var i = 0; i < enterprises.length; i++) {
-            var viewEntry = {};
-            viewEntry["enterprise"] = enterprises[i];
-            viewEntry["subscribed"] = enterprises[i] in trustedIdpsSet;
-            viewData.push(viewEntry);
-        }
-
-        return viewData;
+    AuthService=require(getServiceDir('authentication.js')).serviceModule;
+    authenticator=new AuthService.Authenticator();
+    authenticator.init(jagg,session);
+    user=authenticator.getLoggedInUser();
+	
+	
+    //Validate user's role and send error if user is not a subscriber. 
+    if (user != null) {
+	var role = require('/modules/role.js').checkeRole(user.username, session);
+	if (role == false) {
+		log.warn('User ' + user.username + ' does not have permission to access the store application. ' +
+		'Make sure the user has the subscriber role.');
+		response.sendError(401, 'You do not have permission to login to this application.' +
+		'Please contact your administrator and request permission.');
+		return false;
+	}
     }
-
-    var getEnterprises = function (asset) {
-        var store = jagg.module("manager").getAPIStoreObj();
-        var isEmailLoginEnabled = store.isEnableEmailUsername();
-
-        var appName = asset.attributes.overview_name;
-        var appVersion = asset.attributes.overview_version;
-        var appProvider = asset.attributes.overview_provider;
-        var result = null;
-        var issuerName = null;
-        var store = jagg.module("manager").getAPIStoreObj();
-        var isEmailLoginEnabled = store.isEnableEmailUsername();
-
-        //Check whether application author is a tenant
-        if (!isEmailLoginEnabled && appProvider != null && appProvider.indexOf("-AT-") != -1) {
-            result = appProvider.split("-AT-");
-        }
-        if (result != null) {
-            issuerName = appName + "-" + result[1] + "-" + appVersion;
-        } else {
-            issuerName = appName + "-" + appVersion;
-        }
-
-        var ssoProviderInfo = asset.attributes.sso_ssoProvider.split("-");
-
-
-        var authResult = subscriptionService.getEnterprisesForApplication(
-                {appName: issuerName, ssoProviderName: ssoProviderInfo[0], ssoProviderVersion: ssoProviderInfo[1]});
-
-        return authResult.enterprises;
-
-    }
-
-
 
     types.forEach(function (type) {
         manager = store.rxtManager(type, session);
@@ -174,14 +120,21 @@ require('/modules/store.js').exec(function (ctx) {
 
 
         var rxtAttributes = require('/modules/util.js').getRXTAttributes(tenantId, type);
-        AuthService=require(getServiceDir('authentication.js')).serviceModule;
-        authenticator=new AuthService.Authenticator();
-        authenticator.init(jagg,session);
-        user=authenticator.getLoggedInUser();
+
         if(type == "webapp") {
 
             var subscriptionInfo;
             assets.forEach(function (asset) {
+
+                //set rating
+                
+                if(JSON.parse(social.getRating("webapp:" + asset.id))){
+                    asset.rating = Math.floor(JSON.parse(social.getRating("webapp:" + asset.id)).rating);
+                }else{
+                    asset.rating = 0;
+                }
+
+
                 isSubscribed = false;
                 //set subscription details for each asset
                 subscriptionInfo = getSubscriptionInfo(asset)

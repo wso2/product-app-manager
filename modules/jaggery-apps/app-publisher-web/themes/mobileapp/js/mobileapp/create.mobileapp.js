@@ -15,8 +15,8 @@ $("#txtName").change(function() {
         success: function (data) {
             var data = JSON.parse(data);
             if(data.isExist){
-                $("#name_is_ok").css("color", "#ff0000");
-                $("#name_is_ok").addClass("icon-remove");
+                $("#name_is_ok").css("color", "#ffa500");
+                $("#name_is_ok").text("App name with version " + data.versions +  " already exists.");
                 $("#name_is_ok").removeClass("icon-ok");
                 $("#name_is_ok").css("padding-left", "15px");
                 $("#name_is_ok").attr("title", "Mobile app name already exists");
@@ -24,6 +24,7 @@ $("#txtName").change(function() {
             }else{
                 $("#name_is_ok").css("color", "#00ff00");
                 $("#name_is_ok").addClass("icon-ok");
+                $("#name_is_ok").text("");
                 $("#name_is_ok").removeClass("icon-remove");
                 $("#name_is_ok").css("padding-left", "30px");
             }
@@ -205,6 +206,7 @@ $(document).ready(function(){
         done: function (e, data) {
             var data = data._response.result;
             $('#txtVersion').val(data.version);
+            $("#version").val(data.version);
 
             if (data.ok == false) {
                 var validationErrors = "";
@@ -216,7 +218,6 @@ $(document).ready(function(){
                     }
                 }
                 $("#modal-upload-progress").hide();
-
 
               //  window.location.replace("/publisher/assets/mobileapp/");
 
@@ -312,8 +313,6 @@ $('#btn-app-upload').click(function () {
     }
 
 
-
-
       if(appMetaData == null){
           $("#modal-upload-data").hide();
           $('#wizard_step2').show();
@@ -330,6 +329,7 @@ $('#btn-app-upload').click(function () {
 
 
 jQuery("#form-asset-create").submit(function(e) {
+
 	$("#txtMarketHidden").val($("#txtMarket").val());
 	$("#txtOSHidden").val($("#txtOS").val());
 

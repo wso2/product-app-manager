@@ -644,9 +644,6 @@ td.asset-listing-btn {
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.14);
     width: 30px;
 }
-.badge {
-    background: none;
-}
 .lc-state-Created{
     color:#88DAFF
 }
@@ -898,7 +895,7 @@ span.title {
     margin-bottom: 15px;
 }
 .asset-detail-top-row {
-    border-bottom: 1px solid #ECF0F1;
+   /* border-bottom: 1px solid #ECF0F1;*/
 }
 .nav-list > li > a, .nav-list .nav-header {
     margin-left: 0;
@@ -1382,9 +1379,15 @@ h2.first-h2{
     margin-top: -43px;
 }
 .secondary-pills > li > a{
-    background: #fff;
-    color:#428bca;
+    color: #428bca;
+    width: 100px;
+    padding-left: 50px;
 }
+.secondary-pills > li > a >i{
+    position: absolute;
+    margin-top: 3px;
+    font-size: 18px;
+    margin-left: -22px;}
 .secondary-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus{
     background: #efefef;
     color: #444;
@@ -1656,3 +1659,39 @@ ul.token-input-list-facebook{
 .load-seperator{margin-right: 20px;}
 .policy-group-edit-button,.policy-group-delete-button,.delete_resource{cursor: pointer}
 .wr-section > h2 {cursor: pointer;}
+
+/* Application Overview */
+.app-overview-tabs > .nav-tabs > li.active > a, .app-overview-tabs > .nav-tabs > li.active > a:hover,
+.app-overview-tabs > .nav-tabs > li.active > a:focus{
+    background: #fff;
+}
+
+.app-overview-tabs >.tab-content{
+    background: none repeat scroll 0 0 #fff;
+    border-radius: 3px;
+    margin-bottom: 20px;
+    margin-top: -2px;
+    padding: 15px;
+    border: 1px solid #DDDDDD;
+}
+
+.app-overview-tabs >.tab-content div.row{border-bottom: none;}
+.truncated-para {text-align: justify;}
+.app-overview-inner{border: 1px solid #DDDDDD;}
+.app-overview-inner > .tab-pane{min-height: 150px}
+.app-overview-inner{margin-bottom: 0px}
+.asset-tab-content{background: none !important;}
+#addDoc{height: 70px}
+ul.dropdown-menu.notifications {
+    width: auto;
+}
+.dropdown-menu>li>a{
+    max-width: 736px;
+    overflow: hidden !important;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+textarea#overview_description {
+    padding: 7px;
+}

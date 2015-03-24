@@ -1,4 +1,4 @@
-<div id="modal-ent-install" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="width:800px; margin-left: -400px" aria-hidden="true">
+<div id="modal-ent-install" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="width:800px; margin-left: -400px; display: none" aria-hidden="true">
 
     <div class="modal-header">
         <button id="btn-ent-install-close" type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -106,9 +106,9 @@
                         {{/if}}
 
                     </span>
-                           {{#unless ../../config.is_catalog}}
+                           {{#if ../../config.enabled}}
                                 {{>asset-utilization ../../../.}}
-                           {{/unless}}
+                           {{/if}}
                          </div>
 
                     </div>
@@ -116,12 +116,14 @@
                 </div>
 
             </div>
-
             <div class="assetp-properties">
 
                 <ul class="nav nav-tabs" id="assetp-tabs" data-aid="{{../path}}">
                     <li class="active">
                         <a href="#tab-properties" data-toggle="tab" data-type="basic">{{t "Description"}}</a>
+                    </li>
+                    <li>
+                        <a href="#tab-changes" data-toggle="tab" data-type="basic">{{t "Recent Changes"}}</a>
                     </li>
                     <li style="display:none">
                         <a  href="#tab-reviews" data-toggle="tab" data-type="comments">{{t "User Reviews"}}</a>
@@ -134,17 +136,12 @@
                             {{>overview .}}
                         </div>
                     </div>
-
-                      <div class="tab-pane" id="tab-reviews">
-                            <iframe name="socialIfr" id="socialIfr"
-                                     src="../../../social/?target={{../../type}}:{{../id}}&user={{../../user.username}}"
-                                    width="100%" height="100%" style="height: 300px;"></iframe>
-                       	{{#if ../../inDashboard}}
-                       		 <div id="comment-content" class="content"></div>
-						{{else}}
-							<div id="comment-content" class="content user-review"></div>
-						{{/if}}
+                    <div class="tab-pane" id="tab-changes">
+                        <div class="content">
+                            {{overview_recentchanges}}
+                        </div>
                     </div>
+
 
                 </div>
 

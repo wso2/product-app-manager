@@ -230,17 +230,43 @@ $(document).ready(function() {
 	function search() {
 		var searchAssetString = $('#inp_searchAsset').val();
 		var searchPrefix = $('#search-prefix').val();
+		if (checkNonSpecial(searchAssetString)) {
 
-		//set default when empty
-		if (searchPrefix.trim() == "") {
-			searchPrefix = "webapp";
-		}
+			//set default when empty
+			if (searchPrefix.trim() == "") {
+				searchPrefix = "webapp";
+			}
 
-		if (searchAssetString != "") {
-			var link = '/publisher/assets/' + searchPrefix + '/?query=' + searchAssetString;
-			window.location = link;
+			if (searchAssetString != "") {
+				var link = '/publisher/assets/' + searchPrefix + '/?query=' + searchAssetString;
+				window.location = link;
+			}
+		} else {
+			noty({
+			    text: 'Please enter a valid search term',
+			    template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
+			    layout: "center",
+			    modal: true,
+			    type: "error",
+			    buttons: [
+				{
+
+				    addClass: 'btn btn-default',
+				    text: 'Ok',
+				    onClick: function ($noty) {
+				        $noty.close();
+				    }
+
+				}
+			    ]
+        		});
 		}
 	}
+
+	function checkNonSpecial(value){
+        	var non_special_regex = /^[A-Za-z][A-Za-z0-9\s-]*$/;
+        	return non_special_regex.test(value);
+    	}
 
     /* expand collapse container */
     $("h2.exp_col").click(function() {

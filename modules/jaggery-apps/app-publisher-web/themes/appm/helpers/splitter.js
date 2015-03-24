@@ -19,6 +19,7 @@ function isEmpty(obj) {
 var splitData = function(copyOfData){
     var dataPart = copyOfData.data.fields;
     var overview_name;
+    var overview_displayName;
     var overview_meta = [];
     var overview_main = [];
     var overview_description;
@@ -39,6 +40,7 @@ var splitData = function(copyOfData){
         }else if (dataPart[i].name == "overview_version") {
             overview_main.push(dataPart[i]);
         }else if (dataPart[i].name == "overview_displayName") {
+            overview_displayName = dataPart[i];
             overview_main.push(dataPart[i]);
         }else if (dataPart[i].name == "overview_webAppUrl") {
             overview_main.push(dataPart[i]);
@@ -108,6 +110,7 @@ var splitData = function(copyOfData){
     var newViewData = {};
 
     newViewData.name=overview_name;
+    newViewData.displayName=overview_displayName;
     newViewData.description=overview_description;
     newViewData.main=overview_main;
     newViewData.meta=overview_meta;

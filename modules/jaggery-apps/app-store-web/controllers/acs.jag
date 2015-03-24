@@ -67,7 +67,7 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
 
 						
                         } else {
-                        	log.warn('User '+sessionObj.loggedInUser+' does not have permission to access the publisher application. Make sure the user has the store role.');
+                        	log.warn('User '+sessionObj.loggedInUser+' does not have permission to access the store application. Make sure the user has the store role.');
                         	response.sendError(401,'You do not have permission to login to this application.Please contact your administrator and request permission.');
                         	                        	
                         }                        

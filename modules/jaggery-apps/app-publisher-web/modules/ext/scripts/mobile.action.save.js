@@ -20,26 +20,6 @@ var module=function(){
 
     var configs=require('/config/publisher.json');
     var log=new Log();
-    /*
-     adding asset details to Social Cache DB.
-     */
-    function addToSocialCache(id, type) {
-        if (id) {
-            var logged = require('store').server.current(session);
-            var domain = (logged && logged.tenantDomain) ? logged.tenantDomain : "carbon.super";
-
-            var CREATE_QUERY = "CREATE TABLE IF NOT EXISTS SOCIAL_CACHE (id VARCHAR(255) NOT NULL,tenant VARCHAR(255),type VARCHAR(255), " +
-                "body VARCHAR(5000), rating DOUBLE,  PRIMARY KEY ( id ))";
-            var server = require('store').server;
-            server.privileged(function () {
-                var db = new Database("SOCIAL_CACHE");
-                db.query(CREATE_QUERY);
-                var combinedId = type + ':' + id;
-                db.query("MERGE INTO SOCIAL_CACHE (id,tenant,type,body,rating) VALUES('" + combinedId + "','" + domain + "','" + type + "','',0)");
-                db.close();
-            });
-        }
-    }
 
     return{
         execute:function(context){
@@ -110,9 +90,6 @@ var module=function(){
             var id=artifact[0].id||' ';
 
             log.debug('Setting id of model to '+id);
-
-            //adding asset to social
-            //addToSocialCache(id,template.shortName);
 
             //Save the id data to the model
             model.setField('*.id',id);

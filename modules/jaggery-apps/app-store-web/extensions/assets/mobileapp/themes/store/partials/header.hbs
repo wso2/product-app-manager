@@ -38,10 +38,10 @@
                             </li>
 							{{#if user}}
 							<li class="nav-separator">
-                                {{#unless config.is_catalog}}
+                                {{#if config.enabled}}
                                     <a href="{{url "/extensions/assets/mobileapp/subscriptions"}}"><i
                                     class="icon-mobile-phone store-topnav-bookmark"></i> {{t "My Subscriptions"}}</a>
-                                {{/unless}}
+                                {{/if}}
 							</li>
 							<li>
 

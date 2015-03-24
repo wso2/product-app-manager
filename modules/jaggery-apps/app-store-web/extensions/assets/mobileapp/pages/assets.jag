@@ -15,9 +15,23 @@ require('/modules/store.js').exec(function (ctx) {
             site = ctx.site,
             subscriptions = {},
             subscription = false,
-            avaliablePages;
+            avaliablePages,
+            mdmConfig = new Packages.org.wso2.carbon.appmgt.mobile.store.MDMConfig();
+
+
+
+        if(configs.mobile.enable_emm){
+            //for wso2emm
+            var mdmUIConfig  = {enabled : !configs.mobile.is_catalog};
+        }else{
+            //for wso2mdm
+            var mdmUIConfig  = {enabled : mdmConfig.isMDMEnabled()};
+        }
+
 
     caramel = require('caramel');
+
+
 
     url = '/assets/' + type + '/?' + (tag ? 'tag=' + tag + '&' : '') + (query ? 'query=' + query + '&' : '');
 
@@ -165,22 +179,8 @@ require('/modules/store.js').exec(function (ctx) {
     }
     var rxtAttributes = require('/modules/util.js').getRXTAttributes(tenantId, type);
     var devices = [];
-    if(!configs.mobile.is_catalog){
-
-        if(user!=null){
-            var emm = require('/modules/emm.js').emm;
-            var emmServer = new emm();
-
-            try{
-                var result = emmServer.getDevices(user.username+"@"+user.tenantDomain);
-                devices = parse(result);
-
-            }catch(e){
-                log.debug(e);
-            }
-        }
-
-    }
+    //devices = devicesClass.get
+    //TODO Implement devices
 
 
     caramel.render({
@@ -219,7 +219,7 @@ require('/modules/store.js').exec(function (ctx) {
         sorting: {
             url: url + 'sort='
         },
-        config : configs.mobile,
+        config : mdmUIConfig,
         myAssets : { user:user, type: type, title: title, subscriptions: subscriptions[type], subscription : subscription, pageIndices : pageIndices, leftNav:leftnav, rightNav:rightnav},
         recentAssets: store.recentAssets(type)
 

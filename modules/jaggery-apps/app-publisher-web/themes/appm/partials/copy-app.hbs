@@ -5,17 +5,22 @@
          <div class="widget wlightblue">
             <div class="widget-head">
                <div class="pull-left">Create New Version  - {{{snoop
-                  "fields(name=overview_name).value" this.data}}}
+                  "fields(name=overview_displayName).value" this.data}}}
                </div>
                <div class="clearfix"></div>
             </div>
             <div class="widget-content">
                <form class="form-horizontal" id='form-asset-copy'>
                   <fiedlset>
-                  <b><label class="control-label">New Version : </label></b> 
-                            <div class="control-group">
-                                <input type="text" name="overview_version" id="overview_version" class="form-control">
-                            </div>
+                      <b><label class="control-label">New Version : </label></b>
+                      <span class="label-required">*</span>
+                      <div class="control-group">
+                          <input type="text" name="overview_version" id="overview_version" class="form-control">
+                      </div>
+                      <b><label class="control-label">New Display Name : </label></b>
+                      <div class="control-group">
+                          <input type="text" name="newDisplayName" id="newDisplayName" class="form-control">
+                      </div>
                   <fieldset/>
                   <fieldset style="display:none;">
                      <input type="hidden" value="{{{snoop "fields(name=overview_version).value" data}}}" name="oldversion" id="oldversion"/>
@@ -276,6 +281,7 @@
                         name="btn-copy-asset" id="btn-copy-asset">  <input
                         type="hidden" value="{{shortName}}" name="{{shortName}}"
                         id="meta-asset-type">
+                      <button class="btn btn-cancel" onclick="history.go(-1);">Cancel</button>
                   </div>
                </form>
             </div>

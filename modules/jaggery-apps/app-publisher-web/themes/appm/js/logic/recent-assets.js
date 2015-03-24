@@ -24,7 +24,7 @@ $(function () {
     }, REFRESH_TIMER);
 	var recentTmpl = '{{#each cachedAssets}}';
 		recentTmpl += '		<div class="row-fluid">';
-		recentTmpl += '			<div class="span10"><i class="icon-refresh icon-spin load-seperator"></i><i class="icon-ok-circle"></i> <span><strong>{{attributes.overview_name}}</strong> is being added</span></div>';
+		recentTmpl += '			<div class="span10"><i class="icon-refresh icon-spin load-seperator"></i><i class="icon-ok-circle"></i> <span><strong>{{attributes.overview_displayName}}</strong> is being added</span></div>';
 		recentTmpl += '     </div>';
 		recentTmpl += '{{/each}}';
 

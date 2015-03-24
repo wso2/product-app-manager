@@ -519,26 +519,47 @@ require('/modules/publisher.js').exec(function(ctx) {
             var appMDAO = Packages.org.wso2.carbon.appmgt.impl.dao.AppMDAO;
             var appMDAOObj = new appMDAO();
 
-            appMDAOObj.updateOAuthAPIAccessInfo(webAppObj);
+	    var tenantId = server.current(session).tenantId;
+
+            appMDAOObj.updateOAuthAPIAccessInfo(webAppObj, tenantId);
 
             var count = 1;
             var tokenEndpoint = attributes["oauthapis_apiTokenEndpoint" + count];
 
-            while (tokenEndpoint != null && tokenEndpoint.length > 0) {
+	    var tenantId = server.current(session).tenantId;
+	    var tenantDomain = carbon.server.tenantDomain({tenantId:tenantId});
+	    var saml2SsoIssuer = null;
+	    if (tenantId == -1234) {
+		saml2SsoIssuer = attributes["overview_name"] + "-" + attributes["overview_version"];
+	    } else {
+		saml2SsoIssuer = attributes["overview_name"] + "-" + tenantDomain + "-" + attributes["overview_version"];
+	    }
+
+            while (tokenEndpoint != null && tokenEndpoint.trim().length > 0) {
 
                 webAppObj.setTokenEndpoint(attributes["oauthapis_apiTokenEndpoint" + count]);
                 webAppObj.setApiConsumerKey(attributes["oauthapis_apiConsumerKey" + count]);
                 webAppObj.setApiConsumerSecret(attributes["oauthapis_apiConsumerSecret" + count]);
                 webAppObj.setApiName(attributes["oauthapis_apiName" + count]);
+		webAppObj.setSaml2SsoIssuer(saml2SsoIssuer);
 
                 count++;
                 tokenEndpoint = attributes["oauthapis_apiTokenEndpoint" + count];
 
                 //Save OAuth APIs consumer details per given web-app
-                appMDAOObj.addOAuthAPIAccessInfo(webAppObj);
+                appMDAOObj.addOAuthAPIAccessInfo(webAppObj, tenantId);
             }
 
             saveExternalEntitlementPolicies(context.post);
+
+            var artifactManagerForUpdate = rxtManager.getSystemArtifactManager(shortName,session);
+
+            if(originalArtifact.lifecycleState=="Approved") {
+                log.info("Before Calling update");
+                var updateLCArtifact = artifactManager.get(id);
+                artifactManagerForUpdate.promoteLifecycleState("Revert", updateLCArtifact);
+                log.info("After Calling update");
+            }
 
             msg['ok']=true;
             msg['message']='asset updated';
@@ -865,6 +886,9 @@ require('/modules/publisher.js').exec(function(ctx) {
                 model.set('overview.provider', username);
                 model.set('overview.description',ctx.description);
                 model.set('overview.type',ctx.markettype);
+                if(ctx.recentChanges == ""){
+                    ctx.recentChanges = "-";
+                }
                 model.set('overview.recentchanges',ctx.recentChanges);
                 model.set('images.thumbnail',icon);
                 model.set('images.banner',banner);
@@ -977,10 +1001,19 @@ require('/modules/publisher.js').exec(function(ctx) {
                 var screenshot3 = files['screenshot3File'];
                 screenshot3 = saveFile(screenshot3);
 
+
                 var screenshots = screenshot1+","+screenshot2+","+screenshot3;
 
+
+               var ssValues =  modelA.get('images.screenshots').value;
+                ssValues = ssValues.split(",");
+                if(screenshot1 != "") ssValues[0] = screenshot1;
+                if(screenshot2 != "" ) ssValues[1] = screenshot2;
+                if(screenshot3 != "") ssValues[2] = screenshot3;
+
+
                 if(screenshots!=",,"){
-                    modelA.set('images.screenshots',screenshots);
+                    modelA.set('images.screenshots',ssValues.join());
                 }
                 if(!checkNonSpecial(ctx.name)){
                     print({"ok" : false, "message" : "Validation failure", "report" : {"failed" : true, "name" : ["Special characters found in name"]}});

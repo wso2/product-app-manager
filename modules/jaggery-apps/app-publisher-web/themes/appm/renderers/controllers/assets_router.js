@@ -17,7 +17,7 @@ var render = function (theme, data, meta, require) {
     var log = new Log();
 
 
-    var lifecycleColors = {"Create": "btn-green", "Recycle": "btn-blue", "Re-Publish": "btn-blue", "Submit for Review": "btn-blue", "Unpublish": "btn-orange", "Deprecate": "btn-danger", "Retire": "btn-danger", "Publish": "btn-blue", "Reject": "btn-orange"};
+    var lifecycleColors = {"Create": "btn-green", "Recycle": "btn-blue", "Re-Publish": "btn-blue", "Submit for Review": "btn-blue", "Unpublish": "btn-orange", "Deprecate": "btn-danger", "Retire": "btn-danger", "Publish": "btn-blue", "Approve": "btn-blue", "Reject": "btn-orange"};
 
     if(data.artifacts){
 
@@ -27,7 +27,9 @@ var render = function (theme, data, meta, require) {
 
         var shortName = "webapp";
         var artifactManager = rxtManager.getArtifactManager(shortName);
-
+        //handle asset based notification
+        var notifications = [];
+        var notificationCount = 0;
 
         for(var i = 0; i < data.artifacts.length; i++){
             var lifecycleAvailableActionsButtons = new Array();
@@ -73,7 +75,9 @@ var render = function (theme, data, meta, require) {
                             if (name == "Retire") {
                                 lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
                             }
-
+                            if (name == "Approve") {
+                                lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                            }
                             break;
                         }
                     }
@@ -91,14 +95,28 @@ var render = function (theme, data, meta, require) {
 
             data.artifacts[i].deleteButtonAvailability = deleteButtonAvailability;
 
+            //handle asset based notification - collect notifications
             if(data.artifacts[i].lifecycleState == "Rejected"){
+                notificationCount++;
+                var notifyObject;
                 var lcComments = lcModule.getlatestLCComment(artifactManager, data.artifacts[i].path);
+                for(key in lcComments) {
+                    if(lcComments.hasOwnProperty(key)) {
+                        notifyObject = {'url': '/publisher/asset/webapp/'+ data.artifacts[i].id,
+                            'notification': lcComments[key], 'appname':data.artifacts[i].attributes.overview_displayName }
+                    }
+                }
+                notifications.push(notifyObject);
             }
         }
-
-
+        //handle asset based notification - bind with session
+        session.put('notifications', notifications);
+        session.put('notificationCount', notificationCount);
 
     }
+
+    var notifications = session.get('notifications');
+    var notificationCount = session.get('notificationCount');
 
     var listPartial = 'list-assets';
 
@@ -135,10 +153,7 @@ var render = function (theme, data, meta, require) {
     var breadCrumbData = require('/helpers/breadcrumb.js').generateBreadcrumbJson(data);
     var createActionAuthorized = permissions.isAuthorized(user.username, config.permissions.webapp_create, um);
     var viewStatsAuthorized = permissions.isAuthorized(user.username, config.permissions.view_statistics, um);
-    breadCrumbData.activeRibbonElement = listPartial;
-    breadCrumbData.createPermission = createActionAuthorized;
-    breadCrumbData.viewStats = viewStatsAuthorized;
-    //var addAssetUrl = "/publisher/asset/" + data.meta.shortName +"";
+
     theme('single-col-fluid', {
         title: data.title,
         header: [
@@ -150,7 +165,13 @@ var render = function (theme, data, meta, require) {
         ribbon: [
             {
                 partial: 'ribbon',
-                context: breadCrumbData
+                context: {
+                        active:listPartial,
+                        createPermission : createActionAuthorized,
+                        viewStats : viewStatsAuthorized,
+                        notifications : notifications,
+                        notificationCount: notificationCount
+                }
             }
         ],
         leftnav: [

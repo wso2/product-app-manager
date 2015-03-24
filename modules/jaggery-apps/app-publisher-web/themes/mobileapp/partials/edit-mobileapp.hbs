@@ -27,7 +27,8 @@
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="txtName">Title</label>
 				<div class="col-sm-10">
-					<input class="field col-md-6" type="text" name="overview_name" id="txtName" disabled="disabled" value="{{artifact.attributes.overview_name}}">
+					<input class="field col-md-6" type="text" name="overview_name" id="txtName" disabled="disabled"
+                           value="{{artifact.attributes.overview_name}}" placeholder="Enter the full name of the app">
 					<input type="hidden" name="app_id" id="app_id" value="{{artifact.id}}" >								
 				</div>
 			</div>
@@ -42,7 +43,7 @@
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="txtDescription">Description <span style="color:#FF0000">*</span><br><small>(Max. 1000 characters)</small></label>
 				<div class="col-sm-10">
-					<textarea class="field col-md-6" id="txtDescription"
+					<textarea class="field col-md-6" id="txtDescription" placeholder="Enter description of the app. less than 1000 characters"
 										name="description" rows="12" maxlength="1000" style="width:90%">{{artifact.attributes.overview_description}}</textarea>
 				</div>
 			</div>
@@ -52,6 +53,7 @@
 					Changes <br><small>(Max. 700 characters)</small></label>
 				<div class="col-sm-10">
 					<textarea class="field col-md-6" id="txtRecentChanges" maxlength="1000"
+                              placeholder="Enter recent changes you have done to the app. less than 700 characters."
 										name="recentChanges" rows="6" style="width:90%">{{artifact.attributes.overview_recentchanges}}</textarea>
 				</div>
 			</div>
@@ -105,8 +107,7 @@
 						</div>
 					</div>
 					{{/if}}
-					
-					
+
 					{{#if artifact.attributes.images_screenshots.[1]}}
 					<div data-provides="fileupload" class="fileupload fileupload-exists"><input type="hidden" value="" name="">
 						<div class="fileupload-preview thumbnail" style="line-height: 240px;"><img src="{{artifact.attributes.images_screenshots.[1]}}"></div>
@@ -116,6 +117,24 @@
 							</span>
 						</div>
 					</div>
+
+                     {{else}}
+
+                        <div class="fileupload fileupload-new"
+                             data-provides="fileupload">
+                            <div class="fileupload-preview thumbnail"></div>
+                            <div>
+							<span class="btn btn-file"><span
+                                    class="fileupload-new"><i class="icon-plus-sign"></i></span><span
+                                    class="fileupload-exists"><i class="icon-edit"></i></span>
+								<input
+                                        type="file" class="uploadAction" name="screenshot2File"
+                                        id="txtScreenShot2" data-url="/publisher/api/apps/upload" />
+							</span><a href="#" class="btn fileupload-exists"
+                                      data-dismiss="fileupload"><i class="icon-remove"></i></a>
+                            </div>
+                        </div>
+
 					{{/if}}
 
 					{{#if artifact.attributes.images_screenshots.[2]}}
@@ -127,7 +146,27 @@
 							</span>
 						</div>
 					</div>
+
+                    {{else}}
+
+                        <div class="fileupload fileupload-new"
+                             data-provides="fileupload">
+                            <div class="fileupload-preview thumbnail"></div>
+                            <div>
+							<span class="btn btn-file"><span
+                                    class="fileupload-new"><i class="icon-plus-sign"></i></span><span
+                                    class="fileupload-exists"><i class="icon-edit"></i></span>
+								<input
+                                        type="file" class="uploadAction" name="screenshot3File"
+                                        id="txtScreenShot3" data-url="/publisher/api/apps/upload" />
+							</span><a href="#" class="btn fileupload-exists"
+                                      data-dismiss="fileupload"><i class="icon-remove"></i></a>
+                            </div>
+                        </div>
+
+
 					{{/if}}
+
 
 				</div>
 			</div>

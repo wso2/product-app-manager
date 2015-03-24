@@ -13,11 +13,11 @@
 				<a href="{{url "/assets"}}/{{../type}}/{{../id}}{{#if ../../../device}}?device={{../../../../device}}{{/if}}">
 
                     <div class="asset-icon">
-                        {{#unless ../../../config.is_catalog}}
+                        {{#if ../../../config.enabled}}
                             {{#if ../../indashboard}}
                                 <i class="icon-mobile-phone store-mobileapp-icon"></i>
                             {{/if}}
-                         {{/unless}}
+                         {{/if}}
                     <img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}">
                     </div>
 

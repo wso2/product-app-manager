@@ -36,7 +36,7 @@ var renderAssets, mouseStop, renderAssetsScroll;
 			temp += '	</div> </a>';
 			temp += '	<div class="asset-details">';
 			temp += '		<div class="asset-name">';
-			temp += '			<a href="{{url "/assets"}}/{{../type}}/{{../id}}"> <h4>{{overview_name}}</h4> </a>';
+			temp += '			<a href="{{url "/assets"}}/{{../type}}/{{../id}}"> <h4>{{overview_displayName}}</h4> </a>';
 			temp += '		</div>';
 			temp += '		<div class="asset-rating">';
 			temp += '			<div class="asset-rating-{{../rating/average}}star">';

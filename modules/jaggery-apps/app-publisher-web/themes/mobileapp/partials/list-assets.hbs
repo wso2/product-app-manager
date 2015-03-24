@@ -1,28 +1,3 @@
-<!--
-<div class="asset-thumb-container">
-    <div class="pull-left hide">
-        <div id="tab" class="btn-group" data-toggle="buttons-radio">
-            <a href="#" data-status="All" class="btn active tab-button" data-toggle="tab">All Apps</a>
-            <a href="#" data-status="Created" class="btn tab-button" data-toggle="tab">Created</a>
-            <a href="#" data-status="In-Review"  class="btn tab-button" data-toggle="tab">In-Review</a>
-            <a href="#" data-status="Published" class="btn tab-button" data-toggle="tab">Published</a>
-            <a href="#" data-status="Unpublished" class="btn tab-button" data-toggle="tab">Unpublished</a>
-            <a href="#" data-status="Approved" class="btn tab-button" data-toggle="tab">Approved</a>
-            <a href="#" data-status="Rejected" class="btn tab-button" data-toggle="tab">Rejected</a>
-            <a href="#" data-status="Retired" class="btn tab-button" data-toggle="tab">Retired</a>					
-        </div>
-    </div>
-
-    {{#if this.isNotReviwer}}
-    <div class="row-fluid well-small uploadButton">
-        <a href="/publisher/asset/mobileapp" id="btn-create-asset" class="btn btn-primary pull-right" style="margin-right: 30px" ><i class="icon-plus-sign"> </i> New Application</a>
-    </div>
-    {{/if}}
-
-    <div class="asset-being-added">
-    </div>
-
--->
 <div class="row">
     <div class="pull-left heading" align="left"><h1>Mobile Applications</h1>
     </div>
@@ -30,6 +5,7 @@
 
 <div class="asset-being-added">
 </div>
+
 
 
     {{#if artifacts}}
@@ -44,7 +20,7 @@
                         <a href="?sortby=name&sort=asc">Name <i class="icon-caret-down"></i></a>
                     {{/ifCond}}
                 </th>
-                {{#if ../this.isReviwer}}><th></th>{{/if}} {{#if ../this.isAdmin}}<th></th>{{/if}}
+                {{#if ../this.isReviwer}}<th></th>{{/if}}
                 <th>
                     {{#ifCond sortOptions.sortBy "==" "os"}}
                         <a href="?sortby=os&sort={{sortOptions.sort}}">Platform
@@ -78,43 +54,46 @@
                     {{/ifCond}}
                 </th>
                 <th>
-                    {{#ifCond sortOptions.sortBy "==" "createdDate"}}
-                        <a href="?sortby=createdDate&sort={{sortOptions.sort}}">Created
+                    {{#ifCond sortOptions.sortBy "==" "createdtime"}}
+                        <a href="?sortby=createdtime&sort={{sortOptions.sort}}">Created
                             <i class="icon-caret-{{sortOptions.icon}}"></i></a>
                     {{else}}
-                        <a href="?sortby=createdDate&sort=asc">Created<i class="icon-caret-down"></i></a>
+                        <a href="?sortby=createdtime&sort=asc">Created<i class="icon-caret-down"></i></a>
                     {{/ifCond}}
                 </th>
-                <th><a href="?sortby=status&sort=asc">Status</a></th>
-                <th><a href="?sortby=createdDate&sort=asc">Action</a></th>
+                <th><a href="#">Status</a></th>
+                <th><a href="#">Action</a></th>
                 <th></th>
 </thead>
-<tbody>
+            <tbody>
     {{#each artifacts}}
     <tr data-status="{{this.lifecycleState}}" class="app-row">
         <td>
             <img src="{{this.attributes.images_thumbnail}}" class="" />
         </td>
         <td class="asset-listing-name">
-            <a href='/publisher/asset/operations/edit/mobileapp/{{this.id}}'> 
-                <a href='#'>
+            {{#if ../updateMobileAppAuthorized}}
+                <a href='/publisher/asset/operations/edit/mobileapp/{{this.id}}'>
+             {{else}}
+            <a href='#'>
+            {{/if}}
+
                     {{this.attributes.overview_name}}
-                </a>
-                &nbsp;
+            </a>
         </td>
 
 
         {{#if ../this.isReviwer}}
             <td>
-            <button  class="btn btn-view-app" data-url="{{../this.attributes.overview_url}}"  data-appid="{{../this.attributes.overview_appid}}" data-type="{{../this.attributes.overview_type}}"  data-package="{{../this.attributes.overview_packagename}}" data-category="{{../this.attributes.overview_category}}"  data-id="{{../this.id}}" ><i class="icon-download"></i></button>
+            <button  class="btn btn-view-app" data-url="{{../this.attributes.overview_url}}"
+                     data-appid="{{../this.attributes.overview_appid}}" data-type="{{../this.attributes.overview_type}}"
+                     data-package="{{../this.attributes.overview_packagename}}"
+                     title="Get Download link or QR code"
+                     data-category="{{../this.attributes.overview_category}}"  data-id="{{../this.id}}" >
+                <i class="icon-download"></i>
+            </button>
             </td>
         {{/if}}
-        {{#if ../this.isAdmin}}
-            <td>
-            <button  class="btn btn-view-app" data-url="{{../this.attributes.overview_url}}"  data-appid="{{../this.attributes.overview_appid}}"  data-type="{{../this.attributes.overview_type}}"  data-package="{{../this.attributes.overview_packagename}}"  data-category="{{../this.attributes.overview_category}}"   data-id="{{../this.id}}" ><i class="icon-download"></i></button>
-            </td>
-        {{/if}}
-
 
         <td>
             <img src="/publisher/themes/mobileapp/img/mobileapps/{{this.attributes.overview_platform}}.png">
@@ -154,6 +133,9 @@
             {{#compare this.lifecycleState "Retired"}}	
             <span class="lifecycle-state"><small><i class="icon-circle text-red"></i> {{this.lifecycleState}}</small></span>
             {{/compare}}
+            {{#compare this.lifecycleState "Deprecated"}}
+                <span class="lifecycle-state"><small><i class="icon-circle text-red"></i> {{this.lifecycleState}}</small></span>
+            {{/compare}}
 
 
 
@@ -175,13 +157,9 @@
         </td>
 
     </tr>
-
-</div>
-    
-    
     {{/each}}
-</tbody>
-</table>
+    </tbody>
+        </table>
 
 
     <nav>
@@ -204,26 +182,20 @@
 
 
 
-</div>
+    </div>
 {{else}}
-{{#if this.isNotReviwer}}
-<div class="emptyAssets-MsgDiv">
-    <i class="icon-inbox largeMsgIcon"></i>
-    <br />
-    Nothing added yet.
-    <br />
-    <a type="button" class="btn btn-addNewAssetLarge" href="/publisher/asset/{{shortName}}"><i class="icon-plus-sign-alt"></i>Add New Mobile App</a>
-</div>
-{{/if}}
-{{/if}}
-</div>
+    <div class="emptyAssets-MsgDiv">
+        <i class="icon-inbox largeMsgIcon"></i>
+        <br />
+        No mobile applications added yet.
+        <br />
+        {{#if mobileAppCreatePermission}}
+        <a type="button" class="btn btn-addNewAssetLarge" href="/publisher/asset/{{shortName}}"><i class="icon-plus-sign-alt"></i>Add New Mobile App</a>
+        {{/if}}
+    </div>
 
-<style>
-    .btn-action{
-        width: 80px;
-    }
-</style>
-
+{{/if}}
+</div>
 
 <div id="appModal" class="modal  fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -233,10 +205,10 @@
             <h4 id="myModalLabel"><i class="icon-download"></i> App</h4>
             </div>
             <div class="modal-body">
-             <div class="row offset1">
+             <div class="row offset1" style="padding: 20px">
              Download URL : <a href="" id="appModalAppURL">Download/ View</a>
             <br>
-                 <div id="qrcode" style="width:200px"></div>
+                 <div id="qrcode" style="width:200px; padding: 20px;margin-left: 60px;"></div>
 
 
             </div>
@@ -244,3 +216,26 @@
     </div>
     </div>
 </div>
+
+
+
+<div class="modal fade" id="messageModal3" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                <textarea id="commentText" style="width: 100%" rows="2" placeholder="Please add comment here.&hellip;"></textarea>
+                <input type="hidden" value="" name="webappName" id="webappName" />
+                <input type="hidden" value="" name="action" id="action" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-reject-proceed">Proceed</button>
+            </div>
+        </div>
+    </div>
+</div>
+

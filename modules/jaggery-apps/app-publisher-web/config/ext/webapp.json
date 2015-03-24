@@ -100,7 +100,7 @@
         {
             "name":"description",
             "table":"overview",
-            "value":"The provider has not given a description."
+            "value":""
         }
 
     ],
@@ -109,10 +109,10 @@
         "in-review": ["Internal/publisher", "Internal/private_{overview_provider}"],
         "published": ["Internal/publisher","Internal/private_{overview_provider}"],
         "unpublished": ["Internal/publisher","Internal/private_{overview_provider}"],
-        "approved":["Internal/private_{overview_provider}"],
-        "rejected":["Internal/creator","Internal/private_{overview_provider}"],
+        "approved":["Internal/publisher","Internal/private_{overview_provider}"],
+        "rejected":["Internal/private_{overview_provider}"],
         "retired":["Internal/private_{overview_provider}"],
-        "deprecated":["Internal/private_{overview_provider}"]
+        "deprecated":["Internal/publisher","Internal/private_{overview_provider}"]
     },
 
 
@@ -122,9 +122,9 @@
 
             "lifecycle": {
                 "created": ["Internal/private_{overview_provider}"],
-                "in-review": ["Internal/reviewer", "Internal/private_{overview_provider}"],
-                "published": ["Internal/everyone", "Internal/private_{overview_provider}", "Internal/reviewer"],
-                "unpublished": ["Internal/private_{overview_provider}"]
+                "in-review": ["Internal/publisher", "Internal/private_{overview_provider}"],
+                "published": ["Internal/everyone", "Internal/private_{overview_provider}", "Internal/publisher"],
+                "unpublished": ["Internal/publisher","Internal/private_{overview_provider}"]
             }
         },
 
@@ -132,9 +132,9 @@
 
             "lifecycle": {
                 "created": ["Internal/private_{overview_provider}"],
-                "in-review": ["Internal/reviewer", "Internal/private_{overview_provider}"],
-                "published": ["Internal/everyone", "Internal/private_{overview_provider}", "Internal/reviewer"],
-                "unpublished": ["Internal/private_{overview_provider}"]
+                "in-review": ["Internal/publisher", "Internal/private_{overview_provider}"],
+                "published": ["Internal/everyone", "Internal/private_{overview_provider}", "Internal/publisher"],
+                "unpublished": ["Internal/publisher","Internal/private_{overview_provider}"]
             }
         }
 

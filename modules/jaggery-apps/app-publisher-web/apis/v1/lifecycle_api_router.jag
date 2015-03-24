@@ -136,15 +136,17 @@ require('/modules/publisher.js').exec(function(ctx) {
 
         if(shortName === "mobileapp"){
 
-            mobileAppsLifeCycleChange(context, rxtManager);
+            mobileAppsLifeCycleChange(context, rxtManager, utility);
             return;
         }
 
         var action = context.params.action;
         var id = context.params.id;
-        var comment = context.content.comment;
+
         var roles = context.content.roles || [];
-        var artifactManager = rxtManager.getArtifactManager(shortName);
+        //var artifactManager = rxtManager.getArtifactManager(shortName);
+
+        var artifactManager = rxtManager.getSystemArtifactManager(shortName,session);
         var artifact = artifactManager.get(id);
         var currentState = artifactManager.getLifecycleState(artifact).toString();
         var carbon = require('carbon');
@@ -158,9 +160,9 @@ require('/modules/publisher.js').exec(function(ctx) {
         var publishAuthorized = true;
         var msg={};
         var publisherActions = config.publisherActions;
+        var user = server.current(session);
 
         if(publisherActions.indexOf(action) > -1) {
-            var user = server.current(session);
             var um = server.userManager(server.current(session).tenantId);
             var publishAuthorized = permissions.isAuthorized(user.username, config.permissions.webapp_publish, um);
             log.debug("## Publish Authorized Check : " + publishAuthorized);
@@ -180,7 +182,7 @@ require('/modules/publisher.js').exec(function(ctx) {
                         var attributes = artifact.attributes;
 
                         var previourStatus = artifact['lifecycleState'];
-                        log.info('Calling promoteLifecycleState for action : ' + action);
+                        log.debug('Calling promoteLifecycleState for action : ' + action);
 
                         if (roles.length > 0) {
                             roles.forEach(function (role) {
@@ -188,15 +190,27 @@ require('/modules/publisher.js').exec(function(ctx) {
                             });
                         }
 
-                        artifactManager.promoteLifecycleState(action, artifact);
+                        if (permissions.isLCActionsPermitted(user.username, artifact.path, um)) {
+                            artifactManager.promoteLifecycleState(action, artifact);
+                            msg['status'] = 'ok';
+                            log.debug('Has permission to perform the action');
+                        } else {
+                            log.debug('Does not have permission to perform the action');
+                            msg['status'] = 'failed';
+                            msg['message'] = 'You do not have rights to perform the life-cycle operation';
+                            response.status = 401;
+                        }
 
-                        if (comment) {
+                        var comment;
+                        if (context.content && (comment=parse(context.content).comment) ) {
                             var lcHistory = artifactManager.getLifecycleHistory(artifact);
                             var lcHistoryXML = new XML(lcHistory.content);
                             lcHistoryJSON = utility.xml.convertE4XtoJSON(lcHistoryXML);
                             var newChangeOrder = lcHistoryJSON.item[0].order;
 
-                            require('/modules/comment.js').addLifecycleComment(artifactManager, id, comment, newChangeOrder);
+
+
+                            require('/modules/comment.js').addLifecycleComment(artifactManager, artifact.path, comment, newChangeOrder);
                         }
 
                         msg['status'] = 'ok';
@@ -323,20 +337,22 @@ routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/information/
     var criticalRoles = ['admin'];
 
     lifecycleJSON.configuration[0].lifecycle[0].scxml[0].state.forEach(function(state) {
-      state.datamodel.forEach(function(dataModel) {
-        dataModel.data.forEach(function(data) {
-          data.execution.forEach(function(execution) {
-            execution.parameter.forEach(function(parameter) {
-              if (parameter.name.indexOf('STATE_RULE') > -1) {
-                var role = parameter.value.split(':')[0];
-                if (role.indexOf('{') === -1) {
-                  relatedRoles.push(parameter.value.split(':')[0]);
-                }
-              }
-            })
-          })
-        })
-      })
+      if (state.id != "Retired") {
+	      state.datamodel.forEach(function(dataModel) {
+		dataModel.data.forEach(function(data) {
+		  data.execution.forEach(function(execution) {
+		    execution.parameter.forEach(function(parameter) {
+		      if (parameter.name.indexOf('STATE_RULE') > -1) {
+		        var role = parameter.value.split(':')[0];
+		        if (role.indexOf('{') === -1) {
+		          relatedRoles.push(parameter.value.split(':')[0]);
+		        }
+		      }
+		    })
+		  })
+		})
+	      })
+	}
     });
 
     for (var i = 0; i < criticalRoles.length; i++) {
@@ -477,9 +493,15 @@ var passed=sm.check(session,function(){
 
 
 
-function mobileAppsLifeCycleChange(context, rxtManager){
+function mobileAppsLifeCycleChange(context, rxtManager, utility){
 
+    var store = require('store');
+    var server = store.server;
+	var msg={};
 
+    var permissions=require('/modules/permissions.js').permissions;
+    var user = server.current(session);
+    var um = server.userManager(server.current(session).tenantId);
     var log = new Log();
 
 
@@ -487,15 +509,39 @@ function mobileAppsLifeCycleChange(context, rxtManager){
     var action = context.params.action;
     var id = context.params.id;
 
-    var artifactManager = rxtManager.getArtifactManager(shortName);
+    //var artifactManager = rxtManager.getArtifactManager(shortName);
+    var artifactManager = rxtManager.getSystemArtifactManager(shortName,session);
 
     try {
         var artifact = artifactManager.get(id);
         log.debug('Calling promoteLifecycleState for action : '+action);
+        var attributes = artifact.attributes;
+
+        if (permissions.isLCActionsPermitted(user.username, artifact.path, um)) {
+        var previourStatus = artifact['lifecycleState'];
+        log.info('Calling promoteLifecycleState for action mobile : ' + action);
+
         artifactManager.promoteLifecycleState(action,artifact);
-        var msg={};
+
+        var comment;
+        if (context.content && (comment=parse(context.content).comment) ) {
+            var lcHistory = artifactManager.getLifecycleHistory(artifact);
+            var lcHistoryXML = new XML(lcHistory.content);
+
+            lcHistoryJSON = utility.xml.convertE4XtoJSON(lcHistoryXML);
+            log.info("lcHistryJSON" + lcHistoryJSON);
+            var newChangeOrder = lcHistoryJSON.item[0].order;
+            require('/modules/comment.js').addLifecycleComment(artifactManager, artifact.path, comment, newChangeOrder);
+        }
         msg['status']='ok';
         print(msg);
+        } else {
+            log.debug('Does not have permission to perform the action');
+		    msg['status'] = 'failed';
+            msg['message'] = 'You do not have rights to perform the life-cycle operation';
+		    print(msg);
+            response.status = 401;
+        }
     }
     catch (e) {
         log.debug('The asset with id: '+id+' could not be found.The following exception was thrown: '+e);

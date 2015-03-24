@@ -1,8 +1,22 @@
 <div class="row tool-bar-new">
     <div class="col-md-9 col-sm-12 col-xs-12">
         <ul class="nav nav-pills pull-left">
-            <li {{#ifCond activeRibbonElement "==" "add-asset"}}class="active"{{/ifCond}}><a href="{{url "/asset/mobileapp"}}"><i class="icon-plus-sign-alt"></i> Add New Mobile Application</a></li>
-            <li {{#ifCond activeRibbonElement "==" "list-assets"}}class="active"{{/ifCond}}><a href="{{url "/assets/mobileapp/"}}">All Mobile Applications</a></li>
+            {{#if createMobileAppPerm}}
+            <li {{#ifCond active "==" "add-mobileapp"}}class="active"{{/ifCond}}><a href="{{url "/asset/mobileapp"}}"><i class="icon-plus-sign-alt"></i> Add New Mobile Application</a></li>
+            {{/if}}
+            <li {{#ifCond active "==" "list-assets"}}class="active"{{/ifCond}}><a href="{{url "/assets/mobileapp/"}}">All Mobile Applications</a></li>
+            {{#if mobileNotificationCount}}
+                <li class="dropdown-notification">
+                    <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <span class="badge">{{mobileNotificationCount}}</span>
+                        Notifications <span class="caret"></span></a>
+                    <ul class="dropdown-menu notifications" role="menu">
+                        {{#each mobileNotifications}}
+                            <li><a href="{{this.url}}">Mobile app <strong>{{this.appname}}</strong> has been rejected due to : {{this.notification}}</a></li>
+                        {{/each}}
+                    </ul>
+                </li>
+            {{/if}}
         </ul>
     </div>
     <div class="col-md-3 col-sm-12 col-xs-12">
@@ -31,4 +45,3 @@
 		</button>
 	</div>
 </div>
-

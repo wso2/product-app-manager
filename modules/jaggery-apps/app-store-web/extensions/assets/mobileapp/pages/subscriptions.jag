@@ -12,24 +12,49 @@ require('/modules/store.js').exec(function (ctx) {
             site = ctx.site,
             matcher = ctx.matcher,
             types = store.assetTypes(),
-            utility = require('/modules/util.js');
+            utility = require('/modules/util.js'),
+            mdm = require('/extensions/assets/mobileapp/modules/mdm.js').module,
+            mdmConfig = new Packages.org.wso2.carbon.appmgt.mobile.store.MDMConfig(),
+            devicesClass = new Packages.org.wso2.carbon.appmgt.mobile.store.Devices();
 
+    if(configs.mobile.enable_emm){
+        //for wso2emm
+        var mdmUIConfig  = {enabled : !configs.mobile.is_catalog};
+    }else{
+        //for wso2mdm
+        var mdmUIConfig  = {enabled : mdmConfig.isMDMEnabled()};
+    }
 
-    if(configs.mobile.is_catalog) {
-        response.sendRedirect(404);
+    if(!mdmUIConfig.enabled) {
+        response.sendRedirect("404");
         return;
     }
 
 
-        var devices = [];
-    if(user!=null){
-        var emm = require('/modules/emm.js').emm;
-        var emmServer = new emm();
-        try{
-            var result = emmServer.getDevices(user.username+"@"+user.tenantDomain);
-            devices = parse(result);
-        }catch(e){
-            log.debug(e);
+    var devices = [];
+    if(configs.mobile.enable_emm){
+        //for wso2emm
+        if(!configs.mobile.is_catalog){
+
+            if(user!=null){
+                var emm = require('/modules/emm.js').emm;
+                var emmServer = new emm();
+                try{
+                    var result = emmServer.getDevices(user.username+"@"+user.tenantDomain);
+                    devices = parse(result);
+                }catch(e){
+                    log.debug(e);
+                }
+            }
+        }
+    }else{
+        //for wso2mdm
+        if(user != null && mdmConfig.isMDMEnabled()){
+            if(mdmConfig.isSampleDevicesEnabled()){
+                devices =  parse(String(devicesClass.getDevicesList(stringify(user), user.tenantId, "user", [user.username])));
+            }else{
+                devices =  mdm.formatDevicesList(parse(String(devicesClass.getDevicesList(stringify(user), user.tenantId, "user", [user.username]))));
+            }
         }
     }
 

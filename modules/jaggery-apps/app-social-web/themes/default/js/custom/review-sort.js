@@ -31,7 +31,7 @@ var redrawReviews = function (sortBy, callback) {
     $.get('apis/object.jag', {
         target: target,
         sortBy: sortBy,
-        PreviousActivityID: "",
+        offset: 0,
         limit: 10
     }, function (obj) {
         var reviews = obj || [];
@@ -40,10 +40,9 @@ var redrawReviews = function (sortBy, callback) {
             for (var i = 0; i < reviews.length; i++) {
                 var review = reviews[i];
                 str += template(review);
-                var lastReviewID = review.id;
             }
             $stream.html(str);
-            $('.load-more').attr("value", lastReviewID);
+            $('.load-more').attr("value", 10);
             $more.show();
             $empty_list.text("");
             //callback && callback();

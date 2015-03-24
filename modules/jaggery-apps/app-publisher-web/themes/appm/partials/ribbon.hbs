@@ -2,12 +2,24 @@
     <div class="col-md-9 col-sm-12 col-xs-12">
         <ul class="nav nav-pills pull-left">
 {{#if createPermission}}
-            <li {{#ifCond activeRibbonElement "==" "add-asset"}}class="active"{{/ifCond}}><a href="{{url "/asset/webapp"}}"><i class="icon-plus-sign-alt"></i> Add New Web Application</a></li>
+            <li {{#ifCond active "==" "add-asset"}}class="active"{{/ifCond}}><a href="{{url "/asset/webapp"}}"><i class="icon-plus-sign-alt"></i> Add New Web Application</a></li>
 {{/if}}
-            <li {{#ifCond activeRibbonElement "==" "list-assets"}}class="active"{{/ifCond}}><a href="{{url "/assets/webapp/"}}">All Web Applications</a></li>
+            <li {{#ifCond active "==" "list-assets"}}class="active"{{/ifCond}}><a href="{{url "/assets/webapp/"}}">All Web Applications</a></li>
 {{#if viewStats}}
-            <li  {{#ifCond activeRibbonElement "==" "statistics"}}class="active"{{/ifCond}}><a href="{{url "/assets/statistics/webapp/"}}">Statistics</a></li>
+            <li  {{#ifCond active "==" "statistics"}}class="active"{{/ifCond}}><a href="{{url "/assets/statistics/webapp/"}}">Statistics</a></li>
 {{/if}}
+            {{#if notificationCount}}
+            <li class="dropdown-notification">
+                <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                    <span class="badge">{{notificationCount}}</span>
+                    Notifications <span class="caret"></span></a>
+                <ul class="dropdown-menu notifications" role="menu">
+                    {{#each notifications}}
+                        <li><a href="{{this.url}}">Webapp <strong>{{this.appname}}</strong> has been rejected due to: {{this.notification}}</a></li>
+                    {{/each}}
+                </ul>
+            </li>
+            {{/if}}
         </ul>
     </div>
     <div class="col-md-3 col-sm-12 col-xs-12">

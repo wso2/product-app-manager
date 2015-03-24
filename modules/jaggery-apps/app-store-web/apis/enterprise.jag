@@ -6,6 +6,9 @@ matcher = new URIMatcher(request.getRequestURI());
 require('/modules/store.js').exec(function (ctx) {
 
     var log = new Log();
+    var configs = ctx.configs;
+
+
 
     var server = require('store').server,
             tenant = server.tenant(request, session),
@@ -23,11 +26,23 @@ require('/modules/store.js').exec(function (ctx) {
         return;
     }
 
+    var isEnterpiseAdmin = false;
+
+
+    if(user.hasRoles([configs.mobile.enterprise_installation_role])){
+        isEnterpiseAdmin = true;
+    }
+
 
 
     var um = new carbon.user.UserManager(server, tenantId);
 
     if (matcher.match('/{context}/apis/enterprise/get-all-roles')) {
+
+        if(!isEnterpiseAdmin){
+            response.sendError(401, 'Unauthorized');
+        }
+
         var roles = removeInternalroles(um.allRoles());
         var data = [];
         for(var i = 0; i < roles.length; i++){
@@ -39,6 +54,11 @@ require('/modules/store.js').exec(function (ctx) {
     }
 
     if (matcher.match('/{context}/apis/enterprise/get-all-users')) {
+
+        if(!isEnterpiseAdmin){
+            response.sendError(401, 'Unauthorized');
+        }
+
         var users = um.listUsers();
         var data = [];
         for(var i = 0; i < users.length; i++){
@@ -50,6 +70,11 @@ require('/modules/store.js').exec(function (ctx) {
 
 
     if (matcher.match('/{context}/apis/enterprise/perform/{action}/{type}')) {
+
+        if(!isEnterpiseAdmin){
+            response.sendError(401, 'Unauthorized');
+        }
+
         var elements = matcher.elements();
         var params = request.getAllParameters("UTF-8");
 
@@ -58,12 +83,13 @@ require('/modules/store.js').exec(function (ctx) {
         var app = params.app;
         var data = params["data[]"];
 
+
         log.debug("Params Received " +stringify(elements) + " & " + stringify(params))
 
 
         if(action && type && app && data){
             enterpriseInstall.performAction(action, tenantId, type, app, data);
-            print('{"status" : "sucess"}');
+            print('{"status" : "success"}');
             return;
         }
 

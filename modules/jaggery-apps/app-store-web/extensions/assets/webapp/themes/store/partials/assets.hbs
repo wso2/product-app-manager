@@ -32,10 +32,10 @@
 	            		<div class="asset-details">
 					<div class="asset-name">
 						<input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
-						<a href="{{url "/assets"}}/{{../type}}/{{../id}}" id="assetDeatils"> <h4>{{overview_name}}</h4></a>
+						<a href="{{url "/assets"}}/{{../type}}/{{../id}}" id="assetDeatils"> <h4>{{overview_displayName}}</h4></a>
 	                		</div>
 	                		<div class="asset-rating">
-						<div class="asset-rating-{{../rating/average}}star"></div>
+						<div class="asset-rating-{{../rating}}star"></div>
 					</div>
 							{{#if ../overview_skipGateway}}
                                 <style>.meta-gw-info {

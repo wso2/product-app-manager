@@ -20,8 +20,16 @@ $(document).ready(function() {
     var docId = $("#docName");
     docId.change(function () {
         var apiName = $("#docAPIName").val();
+        var errorCondition = false;
+        if (checkIllegalCharacters(docId.val())) {
+            errorCondition = true;
+            var message = "contains one or more illegal characters (~!@#;%^*()+={}|\\<>\"',)";
+            if (!validInput(docId, message, errorCondition)) {
+                return;
+            }
+        }
         //Check the doc name is duplicated
-        var errorCondition = isAvailableDoc(apiName + "-" + docId.val());
+        errorCondition = isAvailableDoc(apiName + "-" + docId.val());
         validInput(docId, 'Duplicate Document Name.', errorCondition);
 
     });
@@ -39,14 +47,21 @@ $('#saveDoc').click(function() {
         var docType = getRadioValue($('input[name=optionsRadios]:radio:checked'));
 
         var errorCondition = false;
-        if($(this).val() != "Update"){
-            errorCondition = isAvailableDoc(apiName + "-" + docId.val());
-        }
+
         if(docId.val() == ''){
         	errorCondition = true;
         	if (!validInput(docId, 'This field is required.', errorCondition)) {
                 return;
             }
+        } else if (checkIllegalCharacters(docId.val())) {
+            errorCondition = true;
+            var message = "contains one or more illegal characters (~!@#;%^*()+={}|\\<>\"',)";
+            if (!validInput(docId, message, errorCondition)) {
+                return;
+            }
+        }
+        if ($(this).val() != "Update") {
+            errorCondition = isAvailableDoc(apiName + "-" + docId.val());
         }
         if (apiName && !validInput(docId, 'Duplicate Document Name.', errorCondition)) {
             return;
@@ -57,9 +72,18 @@ $('#saveDoc').click(function() {
         }else if($(this).val() != "Update" && sourceType == 'file' && !validInput(fileDiv, 'This field is required.', isFilePathEmpty)) {
          		    return;
         }else if(docType.toLowerCase() == 'other' && !validInput($('#specifyBox'),'This field is required.', isOtherTypeNameEmpty)){
-			return;	
+			return;
 		}
 
+        if (!isFilePathEmpty) {
+            //check whether file name contains illegal characters
+            var fileName = fileDiv.val().split('\\').pop();
+            errorCondition = checkIllegalCharacters(fileName);
+            var message = "contains one or more illegal characters (~!@#;%^*()+={}|\\<>\"',)";
+            if (!validInput(fileDiv, message, errorCondition)) {
+                return;
+            }
+        }
         if($(this).val() == "Update" && $("#docLocation").val() == ""){
             $("#docLocation").removeClass('required');
         }
@@ -119,7 +143,7 @@ $('#saveDoc').click(function() {
 
 
 var newDocFormToggle = function(){
-   $('#addDoc a').hide();
+   $('.asset-detail-top-row').hide();
    $('#newDoc').slideToggle('slow');
    $('#docName').removeAttr("disabled").val('');
    $('#summary').val('');
@@ -135,16 +159,23 @@ var newDocFormToggle = function(){
 var disableInline = function(type) {
     if (type == 'forum') {
         document.getElementById("optionsRadios7").disabled = true;
+        document.getElementById("optionsRadios9").disabled = true;
         document.getElementById("optionsRadios8").checked = true;
         $('#sourceUrlDoc').show('slow');
+        $('#sourceFile').hide('slow');
+        $('#otherTypeDiv').hide('slow');
     } else {
         document.getElementById("optionsRadios7").disabled = false;
+        document.getElementById("optionsRadios9").disabled = false;
         document.getElementById("optionsRadios7").checked = true;
         $('#sourceUrlDoc').hide('slow');
+        $('#sourceFile').hide('slow');
+        $('#otherTypeDiv').hide('slow');
     }
 };
 
 var isAvailableDoc = function(id) {
+    id = id.replace(/ /g,'__');
     var docEntry = $("#docTable #" + id).text();
     if (docEntry != "") {
         return true;
@@ -284,6 +315,7 @@ var validInput = function(divId, message, condition) {
             divId.parent().append('<label class="error">' + message + '</label>');
         } else {
             divId.next().show();
+            divId.next().text(message);
         }
         return false;
     } else {
@@ -292,6 +324,16 @@ var validInput = function(divId, message, condition) {
         return true;
     }
 
+};
+
+var checkIllegalCharacters = function (value) {
+    // registry doesn't allow following illegal charecters
+    var match = value.match(/[~!@#;%^*()+={}|\\<>"',]/);
+    if (match) {
+        return true;
+    } else {
+        return false;
+    }
 };
 
 

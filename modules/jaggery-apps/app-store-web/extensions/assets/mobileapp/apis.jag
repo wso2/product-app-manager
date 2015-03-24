@@ -10,6 +10,7 @@ var process = require("process");
 var emm = require('/modules/emm.js').emm;
 var emmServer = new emm();
 var server = require('store').server;
+var enterpriseInstall = require('/extensions/assets/mobileapp/modules/mod-ent-install.js');
 
 var getTenantID = function() {
     if(!(typeof session === "undefined")){
@@ -65,20 +66,36 @@ router.post('apps/devices/{deviceid}/install', function(ctx){
         response.sendError(401, 'Unauthorized');
         return;
     }
-    var tenant = server.tenant(request, session);
-    var store = require("/modules/store.js").store(tenant, session);
-	var asset =  store.asset(type, ctx.asset);
-	var identity = buildInstallParam(asset);
-	var payload = {
-		type : asset.attributes.overview_type,
-		identity: identity
-	};
-	if(asset.attributes.overview_platform.toUpperCase()=='WEBAPP'){
-		payload['title'] = asset.attributes.overview_name;
-		emmServer.installWebClip(payload, ctx.deviceid);
-	}else{
-		emmServer.install(payload, ctx.deviceid);
-	}
+
+    if(configs.mobile.enable_emm){
+        //for wso2emm
+
+        var tenant = server.tenant(request, session);
+        var store = require("/modules/store.js").store(tenant, session);
+        var asset =  store.asset(type, ctx.asset);
+        var identity = buildInstallParam(asset);
+        var payload = {
+            type : asset.attributes.overview_type,
+            identity: identity
+        };
+        if(asset.attributes.overview_platform.toUpperCase()=='WEBAPP'){
+            payload['title'] = asset.attributes.overview_name;
+            emmServer.installWebClip(payload, ctx.deviceid);
+        }else{
+            emmServer.install(payload, ctx.deviceid);
+        }
+
+    }else{
+        //for wso2mdm
+        var tenant = server.tenant(request, session);
+        var asset =  ctx.asset;
+        var deviceId = ctx.deviceid;
+        enterpriseInstall.performAction('install', tenant.tenantId, 'device', asset, deviceId);
+    }
+
+
+
+
 });
 
 router.post('apps/devices/{deviceid}/uninstall', function(ctx){

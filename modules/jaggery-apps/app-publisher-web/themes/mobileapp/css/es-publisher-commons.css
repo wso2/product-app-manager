@@ -642,9 +642,6 @@ td.asset-listing-btn {
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.14);
     width: 30px;
 }
-.badge {
-    background: none;
-}
 .lc-state-Created{
     color:#88DAFF
 }
@@ -1576,4 +1573,26 @@ h2.first-h2{
 .pull-left.heading {
     margin-top: 13px;
     margin-left: 15px;
+}
+
+ul.dropdown-menu.notifications {
+    width: auto;
+}
+.dropdown-menu>li>a{
+    max-width: 736px;
+    overflow: hidden !important;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+button.btn.btn-reject-proceed {
+    background-color: #ccc;
+}
+.load-seperator{margin-right: 20px;}
+button.btn.btn-view-app {
+    font-size: 18px;
+    padding: 0px;
+}
+
+textarea#txtDescription, textarea#txtRecentChanges {
+    padding: 7px;
 }

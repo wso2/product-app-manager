@@ -9,6 +9,18 @@
             {{#each subscriptions}}
                 <div class="span2 asset store-my-item" >
 
+                    {{#compare status "UNPUBLISHED" operator="=="}}
+                        <div class="ribbon-wrapper-red">
+                            <div class="ribbon-red">Unpublished</div>
+                        </div>
+                    {{/compare}}
+
+                    {{#compare status "DEPRECATED" operator="=="}}
+                        <div class="ribbon-wrapper-red">
+                            <div class="ribbon-red">Deprecated</div>
+                        </div>
+                    {{/compare}}
+
                     <div class="store-my-item-thumbnail">
                         <a href="{{productionURL}}" target="_blank"><img class="icon" src="/store/storage/webapp/{{uuid}}/{{thumbnail}}"></a>
                     </div>
