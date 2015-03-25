@@ -58,7 +58,7 @@ var generateLeftNavJson = function(data, listPartial) {
                             url: "/publisher/asset/operations/edit/" + data.shortName + "/" + data.artifact.id + ""
                         },
                         {
-                            name: "Copy",
+                            name: "Create New Version",
                             iconClass: "icon-file",
                             additionalClasses: (listPartial == "copy-app" ) ? "active" : null,
                             url: "/publisher/asset/operations/copyapp/" + data.shortName + "/" + data.artifact.id + ""
@@ -76,7 +76,7 @@ var generateLeftNavJson = function(data, listPartial) {
                             title: "Edit Action not permitted."
                         },
                         {
-                            name: "Copy",
+                            name: "Create New Version",
                             iconClass: "icon-file",
                             additionalClasses: (listPartial == "copy-app" ) ? "active" : null,
                             url: "/publisher/asset/operations/copyapp/" + data.shortName + "/" + data.artifact.id + ""
