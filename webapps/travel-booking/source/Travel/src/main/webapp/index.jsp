@@ -365,7 +365,9 @@
 	<script type="text/javascript" src="js/jquery.prettyPhoto.js"></script>
 	<script type="text/javascript" src="js/modernizr.js"></script>
 	<script type="text/javascript" src="js/scripts.js"></script>
-	<script type="text/javascript">
+	<script type="text/javascript" src="js/invokeStatistcs.js" ></script>
+    <script type="text/javascript">
+		invokeStatistics();
 		$(document).ready(function() {
 			$(".form").hide();
 			$(".form:first").show();
@@ -373,15 +375,7 @@
 			$(".f-item:first span").addClass("checked");
 		});
 	</script>
-	<script>selectnav('nav'); </script>
-
-
-
-
-
-
-
-
+		<script>selectnav('nav'); </script>
 	</script>
 
 </body>

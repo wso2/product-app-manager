@@ -111,8 +111,11 @@ if(isset($claims)){
     <script src="../assets/js/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../assets/js/bootstrap.min.js"></script>
-
-      <script src="js/script.js"></script>
+    <script src="js/script.js"></script>
+    <script type="text/javascript" src="../assets/js/invokeStatistcs.js" ></script>
+    <script type="text/javascript">
+        invokeStatistics();
+    </script>
 
   </body>
 </html>
