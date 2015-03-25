@@ -590,24 +590,37 @@
     </EntitlementServiceConfiguration>
 
 
-	<!--
-		Configuration to handle Mobile apps and MDM.	
-    	-->
+	<!-- Configuration to handle Mobile apps and MDM. -->
 	<MobileAppsConfiguration>
-		<MDM>
-	           <Enabled>false</Enabled>
-		   <ServerUrl>https://localhost:9450</ServerUrl>
+
+		<MDMSettings>
+	           <Enabled>true</Enabled>
 		   <EnableSampleDevices>false</EnableSampleDevices>
-		   <AppDownloadURLHost>%http%</AppDownloadURLHost>	
-                </MDM>
+		   <AppDownloadURLHost>%http%</AppDownloadURLHost>
+		   <ActiveMDM>WSO2MDM</ActiveMDM>	
+                </MDMSettings>
+
+		<MDMProperties>
+
+		   <MDM name="WSO2MDM" bundle="org.wso2.carbon.appmgt.mdm.wso2mdm">
+			<Property name="serverUrl">https://localhost:9450</Property>
+			<Property name="clentKey">DummyClentKey</Property>	
+			<Property name="clentSecret">DummyClentSecret</Property>
+		   </MDM>
+		
+		   <!-- Please uncommnent this and define the name in ActiveMDM to activate this MDM
+		   <MDM name="WSO2MDM" bundle="org.wso2.carbon.appmgt.mdm.othermdm">
+			<Property name="serverUrl">https://localhost:9454</Property>
+		   </MDM>
+		   -->	
+	
+		</MDMProperties>
+
 	</MobileAppsConfiguration>
 
 	
 
-	<!--
-		Configuration to handle Services.	
-    	-->
-
+	<!-- Configuration to handle Services.-->
 	<ServicesAPI>
 		<AuthorizedRole>admin</AuthorizedRole>
 	</ServicesAPI>
