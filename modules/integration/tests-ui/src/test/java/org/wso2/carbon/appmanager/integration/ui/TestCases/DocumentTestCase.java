@@ -84,7 +84,7 @@ public class DocumentTestCase extends APPManagerIntegrationTest {
 
         appMPublisher.login(username, password);
         docReq = new DocumentRequest(appName, appVersion);
-        docPathPrefix = "/_system/governance/apimgt/applicationdata/provider/" + username
+        docPathPrefix = "/_system/governance/appmgt/applicationdata/provider/" + username
                 + "/" + appName + "/" + appVersion + "/documentation/";
         resourceAdminServiceStub =
                 new ResourceAdminServiceClient(amServer.getBackEndUrl(), amServer.getSessionCookie());
