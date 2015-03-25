@@ -119,6 +119,11 @@ $(function() {
 			return;
 		}
 
+		if(isResourcesSetEmpty()){
+			showAlert("Web Application Resources cannot be empty. At least one Resource should be specified.", 'error');
+			return;
+		}
+
 		$('#overview_context').val(context);
 
         var name =  $('#overview_name').val()
