@@ -182,7 +182,7 @@ body {
         width: 25%;
     }
 
-    .row-fluid .recently-added >..span3 {
+    .row-fluid .recently-added >.span3 {
         width:150px;
     }
     .navbar{float:left !important;}
@@ -1827,4 +1827,8 @@ ol.linenums li {
 }
 .recently-added img{
     margin-right:10px;
+}
+
+.search-bar > .row-fluid > .span9 {
+    margin-top: 12px;
 }

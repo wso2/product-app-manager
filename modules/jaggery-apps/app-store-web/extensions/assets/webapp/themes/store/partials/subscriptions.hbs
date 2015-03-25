@@ -3,11 +3,12 @@
 
     <div class="span9">
 
-        <h4> My Subscriptions</h4>
+        <h1> My Subscriptions</h1>
 
         {{#if subscriptions}}
+        <div class="row-fluid">
             {{#each subscriptions}}
-                <div class="span2 asset store-my-item" >
+                <div class="span3 asset store-my-item" >
 
                     {{#compare status "UNPUBLISHED" operator="=="}}
                         <div class="ribbon-wrapper-red">
@@ -21,10 +22,13 @@
                         </div>
                     {{/compare}}
 
-                    <div class="store-my-item-thumbnail">
-                        <a href="{{productionURL}}" target="_blank"><img class="icon" src="/store/storage/webapp/{{uuid}}/{{thumbnail}}"></a>
-                    </div>
-                    <div class="store-my-item-info">
+                    <a href="{{productionURL}}" target="_blank">
+                        <div class="asset-icon">
+                            <img class="icon" src="/store/storage/webapp/{{uuid}}/{{thumbnail}}">
+                        </div>
+                    </a>
+
+                    <div class="asset-details">
                         <a class="asset-title" href="{{url "/assets/webapp/"}}{{uuid}}">
                             <strong>{{name}}</strong>
                         </a>
@@ -33,6 +37,7 @@
                 </div>
 
             {{/each}}
+            </div>
         {{else}}
             <div id="no-data-my-items" class="no-data">
                 <i class="icon-inbox"></i>
