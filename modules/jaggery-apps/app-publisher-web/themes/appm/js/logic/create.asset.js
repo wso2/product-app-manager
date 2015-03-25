@@ -87,6 +87,7 @@ $(function() {
 
 
 	$('#btn-create-asset').on('click', function(e) {
+        $(this).prop("disabled", true);
 		e.preventDefault();
 
 		//check if at least one policy is added.
