@@ -603,9 +603,9 @@
 		<MDMProperties>
 
 		   <MDM name="WSO2MDM" bundle="org.wso2.carbon.appmgt.mdm.wso2mdm">
-			<Property name="serverUrl">https://localhost:9450</Property>
-			<Property name="clentKey">DummyClentKey</Property>	
-			<Property name="clentSecret">DummyClentSecret</Property>
+			<Property name="ServerURL">https://localhost:9450</Property>
+			<Property name="ClientKey">DummyClentKey</Property>	
+			<Property name="ClientSecret">DummyClentSecret</Property>
 		   </MDM>
 		
 		   <!-- Please uncommnent this and define the name in ActiveMDM to activate this MDM
