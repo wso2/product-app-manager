@@ -110,7 +110,10 @@ $(function() {
 			return;
 		}
 
-
+		if(checkIllegalCharacters($('#overview_name').val())){
+			showAlert("Webapp Name contains one or more illegal characters (~!@#;%^*()+={}|\\<>\"',)", 'error');
+			return;
+		}
 
 		var context = $('#overview_context').val();
 		if(context != null && context != '') {
@@ -544,6 +547,16 @@ function removeClaimTable() {
 	$('#claimTableId').hide();
 	$('#claimPropertyCounter').val(0);
 }
+
+var checkIllegalCharacters = function (value) {
+	// registry doesn't allow following illegal charecters
+	var match = value.match(/[~!@#;%^*()+={}|\\<>"',]/);
+	if (match) {
+		return true;
+	} else {
+		return false;
+	}
+};
 
 /**
  *
