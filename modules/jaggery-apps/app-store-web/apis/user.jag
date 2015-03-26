@@ -94,12 +94,18 @@ require('/modules/store.js').exec(function (ctx) {
                 try {
                     data = request.getContent();
                     //user.register(data.username, data.password);
-                    storeHostObj.addUser(data.username, data.password);
-                    var isSubscriberRolePresent = storeHostObj.checkIfSubscriberRoleAttached(data.username);
+                    exists = user.userExists(data.username);
+                    if (exists) {
+                        message = 'Username ' + data.username + ' has already taken.';
+                        error = true;
+                    }else {
+                        storeHostObj.addUser(data.username, data.password);
+                        var isSubscriberRolePresent = storeHostObj.checkIfSubscriberRoleAttached(data.username);
 
-                    //Check Whether the user has subscriber privileges to login
-                    if(isSubscriberRolePresent.error){
-                        showWorkflowTip = true;
+                        //Check Whether the user has subscriber privileges to login
+                        if (isSubscriberRolePresent.error) {
+                            showWorkflowTip = true;
+                        }
                     }
 
                 } catch (e) {

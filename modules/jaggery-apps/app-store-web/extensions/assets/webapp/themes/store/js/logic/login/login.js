@@ -34,11 +34,11 @@ $(function(){
     };
 
     $('#btn-signin').bind('click', login);
-    
+
     var register = function() {
 		if (!$("#form-register").valid())
 			return;
-		
+
 		caramel.ajax({
             		type: 'POST',
             		url: '/apis/user/register',
@@ -56,7 +56,7 @@ $(function(){
 					$('#modal-register').modal('hide');
 					$('#messageModal a.btn-primary').click(function() {
 					$('#messageModal').modal('hide');
-					$('#modal-login').modal('show'); 
+					$('#modal-login').modal('show');
 				  	});
 		                } else {
 		        		showError(data.message);

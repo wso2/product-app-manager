@@ -186,31 +186,6 @@ $(function() {
 		}
 	});
 
-	$('#inp-username-register').change(function() {
-		var username = $(this).val();
-        if (username.indexOf("@") != -1) {
-            showError("Username cannot contain @ sign");
-            this.select();
-            return;
-        }
-		caramel.ajax({
-            		type: 'POST',
-            		url: '/apis/user/exists',
-            		data: JSON.stringify({
-                		username: username
-            		}),
-            		success: function (data) {
-		        	if (data.error || data.exists) {
-		        		$('#register-alert').html(data.message).fadeIn('fast');               
-		        	} else {
-	  				$('#register-alert').fadeOut('slow');
-		        	}
-            		},
-		    	contentType: 'application/json',
-		    	dataType: 'json'
-        	});
-	});
-
 	$('#btn-register-submit').click(register);
 
 	$('#modal-register input').keypress(function(e) {
