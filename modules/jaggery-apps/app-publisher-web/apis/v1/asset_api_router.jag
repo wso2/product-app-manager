@@ -796,7 +796,7 @@ require('/modules/publisher.js').exec(function(ctx) {
             }
 
             if(shortName =="mobileapp"){
-                var username= server.current(session).username.replace('@', ':');
+                var username= server.current(session).username.replace('@', '-AT-');
                 var ctx = context.post;
                 log.debug(ctx);
                 var files = request.getAllFiles();
@@ -978,7 +978,7 @@ require('/modules/publisher.js').exec(function(ctx) {
 
             if(shortName =="mobileapp"){
                 modelA.import('asset', originalArtifact);
-                var username= server.current(session).username.replace('@', ':');
+                var username= server.current(session).username.replace('@', '-AT-');
                 var ctx = context.post;
                 var files = request.getAllFiles();
                 var banner = files['bannerFile'];

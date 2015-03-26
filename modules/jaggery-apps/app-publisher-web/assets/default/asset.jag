@@ -226,14 +226,20 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
                 tenantId: user.tenantId
             });
 
-            var overridenPermissions = null;
-
-            if (registry.properties(path)['overridden_permissions']) {
-                overridenPermissions = registry.properties(path)['overridden_permissions'][0];
+            var path = artifact.attributes.overview_permissions;
+            log.info("Path : "+path);
+            var permissionSet = null;
+            if(path!=null){
+                permissionSet = registry.get(path);
             }
 
-            if (overridenPermissions) {
-                output.permissions = JSON.parse(overridenPermissions.replace('\\', ''));
+            var overridenPermissions = null;
+
+            var content = '' + permissionSet.content;
+            log.info("works : "+content);
+
+            if (content) {
+                output.permissions = JSON.parse(content);
             }
 
             output.fields[1]['isEditable'] = false;
@@ -590,11 +596,19 @@ function addTags(params,assetId,artifactManager,reg){
             tenantId: server.current(session).tenantId
         });
 
-        if(registry.properties(artifact.path)['overridden_permissions']) {
-            registry.removeProperty(artifact.path, 'overridden_permissions');
-        }
+        artifact.name = artifact.attributes.overview_name;
+        var permPath = artifact.path + "role_restrictions";
 
-        registry.addProperty(artifact.path, 'overridden_permissions', JSON.stringify(permissions));
+        var resource ={
+            content: JSON.stringify(permissions),
+            mediaType: 'text/plain'
+        };
+
+        registry.put(permPath,resource);
+
+        artifact.attributes.overview_permissions = permPath;
+        delete artifact.content;
+        artifactManager.update(artifact);
     }
 
 

@@ -77,6 +77,9 @@
       <field type="text">
             <name label="Tracking ID">Tracking Code</name>
       </field>
+      <field type="text">
+            <name>Permissions</name>
+      </field>
     </table>
     <table name="URITemplate" columns="6">
             <subheading>
