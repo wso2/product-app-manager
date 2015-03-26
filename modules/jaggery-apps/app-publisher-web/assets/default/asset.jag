@@ -386,6 +386,7 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
                 webappId.oldVersion = oldVersion;
                 //Copy web app documentation
                 copyDocuments(webappId);
+                copyRolePermissions(assetId,artifactManager);
             }
             generateEntitlementPolicies(webappId);
 
@@ -431,6 +432,21 @@ function isWebappExists(webappName,provider,version){
    function copyDocuments(webappId){
        apiProvider.copyWebappDocumentations(webappId);
    }
+
+    function copyRolePermissions(webappId,artifactManager){
+        var registry = new carbon.registry.Registry(server, {
+            username: server.current(session).username,
+            tenantId: server.current(session).tenantId
+        });
+        var artifact = artifactManager.get(webappId);
+        var permPath = artifact.path + "role_restrictions";
+        var resource ={
+            content: JSON.stringify(permissions),
+            mediaType: 'text/plain'
+        };
+
+        registry.put(permPath,resource);
+    }
 
 /*
 The function is used to add tags to the provided asset id
