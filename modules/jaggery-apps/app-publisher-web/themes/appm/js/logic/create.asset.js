@@ -129,6 +129,16 @@ $(function() {
 			return;
 		}
 
+		//Check illegal characters in tags
+		var tags = $('#tag-test').tokenInput('get');
+		for (var index in tags) {
+			if(checkIllegalCharacters(tags[index].name));{
+				showAlert("Tags contains one or more illegal characters (~!@#;%^*()+={}|\\<>\"',)", 'error');
+				return;
+			}
+
+		}
+
 		if(isResourcesSetEmpty()){
 			showAlert("Web Application Resources cannot be empty. At least one Resource should be specified.", 'error');
 			return;
