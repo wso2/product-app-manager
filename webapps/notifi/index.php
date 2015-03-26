@@ -37,7 +37,7 @@
         <div class="col-md-12">
           <div class='raw'>
               <img src="assets/img/notifi.png" class="icon-image">
-              <h2>Welcome to Notifi!</h2> 
+              <h2>Welcome to Notifi!</h2>
           </div>
           <div class='raw'>
               <div class="raw raw-space">
@@ -60,5 +60,9 @@
     <script src="assets/js/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/js/invokeStatistcs.js" ></script>
+    <script type="text/javascript">
+       invokeStatistics();
+    </script>
   </body>
 </html>

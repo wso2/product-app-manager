@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
     <script language="javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="invokeStatistcs.js" ></script>
+    <script type="text/javascript">
+        invokeStatistics();
+    </script>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
