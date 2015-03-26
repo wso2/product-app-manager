@@ -55,7 +55,6 @@ public class SAMLtoBackendTestCase extends APPManagerIntegrationTest {
 
     @Test(groups = {"wso2.appmanager.samlTest"}, description = "SAML to backend Test Case")
     public void testSAMLToBackend() throws Exception {
-
         int hostPort = 8080;
         WireMonitorServer server = new WireMonitorServer(hostPort);
         server.start();
@@ -63,7 +62,6 @@ public class SAMLtoBackendTestCase extends APPManagerIntegrationTest {
         storeUIClient.login(driver, ApplicationInitializingUtil.storeURLHttp, username, password);
         storeUIClient.selectApplication(driver, ApplicationInitializingUtil.appId);
         driver.switchTo().alert().accept();
-
         assertTrue(server.getCapturedMessage().contains("AppMgtSAML2Response"), "SAML to backend pass failed");
     }
 

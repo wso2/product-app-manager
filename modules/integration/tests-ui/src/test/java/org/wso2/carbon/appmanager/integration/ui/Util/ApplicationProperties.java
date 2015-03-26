@@ -30,6 +30,7 @@ public class ApplicationProperties {
     private String transports;
     private String version;
     private String appName;
+    private String appDisplayName;
     private String role;
     private String tier;
     private Properties appProp;
@@ -37,6 +38,11 @@ public class ApplicationProperties {
     private String path;
     private String policyPath;
     private String appSample;
+    private String anonymousAccessToUrlPattern;
+    private String policyGroupName;
+    private String throttlingTier;
+    private String objPartialMappings;
+    private String policyGroupDesc;
 
     public ApplicationProperties() throws IOException {
         appProp = new Properties();
@@ -53,11 +59,17 @@ public class ApplicationProperties {
         setVersion(appProp.getProperty("appVersion"));
         setTier(appProp.getProperty("tier"));
         setAppName(appProp.getProperty("appName"));
+        setAppDisplayName(appProp.getProperty("appDisplayName"));
         setTags(appProp.getProperty("tags"));
         setRole(appProp.getProperty("role"));
         setPath(appProp.getProperty("path"));
         setPolicyPath(appProp.getProperty("policyFile"));
         setAppSample(appProp.getProperty("appSample"));
+        setAnonymousAccessToUrlPattern(appProp.getProperty("anonymousAccessToUrlPattern"));
+        setPolicyGroupName(appProp.getProperty("policyGroupName"));
+        setThrottlingTier(appProp.getProperty("throttlingTier"));
+        setObjPartialMappings(appProp.getProperty("objPartialMappings"));
+        setPolicyGroupDesc(appProp.getProperty("policyGroupDesc"));
     }
 
     public String getAppURL() {
@@ -100,6 +112,14 @@ public class ApplicationProperties {
         this.appName = appName;
     }
 
+    public String getAppDisplayName() {
+        return appDisplayName;
+    }
+
+    public void setAppDisplayName(String appDisplayName) {
+        this.appDisplayName = appDisplayName;
+    }
+
     public String getTags() {
         return tags;
     }
@@ -140,5 +160,43 @@ public class ApplicationProperties {
         this.appSample = appSample;
     }
 
+    public String getAnonymousAccessToUrlPattern() {
+        return anonymousAccessToUrlPattern;
+    }
 
+    public void setAnonymousAccessToUrlPattern(String anonymousAccessToUrlPattern) {
+        this.anonymousAccessToUrlPattern = anonymousAccessToUrlPattern;
+    }
+
+    public String getPolicyGroupName() {
+        return policyGroupName;
+    }
+
+    public void setPolicyGroupName(String policyGroupName) {
+        this.policyGroupName = policyGroupName;
+    }
+
+    public String getThrottlingTier() {
+        return throttlingTier;
+    }
+
+    public void setThrottlingTier(String throttlingTier) {
+        this.throttlingTier = throttlingTier;
+    }
+
+    public String getObjPartialMappings() {
+        return objPartialMappings;
+    }
+
+    public void setObjPartialMappings(String objPartialMappings) {
+        this.objPartialMappings = objPartialMappings;
+    }
+
+    public String getPolicyGroupDesc() {
+        return policyGroupDesc;
+    }
+
+    public void setPolicyGroupDesc(String policyGroupDesc) {
+        this.policyGroupDesc = policyGroupDesc;
+    }
 }

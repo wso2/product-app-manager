@@ -64,8 +64,8 @@ public class ThrottlingTestCase extends APPManagerIntegrationTest {
     }
 
     /*
-     * Application creation done with 'Silver' Throttling for all resources
-     * So that application is only invokable for 5 times per minute.
+     * Application creation done with 'Bronze' Throttling for all resources
+     * So that application is only invokable for 1 times per minute.
      */
 
     @Test(groups = {"wso2.appmanager.throttling"}, description = "Throttling Test Case")
