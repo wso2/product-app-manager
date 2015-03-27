@@ -31,12 +31,12 @@ require('/modules/store.js').exec(function (ctx) {
 
     var isEnterpriseInstallEnabled = false;
 
-    if(user && configs.mobile.enterprise_installation){
+    if(user && mdmConfig.isEnterpriseOperationsEnabled()){
         var server = require('store').server;
         var um = new carbon.user.UserManager(server, tenantId);
         var userRoles = um.getRoleListOfUser(user.username);
         for(var i = 0; i < userRoles.length; i++){
-            if(userRoles[i] == configs.mobile.enterprise_installation_role){
+            if(userRoles[i] == mdmConfig.getEnterpriseAuthorizedRole()){
                 isEnterpriseInstallEnabled = true;
                 break;
             }

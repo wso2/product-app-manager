@@ -598,7 +598,11 @@
 		   <EnableSampleDevices>false</EnableSampleDevices>
 		   <AppDownloadURLHost>%http%</AppDownloadURLHost>
 		   <ActiveMDM>WSO2MDM</ActiveMDM>
-	           <IosPlistPath>publisher/api/mobileapp/getplist</IosPlistPath>			
+	           <IosPlistPath>publisher/api/mobileapp/getplist</IosPlistPath>
+		   <EnterpriseOperations>
+			<Enabled>true</Enabled>
+			<AuthorizedRole>admin</AuthorizedRole>
+		   </EnterpriseOperations>					
                 </MDMSettings>
 
 		<MDMProperties>
