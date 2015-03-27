@@ -175,19 +175,19 @@ return parseRolesResponse(result);
 }};
 
 
-var parseRolesResponse=function parseResponse(result){
-var site = require("/site/conf/site.json");
-var roles= result. *::["return"];
-for(var i=0; i<roles.length(); i++){
- var entry=roles[i];
+var parseRolesResponse = function parseResponse(result) {
+    var site = require("/site/conf/site.json");
+    var roles = result.*::["return"];
+    for (var i = 0; i < roles.length(); i++) {
+        var entry = roles[i];
 
- var roleName= entry.text();
+        var roleName = entry.text();
 
- if(roleName==site.allowedRole){
- return true;
- }
-
-return false;}
+        if (roleName == site.allowedRole) {
+            return true;
+        }
+    }
+    return false;
 };
 
 %>
