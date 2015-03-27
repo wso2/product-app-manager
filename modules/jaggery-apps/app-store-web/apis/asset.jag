@@ -20,7 +20,8 @@ require('/modules/store.js').exec(function (ctx) {
     }
 
     if (isMyAsset || matcher.match('/{context}/apis/asset/{type}')) {
-        var type = matcher.elements().type;
+        /*Disable for security
+         var type = matcher.elements().type;
         if (aid) {
             //get information about a specific gadget.
             //request format : GET /store/apis/asset/gadget?id=/_sys/gov/gadgets/1.0.0
@@ -51,7 +52,7 @@ require('/modules/store.js').exec(function (ctx) {
                 }));
                 return;
             }
-        }
+        }*/
     }
 
     if (matcher.match('/{context}/apis/remove')) {
