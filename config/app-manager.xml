@@ -597,7 +597,8 @@
 	           <Enabled>true</Enabled>
 		   <EnableSampleDevices>false</EnableSampleDevices>
 		   <AppDownloadURLHost>%http%</AppDownloadURLHost>
-		   <ActiveMDM>WSO2MDM</ActiveMDM>	
+		   <ActiveMDM>WSO2MDM</ActiveMDM>
+	           <IosPlistPath>publisher/api/mobileapp/getplist</IosPlistPath>			
                 </MDMSettings>
 
 		<MDMProperties>
