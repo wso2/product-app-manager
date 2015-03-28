@@ -227,19 +227,17 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
             });
 
             var path = artifact.attributes.overview_permissions;
-            log.info("Path : "+path);
+            log.debug("Path of permission resource : "+path);
             var permissionSet = null;
-            if(path!=null){
-                permissionSet = registry.get(path);
-            }
-
             var overridenPermissions = null;
+            if(path && (path != "null")){
+                permissionSet = registry.get(path);
 
-            var content = '' + permissionSet.content;
-            log.info("works : "+content);
+                var content = '' + permissionSet.content;
 
-            if (content) {
-                output.permissions = JSON.parse(content);
+                if (content) {
+                    output.permissions = JSON.parse(content);
+                }
             }
 
             output.fields[1]['isEditable'] = false;
