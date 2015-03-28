@@ -100,11 +100,23 @@ var render = function (theme, data, meta, require) {
                 notificationCount++;
                 var notifyObject;
                 var lcComments = lcModule.getlatestLCComment(artifactManager, data.artifacts[i].path);
-                for(key in lcComments) {
-                    if(lcComments.hasOwnProperty(key)) {
-                        notifyObject = {'url': '/publisher/asset/webapp/'+ data.artifacts[i].id,
-                            'notification': lcComments[key], 'appname':data.artifacts[i].attributes.overview_displayName }
+                if(lcComments) {
+                    for (key in lcComments) {
+                        if (lcComments.hasOwnProperty(key)) {
+                            notifyObject = {
+                                'url': '/publisher/asset/webapp/' + data.artifacts[i].id,
+                                'notification': lcComments[key],
+                                'appname': data.artifacts[i].attributes.overview_displayName
+                            }
+                        }
                     }
+                }else{
+                    notifyObject = {
+                        'url': '/publisher/asset/webapp/' + data.artifacts[i].id,
+                        'notification': 'Rejected reason is not defined',
+                        'appname': data.artifacts[i].attributes.overview_displayName
+                    }
+
                 }
                 notifications.push(notifyObject);
             }

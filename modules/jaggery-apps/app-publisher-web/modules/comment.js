@@ -61,9 +61,11 @@ var getlatestLCComment = function (artifactManager, rid) {
             // i am leaving this intentionally blank
             // if it ever hits this, then this is a non-lifecycle comment-ish
         }
-    };
+		return lifecycleComments;
+    }
+	return null;
 
-    return lifecycleComments;
+
 };
 
 
