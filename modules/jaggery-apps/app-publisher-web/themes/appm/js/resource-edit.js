@@ -237,6 +237,17 @@ $( document ).ready(function() {
         $('#overview_skipGateway').val(output);
     });
 
+    /**
+     * This enable/disable role based authorization adhere with anonymous access property value
+     */
+    $('#anonymousAccessToUrlPattern').change(function () {
+        var selectedVal = $('#anonymousAccessToUrlPattern').val();
+        if (selectedVal == "true") {
+            $('.authPolicies').hide(200);
+        } else {
+            $('.authPolicies').show(200);
+        }
+    });
 
 
 });
