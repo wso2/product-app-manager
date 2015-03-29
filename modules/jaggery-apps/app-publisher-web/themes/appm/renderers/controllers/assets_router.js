@@ -18,6 +18,9 @@ var render = function (theme, data, meta, require) {
 
 
     var lifecycleColors = {"Create": "btn-green", "Recycle": "btn-blue", "Re-Publish": "btn-blue", "Submit for Review": "btn-blue", "Unpublish": "btn-orange", "Deprecate": "btn-danger", "Retire": "btn-danger", "Publish": "btn-blue", "Approve": "btn-blue", "Reject": "btn-orange"};
+    //Check whether the app publish workflow is enabled
+    appPublishWFExecutor = org.wso2.carbon.appmgt.impl.workflow.WorkflowExecutorFactory.getInstance().getWorkflowExecutor("AM_APPLICATION_PUBLISH");
+    var isAsynchronousFlow = appPublishWFExecutor.isAsynchronus();
 
     if(data.artifacts){
 
@@ -51,7 +54,7 @@ var render = function (theme, data, meta, require) {
                             if (name == "Publish") {
                                 lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
                             }
-                            if (name == "Reject") {
+                            if (name == "Reject" && isAsynchronousFlow) {
                                 lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
                             }
                             if (name == "Submit for Review") {
@@ -75,7 +78,7 @@ var render = function (theme, data, meta, require) {
                             if (name == "Retire") {
                                 lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
                             }
-                            if (name == "Approve") {
+                            if (name == "Approve" && isAsynchronousFlow) {
                                 lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
                             }
                             break;
@@ -100,11 +103,23 @@ var render = function (theme, data, meta, require) {
                 notificationCount++;
                 var notifyObject;
                 var lcComments = lcModule.getlatestLCComment(artifactManager, data.artifacts[i].path);
-                for(key in lcComments) {
-                    if(lcComments.hasOwnProperty(key)) {
-                        notifyObject = {'url': '/publisher/asset/webapp/'+ data.artifacts[i].id,
-                            'notification': lcComments[key], 'appname':data.artifacts[i].attributes.overview_displayName }
+                if(lcComments) {
+                    for (key in lcComments) {
+                        if (lcComments.hasOwnProperty(key)) {
+                            notifyObject = {
+                                'url': '/publisher/asset/webapp/' + data.artifacts[i].id,
+                                'notification': lcComments[key],
+                                'appname': data.artifacts[i].attributes.overview_displayName
+                            }
+                        }
                     }
+                }else{
+                    notifyObject = {
+                        'url': '/publisher/asset/webapp/' + data.artifacts[i].id,
+                        'notification': 'Rejected reason is not defined',
+                        'appname': data.artifacts[i].attributes.overview_displayName
+                    }
+
                 }
                 notifications.push(notifyObject);
             }

@@ -258,6 +258,12 @@ $(document).on("click", ".policy-group-edit-button", function () {
                 $('#userRoles').tokenInput("add", {id: roletoken[i], name: roletoken[i]});
             }
 
+            var selectedVal = $('#anonymousAccessToUrlPattern').val();
+            if (selectedVal == "true") {
+                $('.authPolicies').hide(200);
+            } else {
+                $('.authPolicies').show(200);
+            }
             //handle XACML Policies:
             var getPolicyPartials = JSON.parse(obj.policyPartials);
 
@@ -327,6 +333,7 @@ $(document).on("click", "#btn-add-policy-group", function () {
     $('.policy-opt-val').each(function(){
         $(this).prop('checked', false)
     });
+    $('.authPolicies').show(200);
     hidePolicyGroupNotification();
 });
 

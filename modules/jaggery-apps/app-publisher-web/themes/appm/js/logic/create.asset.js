@@ -87,6 +87,14 @@ $(function() {
 
 
 	$('#btn-create-asset').on('click', function(e) {
+        //trim the value of all the text field and text area
+        var fields = $('#form-asset-create :input');
+        fields.each(function () {
+            if (this.type == 'text' || this.type == 'textarea') {
+                this.value = this.value.trim();
+            }
+        });
+
         $(this).prop("disabled", true);
 		e.preventDefault();
 
@@ -132,7 +140,7 @@ $(function() {
 		//Check illegal characters in tags
 		var tags = $('#tag-test').tokenInput('get');
 		for (var index in tags) {
-			if(checkIllegalCharacters(tags[index].name));{
+			if(checkIllegalCharacters(tags[index].name)){
 				showAlert("Tags contains one or more illegal characters (~!@#;%^*()+={}|\\<>\"',)", 'error');
 				return;
 			}
