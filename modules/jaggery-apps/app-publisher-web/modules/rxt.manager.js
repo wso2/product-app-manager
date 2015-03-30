@@ -116,25 +116,14 @@ var rxt_management=function(){
 
 
     RxtManager.prototype.getSystemArtifactManager=function(type,session){
-        log.info('###Getting ArtifactManager with System Reg###');
-        log.info('Getting server ');
         var server=require('store').server;
-        log.info('Getting user');
         var user=server.current(session);
-        log.info('Obtained user registry');
         var tenantId=user.tenantId;
-        log.info('Tenant Id '+tenantId);
 
         var sysRegistry=server.systemRegistry(tenantId);
-        log.info('Obtained system registry');
-
-        log.info('Loading governance artifats');
         GovernanceUtils.loadGovernanceArtifacts(sysRegistry.registry);
 
-        log.info('Building artifact manager');
-
         var am=new carbon.registry.ArtifactManager(sysRegistry,type);
-        log.info('###Finished obtaining the ArtifactManager###');
         return am;
     };
 

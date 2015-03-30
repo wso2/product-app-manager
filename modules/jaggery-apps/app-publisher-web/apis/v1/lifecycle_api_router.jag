@@ -246,7 +246,6 @@ require('/modules/publisher.js').exec(function(ctx) {
 
         appPublishWFExecutor = org.wso2.carbon.appmgt.impl.workflow.WorkflowExecutorFactory.getInstance().getWorkflowExecutor("AM_APPLICATION_PUBLISH");
         var isAsynchronousFlow = appPublishWFExecutor.isAsynchronus();
-        log.info("IS ASYNCH : " + isAsynchronousFlow);
         var shortName=context.params.type;
         var id=context.params.id;
         var artifactManager=rxtManager.getArtifactManager(shortName);
@@ -511,7 +510,6 @@ function mobileAppsLifeCycleChange(context, rxtManager, utility){
             var lcHistoryXML = new XML(lcHistory.content);
 
             lcHistoryJSON = utility.xml.convertE4XtoJSON(lcHistoryXML);
-            log.info("lcHistryJSON" + lcHistoryJSON);
             var newChangeOrder = lcHistoryJSON.item[0].order;
             require('/modules/comment.js').addLifecycleComment(artifactManager, artifact.path, comment, newChangeOrder);
         }

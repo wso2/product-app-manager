@@ -645,7 +645,6 @@ function addTags(params,assetId,artifactManager,reg){
         }
         var actions = actions.split(",");
         var filteredActions = [];
-        log.info(actions);
         actions.forEach(function (value) {
             if(value.indexOf(symbol)===0){
                 switch(value){

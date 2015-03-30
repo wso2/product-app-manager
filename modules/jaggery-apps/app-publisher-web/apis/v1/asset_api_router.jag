@@ -414,7 +414,6 @@ require('/modules/publisher.js').exec(function(ctx) {
         var user = server.current(session);
         var um = server.userManager(server.current(session).tenantId);
         var updateAuthorized = permissions.isAuthorized(username, config.permissions.webapp_update, um);
-        log.info("## Update Authorized Check : " + updateAuthorized);
 
         if(context.post['images_thumbnail'] instanceof Array){
             context.post['images_thumbnail'] = context.post['images_thumbnail'][0];
@@ -555,10 +554,8 @@ require('/modules/publisher.js').exec(function(ctx) {
             var artifactManagerForUpdate = rxtManager.getSystemArtifactManager(shortName,session);
 
             if(originalArtifact.lifecycleState=="Approved") {
-                log.info("Before Calling update");
                 var updateLCArtifact = artifactManager.get(id);
                 artifactManagerForUpdate.promoteLifecycleState("Revert", updateLCArtifact);
-                log.info("After Calling update");
             }
 
             msg['ok']=true;
