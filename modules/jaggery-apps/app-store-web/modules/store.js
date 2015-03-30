@@ -989,7 +989,7 @@ function PaginationFormBuilder(pagin) {
  */
 function AnonStoreMasterManager() {
     var store = require('store');
-    var registry = store.server.systemRegistry(SUPER_TENANT);
+    var registry = store.server.anonRegistry(SUPER_TENANT);
 
     var managers = buildManagers(registry, SUPER_TENANT);
 
