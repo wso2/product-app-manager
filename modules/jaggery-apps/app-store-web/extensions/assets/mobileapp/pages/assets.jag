@@ -45,8 +45,14 @@ require('/modules/store.js').exec(function (ctx) {
 
     title = store.assetLinks(type).title;
 
+    var skipIndices = false;
 
-    var indices = store.pageIndexPopulator(avaliablePages,paging.start+1);
+    var indices = [];
+
+    if(skipIndices) {
+        indices = store.pageIndexPopulator(avaliablePages, paging.start + 1);
+    }
+
     var PAGE_SIZE = store.getPageSize();
     var pageIndices;
     if(indices.length > 1){
@@ -61,13 +67,6 @@ require('/modules/store.js').exec(function (ctx) {
     if(currentPage-1 > 0){
         var leftnav = currentPage-1;
     }
-
-    if(currentPage+1 <= avaliablePages){
-        var rightnav = currentPage+1;
-    }
-
-   
-   
 
     if (user) {
         subscriptions = store.subscriptions(type);
@@ -181,6 +180,17 @@ require('/modules/store.js').exec(function (ctx) {
     var devices = [];
     //devices = devicesClass.get
     //TODO Implement devices
+
+    var nextPage = store.buildNextPage(request,avaliablePages);
+    var nextAssetSet = store.assets(type, nextPage);
+    var nextPageAvailable = false;
+    if(nextAssetSet.length > 0){
+        nextPageAvailable = true;
+    }
+
+    if(nextPageAvailable && (assets.length == PAGE_SIZE)){
+        var rightnav = currentPage+1;
+    }
 
 
     caramel.render({

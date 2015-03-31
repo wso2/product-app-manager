@@ -282,9 +282,6 @@ Store.prototype.buildNextPage = function (request,availablePages) {
     var page = request.getParameter('page'),
             size = this.getPageSize();
     page = page ? page : 1;
-    if(page >= availablePages){
-        page = availablePages -1;
-    }
     return {
         start: page * size,
         count: size,
