@@ -333,7 +333,7 @@ var drawAPIUsageByUser = function (response,usageByContext) {
                     div.html('<b style="color:#555">'+app +'</b><p style="color:#666;margin-top:5px;">Subscription Count : '+data[i].Subscriber_Count+'</p><table class="table" id="tooltipTable" ><thead><tr><th>version</th><th>Hits' +
                         '</th></tr></thead><tbody></tbody></table>');
 
-/
+
                     for (var l = 0; l < arr.length; l++) {
                         var arrStr = JSON.stringify(arr);
                         var versionName = arr[l].version;

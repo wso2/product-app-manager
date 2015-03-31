@@ -1,6 +1,5 @@
 $(function () {
     drawGraphs();
-    alert("sdswd")
 });
 
 function drawGraphs() {
