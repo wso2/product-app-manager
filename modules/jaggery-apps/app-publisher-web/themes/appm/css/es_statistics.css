@@ -362,3 +362,51 @@ input#search {
     fill:#555
 }
 
+#tooltip {
+    position: absolute;
+    display: none;
+    width: auto;
+    height: auto;
+    background: none repeat scroll 0 0 white;
+    border: 0 none;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: -3px 3px 15px #888888;
+    color: black;
+    font: 12px sans-serif;
+    padding: 5px;
+    top:  y - 40;
+    left:  x - 100;
+    text-align:left;
+
+
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button{
+   color:#428BCA !important;
+   padding: 0 !important;
+   background:white;
+   margin-left:-2px!important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+   color :#666 !important;
+   background: #f5f5f5 !important;
+   border:none !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+   background:#f5f5f5;
+    border: 1px solid #fff;
+   color:#005580 !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active{
+   color:#bbb !important;
+}
+
+a.previous {
+    border-radius: 3px 0 0 3px !important;
+}
+
+a.next {
+    border-radius: 0 3px 3px 0;
+}

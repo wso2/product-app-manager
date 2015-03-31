@@ -1,5 +1,5 @@
 var to = new Date();
-var from = new Date(to.getTime() - 1000 * 60 * 60 * 24 * 30);
+var from = new Date(to.getTime() - (604800000*4));
 var currentDay = new Date(to.getFullYear(), to.getMonth(), to.getDate(),to.getHours(),to.getMinutes());
 
 var today=false;

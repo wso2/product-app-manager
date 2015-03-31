@@ -5,7 +5,7 @@ $(function () {
 
 function drawGraphs() {
 $('.twitter-typeahead').remove();
-$('#searchUserForm label').append("<input type='text' class='form-control type-ahead' style='width: 200px; ' id='search' placeholder='Enter Subscribed User name'/>")
+$('#searchUserForm label').append("<input type='text' class='form-control type-ahead' style='width: 230px; ' id='search' placeholder='Enter Subscribed User name'/>")
  $('#webAppTable2').hide();
     var url = window.location.pathname;
     var comps = url.split('/');
@@ -151,6 +151,7 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
                                 + '</td><td>' + parsedResponse[i][1][j][1][t][1] +
                                 '</td><td><a  href="#" class="trigger-ajax" id=' + detailNumber + '>View History</a>'
                                 + '</td></tr>'));
+
                         detailNumber++;
                         rawNumber++;
                     }
@@ -170,13 +171,26 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
            // $('#flot-placeholder').append($('<div id="lineWithFocusChart"><svg style="height:450px;"></svg></div>'));
             $('#placeholder2').show();
             $('#webAppTable2').dataTable({
-                                             "bFilter": false
-                                           });
+            "order": [
+               [ 2, "desc" ]
+            ],
+            "fnDrawCallback": function(){
+                                     if(this.fnSettings().fnRecordsDisplay()<=$("#webAppTable2_length option:selected" ).val()
+                                     || $("#webAppTable2_length option:selected" ).val()==-1)
+                                         $('#webAppTable2_paginate').hide();
+                                     else
+                                         $('#webAppTable2_paginate').show();
+                                 },
+                 "bFilter": false,
+
+            });
         }
     }
 
     //init deafult
     getWebAppUsage();
+
+
 
     //ajax call to get hits
     $("#placeholder2").on("click", ".trigger-ajax", function () {
@@ -312,6 +326,7 @@ check =true;
                                             'values': dataTest,
                                             'key': usageByContext[i][1][j][1][t][1][k][0],
                                             'yAxis': '1',
+                                            'color' : '#46b8da'
 
                                         }
                                     ];

@@ -11,6 +11,7 @@ function drawGraphs() {
     var operation = comps[comps.length - 3];
     var action = 'getSubscriberCountByAPIs';
     var dateRange = $('#date-range').val();
+
     var from = dateRange.split('to')[0].trim() + ":00";
     var to = dateRange.split('to')[1].trim() + ":00";
     var userParsedResponse;
@@ -126,7 +127,7 @@ var drawSubscriberCountByAPIs = function (response) {
             var data;
             var div = d3.select("body").append("div").attr("class", "toolTip");
             var w = 250;
-            var h = 270;
+            var h = 260;
             var r = 60;
             var ir = 35;
             var textOffset = 24;
@@ -163,10 +164,10 @@ var drawSubscriberCountByAPIs = function (response) {
             // CREATE VIS & GROUPS
             var vis = d3.select("#pie-chart").append("svg:svg")
                 .attr("width", w)
-                .attr("height", h);
+                .attr("height", h-40);
             vis.append("text").attr("class", "title_text")
                 .attr("x", 125)
-                .attr("y", 265)
+                .attr("y", 17)
                 .style("font-size", "14px").style("font-weight", "10px")
 
                 .style("font-family", "'Helvetica Neue',Helvetica,Arial,sans-serif")
@@ -247,10 +248,11 @@ var drawSubscriberCountByAPIs = function (response) {
                     .remove();
 
                 paths.on("mousemove", function (d) {
+                    var percentage = (d.value / sliceProportion) * 100;
                     div.style("left", d3.event.pageX + 10 + "px");
                     div.style("top", d3.event.pageY - 25 + "px");
                     div.style("display", "inline-block");
-                    div.html((d.data.itemLabel) + "<br>" + ("Count : " + d.data.itemValue));
+                    div.html((d.data.itemLabel) + "<br>" + ("Count : " + d.data.itemValue)+"<br>Percentage : "+percentage.toFixed(1) + "%");
                     if (d.data.version == "other") {
                         div.style("display", "none");
                     }
@@ -333,13 +335,6 @@ var drawSubscriberCountByAPIs = function (response) {
                             return "beginning";
                         } else {
                             return "end";
-                        }
-                    }).text(function (d) {
-                        var percentage = (d.value / sliceProportion) * 100;
-                        if (d.name == "other") {
-                            return "";
-                        } else {
-                            return percentage.toFixed(1) + "%";
                         }
                     });
 
@@ -466,7 +461,7 @@ var drawSubscriberCountByAPIs = function (response) {
             $("#pagination").pagination({
                 items: numItems,
                 itemsOnPage: perPage,
-                cssStyle: "dakshika-theme",
+                cssStyle: "",
                 onPageClick: function (pageNumber) { // this is where the magic happens
                     // someone changed page, lets hide/show trs appropriately
                     var showFrom = perPage * (pageNumber - 1);

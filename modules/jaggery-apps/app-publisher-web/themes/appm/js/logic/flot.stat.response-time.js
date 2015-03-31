@@ -37,7 +37,7 @@ function drawGraphs() {
     });
 
 }
-
+var labelarray=[];
 var drawAPIResponseTime = function (response) {
     var parsedResponse = JSON.parse(response);
     var length = parsedResponse.webapps.length;
@@ -133,19 +133,28 @@ var drawAPIResponseTime = function (response) {
             "order": [
                 [ 2, "desc" ]
             ],
+
             "aoColumns": [
                 { "bSortable": false },
                 null,
                 null
             ],
+            "fnDrawCallback": function(){
+             if(this.fnSettings().fnRecordsDisplay()<=$("#webAppTable2_length option:selected" ).val()
+             || $("#webAppTable2_length option:selected" ).val()==-1)
+                 $('#webAppTable2_paginate').hide();
+             else
+                 $('#webAppTable2_paginate').show();
+         }
         });
 
         // BAR CHART
 
+    var randomColor =["rgb(31, 119, 180)","rgb(174, 199, 232)","rgb(255, 127, 14)","rgb(255, 187, 120)","rgb(44, 160, 44)","rgb(152, 223, 138)","rgb(214, 39, 40)","rgb(255, 152, 150)","rgb(148, 103, 189)","rgb(197, 176, 213)","rgb(140, 86, 75)","rgb(196, 156, 148)","rgb(227, 119, 194)","rgb(247, 182, 210)","rgb(219, 219, 141)"];
         var dataset=[];
         for(var i=0;i<defaultChartData.length;i++){
-        var randomColor = getRandomColor();
-            dataset.push({data: [defaultChartData[i]], color: randomColor});
+       // var randomColor = getRandomColor();
+            dataset.push({data: [defaultChartData[i]], color: randomColor[i]});
 
         }
 
@@ -166,7 +175,8 @@ var drawAPIResponseTime = function (response) {
                 axisLabelUseCanvas: false,
                 axisLabelFontSizePixels: 12,
                 axisLabelFontFamily: 'Verdana, Arial',
-                axisLabelPadding: 20
+                axisLabelPadding: 20,
+               max:chartData[0][0]+20
             },
             yaxis: {
                 axisLabel: "Web App",
@@ -205,7 +215,7 @@ var drawAPIResponseTime = function (response) {
 
         var y = dataPoint[1];
 
-        var xPos =  0+offset.left  // place at end of bar
+        var xPos =  0+offset.left;  // place at end of bar
         var yPos = yaxis.p2c(y) + offset.top +3;
         ctx.fillText(text, xPos, yPos);
         ctx.save();
@@ -232,19 +242,18 @@ var drawAPIResponseTime = function (response) {
                 opacity: 1
             }).appendTo("body").fadeIn(200);
         }
-
-        $("body #placeholder41").bind("plothover", function (event, pos, item) {
+labelarray = defaultFilterValues;
+        $("body #placeholder41").bind("plotclick", function (event, pos, item) {
             $("#tooltip").remove();
             if (item != null) {
 
                 var tableStatement = '';
-                tableStatement = '<table class="table graphTable"><thead><tr><th>page</th><th>response time(ms)' +
-                    '</th></tr></thead><tbody id="tbody"></tbody></table>';
+
                 var x = item.datapoint[0];
                 var y = item.datapoint[1];
 
 
-                var label = defaultFilterValues[y].label;
+                 label = labelarray[y].label;
 
 
                 var webappPage = [];
@@ -253,6 +262,9 @@ var drawAPIResponseTime = function (response) {
                 for (var i = 0; i < parsedResponse.webapps.length; i++) {
                     arr = [];
                     if (label == parsedResponse.webapps[i][0]) {
+                     tableStatement = '<h6>' + "App Name :"+label + '</h6><table class="table graphTable"><thead><tr><th>page</th><th>response time(ms)' +
+                                        '</th></tr></thead><tbody id="tbody"></tbody></table>';
+
                         for (var j = 0; j < parsedResponse.webapps[i][1].length; j++) {
                             for (var l = 0; l < parsedResponse.webapps[i][1][j].length; l++) {
                                 webappPage = parsedResponse.webapps[i][1][j][0]
@@ -277,6 +289,21 @@ var drawAPIResponseTime = function (response) {
 
 
         });
+                $("body #placeholder41").bind("plothover", function (event, pos, item) {
+                    if (item) {
+                        $("#tooltip").remove();
+                        previousPoint = [0,0,0];
+                    }
+
+                });
+        $("#placeholder41").bind("plothover", function(event, pos, item) {
+            if(item) {
+                document.body.style.cursor = 'pointer';
+            } else {
+                document.body.style.cursor = 'default';
+            }
+        });
+
 
         var count=15;
         //on checkbox check and uncheck event
@@ -322,12 +349,13 @@ var drawAPIResponseTime = function (response) {
                 }
             });
 
-
+labelarray = draw_x_axis;
+    var randomColor =["rgb(31, 119, 180)","rgb(174, 199, 232)","rgb(255, 127, 14)","rgb(255, 187, 120)","rgb(44, 160, 44)","rgb(152, 223, 138)","rgb(214, 39, 40)","rgb(255, 152, 150)","rgb(148, 103, 189)","rgb(197, 176, 213)","rgb(140, 86, 75)","rgb(196, 156, 148)","rgb(227, 119, 194)","rgb(247, 182, 210)","rgb(219, 219, 141)"];
             //color bar chart
             var onCheckDataset=[];
             for(var i=0;i<draw_y_axis.length;i++){
-                var randomColor = getRandomColor();
-                onCheckDataset.push({data: [draw_y_axis[i]], color: randomColor});
+               // var randomColor = getRandomColor();
+                onCheckDataset.push({data: [draw_y_axis[i]], color: randomColor[i]});
             }
 
             somePlot=$.plot($("#placeholder41"), onCheckDataset, {
@@ -347,7 +375,8 @@ var drawAPIResponseTime = function (response) {
                     axisLabelUseCanvas: false,
                     axisLabelFontSizePixels: 12,
                     axisLabelFontFamily: 'Verdana, Arial',
-                    axisLabelPadding: 20
+                    axisLabelPadding: 20,
+                    max:draw_y_axis[0][0]+20
                 },
                 yaxis: {
                     axisLabel: "Web App",
@@ -388,6 +417,28 @@ var drawAPIResponseTime = function (response) {
                 ctx.restore();
             }
         });
+        $.fn.UseTooltip = function () {
+            $(this).bind("plothover", function (event, pos, item) {
+                if (item) {
+                    if ((previousLabel != item.series.label) || (previousPoint != item.dataIndex)) {
+                        previousPoint = item.dataIndex;
+                        previousLabel = item.series.label;
+                        $("#tooltip").remove();
+                        var x = item.datapoint[0];
+                        var y = item.datapoint[1];
+
+                        var color = item.series.color;
+                        showTooltip(item.pageX,
+                            item.pageY,
+                            color,
+                                "<strong>" +defaultFilterValues[y].label + " : " + x + "</strong>");
+                    }
+                } else {
+                    $("#tooltip").remove();
+                    previousPoint = null;
+                }
+            });
+        };
     }
 }
 
