@@ -1,0 +1,60 @@
+<%
+jagg.initializer("cacheHitMiss-task", {
+
+    preInitialize:function () {
+
+              //JS files
+
+
+              //jagg.addFooterJS("application", "jagg", "templates/cacheHitMiss-task/js/jquery-ui.js");
+             // jagg.addFooterJS("application", "jagg1", "templates/cacheHitMiss-task/js/min.js");
+
+              jagg.addFooterJS("application", "jagg3", "templates/cacheHitMiss-task/js/jquery.flot.js");
+              jagg.addFooterJS("application", "jagg4", "templates/cacheHitMiss-task/js/excanvas.min.js");
+              jagg.addFooterJS("application", "jagg5", "templates/cacheHitMiss-task/js/datepicker.js");
+
+
+              jagg.addFooterJS("application", "jagg28", "templates/cacheHitMiss-task/js/flot.cashe-stat.js");
+              jagg.addFooterJS("application", "jagg33", "templates/cacheHitMiss-task/js/jquery-ui.js");
+              jagg.addFooterJS("application", "jagg34", "templates/cacheHitMiss-task/js/d3.v3.min.js");
+              jagg.addFooterJS("application", "jagg2", "templates/cacheHitMiss-task/js/nv.d3.js");
+              jagg.addFooterJS("application", "jagg6", "templates/cacheHitMiss-task/js/moment.js");
+              jagg.addFooterJS("application", "jagg31", "templates/cacheHitMiss-task/js/jquery.daterangepicker.js");
+              jagg.addFooterJS("application", "jagg8", "templates/cacheHitMiss-task/js/date.picker.js");
+
+
+
+
+              jagg.addFooterJS("application", "jagg12", "templates/cacheHitMiss-task/js/jquery.flot.orderBars.js");
+              jagg.addFooterJS("application", "jagg13", "templates/cacheHitMiss-task/js/jquery.flot.tooltip.js");
+              //jagg.addFooterJS("application", "jagg14", "templates/cacheHitMiss-task/js/dialogextend.js");
+              jagg.addFooterJS("application", "jagg15", "templates/cacheHitMiss-task/js/jquery.dataTables.min.js");
+              jagg.addFooterJS("application", "jagg16", "templates/cacheHitMiss-task/js/dataTables.bootstrap.js");
+
+
+              //css files
+
+              jagg.addHeaderCSS("application", "jagg18", "templates/cacheHitMiss-task/js/flot-graphs.css");
+              jagg.addHeaderCSS("application", "jagg19", "templates/cacheHitMiss-task/js/base.css");
+              jagg.addHeaderCSS("application", "jagg20", "templates/cacheHitMiss-task/js/custom-widget.css");
+              jagg.addHeaderCSS("application", "jagg21", "templates/cacheHitMiss-task/js/clean.css");
+              jagg.addHeaderCSS("application", "jagg22", "templates/cacheHitMiss-task/js/daterangepicker.css");
+              jagg.addHeaderCSS("application", "jagg23", "templates/cacheHitMiss-task/js/simplePagination.css");
+              jagg.addHeaderCSS("application", "jagg24", "templates/cacheHitMiss-task/js/es_statistics.css");
+              jagg.addHeaderCSS("application", "jagg25", "templates/cacheHitMiss-task/js/nv.d3.css");
+              jagg.addHeaderCSS("application", "jagg27", "templates/cacheHitMiss-task/js/jquery.dataTables.css");
+              jagg.addHeaderCSS("application", "jagg26", "templates/cacheHitMiss-task/js/dataTables.bootstrap.css");
+              jagg.addHeaderCSS("application", "jagg35", "templates/cacheHitMiss-task/js/bootstrap.min.css");
+
+              jagg.addHeaderCSS("application", "jagg32", "templates/cacheHitMiss-task/js/es-publisher-commons.css");
+
+
+
+
+
+
+
+    }
+});
+%>
+

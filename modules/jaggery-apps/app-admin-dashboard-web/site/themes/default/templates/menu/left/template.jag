@@ -21,6 +21,9 @@
         <li <%if(request.getParameter("task")=="publishapp"){%>class="active"<% } %>><a href="<%=listMappedUrl%>?task=publishapp"  onclick="jagg.sessionAwareJS({redirect:'<%=listMappedUrl%>?task=ApprovePubApplication',e:event,ssoEnabled:<%=ssoEnabled%>})"><i class="icon-font"></i><br><%=i18n.localize("appPublishHeader")%></a></li>
 
         <li <%if(request.getParameter("task")=="xacmlpolicy"){%>class="active"<% } %>><a href="<%=listMappedUrl%>?task=xacmlpolicy"  onclick="jagg.sessionAwareJS({redirect:'<%=listMappedUrl%>?task=XACMLPolicy',e:event,ssoEnabled:<%=ssoEnabled%>})"><i class="icon-font"></i><br><%=i18n.localize("addXACMLPolicyHeader")%></a></li>
+         <li <%if(request.getParameter("task")=="cacheHitMiss"){%>class="active"<% } %>><a href="<%=listMappedUrl%>?task=cacheHitMiss"  onclick="jagg.sessionAwareJS({redirect:'<%=listMappedUrl%>?task=cacheHitMiss',e:event,ssoEnabled:<%=ssoEnabled%>})"><i class="icon-font"></i><br>Cache Hit/Miss</a></li>
+
+
 
      </ul>
 </div>
