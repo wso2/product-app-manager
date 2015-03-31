@@ -597,7 +597,7 @@
 	           <Enabled>true</Enabled>
 		   <EnableSampleDevices>false</EnableSampleDevices>
 		   <AppDownloadURLHost>%http%</AppDownloadURLHost>
-		   <ActiveMDM>WSO2MDM</ActiveMDM>
+		   <ActiveMDM>WSO2EMM</ActiveMDM>
 	           <IosPlistPath>publisher/api/mobileapp/getplist</IosPlistPath>
 		   <EnterpriseOperations>
 			<Enabled>true</Enabled>
@@ -613,6 +613,12 @@
 			<Property name="ClientKey">WjLm24IxBVLF0oz0VJfmtJbjJbka</Property>	
 			<Property name="ClientSecret">v3KkIQXkJ1SDp_Bf8uUQxu5p7TQa</Property>
 		   </MDM>
+
+		   <MDM name="WSO2EMM" bundle="org.wso2.carbon.appmgt.mdm.wso2emm">
+			<Property name="ServerURL">https://localhost:9451</Property>
+			<Property name="AuthUser">admin</Property>	
+			<Property name="AuthPass">admin</Property>
+		   </MDM>	
 		
 		   <!-- Please uncommnent this and define the name in ActiveMDM to activate this MDM
 		   <MDM name="WSO2MDM" bundle="org.wso2.carbon.appmgt.mdm.othermdm">
