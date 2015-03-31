@@ -130,7 +130,7 @@
      *
      */
     ArtifactManager.prototype.search = function (query, paging) {
-
+    	var log = new Log();
         var list, map, key, artifacts, pagination, value, that,
             artifactz = [];
         pagination = generatePaginationForm(paging);
@@ -167,7 +167,12 @@
                     }
                 }//end of attribut looping (all attributes)
             }
-            artifacts = this.manager.findGenericArtifacts(map);
+            try{
+            	artifacts = this.manager.findGenericArtifacts(map);
+        	}catch(e){
+        		log.debug("No Assets found!");
+        		artifacts = [];
+        	}
             that = this;
             artifacts.forEach(function (artifact) {
                 artifactz.push(buildArtifact(that, artifact));
