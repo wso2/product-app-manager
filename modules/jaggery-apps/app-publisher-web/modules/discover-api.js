@@ -41,13 +41,12 @@ var api = {};
           var model=modelManager.getModel(shortName);
 
           //assigning default thumbnail and banner if not provided.
-          if(context.post['images_thumbnail'] == '') {
-              context.post['images_thumbnail'] = '/publisher/config/defaults/img/thumbnail.jpg';
+          if(data.images_thumbnail == '') {
+              data.images_thumbnail = '/publisher/config/defaults/img/thumbnail.jpg';
           }
-          if(context.post['images_banner'] == '') {
-              context.post['images_banner'] = '/publisher/config/defaults/img/banner.jpg';
+          if(data.images_banner == '') {
+              data.images_banner = '/publisher/config/defaults/img/banner.jpg';
           }
-
 
 
           model.import('form.importer',data);
