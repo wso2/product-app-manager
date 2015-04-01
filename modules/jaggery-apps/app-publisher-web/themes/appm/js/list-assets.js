@@ -3,31 +3,17 @@ var app = $(this).data("app");
 var action = $(this).data("action");
 
 //alert(app + action);
-    if(action=="Reject") {
-        showCommentModel("Reason for Rejection",action,app);
-    }else{
+    if (action == "Reject") {
+        showCommentModel("Reason for Rejection", action, app);
+    } else {
+        jQuery.ajax({
+            url: '/publisher/api/lifecycle/' + action + '/webapp/' + app,
+            type: "PUT"
+        });
 
-    jQuery.ajax({
-        url: '/publisher/api/lifecycle/' + action + '/webapp/' + app,
-        type: "PUT",
-        success: function (response) {
-            //Convert the response to a JSON object
-            var statInfo = JSON.parse(response);
-            if(statInfo.status != "error") {
-                var isAsynch = statInfo.asynch;
-                if (isAsynch == false && action == 'Approve') {
-                    showMessageModel("Your request to publish the application is awaiting administrator approval.", "Awaiting administrator approval", "webapp");
-                } else {
-                    location.reload();
-                }
-            }else{
-                alert(statInfo.message);
-            }
-        },
-        error: function (response) {
-            showMessageModel("Error occured while updating life-cycle state : " + action, "Lify-cycle update failed", "webapp");
-        }
-    });
+        $(document).ajaxComplete(function () {
+            location.reload();
+        });
     }
     e.stopPropagation();
 });
@@ -42,30 +28,14 @@ $( ".btn-reject-proceed" ).click(function() {
 
     var app = $("#webappName").val();
     var action = $("#action").val();
-    $.ajax({
+    jQuery.ajax({
         url: '/publisher/api/lifecycle/' + action + '/webapp/' + app,
         type: "PUT",
-        data: JSON.stringify({comment:comment}),
-        success: function (response) {
-            //Convert the response to a JSON object
-            var statInfo = JSON.parse(response);
-            if(statInfo.status != "error") {
-                var isAsynch = statInfo.asynch;
-                if (isAsynch == false && action == 'Approve') {
-                    showMessageModel("Your request to publish the application is awaiting administrator approval.", "Awaiting administrator approval", "webapp");
-                } else {
-                    location.reload();
-                }
-            }else{
-                alert(statInfo.message);
-            }
-        },
-        error: function (response) {
-            if (response.status == 403) {
-                alert('Sorry, your session has expired');
-                location.reload();
-            }
-        }
+        data: JSON.stringify({comment: comment})
+    });
+
+    $(document).ajaxComplete(function () {
+        location.reload();
     });
 
 });

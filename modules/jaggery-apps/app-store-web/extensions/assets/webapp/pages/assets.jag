@@ -21,6 +21,15 @@ var authenticator;
 var caramel;
 
 include('../modules/jagg/jagg.jag');
+var storeServer = require('store').server;
+var carbon = require('carbon');
+var user=storeServer.current(session);
+var um;
+if(user) {
+    um = storeServer.userManager(user.tenantId);
+}else{
+    um = storeServer.userManager(-1234);
+}
 
 require('/modules/store.js').exec(function (ctx) {
     var options, assets, paging, current, total, url, mainPage, subPage, title, selectedCategory, key,
@@ -44,6 +53,7 @@ require('/modules/store.js').exec(function (ctx) {
     process = require('process'),
     localIP = "https://" + process.getProperty('server.host'),
     httpsPort = process.getProperty('https.port');
+
         
     url = '/assets/' + type + '/?' + (tag ? 'tag=' + tag + '&' : '') + (query ? 'query=' + query + '&' : '');
     avaliablePages = store.getAvailablePages(type,ctx.request,ctx.session);
@@ -52,7 +62,24 @@ require('/modules/store.js').exec(function (ctx) {
     mainPage = type;
     title = store.assetLinks(type).title;
 
-    var indices = store.pageIndexPopulator(avaliablePages,paging.start+1);
+    //var allRoles = realm.getUserStoreManager().getRoleNames();
+
+    //Disabling showing of page numbers as getting the count is sometimes tricky
+    var skipIndices = true;
+
+    //for (var i = 0; i < criticalRoles.length; i++) {
+    //    for(var j=0; j < allRoles.length ; j++){
+    //        if(allRoles[j] == criticalRoles[i]){
+    //            skipIndices = true;
+    //        }
+    //    }
+    //}
+
+    var indices = [];
+
+    if(!skipIndices) {
+        indices = store.pageIndexPopulator(avaliablePages, paging.start + 1);
+    }
     var PAGE_SIZE = store.getPageSize();
     var pageIndices;
     if(indices.length > 1){
@@ -63,14 +90,6 @@ require('/modules/store.js').exec(function (ctx) {
 
     var currentPage = store.getCurrentPage(currIndex);
     //currentPage = parseInt(currentPage, 10);
-
-    if(currentPage-1 > 0){
-        var leftnav = currentPage-1;
-    }
-
-    if(currentPage+1 <= avaliablePages){
-        var rightnav = currentPage+1;
-    }
 
 
     if (user) {
@@ -221,11 +240,28 @@ require('/modules/store.js').exec(function (ctx) {
         }
     }
 
+    //Checking if there are any assets for the next page
+    var nextPage = store.buildNextPage(request,avaliablePages);
+    var nextAssetSet = store.assets(type, nextPage);
+    var nextPageAvailable = false;
+    if(nextAssetSet.length > 0){
+        nextPageAvailable = true;
+    }
+
+
     var rxtAttributes = require('/modules/util.js').getRXTAttributes(tenantId, type);
     AuthService=require(getServiceDir('authentication.js')).serviceModule;
     authenticator=new AuthService.Authenticator();
     authenticator.init(jagg,session);
     user=authenticator.getLoggedInUser();
+
+    if(currentPage-1 > 0){
+        var leftnav = currentPage-1;
+    }
+
+    if(nextPageAvailable && (assets.length == PAGE_SIZE)){
+        var rightnav = currentPage+1;
+    }
 
 
     var subscriptionInfo;

@@ -109,8 +109,6 @@
 		</p>
 		</article>
 
-
-
 	</div>
 	</footer>
 	<!--//footer-->
@@ -123,11 +121,12 @@
 	<script type="text/javascript" src="js/jquery.prettyPhoto.js"></script>
 	<script type="text/javascript" src="js/selectnav.js"></script>
 	<script type="text/javascript" src="js/scripts.js"></script>
-
+	<script type="text/javascript" src="js/invokeStatistcs.js" ></script>
+    <script type="text/javascript">
+           invokeStatistics();
+    </script>
 	<script>
-		selectnav('nav');
+	   selectnav('nav');
 	</script>
-
-
 </body>
 </html>

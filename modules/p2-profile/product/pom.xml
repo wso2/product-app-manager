@@ -465,6 +465,12 @@
 				 <featureArtifactDef>
                                     org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.mdm.wso2mdm.feature:1.0.0-SNAPSHOT
                                 </featureArtifactDef>
+				<featureArtifactDef>
+                                    org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.mdm.wso2emm.feature:1.0.0-SNAPSHOT
+                                </featureArtifactDef>
+				 <featureArtifactDef>
+                                    org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.services.api.feature:1.0.0-SNAPSHOT
+                                </featureArtifactDef>
                                 <!--featureArtifactDef>org.wso2.am:org.wso2.stratos.apimgt.dashboard.ui.feature:${stratos.version}</featureArtifactDef-->
 
 
@@ -576,10 +582,6 @@
 				<featureArtifactDef>org.wso2.store.modules:registration.feature:${snapshot.feature.version}
                                 </featureArtifactDef>
 				<featureArtifactDef>org.jaggeryjs.modules:caramel.feature:1.0.1
-                                </featureArtifactDef>
-                                <featureArtifactDef>org.wso2.store.modules:lifecycle.feature:${snapshot.feature.version}T
-                                </featureArtifactDef>
-                                <featureArtifactDef>org.wso2.store.modules:utils.feature:${snapshot.feature.version}
                                 </featureArtifactDef>
 				<featureArtifactDef>org.jaggeryjs.modules:carbon.feature:1.0.0
                                 </featureArtifactDef>
@@ -1001,6 +1003,14 @@
                                     <id>org.wso2.carbon.appmgt.mdm.wso2mdm.feature.group</id>
                                     <version>1.0.0-SNAPSHOT</version>
                                 </feature>
+				<feature>
+                                    <id>org.wso2.carbon.appmgt.mdm.wso2emm.feature.group</id>
+                                    <version>1.0.0-SNAPSHOT</version>
+                                </feature>
+ 				<feature>
+                                    <id>org.wso2.carbon.appmgt.services.api.feature.group</id>
+                                    <version>1.0.0-SNAPSHOT</version>
+                                </feature>
                                 <feature>
                                     <id>org.wso2.carbon.event.feature.group</id>
                                     <version>4.2.1</version>
@@ -1237,14 +1247,6 @@
                                 </feature>
 				<feature>
                                     <id>org.wso2.store.modules.registration.feature.group</id>
-                                    <version>${snapshot.feature.version}</version>
-                                </feature>
-				<feature>
-                                    <id>org.wso2.store.modules.lifecycle.feature.group</id>
-                                    <version>${snapshot.feature.version}</version>
-                                </feature>
-				<feature>
-                                    <id>org.wso2.store.modules.utils.feature.group</id>
                                     <version>${snapshot.feature.version}</version>
                                 </feature>
 				<feature>

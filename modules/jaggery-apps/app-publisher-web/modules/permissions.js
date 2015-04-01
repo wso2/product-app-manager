@@ -1,4 +1,7 @@
+include("/extensions/webapp/modules/jagg/jagg.jag");
 var permissions={};
+var manager = jagg.module("manager").getAPIStoreObj();
+
 (function() {
     var log=new Log();
     /**
@@ -80,8 +83,12 @@ var permissions={};
      * @return {Boolean}			  True if the user can perform life-cycle actions
      */
     var isAuthorized = function(username, permission, userManager) {
+        var isEmailLoginEnabled = manager.isEnableEmailUsername();
         log.debug('### CHECKING PERMISSINON! ###');
-        var uname = username.split('@')[0];
+        var uname = username;
+        if(!isEmailLoginEnabled) {
+            uname = username.split('@')[0];
+        }
         var action = "ui.execute";
         var user = userManager.getUser(uname);
         log.debug("Authorization Check : "+user.isAuthorized(permission,action));

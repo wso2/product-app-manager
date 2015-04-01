@@ -92,3 +92,7 @@
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
 }
+
+.os-active{
+    background: #F7F9F9;
+}

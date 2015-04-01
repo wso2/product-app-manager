@@ -21,6 +21,11 @@ $(function() {
 	});
 	
 	$(".asset-icon").on('click', function(e) {
+
+           if($(this).data("type") === "mobileapp"){
+               return;
+           }
+
 		  var loggedUser = $("#loggedinuser").val();
 		  if(loggedUser == "" || loggedUser == null){
 			  var allowAnonymous = $(this).find("input").val();
@@ -87,7 +92,13 @@ $(function() {
 	});
 	
 	
-	$(".asset-details").on('click', function(e) {
+	$(".asset-details").on('click', function(e)
+
+
+            if($(this).data("type") === "mobileapp"){
+                return;
+            }
+
 		  var loggedUser = $("#loggedinuser").val();
 		  if(loggedUser == "" || loggedUser == null){
 			  var allowAnonymous = $(this).find("input").val();

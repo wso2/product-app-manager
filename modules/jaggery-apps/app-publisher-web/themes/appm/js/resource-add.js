@@ -225,6 +225,17 @@ function updateDropdownPolicyGroup(index) {
     RESOURCES[index].policyGroupId = policyGroupIdElement.options[policyGroupIdElement.selectedIndex].value;
 }
 
+/**
+ * Check whether the resource set is empty
+ * @returns {boolean} isEmpty
+ */
+function isResourcesSetEmpty() {
+    if (RESOURCES.length == 0) {
+        return true;
+    }
+    return false;
+
+}
 
 /**
  * set policy group id value

@@ -3,7 +3,7 @@
            <h4><i class="icon-time"></i>{{t "Recently Added"}}</h4>
         {{#slice . count="20" size="20"}}
             {{#each .}}
-                <div class="row recently-added">
+                <div class="row-fluid recently-added">
                     {{#attributes}}
                         <div class="span3 recent-asset-icon">
 			    <input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">

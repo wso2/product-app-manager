@@ -84,6 +84,12 @@ $(function() {
     }
 
     var doValidation = function(usename, pw1, pw2) {
+
+        if (usename.indexOf("@") != -1) {
+            showError("Username cannot contain @ sign.");
+            return;
+        }
+
         var reason = "";
         reason = validateUsername(usename);
         if (reason != "") {
@@ -111,6 +117,7 @@ $(function() {
     }
 
 	var register = function() {
+
 		if (!$("#form-register").valid())
 			return;
 
@@ -177,26 +184,6 @@ $(function() {
 		if (e.keyCode === 13) {
 			login();
 		}
-	});
-
-	$('#inp-username-register').change(function() {
-		var username = $(this).val();
-		caramel.ajax({
-            		type: 'POST',
-            		url: '/apis/user/exists',
-            		data: JSON.stringify({
-                		username: $('#inp-username-register').val()
-            		}),
-            		success: function (data) {
-		        	if (data.error || data.exists) {
-		        		$('#register-alert').html(data.message).fadeIn('fast');               
-		        	} else {
-	  				$('#register-alert').fadeOut('slow');
-		        	}
-            		},
-		    	contentType: 'application/json',
-		    	dataType: 'json'
-        	});
 	});
 
 	$('#btn-register-submit').click(register);

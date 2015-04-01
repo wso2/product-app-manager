@@ -153,10 +153,6 @@ require('/modules/publisher.js').exec(function(ctx) {
         var um = server.userManager(server.current(session).tenantId);
         var validRoles = um.allRoles();
         var commentNeeded = false;
-        appPublishWFExecutor = org.wso2.carbon.appmgt.impl.workflow.WorkflowExecutorFactory.getInstance().getWorkflowExecutor("AM_APPLICATION_PUBLISH");
-        var isAsynchronousFlow = appPublishWFExecutor.isAsynchronus();
-        log.debug("IS ASYNCH : " + isAsynchronousFlow);
-        var isStateChangeable = true;
         var publishAuthorized = true;
         var msg={};
         var publisherActions = config.publisherActions;
@@ -168,64 +164,50 @@ require('/modules/publisher.js').exec(function(ctx) {
             log.debug("## Publish Authorized Check : " + publishAuthorized);
         }
 
-        if(!isAsynchronousFlow && action == "Approve"){
-            isStateChangeable = false;
-        }
-
-        if(publishAuthorized) {
-            if (isStateChangeable) {
-                if (commentNeeded) {
-                    response.sendError(400, 'This change requires that you insert a comment');
-                } else {
-                    try {
-                        var artifact = artifactManager.get(id);
-                        var attributes = artifact.attributes;
-
-                        var previourStatus = artifact['lifecycleState'];
-                        log.debug('Calling promoteLifecycleState for action : ' + action);
-
-                        if (roles.length > 0) {
-                            roles.forEach(function (role) {
-                                um.authorizeRole(role, artifact.path, carbon.registry.actions.GET);
-                            });
-                        }
-
-                        if (permissions.isLCActionsPermitted(user.username, artifact.path, um)) {
-                            artifactManager.promoteLifecycleState(action, artifact);
-                            msg['status'] = 'ok';
-                            log.debug('Has permission to perform the action');
-                        } else {
-                            log.debug('Does not have permission to perform the action');
-                            msg['status'] = 'failed';
-                            msg['message'] = 'You do not have rights to perform the life-cycle operation';
-                            response.status = 401;
-                        }
-
-                        var comment;
-                        if (context.content && (comment=parse(context.content).comment) ) {
-                            var lcHistory = artifactManager.getLifecycleHistory(artifact);
-                            var lcHistoryXML = new XML(lcHistory.content);
-                            lcHistoryJSON = utility.xml.convertE4XtoJSON(lcHistoryXML);
-                            var newChangeOrder = lcHistoryJSON.item[0].order;
-
-
-
-                            require('/modules/comment.js').addLifecycleComment(artifactManager, artifact.path, comment, newChangeOrder);
-                        }
-
-                        msg['status'] = 'ok';
-                        msg['asynch'] = isAsynchronousFlow;
-
-                    } catch (e) {
-                        log.debug('The asset with id: ' + id + ' could not be found.The following exception was thrown: ' + e);
-                        response.sendError(404, 'The asset with id: ' + id + ' could not be found.Please refer to the server log.');
-                    }
-                }
+        if (publishAuthorized) {
+            if (commentNeeded) {
+                response.sendError(400, 'This change requires that you insert a comment');
             } else {
-                msg['status'] = 'ok';
-                msg['asynch'] = isAsynchronousFlow;
+                try {
+                    var artifact = artifactManager.get(id);
+                    var attributes = artifact.attributes;
+
+                    var previourStatus = artifact['lifecycleState'];
+                    log.debug('Calling promoteLifecycleState for action : ' + action);
+
+                    if (roles.length > 0) {
+                        roles.forEach(function (role) {
+                            um.authorizeRole(role, artifact.path, carbon.registry.actions.GET);
+                        });
+                    }
+
+                    if (permissions.isLCActionsPermitted(user.username, artifact.path, um)) {
+                        artifactManager.promoteLifecycleState(action, artifact);
+                        msg['status'] = 'ok';
+                        log.debug('Has permission to perform the action');
+                    } else {
+                        log.debug('Does not have permission to perform the action');
+                        msg['status'] = 'failed';
+                        msg['message'] = 'You do not have rights to perform the life-cycle operation';
+                        response.status = 401;
+                    }
+
+                    var comment;
+                    if (context.content && (comment = parse(context.content).comment)) {
+                        var lcHistory = artifactManager.getLifecycleHistory(artifact);
+                        var lcHistoryXML = new XML(lcHistory.content);
+                        lcHistoryJSON = utility.xml.convertE4XtoJSON(lcHistoryXML);
+                        var newChangeOrder = lcHistoryJSON.item[0].order;
+                        require('/modules/comment.js').addLifecycleComment(artifactManager, artifact.path, comment, newChangeOrder);
+                    }
+
+                } catch (e) {
+                    log.debug('The asset with id: ' + id + ' could not be found.The following exception was thrown: ' + e);
+                    response.sendError(404, 'The asset with id: ' + id + ' could not be found.Please refer to the server log.');
+                }
             }
-        }else{
+
+        } else {
             msg['status'] = 'error';
             msg['message'] = 'Action not permitted. Insufficient privileges.';
         }
@@ -264,7 +246,6 @@ require('/modules/publisher.js').exec(function(ctx) {
 
         appPublishWFExecutor = org.wso2.carbon.appmgt.impl.workflow.WorkflowExecutorFactory.getInstance().getWorkflowExecutor("AM_APPLICATION_PUBLISH");
         var isAsynchronousFlow = appPublishWFExecutor.isAsynchronus();
-        log.info("IS ASYNCH : " + isAsynchronousFlow);
         var shortName=context.params.type;
         var id=context.params.id;
         var artifactManager=rxtManager.getArtifactManager(shortName);
@@ -529,7 +510,6 @@ function mobileAppsLifeCycleChange(context, rxtManager, utility){
             var lcHistoryXML = new XML(lcHistory.content);
 
             lcHistoryJSON = utility.xml.convertE4XtoJSON(lcHistoryXML);
-            log.info("lcHistryJSON" + lcHistoryJSON);
             var newChangeOrder = lcHistoryJSON.item[0].order;
             require('/modules/comment.js').addLifecycleComment(artifactManager, artifact.path, comment, newChangeOrder);
         }

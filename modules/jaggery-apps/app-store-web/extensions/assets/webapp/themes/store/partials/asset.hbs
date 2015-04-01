@@ -63,7 +63,15 @@
             
             <div class="tab-pane" id="tab-docs">
                 <div class="content">
-                    {{> documentation .}}
+                    {{#if tabs.documentation.data.availability}}
+                        {{> documentation .}}
+                    {{else}}
+                        <div class="row">
+                            <h4 class="text-center">No Documentation available for this webapp</h4>
+                        </div>
+
+                    {{/if}}
+
                 </div>
             </div>         
             

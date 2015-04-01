@@ -87,6 +87,15 @@ $(function() {
 
 
 	$('#btn-create-asset').on('click', function(e) {
+        //trim the value of all the text field and text area
+        var fields = $('#form-asset-create :input');
+        fields.each(function () {
+            if (this.type == 'text' || this.type == 'textarea') {
+                this.value = this.value.trim();
+            }
+        });
+
+        $(this).prop("disabled", true);
 		e.preventDefault();
 
 		//check if at least one policy is added.
@@ -109,13 +118,37 @@ $(function() {
 			return;
 		}
 
-
+		if(checkIllegalCharacters($('#overview_name').val())){
+			showAlert("Webapp Name contains one or more illegal characters (~!@#;%^*()+={}|\\<>\"',)", 'error');
+			return;
+		}
 
 		var context = $('#overview_context').val();
 		if(context != null && context != '') {
-			context = context.indexOf('/') == 0 ? context : '/' + context;
+			//context cannot contain spaces
+			if (context.indexOf(" ") == -1) {
+				context = context.indexOf('/') == 0 ? context : '/' + context;
+			} else {
+				showAlert('Context Cannot be contain spaces.', 'error');
+				return;
+			}
 		}else{
 			showAlert('Context Cannot be null.', 'error');
+			return;
+		}
+
+		//Check illegal characters in tags
+		var tags = $('#tag-test').tokenInput('get');
+		for (var index in tags) {
+			if(checkIllegalCharacters(tags[index].name)){
+				showAlert("Tags contains one or more illegal characters (~!@#;%^*()+={}|\\<>\"',)", 'error');
+				return;
+			}
+
+		}
+
+		if(isResourcesSetEmpty()){
+			showAlert("Web Application Resources cannot be empty. At least one Resource should be specified.", 'error');
 			return;
 		}
 
@@ -532,6 +565,16 @@ function removeClaimTable() {
 	$('#claimTableId').hide();
 	$('#claimPropertyCounter').val(0);
 }
+
+var checkIllegalCharacters = function (value) {
+	// registry doesn't allow following illegal charecters
+	var match = value.match(/[~!@#;%^*()+={}|\\<>"',]/);
+	if (match) {
+		return true;
+	} else {
+		return false;
+	}
+};
 
 /**
  *

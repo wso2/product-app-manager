@@ -1380,7 +1380,6 @@ h2.first-h2{
 }
 .secondary-pills > li > a{
     color: #428bca;
-    width: 100px;
     padding-left: 50px;
 }
 .secondary-pills > li > a >i{
@@ -1529,6 +1528,7 @@ input.apply-btn {
     text-decoration: none;
     background-color: #fff;
     border: 1px solid #ddd;
+
 }
 
 
@@ -1542,6 +1542,12 @@ input.apply-btn {
     background-color: #eee;
     border-color: #ddd;
     cursor: pointer;
+}
+.pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
+    color: #777;
+    cursor: not-allowed;
+    background-color: #fff;
+    border-color: #ddd;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button {
@@ -1660,6 +1666,7 @@ ul.token-input-list-facebook{
 .policy-group-edit-button,.policy-group-delete-button,.delete_resource{cursor: pointer}
 .wr-section > h2 {cursor: pointer;}
 
+
 /* Application Overview */
 .app-overview-tabs > .nav-tabs > li.active > a, .app-overview-tabs > .nav-tabs > li.active > a:hover,
 .app-overview-tabs > .nav-tabs > li.active > a:focus{
@@ -1695,3 +1702,52 @@ ul.dropdown-menu.notifications {
 textarea#overview_description {
     padding: 7px;
 }
+#commentText{resize: none}
+
+.toolTip {
+background-color:red;
+    position: absolute;
+    display: none;
+    width: auto;
+    height: auto;
+    background: none repeat scroll 0 0 white;
+    border: 0 none;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: -3px 3px 15px #888888;
+    color: black;
+    font: 12px sans-serif;
+    padding: 5px;
+    text-align: left;
+}
+#tooltipTable{
+   padding: 0;
+   margin-top:10px;
+   border-left: 1px solid #dbdbdb;
+   border-top: 1px solid #dbdbdb;
+}
+
+#tooltipTable th {
+      font: 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+      color: #666;
+      border-right: 1px solid #dbdbdb;
+      border-bottom: 1px solid #dbdbdb;
+      border-top: 1px solid #dbdbdb;
+      letter-spacing: 2px;
+      text-align: left;
+      padding: 2px 2px 2px 4px;
+      background: #eee;
+}
+
+#tooltipTable td {
+      border-right: 1px solid #dbdbdb;
+      border-bottom: 1px solid #dbdbdb;
+      background: #fff;
+      padding: 2px 2px 2px 4px;
+      color: #4f6b72;
+      text-align: left;
+}
+
+.dimple-bubble{
+   cursor:pointer;
+}
+

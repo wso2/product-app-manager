@@ -7,7 +7,7 @@ require('/modules/store.js').exec(function (ctx) {
 
     var log = new Log();
     var configs = ctx.configs;
-
+    var mdmConfig = new Packages.org.wso2.carbon.appmgt.mobile.store.MDMConfig();
 
 
     var server = require('store').server,
@@ -29,7 +29,7 @@ require('/modules/store.js').exec(function (ctx) {
     var isEnterpiseAdmin = false;
 
 
-    if(user.hasRoles([configs.mobile.enterprise_installation_role])){
+    if(user.hasRoles([mdmConfig.getEnterpriseAuthorizedRole()])){
         isEnterpiseAdmin = true;
     }
 

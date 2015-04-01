@@ -18,8 +18,6 @@ require('/modules/publisher.js').exec(function(ctx) {
         var artifactManager = rxtManager.getArtifactManager("mobileapp");
 
         var versionList=artifactManager.getAllAssetVersions(name);
-        log.info("version l " + stringify(versionList));
-
 
 
         if(versionList.length > 0){

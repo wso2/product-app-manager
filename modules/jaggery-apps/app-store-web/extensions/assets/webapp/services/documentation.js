@@ -35,8 +35,15 @@ var serviceModule = (function () {
         var user = ofUser || this.user;  //If the user does not provide a user then use the default user from session
 
         var documents = this.instance.getAllDocumentations(query, user);
+        var documentsAvailability = documents.documentations.length;
 
         documents = sortDocumentsByType(documents);
+        if(documentsAvailability > 0){
+            documents['availability'] = true;
+        }else{
+            documents['availability'] = false;
+        }
+
         return documents;
     };
 
@@ -74,17 +81,19 @@ var serviceModule = (function () {
 
         documents=data.documentations;
 
-        for(var docIndex in documents){
-            doc=documents[docIndex];
+        if(documents.length > 0){
+            for(var docIndex in documents){
+                doc=documents[docIndex];
 
-            //Add meta data
-            doc=addMetaDataToDoc(doc);
+                //Add meta data
+                doc=addMetaDataToDoc(doc);
 
-            //Assign to an appropriate type in the document map
-            assignToDocMap(docMap,doc.type,doc);
+                //Assign to an appropriate type in the document map
+                assignToDocMap(docMap,doc.type,doc);
+            }
+
+            docMap=checkIfContentPresent(docMap);
         }
-
-        docMap=checkIfContentPresent(docMap);
 
         return docMap;
     };

@@ -72,7 +72,7 @@
                                 </div>
 							{{/if}}
 							<a href="#">
-								<div class="asset-icon">
+								<div class="asset-icon" data-type="{{../type}}">
                                 <input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
 								{{#if ../indashboard}} 
 									<i class=""></i>
@@ -83,7 +83,7 @@
 
                             {{#compare "mobileapp" ../type}}
 
-                                <div class="asset-details">
+                                <div class="asset-details" data-type="{{../../type}}">
                                     <div class="asset-name">
                                         <input type="hidden"  value="{{../overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
                                         <a href="{{url "/assets"}}/{{../../type}}/{{../../id}}"><h4>{{../overview_name}}</h4></a>
@@ -99,7 +99,7 @@
                              {{else}}
 
 
-                                <div class="asset-details">
+                                <div class="asset-details" data-type="{{../../type}}">
                                     <div class="asset-name">
                                         <input type="hidden"  value="{{../overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
                                         <a href="{{url "/assets"}}/{{../../type}}/{{../../id}}"><h4>{{../overview_displayName}}</h4></a>

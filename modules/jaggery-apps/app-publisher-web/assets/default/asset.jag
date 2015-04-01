@@ -226,14 +226,18 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
                 tenantId: user.tenantId
             });
 
+            var path = artifact.attributes.overview_permissions;
+            log.debug("Path of permission resource : "+path);
+            var permissionSet = null;
             var overridenPermissions = null;
+            if(path && (path != "null")){
+                permissionSet = registry.get(path);
 
-            if (registry.properties(path)['overridden_permissions']) {
-                overridenPermissions = registry.properties(path)['overridden_permissions'][0];
-            }
+                var content = '' + permissionSet.content;
 
-            if (overridenPermissions) {
-                output.permissions = JSON.parse(overridenPermissions.replace('\\', ''));
+                if (content) {
+                    output.permissions = JSON.parse(content);
+                }
             }
 
             output.fields[1]['isEditable'] = false;
@@ -380,6 +384,7 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
                 webappId.oldVersion = oldVersion;
                 //Copy web app documentation
                 copyDocuments(webappId);
+                copyRolePermissions(assetId,artifactManager);
             }
             generateEntitlementPolicies(webappId);
 
@@ -425,6 +430,21 @@ function isWebappExists(webappName,provider,version){
    function copyDocuments(webappId){
        apiProvider.copyWebappDocumentations(webappId);
    }
+
+    function copyRolePermissions(webappId,artifactManager){
+        var registry = new carbon.registry.Registry(server, {
+            username: server.current(session).username,
+            tenantId: server.current(session).tenantId
+        });
+        var artifact = artifactManager.get(webappId);
+        var permPath = artifact.path + "role_restrictions";
+        var resource ={
+            content: JSON.stringify(permissions),
+            mediaType: 'text/plain'
+        };
+
+        registry.put(permPath,resource);
+    }
 
 /*
 The function is used to add tags to the provided asset id
@@ -590,11 +610,19 @@ function addTags(params,assetId,artifactManager,reg){
             tenantId: server.current(session).tenantId
         });
 
-        if(registry.properties(artifact.path)['overridden_permissions']) {
-            registry.removeProperty(artifact.path, 'overridden_permissions');
-        }
+        artifact.name = artifact.attributes.overview_name;
+        var permPath = artifact.path + "role_restrictions";
 
-        registry.addProperty(artifact.path, 'overridden_permissions', JSON.stringify(permissions));
+        var resource ={
+            content: JSON.stringify(permissions),
+            mediaType: 'text/plain'
+        };
+
+        registry.put(permPath,resource);
+
+        artifact.attributes.overview_permissions = permPath;
+        delete artifact.content;
+        artifactManager.update(artifact);
     }
 
 
@@ -617,7 +645,6 @@ function addTags(params,assetId,artifactManager,reg){
         }
         var actions = actions.split(",");
         var filteredActions = [];
-        log.info(actions);
         actions.forEach(function (value) {
             if(value.indexOf(symbol)===0){
                 switch(value){

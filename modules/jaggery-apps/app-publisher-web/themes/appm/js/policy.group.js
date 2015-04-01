@@ -239,10 +239,8 @@ $(document).on("click", ".policy-group-edit-button", function () {
         if (obj != null && obj.policyGroupId == policyGroupId) {
             $('#policy-group-editor #policyGroupName').val(obj.policyGroupName);
             $('#policy-group-editor #policyGroupDescription').val(obj.policyGroupDesc);
-            $("#policy-group-editor #throttlingTier option[value=" + obj.throttlingTier +
-            "]").attr("selected", "selected");
-            $("#policy-group-editor #anonymousAccessToUrlPattern option[value=" + obj.anonymousAccessToUrlPattern +
-            "]").attr("selected", "selected");
+            $("#policy-group-editor #throttlingTier").val(obj.throttlingTier);
+            $("#policy-group-editor #anonymousAccessToUrlPattern").val(obj.anonymousAccessToUrlPattern);
             $('#policy-group-editor #userRoles').val(obj.userRoles);
             //clear all checkbox
             $('.policy-opt-val').each(function () {
@@ -260,6 +258,12 @@ $(document).on("click", ".policy-group-edit-button", function () {
                 $('#userRoles').tokenInput("add", {id: roletoken[i], name: roletoken[i]});
             }
 
+            var selectedVal = $('#anonymousAccessToUrlPattern').val();
+            if (selectedVal == "true") {
+                $('.authPolicies').hide(200);
+            } else {
+                $('.authPolicies').show(200);
+            }
             //handle XACML Policies:
             var getPolicyPartials = JSON.parse(obj.policyPartials);
 
@@ -329,6 +333,7 @@ $(document).on("click", "#btn-add-policy-group", function () {
     $('.policy-opt-val').each(function(){
         $(this).prop('checked', false)
     });
+    $('.authPolicies').show(200);
     hidePolicyGroupNotification();
 });
 

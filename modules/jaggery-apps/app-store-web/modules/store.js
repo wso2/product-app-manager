@@ -278,6 +278,17 @@ Store.prototype.assetsPagingOverrided = function (request,availablePages) {
     };
 };
 
+Store.prototype.buildNextPage = function (request,availablePages) {
+    var page = request.getParameter('page'),
+            size = this.getPageSize();
+    page = page ? page : 1;
+    return {
+        start: page * size,
+        count: size,
+        sort: request.getParameter('sort') || 'recent'
+    };
+};
+
 Store.prototype.pageIndexPopulator = function(pageCount,currentIndex){
     var indices = [];
     var temp={};
@@ -604,23 +615,13 @@ Store.prototype.getAvailablePages = function (type,req,session) {
     var rxtManager = managers.rxtManager;
     var artifactManager = rxtManager.getArtifactManager(type);
     var appCount = artifactManager.count();
-    var pageNumber = Math.floor(appCount/PAGE_SIZE);
-    var remainder = (appCount/PAGE_SIZE) % 1;
-
-    if(remainder || pageNumber===0){
-        pageNumber = pageNumber +1;
-    }
+    var pageNumber = Math.ceil(appCount/PAGE_SIZE);
     return pageNumber;
 };
 
 Store.prototype.getCurrentPage = function(currentIndex){
     var PAGE_SIZE = this.getPageSize();
-    var pageNumber = Math.floor(currentIndex/PAGE_SIZE);
-    var remainder = (currentIndex/PAGE_SIZE) % 1;
-
-    if(remainder || pageNumber===0){
-        pageNumber = pageNumber +1;
-    }
+    var pageNumber = Math.ceil(currentIndex/PAGE_SIZE);
     return pageNumber;
 }
 
@@ -902,10 +903,8 @@ function handleLoggedInUser(o, session) {
 function handleAnonUser() {
     var anonMasterManager = application.get(APP_MANAGERS);
 
-
     //Check if it is cached
     if (anonMasterManager) {
-
         return anonMasterManager;
 
     }
@@ -989,7 +988,7 @@ function PaginationFormBuilder(pagin) {
  */
 function AnonStoreMasterManager() {
     var store = require('store');
-    var registry = store.server.systemRegistry(SUPER_TENANT);
+    var registry = store.server.anonRegistry(SUPER_TENANT);
 
     var managers = buildManagers(registry, SUPER_TENANT);
 
