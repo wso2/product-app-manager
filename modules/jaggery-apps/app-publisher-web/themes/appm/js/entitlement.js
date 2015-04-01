@@ -504,8 +504,7 @@ function updatePolicyPartial() {
                 <tr style='padding-bottom: 20px'> \
                 <td style='padding-left:10px; width:80px'>" + obj.policyPartialName + "</td> \
                 <td style='padding-left:10px; width:200px'>" + obj.description + "</td> \
-                <td style='padding-left: 30px;'><input class='policy-opt-val policy-allow-cb' data-policy-id='" + obj.id + "' type='checkbox'></td> \
-                <td style='padding-left: 30px;'> <input class='policy-opt-val policy-deny-cb' data-policy-id='" + obj.id + "'  type='checkbox'> </td> \
+                <td style='padding-left: 30px;'><input class='policy-opt-val' data-policy-id='" + obj.id + "' type='checkbox'></td> \
                 </tr>");
 
         }
