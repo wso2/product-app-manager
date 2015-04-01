@@ -38,40 +38,40 @@ var api = {};
 
         //Check if the type is valid
 
-          var model=modelManager.getModel(shortName);
+        var model=modelManager.getModel(shortName);
 
-          //assigning default thumbnail and banner if not provided.
-          if(data.images_thumbnail == '') {
-              data.images_thumbnail = '/publisher/config/defaults/img/thumbnail.jpg';
-          }
-          if(data.images_banner == '') {
-              data.images_banner = '/publisher/config/defaults/img/banner.jpg';
-          }
+        //assigning default thumbnail and banner if not provided.
+        if(data.images_thumbnail == '') {
+            data.images_thumbnail = '/publisher/config/defaults/img/thumbnail.jpg';
+        }
+        if(data.images_banner == '') {
+            data.images_banner = '/publisher/config/defaults/img/banner.jpg';
+        }
 
 
-          model.import('form.importer',data);
+        model.import('form.importer',data);
 
-          //Perform validations on the asset
-          var report=model.validate();
+        //Perform validations on the asset
+        var report=model.validate();
 
-          //If the report indicates the model has failed validations send an error
-          if((report)&&(report.failed)){
-              print({ok:false,message:'Validation failure',report:report});
-              return;
-          }
+        //If the report indicates the model has failed validations send an error
+        if((report)&&(report.failed)){
+            print({ok:false,message:'Validation failure',report:report});
+            return;
+        }
 
-          //var assetModel = getModel(context.post);
+        //var assetModel = getModel(context.post);
 
-          model.save();
+        model.save();
 
-          //var createdAsset = artifactManager.add(assetModel);
+        //var createdAsset = artifactManager.add(assetModel);
 
-          //Get the model id
-          var idField = model.get('*.id');
+        //Get the model id
+        var idField = model.get('*.id');
 
-          if (!idField) {
-              log.debug('An asset of type: ' + shortName + ' could not be created.Probably a fault with publisher logic!');
-          }
+        if (!idField) {
+          log.debug('An asset of type: ' + shortName + ' could not be created.Probably a fault with publisher logic!');
+        }
 
     };
 
