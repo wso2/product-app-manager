@@ -1,5 +1,6 @@
 $(function () {
     drawGraphs();
+    alert("sdswd")
 });
 
 function drawGraphs() {
@@ -137,13 +138,13 @@ var drawAPIUsageByPage = function (response) {
             null,
             null
         ],
-                    "fnDrawCallback": function(){
-                                             if(this.fnSettings().fnRecordsDisplay()<=$("#webAppTable2_length option:selected" ).val()
-                                             || $("#webAppTable2_length option:selected" ).val()==-1)
-                                                 $('#webAppTable2_paginate').hide();
-                                             else
-                                                 $('#webAppTable2_paginate').show();
-                                         }
+        "fnDrawCallback": function(){
+             if(this.fnSettings().fnRecordsDisplay()<=$("#webAppTable2_length option:selected" ).val()
+             || $("#webAppTable2_length option:selected" ).val()==-1)
+                 $('#webAppTable2_paginate').hide();
+             else
+                 $('#webAppTable2_paginate').show();
+        }
     });
 
 
@@ -228,7 +229,7 @@ var drawAPIUsageByPage = function (response) {
             }
     }
     $("#placeholder51").UseTooltip();
-labelarray =defaultFilterValues;
+    labelarray =defaultFilterValues;
 
     $("#placeholder51").bind("plotclick", function (event, pos, item) {
 
@@ -248,8 +249,6 @@ labelarray =defaultFilterValues;
 
             var x = item.datapoint[1];
             var y = item.datapoint[0];
-            //console.log(JSON.stringify(item.ticks));
-
             label = labelarray[x].label;
 
 
@@ -342,7 +341,7 @@ labelarray =defaultFilterValues;
                 x_iter++
             }
         });
-labelarray = draw_x_axis;
+        labelarray = draw_x_axis;
         var options = {
             series: {
 
@@ -616,14 +615,4 @@ function drawPopupChart(parsedResponse, label, strUser) {
 
 }
 
-//function getRandomColor() {
-//    var letters = '0123456789ABCDEF'.split('');
-//    var color = '#';
-//
-//    for (var i = 0; i < 6; i++) {
-//        color += letters[Math.floor(Math.random() * 16)];
-//    }
-//
-//    return color;
-//}
 

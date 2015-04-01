@@ -1,4 +1,5 @@
 var to = new Date();
+//set from date in date picker month back from the currant date
 var from = new Date(to.getTime() - (604800000*4));
 var currentDay = new Date(to.getFullYear(), to.getMonth(), to.getDate(),to.getHours(),to.getMinutes());
 
@@ -18,8 +19,6 @@ $('#today-btn').on('click',function(){
     $("#date-range").html(dateStr);
     $('#date-range').data('dateRangePicker').setDateRange(from,to);
     drawGraphs();
-    isToday=true;
-    isWeek,isMonth,isDefault,isHour=false;
 
 });
 
