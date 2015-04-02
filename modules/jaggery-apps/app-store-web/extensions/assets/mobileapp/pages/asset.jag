@@ -83,6 +83,7 @@ require('/modules/store.js').exec(function (ctx) {
         if(user != null && mdmConfig.isMDMEnabled()){
                 devices =  parse(String(devicesClass.getDevicesList(stringify(user), user.tenantId, "user", [user.username])));
         }
+
     }
 
 
