@@ -232,6 +232,26 @@ textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[ty
     margin-right: 2px;
     text-align: left;
 }
+.btn-deploySample, .btn-goBack {
+    background: none repeat scroll 0 0 #EAE8E8;
+    color: #585858;
+    font-size: 16px;
+    margin-bottom: 10px;
+    padding: 6px 16px;
+    text-shadow: none;
+    margin-left: 10px;
+}
+.btn-deploySample:hover, .btn-deploySample:focus {
+    background: none repeat scroll 0 0 #24AB5D;
+    color: #fff;
+    text-shadow: 0 2px 2px rgba(255, 252, 176, 0.6);
+}
+.btn-deploySample > i {
+    display: inline-block;
+    width: 20px;
+    margin-right: 2px;
+    text-align: left;
+}
 .btn-goBack:hover, .btn-goBack:focus {
     background: none repeat scroll 0 0 #D64B4B;
     color: #fff;

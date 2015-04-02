@@ -209,7 +209,7 @@ textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[ty
     right: 16px;
 }
 
-.btn-addNewAsset, .btn-goBack {
+.btn-addNewAsset, .btn-goBack{
     background: none repeat scroll 0 0 #EAE8E8;
     color: #585858;
     font-size: 16px;
@@ -823,6 +823,26 @@ td.asset-listing-btn {
 .btn-addNewAssetLarge i {
     margin-right: 10px;
 }
+
+.btn-deploySample {
+    background: none repeat scroll 0 0 #27AE60;
+    color: #FFFFFF;
+    font-size: 24px;
+    margin-top: 20px;
+    padding: 10px 20px;
+    text-shadow: none;
+}
+.btn-deploySample:hover {
+    background: none repeat scroll 0 0 #1FAB3A;
+    color: #FFFFFF;
+    text-shadow: 1px 1px 1px rgba(255, 252, 176, 0.6);
+}
+.btn-deploySample i {
+    margin-right: 10px;
+}
+
+
+
 .asset-listing-name a {
     color: #4F4F4F;
     font-weight: 700;
