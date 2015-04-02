@@ -2,18 +2,23 @@
     var tasks = outputs.tasks;
     %>
      <div class="title-section">
-       <h2><%=i18n.localize("addXACMLPolicyHeader")
+       <h2><%=i18n.localize("addXACMLRuleHeader")
     %></h2>
           </div>
 
           <div class="content-section shadow-up">
-                                <label>Name:</label>
+                                <label>Name</label>
                                 <input id="policy-name" type="text" class="form-control" style="width: 30%"
                                 maxlength="256"/>
-                                <label>Description:</label>
+                                <label>Description</label>
                                 <textarea id="policy-desc" style="width:80%;height:100px;border: 1px solid #eee;"
                                 class="form-control" maxlength="1000"></textarea>
-                                 <label>Policy:</label>
+                                <label>Effect</label>
+                                <div id="rule-effects" class="btn-group" data-toggle="buttons-radio" style="margin-bottom:10px">
+                                  <button id="btn-rule-effect-permit" type="button" class="btn btn-primary" data-effect="Permit">Permit</button>
+                                  <button id="btn-rule-effect-deny" type="button" class="btn btn-primary active" data-effect="Deny">Deny</button>
+                                </div>
+                                <label>Condition</label>
                                     <div id="policy-content-container">
         <textarea id="policy-content" style="width:80%;height:200px;border: 1px solid #eee;" class="form-control"></textarea>
                         </div>
