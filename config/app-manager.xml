@@ -616,6 +616,7 @@
 
 		    <MDM name="WSO2EMM" bundle="org.wso2.carbon.appmgt.mdm.wso2emm">
 			<Property name="ServerURL">https://localhost:9451</Property>
+			<Property name="ImageURL">https://localhost:9451/emm/assets/wso2mobile/img/models/%s.png</Property>
 			<Property name="AuthUser">admin</Property>	
 			<Property name="AuthPass">admin</Property>
 		   </MDM>	
