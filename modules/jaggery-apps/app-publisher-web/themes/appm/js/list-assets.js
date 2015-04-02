@@ -41,6 +41,17 @@ $( ".btn-reject-proceed" ).click(function() {
 });
 
 
+$(".btn-deploySample").click(function() {
+    jQuery.ajax({
+        url: '/publisher/api/asset/webapp/deploySample',
+        type: "GET",
+    });
+    $(document).ajaxComplete(function () {
+        location.reload();
+    });    
+});
+
+
 $( ".tab-button" ).click(function() {
 	
 	var status = $(this).data("status");
