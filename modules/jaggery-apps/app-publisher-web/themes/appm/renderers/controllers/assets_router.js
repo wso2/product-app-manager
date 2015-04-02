@@ -159,6 +159,9 @@ var render = function (theme, data, meta, require) {
         case 'cache-stat':
             listPartial = 'cache-stat';
             break;
+        case 'app-by-endpoint':
+            listPartial = 'app-by-endpoint';
+            break;
 
         default:
             break;
