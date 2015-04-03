@@ -516,9 +516,9 @@ function updatePolicyPartial() {
     $(".xacml-policy-group").find('tbody').html(policyGroupPartialText);
 
     if(policyPartialsArray ==  null || policyPartialsArray.length == 0 ){
-        $(".dropdown").hide();
+        $(".xacml-policy-group .dropdown").hide();
     }else{
-        $(".dropdown").show()
+        $(".xacml-policy-group .dropdown").show()
     }
 
 }
