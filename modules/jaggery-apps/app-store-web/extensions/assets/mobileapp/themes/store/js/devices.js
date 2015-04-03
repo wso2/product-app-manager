@@ -37,7 +37,7 @@ $(".device-image-modal").each(function(index) {
 function urlExists(url){
 
     var http = new XMLHttpRequest();
-    http.open('HEAD', url, false);
+    http.open('HEAD', url, true);
     http.send();
     return http.status!=404;
 }
