@@ -144,6 +144,9 @@ var render = function (theme, data, meta, require) {
         case 'statistics':
             listPartial = 'statistics';
             break;
+        case 'discover':
+            listPartial = 'discover';
+            break;
         case 'app_sub_user':
             listPartial = 'app_sub_user';
             break;
