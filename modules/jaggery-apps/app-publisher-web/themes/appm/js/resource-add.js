@@ -54,7 +54,8 @@ $( document ).ready(function() {
                     policyPartialName: data[i].partialName,
                     policyPartial: data[i].partialContent,
                     isShared: data[i].isShared,
-                    author: data[i].author
+                    author: data[i].author,
+                    description: data[i].description
                 })
             }
             updatePolicyPartial();
