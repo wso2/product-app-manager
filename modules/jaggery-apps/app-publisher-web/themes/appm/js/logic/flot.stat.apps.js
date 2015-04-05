@@ -36,7 +36,7 @@ function drawGraphs() {
         }
     });
 
-
+    //get hit count for subscribed apps per users
     $.ajax({
         async: false,
         url: '/publisher/api/assets/' + operation + '/' + type
@@ -149,7 +149,7 @@ var drawAPIUsageByUser = function (response,usageByContext) {
             }
         }
     }
-      // alert(JSON.stringify(data))
+
     for(var p = 0; p < dataStructure.length; p++){
 
         if(dataStructure[p].checked == false){
@@ -296,6 +296,7 @@ var drawAPIUsageByUser = function (response,usageByContext) {
         var shape = d3.select(shp);
         var circle = d3.select("#" + d.aggField + "_" + d.aggField + "__");
 
+        //add tooltip when mouse over on the circle
         circle.on("mouseover", function (d) {
             for (var i = 0; i < parsedResponse.length; i++) {
                 var count = 0;
@@ -332,10 +333,7 @@ var drawAPIUsageByUser = function (response,usageByContext) {
                     div.html('<b style="color:#555">'+app +'</b><p style="color:#666;margin-top:5px;">Subscription Count : '+data[i].Subscriber_Count+'</p><table class="table" id="tooltipTable" ><thead><tr><th>version</th><th>Hits' +
                         '</th></tr></thead><tbody></tbody></table>');
 
-//div.html('<div style="color:#555; text-align:left">API : '+app +'</div><div style="color:#666;margin-top:5px;text-align:left">Subscription Count : '+data[i].Subscriber_Count+'</div><table class="table" id="tooltipTable"><thead><tr><th>Version</th><th>Hits</th></tr></thead><tbody></tbody></table>');
 
-                    //    div.html('<label>' + "API NAME :" + '</label>')
-//$('#tooltipTable tbody').append('<tr><td>' + "API NAME :" + '</td><td>' );
                     for (var l = 0; l < arr.length; l++) {
                         var arrStr = JSON.stringify(arr);
                         var versionName = arr[l].version;

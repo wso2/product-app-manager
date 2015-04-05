@@ -1,14 +1,16 @@
 var to = new Date();
-//set from date in date picker month back from the currant date
-var from = new Date(to.getTime() - (604800000*4));
+var from = new Date(to.getTime() - 1000 * 60 * 60 * 24 * 30);
 var currentDay = new Date(to.getFullYear(), to.getMonth(), to.getDate(),to.getHours(),to.getMinutes());
-
 var today=false;
 var month=false;
 var hour=false;
 var dateRange=false;
 var week=false;
+$(function () {
 
+    drawGraphs();
+
+});
 //day picker
 $('#today-btn').on('click',function(){
     today =true;
@@ -19,6 +21,7 @@ $('#today-btn').on('click',function(){
     $("#date-range").html(dateStr);
     $('#date-range').data('dateRangePicker').setDateRange(from,to);
     drawGraphs();
+
 
 });
 
@@ -81,9 +84,6 @@ $('#date-range').dateRangePicker(
     })
     .bind('datepicker-apply',function(event,obj)
     {
-        if(obj.date2 == 'Invalid Date'){
-            return false;
-        }
          var from = convertDate(obj.date1);
          var to = convertDate(obj.date2);
          $('#date-range').html(from + " to "+ to);
@@ -96,9 +96,9 @@ $('#date-range').dateRangePicker(
     {
     });
 
-    //setting default date
-    $('#date-range').data('dateRangePicker').setDateRange(from,to);
-    $('#date-range').html($('#date-range').val());
+        $('#date-range').data('dateRangePicker').setDateRange(from,to);
+        $('#date-range').html($('#date-range').val());
+
 
 
 

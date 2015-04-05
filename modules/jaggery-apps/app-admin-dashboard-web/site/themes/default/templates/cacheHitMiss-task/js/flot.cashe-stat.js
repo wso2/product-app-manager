@@ -1,4 +1,6 @@
+
 var  btn = 'month-btn';
+var context = "/admin-dashboard";
 $(function () {
 
     drawGraphs();
@@ -18,6 +20,8 @@ function drawGraphs() {
 
 
     var dateRange = $('#date-range').val();
+
+
     var from = dateRange.split('to')[0].trim() + ":00";
     var to = dateRange.split('to')[1].trim() + ":00";
 
@@ -27,8 +31,7 @@ function drawGraphs() {
     $.ajax({
 
         async: false,
-        url: '/publisher/api/assets/' + operation + '/' + type
-            + '/getCacheHit/',
+        url: context + '/apis/cache-hit-miss',
         type: 'POST',
         data: {
             'startDate': from,
@@ -66,16 +69,10 @@ function drawGraphs() {
     });
 
 }
+
    var drawCacheHit = function (response) {
 
-  //  var usageByContext = JSON.parse(response);
-    var usageByContext =
-           [
-           ["2015-02-27 10:45:00", [[1.0, [["app1", [["1.0.0", [["/app1.1/1/", 4]]]]],["app2.1", [["1.0.0", [["/app2.1/2/", 5]]]]]]],[0.0, [["app4", [["1.0.0", [["/app4/1/", 4]]]]],["admin--app2:v1", [["1.0.0", [["/app2/1/", 20],["/app2/2/", 5]]]]]]]]],
-           ["2015-03-27 10:45:00", [[0.0, [["app4", [["1.0.0", [["/app4/1/", 4]]]]],["app2.2", [["1.0.0", [["/app2/1/", 20],["/app2/2/", 5]]]]]]]]],
-           ["2015-04-27 10:45:00", [[1.0, [["app3", [["1.0.0", [["/app3.1/1/", 2]]]]],["app2.3", [["1.0.0", [["/app2.3/1/", 4],["/app2.3/2/", 6]]]]]]],[0.0, [["app4", [["1.0.0", [["/app4/1/", 6]]]]],["app2", [["1.0.0", [["/app2/1/", 2],["/app2/2/", 5]]]]]]]]],
-           ["2015-05-27 10:45:00", [[1.0, [["app4", [["1.0.0", [["/app4.1/1/", 13]]]]],["app2.4", [["1.0.0", [["/app2.4/1/", 9],["/app2.4/2/", 5]]]]]]],[0.0, [["app4", [["1.0.0", [["/app4/1/", 9]]]]],["app2", [["1.0.0", [["/app2/1/", 14],["/app2/2/", 2]]]]]]]]],
-           ["2015-06-27 10:45:00", [[1.0, [["app5", [["1.0.0", [["/app5.1/1/", 4]]]]],["app2.5", [["1.0.0", [["/app2.5/1/", 2]]]]]]],[0.0, [["app4", [["1.0.0", [["/app4/1/", 14]]]]],["admin--app2:v1", [["1.0.0", [["/app2/1/", 14],["/app2/2/", 12]]]]]]]]]]
+   var usageByContext = JSON.parse(response);
 
     if(usageByContext.length>0){
     $('#tableContainer').empty();
@@ -211,6 +208,8 @@ volumeData.push({"key":"Miss","values":values});
     var chart;
     nv.addGraph(function() {
         chart = nv.models.stackedAreaChart()
+
+
         .x(function(d) { return d[0] })
         .y(function(d) { return d[1] })
          .useInteractiveGuideline(true)
@@ -232,7 +231,44 @@ volumeData.push({"key":"Miss","values":values});
         .datum(data)
         .transition().duration(0)
 
+
         .call(chart);
+
+
+
+        function disableAreaClick() {
+
+            //I'm probably over-killing with the amount of events I'm cancelling out
+            //but it doesn't seem to have any side effects:
+             chart.legend.dispatch.on("legendClick", null);
+                       chart.legend.dispatch.on("legendDblclick", null);
+            chart.stacked.dispatch.on("areaClick", null);
+            chart.stacked.dispatch.on("areaClick.toggle", null);
+
+            chart.stacked.scatter.dispatch.on("elementClick", null);
+            chart.stacked.scatter.dispatch.on("elementClick.area", null);
+
+
+            chart.legend.dispatch.on("stateChange", null);
+
+            if (chart.update) {
+               //if the chart currently has an update function
+               //(created when the chart is called on a container selection)
+               //then modify it to re-call this function after update
+
+               var originalUpdate = chart.update;
+                   //assign the update function to a new name
+
+               chart.update = function(){
+                  originalUpdate();
+                  disableAreaClick();
+               }
+            }
+          }
+        //Call your function, disabling events on current chart and future updates:
+          disableAreaClick();
+          //this must be called *after* calling the chart on a selection
+          //so that it has an update function to modify
 
         nv.utils.windowResize(chart.update);
 
@@ -326,8 +362,8 @@ volumeData.push({"key":"Miss","values":values});
 //                                      $('#tooltipTable tbody').append('<tr><td>' + appName + '</td><td>1.0.0</td><td>' + appContext +
 //                                                                  '</td><td>' + count + '</td></tr>');
 
-                                      $dataTable.append('<tr><td>' + appName + '</td><td>'+version+'</td><td>' + appContext +
-                                            '</td><td class="pull-right">' + count + '</td></tr>');
+                                          $dataTable.append('<tr><td>' + appName + '</td><td>'+version+'</td><td>' + appContext +
+                                                '</td class="pull-right"><td>' + count + '</td></tr>');
 
                                    }
                                 }
@@ -364,8 +400,8 @@ volumeData.push({"key":"Miss","values":values});
 //                                    $('#tooltipTable tbody').append('<tr><td>' + appName + '</td><td>1.0.0</td><td>' + appContext +
 //                                                                  '</td></td><td>' + count + '</td></tr>');
 
-                                    $dataTable.append('<tr><td>' + appName + '</td><td>'+version+'</td><td>' + appContext +
-                                                                '</td></td><td class="pull-right">' + count + '</td></tr>');
+                                          $dataTable.append('<tr><td>' + appName + '</td><td>'+version+'</td><td>' + appContext +
+                                                '</td class="pull-right"><td>' + count + '</td></tr>');
                                     }
 
                                 }
@@ -441,15 +477,13 @@ volumeData.push({"key":"Miss","values":values});
                     div.style("display", "none");
                 });
 
-chart.update = function(){
-          originalUpdate();
-          disableAreaClick();
-       }
 
 
-        return chart;
+
+       // return chart;
     });
 })(volumeData);
+
 $('#dateLabel').show();
 }
 else{
@@ -458,22 +492,7 @@ else{
  $('#dateLabel').hide();
 }
 }
-var onDateSelected = function () {
-    $('.graph-container').empty();
 
-    $('.graph-container').hide();
-     $('.casheStatTable_wrapper').empty();
-
-    drawGraphs();
-
-}
-
-function clearTables() {
-    $('#tbody').empty();
-    $('.chartContainer').remove();
-
-
-}
 
 
 
