@@ -223,9 +223,11 @@ function displayValidationRequestException() {
 
 function savePolicyPartial() {
 
-    var policyPartial = editor.getValue();
+    var ruleCondition = editor.getValue();
     var policyPartialName = $('#policy-name').val();
     var policyPartialDesc = $('#policy-desc').val();
+    var ruleEffect = getSelectedRuleEffect();
+    var generatedRule = generatePolicyRule(ruleEffect, ruleCondition);
 
     var provider = "";
     var isSharedPartial = true;
@@ -250,7 +252,7 @@ function savePolicyPartial() {
             async: false,
             data: {
                 "policyPartialName": policyPartialName,
-                "policyPartial": policyPartial,
+                "policyPartial": generatedRule,
                 "isSharedPartial": isSharedPartial,
                 "policyPartialDesc": policyPartialDesc
             },
@@ -260,7 +262,7 @@ function savePolicyPartial() {
                 policyPartialsArray.push({
                     id: returnedId,
                     policyPartialName: policyPartialName,
-                    policyPartial: policyPartial,
+                    policyPartial: ruleCondition,
                     isShared: isSharedPartial,
                     author: provider,
                     description: policyPartialDesc
@@ -307,11 +309,11 @@ function savePolicyPartial() {
 
                     var conf = confirm(msg);
                     if (conf == true) {
-                        updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, policyPartial, isSharedPartial, policyPartialDesc);
+                        updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, generatedRule, ruleCondition, isSharedPartial, policyPartialDesc);
                     }
                 }
                 else {
-                    updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, policyPartial, isSharedPartial, policyPartialDesc);
+                    updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, generatedRule, ruleCondition, isSharedPartial, policyPartialDesc);
                 }
 
 
@@ -328,7 +330,7 @@ function savePolicyPartial() {
 }
 
 
-function updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, policyPartial, isSharedPartial, policyPartialDesc) {
+function updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, generatedRule, ruleCondition, isSharedPartial, policyPartialDesc) {
     $.ajax({
         url: context + '/apis/xacmlpolicies/update',
         type: 'POST',
@@ -336,7 +338,7 @@ function updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, p
         async: false,
         data: {
             "id": editedpolicyPartialId,
-            "policyPartial": policyPartial,
+            "policyPartial": generatedRule,
             "isSharedPartial": isSharedPartial,
             "policyPartialDesc": policyPartialDesc
         },
@@ -345,7 +347,7 @@ function updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, p
                 $.each(policyPartialsArray, function (index, obj) {
                     if (obj != null && obj.id == editedpolicyPartialId) {
                         policyPartialsArray[index].policyPartialName = policyPartialName;
-                        policyPartialsArray[index].policyPartial = policyPartial;
+                        policyPartialsArray[index].policyPartial = ruleCondition;
                         policyPartialsArray[index].isShared = isSharedPartial;
                         policyPartialsArray[index].description = policyPartialDesc
 
@@ -387,6 +389,19 @@ function updatePolicyPartial() {
         }
     });
 
+}
+
+function getSelectedRuleEffect(){
+    return $('#rule-effects .active').data('effect');
+}
+
+/**
+* Generates a XACML rule using the effect and the condition.
+*
+*/
+function generatePolicyRule(ruleEffect, ruleCondition){
+    var generatedRule = "<Rule Effect=\"" + ruleEffect + "\" RuleId=\"Rule001\">" + ruleCondition + "</Rule>";
+    return generatedRule;
 }
 
 //edit event

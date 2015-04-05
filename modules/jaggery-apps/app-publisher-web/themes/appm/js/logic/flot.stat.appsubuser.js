@@ -232,6 +232,7 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
 
                     if (usageByContext[i][1][j][0] == getCell('webApp', '' + test + '').html()) {
                     check =true;
+
                         numOfVersion = usageByContext[i][1][j][1].length;
                         for (var t = 0; t < numOfVersion; t++) {
                             if (usageByContext[i][1][j][1][t][0] == getCell('appVersion', '' + test + '').html()) {
@@ -266,7 +267,6 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
                                         });
 
                                     }
-
 
                                     dataTest.sort(function (obj1, obj2) {
                                         return obj1.x - obj2.x;
@@ -324,15 +324,16 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
 
                                         }
                                     ];
-
+                                //break;
 
                                 }
-
+                            //break;
                             }
 
                         }
                     }
                 }
+                //break;
 
             }
 

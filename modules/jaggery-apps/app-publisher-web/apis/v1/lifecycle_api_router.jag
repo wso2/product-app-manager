@@ -371,9 +371,24 @@ routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/information/
       }
     };
 
+    matchedRoles = parse(stringify(matchedRoles));
+
+    var hiddenRoles = config.hiddenRoles;
+
+    var filteredRoles = [];
+
+    if(matchedRoles.length > 0) {
+        for (var i = 0; i < matchedRoles.length; i++) {
+            if ((matchedRoles[i].id.indexOf("Internal/private_") == -1) && (hiddenRoles.indexOf(matchedRoles[i].id) == -1)) {
+                filteredRoles.push(matchedRoles[i]);
+            }
+        }
+    }
+
+
     response.contentType = 'application/json';
     response.status = 200;
-    response.content = matchedRoles;
+    response.content = filteredRoles;
 });
 
 routeManager.register('GET','publisher','/publisher/api/lifecycle/checklist/{type}/{id}',function(context){

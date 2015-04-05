@@ -1,49 +1,53 @@
 ================================================================================
-                               WSO2 API Manager
+                               WSO2 Application Manager
 ================================================================================
 
-WSO2 API Manager is a powerful platform for creating, managing, consuming and
-monitoring web APIs. It combines tried and tested SOA best practices with modern
-day API management principles to solve a wide range of enterprise challenges
-associated with API provisioning, governance and integration.
+WSO2 Application Manager (AppM) is a powerful platform for creating, managing,
+consuming and monitoring web Applications. It combines tried and tested SOA best practices
+with modern day Application provisioning, management principles, governing and security
+to solve a wide range of enterprise challenges associated with managing many number of
+applications (Mobile and Web).
 
-WSO2 API Manager consists of several loosely coupled modules.
+WSO2 App Manager consists of several loosely coupled modules.
 
-        * API publisher
-        * API store
-        * API gateway
-	* API Key Manager
+        * Application publisher
+        * Application store
+        * Application gateway
+	    * Connected Device Manager
 
-The API publisher module allows API publishers to easily define APIs and manage them
-using a strong governance model which consists of well-established concepts such as
-versioning and lifecycles. API consumers can use the API store module to discover
-published, production-ready APIs and access them in a secure and reliable manner
-using unique API keys.  The built-in API gateway module provides powerful tools to
-secure and control the load on individual APIs.
+Application Publisher allows Wab or Mobile application creators/publishers to easily
+create and publish Applications. The Applications can be managed with strong
+governance model which consists od well-established concepts such as versioning and
+life-cycles. Application consumers can user the Application Store module to discover
+published Applications and access them with controlled, secure and reliable manner.
+AppM also provides Single Sign On (SSO) from end for all the applications provisioned
+through the Store. Web gateway is built in to the AppM so that the web calls are
+routed to the respective backend web application.
 
-WSO2 API Manager is based on the revolutionary WSO2 Carbon [Middleware a' la carte]
+
+WSO2 Application Manager is based on the revolutionary WSO2 Carbon [Middleware a' la carte]
 framework. All the major features have been developed as reusable Carbon
 components.
 
-To learn more about WSO2 API Manager please visit http://wso2.com/products/api-manager.
+To learn more about WSO2 Application Manager please visit http://wso2.com/products/appm.
 
 Key Features
 =============
 
-* API publishers:
-    - Simple web-based UI for defining APIs
-    - Easily modify existing APIs and move them across life cycle states
-    - Specify and attach documentation to defined APIs
-    - Create new versions of existing APIs
-    - Specify SLAs under which each API is exposed to the consumers
-    - Track and monitor API usage
+* Application publishers:
+    - Simple web-based UI for defining Applications(Web and Mobile)
+    - Easily modify existing Applications and move them across life cycle states
+    - Specify and attach documentation to defined Applications
+    - Create new versions of existing Applications
+    - Specify SLAs under which each Application is exposed to the consumers
+    - Track and monitor Application usage
 
-* API consumers:
-    - Rich web portal to discover published APIs
-    - Create applications, subscribe and obtain API keys
-    - Browse documentation and samples associated with each API
-    - Try APIs on-line before using them
-    - Rate APIs and comment on their features, usability and other related aspects
+* Application consumers:
+    - Rich web portal to discover published Applications
+    - Create applications, subscribe and obtain Application keys
+    - Browse documentation and samples associated with each Application
+    - Rate Applications and comment on their features, usability and other related aspects
+    - Single sign on and pass the authorization information with JWT/SAML
 
 System Requirements
 ==================================
@@ -57,24 +61,26 @@ System Requirements
    medium or lower.
 5. To compile and run the sample clients, an Ant version is required. Ant 1.7.0
    version is recommended
-6. To build WSO2 API Manager from the Source distribution, it is necessary that you have
-   JDK 1.6.x version and Maven 3.0.0 or later
+6. To build WSO2 Application Manager from the Source distribution, it is necessary
+   that you have JDK 1.6.x version and Maven 3.0.0 or later
 
 Installation & Running
 ==================================
 
 1. Extract the wso2appmanager-1.6.0.zip and go to the 'bin' directory
 2. Run the wso2server.sh or wso2server.bat as appropriate
-3. API Publisher web application is running at http://localhost:9763/publisher. You may login
-   to the Publisher using the default administrator credentials (user: admin, pass: admin).
-4. API Store web application is running at http://localhost:9763/store. You may login
-   to the Store using the default administrator credentials (user: admin, pass: admin).
+3. Application Publisher web application is running at http://localhost:9763/publisher.
+   You may login to the Publisher using the default administrator credentials
+   (user: admin, pass: admin).
+4. Application Store web application is running at http://localhost:9763/store.
+   You may login to the Store using the default administrator credentials
+   (user: admin, pass: admin).
 
 Documentation
 ==============
 
 On-line product documentation is available at:
-        http://docs.wso2.org/wiki/display/AM160/WSO2+API+Manager+Documentation
+        https://docs.wso2.com/display/APPM100/WSO2+App+Manager+Documentation
 
 Support
 ==================================
@@ -85,14 +91,14 @@ hours, to premium 24x7 phone support.
 
 For additional support information please refer to http://wso2.com/support
 
-For more information on WSO2 API Manager please visit http://wso2.com/products/api-manager
+For more information on WSO2 Application Manager please visit http://wso2.com/products/app-manager
 
-Known issues of WSO2 API Manager
+Known issues of WSO2 Application Manager
 ==================================
 
-All known issues of WSO2 API Manager are filed at:
+All known issues of WSO2 Application Manager are filed at:
 
-    https://wso2.org/jira/secure/IssueNavigator.jspa?requestId=10810
+    https://wso2.org/jira/secure/IssueNavigator.jspa?requestId=x
 
 Issue Tracker
 ==================================
@@ -100,7 +106,7 @@ Issue Tracker
 Help us make our software better. Please submit any bug reports or feature
 requests through the WSO2 JIRA system:
 
-    https://wso2.org/jira/browse/APIMANAGER
+    https://wso2.org/jira/browse/APPMANAGER
 
 
 Crypto Notice
@@ -134,5 +140,5 @@ Crypto Notice
    Bouncycastle     : http://www.bouncycastle.org/
 
 --------------------------------------------------------------------------------
-(c) Copyright 2012 WSO2 Inc.
+(c) Copyright 2015 WSO2 Inc.
 

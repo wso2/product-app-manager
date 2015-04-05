@@ -191,7 +191,7 @@ var drawAPIUsageByUser = function (response,usageByContext) {
 
     $dataTable.append($('<thead class="tableHead"><tr>' +
         '<th width="10%"></th>' +
-        '<th>API</th>' +
+        '<th>App</th>' +
         '<th style="text-align:right" width="30%" >Subscriber Count</th>'+
         '</tr></thead>'));
 

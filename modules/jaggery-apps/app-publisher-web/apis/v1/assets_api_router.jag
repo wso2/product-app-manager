@@ -30,7 +30,7 @@ require('/modules/publisher.js').exec(function (ctx) {
         }
 
 
-var usage = [];
+		var usage = [];
 
 
 		//manipulate endDate to overcome date-picker issue
@@ -184,7 +184,31 @@ var usage = [];
 
             print(webapps);
 
-		}else if (action == "getAPIUsageByUser") { /* Overall Web Application Usage Graph */
+		}
+
+	  else if (action == "getAppsByEndPoint") {
+			usage = appMgtProviderObj.getAppsByEndPoint("__all_providers__");
+				var obj, result;
+				var webapps = [];
+
+				for(x=0;x<usage.length;x++)	{
+					var userIndex = -1;
+					var appIndex = -1;
+					webapps.push([usage[x].name, usage[x].version, usage[x].endpoint]);
+				}
+				if (usage == null) {
+					 obj = {
+						 error:true
+					 };
+				} else {
+					 obj = {
+						 error:false,
+						 webapps:webapps
+					 };
+				}
+				print(webapps);
+
+      } else if (action == "getAPIUsageByUser") { /* Overall Web Application Usage Graph */
 			usage = appMgtProviderObj.getAPIUsageByUser("__all_providers__",startDate,endDate);
 
 			usage = parse(stringify(usage));
