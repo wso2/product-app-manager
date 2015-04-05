@@ -101,6 +101,12 @@
 	-->
 	<EnableTokenGeneration>true</EnableTokenGeneration>
 
+	<!-- By default all claim values of default claim dialect uri which mapped to the user profile get added to the JWT token.
+	     By setting "AddClaimsSelectively" attribute to true, publisher can select only required claim attributes to each App 
+	     and include into JWT token. 
+	-->
+        <AddClaimsSelectively>false</AddClaimsSelectively>
+
 	<!--
 		Remove OAuth headers from outgoing message or keep with it.
 	-->
