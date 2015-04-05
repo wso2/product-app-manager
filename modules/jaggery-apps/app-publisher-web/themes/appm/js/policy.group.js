@@ -127,20 +127,17 @@ function updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrl
             "userRoles": userRoles,
             "anonymousAccessToUrlPattern": anonymousAccessToUrlPattern,
             "policyGroupId": editedPolicyGroup,
-            "objPartialMappings": objPartialMappings,
+            "objPartialMappings": JSON.stringify(objPartialMappings),
             "policyGroupDesc" :policyGroupDesc
         },
         success: function (data) {
             var policyPartialsMapping = [];
-            var objPartialMappingsParsed = JSON.parse(objPartialMappings);
 
-            for(var i=0; i < objPartialMappingsParsed.length; i++){
-                var POLICY_PARTIAL_ID = objPartialMappingsParsed[i].entitlementPolicyPartialId;
-                var EFFECT = objPartialMappingsParsed[i].effect;
+            for(var i=0; i < objPartialMappings.length; i++){
+                var ruleId = objPartialMappings[i];
                 policyPartialsMapping.push({
                     "POLICY_GRP_ID": editedPolicyGroup,
-                    "POLICY_PARTIAL_ID": POLICY_PARTIAL_ID,
-                    "EFFECT": EFFECT
+                    "POLICY_PARTIAL_ID": ruleId
                 });
             }
             for(var i=0; i<policyGroupsArray.length;i++){
@@ -231,10 +228,10 @@ $(document).on("click", ".policy-group-edit-button", function () {
             $('#policy-group-editor #policyGroupName').val(obj.policyGroupName);
             $('#policy-group-editor #policyGroupDescription').val(obj.policyGroupDesc);
             $("#policy-group-editor #throttlingTier").val(obj.throttlingTier);
-            $("#policy-group-editor #anonymousAccessToUrlPattern").val(obj.anonymousAccessToUrlPattern);
+            $("#policy-group-editor #anonymousAccessToUrlPattern").val(JSON.stringify(obj.anonymousAccessToUrlPattern));
             $('#policy-group-editor #userRoles').val(obj.userRoles);
             //clear all checkbox
-            $('.policy-opt-val').each(function () {
+            $('.policy-group-xacml-rule').each(function () {
                 $(this).prop('checked', false)
             });
             //generate token input method
@@ -316,7 +313,7 @@ $(document).on("click", "#btn-add-policy-group", function () {
     $('#policy-group-editor #throttlingTier').prop('selectedIndex', 0);
     $('#policy-group-editor #anonymousAccessToUrlPattern').prop('selectedIndex', 0);
     $('#policy-group-editor #userRoles').tokenInput("clear");
-    $('.policy-opt-val').each(function(){
+    $('.policy-group-xacml-rule').each(function(){
         $(this).prop('checked', false)
     });
     $('.authPolicies').show(200);
