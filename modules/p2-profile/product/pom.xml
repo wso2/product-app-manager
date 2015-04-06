@@ -548,8 +548,8 @@
                                 <!-- as runtime features-->
                                 <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.as.runtimes.cxf.feature:4.2.2
                                 </featureArtifactDef>
-                                <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.webapp.mgt.server.feature:4.2.2
-                                </featureArtifactDef>
+                                <!--featureArtifactDef>org.wso2.carbon:org.wso2.carbon.webapp.mgt.server.feature:4.2.2
+                                </featureArtifactDef-->
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.jaxws.webapp.mgt.server.feature:${carbon.platform.version}
                                 </featureArtifactDef>
@@ -557,7 +557,7 @@
                                 <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.claim.mgt.feature:4.2.1
                                 </featureArtifactDef>
                                 <!---->
-                                <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.webapp.mgt.feature:4.2.2
+                                <featureArtifactDef>org.wso2.carbon.deployment:org.wso2.carbon.webapp.mgt.feature:${carbon.deployment.feature.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.jaxws.webapp.mgt.feature:${carbon.platform.version}
@@ -644,7 +644,7 @@
                                 <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.identity.mgt.feature:4.2.2</featureArtifactDef>
                                 <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.identity.sts.passive.feature:4.2.2</featureArtifactDef>
                                 <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.identity.xacml.feature:4.2.2</featureArtifactDef>
-                                <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.identity.scim.feature:4.2.2</featureArtifactDef>
+                                <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.identity.scim.feature:${carbon.scim.feature.version}</featureArtifactDef>
                                 <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.sts.feature:4.2.2</featureArtifactDef>
                                 <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.identity.sts.mgt.feature:4.2.0</featureArtifactDef> 
 
@@ -802,10 +802,10 @@
                                     <id>org.wso2.carbon.as.runtimes.cxf.feature.group</id>
                                     <version>4.2.2</version>
                                 </feature>
-                                <feature>
+                                <!--feature>
                                     <id>org.wso2.carbon.webapp.mgt.server.feature.group</id>
                                     <version>4.2.2</version>
-                                </feature>
+                                </feature-->
                                 <feature>
                                     <id>org.wso2.carbon.jaxws.webapp.mgt.server.feature.group</id>
                                     <version>${carbon.platform.version}</version>
@@ -1175,7 +1175,7 @@
                         </feature> -->
                                 <feature>
                                     <id>org.wso2.carbon.webapp.mgt.feature.group</id>
-                                    <version>4.2.2</version>
+                                    <version>${carbon.deployment.feature.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.jaxws.webapp.mgt.feature.group</id>
@@ -1366,7 +1366,7 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.identity.scim.feature.group</id>
-                                    <version>4.2.2</version>
+                                    <version>${carbon.scim.feature.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.sts.feature.group</id>
@@ -1483,6 +1483,8 @@
 <properties>
         <snapshot.feature.version>1.0.0</snapshot.feature.version>
 	<caramel.feature.version>1.0.0</caramel.feature.version>
+	<carbon.deployment.feature.version>4.2.3-SNAPSHOT</carbon.deployment.feature.version>
+	<carbon.scim.feature.version>4.2.5-SNAPSHOT</carbon.scim.feature.version>
 </properties>
 
 </project>
