@@ -4,14 +4,15 @@
 {{#if createPermission}}
     <li class="dropdown closed">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">
-            <i class="icon-plus-sign-alt"></i>Add New Web Application <span class="caret"></span></a>
+            Web Applications <span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
-            <li><a href="{{url "/asset/webapp"}}"> Create</a></li>
-            <li><a href="{{url "/assets/discover/webapp/"}}"> Discover from Server</a></li>
+            <li {{#ifCond active "==" "list-assets"}}class="active"{{/ifCond}}><a href="{{url "/assets/webapp/"}}" > All Web Applications</a></li>
+            <li {{#ifCond active "==" "add-asset"}}class="active"{{/ifCond}}><a href="{{url "/asset/webapp"}}">Add New Web Application</a></li>
+            <li {{#ifCond active "==" "discover"}}class="active"{{/ifCond}}><a href="{{url "/assets/discover/webapp/"}}"> Discover from Server</a></li>
+            <li><a class="btn-deploySample overide-default" data-type="{{shortName}}" >Deploy Samples</a></li>
         </ul>
     </li>
 {{/if}}
-            <li {{#ifCond active "==" "list-assets"}}class="active"{{/ifCond}}><a href="{{url "/assets/webapp/"}}">All Web Applications</a></li>
 {{#if viewStats}}
             <li  {{#ifCond active "==" "statistics"}}class="active"{{/ifCond}}><a href="{{url "/assets/statistics/webapp/"}}">Statistics</a></li>
 {{/if}}
