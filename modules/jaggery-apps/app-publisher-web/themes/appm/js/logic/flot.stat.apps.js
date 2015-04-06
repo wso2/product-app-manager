@@ -15,30 +15,6 @@ function drawGraphs() {
     var from = dateRange.split('to')[0].trim() + ":00";
     var to = dateRange.split('to')[1].trim() + ":00";
 
-<<<<<<< HEAD
-     $.ajax({
-        /* Web Application Last Access Time Graph */
-        async: false,
-        url: '/publisher/api/assets/' + operation + '/' + type + '/' + action
-            + '/',
-        type: 'POST',
-        data: {
-            'startDate': from,
-            'endDate': to
-        },
-        success: function (response) {
-
-            usageByContext = JSON.parse(response);
-            $('#spinner').hide();
-
-        },
-        error: function (response) {
-            alert('Error occured at statistics graph rendering');
-        }
-    });
-
-    //get hit count for subscribed apps per users
-=======
     $.ajax({
             /* Web Application Last Access Time Graph */
             async: false,
@@ -60,7 +36,7 @@ function drawGraphs() {
             }
         });
 
->>>>>>> 1e48aff... show annonymous user hit count in Usage By App grapgh
+
     $.ajax({
         async: false,
         url: '/publisher/api/assets/' + operation + '/' + type
