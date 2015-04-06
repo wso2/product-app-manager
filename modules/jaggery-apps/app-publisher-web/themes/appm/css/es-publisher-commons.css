@@ -825,24 +825,17 @@ td.asset-listing-btn {
 }
 
 .btn-deploySample {
-    background: none repeat scroll 0 0 #5bc0de;
-    color: #FFFFFF;
-    font-size: 16px;
-    margin-top: 20px;
-    padding: 7px 10px;
-    text-shadow: none;
-}
-.btn-deploySample:hover {
-    background: none repeat scroll 0 0 #31b0d5;
-    color: #FFFFFF;
-    text-shadow: 1px 1px 1px rgba(255, 252, 176, 0.6);
-}
-.btn-deploySample i {
-    margin-right: 10px;
+    font-size: 18px;
+    cursor: pointer;
 }
 
+.overide-default{
+    font-size: 12px !important;
+}
 
-
+.dropdown-menu>.active>a{
+    background-color: #444;
+}
 .asset-listing-name a {
     color: #4F4F4F;
     font-weight: 700;
