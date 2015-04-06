@@ -125,7 +125,12 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
 
 			//TODO need proper way to distinguish search and parameter search
 			if(options.attributes.length != null){
-				options.attributes = {"overview_displayName":options.attributes,"lcState":configs.lifeCycleBehaviour.visibleIn};
+                if(options.type === "webapp"){
+                    options.attributes = {"overview_displayName":options.attributes,"lcState":configs.lifeCycleBehaviour.visibleIn};
+                }else{
+                    options.attributes = {"overview_name":options.attributes,"lcState":configs.lifeCycleBehaviour.visibleIn};
+                }
+
 			}else{
 				options.attributes["lcState"] = configs.lifeCycleBehaviour.visibleIn;
 			}
