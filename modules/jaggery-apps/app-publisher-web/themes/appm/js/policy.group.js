@@ -51,11 +51,11 @@ function validate(policyGroupName) {
  * @param throttlingTier :Throttling Tier
  * @param anonymousAccessToUrlPattern : if anonymous access allowed for the related url pattern/verb
  * @param userRoles : User Roles
- * @param objPartialMappings : Object which contains XACML policy partial details arrays
+ * @param appliedXacmlRules : Applied XACML rules.
  * @param policyGroupDesc : Policy Group DEscription
  * @param isSaveAndClose : check if the call is from the save and close button
  */
-function insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, objPartialMappings, isSaveAndClose ,policyGroupDesc) {
+function insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, appliedXacmlRules, isSaveAndClose ,policyGroupDesc) {
 
     $.ajax({
         async: false,
@@ -66,21 +66,18 @@ function insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUr
             "throttlingTier": throttlingTier,
             "userRoles": userRoles,
             "anonymousAccessToUrlPattern": anonymousAccessToUrlPattern,
-            "objPartialMappings": objPartialMappings,
+            "objPartialMappings": JSON.stringify(appliedXacmlRules),
             "policyGroupDesc" :policyGroupDesc
         },
         success: function (data) {
             editedPolicyGroup = JSON.parse(data).response.id;
             var policyPartialsMapping = [];
-            var objPartialMappingsParsed = JSON.parse(objPartialMappings);
-
-            for(var i=0; i < objPartialMappingsParsed.length; i++){
-                var POLICY_PARTIAL_ID = objPartialMappingsParsed[i].entitlementPolicyPartialId;
-                var EFFECT = objPartialMappingsParsed[i].effect;
+            
+            for(var i=0; i < appliedXacmlRules.length; i++){
+                var POLICY_PARTIAL_ID = appliedXacmlRules[i];
                 policyPartialsMapping.push({
                     "POLICY_GRP_ID": editedPolicyGroup,
-                    "POLICY_PARTIAL_ID": POLICY_PARTIAL_ID,
-                    "EFFECT": EFFECT
+                    "POLICY_PARTIAL_ID": POLICY_PARTIAL_ID
                 });
             }
             policyGroupsArray.push({
@@ -89,7 +86,7 @@ function insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUr
                 throttlingTier: throttlingTier,
                 anonymousAccessToUrlPattern: anonymousAccessToUrlPattern,
                 userRoles: userRoles,
-                policyPartials: JSON.stringify(policyPartialsMapping),
+                policyPartials: appliedXacmlRules,
                 policyGroupDesc: policyGroupDesc
 
             });
@@ -130,20 +127,17 @@ function updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrl
             "userRoles": userRoles,
             "anonymousAccessToUrlPattern": anonymousAccessToUrlPattern,
             "policyGroupId": editedPolicyGroup,
-            "objPartialMappings": objPartialMappings,
+            "objPartialMappings": JSON.stringify(objPartialMappings),
             "policyGroupDesc" :policyGroupDesc
         },
         success: function (data) {
             var policyPartialsMapping = [];
-            var objPartialMappingsParsed = JSON.parse(objPartialMappings);
 
-            for(var i=0; i < objPartialMappingsParsed.length; i++){
-                var POLICY_PARTIAL_ID = objPartialMappingsParsed[i].entitlementPolicyPartialId;
-                var EFFECT = objPartialMappingsParsed[i].effect;
+            for(var i=0; i < objPartialMappings.length; i++){
+                var ruleId = objPartialMappings[i];
                 policyPartialsMapping.push({
                     "POLICY_GRP_ID": editedPolicyGroup,
-                    "POLICY_PARTIAL_ID": POLICY_PARTIAL_ID,
-                    "EFFECT": EFFECT
+                    "POLICY_PARTIAL_ID": ruleId
                 });
             }
             for(var i=0; i<policyGroupsArray.length;i++){
@@ -198,18 +192,14 @@ function savePolicyGroupData(isSaveAndClose) {
 
     hidePolicyGroupNotification();
 
-    //contains XACML policy partial details arrays
-    var objPartialMappings = {policyGroupOptions: []};
-    //check the selected XACML policy partial options and add to array
-    $('.policy-opt-val').each(function (index, obj) {
-        //get checked value from list
+    var appliedXacmlRules = [];
+    
+    // Get the applied XACML rules.
+    $('.policy-group-xacml-rule').each(function (index, obj) {
+        
         if ($(this).context.checked) {
-            var pgID = $(this).attr('data-policy-id'); //partial id
-            if ($(this).hasClass('policy-allow-cb')) {
-                objPartialMappings.policyGroupOptions.push({"entitlementPolicyPartialId": pgID, "effect": "Permit"});
-            } else if ($(this).hasClass('policy-deny-cb')) {
-                objPartialMappings.policyGroupOptions.push({"entitlementPolicyPartialId": pgID, "effect": "Deny"});
-            }
+            var appliedXacmlRuleId = $(this).data('xacml-rule-id');
+            appliedXacmlRules.push(appliedXacmlRuleId);
         }
 
     });
@@ -218,12 +208,10 @@ function savePolicyGroupData(isSaveAndClose) {
     if (validate(policyGroupName)) {
         // editedPolicyGroup : 0 > then insert else update
         if (editedPolicyGroup == 0) {
-            insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions), isSaveAndClose , policyGroupDesc);
+            insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, appliedXacmlRules, isSaveAndClose , policyGroupDesc);
         }
         else {
-            updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, JSON.stringify(objPartialMappings.policyGroupOptions), isSaveAndClose, policyGroupDesc);
-
-           // updatePolicyGroupPartialXACMLPolicies($("#uuid").val());
+            updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, appliedXacmlRules, isSaveAndClose, policyGroupDesc);
         }
     }
 }
@@ -240,10 +228,10 @@ $(document).on("click", ".policy-group-edit-button", function () {
             $('#policy-group-editor #policyGroupName').val(obj.policyGroupName);
             $('#policy-group-editor #policyGroupDescription').val(obj.policyGroupDesc);
             $("#policy-group-editor #throttlingTier").val(obj.throttlingTier);
-            $("#policy-group-editor #anonymousAccessToUrlPattern").val(obj.anonymousAccessToUrlPattern);
+            $("#policy-group-editor #anonymousAccessToUrlPattern").val(JSON.stringify(obj.anonymousAccessToUrlPattern));
             $('#policy-group-editor #userRoles').val(obj.userRoles);
             //clear all checkbox
-            $('.policy-opt-val').each(function () {
+            $('.policy-group-xacml-rule').each(function () {
                 $(this).prop('checked', false)
             });
             //generate token input method
@@ -265,28 +253,23 @@ $(document).on("click", ".policy-group-edit-button", function () {
                 $('.authPolicies').show(200);
             }
             //handle XACML Policies:
-            var getPolicyPartials = JSON.parse(obj.policyPartials);
+            var appliedXacmlRules = JSON.parse(obj.policyPartials);
 
-            for (var j = 0; j < getPolicyPartials.length; j++) {
-                if (getPolicyPartials[j].POLICY_GRP_ID == policyGroupId) {
+            for (var j = 0; j < appliedXacmlRules.length; j++) {
 
-                    $('.policy-opt-val').each(function () {
-                        var checkeditem = $(this).attr('data-policy-id');
-                        if (getPolicyPartials[j].POLICY_PARTIAL_ID == checkeditem && getPolicyPartials[j].EFFECT == 'Permit') {
-                            if ($(this).hasClass('policy-allow-cb')) {
-                                $(this).prop('checked', true);
-                            }
+                if (appliedXacmlRules[j].POLICY_GRP_ID == policyGroupId) {
+
+                    $('.policy-group-xacml-rule').each(function () {
+                        
+                        var ruleId = $(this).data('xacml-rule-id');
+
+                        if (appliedXacmlRules[j].POLICY_PARTIAL_ID == ruleId) {
+                            $(this).prop('checked', true);
                         }
-                        if (getPolicyPartials[j].POLICY_PARTIAL_ID == checkeditem && getPolicyPartials[j].EFFECT == 'Deny') {
-                            if ($(this).hasClass('policy-deny-cb')) {
-                                $(this).prop('checked', true);
-                            }
-                        }
+
                     });
 
-
                 }
-
 
             }
 
@@ -330,7 +313,7 @@ $(document).on("click", "#btn-add-policy-group", function () {
     $('#policy-group-editor #throttlingTier').prop('selectedIndex', 0);
     $('#policy-group-editor #anonymousAccessToUrlPattern').prop('selectedIndex', 0);
     $('#policy-group-editor #userRoles').tokenInput("clear");
-    $('.policy-opt-val').each(function(){
+    $('.policy-group-xacml-rule').each(function(){
         $(this).prop('checked', false)
     });
     $('.authPolicies').show(200);

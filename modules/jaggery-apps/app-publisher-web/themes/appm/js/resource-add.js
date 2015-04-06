@@ -54,7 +54,8 @@ $( document ).ready(function() {
                     policyPartialName: data[i].partialName,
                     policyPartial: data[i].partialContent,
                     isShared: data[i].isShared,
-                    author: data[i].author
+                    author: data[i].author,
+                    description: data[i].description
                 })
             }
             updatePolicyPartial();
@@ -73,12 +74,20 @@ $( document ).ready(function() {
 
         $(".http_verb").each(function () {
             var resource = {};
-            var url_pattern = $("#url_pattern").val();
+            var url_pattern = $("#url_pattern").val() == "" ? "*" : $("#url_pattern").val();
             resource.url_pattern =  url_pattern.indexOf('/') == 0 ? url_pattern : '/' + url_pattern;
             resource.http_verb = $(this).val();
             resource.user_roles = $("#user_roles").val();
             if ($(this).is(':checked')) {
                 if (resource.url_pattern != "") {
+                    //check if the resource is already available
+                    for (var i = 0; i < RESOURCES.length; i++) {
+                        if (resource.url_pattern == RESOURCES[i].url_pattern &&
+                            resource.http_verb == RESOURCES[i].http_verb) {
+                            alert("Resource is already added.")
+                            return false;
+                        }
+                    }
                     RESOURCES.push(resource);
                 }
 

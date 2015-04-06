@@ -484,6 +484,12 @@ function addTags(params,assetId,artifactManager,reg){
     */
     function overridePermissions(assetId, artifactManager, permissions) {
 
+        var denyEveryone = false;
+
+        if (permissions.length > 0) {
+            denyEveryone = true;
+        }
+
         // set a property in  the artifact indicating the permissions are overriden / remove the lifecycle
         var artifact = artifactManager.get(assetId);
         // artifactManager.detachLifecycle(artifact);
@@ -541,15 +547,15 @@ function addTags(params,assetId,artifactManager,reg){
         // But, there's an internal_everyone coming up with +GET. Let's nuke it.
         //um.denyRole('Internal/everyone', artifact.path, carbon.registry.actions.GET);
         //remove Internal/everyone role if there are roles added only.
-        var denyEveryone = false;
-        permissions.forEach(function (rolePermissions) {
-            var role = rolePermissions.role;
-            if (role != 'Internal/private_admin' && role != 'admin') {
-                if (rolePermissions.permissions.length > 0) {
-                    denyEveryone = true;
-                }
-            }
-        });
+
+        <!--permissions.forEach(function (rolePermissions) {-->
+            <!--var role = rolePermissions.role;-->
+            <!--if (role != 'Internal/private_admin' && role != 'admin') {-->
+                <!--if (rolePermissions.permissions.length > 0) {-->
+                    <!--denyEveryone = true;-->
+                <!--}-->
+            <!--}-->
+        <!--});-->
 
         if(denyEveryone){
             um.denyRole('Internal/everyone', artifact.path, carbon.registry.actions.GET);

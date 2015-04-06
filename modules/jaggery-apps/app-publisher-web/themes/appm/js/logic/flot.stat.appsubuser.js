@@ -108,10 +108,6 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
         source: substringMatcher(states)
     });
 
-
-    //$('.type-ahead.input-lg').siblings('input.tt-hint').addClass('hint-large');
-
-
     tableStatement = '';
     rawStatement = '';
     /* Overall Web Application Usage Graph */
@@ -226,7 +222,7 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
         var data = []
 
 
-var check;
+        var check;
         for (var i = 0; i < usageByContext.length; i++) {
        //  $('#lineWithFocusChart').html('');
 
@@ -235,7 +231,8 @@ var check;
                 for (var j = 0; j < usageByContext[i][1].length; j++) {
 
                     if (usageByContext[i][1][j][0] == getCell('webApp', '' + test + '').html()) {
-check =true;
+                    check =true;
+
                         numOfVersion = usageByContext[i][1][j][1].length;
                         for (var t = 0; t < numOfVersion; t++) {
                             if (usageByContext[i][1][j][1][t][0] == getCell('appVersion', '' + test + '').html()) {
@@ -245,8 +242,6 @@ check =true;
                                     function dateToUnix(year, month, day, hour, minute, second) {
                                         return ((new Date(year, month - 1, day, hour, minute, second)).getTime());
                                     }
-
-
 
                                     for (var l = 0; l < usageByContext[i][1][j][1][t][1][k][1].length; l++) {
 
@@ -272,7 +267,6 @@ check =true;
                                         });
 
                                     }
-
 
                                     dataTest.sort(function (obj1, obj2) {
                                         return obj1.x - obj2.x;
@@ -330,20 +324,21 @@ check =true;
 
                                         }
                                     ];
-
+                                //break;
 
                                 }
-
+                            //break;
                             }
 
                         }
                     }
                 }
+                //break;
 
             }
 
         }
-       // alert(check)
+
     if(check != true){
 
         $('#lineWithFocusChart').html('<h1 class="no-data-heading">No data available</h1>');

@@ -133,3 +133,28 @@ $(function() {
 	caramel.loaded('js', 'assets');
 	caramel.loaded('js', 'sort-assets');
 });
+
+var mouseStop = function() {
+	$('.asset').bind('mousestop', 300, function() {
+		//console.log("In");
+		bookmark = $(this).find('.store-bookmark-icon');
+		bookmark.animate({
+			top : -200
+		}, 200);
+		details = $(this).find('.asset-details');
+		details.animate({
+			top : 0
+		}, 200);
+		opened = true;
+	}).mouseleave(function() {
+		//console.log("out");
+		bookmark = $(this).find('.store-bookmark-icon');
+		bookmark.animate({
+			top : -4
+		}, 200);
+		opened = opened && details.stop(true, true).animate({
+			top : 200
+		}, 200) ? false : opened;
+	});
+
+}
