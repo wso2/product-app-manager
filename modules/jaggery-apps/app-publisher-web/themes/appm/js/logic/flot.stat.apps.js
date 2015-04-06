@@ -15,6 +15,7 @@ function drawGraphs() {
     var from = dateRange.split('to')[0].trim() + ":00";
     var to = dateRange.split('to')[1].trim() + ":00";
 
+<<<<<<< HEAD
      $.ajax({
         /* Web Application Last Access Time Graph */
         async: false,
@@ -37,6 +38,29 @@ function drawGraphs() {
     });
 
     //get hit count for subscribed apps per users
+=======
+    $.ajax({
+            /* Web Application Last Access Time Graph */
+            async: false,
+            url: '/publisher/api/assets/' + operation + '/' + type + '/' + action
+                + '/',
+            type: 'POST',
+            data: {
+                'startDate': from,
+                'endDate': to
+            },
+            success: function (response) {
+
+                usageByContext = JSON.parse(response);
+                $('#spinner').hide();
+
+            },
+            error: function (response) {
+                alert('Error occured at statistics graph rendering');
+            }
+        });
+
+>>>>>>> 1e48aff... show annonymous user hit count in Usage By App grapgh
     $.ajax({
         async: false,
         url: '/publisher/api/assets/' + operation + '/' + type
@@ -60,7 +84,6 @@ function drawGraphs() {
 
 
 var drawAPIUsageByUser = function (response,usageByContext) {
-
     var dataStructure = [];
     for (var i = 0; i < usageByContext.length; i++) {
         var Num =0;
@@ -72,7 +95,6 @@ var drawAPIUsageByUser = function (response,usageByContext) {
             "appName": usageByContext[i][0],
             "subCount": Num,
             "checked" : false
-
         });
     }
 
@@ -135,10 +157,12 @@ var drawAPIUsageByUser = function (response,usageByContext) {
     }
 
     function myFunction(allcount,app) {
+    var status =false;
 
         for(var z = 0; z < dataStructure.length; z++){
 
             if(app == dataStructure[z].appName.replace(/\s+/g, '')){
+                status=true;
                 dataStructure[z].checked = true;
                 data.push({
                     API_name: app,
@@ -148,6 +172,15 @@ var drawAPIUsageByUser = function (response,usageByContext) {
                 });
             }
         }
+        if(!status){
+            data.push({
+                API_name: app,
+                Subscriber_Count: 0,
+                Hits: allcount,
+                API: app
+            });
+        }
+
     }
 
     for(var p = 0; p < dataStructure.length; p++){
