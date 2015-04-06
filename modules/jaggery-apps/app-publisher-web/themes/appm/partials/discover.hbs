@@ -13,34 +13,36 @@
         <div class="form-group">
             <label class="control-label col-sm-2">Application Server URL </label>
 
-            <div class="col-sm-10">
-                <input type='text' id='server-url' name='serverUrl' class="col-lg-12 col-sm-12 col-xs-12 form-control"
+            <div class="col-sm-6">
+                <input type='text' id='server-url' name='serverUrl' class="form-control"
                        value="{{sessionData.serverUrl}}">
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2">User Name </label>
 
-            <div class="col-sm-10">
+            <div class="col-sm-6">
                 <input type='text' id='server-username' name='serverUserName'
-                       class="col-lg-12 col-sm-12 col-xs-12 form-control" value="{{sessionData.serverUserName}}">
+                       class="form-control" value="{{sessionData.serverUserName}}">
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2">Password </label>
 
-            <div class="col-sm-10">
+            <div class="col-sm-6">
                 <input type='password' id='server-password' name='serverPassword'
-                       class="col-lg-12 col-sm-12 col-xs-12 form-control" value="{{sessionData.serverPassword}}">
+                       class="form-control" value="{{sessionData.serverPassword}}">
             </div>
         </div>
-        <div class="form-group" id="discoverButtons">
-            <button id="btn-discover-asset" class="btn btn-primary pull-right push-15" name="discoverAssetsButton">Discover</button>
+        <div class="form-horizontal form-group" id="discoverButtons">
+            <button id="btn-discover-asset" class="btn btn-primary pull-left push-15" name="discoverAssetsButton">Discover</button>
             <input type="hidden" value="discoverAssets" name="discoveryAction" id="meta-asset-type">
         </div>
     {{#if status}}
-        <div class="col-sm-10" id="serverLoginStatus">
-            <i class="icon-inbox largeMsgIcon"></i> {{status.description}}
+        <div class="info-div alert alert-error">
+            <a data-dismiss="alert" class="close">x</a>
+            <i class="icon-info-sign"></i>
+            <span>{{status.description}}</span>
         </div>
     {{/if}}
         <!--</fieldset>-->
