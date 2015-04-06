@@ -5,13 +5,16 @@ var selectedApp = "";
 
 $(document).ready( function () {
 
-
-    oTable = $('#roles-table').dataTable( {
-        "sDom" : "<'row-fluid'<'tabel-filter-group span8'T><'span4'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
-        "aaSorting": [[ 0, "desc" ]],
+  
+if($('#isEnterpriseInstallEnabled').val() === 'true'){
+    oTable = $('#roles-table').dataTable({
+        "sDom": "<'row-fluid'<'tabel-filter-group span8'T><'span4'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+        "aaSorting": [
+            [ 0, "desc" ]
+        ],
         "iDisplayLength": 5,
         "bStateSave": false,
-        "sAjaxSource" : "/store/apis/enterprise/get-all-roles",
+        "sAjaxSource": "/store/apis/enterprise/get-all-roles",
         "oTableTools": {
             "aButtons": [
                 "copy",
@@ -27,23 +30,25 @@ $(document).ready( function () {
         aoColumns: [
 
             {   "mData": function (data, type, full) {
-                    return  data[0];
-                }
+                return  data[0];
+            }
             },
             {   "mData": function (data, type, full) {
-                    return '<input type="checkbox"  class="select-checkbox role-checkbox" value="' + data[0] + '" id="' + data[0] + '"  data-true-val="true" data-false-val="false">';
-                }
+                return '<input type="checkbox"  class="select-checkbox role-checkbox" value="' + data[0] + '" id="' + data[0] + '"  data-true-val="true" data-false-val="false">';
+            }
             }
         ]
-    } );
+    });
 
 
-    oTableUsers = $('#users-table').dataTable( {
-        "sDom" : "<'row-fluid'<'tabel-filter-group span8'T><'span4'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
-        "aaSorting": [[ 0, "desc" ]],
+    oTableUsers = $('#users-table').dataTable({
+        "sDom": "<'row-fluid'<'tabel-filter-group span8'T><'span4'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+        "aaSorting": [
+            [ 0, "desc" ]
+        ],
         "iDisplayLength": 5,
         "bStateSave": false,
-        "sAjaxSource" : "/store/apis/enterprise/get-all-users",
+        "sAjaxSource": "/store/apis/enterprise/get-all-users",
         "oTableTools": {
             "aButtons": [
                 "copy",
@@ -58,15 +63,17 @@ $(document).ready( function () {
 
         aoColumns: [
             {   "mData": function (data, type, full) {
-                    return  data[0];
-                }
+                return  data[0];
+            }
             },
             {   "mData": function (data, type, full) {
-                    return '<input type="checkbox"  class="select-checkbox user-checkbox" value="' + data[0] + '" id="' + data[0] + '"  data-true-val="true" data-false-val="false">';
-                }
+                return '<input type="checkbox"  class="select-checkbox user-checkbox" value="' + data[0] + '" id="' + data[0] + '"  data-true-val="true" data-false-val="false">';
+            }
             }
         ]
-    } );
+    });
+
+}
 
 
     $("#btn-apps-ent-install").click(function () {
