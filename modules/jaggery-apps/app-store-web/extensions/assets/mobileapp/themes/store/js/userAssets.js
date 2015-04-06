@@ -66,9 +66,20 @@ $(".device-image-modal").each(function(index) {
 });
 
 function urlExists(url){
+
     var http = new XMLHttpRequest();
-    http.open('HEAD', url, true);
-    http.send();
+    try{
+        http.open('HEAD', url, false);
+    }catch(e){
+        http.open('HEAD', url, true);
+    }
+
+    try{
+        http.send();
+    }catch(e){
+
+    }
+
     return http.status!=404;
 }
 
