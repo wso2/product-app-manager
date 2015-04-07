@@ -24,7 +24,7 @@
         "storeAcs" : "%https.host%/store/acs",
         "keyStoreName": "/repository/resources/security/wso2carbon.jks"
     },
-    
+
     "pagination": {
         "PAGE_SIZE" : 12
     }
