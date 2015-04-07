@@ -25,13 +25,6 @@
         "keyStoreName": "/repository/resources/security/wso2carbon.jks"
     },
     
-    "mobile": {
-        "enable_emm" : false,
-        "is_catalog" : true,
-        "api": "https://localhost:9450/emm/api",
-        "archieve_location_ios": "%https.ip%",
-        "archieve_location_android": "%http.ip%"
-    },
     "pagination": {
         "PAGE_SIZE" : 12
     }

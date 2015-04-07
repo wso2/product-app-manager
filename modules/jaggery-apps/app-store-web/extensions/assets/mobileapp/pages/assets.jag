@@ -18,15 +18,7 @@ require('/modules/store.js').exec(function (ctx) {
             avaliablePages,
             mdmConfig = new Packages.org.wso2.carbon.appmgt.mobile.store.MDMConfig();
 
-
-
-        if(configs.mobile.enable_emm){
-            //for wso2emm
-            var mdmUIConfig  = {enabled : !configs.mobile.is_catalog};
-        }else{
-            //for wso2mdm
             var mdmUIConfig  = {enabled : mdmConfig.isMDMEnabled()};
-        }
 
 
     caramel = require('caramel');

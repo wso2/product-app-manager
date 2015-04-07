@@ -17,13 +17,8 @@ require('/modules/store.js').exec(function (ctx) {
             mdmConfig = new Packages.org.wso2.carbon.appmgt.mobile.store.MDMConfig(),
             devicesClass = new Packages.org.wso2.carbon.appmgt.mobile.store.Devices();
 
-    if(configs.mobile.enable_emm){
-        //for wso2emm
-        var mdmUIConfig  = {enabled : !configs.mobile.is_catalog};
-    }else{
-        //for wso2mdm
         var mdmUIConfig  = {enabled : mdmConfig.isMDMEnabled()};
-    }
+
 
     if(!mdmUIConfig.enabled) {
         response.sendRedirect("404");
@@ -31,28 +26,11 @@ require('/modules/store.js').exec(function (ctx) {
     }
 
 
-    var devices = [];
-    if(configs.mobile.enable_emm){
-        //for wso2emm
-        if(!configs.mobile.is_catalog){
-
-            if(user!=null){
-                var emm = require('/modules/emm.js').emm;
-                var emmServer = new emm();
-                try{
-                    var result = emmServer.getDevices(user.username+"@"+user.tenantDomain);
-                    devices = parse(result);
-                }catch(e){
-                    log.debug(e);
-                }
-            }
-        }
-    }else{
-        //for wso2mdm
+     var devices = [];
         if(user != null && mdmConfig.isMDMEnabled()){
                 devices =  parse(String(devicesClass.getDevicesList(stringify(user), user.tenantId, "user", [user.username])));
         }
-    }
+
 
     caramel = require('caramel');
 

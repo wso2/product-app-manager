@@ -19,14 +19,7 @@ require('/modules/store.js').exec(function (ctx) {
 
     caramel = require('caramel');
 
-
-    if(configs.mobile.enable_emm){
-        //for wso2emm
-        var mdmUIConfig  = {enabled : !configs.mobile.is_catalog};
-    }else{
-        //for wso2mdm
         var mdmUIConfig  = {enabled : mdmConfig.isMDMEnabled()};
-    }
 
 
     var isEnterpriseInstallEnabled = false;
@@ -62,29 +55,10 @@ require('/modules/store.js').exec(function (ctx) {
     var rxtAttributes = utility.getRXTAttributes(tenantId, type);
 
     var devices = [];
-
-    if(configs.mobile.enable_emm){
-        //for wso2emm
-        if(!configs.mobile.is_catalog){
-
-            if(user!=null){
-                var emm = require('/modules/emm.js').emm;
-                var emmServer = new emm();
-                try{
-                    var result = emmServer.getDevices(user.username+"@"+user.tenantDomain);
-                    devices = parse(result);
-                }catch(e){
-                    log.debug(e);
-                }
-            }
-        }
-    }else{
-        //for wso2mdm
         if(user != null && mdmConfig.isMDMEnabled()){
                 devices =  parse(String(devicesClass.getDevicesList(stringify(user), user.tenantId, "user", [user.username])));
         }
 
-    }
 
 
     caramel.render({
