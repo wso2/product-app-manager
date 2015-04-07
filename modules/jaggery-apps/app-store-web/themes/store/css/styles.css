@@ -1461,9 +1461,6 @@ div.rating-cancel, div.star-rating {
 #btn-add-gadget {
     margin-top: 0;
     display: inline-block;
-    font-size: 18px;
-    padding: 10px;
-    font-weight: bold;
 }
 
 #btn-download-ebook {

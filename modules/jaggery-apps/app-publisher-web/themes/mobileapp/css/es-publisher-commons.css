@@ -1616,3 +1616,7 @@ button.btn.btn-view-app {
 textarea#txtDescription, textarea#txtRecentChanges {
     padding: 7px;
 }
+
+.dropdown-menu>.active>a{
+    background-color: #444;
+}
