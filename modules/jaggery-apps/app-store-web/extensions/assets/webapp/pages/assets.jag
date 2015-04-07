@@ -163,26 +163,35 @@ require('/modules/store.js').exec(function (ctx) {
     } else {
         if (paging.sort == 'popular') {
             server.privileged(function () {
-                //TODO:  move to a module.
-                var tenantDomain = user ? user.tenantDomain : "carbon.super";
+                var userName = user ? user.username : "";
                 var index = 0, maxTry = 0;
+
+                var ratingApi = require('/modules/rating-api.js').api;
+                registry = storeServer.systemRegistry(tenantId),
+                 am = store.assetManager(type, registry);
+
                 var getNextassetSet = function () {
-                    var db = new Database('SOCIAL_CACHE');
-                    var result = db.query("SELECT ID FROM SOCIAL_CACHE WHERE TYPE='" + type.replace(/\W/g, '') + "' AND " +
-                            "TENANT='" + tenantDomain + "' ORDER BY RATING DESC LIMIT " + (paging.start + index) + ","+PAGE_SIZE);
-                    db.close();
-                    index += store.getPageSize();;
+                    var appMgtDaoService = Packages.org.wso2.carbon.appmgt.impl.dao.AppMDAO;
+                    var appMgtDaoObj = new appMgtDaoService();
+
+                    var result = ratingApi.getPopularAssets(type, tenantId, am, paging.start + index);
+                    if (log.isDebugEnabled()) {
+                        log.debug("Query executed successfully to get the assets hit count");
+                    }
+                    index += 12;
                     return result;
                 };
+
+
+
                 assets = [];
-                var pos, aid, asset;
-                while (assets.length < PAGE_SIZE && maxTry < 10) {
+                var aid, asset;
+                while (assets.length < 12 && maxTry < 10) {
                     maxTry++;
                     var result = getNextassetSet();
-                    for (var n = 0; n < result.length && assets.length < PAGE_SIZE; n++) {
-                        var combinedAid = String(result[n].ID);
-                        pos = combinedAid.indexOf(':');
-                        aid = combinedAid.substring(pos + 1);
+
+                    for (var n = 0; n < result.length && assets.length < 12; n++) {
+                        aid = String(result[n].id);
                         try {
                             asset = store.asset(type, aid);
                             asset.indashboard = store.isuserasset(aid, type);
@@ -190,8 +199,8 @@ require('/modules/store.js').exec(function (ctx) {
                                 assets.push(asset);
                             }
                         } catch (e) {
-                            log.warn("error retrieving asset from store ,information might be stale in social cache. id=" +
-                                    combinedAid);
+                            log.warn("error retrieving asset from store ,information might be stale in table. id=" +
+                                    aid);
                         }
                     }
                 }

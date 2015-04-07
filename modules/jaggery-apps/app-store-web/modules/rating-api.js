@@ -83,5 +83,49 @@ var api = {};
         var asset = require('rxt').asset;
         var am = asset.createUserAssetManager(session, type);
         return am;
+    };
+
+
+    api.getPopularAssets = function(type, tenantId, am, start){
+        var carbon = require('carbon');
+        var social = carbon.server.osgiService('org.wso2.carbon.social.core.service.SocialActivityService');
+        var index = 0, maxTry = 0; limit = 12;
+
+        var getNextAssetSet = function () {
+            var offset = Number(start)+ Number(index);
+            var result = JSON.parse(String(social.getPopularAssets(type, tenantId, limit, offset)));
+            index += 12;
+            return result.assets || [];
+        };
+
+        assets = [];
+        var pos, aid, asset;
+        while (assets.length < 12 && maxTry < 10) {
+            maxTry++;
+            var result = getNextAssetSet();
+            for (var n = 0; n < result.length && assets.length < 12; n++) {
+                var combinedAid = String(result[n]);
+                pos = combinedAid.indexOf(':');
+                aid = combinedAid.substring(pos + 1);
+                try {
+                    /*asset = store.asset(type, aid);
+                     asset.indashboard = store.isuserasset(aid, type);*/
+                    asset = am.get(aid);
+                    if (configs.lifeCycleBehaviour.visibleIn.indexOf(String(asset.lifecycleState), 0) >= 0) {
+                        assets.push(asset);
+                    }
+                } catch (e) {
+                    log.warn("Error retrieving asset from store, information might be stale in social cache. id=" +
+                        combinedAid + e);
+                }
+            }
+        }
+
+        return assets;
     }
+
+
+
+
+
 }(api));

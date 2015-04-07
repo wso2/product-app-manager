@@ -330,6 +330,11 @@ require('/modules/publisher.js').exec(function(ctx) {
         var shortName = context.params.type;
         var artifactManager = rxtManager.getArtifactManager(shortName);
 
+        var carbon = require('carbon');
+        var social = carbon.server.osgiService('org.wso2.carbon.social.core.service.SocialActivityService');
+
+
+
         //check for mobile
         if(shortName === "mobileapp"){
             addNewMobileApp(context, rxtManager);
@@ -371,6 +376,13 @@ require('/modules/publisher.js').exec(function(ctx) {
 
             //Get the model id
             var idField = model.get('*.id');
+
+            try{
+                social.warmUpRatingCache(shortName + ':' + idField.value);
+            }catch(e) {
+                log.warn("Unable to publish the asset: " + shortName + ":" + idField.value + " to social cache. This may affect on sort by popularity function.");
+            }
+
 
             if (idField) {
                 print({ok: 'true', message: 'Asset created.', id: idField.value});
