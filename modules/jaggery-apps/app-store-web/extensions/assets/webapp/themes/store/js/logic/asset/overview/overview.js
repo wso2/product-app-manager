@@ -26,7 +26,7 @@ $(function () {
             "tenantId": $('#hdnTenantId').val()
         },
         "appControls": {"0": "a"},
-        "publishedPeriod": "5000",
+        "publishedPeriod": "20000",
         "pageName": "Store_Overview"
     };
     initializeUserActivity("page-load", jsonObj);
