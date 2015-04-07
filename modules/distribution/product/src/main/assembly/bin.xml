@@ -47,7 +47,8 @@
 		<exclude>**/user-mgt.xml</exclude>
                 <exclude>**/identity.xml</exclude>
                 <exclude>**/embedded-ldap.xml</exclude>
-                <exclude>**/master-datasources.xml</exclude>
+		<exclude>**/master-datasources.xml</exclude>
+                <exclude>**/conf/tomcat/web.xml</exclude>
                 <exclude>**/repository/deployment/server/jaggeryapps/publisher/**</exclude>
                 <exclude>**/repository/deployment/server/jaggeryapps/store/**</exclude>
 		<exclude>**/lib/org.wso2.carbon.server-${carbon.version}.jar</exclude>
@@ -745,6 +746,11 @@
             <source>src/main/conf/identity.xml</source>
             <outputDirectory>wso2appm-${pom.version}/repository/conf</outputDirectory>
             <destName>identity.xml</destName>
+        </file>
+	<file>
+            <source>src/main/conf/web.xml</source>
+            <outputDirectory>wso2appm-${pom.version}/repository/conf/tomcat</outputDirectory>
+            <destName>web.xml</destName>
         </file>
 	<file>
             <source>src/main/conf/user-mgt.xml</source>
