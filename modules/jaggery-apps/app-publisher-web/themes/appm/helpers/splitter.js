@@ -33,6 +33,7 @@ var splitData = function(copyOfData){
     for(var i=0;i<dataPart.length;i++) {
         if (dataPart[i].name == "overview_name") {
             overview_name = dataPart[i];
+            overview_meta.push(dataPart[i]);
         }else if (dataPart[i].name == "overview_provider") {
             overview_meta.push(dataPart[i]);
         }else if (dataPart[i].name == "overview_context") {
