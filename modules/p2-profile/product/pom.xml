@@ -351,7 +351,7 @@
                                 </featureArtifactDef>
 
                                 <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.mediation.initializer.feature:4.2.1
+                                    org.wso2.carbon:org.wso2.carbon.mediation.initializer.feature:4.2.3
                                 </featureArtifactDef>
 
                                 <featureArtifactDef>
@@ -849,7 +849,7 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.mediation.initializer.feature.group</id>
-                                    <version>4.2.1</version>
+                                    <version>4.2.3</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.mediation.security.server.feature.group</id>
