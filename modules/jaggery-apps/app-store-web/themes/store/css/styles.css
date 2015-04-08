@@ -1829,3 +1829,8 @@ ol.linenums li {
 .search-bar > .row-fluid > .span9 {
     margin-top: 12px;
 }
+
+.btn-primary:focus{
+    background-color: #357335;
+    border-color: #398439;
+}
