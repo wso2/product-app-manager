@@ -32,7 +32,9 @@ var checkeRole = function (username, session) {
     }
 
     if (!(apiUtil.checkPermissionWrapper(usr.username, config.permissions.webapp_create)
-          || apiUtil.checkPermissionWrapper(usr.username, config.permissions.webapp_publish))) {
+          || apiUtil.checkPermissionWrapper(usr.username, config.permissions.webapp_publish)
+            || apiUtil.checkPermissionWrapper(usr.username, config.permissions.mobileapp_create)
+                || apiUtil.checkPermissionWrapper(usr.username, config.permissions.mobileapp_publish))) {
         return false;
     }
   	return true;
