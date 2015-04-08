@@ -86,9 +86,47 @@ function urlExists(url){
 
 
 
-$(document).on('click', '#myasset-container .asset-uninstall-btn', function() {
-	appToUninstall = $(this).data("aid");	
-	$('#devicesList').modal('show');	
+$(document).on('click', '#myasset-container .asset-unsubscribe-btn', function() {
+	appToUninstall = $(this).data("aid");
+    appName = $(this).data("name");
+    noty({
+        text : 'Are you sure you want to unsubscribe from ' + appName + '?',
+        'layout' : 'center',
+        'modal' : true,
+        buttons : [{
+            addClass : 'btn',
+            text : 'Yes',
+            onClick : function($noty) {
+
+                $noty.close();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/store/apps/devices/uninstall",
+                    data: { asset: appToUninstall }
+                })
+                    .done(function( msg ) {
+                        noty({
+                            text : appName + ' is unsubscribed from the selected user',
+                            'layout' : 'center',
+                            'modal' : true,
+                            timeout: 1000,
+                            'onClose': function() {
+                                location.reload();
+                            }
+                        });
+                    });
+
+            }
+        },
+            {
+                addClass : 'btn',
+                text : 'No',
+                onClick : function($noty) {
+                    $noty.close();
+                }
+            }]
+    });
 });
 
 $(document).on('click', '#myasset-container .asset-reinstall-btn', function() {

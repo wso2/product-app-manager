@@ -33,22 +33,6 @@ var getTenantDomainFromID = function() {
     return tenantDomain;
 }
 
-/* 
-	Get Devices
-*/
-router.get('apps/users/{userid}/devices', function(ctx){
-	if(user!=undefined){
-		var result = emmServer.getDevices(user.username, ctx.platform);
-		print(result.data);
-	}else{
-		response.sendError(404);
-	}
-});
-
-/*
-	iOS device will first perform a request to the below end point - it will serve a plist file
-	with an endpoint to pickup the .ipa archive
-*/
 
 
 
@@ -58,26 +42,27 @@ router.post('apps/devices/{deviceid}/install', function(ctx){
         response.sendError(401, 'Unauthorized');
         return;
     }
-
-
         var tenant = server.tenant(request, session);
         var asset =  ctx.asset;
         var deviceId = ctx.deviceid;
         enterpriseInstall.performAction('install', tenant.tenantId, 'device', asset, deviceId);
-
-
-
-
-
 });
 
 
-function getResource(name){
-	var f = new File(name);
-	f.open("r");
-	var cont = f.readAll();
-	f.close();
-	return cont;
-}
+router.post('apps/devices/uninstall', function(ctx){
+    if (!user) {
+        response.sendError(401, 'Unauthorized');
+        return;
+    }
+    var asset =  ctx.asset;
+
+    log.info("UUSssssss " + stringify(user.username));
+    var tenant = server.tenant(request, session);
+    var asset =  ctx.asset;
+    var deviceId = ctx.deviceid;
+    enterpriseInstall.performAction('uninstall', tenant.tenantId, 'user', asset, [user.username]);
+});
+
+
 router.process(request);
 %>
