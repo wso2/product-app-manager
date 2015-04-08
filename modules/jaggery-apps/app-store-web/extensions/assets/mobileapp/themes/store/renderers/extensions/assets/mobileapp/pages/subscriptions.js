@@ -111,7 +111,8 @@ var render = function (theme, data, meta, require) {
                 context: {
                     'userAssets': data.userAssets,
                     'URL': data.URL,
-                    'devices': data.devices
+                    'devices': data.devices,
+                    'selfUnsubscription' : data.selfUnsubscription
                 }
             }
         ],

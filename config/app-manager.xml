@@ -606,6 +606,7 @@
 		   <Config name="AppDownloadURLHost">%http%</Config>
                    <Config name="ActiveMDM">WSO2EMM</Config>
 		   <Config name="IosPlistPath">publisher/api/mobileapp/getplist</Config>
+		   <Config name="EnableSelfUnsubscription">false</Config>
 
 		   <Config name="EnterpriseOperations_Enabled">true</Config>
 		   <Config name="EnterpriseOperations_AuthorizedRole">admin</Config>
