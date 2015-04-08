@@ -197,24 +197,20 @@
 
             <!-- IS JAGGERY APPS -->
         </fileSet>
-            <fileSet>
+        <!--fileSet>
             <directory>../../jaggery-apps/user-dashboard/dashboard</directory>
             <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/jaggeryapps/dashboard</outputDirectory>
-            <!-- Changes related to Carbon kernel 4.2.0 patches -->
             <includes>
                 <include>**/**</include>
             </includes>
-            <!-- End - Changes related to Carbon kernel 4.2.0 patches -->
-        </fileSet>
-    <fileSet>
+        </fileSet-->
+    	<!--fileSet>
             <directory>../../jaggery-apps/portal</directory>
             <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/jaggeryapps/portal</outputDirectory>
-            <!-- Changes related to Carbon kernel 4.2.0 patches -->
             <includes>
                 <include>**/**</include>
             </includes>
-            <!-- End - Changes related to Carbon kernel 4.2.0 patches -->
-        </fileSet>
+        </fileSet-->
         <fileSet>
             <directory>../../jaggery-apps/shindig</directory>
             <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/webapps/shindig</outputDirectory>
