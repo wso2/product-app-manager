@@ -831,6 +831,12 @@
             <fileMode>666</fileMode>
         </file>
         <file>
+            <source>../../distribution/product/target/repository/deployment/server/synapse-configs/default/sequences/main.xml</source>
+            <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/synapse-configs/default/sequences/main.xml</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>666</fileMode>
+        </file>
+        <file>
             <source>../../../docs/xdoc/release-notes.xml</source>
             <outputDirectory>wso2appm-${pom.version}</outputDirectory>
             <destName>release-notes.html</destName>
