@@ -39,7 +39,7 @@
             <input type="hidden" value="discoverAssets" name="discoveryAction" id="meta-asset-type">
         </div>
     {{#if status}}
-        <div class="info-div alert alert-error">
+        <div class="info-div alert {{#ifCond status.code "!=" 200}}alert-error{{/ifCond}}">
             <a data-dismiss="alert" class="close">x</a>
             <i class="icon-info-sign"></i>
             <span>{{status.description}}</span>
@@ -55,39 +55,18 @@
                 <thead>
                 <th></th>
                 <th>
-                    {{#ifCond sortOptions.sortBy "==" "name"}}
-                        <a href="?sortby=displayName&sort={{sortOptions.sort}}" class="sort-list">Name
-                            <i class="icon-caret-{{sortOptions.icon}}"></i></a>
-                    {{else}}
-                        <a href="?sortby=displayName&sort=asc" class="sort-list">Name <i class="icon-caret-down"></i></a>
-                    {{/ifCond}}
-
+                    <a href="?sortby=displayName&sort=asc" class="sort-list">Name </a>
                 </th>
                 <th>
-                    {{#ifCond sortOptions.sortBy "==" "version"}}
-                        <a href="?sortby=version&sort={{sortOptions.sort}}" class="sort-list">Version
-                            <i class="icon-caret-{{sortOptions.icon}}"></i></a>
-                    {{else}}
-                        <a href="?sortby=version&sort=asc" class="sort-list">Version <i class="icon-caret-down"></i></a>
-                    {{/ifCond}}
+                    <a href="?sortby=version&sort=asc" class="sort-list">Version </a>
                 </th>
                 <th>
-                    {{#ifCond sortOptions.sortBy "==" "originalContext"}}
-                        <a href="?sortby=originalContext&sort={{sortOptions.sort}}" class="sort-list">Original Context
-                            <i class="icon-caret-{{sortOptions.icon}}"></i></a>
-                    {{else}}
-                        <a href="?sortby=originalContext&sort=asc" class="sort-list">Original Context <i class="icon-caret-down"></i></a>
-                    {{/ifCond}}
+                    <a href="?sortby=originalContext&sort=asc" class="sort-list">Original Context</a>
                 </th>
                 <th>
-                    {{#ifCond sortOptions.sortBy "==" "applicationType"}}
-                        <a href="?sortby=applicationType&sort={{sortOptions.sort}}" class="sort-list">Type
-                            <i class="icon-caret-{{sortOptions.icon}}"></i></a>
-                    {{else}}
-                        <a href="?sortby=applicationType&sort=asc" class="sort-list">Type <i class="icon-caret-down"></i></a>
-                    {{/ifCond}}
+                    <a href="?sortby=applicationType&sort=asc" class="sort-list">Type </a>
                 </th>
-                <!--<th><a href="#">Status</a></th>-->
+                <th><a href="#">Status</a></th>
                 <th>
                     <a href="?sortby=proxyContext&sort=asc" class="sort-list">Proxy Context </a>
                 </th>
@@ -108,14 +87,15 @@
                             {{this.version}}
                         </td>
                         <td>
-                            {{this.context}}
+                            <a href="{{this.applicationPreviewUrl}}" title="{{this.applicationPreviewUrl}}"
+                               target="_blank">{{this.context}}</a>
                         </td>
                         <td>
                             {{this.appType}}
                         </td>
-                        <!--<td>-->
-                            <!--New-->
-                        <!--</td>-->
+                        <td>
+                            {{this.status}}
+                        </td>
                         <td>
                             <input type='text' id='proxy-context-{{this.id}}' name='proxyContext' class=""
                                    value="{{this.proxyContext}}">
@@ -123,8 +103,9 @@
                         <td>
                             <div class="col-sm-10" id="discoverButtons">
                                 <input type="button" value="Create Proxy App" class="btn btn-primary btn-create-discovered"
-                                       name="createAsset" data-action="createAsset" data-app="{{this.webappId}}"
-                                       data-id="{{this.id}}" />
+                                    {{#ifCond this.status "!=" "NEW"}} disabled="disabled"{{/ifCond}}
+                                   name="createAsset" data-action="createAsset" data-app="{{this.webappId}}"
+                                   data-id="{{this.id}}" />
                             </div>
                         </td>
                     </tr>
