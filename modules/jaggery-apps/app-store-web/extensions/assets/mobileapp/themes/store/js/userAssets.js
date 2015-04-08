@@ -90,7 +90,7 @@ $(document).on('click', '#myasset-container .asset-unsubscribe-btn', function() 
 	appToUninstall = $(this).data("aid");
     appName = $(this).data("name");
     noty({
-        text : 'Are you sure you want to unsubscribe from ' + appName + '?',
+        text : 'Are you sure you want to uninstall ' + appName + ' from all of your devices?',
         'layout' : 'center',
         'modal' : true,
         buttons : [{
@@ -107,7 +107,7 @@ $(document).on('click', '#myasset-container .asset-unsubscribe-btn', function() 
                 })
                     .done(function( msg ) {
                         noty({
-                            text : appName + ' is unsubscribed from the selected user',
+                            text : appName + ' is uninstalled and unsubscribed',
                             'layout' : 'center',
                             'modal' : true,
                             timeout: 1000,

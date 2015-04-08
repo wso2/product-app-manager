@@ -11,6 +11,7 @@ var emm = require('/modules/emm.js').emm;
 var emmServer = new emm();
 var server = require('store').server;
 var enterpriseInstall = require('/extensions/assets/mobileapp/modules/mod-ent-install.js');
+var mdmConfig = parse(String((new Packages.org.wso2.carbon.appmgt.mobile.store.MDMConfig()).getConfigs()));
 
 var getTenantID = function() {
     if(!(typeof session === "undefined")){
@@ -50,13 +51,13 @@ router.post('apps/devices/{deviceid}/install', function(ctx){
 
 
 router.post('apps/devices/uninstall', function(ctx){
-    if (!user) {
+    if (!user || mdmConfig.EnableSelfUnsubscription == false) {
         response.sendError(401, 'Unauthorized');
         return;
     }
+
     var asset =  ctx.asset;
 
-    log.info("UUSssssss " + stringify(user.username));
     var tenant = server.tenant(request, session);
     var asset =  ctx.asset;
     var deviceId = ctx.deviceid;
