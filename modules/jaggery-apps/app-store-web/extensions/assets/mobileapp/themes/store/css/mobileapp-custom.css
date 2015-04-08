@@ -96,3 +96,12 @@
 .os-active{
     background: #F7F9F9;
 }
+
+i.icon-mobile-phone.store-mobileapp-icon {
+    padding: 0px 4px;
+    position: absolute;
+    background: white;
+    z-index: 99;
+    font-size: 34px;
+    border-radius: 4px;
+}
