@@ -883,3 +883,8 @@ legend + .control-group {
     margin-top: 19px;
     margin-left: 7px;
 }
+.custom-verticle > .dropdown-menu{
+    top: 16%;
+    left: 157px;
+    border-radius: 0px !important;
+}
