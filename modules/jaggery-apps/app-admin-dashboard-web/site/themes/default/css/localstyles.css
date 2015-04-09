@@ -882,6 +882,7 @@ legend + .control-group {
 #userMenu > .caret{
     margin-top: 19px;
     margin-left: 7px;
+    border-top: 4px solid #FFFFFF;
 }
 .custom-verticle > .dropdown-menu{
     top: 16%;
