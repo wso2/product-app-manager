@@ -10,6 +10,8 @@
     "userCreation": "Pending User Creations",
     "appCreation": "Application Creation",
     "appPublishHeader": "Pending Published Applications",
+    "xacmlpolicyHeader":"XACML Policy",
+    "cacheHitMissHeader":"Cache Hits/Miss",
 
     "username": "Username",
     "password": "Password",
