@@ -599,17 +599,19 @@
 	<!-- Configuration to handle Mobile apps and MDM. -->
 	<MobileAppsConfiguration>
 
-		<MDMSettings>
-	           <Enabled>false</Enabled>
-		   <EnableSampleDevices>false</EnableSampleDevices>
-		   <AppDownloadURLHost>%http%</AppDownloadURLHost>
-		   <ActiveMDM>WSO2EMM</ActiveMDM>
-		   <IosPlistPath>publisher/api/mobileapp/getplist</IosPlistPath>
-		   <EnterpriseOperations>
-			<Enabled>true</Enabled>
-			<AuthorizedRole>admin</AuthorizedRole>
-		   </EnterpriseOperations>				
-                </MDMSettings>
+		<MDMConfig>
+
+		   <Config name="Enabled">false</Config>
+		   <Config name="EnableSampleDevices">false</Config>
+		   <Config name="AppDownloadURLHost">%http%</Config>
+                   <Config name="ActiveMDM">WSO2EMM</Config>
+		   <Config name="IosPlistPath">publisher/api/mobileapp/getplist</Config>
+		   <Config name="EnableSelfUnsubscription">false</Config>
+
+		   <Config name="EnterpriseOperations_Enabled">true</Config>
+		   <Config name="EnterpriseOperations_AuthorizedRole">admin</Config>
+
+                </MDMConfig>
 
 		<MDMProperties>
 

@@ -1829,3 +1829,23 @@ ol.linenums li {
 .search-bar > .row-fluid > .span9 {
     margin-top: 12px;
 }
+
+.btn-primary:focus{
+    background-color: #357335;
+    border-color: #398439;
+}
+/*ent-install popup */
+div#roles-table_paginate ,div#users-table_paginate{
+    float: right;
+}
+
+.paginate_disabled_previous, .paginate_disabled_next{
+    border-radius: 4px;
+    color: #777;
+    cursor: not-allowed;
+    background-color: #fff;
+    border-color: #ddd;
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    line-height: 1.42857143;
+}

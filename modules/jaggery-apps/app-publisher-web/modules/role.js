@@ -6,6 +6,10 @@ var checkeRole = function (username, session) {
       	usr = carbon.server.tenantUser(username);
 	var log = new Log();
 	var user = require('store').user;
+    var config = require('/config/publisher.json');
+
+    var apiUtil = Packages.org.wso2.carbon.appmgt.impl.utils.AppManagerUtil;
+    var apiUtil = new apiUtil();
 
 	if (!user.configs(usr.tenantId)) {
 		event.emit('tenantLoad', usr.tenantId);
@@ -27,8 +31,11 @@ var checkeRole = function (username, session) {
         return true;
     }
 
-  	if (!( usr.hasRoles(["Internal/publisher"]) || usr.hasRoles(["Internal/creator"]))) {
-           return false;
-  	}
+    if (!(apiUtil.checkPermissionWrapper(usr.username, config.permissions.webapp_create)
+          || apiUtil.checkPermissionWrapper(usr.username, config.permissions.webapp_publish)
+            || apiUtil.checkPermissionWrapper(usr.username, config.permissions.mobileapp_create)
+                || apiUtil.checkPermissionWrapper(usr.username, config.permissions.mobileapp_publish))) {
+        return false;
+    }
   	return true;
 };

@@ -27,5 +27,9 @@
 
     "pagination": {
         "PAGE_SIZE" : 12
-    }
+    },
+  "permissions": {
+    "webapp_subscribe": "/permission/admin/manage/webapp/subscribe",
+    "mobileapp_install": "/permission/admin/manage/mobileapp/subscribe"
+  }
 }
