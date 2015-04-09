@@ -41,17 +41,11 @@
                     <% } %>
                     <% if(request.getParameter("task")=="xacmlpolicy"){%>
                     <li>
-                    <%=i18n.localize("tasks")%> <span class="divider">/</span>
-                    </li>
-                    <li>
                     <a href="<%=listMappedUrl%>?tasks=xacmlpolicy" onclick="jagg.sessionAwareJS({redirect:'<%=listMappedUrl%>',e:event})"><%=i18n.localize("xacmlpolicyHeader")%></a>
                     </li>
 
                     <% } %>
                     <% if(request.getParameter("task")=="cacheHitMiss"){%>
-                    <li>
-                    <%=i18n.localize("tasks")%> <span class="divider">/</span>
-                    </li>
                     <li>
                     <a href="<%=listMappedUrl%>?tasks=cacheHitMiss" onclick="jagg.sessionAwareJS({redirect:'<%=listMappedUrl%>',e:event})"><%=i18n.localize("cacheHitMissHeader")%></a>
                     </li>
