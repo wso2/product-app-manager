@@ -6,10 +6,10 @@
     "user":"User",
     "subscriptions":"Subscriptions ",
     "myTasks":"Approval Tasks",
-    "subscriptionCreation": "Pending Subscriptions",
-    "userCreation": "Pending User Creations",
+    "subscriptionCreation": "Subscriptions",
+    "userCreation": "User Creations",
     "appCreation": "Application Creation",
-    "appPublishHeader": "Pending Published Applications",
+    "appPublishHeader": "Published Applications",
     "xacmlpolicyHeader":"XACML Policy",
     "cacheHitMissHeader":"Cache Hits/Miss",
 
