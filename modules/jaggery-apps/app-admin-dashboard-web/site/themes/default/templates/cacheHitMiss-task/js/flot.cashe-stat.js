@@ -451,7 +451,7 @@ volumeData.push({"key":"Miss","values":values});
 $('#dateLabel').show();
 }
 else{
- $('.graph-container').html('<h1 class="no-data-heading center-wrapper-msg">No data available</h1>');
+ $('.graph-container').html('<h1 class="no-data-heading span10">No data available</h1>');
  $('#tableContainer').hide();
  $('#dateLabel').hide();
 }
