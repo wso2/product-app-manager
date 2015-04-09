@@ -20,9 +20,6 @@
 <link href="<%=jagg.getAbsoluteUrl(jagg.getThemeFile("css/localstyles.css"))%>" rel="stylesheet">
 <script src="<%=jagg.getAbsoluteUrl(jagg.getThemeFile('lib/jquery-1.7.1.min.js'))%>"></script>
 
-
-
-
 <div class="container login-header">
           <div class="row">
               <div class="span2 logo-section">
@@ -38,7 +35,7 @@
                                   <li class="dropdown">
                                     <a id="userMenu"><%if(outputs.user!=null){%><i class="icon-user icon-white"></i> <%=outputs.user.username%><%}%><b class="caret"></b></a>
                                     <ul id="userInfoMenu" class="dropdown-menu">
-                                      <li><a style="cursor:pointer" onclick="location.href='<%=jagg.getAbsoluteUrl("/site/pages/logout.jag")%><%=urlPrefix%>';"><i class="icon-circle-arrow-left"></i> <%=i18n.localize("logout")%></a></li>
+                                      <li><a style="cursor:pointer" onclick="location.href='<%=jagg.getAbsoluteUrl("/site/pages/logout.jag")%><%=urlPrefix%>';"><%=i18n.localize("logout")%></a></li>
                                     </ul>
                                   </li>
                                 </ul>
