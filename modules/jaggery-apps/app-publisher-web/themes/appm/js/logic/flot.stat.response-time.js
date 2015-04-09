@@ -176,7 +176,8 @@ var drawAPIResponseTime = function (response) {
                 axisLabelFontSizePixels: 12,
                 axisLabelFontFamily: 'Verdana, Arial',
                 axisLabelPadding: 20,
-               max:chartData[0][0]+20
+                max:chartData[0][0]+20,
+                tickDecimals: 0
             },
             yaxis: {
                 axisLabel: "Web App",
@@ -186,6 +187,7 @@ var drawAPIResponseTime = function (response) {
                 tickLength: 0,
                 ticks: defaultFilterValues,
                 show:false
+
             },
             grid: {
                 clickable: true,

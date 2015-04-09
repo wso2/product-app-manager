@@ -9,7 +9,7 @@ var filterModule = function () {
     var log = new Log('permission.asset.filter');
     var utility = require('/modules/utility.js').rxt_utility();
 
-    var ADMIN_ROLE = 'admin';
+    var ADMIN_ROLE = Packages.org.wso2.carbon.context.PrivilegedCarbonContext.getThreadLocalCarbonContext().getUserRealm().getRealmConfiguration().getAdminUserName();
     var ANON_ROLE = 'anon';
 
 

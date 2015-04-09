@@ -189,13 +189,13 @@ require('/modules/publisher.js').exec(function(ctx) {
             log.debug("deploying webapp samples");
             var deployWebApplicationClass = Packages.org.wso2.carbon.appmgt.sample.deployer.deploy.DeployWebApplication;
             var deployWebApplication = new deployWebApplicationClass();
-            deployWebApplication.copyFileUsingFileStreams("plan-your-trip-1.0.war");
-            deployWebApplication.copyFileUsingFileStreams("travel-booking-1.0.war");
+            deployWebApplication.copyFileUsingFileStreams("plan-your-trip-1.0");
+            deployWebApplication.copyFileUsingFileStreams("travel-booking-1.0");
             log.debug("deploying webapplication done");
             var configurationWebApplicationClass = Packages.org.wso2.carbon.appmgt.sample.deployer.configuration.ManageClaim;
             var configurationWebApp = new configurationWebApplicationClass();
             configurationWebApp.addClaimMapping();
-            configurationWebApp.setClaimValues();
+            configurationWebApp.setClaimValues(username);
             log.debug("Claim configuration done");
             applicationController.manageWebApplication(sessionID) 
 

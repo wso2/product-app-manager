@@ -1,0 +1,196 @@
+<%
+/*
+ *  Copyright (c) 2005-2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ *  WSO2 Inc. licenses this file to you under the Apache License,
+ *  Version 2.0 (the "License"); you may not use this file except
+ *  in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ *
+ */
+
+/**
+ * Description: The API accepts a set of credentials which it attempts to verify.If the
+ provided credentials are authenticated , the logged in user is set to the provided
+ username and the session id is returned.If the authentication fails then the
+ a message indicating the failure is returned.
+
+ E.g. invocation
+ POST /api/authenticate
+ username={name}
+ password={password}
+ */
+include("/extensions/webapp/modules/jagg/jagg.jag");
+var log = new Log('login-api');
+var user = require('store').user;
+//var constants = require("rxt").constants;
+var credentials = {};
+var result = {};
+var METHOD = request.getMethod();
+//var responseProcessor = require('utils').response;
+response.contentType = 'application/json';
+var SESSION_MAP = 'sso_sessions'; //We need to create the session map as it is required by the session listener
+
+var constants = {}
+constants.STATUS_CODES = {
+        OK: 200,
+        CREATED:201,
+        ACCEPTED: 202,
+        BAD_REQUEST:400,
+        UNAUTHORIZED:401,
+        NOT_FOUND:404,
+        INTERNAL_SERVER_ERROR:500,
+        NOT_IMPLEMENTED:501
+    };
+/**
+ * The function adds the session to a session map.If a session map is not present
+ * in the application context it is added
+ * @param  app             :Application context
+ * @param  sessionInstance :The session to be added
+ */
+var addToSessionMap = function (app, sessionInstance) {
+    var ssoSessions = app.get(SESSION_MAP);
+    var sessionId = sessionInstance.getId();
+    if (!ssoSessions) {
+        app.put(SESSION_MAP, {});
+        ssoSessions = app.get(SESSION_MAP);
+        log.debug('Created session as session was not present');
+    }
+    if (!ssoSessions[sessionId]) {
+        ssoSessions[sessionId] = '';
+        log.debug('Added session: ' + sessionId + ' to session map');
+    } else {
+        log.warn('Session already exists in the session map');
+    }
+};
+
+
+switch (METHOD) {
+    case 'POST'://request method is POST
+        //TODO change the authorization model to oauth or a proper on
+        //this is a temporary authorization logic, will be finalized after discussions
+        var action = request.getParameter('action');
+        log.debug("user" +request.getParameter('username'))
+        log.debug("pass"+request.getParameter('password'));
+        if(action == "login"){
+            credentials.username = request.getParameter('username');
+            credentials.password = request.getParameter('password');
+            var isAuthenticated = user.login(credentials.username, credentials.password, session);
+            //Check if a username and password is provided
+            log.debug("username "+action);
+            if ((!credentials.username) || (!credentials.password)) {
+                response = buildErrorResponse(response, constants.STATUS_CODES.BAD_REQUEST, 'Username and Password must be provided');
+
+            } else {
+                var isAuthenticated = user.login(credentials.username, credentials.password, session);//authenticate the user
+                if (isAuthenticated) {
+                    session.put("LOGGED_IN_USER", credentials.username);
+                    session.put("logged.user", credentials.username);
+                    session.put("Logged", "true");
+                    
+                    //Add to the session map as it is required by the session listener
+                    var manager = jagg.module("manager");
+                    var provider = manager.getAPIProviderObj();
+                    result = provider.login(credentials.username, credentials.password);
+                    response = buildSuccessResponse(response, constants.STATUS_CODES.OK, {'sessionId': session.getId()});
+                } else {
+                    response = buildErrorResponse(response, constants.STATUS_CODES.UNAUTHORIZED, 'username/password is incorrect');
+                }
+            }
+        }else if (action == "logout"){
+            try {
+                var user = require('store').user;//get current user
+                user.logout();
+                session.invalidate();
+                response =  buildSuccessResponse(response, constants.STATUS_CODES.OK, {'message': 'User Logged out successfully'});
+            }
+            catch (e) {
+                response =  buildErrorResponse(response, constants.STATUS_CODES.INTERNAL_SERVER_ERROR, 'Unable to logout user!');
+            }
+        }
+        break;
+
+    default:// other methods       
+        result = buildErrorResponse(response, constants.STATUS_CODES.BAD_REQUEST, 'Your request malformed!');
+}
+
+
+/**
+     * Build Error response
+     * @param  resp     jaggery-response object to retrieve to client
+     * @param  code     status code
+     * @param  message  message to the client side
+     * @return return   response
+     */
+    function buildErrorResponse(resp,code,message) {
+        var content={};
+        content.error = message;
+        resp = processResponse(resp,code,content);
+        return resp;
+    };
+
+    /**
+     * Build success response
+     * @param  resp     jaggery response object
+     * @param  code     status code
+     * @param  data     the result to client
+     * @return return   response
+     */
+    function buildSuccessResponse(resp, code, data){
+        var content={};
+        content.data = data;
+        resp = processResponse(resp,code,content);
+        return resp;
+    };
+
+    /**
+     * process General response
+     * @param  resp  jaggery response
+     * @param  code  status code
+     * @param  data  success result
+     * @return resp  jaggery response
+     */
+    function buildSuccessResponseForRxt(resp, code, data){
+        resp.status = code;
+        resp.content = data;
+        return resp;
+    };
+
+    /**
+     * General response builder
+     * @param  resp     jaggery response
+     * @param  code     status code
+     * @param  content  what ever the content to be sent as response
+     * @return resp     jaggery response
+     */
+    function processResponse(resp, code, content){
+        resp.status = code;
+        resp.contentType = 'application/json';
+        resp.content = content;
+        return resp;
+
+    };
+
+    /**
+     *
+     * @param resp
+     * @param code
+     * @param data
+     * @return The http response
+     */
+    function buildSuccessResponseForRxt (resp, code, data){
+         resp.contentType = 'application/json';
+         resp.status = code;
+         resp.content = data;     
+         return resp;
+     };
+%>
