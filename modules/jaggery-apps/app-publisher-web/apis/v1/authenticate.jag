@@ -79,7 +79,6 @@ switch (METHOD) {
         //TODO change the authorization model to oauth or a proper on
         //this is a temporary authorization logic, will be finalized after discussions
         var action = request.getParameter('action');
-        log.debug("#######"+action);
         log.debug("user" +request.getParameter('username'))
         log.debug("pass"+request.getParameter('password'));
         if(action == "login"){
@@ -95,21 +94,14 @@ switch (METHOD) {
                 var isAuthenticated = user.login(credentials.username, credentials.password, session);//authenticate the user
                 if (isAuthenticated) {
                     session.put("LOGGED_IN_USER", credentials.username);
-                    log.debug("-------------------- Credentials : "+ stringify(credentials));
-                    log.debug("--------------------- UserName : "+ stringify(credentials.username));
                     session.put("logged.user", credentials.username);
-
                     session.put("Logged", "true");
-
+                    
                     //Add to the session map as it is required by the session listener
-
                     var manager = jagg.module("manager");
                     var provider = manager.getAPIProviderObj();
-
                     result = provider.login(credentials.username, credentials.password);
-
                     response = buildSuccessResponse(response, constants.STATUS_CODES.OK, {'sessionId': session.getId()});
-                     
                 } else {
                     response = buildErrorResponse(response, constants.STATUS_CODES.UNAUTHORIZED, 'username/password is incorrect');
                 }
