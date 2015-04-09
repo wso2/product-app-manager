@@ -30,13 +30,14 @@
 						<a class="btn btn-primary asset-reinstall-btn" type="{{../../key}}"  data-platform="{{../attributes.overview_platform}}" data-aid="{{../id}}" data-toggle="tooltip" title="{{t "Reinstall"}} {{../../key}}">
 							<i class="icon-mobile-phone"></i> Reinstall
 						</a>
+                        {{/compare}}
                         <br>
                         {{#if ../../../../selfUnsubscription}}
                         <a class="btn btn-danger asset-unsubscribe-btn" type="{{../../../key}}" data-name="{{../../attributes.overview_name}}"   data-platform="{{../../attributes.overview_platform}}" data-aid="{{../../id}}" >
                             <i class="icon-remove"></i> Uninstall
                         </a>
                          {{/if}}
-                        {{/compare}}
+
 					</div>
 				</div>
 			
