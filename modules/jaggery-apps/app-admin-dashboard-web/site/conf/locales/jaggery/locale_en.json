@@ -15,9 +15,9 @@
 
     "username": "Username",
     "password": "Password",
-    "login": "Login",
-    "logged": "Logged in as",
-    "logout": "Logout",
+    "login": "Sign in",
+    "logged": "Sign in as",
+    "logout": "Sign out",
     "cancel":"Cancel",
     "reset":"Reset",
 
