@@ -7,16 +7,16 @@
         mw = 10;
     }
 %>
-<div id="layout-base" class="container-fluid">
-    <div class="row-fluid">
+<div id="layout-base" class="container">
+    <div class="row">
         <% if(outputs.top) { %>
         <div id="top">
             <% jagg.includeBlocks(outputs.top); %>
         </div>
         <% } %>
         <div class="span12">
-            <div class="container-fluid spaceless-container">
-                <div class="row-fluid">
+            <div class="container">
+                <div class="row">
                     <% if(outputs.left) { %>
                     <div id="left" class="span2">
                         <% jagg.includeBlocks(outputs.left); %>
