@@ -1,6 +1,6 @@
 <%
 /*
- *  Copyright (c) 2005-2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *  Copyright (c) 2005-2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  *  WSO2 Inc. licenses this file to you under the Apache License,
  *  Version 2.0 (the "License"); you may not use this file except
@@ -79,15 +79,15 @@ switch (METHOD) {
         //TODO change the authorization model to oauth or a proper on
         //this is a temporary authorization logic, will be finalized after discussions
         var action = request.getParameter('action');
-        log.info("#######"+action);
-        log.info("user" +request.getParameter('username'))
-        log.info("pass"+request.getParameter('password'));
+        log.debug("#######"+action);
+        log.debug("user" +request.getParameter('username'))
+        log.debug("pass"+request.getParameter('password'));
         if(action == "login"){
             credentials.username = request.getParameter('username');
             credentials.password = request.getParameter('password');
             var isAuthenticated = user.login(credentials.username, credentials.password, session);
             //Check if a username and password is provided
-            log.info("username "+action);
+            log.debug("username "+action);
             if ((!credentials.username) || (!credentials.password)) {
                 response = buildErrorResponse(response, constants.STATUS_CODES.BAD_REQUEST, 'Username and Password must be provided');
 
@@ -95,8 +95,8 @@ switch (METHOD) {
                 var isAuthenticated = user.login(credentials.username, credentials.password, session);//authenticate the user
                 if (isAuthenticated) {
                     session.put("LOGGED_IN_USER", credentials.username);
-                    log.info("-------------------- Credentials : "+ stringify(credentials));
-                    log.info("--------------------- UserName : "+ stringify(credentials.username));
+                    log.debug("-------------------- Credentials : "+ stringify(credentials));
+                    log.debug("--------------------- UserName : "+ stringify(credentials.username));
                     session.put("logged.user", credentials.username);
 
                     session.put("Logged", "true");
