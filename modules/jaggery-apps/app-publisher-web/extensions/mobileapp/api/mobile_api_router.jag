@@ -17,13 +17,17 @@ require('/modules/publisher.js').exec(function(ctx) {
 
         var artifactManager = rxtManager.getArtifactManager("mobileapp");
 
-        var versionList=artifactManager.getAllAssetVersions(name);
 
+        searchOptions = name;
+
+        var  paging = {start: 0, count: 10, sort: 'recent'};
+
+        var versionList = artifactManager.search(searchOptions, paging);
 
         if(versionList.length > 0){
             var versions = "";
             for( i = 0; i < versionList.length; i++){
-                versions += versionList[i].version
+                versions += versionList[i].attributes.overview_version;
                 if(i < versionList){
                     version += ",";
                 }
@@ -35,6 +39,8 @@ require('/modules/publisher.js').exec(function(ctx) {
         }
 
     });
+
+
 
     routeManager.handle(request, response);
 
