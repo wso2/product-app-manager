@@ -870,3 +870,22 @@ legend + .control-group {
 .row-footer li:last-child {
     float: right;
 }
+
+.dropdown-submenu > a:hover, .dropdown-submenu > a:focus, .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .dropdown-submenu:hover > a, .dropdown-submenu:focus > a {
+    background: none repeat scroll 0 0 #ED6D49;
+    color: #FFFFFF;
+    text-shadow: none;
+}
+.login-sign-up li {
+    line-height: 40px;
+}
+#userMenu > .caret{
+    margin-top: 19px;
+    margin-left: 7px;
+    border-top: 4px solid #FFFFFF;
+}
+.custom-verticle > .dropdown-menu{
+    top: 16%;
+    left: 157px;
+    border-radius: 0px !important;
+}
