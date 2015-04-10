@@ -20,20 +20,35 @@ require('/modules/publisher.js').exec(function(ctx) {
 
         searchOptions = name;
 
-        var  paging = {start: 0, count: 10, sort: 'recent'};
+        var  paging = {};
 
-        var versionList = artifactManager.search(searchOptions, paging);
+        map = new java.util.HashMap();
+        list = new java.util.ArrayList();
+        list.add(name);
+        map.put('overview_name', list);
+
+        var versionList = artifactManager.manager.findGenericArtifacts(map);
 
         if(versionList.length > 0){
-            var versions = "";
-            for( i = 0; i < versionList.length; i++){
-                versions += versionList[i].attributes.overview_version;
-                if(i < versionList){
-                    version += ",";
+
+            var versionList = artifactManager.search(searchOptions, paging);
+            var originalName = "";
+
+            if(versionList.length > 0){
+                var versions = "";
+                for( i = 0; i < versionList.length; i++){
+                    versions += versionList[i].attributes.overview_version;
+                    originalName = versionList[i].attributes.overview_name;
+                    if(i < versionList){
+                        version += ",";
+                    }
                 }
+
+                print({isExist: true, versions : versions, name:originalName});
+            }else{
+                print({isExist: false});
             }
 
-            print({isExist: true, versions : versions});
         }else{
             print({isExist: false});
         }

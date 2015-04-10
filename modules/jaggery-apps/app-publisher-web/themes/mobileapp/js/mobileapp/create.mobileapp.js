@@ -20,6 +20,7 @@ $("#txtName").change(function() {
                 $("#name_is_ok").removeClass("icon-ok");
                 $("#name_is_ok").css("padding-left", "15px");
                 $("#name_is_ok").attr("title", "Mobile app name already exists");
+                $("#txtName").val(data.name);
 
             }else{
                 $("#name_is_ok").css("color", "#00ff00");
