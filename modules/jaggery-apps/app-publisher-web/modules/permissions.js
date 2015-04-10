@@ -13,7 +13,7 @@ var manager = jagg.module("manager").getAPIStoreObj();
      */
     var isLCActionsPermitted = function(username, resourcePath, userManager) {
         log.debug('###Checking permissions ###');
-        var roles = userManager.getRoleListOfUser(username);;
+        var roles = userManager.getRoleListOfUser(username);
         var action = 'authorize';
         var role;
         for (var index in roles) {

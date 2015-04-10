@@ -10,6 +10,7 @@ var checkeRole = function (username, session) {
 
     var apiUtil = Packages.org.wso2.carbon.appmgt.impl.utils.AppManagerUtil;
     var apiUtil = new apiUtil();
+    var ADMIN_ROLE = Packages.org.wso2.carbon.context.PrivilegedCarbonContext.getThreadLocalCarbonContext().getUserRealm().getRealmConfiguration().getAdminUserName();
 
 	if (!user.configs(usr.tenantId)) {
 		event.emit('tenantLoad', usr.tenantId);
@@ -29,6 +30,14 @@ var checkeRole = function (username, session) {
         }
 
         return true;
+    }
+
+    var roles = um.getRoleListOfUser(usr.username);
+
+    for (var index in roles) {
+        if(roles[index] == ADMIN_ROLE){
+            return true;
+        }
     }
 
     if (!(apiUtil.checkPermissionWrapper(usr.username, config.permissions.webapp_create)
