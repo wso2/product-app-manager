@@ -10,7 +10,7 @@ $(function(){
                 var statusText = $('#discover-create-asset-status #statusText');
                 statusText.removeClass('alert-error');
                 statusText.addClass('alert-info');
-                statusText.text('The Proxy Application ['+postData.overview_name+'] is successfully created with proxy context ['+postData.overview_name+']');
+                statusText.text('The Proxy Application ['+postData.overview_displayName+'] is successfully created with proxy context ['+postData.overview_name+']');
 
                 createServiceProvider(postData);
               },
@@ -168,8 +168,8 @@ $(function(){
                 if(statInfo.ok == 'true') {
                     var postData = getWebappCreationPostData();
                     importDiscoveredData(postData, statInfo.data);
-//                    alert(JSON.stringify(postData));
-                    doPostWebappCreation(postData);
+//                    console.log('Response received  ' +JSON.stringify(postData));
+                   doPostWebappCreation(postData);
                 }else{
                     alert(statInfo.message);
                 }

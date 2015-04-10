@@ -73,8 +73,12 @@ var api = {};
             return;
         }
 
-        var discover = new discover_client.DiscoverClient(null);
-        var discoverResult = discover.getApplicationData2(sessionData.serverUrl,
+        var discoverClient = session.get('DiscoverClient');
+        if(discoverClient == null) {
+            discoverClient = new discover_boot.DiscoverClient(null);
+            session.put('DiscoverClient', discoverClient);
+        }
+        var discoverResult = discoverClient.getApplicationData2(sessionData.serverUrl,
                     sessionData.serverUserName, sessionData.serverPassword,
                     shortName, "wso2as", applicationId);
         if(discoverResult.status.code == 0) {

@@ -4,15 +4,21 @@ var carbon=require('carbon');
 /*
 	Description: Encapsulates the web application management services to discover
 	the available applications
+
+	NOTE: [Dev] Objects created from this module is kept in the session. Please re-login if the
+	code is changed on this file while editing Jaggery App on-live.
+
 	Filename:discover.js
 	Created Date: 17/03/2015
 */
 
 var discover_client=function(){
     var log=new Log();
+    var cookies;
+    var hostPart;
 
-	function DiscoverClient(registry){
-		this.registry=registry;
+	function DiscoverClient(){
+	    hostPart = 'https://localhost'+":"+request.getLocalPort();
 	}
 
 	/*
@@ -26,19 +32,27 @@ var discover_client=function(){
                     {"userName" : userName, "appServerUrl" : serviceUrl, "password" : password ,
                     "loggedInUsername" : "admin"},
                    "searchCriteria" :
-                    {"applicationName" : "", "status" : "New", "pageNumber" : 0 }
+                    {"applicationName" : "", "status" : "New", "pageNumber" : pageNumber }
                    } ;
-        var url = 'https://localhost:9443/api/v1/apps/mobile/discovery/app/list/a';
+        var url = hostPart+'/api/v1/apps/mobile/discovery/app/list/a';
         try {
 
-        var xhr = new XMLHttpRequest();
+            var xhr = new XMLHttpRequest();
             xhr.open("POST", url);
             xhr.setRequestHeader("Content-Type", "application/json" );
+
+            if(cookies != null) {
+                xhr.setRequestHeader("Cookie", cookies );
+            }
             xhr.send(stringify(data));
 
             if(xhr.status === 200) {
                 var response = parse(xhr.responseText);
                 var result = this.convertToUiList(response);
+                var respCookies = xhr.getResponseHeader("Set-Cookie");
+                if(respCookies != null) {
+                    cookies = respCookies;
+                }
                 return result;
             } else {
                 var result = {"status": { "code": "0", "description":""}, "metadataList": []};
@@ -112,12 +126,7 @@ var discover_client=function(){
 	DiscoverClient.prototype.getApplicationData2=function(serviceUrl, userName, password,
         		appType, serverType, applicationId) {
 
-        var data = {"credentials" :
-                    {"userName" : userName, "appServerUrl" : serviceUrl, "password" : password ,
-                    "loggedInUsername" : "admin"},
-                   "searchCriteria" :
-                    {"applicationName" : applicationId, "status" : "New", "pageNumber" : 0 }
-                   } ;
+        var data = {"applicationId" : applicationId} ;
 
         var url = 'https://localhost:9443/api/v1/apps/mobile/discovery/app/info/a';
         try {
@@ -125,11 +134,15 @@ var discover_client=function(){
             var xhr = new XMLHttpRequest();
             xhr.open("POST", url);
             xhr.setRequestHeader("Content-Type", "application/json" );
+            if(cookies != null) {
+                xhr.setRequestHeader("Cookie", cookies );
+            }
             xhr.send(stringify(data));
             if(xhr.status === 200) {
                 var result = {"status": { "code": "0", "description":""}};
                 var data = parse(xhr.responseText);
                 result.data = data;
+                var respCookies = xhr.getResponseHeader("Set-Cookie");
                 return result;
             } else {
                 var result = {"status": { "code": "0", "description":""}, "metadataList": []};
