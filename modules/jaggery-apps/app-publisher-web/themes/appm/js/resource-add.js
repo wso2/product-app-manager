@@ -58,7 +58,6 @@ $( document ).ready(function() {
                     description: data[i].description
                 })
             }
-            updatePolicyPartial();
 
         },
         error: function () {
@@ -186,8 +185,6 @@ $( document ).ready(function() {
             if (RESOURCES[i].policyGroupId !== undefined && RESOURCES[i].policyGroupId !== '') {
                 $('#uritemplate_policyGroupId' + i).val(RESOURCES[i].policyGroupId);
             }
-
-            updatePolicyPartial();
 
         }
     });
