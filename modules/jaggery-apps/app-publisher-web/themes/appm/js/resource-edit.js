@@ -102,7 +102,6 @@ $( document ).ready(function() {
                     description: data[i].description
                 });
             }
-            updatePolicyPartial();
         },
         error: function () {
         }
@@ -175,7 +174,6 @@ $( document ).ready(function() {
             if (RESOURCES_1[i].policyGroupId !== undefined && RESOURCES_1[i].policyGroupId !== '') {
                 $('#uritemplate_policyGroupId' + i).val(RESOURCES_1[i].policyGroupId);
             }
-            updatePolicyPartial();
 
         }
     });
@@ -334,7 +332,6 @@ function loadPolicyGroupData(uuid) {
                             policyPartialsArray.push(obj);
                         }
                     }
-                    updatePolicyPartial();
                 },
                 error: function () {
                 }

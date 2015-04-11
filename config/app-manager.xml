@@ -81,7 +81,7 @@
 		to be appended to the JWT. If not specified no claims will be appended.
 		The DefaultClaimsRetriever class adds user claims from the default carbon user store.
 	-->
-	<!--ClaimsRetrieverImplClass>org.wso2.carbon.appmgt.impl.token.DefaultClaimsRetriever</ClaimsRetrieverImplClass-->
+	<ClaimsRetrieverImplClass>org.wso2.carbon.appmgt.impl.token.DefaultClaimsRetriever</ClaimsRetrieverImplClass>
 
 	<!--
 		The dialectURI under which the claimURIs that need to be appended to the

@@ -586,9 +586,7 @@ require('/modules/publisher.js').exec(function(ctx) {
                 //Save OAuth APIs consumer details per given web-app
                 appMDAOObj.addOAuthAPIAccessInfo(webAppObj, tenantId);
             }
-
-            saveExternalEntitlementPolicies(context.post);
-
+            
             var artifactManagerForUpdate = rxtManager.getSystemArtifactManager(shortName,session);
 
             if(originalArtifact.lifecycleState=="Approved") {
