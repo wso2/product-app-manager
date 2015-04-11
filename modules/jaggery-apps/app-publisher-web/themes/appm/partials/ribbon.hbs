@@ -25,7 +25,7 @@
                     Notifications <span class="caret"></span></a>
                 <ul class="dropdown-menu notifications" role="menu">
                     {{#each notifications}}
-                        <li><a href="{{this.url}}">Webapp <strong>{{this.appname}}</strong> has been rejected due to: {{this.notification}}</a></li>
+                        <li title="Webapp {{this.appname}} has been rejected due to: {{this.notification}}"><a href="{{this.url}}">Webapp <strong>{{this.appname}}</strong> has been rejected due to: {{this.notification}}</a></li>
                     {{/each}}
                 </ul>
             </li>
