@@ -98,7 +98,8 @@ $( document ).ready(function() {
                     policyPartialName: data[i].partialName,
                     policyPartial: data[i].partialContent,
                     isShared: data[i].isShared,
-                    author: data[i].author
+                    author: data[i].author,
+                    description: data[i].description
                 });
             }
         },
@@ -318,7 +319,6 @@ function loadPolicyGroupData(uuid) {
                 dataType: 'json',
                 async: false,
                 success: function (data) {
-
                     for (var i = 0; i < data.length; i++) {
                         var obj = {
                             id: data[i].partialId,
