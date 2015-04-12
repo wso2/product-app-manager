@@ -10,7 +10,7 @@
     "userCreation": "Pending User Creations",
     "appCreation": "Application Creation",
     "appPublishHeader": "Pending Published Applications",
-    "addXACMLRuleHeader" : "Add XACML Rule",
+    "addEntitlementPolicyHeader" : "Add Entitlement Policy",
 
     "username": "Username",
     "password": "Password",

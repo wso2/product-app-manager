@@ -41,7 +41,7 @@
                     <% } %>
                     <% if(request.getParameter("task")=="xacmlpolicy"){%>
                     <li>
-                    <a href="<%=listMappedUrl%>?tasks=xacmlpolicy" onclick="jagg.sessionAwareJS({redirect:'<%=listMappedUrl%>',e:event})"><%=i18n.localize("xacmlpolicyHeader")%></a>
+                    <a href="<%=listMappedUrl%>?tasks=xacmlpolicy" onclick="jagg.sessionAwareJS({redirect:'<%=listMappedUrl%>',e:event})"><%=i18n.localize("entitlementPoliciesHeader")%></a>
                     </li>
 
                     <% } %>

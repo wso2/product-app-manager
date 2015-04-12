@@ -10,7 +10,7 @@
     "userCreation": "User Creations",
     "appCreation": "Application Creation",
     "appPublishHeader": "Published Applications",
-    "xacmlpolicyHeader":"XACML Policy",
+    "entitlementPoliciesHeader":"Entitlement Policies",
     "cacheHitMissHeader":"Cache Hits/Miss",
 
     "username": "Username",

@@ -25,7 +25,7 @@
             <li <%if(request.getParameter("task")=="publishapp"){%>class="active"<% } %>><a href="<%=listMappedUrl%>?task=publishapp"  onclick="jagg.sessionAwareJS({redirect:'<%=listMappedUrl%>?task=ApprovePubApplication',e:event,ssoEnabled:<%=ssoEnabled%>})"><i class="icon-font"></i><br><%=i18n.localize("appPublishHeader")%></a></li>
         </ul>
      </li>
-        <li <%if(request.getParameter("task")=="xacmlpolicy"){%>class="active"<% } %>><a href="<%=listMappedUrl%>?task=xacmlpolicy"  onclick="jagg.sessionAwareJS({redirect:'<%=listMappedUrl%>?task=XACMLPolicy',e:event,ssoEnabled:<%=ssoEnabled%>})"><i class="icon-wrench"></i><br>XACMLPolicy</a></li>
+        <li <%if(request.getParameter("task")=="xacmlpolicy"){%>class="active"<% } %>><a href="<%=listMappedUrl%>?task=xacmlpolicy"  onclick="jagg.sessionAwareJS({redirect:'<%=listMappedUrl%>?task=XACMLPolicy',e:event,ssoEnabled:<%=ssoEnabled%>})"><i class="icon-wrench"></i><br><%=i18n.localize("entitlementPoliciesHeader")%></a></li>
         <li <%if(request.getParameter("task")=="cacheHitMiss"){%>class="active"<% } %>><a href="<%=listMappedUrl%>?task=cacheHitMiss"  onclick="jagg.sessionAwareJS({redirect:'<%=listMappedUrl%>?task=cacheHitMiss',e:event,ssoEnabled:<%=ssoEnabled%>})"><i class="icon-signal"></i><br>Cache Hit/Miss</a></li>
 
      </ul>
