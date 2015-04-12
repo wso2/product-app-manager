@@ -79,6 +79,7 @@ $(document).ready(function () {
                     id: data[i].partialId,
                     policyPartialName: data[i].partialName,
                     policyPartial: data[i].partialContent,
+                    ruleEffect: data[i].ruleEffect,
                     isShared: data[i].isShared,
                     author: data[i].author,
                     description: data[i].description
@@ -101,6 +102,7 @@ function resetControls() {
     $('#policy-name').prop("readonly", false);
     $('#policy-name').val("");
     $('#policy-name').select();
+    setSelectedRuleEffect('Deny');
 
 }
 
@@ -263,6 +265,7 @@ function savePolicyPartial() {
                     id: returnedId,
                     policyPartialName: policyPartialName,
                     policyPartial: ruleCondition,
+                    ruleEffect: ruleEffect,
                     isShared: isSharedPartial,
                     author: provider,
                     description: policyPartialDesc
@@ -309,11 +312,11 @@ function savePolicyPartial() {
 
                     var conf = confirm(msg);
                     if (conf == true) {
-                        updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, generatedRule, ruleCondition, isSharedPartial, policyPartialDesc);
+                        updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, generatedRule, ruleCondition, ruleEffect, isSharedPartial, policyPartialDesc);
                     }
                 }
                 else {
-                    updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, generatedRule, ruleCondition, isSharedPartial, policyPartialDesc);
+                    updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, generatedRule, ruleCondition, ruleEffect, isSharedPartial, policyPartialDesc);
                 }
 
 
@@ -330,7 +333,7 @@ function savePolicyPartial() {
 }
 
 
-function updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, generatedRule, ruleCondition, isSharedPartial, policyPartialDesc) {
+function updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, generatedRule, ruleCondition, ruleEffect, isSharedPartial, policyPartialDesc) {
     $.ajax({
         url: context + '/apis/xacmlpolicies/update',
         type: 'POST',
@@ -348,6 +351,7 @@ function updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, g
                     if (obj != null && obj.id == editedpolicyPartialId) {
                         policyPartialsArray[index].policyPartialName = policyPartialName;
                         policyPartialsArray[index].policyPartial = ruleCondition;
+                        policyPartialsArray[index].ruleEffect = ruleEffect;
                         policyPartialsArray[index].isShared = isSharedPartial;
                         policyPartialsArray[index].description = policyPartialDesc
 
@@ -395,6 +399,16 @@ function getSelectedRuleEffect(){
     return $('#rule-effects .active').data('effect');
 }
 
+function setSelectedRuleEffect(effect){
+    if(effect == "Deny"){
+        $('#btn-rule-effect-permit').removeClass('active');
+        $('#btn-rule-effect-deny').addClass('active');
+    }else if(effect == "Permit"){
+        $('#btn-rule-effect-deny').removeClass('active');
+        $('#btn-rule-effect-permit').addClass('active');
+    }
+}
+
 /**
 * Generates a XACML rule using the effect and the condition.
 *
@@ -420,6 +434,7 @@ $(document).on("click", ".policy-edit-button", function () {
             $('#policy-desc').val(obj.description);
             $('#policy-content').val(obj.policyPartial);
             editor.setValue(obj.policyPartial);
+            setSelectedRuleEffect(obj.ruleEffect);
 
         }
     });
