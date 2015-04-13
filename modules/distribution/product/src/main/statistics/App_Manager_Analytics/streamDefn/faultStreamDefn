@@ -1,7 +1,7 @@
 { 
                                          'name':'org_wso2_appmgt_statistics_fault', 
                                          'version':'1.0.0', 
-                                         'nickName': 'API Manager Fault Data', 
+                                         'nickName': 'App Manager Fault Data', 
                                          'description': 'Fault Data', 
                                          'metaData':[ 
                                                  {'name':'clientType','type':'STRING'} 
