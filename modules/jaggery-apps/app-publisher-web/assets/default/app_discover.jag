@@ -127,6 +127,8 @@ routeMnger.register('POST', 'publisher', '/publisher/assets/{operation}/{type}/'
                     var serverUrl = request.getParameter('serverUrl');
                     var serverUserName = request.getParameter('serverUserName');
                     serverPassword = request.getParameter('serverPassword');
+                    var appNameStartsWith = request.getParameter('appNameStartsWith');
+                    //var appStatus = request.getParameter('appStatus');
 
                     //Remember the server connection details in session
                     sessionData.serverUrl = serverUrl;
@@ -135,6 +137,8 @@ routeMnger.register('POST', 'publisher', '/publisher/assets/{operation}/{type}/'
                     sessionData.currentPage = 1;
                     sessionData.leftNav= 1;
                     sessionData.rightNav =1;
+                    sessionData.appNameStartsWith = appNameStartsWith;
+                    //sessionData.appStatus = appStatus;
                 }
                 if(page == null) {
                     page = sessionData.currentPage;
@@ -142,7 +146,8 @@ routeMnger.register('POST', 'publisher', '/publisher/assets/{operation}/{type}/'
 
                 var currIndex = page - 1;
                 var appsWrapper = discoverClient.discoverWebapps(sessionData.serverUrl,
-                    sessionData.serverUserName, serverPassword, currIndex);
+                    sessionData.serverUserName, serverPassword, currIndex, sessionData.appStatus,
+                    sessionData.appNameStartsWith);
                 discoveredArtifacts = appsWrapper.metadataList;
                 status = appsWrapper.status;
                 sessionData.currentPage = page;
@@ -162,7 +167,7 @@ routeMnger.register('POST', 'publisher', '/publisher/assets/{operation}/{type}/'
 routeMnger.register('GET', 'publisher', '/publisher/assets/{operation}/{type}/', function (context) {
     var operation = (context.params.operation) || '';
     var type = context.params.type;
-    var page = request.getParameter("page")
+    var page = request.getParameter("page");
     if (operation == 'discover') {
         var discoveredArtifacts;
         var status = {"code" : 200, "description" : "Please enter Server Credentials and press Discover button"};
@@ -183,10 +188,10 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{operation}/{type}/',
         try {
             if(discoverClient != null && sessionData != null) {
                 var appsWrapper = discoverClient.discoverWebapps(sessionData.serverUrl,
-                                sessionData.serverUserName, null, currIndex);
+                                sessionData.serverUserName, null, currIndex, sessionData.appStatus,
+                                sessionData.appNameStartsWith);
                 discoveredArtifacts = appsWrapper.metadataList;
                 status = appsWrapper.status;
-
                 createPaginationInfo(appsWrapper, sessionData, currIndex);
             }
             caramel.render({op: 'app_discover', cuser: server.current(session),shortName: type,

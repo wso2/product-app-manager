@@ -84,6 +84,7 @@ var api = {};
         if(discoverResult.status.code == 0) {
             var applicationMetaData = discoverResult.data;
             applicationMetaData.providerName = loggedInUser;
+            applicationMetaData.proxyContext = proxyContext;
 
             result = {ok: 'true', message: 'Asset added', applicationId : applicationMetaData.overview_name,
                     appName : applicationMetaData.overview_displayName,

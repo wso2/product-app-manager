@@ -6,8 +6,8 @@ $(function(){
               url: '/publisher/api/asset/webapp',
               type: "POST", data: postData, async:false, dataType : 'json',
               success: function (response) {
-                $('#discover-create-asset-status').modal('show');
-                var statusText = $('#discover-create-asset-status #statusText');
+                jQuery('#discover-create-asset-status').modal('show');
+                var statusText = jQuery('#discover-create-asset-status #statusText');
                 statusText.removeClass('alert-error');
                 statusText.addClass('alert-info');
                 statusText.text('The Proxy Application ['+postData.overview_displayName+'] is successfully created with proxy context ['+postData.overview_name+']');
@@ -15,11 +15,12 @@ $(function(){
                 createServiceProvider(postData);
               },
               error: function (response) {
-                var statusText = $('#discover-create-asset-status #statusText');
+                var statusText = jQuery('#discover-create-asset-status #statusText');
                 statusText.removeClass('alert-info');
                 statusText.addClass('alert-error');
+                jQuery('#gridSystemModalLabel').text('Application Creation Failed');
                 statusText.text('Failed to create the application ['+postData.overview_name+']. Please consult server administrator for more information.');
-                $('#discover-create-asset-status').modal('show');
+                jQuery('#discover-create-asset-status').modal('show');
               }
           }, 'json');
     }
@@ -125,66 +126,61 @@ $(function(){
         sso_config.app_context = data.overview_context;
         sso_config.app_provider = data.overview_provider;
         sso_config.app_allowAnonymous=data.overview_allowAnonymous;
-//        alert(JSON.stringify(data));
-            $.ajax({
-                    url: '/publisher/api/sso/addConfig',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data:JSON.stringify(sso_config),
-                    success: function(response) {
-                        $('#discover-create-asset-status #statusText').
-                            text('Created the Application and SSO:'+sso_config.app_name);
-                    },
-                    error: function(response) {
-                        $('#discover-create-asset-status #statusText').
-                            text('Failed adding SSO to the Application:'+sso_config.app_name);
-                    }
-            });
+        jQuery.ajax({
+                url: '/publisher/api/sso/addConfig',
+                type: 'POST',
+                contentType: 'application/json',
+                data:JSON.stringify(sso_config),
+                success: function(response) {
+                    jQuery('#discover-create-asset-status #statusText').
+                        text('The Proxy Application ['+data.overview_displayName+'] is successfully created with proxy context ['+data.overview_context+']');
+                    jQuery('#gridSystemModalLabel').text('Application Creation Successful');
+                },
+                error: function(response) {
+                    jQuery('#discover-create-asset-status #statusText').
+                        text('Failed adding SSO to the Application:'+sso_config.app_name);
+                    jQuery('#gridSystemModalLabel').text('Application Creation Failed');
+                }
+        });
     };
 
-    $(".btn-create-discovered" ).click(function(e) {
+    jQuery(".btn-create-discovered" ).click(function(e) {
         var $this = $(this);
         var app = $this.data("app");
         var action = $this.data("action");
         var id = $this.data("id")
 
         //proxy context entered
-        var proxyContext = $('#proxy-context-'+id).val();
+        var proxyContext = jQuery('#proxy-context-'+id).val();
 
         var postData = {"proxy_context_path" : proxyContext};
         if(action=="Reject") {
             showCommentModel("Reason for Rejection",action,app);
         }else{
 
-
-        //$('#discover-create-asset-status').modal('show');
-        jQuery.ajax({
-            url: '/publisher/api/discover/asset/loadCreatableAsset/webapp/'+id,
-            type: "POST", data: postData, async:false, dataType : 'json',
-            success: function (response) {
-                $('#discover-create-asset-status #statusText').text('Application is being imported...');
-                //Convert the response to a JSON object
-                var statInfo = response.data;
-                if(statInfo.ok == 'true') {
-                    var postData = getWebappCreationPostData();
-                    importDiscoveredData(postData, statInfo.data);
-//                    console.log('Response received  ' +JSON.stringify(postData));
-                   doPostWebappCreation(postData);
-                }else{
-                    console.log('Error in the serve: '+statInfo.message);
+            jQuery.ajax({
+                url: '/publisher/api/discover/asset/loadCreatableAsset/webapp/'+id,
+                type: "POST", data: postData, async:false, dataType : 'json',
+                success: function (response) {
+                    jQuery('#discover-create-asset-status #statusText').text('Application is being imported...');
+                    //Convert the response to a JSON object
+                    var statInfo = response.data;
+                    if(statInfo.ok == 'true') {
+                        var postData = getWebappCreationPostData();
+                        importDiscoveredData(postData, statInfo.data);
+                       doPostWebappCreation(postData);
+                    }else{
+                        console.log('Error in the serve: '+statInfo.message);
+                    }
+                },
+                error: function (response) {
+                    var statusText = jQuery('#discover-create-asset-status #statusText');
+                    statusText.removeClass('alert-info');
+                    statusText.addClass('alert-error');
+                    statusText.text('Failed to create the application.');
+                    jQuery('#gridSystemModalLabel').text('Application Creation Failed');
                 }
-            },
-            error: function (response) {
-                var statusText = $('#discover-create-asset-status #statusText');
-                statusText.removeClass('alert-info');
-                statusText.addClass('alert-error');
-                statusText.text('Failed to create the application.');
-                $('#discover-create-asset-status #info-table').hide();
-    //            $('#discover-create-asset-status #errorInfo').html(response.responseText);
-            }
-        }, 'json');
-
-
+            }, 'json');
         }
         e.stopPropagation();
     });

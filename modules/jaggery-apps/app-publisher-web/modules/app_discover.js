@@ -26,13 +26,13 @@ var discover_client=function(){
 
 
     */
-    DiscoverClient.prototype.discoverWebapps=function(serviceUrl, userName, password, pageNumber){
-
+    DiscoverClient.prototype.discoverWebapps=function(serviceUrl, userName, password, pageNumber,
+                appStatus, appNameStartsWith){
         var data = {"credentials" :
                     {"userName" : userName, "appServerUrl" : serviceUrl, "password" : password ,
                     "loggedInUsername" : "admin"},
                    "searchCriteria" :
-                    {"applicationName" : "", "status" : "New", "pageNumber" : pageNumber }
+                    {"applicationName" : appNameStartsWith, "status" : appStatus, "pageNumber" : pageNumber }
                    } ;
         var url = hostPart+'/api/v1/apps/mobile/discovery/app/list/a';
         try {

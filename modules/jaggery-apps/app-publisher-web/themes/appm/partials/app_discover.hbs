@@ -34,6 +34,14 @@
                        class="form-control" value="{{sessionData.serverPassword}}">
             </div>
         </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Context (Starts With) </label>
+
+            <div class="col-sm-6">
+                <input type='text' id='app-name' name='appNameStartsWith'
+                       class="form-control" value="{{sessionData.appNameStartsWith}}">
+            </div>
+        </div>
         <div class="form-horizontal form-group" id="discoverButtons">
             <button id="btn-discover-asset" class="btn btn-primary pull-left push-15" name="discoverAssetsButton">Discover</button>
             <input type="hidden" value="discoverAssets" name="discoveryAction" id="meta-asset-type">
