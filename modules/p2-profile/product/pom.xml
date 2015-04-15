@@ -573,7 +573,7 @@
 				<!--<featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.bam.toolbox.deployer.feature:4.2.2
                                 </featureArtifactDef>-->
-				<featureArtifactDef>org.wso2.store.modules:ues.feature:${snapshot.feature.version}</featureArtifactDef>
+				<!--featureArtifactDef>org.wso2.store.modules:ues.feature:${snapshot.feature.version}</featureArtifactDef-->
 				<featureArtifactDef>org.wso2.store.modules:store.feature:${snapshot.feature.version}</featureArtifactDef>
 				<featureArtifactDef>org.jaggeryjs.modules:handlebars.feature:1.0.0</featureArtifactDef>
 				<featureArtifactDef>org.wso2.store.modules:login.feature:${snapshot.feature.version}</featureArtifactDef>
@@ -1193,10 +1193,10 @@
                                     <id>org.wso2.carbon.bam.toolbox.deployer.feature.group</id>
                                     <version>4.2.2</version>
                                 </feature>-->
-				<feature>
+				<!--feature>
                                     <id>org.wso2.store.modules.ues.feature.group</id>
                                     <version>${snapshot.feature.version}</version>
-                                </feature>
+                                </feature-->
 				<feature>
                                     <id>org.wso2.store.modules.login.feature.group</id>
                                     <version>${snapshot.feature.version}</version>

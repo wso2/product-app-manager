@@ -5,32 +5,15 @@ var tasks=outputs.tasks;
     <div class="title-section">
         <h2>Web Application Statistics - Cache Hits/Miss</h2>
     </div>
-
     <div class="content-section shadow-up">
-
         <div class="content-data">
-
-
-
-
-
-
-
                 <input type="hidden" id="page" value="6">
                 <div class="content-div">
-                    <div class="row-fluid">
                         <div class="row">
-
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2 left-nav">
-
-                            </div>
-                            <div class="col-md-10 asset-view-container">
-
+                            <div class="span10 asset-view-container">
                                 <div>
                                     <div id="rangeSliderWrapper1" class="well">
-                                        <div class="row-fluid">
+                                        <div class="row">
                                             <div id="dateRangePickerContainer">
                                                 <div class="btn-group" role="group">
                                                     <button id="hour-btn" type="button" class="btn btn-default date-range">Hour</button>
@@ -50,7 +33,6 @@ var tasks=outputs.tasks;
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
-
                                 <div class="widget">
                                     <div class="widget-content">
                                         <div id="spinner" class="center-wrapper">
@@ -69,22 +51,9 @@ var tasks=outputs.tasks;
                                 </div>
                             </div>
                         </div>
-                    </div>
+
                 </div>
                 <div class="backdrop"></div>
-
-
-
-
-
-
-
-
-
-
-
-
-
         </div>
     </div>
 </div>

@@ -16,9 +16,9 @@ require('/modules/store.js').exec(function (ctx) {
             subscriptions = {},
             subscription = false,
             avaliablePages,
-            mdmConfig = new Packages.org.wso2.carbon.appmgt.mobile.store.MDMConfig();
+            mdmConfig = parse(String((new Packages.org.wso2.carbon.appmgt.mobile.store.MDMConfig()).getConfigs()));
 
-            var mdmUIConfig  = {enabled : mdmConfig.isMDMEnabled()};
+            var mdmUIConfig  = {enabled : mdmConfig.Enabled};
 
 
     caramel = require('caramel');

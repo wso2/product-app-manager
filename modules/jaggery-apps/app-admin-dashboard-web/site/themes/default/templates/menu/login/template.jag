@@ -1,13 +1,12 @@
 <% jagg.template("menu/login", function(inputs, outputs, jagg) { %>
-<div class="container-fluid login-header">
-  <div class="row-fluid">
+<div class="container login-header">
+  <div class="row">
       <div class="span2 logo-section">
-          <a class="brand"><img src="<%=jagg.getAbsoluteUrl(jagg.getThemeFile("images/logo.png"))%>" alt="API PROVIDER"></a>
+          <a class="brand"><img src="<%=jagg.getAbsoluteUrl(jagg.getThemeFile("images/logo.png"))%>"
+          alt="AppManager"></a>
       </div>
       <div class="span10 menu-back">
-          <div class="menu-content">
-
-          </div>
+          <div class="menu-content"></div>
       </div>
   </div>
 </div>

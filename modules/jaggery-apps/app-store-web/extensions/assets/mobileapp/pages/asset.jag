@@ -14,22 +14,22 @@ require('/modules/store.js').exec(function (ctx) {
             inDashboard = false,
             utility = require('/modules/util.js'),
             mdm = require('/extensions/assets/mobileapp/modules/mdm.js').module,
-            mdmConfig = new Packages.org.wso2.carbon.appmgt.mobile.store.MDMConfig();
+            mdmConfig = parse(String((new Packages.org.wso2.carbon.appmgt.mobile.store.MDMConfig()).getConfigs()));
             devicesClass = new Packages.org.wso2.carbon.appmgt.mobile.store.Devices();
 
-    caramel = require('caramel');
+        caramel = require('caramel');
 
-        var mdmUIConfig  = {enabled : mdmConfig.isMDMEnabled()};
+        var mdmUIConfig  = {enabled : mdmConfig.Enabled};
 
 
     var isEnterpriseInstallEnabled = false;
 
-    if(user && mdmConfig.isEnterpriseOperationsEnabled()){
+    if(user && mdmConfig.EnterpriseOperations_Enabled){
         var server = require('store').server;
         var um = new carbon.user.UserManager(server, tenantId);
         var userRoles = um.getRoleListOfUser(user.username);
         for(var i = 0; i < userRoles.length; i++){
-            if(userRoles[i] == mdmConfig.getEnterpriseAuthorizedRole()){
+            if(userRoles[i] == mdmConfig.EnterpriseOperations_AuthorizedRole){
                 isEnterpriseInstallEnabled = true;
                 break;
             }
@@ -55,7 +55,7 @@ require('/modules/store.js').exec(function (ctx) {
     var rxtAttributes = utility.getRXTAttributes(tenantId, type);
 
     var devices = [];
-        if(user != null && mdmConfig.isMDMEnabled()){
+        if(user != null && mdmConfig.Enabled){
                 devices =  parse(String(devicesClass.getDevicesList(stringify(user), user.tenantId, "user", [user.username])));
         }
 

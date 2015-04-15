@@ -14,10 +14,10 @@ require('/modules/store.js').exec(function (ctx) {
             types = store.assetTypes(),
             utility = require('/modules/util.js'),
             mdm = require('/extensions/assets/mobileapp/modules/mdm.js').module,
-            mdmConfig = new Packages.org.wso2.carbon.appmgt.mobile.store.MDMConfig(),
+            mdmConfig = parse(String((new Packages.org.wso2.carbon.appmgt.mobile.store.MDMConfig()).getConfigs()));
             devicesClass = new Packages.org.wso2.carbon.appmgt.mobile.store.Devices();
 
-        var mdmUIConfig  = {enabled : mdmConfig.isMDMEnabled()};
+     var mdmUIConfig  = {enabled : mdmConfig.Enabled};
 
 
     if(!mdmUIConfig.enabled) {
@@ -25,9 +25,11 @@ require('/modules/store.js').exec(function (ctx) {
         return;
     }
 
+    var selfUnsubscription = mdmConfig.EnableSelfUnsubscription;
+
 
      var devices = [];
-        if(user != null && mdmConfig.isMDMEnabled()){
+        if(user != null && mdmConfig.Enabled){
                 devices =  parse(String(devicesClass.getDevicesList(stringify(user), user.tenantId, "user", [user.username])));
         }
 
@@ -73,6 +75,7 @@ require('/modules/store.js').exec(function (ctx) {
         userAssets: count > 0 ? subscriptions : null,
         recentAssets: recentAssets,
         myAssets: { user: user, type: type, title: title},
+        selfUnsubscription : selfUnsubscription,
         tags: tags
     });
 }, request, response, session);

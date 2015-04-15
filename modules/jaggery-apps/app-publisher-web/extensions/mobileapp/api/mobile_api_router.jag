@@ -17,24 +17,45 @@ require('/modules/publisher.js').exec(function(ctx) {
 
         var artifactManager = rxtManager.getArtifactManager("mobileapp");
 
-        var versionList=artifactManager.getAllAssetVersions(name);
 
+        searchOptions = name;
+
+        var  paging = {};
+
+        map = new java.util.HashMap();
+        list = new java.util.ArrayList();
+        list.add(name);
+        map.put('overview_name', list);
+
+        var versionList = artifactManager.manager.findGenericArtifacts(map);
 
         if(versionList.length > 0){
-            var versions = "";
-            for( i = 0; i < versionList.length; i++){
-                versions += versionList[i].version
-                if(i < versionList){
-                    version += ",";
+
+            var versionList = artifactManager.search(searchOptions, paging);
+            var originalName = "";
+
+            if(versionList.length > 0){
+                var versions = "";
+                for( i = 0; i < versionList.length; i++){
+                    versions += versionList[i].attributes.overview_version;
+                    originalName = versionList[i].attributes.overview_name;
+                    if(i < versionList){
+                        version += ",";
+                    }
                 }
+
+                print({isExist: true, versions : versions, name:originalName});
+            }else{
+                print({isExist: false});
             }
 
-            print({isExist: true, versions : versions});
         }else{
             print({isExist: false});
         }
 
     });
+
+
 
     routeManager.handle(request, response);
 

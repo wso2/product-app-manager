@@ -98,10 +98,10 @@ $( document ).ready(function() {
                     policyPartialName: data[i].partialName,
                     policyPartial: data[i].partialContent,
                     isShared: data[i].isShared,
-                    author: data[i].author
+                    author: data[i].author,
+                    description: data[i].description
                 });
             }
-            updatePolicyPartial();
         },
         error: function () {
         }
@@ -174,7 +174,6 @@ $( document ).ready(function() {
             if (RESOURCES_1[i].policyGroupId !== undefined && RESOURCES_1[i].policyGroupId !== '') {
                 $('#uritemplate_policyGroupId' + i).val(RESOURCES_1[i].policyGroupId);
             }
-            updatePolicyPartial();
 
         }
     });
@@ -320,7 +319,6 @@ function loadPolicyGroupData(uuid) {
                 dataType: 'json',
                 async: false,
                 success: function (data) {
-
                     for (var i = 0; i < data.length; i++) {
                         var obj = {
                             id: data[i].partialId,
@@ -334,7 +332,6 @@ function loadPolicyGroupData(uuid) {
                             policyPartialsArray.push(obj);
                         }
                     }
-                    updatePolicyPartial();
                 },
                 error: function () {
                 }

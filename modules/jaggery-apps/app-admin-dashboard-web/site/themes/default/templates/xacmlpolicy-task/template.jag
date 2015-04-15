@@ -2,7 +2,7 @@
     var tasks = outputs.tasks;
     %>
      <div class="title-section">
-       <h2><%=i18n.localize("addXACMLRuleHeader")
+       <h2><%=i18n.localize("addEntitlementPolicyHeader")
     %></h2>
           </div>
 

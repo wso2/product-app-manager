@@ -349,6 +349,7 @@ var drawAPIUsageByPage = function (response) {
                     align: "center",
                     barWidth: 0.5,
                     horizontal: true,
+                    tickDecimals: 0
                 }
             },
 
@@ -364,6 +365,7 @@ var drawAPIUsageByPage = function (response) {
                 axisLabelUseCanvas: false,
                 axisLabel: "<b>Total Request</b>",
                 axisLabelPadding: 10,
+                tickDecimals: 0
 
             },
             legend: {
