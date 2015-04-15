@@ -6,7 +6,7 @@ var api = {};
 
     var log= new Log();
 
-    var discover_client = require('/modules/discover.js').discover_client();
+    var discover_client = require('/modules/app_discover.js').discover_client();
 
     var msg = function(code, message, data) {
         var obj = {};

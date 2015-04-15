@@ -15,7 +15,7 @@ include("/extensions/webapp/modules/jagg/jagg.jag");
     var utils = require('utils');
     var responseProcessor = utils.response;
 
-       var api = require('/modules/discover-api.js').api;
+       var api = require('/modules/app_discover_api.js').api;
 
        var pattern = '/{context}/api/discover/asset/{action}/{appType}/{appId}';
        var uriMatcher = new URIMatcher(ctx.request.getRequestURI());

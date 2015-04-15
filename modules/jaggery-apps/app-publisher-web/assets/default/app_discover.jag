@@ -17,8 +17,7 @@ var server = require('store').server;
 var publisher = require('/modules/publisher.js').publisher(request, session);
 
 var routeMnger = new router.Router();
-var discover_boot = require('/modules/discover.js').discover_client();
-
+var discover_boot = require('/modules/app_discover.js').discover_client();
 
 var log=new Log();
 
@@ -97,7 +96,6 @@ var createPaginationInfo = function(appsWrapper, sessionData, currentPageIndex) 
 routeMnger.register('POST', 'publisher', '/publisher/assets/{operation}/{type}/', function (context) {
     var operation = (context.params.operation) || '';
     var type = context.params.type;
-
     if (operation == 'discover') {
             var query = request.getParameter("query");
             var sortby = request.getParameter("sortby");
@@ -143,7 +141,6 @@ routeMnger.register('POST', 'publisher', '/publisher/assets/{operation}/{type}/'
                 }
 
                 var currIndex = page - 1;
-                log.debug('--------------- SP2 '+serverPassword);
                 var appsWrapper = discoverClient.discoverWebapps(sessionData.serverUrl,
                     sessionData.serverUserName, serverPassword, currIndex);
                 discoveredArtifacts = appsWrapper.metadataList;
@@ -152,7 +149,7 @@ routeMnger.register('POST', 'publisher', '/publisher/assets/{operation}/{type}/'
 
                 createPaginationInfo(appsWrapper, sessionData, currIndex);
 
-                caramel.render({op: operation,cuser: server.current(session),shortName: type,
+                caramel.render({op: 'app_discover',cuser: server.current(session),shortName: type,
                      title: type, discoveredArtifacts : discoveredArtifacts, status: status,
                      sessionData: sessionData});
 
@@ -166,7 +163,6 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{operation}/{type}/',
     var operation = (context.params.operation) || '';
     var type = context.params.type;
     var page = request.getParameter("page")
-
     if (operation == 'discover') {
         var discoveredArtifacts;
         var status = {"code" : 200, "description" : "Please enter Server Credentials and press Discover button"};
@@ -193,8 +189,7 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{operation}/{type}/',
 
                 createPaginationInfo(appsWrapper, sessionData, currIndex);
             }
-
-            caramel.render({op: operation,cuser: server.current(session),shortName: type,
+            caramel.render({op: 'app_discover', cuser: server.current(session),shortName: type,
                  title: type, discoveredArtifacts : discoveredArtifacts, status: status,
                  sessionData: sessionData});
 

@@ -171,7 +171,7 @@ $(function(){
 //                    console.log('Response received  ' +JSON.stringify(postData));
                    doPostWebappCreation(postData);
                 }else{
-                    alert(statInfo.message);
+                    console.log('Error in the serve: '+statInfo.message);
                 }
             },
             error: function (response) {
