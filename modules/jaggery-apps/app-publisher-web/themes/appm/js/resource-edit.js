@@ -149,9 +149,6 @@ $( document ).ready(function() {
         var i = $(this).attr("data-index");
         RESOURCES_1.splice(i, 1);
 
-        // Invalidate relevant entitlement policy
-        invalidateEntitlementPolicy(i);
-
         $("#resource_tbody").trigger("draw");
     });
 
