@@ -1,12 +1,18 @@
 {{#with asset}}
     {{#attributes}}
         {{#if ../../inDashboard}}
-
+            {{#if ../../../isDeviceSubscriptionEnabled}}
             <a id="btn-add-gadget" class="btn btn-primary" href="#modal-add-gadget"
                data-toggle="modal"
-               data-app="{{../../id}}"
-               data-platform="{{../../attributes.overview_platform}}"
-               data-aid="{{../../id}}" data-type="{{../../type}}"> {{t "Installed"}}</a>
+               data-app="{{../../../id}}"
+               data-platform="{{../../../attributes.overview_platform}}"
+               data-aid="{{../../../id}}" data-type="{{../../../type}}"> {{t "Installed"}}</a>
+            {{else}}
+                <a id="btn-add-gadget-disabled" class="btn disabled"
+                   data-app="{{../../../id}}"
+                   data-platform="{{../../../attributes.overview_platform}}"
+                   data-aid="{{../../../id}}" data-type="{{../../../type}}"> {{t "Installed"}}</a>
+            {{/if}}
 
             {{#if ../../../isEnterpriseInstallEnabled}}
                 <a id="btn-ent-install" class="btn btn-primary" href="#modal-ent-install"
@@ -22,19 +28,28 @@
 
             {{#if ../../../sso}}
                 {{#if ../../../../user.username}}
+                    {{#if ../../../../../isDeviceSubscriptionEnabled}}
                     <a id="btn-add-gadget" class="btn btn-primary" href="#modal-add-gadget"
                        data-toggle="modal"
-                       data-app="{{../../../../id}}"
-                       data-aid="{{../../../../id}}"
-                       data-platform="{{../../../../attributes.overview_platform}}"
-                       data-type="{{../../../../type}}"> {{t "Install "}}</a>
+                       data-app="{{../../../../../id}}"
+                       data-aid="{{../../../../../id}}"
+                       data-platform="{{../../../../../attributes.overview_platform}}"
+                       data-type="{{../../../../../type}}"> {{t "Install"}}</a>
+                    {{else}}
+                        <a id="btn-add-gadget-install" class="btn btn-primary" href="#modal-add-gadget"
+                           data-toggle="modal"
+                           data-app="{{../../../../../id}}"
+                           data-aid="{{../../../../../id}}"
+                           data-platform="{{../../../../../attributes.overview_platform}}"
+                           data-type="{{../../../../../type}}"> {{t "Install"}}</a>
+                     {{/if}}
                 {{else}}
                     <a id="btn-add-gadget" class="btn btn-primary" href="{{url "/login"}}"
                        data-toggle="modal"
                         data-app="{{../../../../id}}"
                        data-aid="{{../../../../id}}"
                        data-platform="{{../../../../attributes.overview_platform}}"
-                       data-type="{{../../../../type}}"> {{t "Install "}}</a>
+                       data-type="{{../../../../type}}"> {{t "Install"}}</a>
                 {{/if}}
 
                 {{#if ../../../../isEnterpriseInstallEnabled}}

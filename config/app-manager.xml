@@ -601,7 +601,8 @@
 
 		<MDMConfig>
 
-		   <Config name="Enabled">false</Config>
+		   <Config name="Enabled">true</Config>
+   		   <Config name="EnableSubscriptionFromDevices">false</Config>	
 		   <Config name="EnableSampleDevices">false</Config>
 		   <Config name="AppDownloadURLHost">%http%</Config>
                    <Config name="ActiveMDM">WSO2EMM</Config>

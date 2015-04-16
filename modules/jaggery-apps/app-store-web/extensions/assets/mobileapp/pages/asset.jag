@@ -24,6 +24,9 @@ require('/modules/store.js').exec(function (ctx) {
 
     var isEnterpriseInstallEnabled = false;
 
+    var isDeviceSubscriptionEnabled = mdmConfig.EnableSubscriptionFromDevices == "true" ? true : false;
+
+
     if(user && mdmConfig.EnterpriseOperations_Enabled){
         var server = require('store').server;
         var um = new carbon.user.UserManager(server, tenantId);
@@ -67,6 +70,7 @@ require('/modules/store.js').exec(function (ctx) {
         sso: sso,
         devices: devices,
         isEnterpriseInstallEnabled: isEnterpriseInstallEnabled,
+        isDeviceSubscriptionEnabled : isDeviceSubscriptionEnabled,
         header: site.header(tenantId, {
             sso: sso,
             user: user

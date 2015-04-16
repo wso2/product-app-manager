@@ -197,12 +197,15 @@ $(function () {
 		}else{			
 			performInstalltion(device, appToInstall);
 		}
-		
-       
-       
-       
        
     });
+
+    $('#btn-add-gadget-install').click(function () {
+        appToInstall = $(this).data("app");
+        performInstalltionUser(appToInstall);
+
+    });
+
 
     $("a[data-toggle='tooltip']").tooltip();
 
