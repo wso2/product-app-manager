@@ -1,10 +1,50 @@
 $(function(){
+    /**
+    * Save policy group
+    * @param policyGroupName :Policy Group Name
+    * @param throttlingTier :Throttling Tier
+    * @param anonymousAccessToUrlPattern : if anonymous access allowed for the related url pattern/verb
+    * @param userRoles : User Roles
+    * @param appliedXacmlRules : Applied XACML rules.
+    * @param policyGroupDesc : Policy Group DEscription
+    */
+    function insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUrlPattern,
+            userRoles, appliedXacmlRules ,policyGroupDesc, onSuccess, postData) {
+       console.log('Policy grorup '+policyGroupName);
+       jQuery.ajax({
+           async: true,
+           url: '/publisher/api/entitlement/policy/partial/policyGroup/save',
+           type: 'POST',
+           data: {
+               "policyGroupName": policyGroupName,
+               "throttlingTier": throttlingTier,
+               "userRoles": userRoles,
+               "anonymousAccessToUrlPattern": anonymousAccessToUrlPattern,
+               "objPartialMappings": JSON.stringify(appliedXacmlRules),
+               "policyGroupDesc" :policyGroupDesc
+           },
+           success: function (data) {
+               console.log(data);
+               var editedPolicyGroupResp = JSON.parse(data);
+               if(editedPolicyGroupResp.success) {
+                console.log('Policy group '+editedPolicyGroupResp.response.id);
+                postData.uritemplate_policyGroupIds = '['+editedPolicyGroupResp.response.id+']';
+                onSuccess(postData);
+               }
 
-    function doPostWebappCreation (postData) {
+           },
+           error: function () {
+               console.log('Could not create the policy group');
+           }
+       });
+    }
 
+
+    var doPostWebappCreation = function (postData) {
+             console.log('doPostWebappCreation');
           jQuery.ajax({
               url: '/publisher/api/asset/webapp',
-              type: "POST", data: postData, async:false, dataType : 'json',
+              type: "POST", data: postData, async:true, dataType : 'json',
               success: function (response) {
                 jQuery('#discover-create-asset-status').modal('show');
                 var statusText = jQuery('#discover-create-asset-status #statusText');
@@ -25,6 +65,10 @@ $(function(){
           }, 'json');
     }
 
+    function doCreateWebapp(postData) {
+       insertPolicyGroup('Default', 'Unlimited', false, '', [], '', doPostWebappCreation, postData);
+    }
+
     function getWebappCreationPostData() {
         var result = {
                "uritemplate_httpVerb4": "OPTIONS",
@@ -43,14 +87,14 @@ $(function(){
                "uritemplate_urlPattern2": "/*",
                "providers": "wso2is-5.0.0",
                "webapp": "webapp",
-               "uritemplate_policyGroupId3": "10",
+               "uritemplate_policyGroupId3": "1",
                "overview_provider": "FIXME",
-               "uritemplate_policyGroupId4": "10",
+               "uritemplate_policyGroupId4": "1",
                "uritemplate_urlPattern1": "/*",
                "uritemplate_urlPattern0": "/*",
-               "uritemplate_policyGroupId0": "10",
-               "uritemplate_policyGroupId1": "10",
-               "uritemplate_policyGroupId2": "10",
+               "uritemplate_policyGroupId0": "1",
+               "uritemplate_policyGroupId1": "1",
+               "uritemplate_policyGroupId2": "1",
                "claims": "http://wso2.org/claims/otherphone",  //FIXME
                "oauthapis_apiConsumerSecret1": "",
                "oauthapis_apiConsumerSecret2": "",
@@ -74,7 +118,7 @@ $(function(){
                "claimPropertyName0": "http://wso2.org/claims/role",
                "version": "",
                "overview_description": "T1",
-               "uritemplate_policyGroupIds": "[10]",
+               "uritemplate_policyGroupIds": "[]",
                "overview_context": "/FIXME",
                "entitlementPolicies": "[]",
                "oauthapis_apiTokenEndpoint1": "",
@@ -168,7 +212,7 @@ $(function(){
                     if(statInfo.ok == 'true') {
                         var postData = getWebappCreationPostData();
                         importDiscoveredData(postData, statInfo.data);
-                       doPostWebappCreation(postData);
+                        doCreateWebapp(postData);
                     }else{
                         console.log('Error in the serve: '+statInfo.message);
                     }
