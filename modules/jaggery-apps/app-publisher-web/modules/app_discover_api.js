@@ -7,6 +7,8 @@ var api = {};
     var log= new Log();
 
     var discover_client = require('/modules/app_discover.js').discover_client();
+    var storeUser=require('store').user;
+    var server = require('store').server;
 
     var msg = function(code, message, data) {
         var obj = {};
@@ -50,6 +52,34 @@ var api = {};
     };
 
 
+    var getProviderName = function(req) {
+        var username = server.current(session).username;//.get('LOGGED_IN_USER');
+
+        var tenantDomain = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantDomain();
+        var tenantIdVal = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantId();
+        var userNameWithTenant = "";
+        if(tenantIdVal=='-1234'){
+            userNameWithTenant = storeUser.cleanUsername(username);
+        }else {
+            userNameWithTenant = storeUser.cleanUsername(username)+'-AT-'+tenantDomain;
+        }
+        return userNameWithTenant;
+    }
+
+    api.getLoggedInUser = function(session) {
+        var username = server.current(session).username;//.get('LOGGED_IN_USER');
+
+        var tenantDomain = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantDomain();
+        var tenantIdVal = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantId();
+        var provider = "";
+        if(tenantIdVal=='-1234'){
+            provider = storeUser.cleanUsername(username);
+        }else {
+            provider = storeUser.cleanUsername(username)+'@'+tenantDomain;
+        }
+        return provider;
+    }
+
     api.loadCreatableAsset = function(context, req, res, session, options)  {
         var publisher = require('/modules/publisher.js').publisher(request, session);
         var proxyContext= context.post['proxy_context_path'];
@@ -83,7 +113,7 @@ var api = {};
                     shortName, "wso2as", applicationId);
         if(discoverResult.status.code == 0) {
             var applicationMetaData = discoverResult.data;
-            applicationMetaData.providerName = loggedInUser;
+            applicationMetaData.providerName = getProviderName(req);
             applicationMetaData.proxyContext = proxyContext;
 
             result = {ok: 'true', message: 'Asset added', applicationId : applicationMetaData.overview_name,

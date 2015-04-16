@@ -1,4 +1,6 @@
 var carbon=require('carbon');
+var server = require('store').server;
+var storeUser=require('store').user;
 
 
 /*
@@ -27,10 +29,10 @@ var discover_client=function(){
 
     */
     DiscoverClient.prototype.discoverWebapps=function(serviceUrl, userName, password, pageNumber,
-                appStatus, appNameStartsWith){
+                appStatus, appNameStartsWith, loggedInUsername){
         var data = {"credentials" :
                     {"userName" : userName, "appServerUrl" : serviceUrl, "password" : password ,
-                    "loggedInUsername" : "admin"},
+                    "loggedInUsername" : loggedInUsername},
                    "searchCriteria" :
                     {"applicationName" : appNameStartsWith, "status" : appStatus, "pageNumber" : pageNumber }
                    } ;

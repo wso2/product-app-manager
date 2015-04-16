@@ -18,6 +18,7 @@ var publisher = require('/modules/publisher.js').publisher(request, session);
 
 var routeMnger = new router.Router();
 var discover_boot = require('/modules/app_discover.js').discover_client();
+var api = require('/modules/app_discover_api.js').api;
 
 var log=new Log();
 
@@ -147,7 +148,7 @@ routeMnger.register('POST', 'publisher', '/publisher/assets/{operation}/{type}/'
                 var currIndex = page - 1;
                 var appsWrapper = discoverClient.discoverWebapps(sessionData.serverUrl,
                     sessionData.serverUserName, serverPassword, currIndex, sessionData.appStatus,
-                    sessionData.appNameStartsWith);
+                    sessionData.appNameStartsWith, api.getLoggedInUser(session));
                 discoveredArtifacts = appsWrapper.metadataList;
                 status = appsWrapper.status;
                 sessionData.currentPage = page;
