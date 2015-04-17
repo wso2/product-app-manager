@@ -7,12 +7,11 @@ with modern day Application provisioning, management principles, governing and s
 to solve a wide range of enterprise challenges associated with managing many number of
 applications (Mobile and Web).
 
-WSO2 App Manager consists of several loosely coupled modules.
-
-        * Application publisher
-        * Application store
-        * Application gateway
-        * Connected Device Manager
+* WSO2 App Manager consists of several loosely coupled modules.
+    - Application publisher
+    - Application store
+    - Application gateway
+    - Connected Device Manager
 
 Application Publisher allows Wab or Mobile application creators/publishers to easily
 create and publish Applications. The Applications can be managed with strong

@@ -1,7 +1,7 @@
 <%
 /*
  Description: Used to direct the /assets/discover requests to handle application discovery
- Filename:asset_discover_routers.js
+ Filename:asset_discover_router.js
  Created Date: 31/7/2013
  */
 
@@ -9,8 +9,8 @@
     var log = new Log();
     var config = require('/config/publisher.json');
 
-    var DEFAULT_ROUTER_NAME = '/assets.jag';
-    var EXT_ROUTER_NAME = '/pages/assets.jag';
+    var DEFAULT_ROUTER_NAME = '/app_discover.jag';
+    var EXT_ROUTER_NAME = '/pages/app_discover.jag';
     var EXT_PATH = config.paths.ASSETS_EXT_PATH;
     var DEFAULT_PATH = config.paths.ASSETS_DEFAULT_PATH;
     var URL = config.urls.ASSETS;
