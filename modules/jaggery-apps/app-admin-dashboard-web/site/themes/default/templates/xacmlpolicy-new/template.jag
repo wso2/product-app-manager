@@ -1,35 +1,11 @@
-<% jagg.template("xacmlpolicy-task", function (inputs, outputs, jagg) {
+<% jagg.template("xacmlpolicy-new", function (inputs, outputs, jagg) {
     var tasks = outputs.tasks;
     %>
      <div class="title-section">
-       <h2>Entitlement Policy</h2>
-         </div>
-         <div id="wr-overview" class="wr-overview-policies" style="display:block">
-             <div class="alert alert-error" id="statusSuccess" style="display:none">
-                   <span id="statusErrorSpan"></span>
-              </div>
-            <fieldset>
-                <input type='hidden' value="[]" name="uritemplate_policyPartialIds"
-                                                           id="uritemplate_policyPartialIds"/>
-                    <table class="table table-striped" id="policyPartialsTable">
-                        <thead>
-                            <tr>
-                                <th>Policy Name</th>
-                                <th>Description</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-            </fieldset>
-          </div>
-         <div class="content-section shadow-up" style="display: none">
-            <hr/>
-            <div class="title-section-edit">
-                <h2>Edit Entitlement Policy</h2>
-            </div>
-            <br/>
+       <h2><%=i18n.localize("entitlementPoliciesHeaderNew")%></h2>
+     </div>
+
+          <div class="content-section shadow-up">
           <div class="alert alert-error" id="statusError" style="display:none">
                <span id="statusErrorSpan"></span>
           </div>
@@ -49,8 +25,8 @@
         <textarea id="policy-content" style="width:80%;height:200px;border: 1px solid #eee;" class="form-control"></textarea>
                         </div>
                                      <br>
-                            <a id="btn-policy-partial-validate" class="btn  btn-success">Validate</a>
+                             <a id="btn-policy-partial-validate" class="btn  btn-success">Validate</a>
                             <a id="btn-policy-save" class="btn btn-primary">Save</a>
-                            <a id="btn-policy-cancel" class="btn">Cancel</a>
         </div>
-         <%}); %>
+            <%
+}); %>
