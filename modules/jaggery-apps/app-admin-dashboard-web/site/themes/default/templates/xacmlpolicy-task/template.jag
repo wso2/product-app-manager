@@ -8,7 +8,7 @@
              <div class="alert alert-error" id="statusSuccess" style="display:none">
                    <span id="statusErrorSpan"></span>
               </div>
-            <fieldset>
+            <fieldset class="policy-list" style="display: none;">
                 <input type='hidden' value="[]" name="uritemplate_policyPartialIds"
                                                            id="uritemplate_policyPartialIds"/>
                     <table class="table table-striped" id="policyPartialsTable">
@@ -23,6 +23,10 @@
                         </tbody>
                     </table>
             </fieldset>
+            <div class="no-policy" style="display: none;">
+                <h4>No entitlement policy found. <br/> <br/>
+                <a class="btn btn-primary" href="tasks?task=xacmlpolicy-new">Add New Entitlement Policy</a> </h4>
+            </div>
           </div>
          <div class="content-section shadow-up" style="display: none">
             <hr/>
