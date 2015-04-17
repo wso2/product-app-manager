@@ -11,6 +11,7 @@
     "appCreation": "Application Creation",
     "appPublishHeader": "Published Applications",
     "entitlementPoliciesHeader":"Entitlement Policies",
+    "entitlementPoliciesHeaderNew":"Add New Entitlement Policy",
     "cacheHitMissHeader":"Cache Hits/Miss",
 
     "username": "Username",
