@@ -23,6 +23,16 @@ body{
     background-color: #f5f5f5;
 }
 
+.Site {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+#body{
+    flex: 1;
+}
+
 .footer-txt{
     font-size: 12px;
 }
@@ -130,6 +140,13 @@ label, input, button, select, textarea{
     color: #7d7d7d;
     padding:10px;
 }
+.title-section-edit h2{
+    margin:0 20px;
+    font-size:22px;
+    color: #7d7d7d;
+    padding:10px;
+}
+
 .brand{
     position:absolute;
 }
@@ -710,7 +727,7 @@ div.navbar-inner{
     margin-bottom:15px;
 }
 .nav-list > .active > a, .nav-list > .active > a:hover, .nav-list > .active > a:focus{
-    background: none repeat scroll 0 0 #E84C3D;
+   /* background: none repeat scroll 0 0 #E84C3D;*/
     color:#fff;
     text-align: center;
 }
