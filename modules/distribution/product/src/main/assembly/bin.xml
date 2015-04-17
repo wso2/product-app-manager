@@ -69,7 +69,11 @@
         <fileSet>
             <directory>src/main/conf/synapse-configs</directory>
             <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/synapse-configs</outputDirectory>
+	    <excludes>
+		<exclude>**/main.xml</exclude>
+            </excludes>
         </fileSet>
+        
   	<fileSet>
             <directory>src/main/conf/synapse-configs/default/sequences</directory>
             <outputDirectory>wso2appm-${pom.version}/repository/resources/apim-synapse-config/</outputDirectory>
@@ -927,6 +931,14 @@
             <destName>message-tracer-config.xml</destName>
             <filtered>true</filtered>
 	    <fileMode>644</fileMode>
+        </file>
+	<!--Copy main sequence xml from gateway feature -->
+	<file>
+           <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/deployment/server/synapse-configs/default/sequences/main.xml</source>
+           <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/synapse-configs/default/sequences</outputDirectory>
+	   <destName>main.xml</destName>
+           <filtered>true</filtered>
+	   <fileMode>644</fileMode>
         </file>
 
     </files>
