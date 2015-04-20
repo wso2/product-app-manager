@@ -338,7 +338,12 @@ $(function() {
 
 			},
 			error : function(response) {
-				createMessage(MSG_CONTAINER, ERROR_CSS, 'Asset was not updated successfully.');
+                if (response.status == 401) {
+                    alert('Sorry, your session has expired');
+                    location.reload();
+                } else {
+                    createMessage(MSG_CONTAINER, ERROR_CSS, 'Asset was not updated successfully.');
+                }
 			},
 
 			// other available options:
