@@ -23,14 +23,6 @@ var checkeRole = function (username, session) {
   	usr.tenantDomain = carbon.server.tenantDomain({tenantId: usr.tenantId});
 
   	event.emit('login', usr.tenantId, usr, session);
-    if(usr.hasRoles(['admin'])){
-
-        if (!usr.hasRoles([role[0]])) {
-            usr.addRoles([role[0]]);
-        }
-
-        return true;
-    }
 
     var roles = um.getRoleListOfUser(usr.username);
 
