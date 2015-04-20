@@ -10,6 +10,13 @@ require('/modules/publisher.js').exec(function(ctx) {
     var publisher = require('/modules/publisher.js').publisher(request, session);
     var rxtManager = publisher.rxtManager;
 
+
+    routeManager.register('DELETE', 'publisher', '/publisher/api/mobile/delete/{app}', function (ctx) {
+        var app = ctx.params.app;
+        var artifactManager = rxtManager.getArtifactManager("mobileapp");
+        artifactManager.remove(app);
+    });
+
     routeManager.register('GET', 'publisher', '/publisher/api/mobile/isexist', function (ctx) {
 
         var name = request.getParameter("name");

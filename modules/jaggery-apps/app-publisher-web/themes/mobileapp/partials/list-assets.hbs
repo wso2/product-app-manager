@@ -62,7 +62,7 @@
                     {{/ifCond}}
                 </th>
                 <th><a href="#">Status</a></th>
-                <th><a href="#">Action</a></th>
+                <th width="30%"><a href="#">Action</a></th>
                 <th></th>
 </thead>
             <tbody>
@@ -148,8 +148,8 @@
 
             {{#this.lifecycleAvailableActions}}                         		
             <a  data-action="{{name}}" data-app="{{../this.id}}" class="btn {{style}} btn-action" name="addNewAssetButton">{{name}}</a>
-            {{/this.lifecycleAvailableActions}}  
-
+            {{/this.lifecycleAvailableActions}}
+            <a  data-app="{{this.id}}"  data-app-name="{{this.attributes.overview_name}}" class="btn btn-danger delete-mobile-app">Delete</a>
 
 
 

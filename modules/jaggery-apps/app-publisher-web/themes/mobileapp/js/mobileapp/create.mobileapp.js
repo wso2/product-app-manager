@@ -194,6 +194,7 @@ $(document).ready(function(){
         dataType: 'json',
         add: function (e, data) {
             $('#btn-app-upload').one("click", function () {
+
                 $("#modal-upload-data").hide();
                 $("#modal-upload-progress").show();
                 data.platform = $('#txtOS').val();
