@@ -1018,8 +1018,8 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 .recently-added .span3 > a {
     display: block;
     overflow: hidden;
-    width: 60px;
-    height: 60px;
+    width: 55px;
+    height: 55px;
 }
 .recently-added small {
     display: block;
