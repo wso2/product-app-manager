@@ -225,7 +225,7 @@
         <dependency>
             <groupId>org.wso2.carbon.appmgt</groupId>
             <artifactId>org.wso2.carbon.appmgt.api</artifactId>
-            <version>1.0.0.SNAPSHOT</version>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.jettison.wso2</groupId>
