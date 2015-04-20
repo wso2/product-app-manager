@@ -32,7 +32,7 @@
                                 <span class="requiredAstrix">*</span>
                             </label>
                             <div class="controls">
-                                <input class="input-xlarge" type="text"  id="pass" name="pass" size="30">
+                                <input class="input-xlarge" type="password"  id="pass" name="pass" size="30">
                             </div>
                         </div>
                         <input type="hidden"  id="tenant" value="<%=request.getParameter("tenant")%>"/>

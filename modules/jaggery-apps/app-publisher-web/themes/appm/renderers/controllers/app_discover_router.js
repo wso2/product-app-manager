@@ -25,8 +25,8 @@ var render = function (theme, data, meta, require) {
     //Determine what view to show
     switch (data.op) {
 
-        case 'discover':
-            listPartial = 'discover';
+        case 'app_discover':
+            listPartial = 'app_discover';
             break;
         default:
             break;

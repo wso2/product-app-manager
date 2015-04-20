@@ -33,6 +33,7 @@ var render = function(theme, data, meta, require) {
                 type : data.type,
                 inDashboard : data.inDashboard,
                 isEnterpriseInstallEnabled : data.isEnterpriseInstallEnabled,
+                isDeviceSubscriptionEnabled : data.isDeviceSubscriptionEnabled,
                 embedURL : data.embedURL,
                 isSocial : data.isSocial,
                 devices : data.devices,

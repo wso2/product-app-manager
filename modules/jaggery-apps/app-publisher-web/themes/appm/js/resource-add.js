@@ -157,7 +157,7 @@ $( document ).ready(function() {
             RESOURCES.splice(i, 1);
 
             // Invalidate relevant entitlement policy
-            invalidateEntitlementPolicy(i);
+            //invalidateEntitlementPolicy(i);
 
             $("#resource_tbody").trigger("draw");
 

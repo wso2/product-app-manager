@@ -31,8 +31,8 @@ var Showalert = function(msg, type, target) {
     jQuery('html, body').animate({
         scrollTop: section.offset().top
     }, 1000);
-    ;
 }
+
 policyPartialsArray = new Array(); // xacml policy details array
 var editedpolicyPartialId = 0; //if 1 then edit else save
 var context = "/admin-dashboard";
@@ -131,7 +131,7 @@ function getXacmlPolicyTemplate() {
         dataType: "text",
         success: function (response) {
             if (response != null) {
-                //editor.setValue(response);
+                editor.setValue(response);
                 $('#policy-content').val(response);
             }
         },
@@ -192,7 +192,7 @@ function validatePolicyPartial(policyPartial, onSuccess, onError) {
         success: onSuccess,
         error: function (response) {
             if (response.status == 500) {
-                Showalert('Sorry, your session has expired');
+                Showalert('Sorry, your session has expired',"alert-error", "statusError");
                 location.reload();
             } else {
                 onError(respond);
@@ -209,7 +209,7 @@ function continueAddingEntitlementPolicyPartialAfterValidation(response) {
         if (response.isValid) {
             savePolicyPartial();
         } else {
-            Showalert("Policy is not valid.", "alert-error", "statusError");
+            Showalert("Policy is not valid.","alert-error", "statusError");
         }
 
     } else {
@@ -287,7 +287,7 @@ function savePolicyPartial() {
                     description: policyPartialDesc
                 });
                 updatePolicyPartial()
-                Showalert("Policy Saved Successfully", "alert-error", "statusError");
+                Showalert("Policy Saved Successfully","alert-success", "statusError");
                 $('#policy-name').prop("readonly", true);
             },
             error: function () {
@@ -376,7 +376,6 @@ function updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, g
                 updatePolicyPartial();
                 Showalert("Policy Updated Successfully", "alert-success", "statusError");
                 resetControls();
-                $('.content-section').delay(3000).hide(0);
             } else {
                 Showalert("Couldn't modify .This partial is being used by web apps ", "alert-error", "statusError");
             }
@@ -442,11 +441,6 @@ $(document).on("click", ".policy-edit-button", function () {
     $('#policy-content').val("");
     $('#policy-name').val("");
     $('#policy-desc').val("");
-    $('.content-section').show();
-    var section=$('.title-section-edit');
-    jQuery('html, body').animate({
-        scrollTop: section.offset().top
-    }, 1000);
     editor.setValue("");
 
     $.each(policyPartialsArray, function (index, obj) {
@@ -501,11 +495,10 @@ $(document).on("click", ".policy-delete-button", function () {
                     }
                     var msg = "You cannot delete the policy " + policyName + " because it is been used in following apps\n\n" +
                         apps;
-                    Showalert(msg, "alert-error", "statusError");
+                    Showalert(msg);
                     return;
 
                 } else {
-                    $(".alert").alert();
                     conf = confirm("Are you sure you want to delete the policy " + policyName + "?");
                 }
 
@@ -534,7 +527,7 @@ $(document).on("click", ".policy-delete-button", function () {
                 if (success) {
                     delete policyPartialsArray[arrayIndex];
                     updatePolicyPartial();
-                    Showalert("Policy Deleted Successfully ", "alert-success", "statusSuccess");
+
 
                 } else {
                     Showalert("Couldn't delete the partial.This partial is being used by web apps  ", "alert-error", "statusError");
@@ -548,8 +541,4 @@ $(document).on("click", ".policy-delete-button", function () {
 
     }
 
-});
-
-$(document).on('click', '#btn-policy-cancel', function(){
-    $('.content-section').delay(300).hide(0);
 });

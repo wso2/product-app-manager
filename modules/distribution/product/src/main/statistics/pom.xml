@@ -30,9 +30,9 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>eam-toolbox</artifactId>
     <packaging>pom</packaging>
-    <name>WSO2 APP Enterprise Manager - BAM Toolbox</name>
+    <name>WSO2 App Manager - BAM Toolbox</name>
     <url>http://wso2.org/projects/bam/java</url>
-    <description>WSO2 Enterprise App Manager BAM Toolbox</description>
+    <description>WSO2 App Manager BAM Toolbox</description>
 
     <licenses>
         <license>

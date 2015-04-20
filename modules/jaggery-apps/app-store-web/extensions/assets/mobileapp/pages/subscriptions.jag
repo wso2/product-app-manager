@@ -25,7 +25,8 @@ require('/modules/store.js').exec(function (ctx) {
         return;
     }
 
-    var selfUnsubscription = mdmConfig.EnableSelfUnsubscription;
+    var selfUnsubscription = mdmConfig.EnableSelfUnsubscription == "true" ? true : false;
+    var isDeviceSubscriptionEnabled = mdmConfig.EnableSubscriptionFromDevices == "true" ? true : false;
 
 
      var devices = [];
@@ -76,6 +77,7 @@ require('/modules/store.js').exec(function (ctx) {
         recentAssets: recentAssets,
         myAssets: { user: user, type: type, title: title},
         selfUnsubscription : selfUnsubscription,
+        isDeviceSubscriptionEnabled : isDeviceSubscriptionEnabled,
         tags: tags
     });
 }, request, response, session);

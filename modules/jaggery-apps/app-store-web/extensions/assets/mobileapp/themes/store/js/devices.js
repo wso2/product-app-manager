@@ -101,6 +101,51 @@ function performInstalltion(device, app){
 }
 
 
+function performInstalltionUser(app){
+    noty({
+        text : 'Are you sure you want to install and subscribe to this app?',
+        'layout' : 'center',
+        'modal' : true,
+        buttons : [{
+            addClass : 'btn',
+            text : 'Yes',
+            onClick : function($noty) {
+
+                $noty.close();
+
+                jQuery.ajax({
+                    url: "/store/apps/user/install",
+                    type: "POST",
+                    dataType: "json",
+                    data : {"asset": app}
+                });
+
+                $( document ).ajaxComplete(function() {
+                    // asset.process("mobileapp",app, location.href);
+                    noty({
+                        text : 'You have been subscribed to the application successfully',
+                        'layout' : 'center',
+                        'timeout': 1500,
+                        'modal': false,
+                        'onClose': function() {
+                            location.reload();
+                        }
+                    });
+                });
+
+            }
+        },
+            {
+                addClass : 'btn',
+                text : 'No',
+                onClick : function($noty) {
+                    $noty.close();
+                }
+            }]
+    });
+}
+
+
 $( document ).ready(function() {
     var id = getURLParameter("id");
 

@@ -43,6 +43,7 @@
     </licenses>
 
     <modules>
+        <module>product/src/main/statistics</module>
         <module>product</module>
     </modules>
 

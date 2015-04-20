@@ -2,7 +2,7 @@
 <div class="container">
     <div class="row row-footer">
        <div class="col-md-6">
-            <span class="footer-txt"> <%=i18n.localize("copyright", "&copy; Copyright 2011 &ndash; 2014 WSO2 Inc. All Rights Reserved")%></span>
+            <span class="footer-txt"> <%=i18n.localize("copyright", "&copy; Copyright 2011 &ndash; 2015 WSO2 Inc. All Rights Reserved")%></span>
        </div>
        <div class="col-md-5 pull-right txt-right">
            <ul>
