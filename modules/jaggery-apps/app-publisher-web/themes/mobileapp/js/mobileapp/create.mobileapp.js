@@ -268,6 +268,9 @@ $(document).ready(function(){
 
 $('#btn-app-upload').click(function () {
 
+    $('#txtOS').attr("disabled", "disabled");
+    $('#txtMarket').attr("disabled", "disabled");
+
     if(($('#txtOS').val() != 'webapp' && $('#txtMarket').val() == 'Market') && $('#txtPackagename').val() === ""){
         noty({
             text: 'Please enter a correct value as Package Name or App Identifier',
