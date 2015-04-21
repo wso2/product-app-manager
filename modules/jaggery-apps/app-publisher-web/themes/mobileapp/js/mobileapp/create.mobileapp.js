@@ -369,3 +369,9 @@ jQuery("#form-asset-create").submit(function(e) {
 	}
    //alert($('#appmeta').val());
 });
+
+$( document ).ajaxComplete(function( event, xhr, settings ) {
+    if(xhr.status == 401){
+        location.reload();
+    }
+});

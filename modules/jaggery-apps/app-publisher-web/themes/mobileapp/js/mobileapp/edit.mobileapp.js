@@ -98,7 +98,9 @@ $('#txtMarket').on("change",function() {
                
 				
              
-            }); 
+            });
+
+
         });
 	
 
@@ -169,4 +171,10 @@ $('#btn-app-upload').click(function () {
 jQuery("#form-asset-create").submit(function(e) {
 	//e.preventDefault();
    //alert($('#appmeta').val());
+});
+
+$( document ).ajaxComplete(function( event, xhr, settings ) {
+   if(xhr.status == 401){
+       location.reload();
+   }
 });
