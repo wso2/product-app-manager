@@ -5,7 +5,9 @@
     var currentUser = server.current(session);
     var SUBSCRIPTIONS_PATH = '/subscriptions/mobileapp/';
     var mobileGeneric = new Packages.org.wso2.carbon.appmgt.mobile.store.Generic();
+    var mdmConfig = parse(String((new Packages.org.wso2.carbon.appmgt.mobile.store.MDMConfig()).getConfigs()));
 
+    var isMDMOperationsEnabled = mdmConfig.EnableMDMOperations == "true" ? true : false;
 
 
     var performAction = function performAction (action, tenantId, type, app, params) {
@@ -81,10 +83,11 @@
             mobileGeneric.showAppVisibilityToUser(path, username, opType);
         }
 
-
-        var operationsClass = Packages.org.wso2.carbon.appmgt.mobile.store.Operations;
-        var operations = new operationsClass();
-        operations.performAction(stringify(currentUser), action, tenantId, type, app, params);
+        if(isMDMOperationsEnabled){
+            var operationsClass = Packages.org.wso2.carbon.appmgt.mobile.store.Operations;
+            var operations = new operationsClass();
+            operations.performAction(stringify(currentUser), action, tenantId, type, app, params);
+        }
 
     };
 

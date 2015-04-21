@@ -12,7 +12,7 @@
     <div class="row-fluid">
         <table class="table table-striped list-asset-table">
             <thead>
-                <th colspan="2">
+                <th colspan="2" width="30%">
                     {{#ifCond sortOptions.sortBy "==" "name"}}
                         <a href="?sortby=name&sort={{sortOptions.sort}}">Name
                             <i class="icon-caret-{{sortOptions.icon}}"></i></a>
@@ -62,7 +62,7 @@
                     {{/ifCond}}
                 </th>
                 <th><a href="#">Status</a></th>
-                <th><a href="#">Action</a></th>
+                <th width="40%"><a href="#">Action</a></th>
                 <th></th>
 </thead>
             <tbody>
@@ -148,8 +148,8 @@
 
             {{#this.lifecycleAvailableActions}}                         		
             <a  data-action="{{name}}" data-app="{{../this.id}}" class="btn {{style}} btn-action" name="addNewAssetButton">{{name}}</a>
-            {{/this.lifecycleAvailableActions}}  
-
+            {{/this.lifecycleAvailableActions}}
+            <a  data-app="{{this.id}}"  data-app-name="{{this.attributes.overview_name}}" class="btn btn-danger delete-mobile-app">Delete</a>
 
 
 

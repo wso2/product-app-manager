@@ -9,6 +9,22 @@ require('/modules/publisher.js').exec(function(ctx) {
 
     var publisher = require('/modules/publisher.js').publisher(request, session);
     var rxtManager = publisher.rxtManager;
+    var server = require('store').server;
+    var permissions=require('/modules/permissions.js').permissions;
+
+
+    routeManager.register('DELETE', 'publisher', '/publisher/api/mobile/delete/{app}', function (ctx) {
+        var username=require('store').server.current(session).username;
+        var um = server.userManager(server.current(session).tenantId);
+        var deleteAuthorized = permissions.isAuthorized(username, config.permissions.webapp_delete, um);
+
+        if(deleteAuthorized){
+            var app = ctx.params.app;
+            var artifactManager = rxtManager.getArtifactManager("mobileapp");
+            artifactManager.remove(app);
+        }
+
+    });
 
     routeManager.register('GET', 'publisher', '/publisher/api/mobile/isexist', function (ctx) {
 

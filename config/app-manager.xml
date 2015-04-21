@@ -601,12 +601,15 @@
 
 		<MDMConfig>
 
-		   <Config name="Enabled">true</Config>
+		   <Config name="IsCatalog">false</Config>
+
+		   <Config name="EnableMDMOperations">false</Config>
 		   <Config name="ActiveMDM">WSO2EMM</Config>
+		   <Config name="EnableSelfUnsubscription">false</Config>	
 
    		   <Config name="EnableSubscriptionFromDevices">false</Config>	
 		   <Config name="EnableSampleDevices">false</Config>
-		   <Config name="EnableSelfUnsubscription">false</Config>
+		   
 
 		   <Config name="AppDownloadURLHost">%http%</Config>
 		   <Config name="IosPlistPath">publisher/api/mobileapp/getplist</Config>

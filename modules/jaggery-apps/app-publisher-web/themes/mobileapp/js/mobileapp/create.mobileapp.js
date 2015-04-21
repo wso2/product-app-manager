@@ -194,6 +194,7 @@ $(document).ready(function(){
         dataType: 'json',
         add: function (e, data) {
             $('#btn-app-upload').one("click", function () {
+
                 $("#modal-upload-data").hide();
                 $("#modal-upload-progress").show();
                 data.platform = $('#txtOS').val();
@@ -267,6 +268,9 @@ $(document).ready(function(){
 });
 
 $('#btn-app-upload').click(function () {
+
+    $('#txtOS').attr("disabled", "disabled");
+    $('#txtMarket').attr("disabled", "disabled");
 
     if(($('#txtOS').val() != 'webapp' && $('#txtMarket').val() == 'Market') && $('#txtPackagename').val() === ""){
         noty({
@@ -364,4 +368,10 @@ jQuery("#form-asset-create").submit(function(e) {
 		e.preventDefault();
 	}
    //alert($('#appmeta').val());
+});
+
+$( document ).ajaxComplete(function( event, xhr, settings ) {
+    if(xhr.status == 401){
+        location.reload();
+    }
 });

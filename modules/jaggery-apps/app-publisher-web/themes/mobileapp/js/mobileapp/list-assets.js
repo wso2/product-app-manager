@@ -44,6 +44,51 @@ $( ".tab-button" ).click(function() {
 
 });
 
+
+$( ".delete-mobile-app" ).click(function(e) {
+    e.stopPropagation();
+    var app = $(this).data('app');
+    var appName = $(this).data('appName');
+    noty({
+        text: "Are you sure you want to delete this app '" + appName + "' ?",
+        template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
+        layout: "center",
+        modal: true,
+        type: "info",
+        buttons: [
+            {
+
+                addClass: 'btn btn-default',
+                text: 'Yes',
+                onClick: function ($noty) {
+                    $.ajax({
+                        url: '/publisher/api/mobile/delete/' + app,
+                        type: "DELETE",
+                        success: function (response) {
+                            location.reload();
+                        },
+                        error: function (response) {
+                            $noty.close();
+                        }
+                    });
+                }
+
+            },
+
+            {
+
+                addClass: 'btn btn-default',
+                text: 'No',
+                onClick: function ($noty) {
+                    $noty.close();
+                }
+
+            }
+        ]
+    });
+
+});
+
 $( ".btn-view-app" ).click(function(e) {
 
 
