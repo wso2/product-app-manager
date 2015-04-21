@@ -48,10 +48,14 @@ $(".btn-deploySample").click(function() {
         dataType:"json",
         async : false,            
         success: function(msg){
-            showMessageModel(msg.response,"Samples Deployed Successfully","webapp");
+            if(msg.response != "admin is already created sample web application"){
+                showMessageModel(msg.response,"Samples Deployed Successfully","webapp");        
+            }else{
+                showMessageModel(msg.response,"Deployment of samples failed","webapp");    
+            }
         },
         error: function(error){
-            showDeployModel("error in response","Deployment of samples failed","webapp");
+            showMessageModel("error in response","Deployment of samples failed","webapp");
         }
     });
 });
