@@ -109,6 +109,7 @@ var showMessageModel = function (msg, head, type) {
     $('#messageModal2 #commentText').html('');
     $('#messageModal2').html($('#confirmation-data1').html());
     $('#messageModal2 h3.modal-title').html((head));
+    $('#messageModal2 #myModalLabel').html((head));
     $('#messageModal2 div.modal-body').html('\n\n' + (msg) + '</b>');
     $('#messageModal2 a.btn-other').html('OK');
     $('#messageModal2').modal();
