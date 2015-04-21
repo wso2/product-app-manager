@@ -20,12 +20,7 @@ var discover_client=function(){
     var hostPart;
 
 	function DiscoverClient(){
-	    var carbon = require('carbon'),
-        conf = carbon.server.loadConfig('carbon.xml'),
-        offset = conf.*::['Ports'].*::['Offset'].text(),
-        hostName = conf.*::['HostName'].text().toString();
-
-	    hostPart = 'https://'+hostName+':'+request.getLocalPort();
+	    hostPart = carbon.server.address('https');
 	}
 
 	/*
