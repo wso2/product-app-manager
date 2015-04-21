@@ -20,7 +20,12 @@ var discover_client=function(){
     var hostPart;
 
 	function DiscoverClient(){
-	    hostPart = 'https://localhost'+":"+request.getLocalPort();
+	    var carbon = require('carbon'),
+        conf = carbon.server.loadConfig('carbon.xml'),
+        offset = conf.*::['Ports'].*::['Offset'].text(),
+        hostName = conf.*::['HostName'].text().toString();
+
+	    hostPart = 'https://'+hostName+':'+request.getLocalPort();
 	}
 
 	/*
@@ -130,7 +135,7 @@ var discover_client=function(){
 
         var data = {"applicationId" : applicationId} ;
 
-        var url = 'https://localhost:9443/api/v1/apps/mobile/discovery/app/info/a';
+        var url = hostPart+'/api/v1/apps/mobile/discovery/app/info/a';
         try {
 
             var xhr = new XMLHttpRequest();
