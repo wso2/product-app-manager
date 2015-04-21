@@ -43,14 +43,18 @@ $( ".btn-reject-proceed" ).click(function() {
 
 $(".btn-deploySample").click(function() {
     jQuery.ajax({
-        url: '/publisher/api/asset/webapp/deploySample',
+        url : '/publisher/api/asset/webapp/deploySample',
         type: "GET",
+        dataType:"json",
+        async : false,            
+        success: function(msg){
+            showMessageModel(msg.response,"Samples Deployed Successfully","webapp");
+        },
+        error: function(error){
+            showDeployModel("error in response","Deployment of samples failed","webapp");
+        }
     });
-    $(document).ajaxComplete(function () {
-        location.reload();
-    });    
 });
-
 
 $( ".tab-button" ).click(function() {
 	
@@ -124,14 +128,11 @@ var showCommentModel = function (head, action, app) {
 
 function updateQRCode(text) {
 
-        var element = document.getElementById("qrcode");
-    
-        
+    var element = document.getElementById("qrcode");
+    var bodyElement = document.body;
+    if(element.lastChild)
+        element.replaceChild(showQRCode(text), element.lastChild);
+    else
+        element.appendChild(showQRCode(text));
 
-        var bodyElement = document.body;
-        if(element.lastChild)
-          element.replaceChild(showQRCode(text), element.lastChild);
-        else
-          element.appendChild(showQRCode(text));
-
-      }
+}
