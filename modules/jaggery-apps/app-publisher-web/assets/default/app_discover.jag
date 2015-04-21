@@ -52,6 +52,14 @@ var pageIndexPopulator = function(pageCount,currentIndex){
     return indices;
 };
 
+/* Returns a dummy password mimicking the password entered. */
+var getDummyPassword = function(password) {
+    if (password != null) {
+        return password.replace(/(.)/g, "*");
+    }
+    return password;
+}
+
 var getAvailablePages = function(appCount){
     var availablePages = Math.floor(appCount/PAGE_SIZE);
     var remainder = (appCount/PAGE_SIZE) % 1;
@@ -132,6 +140,9 @@ routeMnger.register('POST', 'publisher', '/publisher/assets/{operation}/{type}/'
                     //var appStatus = request.getParameter('appStatus');
 
                     //Remember the server connection details in session
+                    if(sessionData.serverUserName != serverUserName ) {
+                        sessionData.serverPassword = getDummyPassword(serverPassword);
+                    }
                     sessionData.serverUrl = serverUrl;
                     sessionData.serverUserName = serverUserName;
                     sessionData.pageIndices = [];
