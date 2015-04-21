@@ -110,8 +110,8 @@ routeMnger.register('POST', 'publisher', '/publisher/assets/{operation}/{type}/'
 
             var sessionData = session.get('sessionData');
             if(sessionData == null) {
-                sessionData = {"serverUrl" : "https://localhost:9445/services/",
-                 "serverUserName": "reader",
+                sessionData = {"serverUrl" : "",
+                 "serverUserName": "",
                  "pageIndices" :[], "currentPage": 1, "leftNav" : 1, "rightNav" : 1};
                 session.put('sessionData', sessionData);
             }
@@ -175,8 +175,8 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{operation}/{type}/',
 
         var sessionData = session.get('sessionData');
         if(sessionData == null) {
-            sessionData = {"serverUrl" : "https://localhost:9445/services/",
-             "serverUserName": "reader",
+            sessionData = {"serverUrl" : "",
+             "serverUserName": "",
              "pageIndices" :[], "currentPage": 1, "leftNav" : 1, "rightNav" : 1};
         }
         var discoverClient = session.get('DiscoverClient');
