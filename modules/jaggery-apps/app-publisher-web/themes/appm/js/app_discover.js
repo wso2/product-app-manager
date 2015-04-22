@@ -1,4 +1,29 @@
 $(function(){
+    var placeHolders= {
+        "server-url": "WSO2AS URL (e.g. https://localhost:9445/services/)",
+        "server-username": "User Name who has permission to list Applications",
+        "server-password" : "Password for the AS",
+        "app-name" : "Keep empty to list all Contexts"
+    }
+
+    $(document).ready(function(){
+        $.each(placeHolders, function(key,val) {
+           $('#'+key).attr("placeholder", val);
+        });
+    });
+
+    /**
+    * Sets up the policy group ID s on the relevant resources and the main policy group
+    */
+    function setupPolicyGroups(postData, policyGroupId) {
+        postData.uritemplate_policyGroupIds = '['+policyGroupId+']';
+        postData.uritemplate_policyGroupId0 = policyGroupId;
+        postData.uritemplate_policyGroupId1 = policyGroupId;
+        postData.uritemplate_policyGroupId2 = policyGroupId;
+        postData.uritemplate_policyGroupId3 = policyGroupId;
+        postData.uritemplate_policyGroupId4 = policyGroupId;
+    }
+
     /**
     * Save policy group
     * @param policyGroupName :Policy Group Name
@@ -10,7 +35,6 @@ $(function(){
     */
     function insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUrlPattern,
             userRoles, appliedXacmlRules ,policyGroupDesc, onSuccess, postData) {
-       console.log('Policy grorup '+policyGroupName);
        jQuery.ajax({
            async: true,
            url: '/publisher/api/entitlement/policy/partial/policyGroup/save',
@@ -24,11 +48,9 @@ $(function(){
                "policyGroupDesc" :policyGroupDesc
            },
            success: function (data) {
-               console.log(data);
                var editedPolicyGroupResp = JSON.parse(data);
                if(editedPolicyGroupResp.success) {
-                console.log('Policy group '+editedPolicyGroupResp.response.id);
-                postData.uritemplate_policyGroupIds = '['+editedPolicyGroupResp.response.id+']';
+                setupPolicyGroups(postData, editedPolicyGroupResp.response.id);
                 onSuccess(postData);
                }
 
@@ -41,7 +63,6 @@ $(function(){
 
 
     var doPostWebappCreation = function (postData) {
-             console.log('doPostWebappCreation');
           jQuery.ajax({
               url: '/publisher/api/asset/webapp',
               type: "POST", data: postData, async:true, dataType : 'json',
@@ -192,7 +213,7 @@ $(function(){
         var $this = $(this);
         var app = $this.data("app");
         var action = $this.data("action");
-        var id = $this.data("id")
+        var id = $this.data("id");
 
         //proxy context entered
         var proxyContext = jQuery('#proxy-context-'+id).val();
@@ -201,6 +222,9 @@ $(function(){
         if(action=="Reject") {
             showCommentModel("Reason for Rejection",action,app);
         }else{
+            //Disable the button as we do not have a proper feedback from server yet. This is workaround to have better user experience
+            $this.attr('disabled','disabled');
+            jQuery('#application-status-'+id).text('PROCESSING');
 
             jQuery.ajax({
                 url: '/publisher/api/discover/asset/loadCreatableAsset/webapp/'+id,
