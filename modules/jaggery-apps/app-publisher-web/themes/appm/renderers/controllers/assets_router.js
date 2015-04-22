@@ -191,6 +191,7 @@ var render = function (theme, data, meta, require) {
                         createPermission : createActionAuthorized,
                         viewStats : viewStatsAuthorized,
                         notifications : notifications,
+                        um : um,
                         notificationCount: notificationCount
                 }
             }

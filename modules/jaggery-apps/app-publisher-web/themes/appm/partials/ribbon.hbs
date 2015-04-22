@@ -10,7 +10,9 @@
         {{#if createPermission}}
             <li {{#ifCond active "==" "add-asset"}}class="active"{{/ifCond}}><a href="{{url "/asset/webapp"}}">Add New Web Application</a></li>
             <li {{#ifCond active "==" "discover"}}class="active"{{/ifCond}}><a href="{{url "/assets/discover/webapp/"}}"> Discover from Server</a></li>
-            <li><a class="btn-deploySample overide-default" data-type="{{shortName}}" >Deploy Samples</a></li>
+            {{#ifCond um.tenantId "==" "-1234"}}
+                <li><a class="btn-deploySample overide-default" data-type="{{shortName}}" >Deploy Samples</a></li>
+            {{/ifCond}}
         {{/if}}
         </ul>
     </li>
