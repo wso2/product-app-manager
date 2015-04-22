@@ -1,4 +1,5 @@
 <div>
+
 	{{#if isSubscribed}}
 		<input type="hidden" value="true" id="subscribed" name="subscribed">
 	{{else}}
@@ -12,7 +13,7 @@
 	    	<ul>
 			<li><a class='icon-globe' id="gatewayURL" href="{{asset.attributes.overview_webAppUrl}}" target="_blank" >&nbsp;{{asset.attributes.overview_webAppUrl}}</a></li>
 	    	</ul>
-	   
+            <input type="hidden" id="skipGateway" value="true">
     {{else}}
         {{#with apiData.serverURL}}
     		<legend>URLs:</legend>
@@ -20,6 +21,7 @@
 	    	<ul>
 			<li><a class='icon-globe' id="gatewayURL" href="{{productionURL}}" target="_blank" >&nbsp;{{productionURL}}</a></li>
 	    	</ul>
+            <input type="hidden" id="skipGateway" value="false">
 	    {{/with}}
     {{/if}}
 
