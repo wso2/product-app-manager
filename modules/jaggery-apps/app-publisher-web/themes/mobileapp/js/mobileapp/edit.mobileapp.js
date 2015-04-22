@@ -19,7 +19,7 @@ $('#txtOS').on("change",function() {
 		   $('#app-upload-block').css('display', 'block');
 		   $('#market-type-block').css('display', 'block');
 	  }
-	  
+
 	  
 	   if($('#txtOS').val() == 'android'){
 	   		$('#txtNameLabel').text('Package Name');
@@ -175,6 +175,6 @@ jQuery("#form-asset-create").submit(function(e) {
 
 $( document ).ajaxComplete(function( event, xhr, settings ) {
    if(xhr.status == 401){
-       location.reload();
+       location.re
    }
 });

@@ -23,17 +23,12 @@ require('/modules/publisher.js').exec(function(ctx) {
             var artifactManager = rxtManager.getArtifactManager("mobileapp");
             artifactManager.remove(app);
         }
-
     });
 
     routeManager.register('GET', 'publisher', '/publisher/api/mobile/isexist', function (ctx) {
 
         var name = request.getParameter("name");
-
-
         var artifactManager = rxtManager.getArtifactManager("mobileapp");
-
-
         searchOptions = name;
 
         var  paging = {};

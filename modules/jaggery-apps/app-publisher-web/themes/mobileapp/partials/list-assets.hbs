@@ -73,11 +73,14 @@
         </td>
         <td class="asset-listing-name">
             {{#if ../updateMobileAppAuthorized}}
-                <a href='/publisher/asset/operations/edit/mobileapp/{{this.id}}'>
+                {{#compare this.lifecycleState "Published" operator="!="}}
+                    <a href='/publisher/asset/operations/edit/mobileapp/{{this.id}}'>
+                  {{else}}
+                    <a href='#'>
+                {{/compare}}
              {{else}}
-            <a href='#'>
+                 <a href='#'>
             {{/if}}
-
                     {{this.attributes.overview_name}}
             </a>
         </td>
@@ -238,4 +241,5 @@
         </div>
     </div>
 </div>
+
 
