@@ -28,8 +28,8 @@ var checkeRole = function (username, session) {
       	//	return false;
   	//}
 
-    if (!(apiUtil.checkPermissionWrapper(usr.username, config.permissions.webapp_subscribe)
-          || apiUtil.checkPermissionWrapper(usr.username, config.permissions.mobileapp_subscribe))) {
+    if (!(apiUtil.checkPermissionWrapper(username, config.permissions.webapp_subscribe)
+          || apiUtil.checkPermissionWrapper(username, config.permissions.mobileapp_subscribe))) {
            return false;
   	}
 

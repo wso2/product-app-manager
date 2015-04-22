@@ -315,7 +315,8 @@ function prepareXACMLRulesDropdown(){
             if (obj != null) {
                 $('#xacml-rule').append($('<option>', { 
                     value: obj.id,
-                    text : obj.policyPartialName 
+                    text : obj.policyPartialName,
+                    title: obj.description
                 }));
             }
         });
