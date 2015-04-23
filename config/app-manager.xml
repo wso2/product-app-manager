@@ -603,7 +603,7 @@
 
 		   <Config name="IsCatalog">false</Config>
 
-		   <Config name="EnableMDMOperations">false</Config>
+		   <Config name="EnableMDMOperations">true</Config>
 		   <Config name="ActiveMDM">WSO2EMM</Config>
 		   <Config name="EnableSelfUnsubscription">false</Config>	
 
