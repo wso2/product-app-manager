@@ -1579,6 +1579,13 @@ div#roles-table_paginate, div#users-table_paginate {
     .top-asset-slideshow-cont .asset {
         width: 160px !important;
     }
+
+    .recently-added .span9{
+        padding-left: .7em;
+    }
+    .asset-introduction-box{
+        width: 224px;
+    }
 }
 
 /* Width size 980px
@@ -1913,6 +1920,30 @@ div#roles-table_paginate, div#users-table_paginate {
         text-align: left;
         margin-left: 1em;
     }
+
+    i.icon-mobile-phone.store-mobileapp-icon {
+        margin-left: 12px;
+    }
+
+    .img-store-mobile{
+        max-width: 100% !important;
+    }
+
+    .asset-banner {
+        width: 446px;
+    }
+
+    .asset-introduction-box{
+        width: 224px;
+    }
+}
+
+/* iphone 6
+-------------------------------------------------- */
+@media only screen
+and (min-device-width : 375px)
+and (max-device-width : 667px) {
+
 }
 
 /* Width size 480px
