@@ -25,7 +25,7 @@
 
 .store-my-item .btn-group {
     display: block;
-    margin-top: 8px;
+    margin-left: -4px;
 }
 
 a.site {
@@ -96,10 +96,6 @@ a.ebook {
 
 .asset-in-site {
     left: 0px !important;
-}
-
-#myasset-container {
-    padding-top: 20px;
 }
 
 .link-view-all {

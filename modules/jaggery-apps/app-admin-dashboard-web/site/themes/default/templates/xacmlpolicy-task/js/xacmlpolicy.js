@@ -82,7 +82,6 @@ $(document).ready(function () {
     });
     //load default xacml policy condition
     getXacmlPolicyTemplate();
-
     // Get shared partials
     $.ajax({
         url: context + '/apis/xacmlpolicies/list',
@@ -389,6 +388,14 @@ function updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, g
 
 function updatePolicyPartial() {
     $('#policyPartialsTable tbody').html("");
+    //show empty msg
+    if(policyPartialsArray.length > 0){
+        $('.no-policy').hide();
+        $('.policy-list').show();
+    }else{
+        $('.no-policy').show();
+        $('.policy-list').hide();
+    }
     $.each(policyPartialsArray, function (index, obj) {
         if (obj != null) {
 

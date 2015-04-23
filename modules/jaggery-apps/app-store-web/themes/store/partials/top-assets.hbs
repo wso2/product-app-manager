@@ -8,50 +8,6 @@
 <input type="hidden" value="{{config.httpsPort}}" id="httpsPort" name="httpsPort">
 <input type="hidden" value="{{sso}}" id="sso" name="sso">
 
-{{#if popularAssets}}
-    <!--div id="asset-slideshow-cont">
-		<div class="html_carousel">
-			<div id="asset-slideshow">
-				{{#each popularAssets}}
-					<div class="slide">
-						{{#attributes}}
-							<div class="asset-banner">
-								<img src="{{images_banner}}">
-							</div>
-							<div class="asset-intro-box">
-								<div>
-									<img src="{{images_thumbnail}}">
-								</div>
-								<div class="asset-intro-inner">
-									<h3>
-										<span>{{overview_displayName}}</span> <small>{{overview_version}}</small>
-									</h3>
-									<div class="star-rating">
-										<div class="asset-rating">
-											<div class="asset-rating-{{../rating/average}}star"></div>
-										</div>
-										<small> by {{overview_provider}} </small>
-									</div>
-								</div>
-								<a data-type="gadget" class="btn btn-primary" id="btn-add-gadget" href="{{url "/assets"}}/{{../type}}/{{../id}}">View</a>
-							</div>
-						{{/attributes}}
-					</div>
-				{{/each}}
-			</div>
-	
-			<div class="clearfix"></div>
-			<a class="prev" id="asset-slideshow-prev" href="#"><span>prev</span></a>
-			<a class="next" id="asset-slideshow-next" href="#"><span>next</span></a>
-	
-			<div class="pagination" id="asset-slideshow-pag"></div>
-	
-		</div>
-	</div>
-	
-	<div id="slideshow-clearfix"></div -->
-{{/if}}
-
 {{#each assets}}
     <h1 class="asset-type-default asset-title-separator asset-type-{{type}}">
         Recent {{plural}}
