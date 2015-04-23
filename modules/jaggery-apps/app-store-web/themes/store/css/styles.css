@@ -1555,6 +1555,18 @@ div#roles-table_paginate, div#users-table_paginate {
     line-height: 1.42857143;
 }
 
+.store-my-item-thumbnail, .store-my-item-info {
+    margin: 10px;
+}
+
+.mobile-type-icon {
+    width: 30px !important;
+    position: absolute;
+    background: #fff;
+    padding: 3px;
+    border-radius: 4px;
+}
+
 /* Width size 1024px
 -------------------------------------------------- */
 @media screen and (max-width: 1024px) {
@@ -1585,6 +1597,13 @@ div#roles-table_paginate, div#users-table_paginate {
     }
     .asset-introduction-box{
         width: 224px;
+    }
+    .store-my-item .btn-group>.btn{
+        font-size: 12px;
+    }
+
+    .store-my-item .btn-group i{
+        display: none;
     }
 }
 
@@ -1935,6 +1954,10 @@ div#roles-table_paginate, div#users-table_paginate {
 
     .asset-introduction-box{
         width: 224px;
+    }
+    .store-my-item-thumbnail > a {
+        width: 105px !important;
+        height: 105px !important;
     }
 }
 
