@@ -1968,6 +1968,19 @@ div#roles-table_paginate, div#users-table_paginate {
         margin-left: 32px;
     }
 
+    #devicesList{
+        width: 570px !important;
+    }
+
+    #modal-ent-install{
+        width: 635px !important;
+        margin-left: -325px !important;
+    }
+    .tab-content > .active, .pill-content > .active{
+        width: 100%;
+    }
+
+
 }
 
 /* iphone 6
