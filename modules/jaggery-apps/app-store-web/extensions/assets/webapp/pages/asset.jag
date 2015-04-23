@@ -236,9 +236,10 @@ require('/modules/store.js').exec(function (ctx) {
     }
 
     function hasUserRole(userRoleName){
-        
-        var userManager = require('store').server.userManager(user.tenantId);
-        var roles = userManager.getRoleListOfUser(user.username);
+        var usr = require('carbon').server.tenantUser(user.username);
+        var userManager = require('store').server.userManager(usr.tenantId);
+        var roles = userManager.getRoleListOfUser(usr.username);
+
         var hasRole = false;
 
         for(var i=0; i < roles.length; i++){
