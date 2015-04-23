@@ -882,3 +882,8 @@ legend + .control-group {
     left: 157px;
     border-radius: 0px !important;
 }
+
+.no-policy {
+    text-align: center;
+    margin-top: 60px;
+}
