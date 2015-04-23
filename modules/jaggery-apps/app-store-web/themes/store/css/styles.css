@@ -1605,6 +1605,10 @@ div#roles-table_paginate, div#users-table_paginate {
     .store-my-item .btn-group i{
         display: none;
     }
+
+    .img-store-mobile{
+        max-width: 100% !important;
+    }
 }
 
 /* Width size 980px
@@ -1959,6 +1963,11 @@ div#roles-table_paginate, div#users-table_paginate {
         width: 105px !important;
         height: 105px !important;
     }
+
+    .asset-description-header .row > div {
+        margin-left: 32px;
+    }
+
 }
 
 /* iphone 6
