@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2005-2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -33,6 +33,7 @@ import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import static org.testng.Assert.assertTrue;
 
@@ -40,15 +41,15 @@ public class ThrottlingTestCase extends APPManagerIntegrationTest {
 
     private String username;
     private String password;
-    private WebDriver driver;
+    private WebDriver driverOne, driverTwo;
     private Map<String, String> requestHeaders = new HashMap<String, String>();
     private APPMStoreUIClient storeUIClient;
     Tomcat tomcat;
+    private ApplicationInitializingUtil baseUtil;
 
     @BeforeClass(alwaysRun = true)
     public void init() throws Exception {
         super.init(0);
-        ApplicationInitializingUtil baseUtil;
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
         baseUtil.testApplicationCreation("8");
@@ -56,7 +57,7 @@ public class ThrottlingTestCase extends APPManagerIntegrationTest {
         baseUtil.testApplicationSubscription();
         username = userInfo.getUserName();
         password = userInfo.getPassword();
-        driver = BrowserManager.getWebDriver();
+        driverOne = BrowserManager.getWebDriver();
         if (requestHeaders.get("Content-Type") == null) {
             this.requestHeaders.put("Content-Type", "text/html");
         }
@@ -81,15 +82,13 @@ public class ThrottlingTestCase extends APPManagerIntegrationTest {
 
         LogViewerClient logClient = new LogViewerClient(amServer.getBackEndUrl(), username, password);
 
-        storeUIClient.loginDriver(driver, ApplicationInitializingUtil.storeURLHttp, username, password);
-        storeUIClient.selectApplication(driver, ApplicationInitializingUtil.appId);
-        driver.switchTo().alert().accept();
-
-        driver = BrowserManager.getWebDriver();
-
-        storeUIClient.loginDriver(driver, ApplicationInitializingUtil.storeURLHttp, username, password);
-        storeUIClient.selectApplication(driver, ApplicationInitializingUtil.appId);
-        driver.switchTo().alert().accept();
+        storeUIClient.loginDriver(driverOne, ApplicationInitializingUtil.storeURLHttp, username, password);
+        storeUIClient.selectApplication(driverOne, ApplicationInitializingUtil.appId);
+        driverOne.switchTo().alert().accept();
+        driverTwo = BrowserManager.getWebDriver();
+        storeUIClient.loginDriver(driverTwo, ApplicationInitializingUtil.storeURLHttp, username, password);
+        storeUIClient.selectApplication(driverTwo, ApplicationInitializingUtil.appId);
+        driverTwo.switchTo().alert().accept();
 
         Thread.sleep(10000);
 
@@ -110,7 +109,22 @@ public class ThrottlingTestCase extends APPManagerIntegrationTest {
     @AfterClass(alwaysRun = true)
     public void destroy() throws Exception {
         super.cleanup();
-        driver.close();
+        this.cleanWebDriver(driverOne);
+        this.cleanWebDriver(driverTwo);
+        baseUtil.destroy();
         tomcat.stop();
+    }
+
+    private void cleanWebDriver(WebDriver driver) {
+        String parentWindow = driver.getWindowHandle();
+        Set<String> handles =  driver.getWindowHandles();
+        for(String windowHandle  : handles) {
+            if(!windowHandle.equals(parentWindow)) {
+                driver.switchTo().window(windowHandle);
+                driver.close();
+            }
+        }
+        driver.switchTo().window(parentWindow);
+        driver.close();
     }
 }

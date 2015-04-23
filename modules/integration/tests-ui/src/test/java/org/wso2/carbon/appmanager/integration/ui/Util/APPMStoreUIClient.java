@@ -239,19 +239,19 @@ public class APPMStoreUIClient {
         driver.findElement(By.xpath(uiElementMapper.getElement("store_reg_confirm_xpath_locator"))).click();
 
         waitElem.until(ExpectedConditions.visibilityOfElementLocated(
-                By.id(uiElementMapper.getElement("store_reg_sign_in_id_usrname_locator"))));
+                By.id(uiElementMapper.getElement("store_username_id_locator"))));
         WebElement sinInUser = driver.findElement(By.id(
-                uiElementMapper.getElement("store_reg_sign_in_id_usrname_locator")));
+                uiElementMapper.getElement("store_username_id_locator")));
         sinInUser.sendKeys(username);
 
         waitElem.until(ExpectedConditions.visibilityOfElementLocated(
-                By.id(uiElementMapper.getElement("store_reg_sign_in_id_pwd_locator"))));
+                By.id(uiElementMapper.getElement("store_password_id_locator"))));
         WebElement sinInPassword = driver.findElement(By.id(
-                uiElementMapper.getElement("store_reg_sign_in_id_pwd_locator")));
+                uiElementMapper.getElement("store_password_id_locator")));
         sinInPassword.sendKeys(password);
 
         waitElem.until(ExpectedConditions.visibilityOfElementLocated
-                (By.id(uiElementMapper.getElement("store_reg_sign_in_submit_locator"))));
-        driver.findElement(By.id(uiElementMapper.getElement("store_reg_sign_in_submit_locator"))).click();
+                (By.className(uiElementMapper.getElement("store_button_class_name_locator"))));
+        driver.findElement(By.className(uiElementMapper.getElement("store_button_class_name_locator"))).click();
     }
 }

@@ -1,5 +1,5 @@
 /*
-*Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*Copyright (c) 2005-2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *WSO2 Inc. licenses this file to you under the Apache License,
 *Version 2.0 (the "License"); you may not use this file except
@@ -28,6 +28,8 @@ import org.wso2.carbon.appmanager.integration.ui.Util.APPMStoreUIClient;
 import org.wso2.carbon.appmanager.integration.ui.Util.TestUtils.ApplicationInitializingUtil;
 import org.wso2.carbon.automation.core.BrowserManager;
 
+import java.util.Set;
+
 import static org.testng.Assert.assertTrue;
 
 
@@ -37,13 +39,14 @@ public class SSOTestCase extends APPManagerIntegrationTest {
     private String password;
     private WebDriver driver;
     private APPMStoreUIClient storeUIClient;
+    private ApplicationInitializingUtil baseUtil;
 
     @BeforeClass(alwaysRun = true)
     public void init() throws Exception {
         super.init(0);
-        ApplicationInitializingUtil baseUtil;
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
+        baseUtil.testApplicationCreation("11");
         username = userInfo.getUserName();
         password = userInfo.getPassword();
         driver = BrowserManager.getWebDriver();
@@ -53,7 +56,7 @@ public class SSOTestCase extends APPManagerIntegrationTest {
     @Test(groups = {"wso2.appmanager.sso"}, description = "Test Single Sign On")
     public void testSSO() throws Exception {
 
-        storeUIClient.login(driver, ApplicationInitializingUtil.storeURLHttp, username, password);
+        storeUIClient.loginDriver(driver, ApplicationInitializingUtil.storeURLHttp, username, password);
         storeUIClient.accessStore(driver, ApplicationInitializingUtil.storeURLHttp);
         assertTrue(driver.findElement(By.xpath("//a[contains(.,'" + username + "')]")) != null,
                 "No user Logged in for given username. SSO failed");
@@ -62,6 +65,16 @@ public class SSOTestCase extends APPManagerIntegrationTest {
     @AfterClass(alwaysRun = true)
     public void destroy() throws Exception {
         super.cleanup();
+        String parentWindow = driver.getWindowHandle();
+        Set<String> handles =  driver.getWindowHandles();
+        for(String windowHandle  : handles) {
+            if(!windowHandle.equals(parentWindow)) {
+                driver.switchTo().window(windowHandle);
+                driver.close();
+            }
+        }
+        driver.switchTo().window(parentWindow);
         driver.close();
+        baseUtil.destroy();
     }
 }

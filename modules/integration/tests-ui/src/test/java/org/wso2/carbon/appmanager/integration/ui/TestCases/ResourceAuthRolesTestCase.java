@@ -1,5 +1,5 @@
 /*
-*Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*Copyright (c) 2005-2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *WSO2 Inc. licenses this file to you under the Apache License,
 *Version 2.0 (the "License"); you may not use this file except
@@ -31,6 +31,7 @@ import org.wso2.carbon.automation.core.BrowserManager;
 import org.wso2.carbon.automation.core.ProductConstant;
 
 import java.io.File;
+import java.util.Set;
 
 import static org.testng.Assert.assertTrue;
 
@@ -43,11 +44,11 @@ public class ResourceAuthRolesTestCase extends APPManagerIntegrationTest {
     private UIElementMapper uiElementMapper;
     TomcatDeployer deployer;
     Tomcat tomcat;
+    private ApplicationInitializingUtil baseUtil;
 
     @BeforeClass(alwaysRun = true)
     public void init() throws Exception {
         super.init(0);
-        ApplicationInitializingUtil baseUtil;
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
         baseUtil.testApplicationCreation("4");
@@ -83,7 +84,17 @@ public class ResourceAuthRolesTestCase extends APPManagerIntegrationTest {
     @AfterClass(alwaysRun = true)
     public void destroy() throws Exception {
         super.cleanup();
+        String parentWindow = driver.getWindowHandle();
+        Set<String> handles =  driver.getWindowHandles();
+        for(String windowHandle  : handles) {
+            if(!windowHandle.equals(parentWindow)) {
+                driver.switchTo().window(windowHandle);
+                driver.close();
+            }
+        }
+        driver.switchTo().window(parentWindow);
         driver.close();
+        baseUtil.destroy();
         tomcat.stop();
     }
 

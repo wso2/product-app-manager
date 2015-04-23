@@ -39,6 +39,7 @@ import org.wso2.carbon.automation.core.utils.HttpResponse;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.Set;
 
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -57,6 +58,7 @@ public class DocumentTestCase extends APPManagerIntegrationTest {
     private ResourceAdminServiceClient resourceAdminServiceStub;
     private String docPathPrefix;
     private WebDriver driver;
+    private ApplicationInitializingUtil baseUtil;
 
     private static final String IN_LINE_DOC_PREFIX = "InlineTestDocument";
     private static final String URL_DOC_PREFIX = "URLTestDocument";
@@ -71,7 +73,6 @@ public class DocumentTestCase extends APPManagerIntegrationTest {
     @BeforeClass(alwaysRun = true)
     public void init() throws Exception {
         super.init(0);
-        ApplicationInitializingUtil baseUtil;
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
         baseUtil.testApplicationCreation("doc");
@@ -305,7 +306,17 @@ public class DocumentTestCase extends APPManagerIntegrationTest {
     @AfterClass(alwaysRun = true)
     public void destroy() throws Exception {
         super.cleanup();
-        if (driver != null) driver.quit();
+        String parentWindow = driver.getWindowHandle();
+        Set<String> handles =  driver.getWindowHandles();
+        for(String windowHandle  : handles) {
+            if(!windowHandle.equals(parentWindow)) {
+                driver.switchTo().window(windowHandle);
+                driver.close();
+            }
+        }
+        driver.switchTo().window(parentWindow);
+        driver.close();
+        baseUtil.destroy();
     }
 
     /**
