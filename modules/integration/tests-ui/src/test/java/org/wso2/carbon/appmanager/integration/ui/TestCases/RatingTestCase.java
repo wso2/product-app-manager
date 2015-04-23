@@ -38,12 +38,12 @@ public class RatingTestCase extends APPManagerIntegrationTest {
     private APPMStoreRestClient appMStore;
     protected UserInfo userInfo1;
     protected UserInfo userInfo2;
+    private ApplicationInitializingUtil baseUtil;
 
 
     @BeforeClass(alwaysRun = true)
     public void init() throws Exception {
         super.init(0);
-        ApplicationInitializingUtil baseUtil;
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
         baseUtil.testApplicationCreation("15");
@@ -85,6 +85,7 @@ public class RatingTestCase extends APPManagerIntegrationTest {
     @AfterClass(alwaysRun = true)
     public void destroy() throws Exception {
         super.cleanup();
+        baseUtil.destroy();
     }
 
 }

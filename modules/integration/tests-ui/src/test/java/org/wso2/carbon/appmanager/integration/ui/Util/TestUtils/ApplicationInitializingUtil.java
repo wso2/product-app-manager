@@ -20,6 +20,7 @@ package org.wso2.carbon.appmanager.integration.ui.Util.TestUtils;
 
 import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.appmanager.integration.ui.APPManagerIntegrationTest;
@@ -33,6 +34,7 @@ import org.wso2.carbon.automation.core.ProductConstant;
 import org.wso2.carbon.automation.core.utils.HttpResponse;
 
 import java.io.File;
+import java.util.Set;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -160,5 +162,20 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
             }
             timeElapsed = System.nanoTime() - timeBefore;
         }
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void destroy() throws Exception {
+        super.cleanup();
+        String parentWindow = driver.getWindowHandle();
+        Set<String> handles =  driver.getWindowHandles();
+        for(String windowHandle  : handles) {
+            if(!windowHandle.equals(parentWindow)) {
+                driver.switchTo().window(windowHandle);
+                driver.close();
+            }
+        }
+        driver.switchTo().window(parentWindow);
+        driver.close();
     }
 }

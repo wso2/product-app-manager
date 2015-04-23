@@ -1,5 +1,5 @@
 /*
-*Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*Copyright (c) 2005-2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *WSO2 Inc. licenses this file to you under the Apache License,
 *Version 2.0 (the "License"); you may not use this file except
@@ -37,15 +37,17 @@ public class AppDeleteTestCase extends APPManagerIntegrationTest {
     private String password;
     private APPMPublisherRestClient appMPublisher;
     private APPMStoreRestClient appMStore;
-
+    private ApplicationInitializingUtil baseUtil;
+    private static String appPrefix = "1";
 
     @BeforeClass(alwaysRun = true)
     public void init() throws Exception {
         super.init(0);
-        ApplicationInitializingUtil baseUtil;
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
-        baseUtil.testApplicationCreation("1");
+        baseUtil.testApplicationCreation(appPrefix);
+        baseUtil.testApplicationPublish();
+        baseUtil.testApplicationSubscription();
         username = userInfo.getUserName();
         password = userInfo.getPassword();
         appMPublisher = new APPMPublisherRestClient(ApplicationInitializingUtil.publisherURLHttp);
@@ -53,16 +55,15 @@ public class AppDeleteTestCase extends APPManagerIntegrationTest {
 
     }
 
-    @Test(groups = {"wso2.appmanager.delete"}, description = "Test Single Sign Out")
+    @Test(groups = {"wso2.appmanager.delete"}, description = "Application delete test")
     public void testApplicationDeletion() throws Exception {
 
         appMPublisher.login(username, password);
-        appMPublisher.deleteApp(ApplicationInitializingUtil.appId);
         appMStore.login(username, password);
+        appMPublisher.deleteApp(ApplicationInitializingUtil.appId);
         HttpResponse appAvailResponse = HttpRequestUtil.doGet(getGatewayServerURLHttp() +
-                appProp.getAppName() + "/" + appProp.getVersion(), null);
-        //use response code
-        assertTrue(appAvailResponse.getResponseMessage().equals("Not Found"), "Application " + appProp.getAppName() +
+                appProp.getAppName() + appPrefix + "/" + appProp.getVersion()+ "/", null);
+        assertTrue(appAvailResponse.getResponseCode() != 200 , "Application " + appProp.getAppName() +
                 " is available. Delete failed.");
 
     }
@@ -71,6 +72,7 @@ public class AppDeleteTestCase extends APPManagerIntegrationTest {
     public void destroy() throws Exception {
         appMStore.logout();
         super.cleanup();
+        baseUtil.destroy();
     }
 
 }
