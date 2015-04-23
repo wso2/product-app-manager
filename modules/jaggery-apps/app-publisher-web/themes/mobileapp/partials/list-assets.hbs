@@ -73,11 +73,11 @@
         </td>
         <td class="asset-listing-name">
             {{#if ../updateMobileAppAuthorized}}
-                {{#compare this.lifecycleState "Published" operator="!="}}
+                {{#if this.enableEdit}}
                     <a href='/publisher/asset/operations/edit/mobileapp/{{this.id}}'>
                   {{else}}
                     <a href='#'>
-                {{/compare}}
+                {{/if}}
              {{else}}
                  <a href='#'>
             {{/if}}
