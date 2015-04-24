@@ -99,7 +99,8 @@ var discover_client=function(){
          var result = {"status": { "code": "0", "description":""}, "metadataList": []};
          result.status.code = 200;
          result.numberOfPages = remoteResult.pageCount;
-         result.authCookie = remoteResult.authCookie;
+         result.moreResultsPossible = remoteResult.moreResultsPossible;
+         result.totalNumberOfPagesKnown = remoteResult.totalNumberOfPagesKnown;
 
          var arrayLength = remoteResult.applicationList.length;
          for (var i = 0; i < arrayLength; i++) {
@@ -118,10 +119,10 @@ var discover_client=function(){
 
              result.metadataList.push(obj);
          }
-
-         result.status.description = 'Successfully Queried the server; found ['
-            +remoteResult.totalNumberOfResults
-            +'] Applications; Showing in ['+remoteResult.pageCount+'] pages';
+         var hasMoreResultsString = remoteResult.moreResultsPossible == true ? ' and more': '';
+         var hasMorePagesString = remoteResult.totalNumberOfPagesKnown == false ? ' + ': '';
+         result.status.description = 'Successfully Queried the server; Showing in ['+
+            remoteResult.pageCount+hasMorePagesString+'] pages';
          return result;
     }
 
