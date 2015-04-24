@@ -30,7 +30,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS CacheRequestSummaryData (api STRING, api_ver
 	'org.wso2.carbon.hadoop.hive.jdbc.storage.JDBCStorageHandler' TBLPROPERTIES ( 'wso2.carbon.datasource.name'='WSO2AM_STATS_DB',
 	'hive.jdbc.update.on.duplicate' = 'true',
 	'hive.jdbc.primary.key.fields'='api,api_version,version,apiPublisher,userId,context,hostName,time,fullRequestPath, cacheHit',
-	'hive.jdbc.table.create.query' = 'CREATE TABLE Cache_REQUEST_SUMMARY ( api VARCHAR(100), api_version VARCHAR(100), version VARCHAR(100),trackingCode VARCHAR(100), referer VARCHAR (500),
+	'hive.jdbc.table.create.query' = 'CREATE TABLE CACHE_REQUEST_SUMMARY ( api VARCHAR(100), api_version VARCHAR(100), version VARCHAR(100),trackingCode VARCHAR(100), referer VARCHAR (500),
 	apiPublisher VARCHAR(100),userId VARCHAR(100), context VARCHAR(100),max_request_time BIGINT,fullRequestPath VARCHAR(100),cacheHit INT,
  total_request_count INT, hostName VARCHAR(100), year SMALLINT, month SMALLINT, day SMALLINT, time VARCHAR(30),PRIMARY KEY(api,api_version,version,apiPublisher,userId,context,hostName,time,fullRequestPath,cacheHit))' );
  
