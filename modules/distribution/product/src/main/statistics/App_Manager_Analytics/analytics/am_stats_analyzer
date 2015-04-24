@@ -63,7 +63,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS APM_APP_HIT_TOTAL_TEMP (key STRING,uuid STRI
  
 CREATE EXTERNAL TABLE IF NOT EXISTS APM_APP_HIT_TOTAL (uuid STRING,user_id STRING,hit_count BIGINT,tenant_id INT) STORED BY 
 'org.wso2.carbon.hadoop.hive.jdbc.storage.JDBCStorageHandler' TBLPROPERTIES ( 
-'wso2.carbon.datasource.name'='WSO2BAM_DATASOURCE',
+'wso2.carbon.datasource.name'='WSO2AM_STATS_DB',
 'hive.jdbc.update.on.duplicate' = 'true',
 'hive.jdbc.primary.key.fields' = 'uuid,user_id',
 'hive.jdbc.table.create.query' ='CREATE TABLE IF NOT EXISTS APM_APP_HIT_TOTAL (uuid VARCHAR2(500) NOT NULL,
