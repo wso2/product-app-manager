@@ -38,9 +38,10 @@ var caramel;
     var tenantDomain;
 
     if (logged != null) {
-         tenantDomain = logged.tenantDomain;
+        tenantDomain = logged.tenantDomain;
     }
     var urlDomain = request.getParameter('urlDomain') || tenantDomain || "carbon.super";
+
 
     if (target) {
         try {
