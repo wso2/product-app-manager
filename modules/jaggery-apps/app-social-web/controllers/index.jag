@@ -35,12 +35,13 @@ var caramel;
     var target = request.getParameter('target');
     var obj, reviewsJSON;
     var more = false;
+    var tenantDomain;
 
-    var loggedTenantDomain = null;
     if (logged != null) {
-        loggedTenantDomain = logged.tenantDomain;
+        tenantDomain = logged.tenantDomain;
     }
-    var urlDomain = request.getParameter('urlDomain') || loggedTenantDomain || "carbon.super";
+    var urlDomain = request.getParameter('urlDomain') || tenantDomain || "carbon.super";
+
 
     if (target) {
         try {

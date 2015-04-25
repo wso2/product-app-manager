@@ -28,11 +28,15 @@ var PAGE_SIZE = config.paginationConfig.PAGE_SIZE;
      * The function will create an array of page indices upto the page count
      * @param pageCount The max page count
      */
-var pageIndexPopulator = function(pageCount,currentIndex){
+var pageIndexPopulator = function(pageCount,currentIndex, isTotalNumberOfPagesKnown){
 
     var indices = [];
     var temp={};
-    for(var index=1;index<=pageCount;index++){
+    var maxPages = pageCount;
+    if(! isTotalNumberOfPagesKnown) {
+        maxPages ++;
+    }
+    for(var index=1;index<=maxPages;index++){
         temp={};
         temp.index = ''+index;
         temp.isDisabled = false;
@@ -51,6 +55,14 @@ var pageIndexPopulator = function(pageCount,currentIndex){
     }
     return indices;
 };
+
+/* Returns a dummy password mimicking the password entered. */
+var getDummyPassword = function(password) {
+    if (password != null) {
+        return password.replace(/(.)/g, "*");
+    }
+    return password;
+}
 
 var getAvailablePages = function(appCount){
     var availablePages = Math.floor(appCount/PAGE_SIZE);
@@ -73,24 +85,26 @@ var getCurrentPage = function(currentIndex){
 
 var createPaginationInfo = function(appsWrapper, sessionData, currentPageIndex) {
     var numberOfPages = appsWrapper.numberOfPages;
-
-    var indices = pageIndexPopulator(numberOfPages, currentPageIndex * PAGE_SIZE +1);
-
-    if(indices.length > 1){
-        sessionData.pageIndices = indices;
-    }
+    var nav = {};
+    sessionData.nav = nav;
+    var indices = pageIndexPopulator(numberOfPages, currentPageIndex * PAGE_SIZE +1,
+            appsWrapper.totalNumberOfPagesKnown);
 
     if(currentPageIndex > 0){
-        sessionData.leftNavEnabled=true;
-        sessionData.leftNav = +(sessionData.currentPage)-1;
+        nav.leftNavEnabled=true;
+        nav.leftNav = +(sessionData.currentPage)-1;
     } else {
-        sessionData.leftNavEnabled=false;
+        nav.leftNavEnabled=false;
     }
-    if(sessionData.currentPage <= numberOfPages -1){
-        sessionData.rightNavEnabled=true;
-        sessionData.rightNav = +(sessionData.currentPage) +1;
+    if(sessionData.currentPage < indices.length){
+        nav.rightNavEnabled=true;
+        nav.rightNav = +(sessionData.currentPage) +1;
     } else {
-        sessionData.rightNavEnabled=false;
+        nav.rightNavEnabled=false;
+    }
+
+    if(indices.length > 1){
+        nav.pageIndices = indices;
     }
 }
 
@@ -107,11 +121,11 @@ routeMnger.register('POST', 'publisher', '/publisher/assets/{operation}/{type}/'
             var availablePages = 1;
             var status;
 
-
             var sessionData = session.get('sessionData');
             if(sessionData == null) {
                 sessionData = {"serverUrl" : "",
                  "serverUserName": "",
+                 "appStatus" : "NEW",
                  "pageIndices" :[], "currentPage": 1, "leftNav" : 1, "rightNav" : 1};
                 session.put('sessionData', sessionData);
             }
@@ -121,7 +135,6 @@ routeMnger.register('POST', 'publisher', '/publisher/assets/{operation}/{type}/'
                 discoverClient = new discover_boot.DiscoverClient(null);
                 session.put('DiscoverClient', discoverClient);
             }
-
             try {
                 var serverPassword;
                 if(button == 'discoverAssets') {
@@ -129,9 +142,11 @@ routeMnger.register('POST', 'publisher', '/publisher/assets/{operation}/{type}/'
                     var serverUserName = request.getParameter('serverUserName');
                     serverPassword = request.getParameter('serverPassword');
                     var appNameStartsWith = request.getParameter('appNameStartsWith');
-                    //var appStatus = request.getParameter('appStatus');
-
+                    var appStatus = request.getParameter('appStatus');
                     //Remember the server connection details in session
+                    if(sessionData.serverUserName != serverUserName ) {
+                        sessionData.serverPassword = getDummyPassword(serverPassword);
+                    }
                     sessionData.serverUrl = serverUrl;
                     sessionData.serverUserName = serverUserName;
                     sessionData.pageIndices = [];
@@ -139,12 +154,11 @@ routeMnger.register('POST', 'publisher', '/publisher/assets/{operation}/{type}/'
                     sessionData.leftNav= 1;
                     sessionData.rightNav =1;
                     sessionData.appNameStartsWith = appNameStartsWith;
-                    //sessionData.appStatus = appStatus;
+                    sessionData.appStatus = appStatus;
                 }
                 if(page == null) {
                     page = sessionData.currentPage;
                 }
-
                 var currIndex = page - 1;
                 var appsWrapper = discoverClient.discoverWebapps(sessionData.serverUrl,
                     sessionData.serverUserName, serverPassword, currIndex, sessionData.appStatus,
@@ -152,8 +166,10 @@ routeMnger.register('POST', 'publisher', '/publisher/assets/{operation}/{type}/'
                 discoveredArtifacts = appsWrapper.metadataList;
                 status = appsWrapper.status;
                 sessionData.currentPage = page;
-
                 createPaginationInfo(appsWrapper, sessionData, currIndex);
+                if(status.code != 200) {
+                    sessionData.serverPassword = '';
+                }
 
                 caramel.render({op: 'app_discover',cuser: server.current(session),shortName: type,
                      title: type, discoveredArtifacts : discoveredArtifacts, status: status,
@@ -176,7 +192,7 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{operation}/{type}/',
         var sessionData = session.get('sessionData');
         if(sessionData == null) {
             sessionData = {"serverUrl" : "",
-             "serverUserName": "",
+             "serverUserName": "", "appStatus" : "NEW",
              "pageIndices" :[], "currentPage": 1, "leftNav" : 1, "rightNav" : 1};
         }
         var discoverClient = session.get('DiscoverClient');

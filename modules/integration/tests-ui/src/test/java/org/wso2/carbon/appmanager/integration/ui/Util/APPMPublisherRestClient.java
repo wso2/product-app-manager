@@ -31,7 +31,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.AppCreateRequest;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.DocumentRequest;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.GetStatisticRequest;
-import org.wso2.carbon.automation.core.BrowserManager;
 import org.wso2.carbon.automation.core.utils.HttpRequestUtil;
 import org.wso2.carbon.automation.core.utils.HttpResponse;
 
@@ -423,10 +422,9 @@ public class APPMPublisherRestClient {
 	 * @throws Exception
 	 */
 	public HttpResponse publishApp(String appId) throws Exception {
-		// created to in-review
-		changeState(appId, "Publish");
-		// in-review to publish
-		HttpResponse response = changeState(appId, "Approve");
+		changeState(appId, "Submit%20for%20Review");
+		changeState(appId, "Approve");
+		HttpResponse response = changeState(appId, "Publish");
 		return response;
 	}
 
@@ -457,7 +455,6 @@ public class APPMPublisherRestClient {
                 "/publisher/api/asset/delete/webapp/"+appId+""),"",requestHeaders);
 
         if (response.getResponseCode() == 200) {
-
             return response;
         } else {
             throw new Exception("App deletion failed>" + response.getData());

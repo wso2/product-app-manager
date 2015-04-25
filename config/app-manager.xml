@@ -603,7 +603,7 @@
 
 		   <Config name="IsCatalog">false</Config>
 
-		   <Config name="EnableMDMOperations">false</Config>
+		   <Config name="EnableMDMOperations">true</Config>
 		   <Config name="ActiveMDM">WSO2EMM</Config>
 		   <Config name="EnableSelfUnsubscription">false</Config>	
 
@@ -651,6 +651,18 @@
 	<ServicesAPI>
 		<AuthorizedRole>admin</AuthorizedRole>
 	</ServicesAPI>
+
+    <!-- The configuration for discovery service -->
+    <DiscoveryConfiguration>
+        <!--
+            Configures the discovery handlers. Discovery handlers are the ones connecting remote servers
+            and discover the applications
+        -->
+        <DiscoveryHandlers>
+            <!-- List of discovery handlers. name is the key being used. Class is the handler class -->
+            <Handler name="WSO2-AS" class="org.wso2.carbon.appmgt.impl.discovery.Wso2AppServerDiscoveryHandler" />
+        </DiscoveryHandlers>
+    </DiscoveryConfiguration>
 
 </APIManager>
 
