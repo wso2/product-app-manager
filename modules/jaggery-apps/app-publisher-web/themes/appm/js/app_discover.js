@@ -167,6 +167,16 @@ $(function(){
         postData.overview_provider = webappInfo.providerName;
     };
 
+    function getTrackingCode() {
+        // random number between 0 to 1 e.g-0.5838903994299471
+        var randomNum = Math.random();
+        var code =randomNum.toString();
+        code = code.replace("0.","");
+        var tracking_code_id = "AM_"+code;
+
+        return tracking_code_id;
+    }
+
     function createServiceProvider(data){
         var sso_config = {};
 
@@ -235,6 +245,9 @@ $(function(){
                     var statInfo = response.data;
                     if(statInfo.ok == 'true') {
                         var postData = getWebappCreationPostData();
+
+                        postData.overview_trackingCode = getTrackingCode();
+
                         importDiscoveredData(postData, statInfo.data);
                         doCreateWebapp(postData);
                     }else{
