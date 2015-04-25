@@ -213,13 +213,16 @@ routeManager.register('PUT', 'publisher', '/publisher/api/lifecycle/{action}/{ty
                         });
 
                         var roleRestrictionPath = artifact.path + "role_restrictions";
-                        var permissionSet = registry.get(roleRestrictionPath);
+                        try{
+                            var permissionSet = registry.get(roleRestrictionPath);
+                            var content = '' + permissionSet.content;
 
-                        var content = '' + permissionSet.content;
-
-                        if (content) {
-                            um.denyRole('Internal/everyone', artifact.path, carbon.registry.actions.GET);
-                            um.denyRole('system/wso2.anonymous.role', artifact.path, carbon.registry.actions.GET);
+                            if (content) {
+                                um.denyRole('Internal/everyone', artifact.path, carbon.registry.actions.GET);
+                                um.denyRole('system/wso2.anonymous.role', artifact.path, carbon.registry.actions.GET);
+                            }
+                        } catch (e) {
+                            log.debug('No role restrictions found for APP ' + id);
                         }
                     }
                 } catch (e) {
