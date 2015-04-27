@@ -362,7 +362,7 @@ var drawAPIUsageByUser = function (response,usageByContext) {
                                 div.style("top", d3.event.pageY-25+"px");
                                 div.style("display", "inline-block");
 
-                                div.html('<div style="color:#555; text-align:left">API : '+app +'</div><div style="color:#666;margin-top:5px;text-align:left">Subscription Count : '+data[i].SubscriberCount+'</div><table class="table" id="tooltipTable"><thead><tr><th>Version</th><th>Hits</th></tr></thead><tbody></tbody></table>');
+                                div.html('<div style="color:#555; text-align:left">API : '+app +'</div><div style="color:#666;margin-top:5px;text-align:left">Subscription Count : '+data[i].Subscriber_Count+'</div><table class="table" id="tooltipTable"><thead><tr><th>Version</th><th>Hits</th></tr></thead><tbody></tbody></table>');
                                     for (var l=0;l<versionCount.length;l++){
                                         var versionName=versionCount[l].version;
                                         var version_Count=versionCount[l].count;
