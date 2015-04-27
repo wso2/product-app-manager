@@ -83,6 +83,39 @@ $(function() {
 
 	});
 
+    $('#overview_name').on('blur', function () {
+        if($(this).val() != ""){
+            $('#btn-create-asset').removeAttr('disabled');
+        }
+    });
+
+    $('#overview_displayName').on('blur', function () {
+        if($(this).val() != ""){
+            $('#btn-create-asset').removeAttr('disabled');
+        }
+    });
+
+
+    $('#overview_webAppUrl').on('blur', function () {
+            if($(this).val() != ""){
+                $('#btn-create-asset').removeAttr('disabled');
+            }
+    });
+
+
+    $('#overview_version').on('blur', function () {
+        if($(this).val() != ""){
+            $('#btn-create-asset').removeAttr('disabled');
+        }
+    });
+
+
+
+    $('.trans_checkbox').on('click', function () {
+        if($(this).val() != ""){
+            $('#btn-create-asset').removeAttr('disabled');
+        }
+    });
 
 
 
