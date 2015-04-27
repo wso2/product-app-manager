@@ -168,7 +168,7 @@
             </log>
             <drop/>
         </out>
-        <description>The default main sequence for API manager - Returns 404 Not Found</description>
+        <description>The default main sequence for APP manager - Returns 404 Not Found</description>
     </sequence>
 
 

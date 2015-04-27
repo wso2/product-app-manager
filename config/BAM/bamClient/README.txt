@@ -7,10 +7,10 @@
 3. Java Runtime Environment
 
 ---------------------------------------------------------------------------------
-Configuring API Manager
+Configuring Application Manager
 ---------------------------------------------------------------------------------
 To enable API statistics collection you need to configure the following properties in the
-api-manager.xml file of API Manager.
+api-manager.xml file of Application Manager.
 
     <!--
 	    Enable/Disable the API usage tracker.
@@ -25,11 +25,11 @@ api-manager.xml file of API Manager.
     <DataSourceName>jdbc/WSO2AM_STATS_DB</DataSourceName>
 
 And you need to configure the datasource definition in the master-datasources.xml file[in conf/datasources]
-of API Manager.
+of Application Manager.
 
     <datasource>
          <name>WSO2AM_STATS_DB</name>
-         <description>The datasource used for getting statistics to API Manager</description>
+         <description>The datasource used for getting statistics to Application Manager</description>
          <jndiConfig>
                <name>jdbc/WSO2AM_STATS_DB</name> //This jndi lookup name should equal to the DataSourceName defined in api-manager.xml as above
          </jndiConfig>

@@ -169,7 +169,7 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>create-API-manager-database</id>
+                        <id>create-APP-manager-database</id>
                         <phase>package</phase>
                         <goals>
                             <goal>run</goal>

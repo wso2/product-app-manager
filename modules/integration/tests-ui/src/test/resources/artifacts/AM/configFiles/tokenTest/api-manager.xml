@@ -6,7 +6,7 @@
     -->
     <DataSourceName>jdbc/WSO2AM_DB</DataSourceName>
 
-    <!-- This parameter is used when adding api management capability to other products like GReg, AS, DSS etc.-->
+    <!-- This parameter is used when adding app management capability to other products like GReg, AS, DSS etc.-->
     <GatewayType>Synapse</GatewayType>
 	
   <!-- This parameter is used to enable the securevault support when try to publish endpoint secured APIs. Values should be "true" or "false".
@@ -268,7 +268,7 @@
         If you want to switch back to Web Service Client, change the value of "KeyValidatorClientType" to "WSClient".
         In a distributed environment;
         -If you are at the Gateway node, you need to point "ThriftClientPort" value to the "ThriftServerPort" value given at KeyManager node.
-        -If you need to start two API Manager instances in the same machine, you need to give different ports to "ThriftServerPort" value in two nodes.
+        -If you need to start two API/APP Manager instances in the same machine, you need to give different ports to "ThriftServerPort" value in two nodes.
         -ThriftServerHost - Allows to configure a hostname for the thrift server. It uses the carbon hostname by default.
         -->
 
@@ -400,7 +400,7 @@
     </StatusObservers-->
 
     <!--
-        There are set of plugguble extensions for some operations related to API MAnager
+        There are set of plugguble extensions for some operations related to APP MAnager
 	operations such as self sign in, subscriptions and etc. For those operatios we can
 	trigger external work flow of business process server. Here are the configurations
 	related to those operations

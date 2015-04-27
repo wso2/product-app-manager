@@ -29,7 +29,7 @@
 
         <datasource>
             <name>WSO2AM_DB</name>
-            <description>The datasource used for API Manager database</description>
+            <description>The datasource used for APP Manager database</description>
             <jndiConfig>
                 <name>jdbc/WSO2AM_DB</name>
             </jndiConfig>
@@ -50,7 +50,7 @@
 
          <datasource>
             <name>WSO2AM_STATS_DB</name>
-            <description>The datasource used for getting statistics to API Manager</description>
+            <description>The datasource used for getting statistics to APP Manager</description>
             <jndiConfig>
                 <name>jdbc/WSO2AM_STATS_DB</name>
             </jndiConfig>
