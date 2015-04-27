@@ -187,13 +187,30 @@ require('/modules/publisher.js').exec(function(ctx) {
         request["webapps"] = stringify(webapps); 
         var deployerClass = Packages.org.wso2.carbon.appmgt.sample.deployer.deploy.Deployer; 
         var deployerObj = new deployerClass();
-        var msg={};             
+        var msg={};
+        msg["isSampleDeployed"] = true;
+        msg["isError"] = "true";
+        msg["isNew"] = "true";
+        var response;
         try {
-            msg["response"] = deployerObj.deploySample(request);
+            response = deployerObj.deploySample(request);
+            if(response){
+                msg["response"] = "Samples deployed succesfully. " +
+                        "You can login to store using UserName : subscriber_" +username+
+                        " Password : subscriber"
+                msg["isError"] = "false";        
+            }else{
+                msg["response"] = username+" has already created a sample web application"
+                msg["isError"] = "true";
+            }
+            
             print(msg);
+            session.put("deploysample", msg);
         } catch (error){
             msg["response"] = error.message;
+            msg["isError"] = "true";
             print(msg);
+            session.put("deploysample", msg);
         }
         
     });

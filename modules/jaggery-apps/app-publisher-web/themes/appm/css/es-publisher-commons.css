@@ -1764,3 +1764,12 @@ background-color:red;
    cursor:pointer;
 }
 
+.alert-dismissable .close, .alert-dismissible .close {
+    color: #000;
+    opacity: 0.6;
+    right:-5px;
+}
+
+.alert-dismissable .close, .alert-dismissible .close:hover {
+    opacity: 0.8;
+}

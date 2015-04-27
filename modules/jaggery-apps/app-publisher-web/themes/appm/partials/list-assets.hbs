@@ -4,7 +4,17 @@
 </div>
 <div class="asset-being-added">
 </div>
-
+{{#if deploysample.isSampleDeployed}}
+    {{#ifCond deploysample.isError "==" "false"}}
+        <div class="alert alert-dismissible alert-success" role="alert" id="policyGroup-notification-text" style="display: block;">
+            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true" class="close">x</span><span class="sr-only">Close</span></button>
+            <span id="policyGroup-notification-text-data">{{deploysample.response}}</span>
+        </div>
+    {{/ifCond}}
+    {{#ifCond deploysample.isError "==" "true"}}
+        <div class="info-div alert alert-error"> <a data-dismiss="alert" class="close">x</a><i class="icon-info-sign"></i> <span>{{deploysample.response}}</span></div>
+    {{/ifCond}}
+{{/if}}
 <div class="asset-thumb-container">
 	{{#if artifacts}}
         <div class="row-fluid">
