@@ -26,8 +26,6 @@ public class Authenticate extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		System.out.println("header " + request.getParameter("header"));
-		System.out.println("start " + request.getParameter("start"));
 		if (request.getSession().getAttribute("loging") == null
 				&& request.getParameter("header") == null) {
 			response.sendRedirect("loging.jsp");
@@ -44,7 +42,7 @@ public class Authenticate extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("header " + request.getParameter("header"));
+
 		//check for header is null and redirect to the login page
 		if (request.getSession().getAttribute("loging") == null
 				&& request.getParameter("header") == null) {
