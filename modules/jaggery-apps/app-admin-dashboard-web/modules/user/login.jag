@@ -123,10 +123,13 @@ var getWorkflowCookie = function(username,password) {
 
 		//check BPS connectivity
 		try {
-			var httpClient = new Packages.org.apache.http.impl.client.DefaultHttpClient();
-			var httpPost = new Packages.org.apache.http.client.methods.HttpPost(endpoint);
-			var response = httpClient.execute(httpPost);
-			BPSRunning = true; 
+            //check isBPSEnabled property value. If true, then check the connectivity
+            if (site.workflows.isBPSEnabled == "true") {
+                var httpClient = new Packages.org.apache.http.impl.client.DefaultHttpClient();
+                var httpPost = new Packages.org.apache.http.client.methods.HttpPost(endpoint);
+                var response = httpClient.execute(httpPost);
+                BPSRunning = true;
+            }
 		} catch (e) {
 			//BPS server not running
 			log.warn("Not Retrieving Pending Tasks. Check BPS Connectivity");
