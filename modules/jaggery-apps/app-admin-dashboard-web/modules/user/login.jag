@@ -121,10 +121,10 @@ var getWorkflowCookie = function(username,password) {
 		var site = require("/site/conf/site.json");
 		var endpoint =  site.workflows.applicationWorkFlowServerURL+"AuthenticationAdmin";
 
-		//check BPS connectivity
 		try {
-            //check isBPSEnabled property value. If true, then check the connectivity
+            //check isBPSEnabled property value. If enabled(true), then check the connectivity
             if (site.workflows.isBPSEnabled == "true") {
+                //check BPS connectivity
                 var httpClient = new Packages.org.apache.http.impl.client.DefaultHttpClient();
                 var httpPost = new Packages.org.apache.http.client.methods.HttpPost(endpoint);
                 var response = httpClient.execute(httpPost);
