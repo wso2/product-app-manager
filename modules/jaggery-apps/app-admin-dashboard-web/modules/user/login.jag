@@ -121,12 +121,15 @@ var getWorkflowCookie = function(username,password) {
 		var site = require("/site/conf/site.json");
 		var endpoint =  site.workflows.applicationWorkFlowServerURL+"AuthenticationAdmin";
 
-		//check BPS connectivity
 		try {
-			var httpClient = new Packages.org.apache.http.impl.client.DefaultHttpClient();
-			var httpPost = new Packages.org.apache.http.client.methods.HttpPost(endpoint);
-			var response = httpClient.execute(httpPost);
-			BPSRunning = true; 
+            //check isBPSEnabled property value. If enabled(true), then check the connectivity
+            if (site.workflows.isBPSEnabled == "true") {
+                //check BPS connectivity
+                var httpClient = new Packages.org.apache.http.impl.client.DefaultHttpClient();
+                var httpPost = new Packages.org.apache.http.client.methods.HttpPost(endpoint);
+                var response = httpClient.execute(httpPost);
+                BPSRunning = true;
+            }
 		} catch (e) {
 			//BPS server not running
 			log.warn("Not Retrieving Pending Tasks. Check BPS Connectivity");

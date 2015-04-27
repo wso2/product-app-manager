@@ -10,7 +10,8 @@
      "applicationWorkFlowServerURL": "https://localhost:9445/services/",
      "subscriptionWorkFlowServerURL": "https://localhost:9445/services/",
      "signupWorkFlowServerURL": "https://localhost:9445/services/",
-     "publishAPPWorkFlowServerURL": "https://localhost:9445/services/"
+     "publishAPPWorkFlowServerURL": "https://localhost:9445/services/",
+     "isBPSEnabled": "false"
 
     },
     "ssoConfiguration" : {

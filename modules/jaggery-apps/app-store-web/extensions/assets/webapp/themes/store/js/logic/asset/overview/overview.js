@@ -58,7 +58,7 @@ $(function () {
 
     $("#gatewayURL").on('click', function (e) {
         //check if subscribed only if skip gateway disabled
-        if (skipGateway == "false") {
+        if ((skipGateway == "false") && (allowAnonymous == "FALSE")) {
             if ($('#hdnUsertId').val() != "") {
                 var isSubscribed = $('#subscribed').val();
                 if (isSubscribed.toLowerCase() === 'false') {
