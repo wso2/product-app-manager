@@ -1,5 +1,5 @@
 /*
-*Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*Copyright (c) 2005-2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *WSO2 Inc. licenses this file to you under the Apache License,
 *Version 2.0 (the "License"); you may not use this file except
@@ -31,9 +31,11 @@ import org.wso2.carbon.appmanager.integration.ui.Util.TestUtils.ApplicationIniti
 import org.wso2.carbon.automation.core.BrowserManager;
 import org.wso2.carbon.automation.core.utils.HttpResponse;
 
+import java.util.Set;
+
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
-
+import static org.testng.Assert.assertTrue;
 
 
 public class LifeCycleTestCase extends APPManagerIntegrationTest {
@@ -43,11 +45,11 @@ public class LifeCycleTestCase extends APPManagerIntegrationTest {
     private WebDriver driver;
     private APPMStoreRestClient appMStore;
     private APPMPublisherRestClient appMPublisher;
+    private ApplicationInitializingUtil baseUtil;
 
     @BeforeClass(alwaysRun = true)
     public void init() throws Exception {
         super.init(0);
-        ApplicationInitializingUtil baseUtil;
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
         baseUtil.testApplicationCreation("3");
@@ -79,7 +81,8 @@ public class LifeCycleTestCase extends APPManagerIntegrationTest {
         HttpResponse unSubscriptionResponse = appMStore.unsubscribeForApplication(appUnSubscriptionRequest);
         JSONObject unSubscriptionJsonObject = new JSONObject(unSubscriptionResponse.getData());
         assertFalse((Boolean) unSubscriptionJsonObject.get("error"), "Error while updating tier permission");
-
+        assertTrue((Boolean) unSubscriptionJsonObject.get("status"),
+                "Application " + appProp.getAppName() + " is already un subscribed");
 
         //Un publish the app
         HttpResponse appUnPublishResponse = appMPublisher.unPublishApp(ApplicationInitializingUtil.appId);
@@ -92,13 +95,23 @@ public class LifeCycleTestCase extends APPManagerIntegrationTest {
         JSONObject subscriptionJsonObjectUnPublished = new JSONObject(subscriptionResponseUnpublished.getData());
         assertFalse((Boolean) subscriptionJsonObjectUnPublished.get("error"),
                 "Error while updating tier permission");
-        assertFalse((Boolean) subscriptionJsonObjectUnPublished.get("status"),
-                "Application "+appProp.getAppName()+" is already subscribed");
+        assertTrue((Boolean) subscriptionJsonObjectUnPublished.get("status"),
+                "Application " + appProp.getAppName() + " is already subscribed");
     }
 
     @AfterClass(alwaysRun = true)
     public void destroy() throws Exception {
         super.cleanup();
+        String parentWindow = driver.getWindowHandle();
+        Set<String> handles =  driver.getWindowHandles();
+        for(String windowHandle  : handles) {
+            if(!windowHandle.equals(parentWindow)) {
+                driver.switchTo().window(windowHandle);
+                driver.close();
+            }
+        }
+        driver.switchTo().window(parentWindow);
         driver.close();
+        baseUtil.destroy();
     }
 }

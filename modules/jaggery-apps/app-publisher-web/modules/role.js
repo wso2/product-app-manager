@@ -6,6 +6,11 @@ var checkeRole = function (username, session) {
       	usr = carbon.server.tenantUser(username);
 	var log = new Log();
 	var user = require('store').user;
+    var config = require('/config/publisher.json');
+
+    var apiUtil = Packages.org.wso2.carbon.appmgt.impl.utils.AppManagerUtil;
+    var apiUtil = new apiUtil();
+    var ADMIN_ROLE = Packages.org.wso2.carbon.context.PrivilegedCarbonContext.getThreadLocalCarbonContext().getUserRealm().getRealmConfiguration().getAdminUserName();
 
 	if (!user.configs(usr.tenantId)) {
 		event.emit('tenantLoad', usr.tenantId);
@@ -18,17 +23,20 @@ var checkeRole = function (username, session) {
   	usr.tenantDomain = carbon.server.tenantDomain({tenantId: usr.tenantId});
 
   	event.emit('login', usr.tenantId, usr, session);
-    if(usr.hasRoles(['admin'])){
 
-        if (!usr.hasRoles([role[0]])) {
-            usr.addRoles([role[0]]);
+    var roles = um.getRoleListOfUser(usr.username);
+
+    for (var index in roles) {
+        if(roles[index] == ADMIN_ROLE){
+            return true;
         }
-
-        return true;
     }
 
-  	if (!( usr.hasRoles(["Internal/publisher"]) || usr.hasRoles(["Internal/creator"]))) {
-           return false;
-  	}
+    if (!(apiUtil.checkPermissionWrapper(username, config.permissions.webapp_create)
+          || apiUtil.checkPermissionWrapper(username, config.permissions.webapp_publish)
+            || apiUtil.checkPermissionWrapper(username, config.permissions.mobileapp_create)
+                || apiUtil.checkPermissionWrapper(username, config.permissions.mobileapp_publish))) {
+        return false;
+    }
   	return true;
 };

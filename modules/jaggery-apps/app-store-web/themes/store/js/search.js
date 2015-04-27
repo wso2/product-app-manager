@@ -121,6 +121,8 @@ $(function () {
     var search = function () {
         var url, searchVal = $('#search').val();
         //var url, searchVal = test($('#search').val());
+
+
         currentPage = 1;
         if (store.asset) {
             url = caramel.url('/assets/' + store.asset.type + '/?' + buildParams(searchVal));
@@ -147,32 +149,13 @@ $(function () {
                 }
             });
             theme.loading($('#assets-container').parent());
-        } else if (searchVal.length > 0 && searchVal != undefined) {
-            /*url = caramel.url('/?' + buildParams(searchVal));
-            caramel.data({
-                title: null,
-                header: ['header'],
-                body: ['top-assets', 'navigation', 'sort-assets']
-            }, {
-                url: url,
-                success: function (data, status, xhr) {
-                    //TODO: Integrate a new History.js library to fix this
-                    if ($.browser.msie == true && $.browser.version < 10) {
-                        renderAssets(data);
-                    } else {
-                        History.pushState({
-                            id: 'top-assets',
-                            context: data
-                        }, document.title, url);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    theme.loaded($('#assets-container').parent(), '<p>Error while retrieving data.</p>');
-                }
-            });
-            theme.loading($('#assets-container').parent());*/
-            window.location.reload();
+        }else if (searchVal.length > 0 && searchVal != undefined) {
+            url = caramel.url('/?' + buildParams(searchVal));
+            window.location = url;
+
         }
+
+      // window.location.reload();
 
         $('.search-bar h2').find('.page').text(' / Search: "' + searchVal + '"');
     };
@@ -203,9 +186,9 @@ $(function () {
     .blur(function(){
              $(this).animate({width:'100%'});
         })*/
-    
+
     ;
-    
+
     $(document).click(function(){
     	 $('#search').animate({width:'100%'});
     });
@@ -222,6 +205,7 @@ $(function () {
             makeQuery();
         }
         search();
+
         /*
          $(this).fadeOut("fast", function(){
          $('#search').fadeIn("fast").focus();
@@ -370,14 +354,14 @@ $(function () {
 
     $('#search-button2').click(function () {
         $('#search').val('');
-        
+
         makeQuery();
         if ($('#search').val() == '') return;
         search();
         $('#search-dropdown-cont input').val('');
         return false;
     });
-    
+
     /*$('#container-search').affix({
        offset: { top: $('.navbar').offset().top + 80}
    });*/

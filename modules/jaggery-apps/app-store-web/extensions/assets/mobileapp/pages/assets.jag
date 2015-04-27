@@ -16,17 +16,12 @@ require('/modules/store.js').exec(function (ctx) {
             subscriptions = {},
             subscription = false,
             avaliablePages,
-            mdmConfig = new Packages.org.wso2.carbon.appmgt.mobile.store.MDMConfig();
+            mdmConfig = parse(String((new Packages.org.wso2.carbon.appmgt.mobile.store.MDMConfig()).getConfigs()));
 
 
+            var  isNotCatalog = mdmConfig.IsCatalog == "true" ? false : true;
 
-        if(configs.mobile.enable_emm){
-            //for wso2emm
-            var mdmUIConfig  = {enabled : !configs.mobile.is_catalog};
-        }else{
-            //for wso2mdm
-            var mdmUIConfig  = {enabled : mdmConfig.isMDMEnabled()};
-        }
+            var mdmUIConfig  = {enabled : isNotCatalog};
 
 
     caramel = require('caramel');

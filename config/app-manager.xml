@@ -81,7 +81,7 @@
 		to be appended to the JWT. If not specified no claims will be appended.
 		The DefaultClaimsRetriever class adds user claims from the default carbon user store.
 	-->
-	<!--ClaimsRetrieverImplClass>org.wso2.carbon.appmgt.impl.token.DefaultClaimsRetriever</ClaimsRetrieverImplClass-->
+	<ClaimsRetrieverImplClass>org.wso2.carbon.appmgt.impl.token.DefaultClaimsRetriever</ClaimsRetrieverImplClass>
 
 	<!--
 		The dialectURI under which the claimURIs that need to be appended to the
@@ -599,17 +599,25 @@
 	<!-- Configuration to handle Mobile apps and MDM. -->
 	<MobileAppsConfiguration>
 
-		<MDMSettings>
-	           <Enabled>false</Enabled>
-		   <EnableSampleDevices>false</EnableSampleDevices>
-		   <AppDownloadURLHost>%http%</AppDownloadURLHost>
-		   <ActiveMDM>WSO2EMM</ActiveMDM>
-		   <IosPlistPath>publisher/api/mobileapp/getplist</IosPlistPath>
-		   <EnterpriseOperations>
-			<Enabled>true</Enabled>
-			<AuthorizedRole>admin</AuthorizedRole>
-		   </EnterpriseOperations>				
-                </MDMSettings>
+		<MDMConfig>
+
+		   <Config name="IsCatalog">false</Config>
+
+		   <Config name="EnableMDMOperations">true</Config>
+		   <Config name="ActiveMDM">WSO2EMM</Config>
+		   <Config name="EnableSelfUnsubscription">false</Config>	
+
+   		   <Config name="EnableSubscriptionFromDevices">false</Config>	
+		   <Config name="EnableSampleDevices">false</Config>
+		   
+
+		   <Config name="AppDownloadURLHost">%http%</Config>
+		   <Config name="IosPlistPath">publisher/api/mobileapp/getplist</Config>
+
+		   <Config name="EnterpriseOperations_Enabled">true</Config>
+		   <Config name="EnterpriseOperations_AuthorizedRole">admin</Config>
+
+                </MDMConfig>
 
 		<MDMProperties>
 
@@ -643,6 +651,18 @@
 	<ServicesAPI>
 		<AuthorizedRole>admin</AuthorizedRole>
 	</ServicesAPI>
+
+    <!-- The configuration for discovery service -->
+    <DiscoveryConfiguration>
+        <!--
+            Configures the discovery handlers. Discovery handlers are the ones connecting remote servers
+            and discover the applications
+        -->
+        <DiscoveryHandlers>
+            <!-- List of discovery handlers. name is the key being used. Class is the handler class -->
+            <Handler name="WSO2-AS" class="org.wso2.carbon.appmgt.impl.discovery.Wso2AppServerDiscoveryHandler" />
+        </DiscoveryHandlers>
+    </DiscoveryConfiguration>
 
 </APIManager>
 

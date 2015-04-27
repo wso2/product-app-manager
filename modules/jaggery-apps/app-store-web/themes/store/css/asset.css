@@ -138,11 +138,6 @@ textarea.site {
 label.error {
     display: none;
 }
-@media all and (max-width: 1225px) {
-    .asset-introduction-box {
-
-    }
-}
 
 /*
  * assert introduction box

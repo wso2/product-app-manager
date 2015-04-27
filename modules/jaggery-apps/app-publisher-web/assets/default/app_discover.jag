@@ -1,0 +1,229 @@
+<%
+/*
+ Description: Provides CRUD operations on groups of assets
+ GET api/assets		      	 : Returns  a list of all asset types
+ GET api/assets/{type}            : Returns  a list of all assets
+ GET api/assets/{type}/{pageSize} : Returns  a paged list of assets
+ Filename:assets.js
+ Created Date: 08/4/2015
+ */
+
+require('/modules/publisher.js').exec(function(ctx) {
+
+var router = require('/modules/router-g.js').router();
+var config = require('/config/publisher.json');
+caramel = require('caramel');
+var server = require('store').server;
+var publisher = require('/modules/publisher.js').publisher(request, session);
+
+var routeMnger = new router.Router();
+var discover_boot = require('/modules/app_discover.js').discover_client();
+var api = require('/modules/app_discover_api.js').api;
+
+var log=new Log();
+
+var PAGE_SIZE = config.paginationConfig.PAGE_SIZE;
+
+    /**
+     * The function will create an array of page indices upto the page count
+     * @param pageCount The max page count
+     */
+var pageIndexPopulator = function(pageCount,currentIndex, isTotalNumberOfPagesKnown){
+
+    var indices = [];
+    var temp={};
+    var maxPages = pageCount;
+    if(! isTotalNumberOfPagesKnown) {
+        maxPages ++;
+    }
+    for(var index=1;index<=maxPages;index++){
+        temp={};
+        temp.index = ''+index;
+        temp.isDisabled = false;
+
+        var pageNumber = Math.floor(currentIndex/PAGE_SIZE);
+        var remainder = (currentIndex/PAGE_SIZE) % 1;
+        if(remainder || pageNumber===0){
+            pageNumber = pageNumber +1;
+        }
+
+        //The current page is offset by 1 as the loop starts at 1
+        if(index==pageNumber){
+           temp.isDisabled=true;
+        }
+            indices.push(temp);
+    }
+    return indices;
+};
+
+/* Returns a dummy password mimicking the password entered. */
+var getDummyPassword = function(password) {
+    if (password != null) {
+        return password.replace(/(.)/g, "*");
+    }
+    return password;
+}
+
+var getAvailablePages = function(appCount){
+    var availablePages = Math.floor(appCount/PAGE_SIZE);
+    var remainder = (appCount/PAGE_SIZE) % 1;
+    if(remainder){
+        availablePages = availablePages +1;
+    }
+    return availablePages;
+}
+
+var getCurrentPage = function(currentIndex){
+    var pageNumber = Math.floor(currentIndex/PAGE_SIZE);
+    var remainder = (currentIndex/PAGE_SIZE) % 1;
+
+    if(remainder || pageNumber===0){
+        pageNumber = pageNumber +1;
+    }
+    return pageNumber;
+}
+
+var createPaginationInfo = function(appsWrapper, sessionData, currentPageIndex) {
+    var numberOfPages = appsWrapper.numberOfPages;
+    var nav = {};
+    sessionData.nav = nav;
+    var indices = pageIndexPopulator(numberOfPages, currentPageIndex * PAGE_SIZE +1,
+            appsWrapper.totalNumberOfPagesKnown);
+
+    if(currentPageIndex > 0){
+        nav.leftNavEnabled=true;
+        nav.leftNav = +(sessionData.currentPage)-1;
+    } else {
+        nav.leftNavEnabled=false;
+    }
+    if(sessionData.currentPage < indices.length){
+        nav.rightNavEnabled=true;
+        nav.rightNav = +(sessionData.currentPage) +1;
+    } else {
+        nav.rightNavEnabled=false;
+    }
+
+    if(indices.length > 1){
+        nav.pageIndices = indices;
+    }
+}
+
+routeMnger.register('POST', 'publisher', '/publisher/assets/{operation}/{type}/', function (context) {
+    var operation = (context.params.operation) || '';
+    var type = context.params.type;
+    if (operation == 'discover') {
+            var query = request.getParameter("query");
+            var sortby = request.getParameter("sortby");
+            var sort = request.getParameter("sort");
+            var page = request.getParameter("page")
+            var button = request.getParameter("discoveryAction");
+            var discoveredArtifacts;
+            var availablePages = 1;
+            var status;
+
+            var sessionData = session.get('sessionData');
+            if(sessionData == null) {
+                sessionData = {"serverUrl" : "",
+                 "serverUserName": "",
+                 "appStatus" : "NEW",
+                 "pageIndices" :[], "currentPage": 1, "leftNav" : 1, "rightNav" : 1};
+                session.put('sessionData', sessionData);
+            }
+
+            var discoverClient = session.get('DiscoverClient');
+            if(discoverClient == null) {
+                discoverClient = new discover_boot.DiscoverClient(null);
+                session.put('DiscoverClient', discoverClient);
+            }
+            try {
+                var serverPassword;
+                if(button == 'discoverAssets') {
+                    var serverUrl = request.getParameter('serverUrl');
+                    var serverUserName = request.getParameter('serverUserName');
+                    serverPassword = request.getParameter('serverPassword');
+                    var appNameStartsWith = request.getParameter('appNameStartsWith');
+                    var appStatus = request.getParameter('appStatus');
+                    //Remember the server connection details in session
+                    if(sessionData.serverUserName != serverUserName ) {
+                        sessionData.serverPassword = getDummyPassword(serverPassword);
+                    }
+                    sessionData.serverUrl = serverUrl;
+                    sessionData.serverUserName = serverUserName;
+                    sessionData.pageIndices = [];
+                    sessionData.currentPage = 1;
+                    sessionData.leftNav= 1;
+                    sessionData.rightNav =1;
+                    sessionData.appNameStartsWith = appNameStartsWith;
+                    sessionData.appStatus = appStatus;
+                }
+                if(page == null) {
+                    page = sessionData.currentPage;
+                }
+                var currIndex = page - 1;
+                var appsWrapper = discoverClient.discoverWebapps(sessionData.serverUrl,
+                    sessionData.serverUserName, serverPassword, currIndex, sessionData.appStatus,
+                    sessionData.appNameStartsWith, api.getLoggedInUser(session));
+                discoveredArtifacts = appsWrapper.metadataList;
+                status = appsWrapper.status;
+                sessionData.currentPage = page;
+                createPaginationInfo(appsWrapper, sessionData, currIndex);
+                if(status.code != 200) {
+                    sessionData.serverPassword = '';
+                }
+
+                caramel.render({op: 'app_discover',cuser: server.current(session),shortName: type,
+                     title: type, discoveredArtifacts : discoveredArtifacts, status: status,
+                     sessionData: sessionData});
+
+            } catch (e) {
+                response.sendError(404, 'Asset type not found'); //TODO: Replace
+            }
+    }
+});
+
+routeMnger.register('GET', 'publisher', '/publisher/assets/{operation}/{type}/', function (context) {
+    var operation = (context.params.operation) || '';
+    var type = context.params.type;
+    var page = request.getParameter("page");
+    if (operation == 'discover') {
+        var discoveredArtifacts;
+        var status = {"code" : 200, "description" : "Please enter Server Credentials and press Discover button"};
+
+        var sessionData = session.get('sessionData');
+        if(sessionData == null) {
+            sessionData = {"serverUrl" : "",
+             "serverUserName": "", "appStatus" : "NEW",
+             "pageIndices" :[], "currentPage": 1, "leftNav" : 1, "rightNav" : 1};
+        }
+        var discoverClient = session.get('DiscoverClient');
+        if(page == null) {
+            page = sessionData.currentPage;
+        } else {
+            sessionData.currentPage = page;
+        }
+        var currIndex = page - 1;
+        try {
+            if(discoverClient != null && sessionData != null) {
+                var appsWrapper = discoverClient.discoverWebapps(sessionData.serverUrl,
+                                sessionData.serverUserName, null, currIndex, sessionData.appStatus,
+                                sessionData.appNameStartsWith, api.getLoggedInUser(session));
+                discoveredArtifacts = appsWrapper.metadataList;
+                status = appsWrapper.status;
+                createPaginationInfo(appsWrapper, sessionData, currIndex);
+            }
+            caramel.render({op: 'app_discover', cuser: server.current(session),shortName: type,
+                 title: type, discoveredArtifacts : discoveredArtifacts, status: status,
+                 sessionData: sessionData});
+
+        } catch (e) {
+            response.sendError(404, 'Asset type not found'); //TODO: Replace
+        }
+    }
+
+});
+
+
+routeMnger.handle(request, response);
+
+}, request, response, session);
+%>

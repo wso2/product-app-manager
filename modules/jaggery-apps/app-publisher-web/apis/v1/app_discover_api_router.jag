@@ -1,0 +1,38 @@
+<%
+
+/*
+ Description: Provides Discovery support for assets
+ Note: type: shortName in the Rxt templates
+ POST api/discover/asset            : Creates a new asset by discovery system
+ Filename:discover_api_router.js
+ Created Date: 29/3/2015
+ */
+
+include("/extensions/webapp/modules/jagg/jagg.jag");
+
+    require('/modules/publisher.js').exec(function(ctx) {
+    var log= new Log();
+    var utils = require('utils');
+    var responseProcessor = utils.response;
+
+       var api = require('/modules/app_discover_api.js').api;
+
+       var pattern = '/{context}/api/discover/asset/{action}/{appType}/{appId}';
+       var uriMatcher = new URIMatcher(ctx.request.getRequestURI());
+       var options = uriMatcher.match(pattern);
+       var result = {};
+
+       if (options) {
+            result = api.resolve(ctx, request, response, session, options);
+       } else {
+            ctx.response.sendError(404,'Could not locate endpoint');
+       }
+
+       if (result.success) {
+           response = responseProcessor.buildSuccessResponse(response, result.code, result.data);
+       } else {
+           response = responseProcessor.buildErrorResponse(response, result.code, result.message);
+       }
+}, request, response, session);
+
+%>

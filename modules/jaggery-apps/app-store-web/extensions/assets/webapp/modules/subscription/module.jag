@@ -7,6 +7,9 @@ jagg.module("subscription", {
     addSubscription:function () {
         return jagg.require(jagg.getModulesDir() + "subscription/add.jag").addSubscription.apply(this, arguments);
     },
+    updateAPPVisibility:function () {
+        return jagg.require(jagg.getModulesDir() + "subscription/add.jag").updateAPPVisibility.apply(this, arguments);
+    },
     removeAPISubscription:function () {
         return jagg.require(jagg.getModulesDir() + "subscription/remove.jag").removeAPISubscription.apply(this, arguments);
     },

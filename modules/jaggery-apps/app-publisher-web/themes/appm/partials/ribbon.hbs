@@ -1,17 +1,22 @@
 <div class="row tool-bar-new">
     <div class="col-md-9 col-sm-12 col-xs-12">
         <ul class="nav nav-pills pull-left">
-{{#if createPermission}}
+
     <li class="dropdown closed">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">
-            <i class="icon-plus-sign-alt"></i>Add New Web Application <span class="caret"></span></a>
+            Web Applications <span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
-            <li><a href="{{url "/asset/webapp"}}"> Create</a></li>
-            <li><a href="{{url "/assets/discover/webapp/"}}"> Discover from Server</a></li>
+            <li {{#ifCond active "==" "list-assets"}}class="active"{{/ifCond}}><a href="{{url "/assets/webapp/"}}" > All Web Applications</a></li>
+        {{#if createPermission}}
+            <li {{#ifCond active "==" "add-asset"}}class="active"{{/ifCond}}><a href="{{url "/asset/webapp"}}">Add New Web Application</a></li>
+            <li {{#ifCond active "==" "discover"}}class="active"{{/ifCond}}><a href="{{url "/assets/discover/webapp/"}}"> Discover from Server</a></li>
+            {{#ifCond um.tenantId "==" "-1234"}}
+                <li><a class="btn-deploySample overide-default" data-type="{{shortName}}" >Deploy Samples</a></li>
+            {{/ifCond}}
+        {{/if}}
         </ul>
     </li>
-{{/if}}
-            <li {{#ifCond active "==" "list-assets"}}class="active"{{/ifCond}}><a href="{{url "/assets/webapp/"}}">All Web Applications</a></li>
+
 {{#if viewStats}}
             <li  {{#ifCond active "==" "statistics"}}class="active"{{/ifCond}}><a href="{{url "/assets/statistics/webapp/"}}">Statistics</a></li>
 {{/if}}
@@ -22,7 +27,7 @@
                     Notifications <span class="caret"></span></a>
                 <ul class="dropdown-menu notifications" role="menu">
                     {{#each notifications}}
-                        <li><a href="{{this.url}}">Webapp <strong>{{this.appname}}</strong> has been rejected due to: {{this.notification}}</a></li>
+                        <li title="Webapp {{this.appname}} has been rejected due to: {{this.notification}}"><a href="{{this.url}}">Webapp <strong>{{this.appname}}</strong> has been rejected due to: {{this.notification}}</a></li>
                     {{/each}}
                 </ul>
             </li>

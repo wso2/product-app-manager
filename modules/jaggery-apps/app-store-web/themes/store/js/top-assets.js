@@ -92,7 +92,7 @@ $(function() {
 	});
 	
 	
-	$(".asset-details").on('click', function(e)
+	$(".asset-details").on('click', function(e){
 
 
             if($(this).data("type") === "mobileapp"){

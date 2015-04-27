@@ -170,15 +170,19 @@ $(function() {
 			$('#sso_ssoProvider').val(selectedProvider);
 		 }
 
-		 // Add entitlement policies.
-		 $('#entitlementPolicies').val(JSON.stringify(entitlementPolicies));
-
 		// AJAX request options.
  		var options = {
       
 			success: function(response) {
-
-				var result = JSON.parse(response);
+                var result = {};
+                try {
+                    result = JSON.parse(response);
+                }
+                catch (e) {
+                    //It always returns a malformed json when the session is expired
+                    alert('Sorry, your session has expired');
+                    location.reload();
+                }
 
 				//Check if the asset was added
 				if (result.ok) {

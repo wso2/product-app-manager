@@ -36,6 +36,19 @@ var serviceModule = (function () {
         return result;
     };
 
+    Subscriber.prototype.updateVisibility = function (options) {
+
+        var apiData = {};
+        apiData['name'] = options.apiName;
+        apiData['version'] = options.apiVersion;
+        apiData['provider'] = options.apiProvider;
+        apiData['user'] = options.user;
+        apiData['op_type'] = options.op_type;
+        log.info("User : "+options.user);
+        var result = this.instance.updateAPPVisibility(apiData);
+        return result;
+    };
+
     Subscriber.prototype.removeSubscription = function (options) {
 
         var apiData = {};

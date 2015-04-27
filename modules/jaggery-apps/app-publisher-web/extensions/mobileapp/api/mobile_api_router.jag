@@ -9,32 +9,64 @@ require('/modules/publisher.js').exec(function(ctx) {
 
     var publisher = require('/modules/publisher.js').publisher(request, session);
     var rxtManager = publisher.rxtManager;
+    var server = require('store').server;
+    var permissions=require('/modules/permissions.js').permissions;
+
+
+    routeManager.register('DELETE', 'publisher', '/publisher/api/mobile/delete/{app}', function (ctx) {
+        var username=require('store').server.current(session).username;
+        var um = server.userManager(server.current(session).tenantId);
+        var deleteAuthorized = permissions.isAuthorized(username, config.permissions.webapp_delete, um);
+
+        if(deleteAuthorized){
+            var app = ctx.params.app;
+            var artifactManager = rxtManager.getArtifactManager("mobileapp");
+            artifactManager.remove(app);
+        }
+    });
 
     routeManager.register('GET', 'publisher', '/publisher/api/mobile/isexist', function (ctx) {
 
         var name = request.getParameter("name");
-
-
         var artifactManager = rxtManager.getArtifactManager("mobileapp");
+        searchOptions = name;
 
-        var versionList=artifactManager.getAllAssetVersions(name);
+        var  paging = {};
 
+        map = new java.util.HashMap();
+        list = new java.util.ArrayList();
+        list.add(name);
+        map.put('overview_name', list);
+
+        var versionList = artifactManager.manager.findGenericArtifacts(map);
 
         if(versionList.length > 0){
-            var versions = "";
-            for( i = 0; i < versionList.length; i++){
-                versions += versionList[i].version
-                if(i < versionList){
-                    version += ",";
+
+            var versionList = artifactManager.search(searchOptions, paging);
+            var originalName = "";
+
+            if(versionList.length > 0){
+                var versions = "";
+                for( i = 0; i < versionList.length; i++){
+                    versions += versionList[i].attributes.overview_version;
+                    originalName = versionList[i].attributes.overview_name;
+                    if(i < versionList){
+                        version += ",";
+                    }
                 }
+
+                print({isExist: true, versions : versions, name:originalName});
+            }else{
+                print({isExist: false});
             }
 
-            print({isExist: true, versions : versions});
         }else{
             print({isExist: false});
         }
 
     });
+
+
 
     routeManager.handle(request, response);
 

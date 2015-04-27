@@ -305,6 +305,11 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
     var log = new Log();
     var oldVersion = context.post.oldVersion;
 
+    var carbon = require('carbon');
+    var social = carbon.server.osgiService('org.wso2.carbon.social.core.service.SocialActivityService');
+
+
+
     var server = require('store').server;
     var user=server.current(session);
     var um = server.userManager(server.current(session).tenantId);
@@ -364,6 +369,12 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
 
             //Obtain the asset id in order to retrieve the asset again
             var assetId = model.get('*.id').value;
+
+            try{
+                social.warmUpRatingCache(shortName + ':' + assetId);
+            }catch(e) {
+                log.warn("Unable to publish the asset: " + shortName + ":" + assetId + " to social cache. This may affect on sort by popularity function.");
+            }
 
             //Convert the model to an artifact
             var asset = model.export('asset.exporter');

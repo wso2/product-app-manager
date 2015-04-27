@@ -16,15 +16,12 @@
 
 #btn-ent-install {
     display: inline-block;
-    font-size: 18px;
-    font-weight: bold;
     margin-top: 0;
-    padding: 10px;
 }
 
 
 .install-uninstall-panel{
-    padding-bottom: 30px;
+    margin-top: 32px;
 }
 
 

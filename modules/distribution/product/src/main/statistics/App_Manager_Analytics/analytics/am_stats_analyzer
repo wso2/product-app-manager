@@ -1,0 +1,83 @@
+CREATE EXTERNAL TABLE IF NOT EXISTS APIRequestData (key STRING,api STRING,
+	api_version STRING,userId STRING,
+	context STRING,version STRING,trackingCode STRING,referer STRING, request INT, requestTime BIGINT,  serviceTime BIGINT,resource STRING, method STRING, hostName STRING, apiPublisher STRING) STORED BY 
+	'org.apache.hadoop.hive.cassandra.CassandraStorageHandler' WITH SERDEPROPERTIES ( 'wso2.carbon.datasource.name'='WSO2BAM_CASSANDRA_DATASOURCE',
+	"cassandra.cf.name" = "org_wso2_appmgt_statistics_request",
+	"cassandra.columns.mapping" = ":key,payload_api, payload_api_version,payload_userId,payload_context,payload_version, payload_trackingCode, payload_referer, payload_request, payload_requestTime,payload_serviceTimeOfPage, payload_resource, payload_method,payload_hostName,payload_apiPublisher" );   
+
+CREATE EXTERNAL TABLE IF NOT EXISTS APIRequestSummaryData (api STRING, api_version STRING, version STRING,trackingCode STRING,referer STRING, apiPublisher STRING,
+	userId STRING,context STRING, max_request_time BIGINT,
+	total_request_count INT, hostName STRING,year SMALLINT,month SMALLINT,day SMALLINT, time STRING) STORED BY 
+	'org.wso2.carbon.hadoop.hive.jdbc.storage.JDBCStorageHandler' TBLPROPERTIES ( 'wso2.carbon.datasource.name'='WSO2AM_STATS_DB',
+	'hive.jdbc.update.on.duplicate' = 'true',
+	'hive.jdbc.primary.key.fields'='api,api_version,version,apiPublisher,userId,context,hostName,time',
+	'hive.jdbc.table.create.query' = 'CREATE TABLE API_REQUEST_SUMMARY ( api VARCHAR(100), api_version VARCHAR(100), version VARCHAR(100),trackingCode VARCHAR(100), referer VARCHAR (500),
+	apiPublisher VARCHAR(100),userId VARCHAR(100), context VARCHAR(100),max_request_time BIGINT, total_request_count INT, hostName VARCHAR(100), year SMALLINT, month SMALLINT, day SMALLINT, time VARCHAR(30),PRIMARY KEY(api,api_version,referer,apiPublisher,userId,context,hostName,time))' );
+
+insert overwrite table APIRequestSummaryData select api, api_version,version, trackingCode, referer, apiPublisher, userId,context,max(requestTime) as max_request_time,sum(request) as total_request_count,hostName,  year(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )) as year, month(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )) as month,day(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )) as day,concat(substring(from_unixtime(cast(requestTime/1000 as BIGINT), 'yyyy-MM-dd HH:mm:ss'),0,19)) as time from APIRequestData group by api,api_version,version,trackingCode,referer,apiPublisher,userId,context,hostName,year(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )), month(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )),day(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )),hour(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )),minute(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )),substring(from_unixtime(cast(requestTime/1000 as BIGINT), 'yyyy-MM-dd HH:mm:ss'),0,19);
+
+
+CREATE EXTERNAL TABLE IF NOT EXISTS CacheStatSummaryData (key STRING,api STRING,
+	api_version STRING,userId STRING,
+	context STRING,version STRING,trackingCode STRING,referer STRING, request INT, requestTime BIGINT,  responseTime BIGINT,fullRequestPath STRING, tenantDomain STRING, hostName STRING, apiPublisher STRING, cacheHit INT, applicationName STRING, applicationId STRING) STORED BY 
+	'org.apache.hadoop.hive.cassandra.CassandraStorageHandler' WITH SERDEPROPERTIES ( 'wso2.carbon.datasource.name'='WSO2BAM_CASSANDRA_DATASOURCE',
+	"cassandra.cf.name" = "org_wso2_appmgt_statistics_cache",
+	"cassandra.columns.mapping" = ":key,payload_api, payload_api_version,payload_userId,payload_context,Version, payload_trackingCode, payload_referer, payload_request, payload_requestTime,payload_responseTime, payload_fullRequestPath, payload_tenantDomain,payload_hostName,payload_apiPublisher,payload_cacheHit,payload_applicationName,payload_applicationId" );   
+
+CREATE EXTERNAL TABLE IF NOT EXISTS CacheRequestSummaryData (api STRING, api_version STRING, version STRING,trackingCode STRING,referer STRING, apiPublisher STRING,
+	userId STRING,context STRING, max_request_time BIGINT,fullRequestPath STRING,cacheHit INT,
+	total_request_count INT, hostName STRING,year SMALLINT,month SMALLINT,day SMALLINT, time STRING) STORED BY 
+	'org.wso2.carbon.hadoop.hive.jdbc.storage.JDBCStorageHandler' TBLPROPERTIES ( 'wso2.carbon.datasource.name'='WSO2AM_STATS_DB',
+	'hive.jdbc.update.on.duplicate' = 'true',
+	'hive.jdbc.primary.key.fields'='api,api_version,version,apiPublisher,userId,context,hostName,time,fullRequestPath, cacheHit',
+	'hive.jdbc.table.create.query' = 'CREATE TABLE CACHE_REQUEST_SUMMARY ( api VARCHAR(100), api_version VARCHAR(100), version VARCHAR(100),trackingCode VARCHAR(100), referer VARCHAR (500),
+	apiPublisher VARCHAR(100),userId VARCHAR(100), context VARCHAR(100),max_request_time BIGINT,fullRequestPath VARCHAR(100),cacheHit INT,
+ total_request_count INT, hostName VARCHAR(100), year SMALLINT, month SMALLINT, day SMALLINT, time VARCHAR(30),PRIMARY KEY(api,api_version,version,apiPublisher,userId,context,hostName,time,fullRequestPath,cacheHit))' );
+ 
+ insert overwrite table CacheRequestSummaryData select api, api_version,version, trackingCode, referer, apiPublisher, userId,context,max(requestTime) as max_request_time,fullRequestPath,cacheHit,sum(request) as total_request_count,hostName,  year(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )) as year, month(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )) as month,day(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )) as day,concat(substring(from_unixtime(cast(requestTime/1000 as BIGINT), 'yyyy-MM-dd HH:mm:ss'),0,16),':00') as time from CacheStatSummaryData group by api,api_version,version,trackingCode,referer,apiPublisher,userId,context,hostName,fullRequestPath,cacheHit,year(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )), month(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )),day(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )),hour(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )),minute(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )),substring(from_unixtime(cast(requestTime/1000 as BIGINT), 'yyyy-MM-dd HH:mm:ss'),0,16);
+
+
+
+CREATE EXTERNAL TABLE IF NOT EXISTS APIVersionUsageSummaryData ( api STRING, version STRING, apiPublisher STRING,context STRING,trackingCode STRING,total_request_count INT, hostName STRING,year SMALLINT,month SMALLINT,day SMALLINT, time STRING) STORED BY   'org.wso2.carbon.hadoop.hive.jdbc.storage.JDBCStorageHandler' TBLPROPERTIES ( 'wso2.carbon.datasource.name'='WSO2AM_STATS_DB',
+	'hive.jdbc.update.on.duplicate' = 'true',
+	'hive.jdbc.primary.key.fields'='api,version,apiPublisher,context,hostName,time',
+	'hive.jdbc.table.create.query' = 'CREATE TABLE API_VERSION_USAGE_SUMMARY ( api VARCHAR(100), version VARCHAR(100),apiPublisher VARCHAR(100),context VARCHAR(100),trackingCode VARCHAR(100),
+	total_request_count INT,hostName VARCHAR(100), year SMALLINT, month SMALLINT, day SMALLINT, time VARCHAR(30), PRIMARY KEY(api,version,apiPublisher,context,hostName,time))' );
+	
+	
+insert overwrite table APIVersionUsageSummaryData select api,version,apiPublisher,context,trackingCode,sum(request) as total_request_count,hostName,  year(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )) as year, month(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )) as month,day(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )) as day,concat(substring(from_unixtime(cast(requestTime/1000 as BIGINT), 'yyyy-MM-dd HH:mm:ss'),0,16),':00') as time from APIRequestData group by api,version,apiPublisher,context,trackingCode,hostName,year(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )), month(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )),day(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )),hour(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )),minute(from_unixtime(cast(requestTime/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss.SSS' )),substring(from_unixtime(cast(requestTime/1000 as BIGINT), 'yyyy-MM-dd HH:mm:ss'),0,16);
+
+CREATE EXTERNAL TABLE IF NOT EXISTS APIResponseSummaryData ( api STRING, version STRING,api_version STRING, apiPublisher STRING,context STRING,trackingCode STRING,referer STRING , hostName STRING,serviceTime BIGINT) STORED BY 'org.wso2.carbon.hadoop.hive.jdbc.storage.JDBCStorageHandler' TBLPROPERTIES ( 'wso2.carbon.datasource.name'='WSO2AM_STATS_DB',
+	'hive.jdbc.update.on.duplicate' = 'true',
+	'hive.jdbc.primary.key.fields'='api,version,api_version,apiPublisher,context,hostName,referer',
+	'hive.jdbc.table.create.query' = 'CREATE TABLE API_RESPONSE_SUMMARY ( api VARCHAR(100), version VARCHAR(100),api_version VARCHAR(100),apiPublisher VARCHAR(100),context VARCHAR(100),trackingCode VARCHAR(100),
+	referer VARCHAR (500),hostName VARCHAR(100),serviceTime BIGINT, PRIMARY KEY(api,version,api_version,apiPublisher,context,hostName,referer))' );
+
+insert overwrite table  APIResponseSummaryData select api,version,api_version,apiPublisher,context,trackingCode,referer,hostName,avg(serviceTime) as serviceTime  from APIRequestData  group by api,version,api_version,apiPublisher,context,trackingCode,referer,hostName;
+
+CREATE EXTERNAL TABLE IF NOT EXISTS APM_APP_HIT_TOTAL_TEMP (key STRING,uuid STRING,
+	user_id STRING,tenant_id INT) STORED BY 
+	'org.apache.hadoop.hive.cassandra.CassandraStorageHandler' WITH SERDEPROPERTIES ( 'wso2.carbon.datasource.name'='WSO2BAM_CASSANDRA_DATASOURCE',
+	"cassandra.cf.name" = "org_wso2_appmgt_bam_uiactivity",
+	"cassandra.columns.mapping" = ":key,payload_appId, payload_userId, payload_tenantId");   
+ 
+CREATE EXTERNAL TABLE IF NOT EXISTS APM_APP_HIT_TOTAL (uuid STRING,user_id STRING,hit_count BIGINT,tenant_id INT) STORED BY 
+'org.wso2.carbon.hadoop.hive.jdbc.storage.JDBCStorageHandler' TBLPROPERTIES ( 
+'wso2.carbon.datasource.name'='WSO2AM_STATS_DB',
+'hive.jdbc.update.on.duplicate' = 'true',
+'hive.jdbc.primary.key.fields' = 'uuid,user_id',
+'hive.jdbc.table.create.query' ='CREATE TABLE IF NOT EXISTS APM_APP_HIT_TOTAL (uuid VARCHAR2(500) NOT NULL,
+user_id VARCHAR2(50) NOT NULL,hit_count BIGINT,tenant_id INTEGER,PRIMARY KEY (uuid, user_id))');                                                                   
+
+insert overwrite table APM_APP_HIT_TOTAL  
+select uuid,user_id, count(*) as hit_count,tenant_id
+from APM_APP_HIT_TOTAL_TEMP
+group by uuid,user_id,tenant_id;
+
+
+
+
+
+
+
+                                    

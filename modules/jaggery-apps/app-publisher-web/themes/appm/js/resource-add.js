@@ -58,7 +58,6 @@ $( document ).ready(function() {
                     description: data[i].description
                 })
             }
-            updatePolicyPartial();
 
         },
         error: function () {
@@ -158,7 +157,7 @@ $( document ).ready(function() {
             RESOURCES.splice(i, 1);
 
             // Invalidate relevant entitlement policy
-            invalidateEntitlementPolicy(i);
+            //invalidateEntitlementPolicy(i);
 
             $("#resource_tbody").trigger("draw");
 
@@ -186,8 +185,6 @@ $( document ).ready(function() {
             if (RESOURCES[i].policyGroupId !== undefined && RESOURCES[i].policyGroupId !== '') {
                 $('#uritemplate_policyGroupId' + i).val(RESOURCES[i].policyGroupId);
             }
-
-            updatePolicyPartial();
 
         }
     });

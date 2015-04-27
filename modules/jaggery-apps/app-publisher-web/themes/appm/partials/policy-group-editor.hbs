@@ -45,21 +45,13 @@
                     <i class="icon-search icon-2 group-role-search"></i>
                 </div>
 
-                <div class="form-group authPolicies">
-                    <label>XACML Rules: </label>
-                    <table class="table table-striped xacml-policy-group">
-                        <thead>
-                        <tr>
-                            <th style='padding-left:10px; width:80px'>Policy</th>
-                            <th style='padding-left:10px; width:200px'>Description</th>
-                            <th style='padding-left:10px; width:50px'>Apply</th>
-                        </tr>
-                        </thead>
-                        <tbody>
+                <div class="form-group">
+                    <label>Entitlement Policy : </label>
+                    <select id="xacml-rule">
+                        <option value='-1'>None</option>
+                    </select>
+                </div>                    
 
-                        </tbody>
-                    </table>
-                </div>
             </div>
             <div class="modal-footer">
                 <a id="btn-policy-group-save" class="btn btn-primary">Save</a>

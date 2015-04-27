@@ -150,7 +150,10 @@ $(function(){
            },
            error : function(response) {
       			alert('Error occured in subscribe');
-      	   }
+      	   },
+           success : function(e){
+               location.reload();
+           }
         });
     };
     

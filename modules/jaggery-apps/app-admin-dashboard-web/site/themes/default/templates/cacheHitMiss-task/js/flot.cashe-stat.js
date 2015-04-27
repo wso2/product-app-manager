@@ -1,4 +1,3 @@
-
 var  btn = 'month-btn';
 var context = "/admin-dashboard";
 $(function () {
@@ -342,14 +341,6 @@ volumeData.push({"key":"Miss","values":values});
                             div.style("left", d3.event.pageX + 10 + "px");
                             div.style("top", d3.event.pageY - 25 + "px");
                             div.style("display", "inline-block");
-
-//                            div.html('<table class="table graphTable" id="tooltipTable" ><thead><tr><th>APP</th><th>Version</th><th>Context' +
-//                            '</th><th>Count</th></tr></thead><tbody></tbody></table>');
-
-
-
-
-
                             for (var t = 0; t < numOfVersion; t++) {
                                 for (var k = 0; k < usageByContext[i][1][0][1][t][1].length; k++) {
 
@@ -358,10 +349,6 @@ volumeData.push({"key":"Miss","values":values});
                                       appName = usageByContext[i][1][0][1][t][0];
                                       count = usageByContext[i][1][0][1][t][1][k][1][l][1];
                                       version = usageByContext[i][1][0][1][t][1][k][0];
-
-//                                      $('#tooltipTable tbody').append('<tr><td>' + appName + '</td><td>1.0.0</td><td>' + appContext +
-//                                                                  '</td><td>' + count + '</td></tr>');
-
                                           $dataTable.append('<tr><td>' + appName + '</td><td>'+version+'</td><td>' + appContext +
                                                 '</td class="pull-right"><td>' + count + '</td></tr>');
 
@@ -382,10 +369,6 @@ volumeData.push({"key":"Miss","values":values});
                   div.style("left", d3.event.pageX + 10 + "px");
                   div.style("top", d3.event.pageY - 25 + "px");
                   div.style("display", "inline-block");
-
-//                  div.html('<table class="table graphTable" id="tooltipTable" ><thead><tr><th>APP</th><th>Version</th><th>Context' +
-//                  '</th><th>Count</th></tr></thead><tbody></tbody></table>');
-
                         for (var t = 0; t < numOfVersion; t++) {
 
                                 for (var k = 0; k < usageByContext[i][1][j][1][t][1].length; k++) {
@@ -397,9 +380,6 @@ volumeData.push({"key":"Miss","values":values});
                                         appContext = usageByContext[i][1][j][1][t][1][k][1][l][0]
                                         count = usageByContext[i][1][j][1][t][1][k][1][l][1];
                                         version = usageByContext[i][1][j][1][t][1][k][0];
-//                                    $('#tooltipTable tbody').append('<tr><td>' + appName + '</td><td>1.0.0</td><td>' + appContext +
-//                                                                  '</td></td><td>' + count + '</td></tr>');
-
                                           $dataTable.append('<tr><td>' + appName + '</td><td>'+version+'</td><td>' + appContext +
                                                 '</td class="pull-right"><td>' + count + '</td></tr>');
                                     }
@@ -419,21 +399,10 @@ volumeData.push({"key":"Miss","values":values});
                     }else{
 
                         if(hitOrMiss == usageByContext[i][1][0][0]){
-                       // alert("pointed hit/miss")
-
                                 numOfVersion = usageByContext[i][1][0][1].length;
-                                //alert("app count" +numOfVersion)
                                 div.style("left", d3.event.pageX + 10 + "px");
                                 div.style("top", d3.event.pageY - 25 + "px");
                                 div.style("display", "inline-block");
-
-//                                div.html('<table class="table graphTable" id="tooltipTable" ><thead><tr><th>APP</th><th>Version</th><th>Context' +
-//                                '</th><th>Count</th></tr></thead><tbody></tbody></table>');
-
-
-
-
-
                                 for (var t = 0; t < numOfVersion; t++) {
                                 //appVersion = usageByContext[i][1][j][1][t][0]
 
@@ -444,11 +413,6 @@ volumeData.push({"key":"Miss","values":values});
                                           appName = usageByContext[i][1][0][1][t][0];
                                           count = usageByContext[i][1][0][1][t][1][k][1][l][1];
                                           version = usageByContext[i][1][0][1][t][1][k][0];
-
-                                            //alert(appName+" "+appContext)
-//                                          $('#tooltipTable tbody').append('<tr><td>' + appName + '</td><td>1.0.0</td><td>' + appContext +
-//                                                                      '</td><td>' + count + '</td></tr>');
-
                                           $dataTable.append('<tr><td>' + appName + '</td><td>'+version+'</td><td>' + appContext +
                                                 '</td class="pull-right"><td>' + count + '</td></tr>');
 
@@ -487,7 +451,7 @@ volumeData.push({"key":"Miss","values":values});
 $('#dateLabel').show();
 }
 else{
- $('.graph-container').html('<h1 class="no-data-heading">No data available</h1>');
+ $('.graph-container').html('<h1 class="no-data-heading span10">No data available</h1>');
  $('#tableContainer').hide();
  $('#dateLabel').hide();
 }

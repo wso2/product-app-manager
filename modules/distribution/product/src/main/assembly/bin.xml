@@ -47,7 +47,8 @@
 		<exclude>**/user-mgt.xml</exclude>
                 <exclude>**/identity.xml</exclude>
                 <exclude>**/embedded-ldap.xml</exclude>
-                <exclude>**/master-datasources.xml</exclude>
+		<exclude>**/master-datasources.xml</exclude>
+                <exclude>**/conf/tomcat/web.xml</exclude>
                 <exclude>**/repository/deployment/server/jaggeryapps/publisher/**</exclude>
                 <exclude>**/repository/deployment/server/jaggeryapps/store/**</exclude>
 		<exclude>**/lib/org.wso2.carbon.server-${carbon.version}.jar</exclude>
@@ -68,7 +69,11 @@
         <fileSet>
             <directory>src/main/conf/synapse-configs</directory>
             <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/synapse-configs</outputDirectory>
+	    <excludes>
+		<exclude>**/main.xml</exclude>
+            </excludes>
         </fileSet>
+        
   	<fileSet>
             <directory>src/main/conf/synapse-configs/default/sequences</directory>
             <outputDirectory>wso2appm-${pom.version}/repository/resources/apim-synapse-config/</outputDirectory>
@@ -196,24 +201,20 @@
 
             <!-- IS JAGGERY APPS -->
         </fileSet>
-            <fileSet>
+        <!--fileSet>
             <directory>../../jaggery-apps/user-dashboard/dashboard</directory>
             <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/jaggeryapps/dashboard</outputDirectory>
-            <!-- Changes related to Carbon kernel 4.2.0 patches -->
             <includes>
                 <include>**/**</include>
             </includes>
-            <!-- End - Changes related to Carbon kernel 4.2.0 patches -->
-        </fileSet>
-    <fileSet>
+        </fileSet-->
+    	<!--fileSet>
             <directory>../../jaggery-apps/portal</directory>
             <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/jaggeryapps/portal</outputDirectory>
-            <!-- Changes related to Carbon kernel 4.2.0 patches -->
             <includes>
                 <include>**/**</include>
             </includes>
-            <!-- End - Changes related to Carbon kernel 4.2.0 patches -->
-        </fileSet>
+        </fileSet-->
         <fileSet>
             <directory>../../jaggery-apps/shindig</directory>
             <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/webapps/shindig</outputDirectory>
@@ -747,6 +748,11 @@
             <destName>identity.xml</destName>
         </file>
 	<file>
+            <source>src/main/conf/web.xml</source>
+            <outputDirectory>wso2appm-${pom.version}/repository/conf/tomcat</outputDirectory>
+            <destName>web.xml</destName>
+        </file>
+	<file>
             <source>src/main/conf/user-mgt.xml</source>
             <outputDirectory>wso2appm-${pom.version}/repository/conf</outputDirectory>
             <destName>user-mgt.xml</destName>
@@ -925,6 +931,14 @@
             <destName>message-tracer-config.xml</destName>
             <filtered>true</filtered>
 	    <fileMode>644</fileMode>
+        </file>
+	<!--Copy main sequence xml from gateway feature -->
+	<file>
+           <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/deployment/server/synapse-configs/default/sequences/main.xml</source>
+           <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/synapse-configs/default/sequences</outputDirectory>
+	   <destName>main.xml</destName>
+           <filtered>true</filtered>
+	   <fileMode>644</fileMode>
         </file>
 
     </files>

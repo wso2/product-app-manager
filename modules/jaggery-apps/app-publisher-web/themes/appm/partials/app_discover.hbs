@@ -1,0 +1,167 @@
+<div class="row">
+    <div class="pull-left heading" align="left"><h1>Discover Web Applications</h1>
+    </div>
+</div>
+<div class="asset-being-added">
+</div>
+
+<div>
+    <div class="clearfix"></div>
+<div class="widget-content">
+    <form class="form-horizontal" id='form-asset-discover' role="form" method="post">
+        <!--<fieldset>-->
+        <div class="form-group">
+            <label class="control-label col-sm-2">Application Server URL: <span class="label-required">*</span></label>
+
+            <div class="col-sm-6">
+                <input type='text' id='server-url' name='serverUrl' class="form-control"
+                       value="{{sessionData.serverUrl}}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">User Name: <span class="label-required">*</span></label>
+
+            <div class="col-sm-6">
+                <input type='text' id='server-username' name='serverUserName'
+                       class="form-control" value="{{sessionData.serverUserName}}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Password: <span class="label-required">*</span></label>
+
+            <div class="col-sm-6">
+                <input type='password' id='server-password' name='serverPassword'
+                       class="form-control" value="{{sessionData.serverPassword}}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Context (Starts With): </label>
+
+            <div class="col-sm-6">
+                <input type='text' id='app-name' name='appNameStartsWith'
+                       class="form-control" value="{{sessionData.appNameStartsWith}}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Status:</label>
+
+            <div class="col-sm-6">
+                <select name="appStatus" id="app-stsatus" class="form-control">
+                    <option name="ALL" value="ALL" {{#ifCond sessionData.appStatus "==" "ALL"}} selected="selected" {{/ifCond}} >ALL</option>
+                    <option name="NEW" value="NEW" {{#ifCond sessionData.appStatus "==" "NEW"}} selected="selected" {{/ifCond}}  >NEW</option>
+                    <option name="CREATED" value="CREATED" {{#ifCond sessionData.appStatus "==" "CREATED"}} selected="selected" {{/ifCond}}  >CREATED</option>
+                </select>
+
+            </div>
+        </div>
+        <div class="form-horizontal form-group" id="discoverButtons">
+            <button id="btn-discover-asset" class="btn btn-primary pull-left push-15" name="discoverAssetsButton">Discover</button>
+            <input type="hidden" value="discoverAssets" name="discoveryAction" id="meta-asset-type">
+        </div>
+    {{#if status}}
+        <div class="info-div alert {{#ifCond status.code "!=" 200}}alert-error{{/ifCond}}">
+            <a data-dismiss="alert" class="close">x</a>
+            <i class="icon-info-sign"></i>
+            <span>{{status.description}}</span>
+        </div>
+    {{/if}}
+        <!--</fieldset>-->
+    </form>
+</div>
+<div class="asset-thumb-container">
+    {{#if discoveredArtifacts}}
+    <div class="row-fluid">
+            <table class="table table-striped list-asset-table">
+                <thead>
+                <th></th>
+                <th>
+                    <a href="?sortby=displayName&sort=asc" class="sort-list">Name </a>
+                </th>
+                <th>
+                    <a href="?sortby=version&sort=asc" class="sort-list">Version </a>
+                </th>
+                <th>
+                    <a href="?sortby=originalContext&sort=asc" class="sort-list">Original Context</a>
+                </th>
+                <th>
+                    <a href="?sortby=applicationType&sort=asc" class="sort-list">Type </a>
+                </th>
+                <th><a href="#">Status</a></th>
+                <th>
+                    <a href="?sortby=proxyContext&sort=asc" class="sort-list">Proxy Context </a>
+                </th>
+                <th><a href="#">Actions</a></th>
+                </thead>
+                <tbody>
+            {{#each discoveredArtifacts}}
+                    <tr>
+                        <td>
+
+                        </td>
+                        <td class="asset-listing-name col-md-2">
+                            <a href='#'>
+                                {{#if this.name}}{{this.name}}{{else}}&lt; no name given &gt;{{/if}}
+                            </a>
+                        </td>
+                        <td>
+                            {{this.version}}
+                        </td>
+                        <td>
+                            <a href="{{this.applicationPreviewUrl}}" title="{{this.applicationPreviewUrl}}"
+                               target="_blank">{{this.context}}</a>
+                        </td>
+                        <td>
+                            {{this.appType}}
+                        </td>
+                        <td id="application-status-{{this.id}}">
+                            {{this.status}}
+                        </td>
+                        <td>
+                            <input type='text' id='proxy-context-{{this.id}}' name='proxyContext' class=""
+                                   value="{{this.proxyContext}}"
+                                {{#ifCond this.status "!=" "NEW"}} disabled="disabled"{{/ifCond}}>
+                        </td>
+                        <td>
+                            <div class="col-sm-10" id="discoverButtons">
+                                <input type="button" value="Create Proxy App" class="btn btn-primary btn-create-discovered"
+                                    {{#ifCond this.status "!=" "NEW"}} disabled="disabled"{{/ifCond}}
+                                   name="createAsset" data-action="createAsset" data-app="{{this.webappId}}"
+                                   data-id="{{this.id}}" />
+                            </div>
+                        </td>
+                    </tr>
+            {{/each}}
+                </tbody>
+            </table>
+            <nav>
+                <ul class="pagination col-sm-12 pull-right push-15">
+                    {{#if sessionData.nav.leftNavEnabled}}
+                        <li><a href="/publisher/assets/discover/webapp/?page={{sessionData.nav.leftNav}}"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>
+                    {{/if}}
+                    {{#each sessionData.nav.pageIndices}}
+                        {{#if this.isDisabled}}
+                            <li class="disabled"><a>{{this.index}}</a></li>
+                        {{else}}
+                            <li><a href="/publisher/assets/discover/webapp/?page={{this.index}}">{{this.index}}</a></li>
+                        {{/if}}
+                    {{/each}}
+                    {{#if sessionData.nav.rightNavEnabled}}
+                        <li><a href="/publisher/assets/discover/webapp/?page={{sessionData.nav.rightNav}}"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>
+                    {{/if}}
+                </ul>
+            </nav>
+    </div>
+
+
+    {{else}}
+        <div class="emptyAssets-MsgDiv">
+            <i class="icon-inbox largeMsgIcon"></i>
+            <br />
+            No web applications discovered.
+
+        </div>
+    {{/if}}
+
+</div>
+{{> app_discover-status}}
+</div>

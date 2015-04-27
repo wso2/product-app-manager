@@ -19,7 +19,7 @@ $('#txtOS').on("change",function() {
 		   $('#app-upload-block').css('display', 'block');
 		   $('#market-type-block').css('display', 'block');
 	  }
-	  
+
 	  
 	   if($('#txtOS').val() == 'android'){
 	   		$('#txtNameLabel').text('Package Name');
@@ -98,7 +98,9 @@ $('#txtMarket').on("change",function() {
                
 				
              
-            }); 
+            });
+
+
         });
 	
 
@@ -169,4 +171,10 @@ $('#btn-app-upload').click(function () {
 jQuery("#form-asset-create").submit(function(e) {
 	//e.preventDefault();
    //alert($('#appmeta').val());
+});
+
+$( document ).ajaxComplete(function( event, xhr, settings ) {
+   if(xhr.status == 401){
+       location.re
+   }
 });
