@@ -212,7 +212,7 @@ var render = function (theme, data, meta, require) {
         listassets: [
             {
                 partial: listPartial,
-                context: data,
+                context: data
             }
         ]
     });
