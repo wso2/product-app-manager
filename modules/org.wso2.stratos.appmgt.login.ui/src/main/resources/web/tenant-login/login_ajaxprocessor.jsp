@@ -44,7 +44,7 @@ limitations under the License.
 
 <head>
     <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
-    <title>WSO2 Stratos API Manager</title>
+    <title>WSO2 Stratos Application Manager</title>
     <link href="../admin/css/global.css" rel="stylesheet" type="text/css" media="all"/>
     <link href="../styles/css/main.css" rel="stylesheet" type="text/css" media="all"/>
 

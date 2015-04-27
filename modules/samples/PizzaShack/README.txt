@@ -1,4 +1,8 @@
-In this sample we are using API Manager as the API Gateway and PIzzaShack web application calling to some APIs that have been deployed on API Manager and those APIs have secured using oauth2. We are going to publish this PizzaShack web application through the AppManager and retreive an accesss token from API Manager by giving the SAML token generated from the AppManager while the SSO authentication.
+In this sample we are using Application Manager as the API Gateway and PIzzaShack web application
+calling to some APIs that have been deployed on Application Manager and those APIs have secured
+using oauth2. We are going to publish this PizzaShack web application through the AppManager and
+retreive an accesss token from Application Manager by giving the SAML token generated from the
+AppManager while the SSO authentication.
 
 
 PRE-REQUESTIES
