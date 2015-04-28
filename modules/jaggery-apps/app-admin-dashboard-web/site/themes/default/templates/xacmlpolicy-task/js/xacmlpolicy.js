@@ -544,12 +544,16 @@ $(document).on("click", ".policy-delete-button", function () {
                     Showalert("Policy Deleted Successfully ", "alert-success", "statusSuccess");
 
                 } else {
-                    Showalert("Couldn't delete the partial.This partial is being used by web apps  ", "alert-error", "statusError");
+                    Showalert("Couldn't delete the policy '" + policyName + "'. This policy is being used by web apps.  ", "alert-error", "statusError");
                 }
 
             },
             error: function (response) {
-                Showalert('Error occured while fetching entitlement policy content', "alert-error", "statusError");
+                if (response.status==403){
+                    Showalert("Couldn't delete the policy '" + policyName + "'. This policy is being used by web apps.  ", "alert-error", "statusError");
+                } else {
+                    Showalert('Error occured while fetching entitlement policy content', "alert-error", "statusError");
+                }
             }
         });
 
