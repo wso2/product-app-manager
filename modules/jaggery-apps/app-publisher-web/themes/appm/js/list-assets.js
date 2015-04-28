@@ -46,18 +46,16 @@ $(".btn-deploySample").click(function(e) {
         url : '/publisher/api/asset/webapp/deploySample',
         type: "GET",
         dataType:"json",
-        async : false,            
-        success: function(msg){
-            if(msg.response != "admin is already created sample web application"){
-                showMessageModel(msg.response,"Samples Deployed Successfully","webapp");        
-            }else{
-                showMessageModel(msg.response,"Deployment of samples failed","webapp");    
+        async : false,
+        success: function(msg){ 
+            if (msg.isError == "true"){
+                $(document).ajaxComplete(function () {
+                    location.reload();
+                });
             }
-        },
-        error: function(error){
-            showMessageModel("error in response","Deployment of samples failed","webapp");
-        }
+        }            
     });
+    
 });
 
 $( ".tab-button" ).click(function() {

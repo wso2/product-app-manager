@@ -12,7 +12,7 @@
     -->
     <UiActivityPublishDataSourceName>jdbc/WSO2AM_DB</UiActivityPublishDataSourceName>
 
-    <!-- This parameter is used when adding api management capability to other products like GReg, AS, DSS etc.-->
+    <!-- This parameter is used when adding app management capability to other products like GReg, AS, DSS etc.-->
     <GatewayType>Synapse</GatewayType>
 
   <!-- This parameter is used to enable the securevault support when try to publish endpoint secured APIs. Values should be "true" or "false".

@@ -617,7 +617,7 @@
     </FeatureRepository>
 
     <!--
-	Configure API Management
+	Configure App Management
    -->
    <APIManagement>
 	

@@ -40,7 +40,7 @@
                 management challenges such as API provisioning, API governance, API security
                 and API monitoring. It combines some of the most powerful and mature components
                 of the WSO2's state-of-the-art Carbon platform to deliver a smooth and end-to-end
-                API management experience while catering to both API publisher and API consumer
+                Application management experience while catering to both API publisher and API consumer
                 requirements.
             </p>
 
@@ -64,12 +64,12 @@
                 of the APP Manager. Further, any existing features of the product which are not
                 required in your environment can be easily removed using the underlying
                 provisioning framework of Carbon. In brief, WSO2 APP Manager can be fully
-                customized and tailored to meet your exact API management needs.
+                customized and tailored to meet your exact Application management needs.
             </p>
 
             <p>
-                For more information on WSO2 APP Manager please visit <a href="http://wso2.com/products/api-manager">
-                http://wso2.com/products/api-manager</a>. Also take a look at the online product
+                For more information on WSO2 APP Manager please visit <a href="http://wso2.com/products/app-manager">
+                http://wso2.com/products/app-manager</a>. Also take a look at the online product
                 <a href="http://docs.wso2.org/wiki/display/AM150/WSO2+API+Manager+Documentation">documentation</a>.
             </p>
 
@@ -374,26 +374,23 @@
                     </ul>
                 </li>
 
-                <li>Support for creating multi-tenanted APIs
+                <li>Support for creating multi-tenanted Applications
                     <ul>
-                        <li>Run a single instance and provide API Management to multiple customers</li>
+                        <li>Run a single instance and provide Application Management to multiple customers</li>
                         <li>Share APIs between different departments in a large enterprise</li>
                     </ul>
                 </li>
 
-                <li>Publishing and Governing API Use
+                <li>Publishing and Governing Application Use
                     <ul>
-                        <li>Document an API using Swagger</li>
-                        <li>Restrict API Access tokens to domains/IPs</li>
+                        <li>Document an Application using Swagger</li>
                         <li>Ability to block a subscription and restricting a complete application</li>
-                        <li>Ability to revoke access tokens</li>
-                        <li>Separate validity period configuration for Application Access Token</li>
                         <li>OAuth2 Authorization Code Grant Type Support</li>
                         <li>Configuring execution point of mediation extensions</li>
                     </ul>
                 </li>
 
-                <li>Monitor API Usage and Performance
+                <li>Monitor Application Usage and Performance
                     <ul>
                         <li>Improved dashboard for monitoring usage statistics (Filtering data for a date range, More visually appealing widgets)</li>
                     </ul>
@@ -465,7 +462,7 @@
             </p>
             <p>
                 To learn more about WSO2 APP Manager and WSO2 support offerings please visit
-                <a href="http://wso2.com/products/api-manager/">http://wso2.com/products/api-manager</a>.
+                <a href="http://wso2.com/products/app-manager/">http://wso2.com/products/app-manager</a>.
             </p>
 
             <p>
