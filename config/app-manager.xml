@@ -615,7 +615,7 @@
 		   <Config name="IosPlistPath">publisher/api/mobileapp/getplist</Config>
 
 		   <Config name="EnterpriseOperations_Enabled">true</Config>
-		   <Config name="EnterpriseOperations_AuthorizedRole">admin</Config>
+		   <Config name="EnterpriseOperations_AuthorizedRole">Internal/store-admin</Config>
 
                 </MDMConfig>
 
