@@ -410,3 +410,20 @@ a.previous {
 a.next {
     border-radius: 0 3px 3px 0;
 }
+
+td.details-control {
+   background: url('../img/details_open.png') no-repeat center center;
+   cursor: pointer;
+}
+tr.shown td.details-control {
+   background: url('../img/details_close.png') no-repeat center center;
+}
+
+div.slider {
+   display: none;
+}
+
+table.dataTable tbody td.no-padding {
+   padding: 0;
+}
+

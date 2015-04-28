@@ -33,7 +33,7 @@
     <artifactId>appmgt-styles-parent</artifactId>
     <packaging>pom</packaging>
     <name>WSO2 APP Manager - Styles Parent</name>
-    <url>http://wso2.com/products/api-manager</url>
+    <url>http://wso2.com/products/app-manager</url>
     <description>WSO2 App Manager Styles Parent</description>
 
     <licenses>

@@ -2,8 +2,8 @@ How to Deploy & User Creation Workflow Sample
 =============================================
 
 This sample contains sample BPS workflow source and back end service. This sample workflow accept web service call from
-API Manager(When user creation process strats) and call to sample echo service hosted in stratos Live(https://stratoslive.wso2.com). 
-This is just example demostrate how we can plug external workflow into user creation process of WSO2 API Manager. Follow given 
+Application Manager(When user creation process strats) and call to sample echo service hosted in stratos Live(https://stratoslive.wso2.com).
+This is just example demostrate how we can plug external workflow into user creation process of WSO2 Application Manager. Follow given
 instructions to run sample.
 
 
