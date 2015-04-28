@@ -619,7 +619,7 @@
 		   <!-- Enables the sample devices for testing purposes -->	
 		   <Config name="EnableSampleDevices">false</Config>
 		   
-		   <!-- Host of the installation URL of the mobile app, which is sent to the MDM in the following format:
+		   <!-- Host of the installation URL of the mobile app, which is sent to the MDM:
 			 (E.g. %http%, %https%, or a custom host URL) -->
 		   <Config name="AppDownloadURLHost">%http%</Config>
 		   <!-- Path of the Property List file generated using the PLIST template for iOS apps. -->	
