@@ -2,12 +2,16 @@
     var tasks = outputs.tasks;
     %>
      <div class="title-section">
-       <h2>Entitlement Policy</h2>
-         </div>
+        <h2>Entitlement Policy</h2>
+     </div>
+     <div class="alert alert-error" id="statusError" style="display:none">
+        <span id="statusErrorSpan"></span>
+     </div>
+     <div class="alert alert-error" id="statusSuccess" style="display:none">
+        <span id="statusErrorSpan"></span>
+     </div>
          <div id="wr-overview" class="wr-overview-policies" style="display:block">
-             <div class="alert alert-error" id="statusSuccess" style="display:none">
-                   <span id="statusErrorSpan"></span>
-              </div>
+
             <fieldset class="policy-list" style="display: none;">
                 <input type='hidden' value="[]" name="uritemplate_policyPartialIds"
                                                            id="uritemplate_policyPartialIds"/>
@@ -34,9 +38,7 @@
                 <h2>Edit Entitlement Policy</h2>
             </div>
             <br/>
-          <div class="alert alert-error" id="statusError" style="display:none">
-               <span id="statusErrorSpan"></span>
-          </div>
+
                                 <label>Name</label>
                                 <input id="policy-name" type="text" class="form-control" style="width: 30%"
                                 maxlength="256"/>
