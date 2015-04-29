@@ -37,7 +37,7 @@ should aware about exact service location of workflow.
 
 Application Manager Configurations
 ==========================
-Edit Application manager configuration file to enable web service based workflow execution. For this we need to edit api-manager.xml located inside repository/conf of Application Manager product.
+Edit Application manager configuration file to enable web service based workflow execution. For this we need to edit app-manager.xml located inside repository/conf of Application Manager product.
 All work flow related configurations are located inside <WorkFlowExtensions> section. Edit WorkFlowExtensions as follows. Please note that all workflow process services
 are running on port 9765 of Business Process Server(as it is running with port offset2). 
 
