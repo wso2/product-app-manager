@@ -21,9 +21,7 @@
         "isNew": false
       }
     },
-    "pages": [
-      "planYourTrip"
-    ]
+    "pages": [["default",10]]
   },
   "TravelBooking": {
     "displayname": "Travel Booking",
@@ -78,9 +76,9 @@
       }
     },
     "pages": [
-      "travelBooking",
-      "booking-step1.jsp",
-      "booking-step2.jsp"
+      ["default",10],
+      ["booking-step1.jsp",20],
+      ["booking-step2.jsp",15]
     ]
   }
 }

@@ -6,15 +6,23 @@
     } else {
         var config = require('/config/store.js').config(),
                 sso = require('sso'),
+                process = require("process"),
                 sso_sessions = application.get('sso_sessions'),
                 sessionId = session.getId(),
                 encodedSAMLLogoutRequest = sso.client.getEncodedSAMLLogoutRequest(user, sso_sessions[session.getId()], config.ssoConfiguration.issuer),
                 relayState = '/store',
-                postUrl = "https://" + process.getProperty('carbon.local.ip') + ":" + process.getProperty('https.port');
+                serverHost = process.getProperty('server.host'),
+                postUrl;
 
         var log = new Log();
 
         log.debug("store session index : " + sso_sessions[session.getId()]);
+
+        if (serverHost == null || serverHost == "") {
+            postUrl = "https://" + process.getProperty('carbon.local.ip') + ":" + process.getProperty('https.port');
+        } else {
+            postUrl = "https://" + serverHost + ":" + process.getProperty('https.port')
+        }
 
 
         %>

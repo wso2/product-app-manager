@@ -8,8 +8,15 @@
             requestedPage = request.getParameter("requestedPage"),
             relayState = '/publisher',
             encodedSAMLAuthRequest = sso.client.getEncodedSAMLAuthRequest(dataConfi.ssoConfiguration.issuer),
+            serverHost = process.getProperty('server.host'),
             log = new Log(),
-            postUrl = "https://" + process.getProperty('carbon.local.ip') + ":" + process.getProperty('https.port');
+            postUrl;
+
+    if (serverHost == null || serverHost == "") {
+       postUrl = "https://" + process.getProperty('carbon.local.ip') + ":" + process.getProperty('https.port');
+    } else {
+       postUrl = "https://" + serverHost + ":" + process.getProperty('https.port') 
+    }
 
     if (!session.get("Loged")) {
         %>
