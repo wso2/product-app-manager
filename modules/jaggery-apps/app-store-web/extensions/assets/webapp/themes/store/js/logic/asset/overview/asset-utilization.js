@@ -12,7 +12,13 @@ $(function(){
     var API_SUBSCRIPTION_WORKFLOW = '/store/resources/webapp/v1/subscription-workflow/app';
     
     $('#btnSubscribe').on('click',function(){
-			getAppDetails();
+        if( $(this).attr("disabled") != 'disabled'){
+            $(this).attr("disabled", true);
+            getAppDetails();
+        }else{
+            location.reload();
+        }
+
     });
     
     // TODO : This code silently fails when enterprise subscriptions are not allowed. Handle it nicely.
