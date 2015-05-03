@@ -62,6 +62,7 @@ $( document ).ready(function() {
             }
         });
         $('#overview_allowAnonymous').val(output);
+        updateVisuals();
      });
 
 
