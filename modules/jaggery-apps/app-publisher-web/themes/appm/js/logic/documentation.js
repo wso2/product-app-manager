@@ -201,8 +201,11 @@ var getRadioValue = function (radioButton) {
 };
 
 var clearDocs = function () {
-    window.location.reload();
-
+    if(window.location.href.indexOf("docs=true") > -1) {
+        window.location.href = window.location.href;
+    }else{
+        window.location.href = window.location.href + "?docs=true";
+    }
 };
 
 
@@ -270,7 +273,11 @@ var removeDocumentation = function (provider, apiName, version, docName, docType
 	                if ($('#docTable tr').length == 1) {
 	                	$('#docTable').append($('<tr><td colspan="6">'+('resultMsgs.noDocs')+'</td></tr>'));
 	                }
-                    window.location.href = window.location.href + "?docs=true";
+                    if(window.location.href.indexOf("docs=true") > -1) {
+                        window.location.href = window.location.href;
+                    }else{
+                        window.location.href = window.location.href + "?docs=true";
+                    }
 	 				}
 	 			else{
 	 		 	     console.log("error occurred while deleting");
