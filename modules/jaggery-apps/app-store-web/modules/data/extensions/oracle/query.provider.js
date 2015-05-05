@@ -21,11 +21,23 @@ var queryProvider = function () {
     }
 
     function checkIfTableExists(schema){
-        return '';
+        var query = "select * from USER_OBJECTS where OBJECT_TYPE = 'TABLE' and OBJECT_NAME = 'resource'";
+        return query;
+    }
+
+    function insert(schema){
+        var query = 'INSERT INTO "resource" (uuid,content,fileName,tenantId,contentType,contentLength) VALUES (?,?,?,?,?,?)';
+        return query;
+    }
+    function select(schema,predicate){
+        var query = 'SELECT * FROM "resource" WHERE  uuid=\'' + predicate.uuid + "'";
+        return query;
     }
 
     return{
         create: create,
+        insert: insert,
+        select: select,
         checkIfTableExists:checkIfTableExists
     }
 };
