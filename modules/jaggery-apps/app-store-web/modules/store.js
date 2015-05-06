@@ -258,7 +258,7 @@ Store.prototype.assetsPaging = function (request) {
     return {
         start: page * size,
         count: size,
-        sort: request.getParameter('sort') || 'recent'
+        sort: encodeURIComponent(request.getParameter('sort')) || 'recent'
     };
 };
 
@@ -274,7 +274,7 @@ Store.prototype.assetsPagingOverrided = function (request,availablePages) {
     return {
         start: page * size,
         count: size,
-        sort: request.getParameter('sort') || 'recent'
+        sort: encodeURIComponent(request.getParameter('sort')) || 'recent'
     };
 };
 
@@ -285,7 +285,7 @@ Store.prototype.buildNextPage = function (request,availablePages) {
     return {
         start: page * size,
         count: size,
-        sort: request.getParameter('sort') || 'recent'
+        sort: encodeURIComponent(request.getParameter('sort')) || 'recent'
     };
 };
 
@@ -321,7 +321,7 @@ Store.prototype.commentsPaging = function (request) {
     return {
         start: page * size,
         count: size,
-        sort: request.getParameter('sort') || 'recent'
+        sort: encodeURIComponent(request.getParameter('sort')) || 'recent'
     };
 };
 

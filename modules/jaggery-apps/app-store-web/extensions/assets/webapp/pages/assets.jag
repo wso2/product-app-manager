@@ -36,7 +36,7 @@ require('/modules/store.js').exec(function (ctx) {
             log = ctx.log,
             sso = ctx.sso,
             query = ctx.params.query,
-            tag = ctx.params.tag,
+            tag = encodeURIComponent(ctx.params.tag),
             store = ctx.store,
             user = ctx.user,
             server = ctx.server,
