@@ -36,7 +36,7 @@ require('/modules/store.js').exec(function (ctx) {
             log = ctx.log,
             sso = ctx.sso,
             query = ctx.params.query,
-            tag = ctx.params.tag,
+            tag = encodeURIComponent(ctx.params.tag),
             store = ctx.store,
             user = ctx.user,
             server = ctx.server,
@@ -48,6 +48,8 @@ require('/modules/store.js').exec(function (ctx) {
             subscription = false,
             avaliablePages,isSubscribed,
             social = carbon.server.osgiService('org.wso2.carbon.social.core.service.SocialActivityService');
+
+    if(tag == 'undefined' ){tag = null;}
 
     caramel = require('caramel');
     process = require('process'),
