@@ -89,6 +89,14 @@ $(function() {
         }
     });
 
+    $('.global_role').on('click', function () {
+            $('#btn-create-asset').removeAttr('disabled');
+    });
+
+    $('.controll_visibility').on('click', function () {
+            $('#btn-create-asset').removeAttr('disabled');
+    });
+
     $('#overview_displayName').on('blur', function () {
         if($(this).val() != ""){
             $('#btn-create-asset').removeAttr('disabled');
@@ -155,6 +163,13 @@ $(function() {
 			showAlert("Webapp Name contains one or more illegal characters (~!@#;%^*()+={}|\\<>\"',)", 'error');
 			return;
 		}
+
+        if($('.controll_visibility').is(':checked') && $('#roles').val() == ""){
+            showAlert('Restrict Visibility should have value', 'error');
+            return;
+        }
+
+
 
 		var context = $('#overview_context').val();
 		if(context != null && context != '') {
