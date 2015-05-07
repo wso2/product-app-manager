@@ -28,6 +28,8 @@ require('/modules/store.js').exec(function (ctx) {
 
     var isDeviceSubscriptionEnabled = mdmConfig.EnableSubscriptionFromDevices == "true" ? true : false;
 
+    var isDirectDownloadEnabled = mdmConfig.EnableDirectDownload == "true" ? true : false;
+
 
     if(user && mdmConfig.EnterpriseOperations_Enabled){
         var server = require('store').server;
@@ -73,6 +75,7 @@ require('/modules/store.js').exec(function (ctx) {
         devices: devices,
         isEnterpriseInstallEnabled: isEnterpriseInstallEnabled,
         isDeviceSubscriptionEnabled : isDeviceSubscriptionEnabled,
+        isDirectDownloadEnabled :isDirectDownloadEnabled,
         header: site.header(tenantId, {
             sso: sso,
             user: user

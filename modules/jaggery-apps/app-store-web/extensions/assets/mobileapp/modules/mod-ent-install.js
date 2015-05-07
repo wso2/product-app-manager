@@ -9,6 +9,8 @@
 
     var isMDMOperationsEnabled = mdmConfig.EnableMDMOperations == "true" ? true : false;
 
+    var isDirectDownloadEnabled = mdmConfig.EnableDirectDownload == "true" ? true : false;
+
 
     var performAction = function performAction (action, tenantId, type, app, params) {
 
@@ -89,6 +91,47 @@
             operations.performAction(stringify(currentUser), action, tenantId, type, app, params);
         }
 
+
+
+
+        if(isDirectDownloadEnabled){
+
+            useragent = request.getHeader("User-Agent");
+
+            if(useragent.match(/iPad/i) || useragent.match(/iPhone/i) || useragent.match(/Android/i)) {
+
+
+
+                asset = store.asset('mobileapp', app);
+                if( asset.attributes.overview_type == "Enterprise" ||  asset.attributes.overview_type == "Web App"){
+                    if(asset.attributes.overview_platform == "android"){
+                        var location = asset.attributes.overview_url;
+                    }else if(asset.attributes.overview_platform == "ios"){
+                        var filename = asset.attributes.overview_url.split("/").pop();
+                        var location =  "/" + mdmConfig.IosPlistPath + "/" + tenantId +  "/" + filename;
+                    }
+                }else if(asset.attributes.overview_type == "Web App"){
+                    var location = asset.attributes.overview_url;
+                }
+
+                else{
+                    if(asset.attributes.overview_platform == "android"){
+                        var location = "https://play.google.com/store/apps/details?id=" + asset.attributes.overview_packagename;
+                    }else if(asset.attributes.overview_platform == "ios"){
+                        var location = "https://itunes.apple.com/en/app/id" + asset.attributes.overview_appid;
+                    }
+                }
+
+
+
+                print({redirect: true, location : location});
+
+            }else{
+                print({});
+            }
+
+
+        }
     };
 
 

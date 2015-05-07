@@ -606,6 +606,9 @@
 			 allow you to perform any operations on the apps -->	
 		   <Config name="IsCatalog">false</Config>
 
+		   <!-- Enables APPM to Force the app download direcly to the app from the App Manager -->		
+		   <Config name="EnableDirectDownload">false</Config>	
+
 		   <!-- Enables WSO2 AppM to communicate with the active MDM for performing operations on the mobile apps. -->	
 		   <Config name="EnableMDMOperations">true</Config>
 		   <!-- Name of the MDM, which is currently active. You need to define the MDM within the <MDMProperties> element. 

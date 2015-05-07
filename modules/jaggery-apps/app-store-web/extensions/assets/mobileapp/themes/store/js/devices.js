@@ -103,7 +103,7 @@ function performInstalltion(device, app){
 
 function performInstalltionUser(app){
     noty({
-        text : 'Are you sure you want to install and subscribe to this app?',
+        text : 'Are you sure you want to install this app?',
         'layout' : 'center',
         'modal' : true,
         buttons : [{
@@ -117,18 +117,31 @@ function performInstalltionUser(app){
                     url: "/store/apps/user/install",
                     type: "POST",
                     dataType: "json",
-                    data : {"asset": app}
+                    data : {"asset": app},
+
+                    success : function(data){
+
+                    }
                 });
 
-                $( document ).ajaxComplete(function() {
+                $( document ).ajaxComplete(function(event, xhr, settings) {
                     // asset.process("mobileapp",app, location.href);
                     noty({
-                        text : 'You have been subscribed to the application successfully',
+                        text : 'You have installed the application successfully',
                         'layout' : 'center',
                         'timeout': 1500,
                         'modal': false,
                         'onClose': function() {
-                            location.reload();
+                            try{
+                                if(JSON.parse(xhr.responseText).redirect != true){
+                                    location.reload();
+                                }else{
+                                    location.replace(JSON.parse(xhr.responseText).location);
+                                }
+                            }catch(e){
+                                location.reload();
+                            }
+
                         }
                     });
                 });
