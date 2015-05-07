@@ -28,13 +28,13 @@ $(function () {
     $('#wrap').css('visibility', 'hidden');
 
     if (loggedUser == "" || loggedUser == null) {
-        if (allowAnonymous.toUpperCase() != "TRUE") {
-            var localIP = $("#assetsLocalIP").val();
-            var port = $("#assetshttpsPort").val()
-            location.href = localIP + ":" + port + "/store/login";
-        }
-        e.preventDefault();
-        e.stopPropagation();
+//        if (allowAnonymous.toUpperCase() != "TRUE") {
+//            var localIP = $("#assetsLocalIP").val();
+//            var port = $("#assetshttpsPort").val()
+//            location.href = localIP + ":" + port + "/store/login";
+//        }
+//        e.preventDefault();
+//        e.stopPropagation();
     }
 
     //show html body after loading
