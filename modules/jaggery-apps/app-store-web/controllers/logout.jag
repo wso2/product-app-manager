@@ -12,25 +12,17 @@
                 encodedSAMLLogoutRequest = sso.client.getEncodedSAMLLogoutRequest(user, sso_sessions[session.getId()], config.ssoConfiguration.issuer),
                 relayState = '/store',
                 serverHost = process.getProperty('server.host'),
-                postUrl;
+                postUrl = config.ssoConfiguration.identityProviderURL;
 
         var log = new Log();
-
         log.debug("store session index : " + sso_sessions[session.getId()]);
-
-        if (serverHost == null || serverHost == "") {
-            postUrl = "https://" + process.getProperty('carbon.local.ip') + ":" + process.getProperty('https.port');
-        } else {
-            postUrl = "https://" + serverHost + ":" + process.getProperty('https.port')
-        }
-
 
         %>
         <div>
            <p>You are now redirected to Stratos Identity. If the
            redirection fails, please click the post button.</p>
 
-            <form id="logoutForm" method="post" action="<%=postUrl%>/samlsso">
+            <form id="logoutForm" method="post" action="<%=postUrl%>">
             <p>
                 <input type="hidden" name="SAMLRequest"
                       value="<%= encodedSAMLLogoutRequest %>"/>
