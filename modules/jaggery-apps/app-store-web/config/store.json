@@ -17,7 +17,7 @@
     "ssoConfiguration": {
         "enabled": true,
         "issuer": "store",
-        "identityProviderURL": "%https.host%/sso/samlsso.jag",
+        "identityProviderURL": "%https.host%/samlsso",
         "keyStorePassword": "wso2carbon",
         "identityAlias": "wso2carbon",
         "responseSigningEnabled": "true",

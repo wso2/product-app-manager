@@ -27,7 +27,7 @@
             relayState = '/social?'+request.getQueryString(),
             encodedSAMLAuthRequest = sso.client.getEncodedSAMLAuthRequest(dataConfi.ssoConfiguration.issuer),
             log = new Log(),
-            postUrl =dataConfi.ssoConfiguration.identityProviderURL; //"https://" + process.getProperty('carbon.local.ip') + ":" + process.getProperty('https.port');
+            postUrl = dataConfi.ssoConfiguration.identityProviderURL; 
 	    if(log.isDebugEnabled()){
             	log.debug('Social Login URL: '+postUrl);
 	    }
