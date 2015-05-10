@@ -35,8 +35,7 @@ import static org.wso2.carbon.appmanager.integration.ui.Util.ExtendedAsserts.ass
  */
 public class AppDiscoveryTestCase extends APPManagerIntegrationTest {
 
-//    private static final String APP_SERVER_URL = "https://localhost:9443/services/";
-    private static final String APP_SERVER_URL = "http://ocalhost:8080/MockWebappAdmin/services/";
+    private static final String APP_SERVER_URL = "https://localhost:9443/services/";
     private static final String INFO_SUCCESS_DISCOVERY_START_WITH = "Successfully Queried the server";
     private String username;
     private String password;
