@@ -6,6 +6,11 @@ var checkeRole = function (username, session) {
       	usr = carbon.server.tenantUser(username);
 	var log = new Log();
 
+    var config = require('/config/store.json');
+
+    var apiUtil = Packages.org.wso2.carbon.appmgt.impl.utils.AppManagerUtil;
+    var apiUtil = new apiUtil();
+
 	var user = require('store').user;
 	if (!user.configs(usr.tenantId)) {
 		event.emit('tenantLoad', usr.tenantId);
@@ -19,15 +24,15 @@ var checkeRole = function (username, session) {
   	usr = um.getUser(usr.username);
   	usr.tenantDomain = carbon.server.tenantDomain({tenantId: usr.tenantId});
 
-  	event.emit('login', usr.tenantId, usr, session);
-  	if (!usr.hasRoles([role[0]])) {
-      		return false;
-  	}
+  	//if (!usr.hasRoles([role[0]])) {
+      	//	return false;
+  	//}
 
-	
-	if (!( usr.hasRoles(["Internal/subscriber"]))) {
+    if (!(apiUtil.checkPermissionWrapper(username, config.permissions.webapp_subscribe)
+          || apiUtil.checkPermissionWrapper(username, config.permissions.mobileapp_subscribe))) {
            return false;
   	}
 
+    event.emit('login', usr.tenantId, usr, session);
   	return true;
 };

@@ -16,7 +16,23 @@
  * under the License.
  */
 
-
+var Showalert = function(msg, type, target) {
+    type = type || 'info';
+    $('#'+ target)
+        .removeClass()
+        .addClass(type)
+        .addClass('alert')
+        .stop()
+        .fadeIn()
+        .delay(3000)
+        .fadeOut()
+        .find('#statusErrorSpan').html(msg);
+    var section=$('.title-section');
+    jQuery('html, body').animate({
+        scrollTop: section.offset().top
+    }, 1000);
+    ;
+}
 policyPartialsArray = new Array(); // xacml policy details array
 var editedpolicyPartialId = 0; //if 1 then edit else save
 var context = "/admin-dashboard";
@@ -66,7 +82,6 @@ $(document).ready(function () {
     });
     //load default xacml policy condition
     getXacmlPolicyTemplate();
-
     // Get shared partials
     $.ajax({
         url: context + '/apis/xacmlpolicies/list',
@@ -79,6 +94,7 @@ $(document).ready(function () {
                     id: data[i].partialId,
                     policyPartialName: data[i].partialName,
                     policyPartial: data[i].partialContent,
+                    ruleEffect: data[i].ruleEffect,
                     isShared: data[i].isShared,
                     author: data[i].author,
                     description: data[i].description
@@ -101,6 +117,7 @@ function resetControls() {
     $('#policy-name').prop("readonly", false);
     $('#policy-name').val("");
     $('#policy-name').select();
+    setSelectedRuleEffect('Deny');
 
 }
 
@@ -113,12 +130,12 @@ function getXacmlPolicyTemplate() {
         dataType: "text",
         success: function (response) {
             if (response != null) {
-                editor.setValue(response);
+                //editor.setValue(response);
                 $('#policy-content').val(response);
             }
         },
         error: function (response) {
-            alert('Error occured while fetching entitlement policy content', 'error');
+            Showalert('Error occured while fetching entitlement policy content', "alert-error", "statusError");
         }
     });
 }
@@ -134,11 +151,11 @@ $(document).on("click", "#btn-policy-partial-validate", function () {
     var policyName = $('#policy-name').val();
 
     if (policyName == "") {
-        alert("Policy name cannot be blank", "alert-danger");
+        Showalert("Policy name cannot be blank", "alert-error", "statusError");
         return;
     }
     if (policyContent == "") {
-        alert("Policy content cannot be blank", "alert-danger");
+        Showalert("Policy content cannot be blank", "alert-error", "statusError");
         return;
     }
     validatePolicyPartial(policyContent, showMessageAfterValidation, displayValidationRequestException);
@@ -151,11 +168,11 @@ $(document).on("click", "#btn-policy-save", function () {
     var policyName = $('#policy-name').val();
 
     if (policyName == "") {
-        alert("Policy name cannot be blank", "alert-danger");
+        Showalert("Policy name cannot be blank", "alert-error", "statusError");
         return;
     }
     if (editor.getValue() == "") {
-        alert("Policy content cannot be blank", "alert-danger");
+        Showalert("Policy content cannot be blank", "alert-error", "statusError");
         return;
     }
 
@@ -174,7 +191,7 @@ function validatePolicyPartial(policyPartial, onSuccess, onError) {
         success: onSuccess,
         error: function (response) {
             if (response.status == 500) {
-                alert('Sorry, your session has expired');
+                Showalert('Sorry, your session has expired');
                 location.reload();
             } else {
                 onError(respond);
@@ -191,11 +208,11 @@ function continueAddingEntitlementPolicyPartialAfterValidation(response) {
         if (response.isValid) {
             savePolicyPartial();
         } else {
-            alert("Policy is not valid.", "alert-danger");
+            Showalert("Policy is not valid.", "alert-error", "statusError");
         }
 
     } else {
-        alert("Could not complete validation.", "alert-danger");
+        Showalert("Could not complete validation.", "alert-error", "statusError");
     }
 }
 
@@ -205,19 +222,19 @@ function showMessageAfterValidation(response) {
     if (response.success) {
         response = response.response;
         if (response.isValid) {
-            alert("Policy is valid.", "alert-success");
+            Showalert("Policy is valid.", "alert-success", "statusError");
         } else {
-            alert("Policy is not valid.", "alert-danger");
+            Showalert("Policy is not valid.", "alert-error", "statusError");
         }
 
     } else {
-        alert("Could not complete validation.", "alert-danger");
+        Showalert("Could not complete validation.", "alert-error", "statusError");
     }
 }
 
 
 function displayValidationRequestException() {
-    alert('Error occured while validating the policy', 'error');
+    Showalert('Error occured while validating the policy', "alert-error", "statusError");
 }
 
 
@@ -238,8 +255,8 @@ function savePolicyPartial() {
             for (var i = 0; i < policyPartialsArray.length; i++) {
                 if (policyPartialsArray[i].policyPartialName == policyPartialName) {
                     //if policy group name is already saved show an warning and return
-                    alert("Cannot save Policy Group Name " + policyPartialName + " as it is already been saved. " +
-                    "Please select a different name");
+                    Showalert("Cannot save Policy Group Name " + policyPartialName + " as it is already been saved. " +
+                    "Please select a different name", "alert-error", "statusError");
                     return;
                 }
             }
@@ -263,12 +280,13 @@ function savePolicyPartial() {
                     id: returnedId,
                     policyPartialName: policyPartialName,
                     policyPartial: ruleCondition,
+                    ruleEffect: ruleEffect,
                     isShared: isSharedPartial,
                     author: provider,
                     description: policyPartialDesc
                 });
                 updatePolicyPartial()
-                alert("Policy Saved Successfully");
+                Showalert("Policy Saved Successfully", "alert-error", "statusError");
                 $('#policy-name').prop("readonly", true);
             },
             error: function () {
@@ -309,11 +327,11 @@ function savePolicyPartial() {
 
                     var conf = confirm(msg);
                     if (conf == true) {
-                        updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, generatedRule, ruleCondition, isSharedPartial, policyPartialDesc);
+                        updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, generatedRule, ruleCondition, ruleEffect, isSharedPartial, policyPartialDesc);
                     }
                 }
                 else {
-                    updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, generatedRule, ruleCondition, isSharedPartial, policyPartialDesc);
+                    updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, generatedRule, ruleCondition, ruleEffect, isSharedPartial, policyPartialDesc);
                 }
 
 
@@ -330,7 +348,7 @@ function savePolicyPartial() {
 }
 
 
-function updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, generatedRule, ruleCondition, isSharedPartial, policyPartialDesc) {
+function updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, generatedRule, ruleCondition, ruleEffect, isSharedPartial, policyPartialDesc) {
     $.ajax({
         url: context + '/apis/xacmlpolicies/update',
         type: 'POST',
@@ -348,16 +366,18 @@ function updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, g
                     if (obj != null && obj.id == editedpolicyPartialId) {
                         policyPartialsArray[index].policyPartialName = policyPartialName;
                         policyPartialsArray[index].policyPartial = ruleCondition;
+                        policyPartialsArray[index].ruleEffect = ruleEffect;
                         policyPartialsArray[index].isShared = isSharedPartial;
                         policyPartialsArray[index].description = policyPartialDesc
 
                     }
                 });
                 updatePolicyPartial();
-                alert("Policy Updated Successfully");
+                Showalert("Policy Updated Successfully", "alert-success", "statusError");
                 resetControls();
+                $('.content-section').delay(3000).hide(0);
             } else {
-                alert("Couldn't modify .This partial is being used by web apps ");
+                Showalert("Couldn't modify .This partial is being used by web apps ", "alert-error", "statusError");
             }
         },
         error: function () {
@@ -368,6 +388,14 @@ function updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, g
 
 function updatePolicyPartial() {
     $('#policyPartialsTable tbody').html("");
+    //show empty msg
+    if(policyPartialsArray.length > 0){
+        $('.no-policy').hide();
+        $('.policy-list').show();
+    }else{
+        $('.no-policy').show();
+        $('.policy-list').hide();
+    }
     $.each(policyPartialsArray, function (index, obj) {
         if (obj != null) {
 
@@ -395,6 +423,16 @@ function getSelectedRuleEffect(){
     return $('#rule-effects .active').data('effect');
 }
 
+function setSelectedRuleEffect(effect){
+    if(effect == "Deny"){
+        $('#btn-rule-effect-permit').removeClass('active');
+        $('#btn-rule-effect-deny').addClass('active');
+    }else if(effect == "Permit"){
+        $('#btn-rule-effect-deny').removeClass('active');
+        $('#btn-rule-effect-permit').addClass('active');
+    }
+}
+
 /**
 * Generates a XACML rule using the effect and the condition.
 *
@@ -411,6 +449,11 @@ $(document).on("click", ".policy-edit-button", function () {
     $('#policy-content').val("");
     $('#policy-name').val("");
     $('#policy-desc').val("");
+    $('.content-section').show();
+    var section=$('.title-section-edit');
+    jQuery('html, body').animate({
+        scrollTop: section.offset().top
+    }, 1000);
     editor.setValue("");
 
     $.each(policyPartialsArray, function (index, obj) {
@@ -420,6 +463,7 @@ $(document).on("click", ".policy-edit-button", function () {
             $('#policy-desc').val(obj.description);
             $('#policy-content').val(obj.policyPartial);
             editor.setValue(obj.policyPartial);
+            setSelectedRuleEffect(obj.ruleEffect);
 
         }
     });
@@ -464,17 +508,18 @@ $(document).on("click", ".policy-delete-button", function () {
                     }
                     var msg = "You cannot delete the policy " + policyName + " because it is been used in following apps\n\n" +
                         apps;
-                    alert(msg);
+                    Showalert(msg, "alert-error", "statusError");
                     return;
 
                 } else {
+                    $(".alert").alert();
                     conf = confirm("Are you sure you want to delete the policy " + policyName + "?");
                 }
 
             },
             error: function (response) {
                 if (response.status==500){
-                    alert('Sorry, your session has expired');
+                    Showalert('Sorry, your session has expired', "alert-error", "statusError");
                     location.reload();
                 }
             }
@@ -496,18 +541,26 @@ $(document).on("click", ".policy-delete-button", function () {
                 if (success) {
                     delete policyPartialsArray[arrayIndex];
                     updatePolicyPartial();
-
+                    Showalert("Policy Deleted Successfully ", "alert-success", "statusSuccess");
 
                 } else {
-                    alert("Couldn't delete the partial.This partial is being used by web apps  ");
+                    Showalert("Couldn't delete the policy '" + policyName + "'. This policy is being used by web apps.  ", "alert-error", "statusError");
                 }
 
             },
             error: function (response) {
-                alert('Error occured while fetching entitlement policy content', 'error');
+                if (response.status==403){
+                    Showalert("Couldn't delete the policy '" + policyName + "'. This policy is being used by web apps.  ", "alert-error", "statusError");
+                } else {
+                    Showalert('Error occured while fetching entitlement policy content', "alert-error", "statusError");
+                }
             }
         });
 
     }
 
+});
+
+$(document).on('click', '#btn-policy-cancel', function(){
+    $('.content-section').delay(300).hide(0);
 });

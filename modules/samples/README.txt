@@ -9,7 +9,7 @@ WSO2 App Manager ships with a collection of basic samples that demonstrate its
 core functionality. You will find all the relevant configurations, scripts and
 instructions required to run these samples in the subdirectories of the 'samples'
 top level directory. As of now following samples are available and released with
-the API Manager binary distribution.
+the Application Manager binary distribution.
 
 1. BPS workflow sample
    A sample to demo how to connect external BPS work flow for user adding action

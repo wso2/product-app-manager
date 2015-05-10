@@ -17,7 +17,9 @@ require('/modules/store.js').exec(function (ctx) {
             mdmConfig = parse(String((new Packages.org.wso2.carbon.appmgt.mobile.store.MDMConfig()).getConfigs()));
             devicesClass = new Packages.org.wso2.carbon.appmgt.mobile.store.Devices();
 
-     var mdmUIConfig  = {enabled : mdmConfig.Enabled};
+    var isNotCatalog = mdmConfig.IsCatalog == "true" ? false : true;
+
+     var mdmUIConfig  = {enabled : isNotCatalog};
 
 
     if(!mdmUIConfig.enabled) {
@@ -25,11 +27,12 @@ require('/modules/store.js').exec(function (ctx) {
         return;
     }
 
-    var selfUnsubscription = mdmConfig.EnableSelfUnsubscription;
+    var selfUnsubscription = mdmConfig.EnableSelfUnsubscription == "true" ? true : false;
+    var isDeviceSubscriptionEnabled = mdmConfig.EnableSubscriptionFromDevices == "true" ? true : false;
 
 
      var devices = [];
-        if(user != null && mdmConfig.Enabled){
+        if(user != null && isNotCatalog && isDeviceSubscriptionEnabled){
                 devices =  parse(String(devicesClass.getDevicesList(stringify(user), user.tenantId, "user", [user.username])));
         }
 
@@ -76,6 +79,7 @@ require('/modules/store.js').exec(function (ctx) {
         recentAssets: recentAssets,
         myAssets: { user: user, type: type, title: title},
         selfUnsubscription : selfUnsubscription,
+        isDeviceSubscriptionEnabled : isDeviceSubscriptionEnabled,
         tags: tags
     });
 }, request, response, session);

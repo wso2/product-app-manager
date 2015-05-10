@@ -112,7 +112,8 @@ var render = function (theme, data, meta, require) {
                     'userAssets': data.userAssets,
                     'URL': data.URL,
                     'devices': data.devices,
-                    'selfUnsubscription' : data.selfUnsubscription
+                    'selfUnsubscription' : data.selfUnsubscription,
+                    'isDeviceSubscriptionEnabled' : data.isDeviceSubscriptionEnabled
                 }
             }
         ],

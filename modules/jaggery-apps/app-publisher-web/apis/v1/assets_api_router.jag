@@ -348,8 +348,8 @@ require('/modules/publisher.js').exec(function (ctx) {
 			print(output);
 		}else if (action == "getAPIUsageByPage") { /* Overall Web Application Usage Graph */
 			usage = appMgtProviderObj.getAPIUsageByPage("__all_providers__",startDate,endDate);
-
-			var webapps = [];
+            
+            var webapps = [];
 			var webappIndex = -1;
 			var webappDetailsIndex = -1;
 			var totalPageCount = [];

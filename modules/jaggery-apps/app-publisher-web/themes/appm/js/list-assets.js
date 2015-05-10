@@ -1,4 +1,5 @@
 $(".btn-action" ).click(function(e) {
+$(this).hide(); //to avoid user from click again before the operation proceeds
 var app = $(this).data("app");
 var action = $(this).data("action");
 
@@ -41,16 +42,22 @@ $( ".btn-reject-proceed" ).click(function() {
 });
 
 
-$(".btn-deploySample").click(function() {
+$(".btn-deploySample").click(function(e) {
     jQuery.ajax({
-        url: '/publisher/api/asset/webapp/deploySample',
+        url : '/publisher/api/asset/webapp/deploySample',
         type: "GET",
+        dataType:"json",
+        async : false,
+        success: function(msg){ 
+            if (msg.isError == "true"){
+                $(document).ajaxComplete(function () {
+                    location.reload();
+                });
+            }
+        }            
     });
-    $(document).ajaxComplete(function () {
-        location.reload();
-    });    
+    
 });
-
 
 $( ".tab-button" ).click(function() {
 	
@@ -105,6 +112,7 @@ var showMessageModel = function (msg, head, type) {
     $('#messageModal2 #commentText').html('');
     $('#messageModal2').html($('#confirmation-data1').html());
     $('#messageModal2 h3.modal-title').html((head));
+    $('#messageModal2 #myModalLabel').html((head));
     $('#messageModal2 div.modal-body').html('\n\n' + (msg) + '</b>');
     $('#messageModal2 a.btn-other').html('OK');
     $('#messageModal2').modal();
@@ -124,14 +132,11 @@ var showCommentModel = function (head, action, app) {
 
 function updateQRCode(text) {
 
-        var element = document.getElementById("qrcode");
-    
-        
+    var element = document.getElementById("qrcode");
+    var bodyElement = document.body;
+    if(element.lastChild)
+        element.replaceChild(showQRCode(text), element.lastChild);
+    else
+        element.appendChild(showQRCode(text));
 
-        var bodyElement = document.body;
-        if(element.lastChild)
-          element.replaceChild(showQRCode(text), element.lastChild);
-        else
-          element.appendChild(showQRCode(text));
-
-      }
+}

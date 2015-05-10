@@ -1,10 +1,11 @@
-
-
 <div id="myasset-container" class="row">
-	<div class="span12">
+	<div class="span9">
 		{{#if userAssets}}
 		{{#itr userAssets}}
-		<h3 class="asset-title-separator asset-type-{{key}}">{{cap key}}s</span><div class="pagination own-asset-slideshow-pag" id="own-asset-slideshow-pag-{{key}}"></div></h3>
+            <h1> My Subscriptions - {{cap key}}s</h1>
+		<!--<h3 class="asset-title-separator asset-type-{{key}}">{{cap key}}s</span>
+            <div class="pagination own-asset-slideshow-pag" id="own-asset-slideshow-pag-{{key}}"></div>
+        </h3>-->
 		<div class="top-asset-slideshow-cont">
 		<div class="html_carousel">
 		<div id="asset-in-{{key}}">
@@ -12,8 +13,9 @@
 			{{#each value}}
 			{{#attributes}}
 			<!--div class="row-fluid"-->
-			<div class="store-my-item">
-			
+			<div class="store-my-item asset span3">
+                <img src="{{url "/extensions/assets/mobileapp/themes/store/img/"}}{{../attributes.overview_platform}}.png"
+                     class="mobile-type-icon"/>
 				<div class="store-my-item-thumbnail">
 					<a href="{{url "/assets/"}}{{../../key}}/{{../id}}"><img src="{{images_thumbnail}}"></a>
 				</div>
@@ -22,22 +24,26 @@
 						<strong>{{overview_name}}</strong>
 					</a>
 					<small class="bookmark-assert-provider">by {{overview_provider}}</small>
+
 					<br><div class="btn-group">
-						<img src="{{url "/extensions/assets/mobileapp/themes/store/img/"}}{{../attributes.overview_platform}}.png" style="width: 30px;"/>
-						
-						<a style="display: none" class="btn btn-danger" style="padding-left: 10px" type="{{../../key}}" data-aid="{{../id}}" data-toggle="tooltip" title="{{t "Remove"}} {{../../key}}">
-							<i class="icon-remove"></i> Remove
-						</a>
-						
-						<a class="btn btn-primary asset-reinstall-btn" type="{{../../key}}"  data-platform="{{../attributes.overview_platform}}" data-aid="{{../id}}" data-toggle="tooltip" title="{{t "Reinstall"}} {{../../key}}">
-							<i class="icon-mobile-phone"></i> Reinstall
-						</a>
-                        <br>
+
+
+
+                        {{#compare ../lifecycleState "Published" }}
+                            {{#if ../../../../isDeviceSubscriptionEnabled}}
+                                <a class="btn btn-info asset-reinstall-btn" type="{{../../../../key}}"  data-platform="{{../../../attributes.overview_platform}}" data-aid="{{../../../id}}" data-toggle="tooltip" title="{{t "Reinstall"}} {{../../../../key}}">
+                                    <i class="icon-mobile-phone"></i> Reinstall
+                                </a>
+                            {{/if}}
+
+                        {{/compare}}
+
                         {{#if ../../../../selfUnsubscription}}
                         <a class="btn btn-danger asset-unsubscribe-btn" type="{{../../../key}}" data-name="{{../../attributes.overview_name}}"   data-platform="{{../../attributes.overview_platform}}" data-aid="{{../../id}}" >
                             <i class="icon-remove"></i> Uninstall
                         </a>
                          {{/if}}
+
 					</div>
 				</div>
 			
@@ -46,7 +52,7 @@
 			{{/attributes}}
 			{{/each}}
 		</div></div></div>
-		<hr>
+
 		{{/itr}}
 		{{else}}
 		<div id="no-data-my-items" class="no-data">

@@ -1,5 +1,5 @@
 /*
-*Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*Copyright (c) 2005-2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *WSO2 Inc. licenses this file to you under the Apache License,
 *Version 2.0 (the "License"); you may not use this file except
@@ -30,6 +30,8 @@ import org.wso2.carbon.appmanager.integration.ui.Util.TestUtils.ApplicationIniti
 import org.wso2.carbon.appmanager.integration.ui.Util.WireMonitorServer;
 import org.wso2.carbon.automation.core.BrowserManager;
 
+import java.util.Set;
+
 import static org.testng.Assert.assertTrue;
 
 public class JWTGenerationTestCase extends APPManagerIntegrationTest {
@@ -39,11 +41,11 @@ public class JWTGenerationTestCase extends APPManagerIntegrationTest {
     private WebDriver driver;
     private APPMStoreUIClient storeUIClient;
     private String claim;
+    private ApplicationInitializingUtil baseUtil;
 
     @BeforeClass(alwaysRun = true)
     public void init() throws Exception {
         super.init(0);
-        ApplicationInitializingUtil baseUtil;
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
         baseUtil.testApplicationCreation("2");
@@ -64,7 +66,6 @@ public class JWTGenerationTestCase extends APPManagerIntegrationTest {
         WireMonitorServer server = new WireMonitorServer(hostPort);
         server.start();
 
-        driver = BrowserManager.getWebDriver();
         storeUIClient.login(driver, ApplicationInitializingUtil.storeURLHttp, username, password);
         storeUIClient.selectApplication(driver, ApplicationInitializingUtil.appId);
         driver.switchTo().alert().accept();
@@ -84,6 +85,16 @@ public class JWTGenerationTestCase extends APPManagerIntegrationTest {
     @AfterClass(alwaysRun = true)
     public void destroy() throws Exception {
         super.cleanup();
+        String parentWindow = driver.getWindowHandle();
+        Set<String> handles =  driver.getWindowHandles();
+        for(String windowHandle  : handles) {
+            if(!windowHandle.equals(parentWindow)) {
+                driver.switchTo().window(windowHandle);
+                driver.close();
+            }
+        }
+        driver.switchTo().window(parentWindow);
         driver.close();
+        baseUtil.destroy();
     }
 }

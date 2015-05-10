@@ -134,12 +134,19 @@ var render = function (theme, data, meta, require) {
     var notificationCount = session.get('notificationCount');
 
     var listPartial = 'list-assets';
-
-//Determine what view to show
+  
+    //Determine what view to show
     switch (data.op) {
         case 'list':
             listPartial = 'list-assets';
             data = require('/helpers/view-asset.js').format(data);
+            var deploysample = session.get('deploysample');
+            if(deploysample != null){
+                if(deploysample.isNew == "true"){
+                    deploysample.isNew = "false";
+                    data['deploysample'] = deploysample; 
+                }
+            }
             break;
         case 'statistics':
             listPartial = 'statistics';
@@ -191,6 +198,7 @@ var render = function (theme, data, meta, require) {
                         createPermission : createActionAuthorized,
                         viewStats : viewStatsAuthorized,
                         notifications : notifications,
+                        um : um,
                         notificationCount: notificationCount
                 }
             }

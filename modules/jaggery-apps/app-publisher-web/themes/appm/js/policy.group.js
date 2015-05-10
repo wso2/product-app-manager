@@ -20,7 +20,7 @@
 var editedPolicyGroup = 0; //contains status (if edit or save)
 var policyGroupsArray = new Array(); //policy group related details array
 var policyGroupBlock; //contains html formatted options list of Policy Groups
-
+var policyPartialsArray = new Array();
 
 $('#userRoles').tokenInput('/publisher/api/lifecycle/information/meta/' + $('#meta-asset-type').val() + '/roles', {
     theme: 'facebook',
@@ -192,26 +192,24 @@ function savePolicyGroupData(isSaveAndClose) {
 
     hidePolicyGroupNotification();
 
-    var appliedXacmlRules = [];
-    
-    // Get the applied XACML rules.
-    $('.policy-group-xacml-rule').each(function (index, obj) {
-        
-        if ($(this).context.checked) {
-            var appliedXacmlRuleId = $(this).data('xacml-rule-id');
-            appliedXacmlRules.push(appliedXacmlRuleId);
-        }
+    // Get the applied XACML rule.
+    // The backend logic support multiple rules per group.
+    // But in this stage we go with only a single rule per group.
+    var appliedXacmlRuleIds = [];
+    var appliedXacmlRuleId = $('#policy-group-editor #xacml-rule').val();
 
-    });
+    if(appliedXacmlRuleId && appliedXacmlRuleId != "-1"){
+        appliedXacmlRuleIds.push(parseInt(appliedXacmlRuleId));
+    }
 
     var result;
     if (validate(policyGroupName)) {
         // editedPolicyGroup : 0 > then insert else update
         if (editedPolicyGroup == 0) {
-            insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, appliedXacmlRules, isSaveAndClose , policyGroupDesc);
+            insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, appliedXacmlRuleIds, isSaveAndClose , policyGroupDesc);
         }
         else {
-            updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, appliedXacmlRules, isSaveAndClose, policyGroupDesc);
+            updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, appliedXacmlRuleIds, isSaveAndClose, policyGroupDesc);
         }
     }
 }
@@ -252,25 +250,13 @@ $(document).on("click", ".policy-group-edit-button", function () {
             } else {
                 $('.authPolicies').show(200);
             }
-            //handle XACML Policies:
+            
+            prepareXACMLRulesDropdown();
+            
+            // Set the applied XACML policy as the selected item in the drop down.
             var appliedXacmlRules = JSON.parse(obj.policyPartials);
-
-            for (var j = 0; j < appliedXacmlRules.length; j++) {
-
-                if (appliedXacmlRules[j].POLICY_GRP_ID == policyGroupId) {
-
-                    $('.policy-group-xacml-rule').each(function () {
-                        
-                        var ruleId = $(this).data('xacml-rule-id');
-
-                        if (appliedXacmlRules[j].POLICY_PARTIAL_ID == ruleId) {
-                            $(this).prop('checked', true);
-                        }
-
-                    });
-
-                }
-
+            if(appliedXacmlRules && appliedXacmlRules.length > 0){
+                $('#policy-group-editor #xacml-rule').val(appliedXacmlRules[0]['POLICY_PARTIAL_ID'].toString());
             }
 
         }
@@ -313,12 +299,31 @@ $(document).on("click", "#btn-add-policy-group", function () {
     $('#policy-group-editor #throttlingTier').prop('selectedIndex', 0);
     $('#policy-group-editor #anonymousAccessToUrlPattern').prop('selectedIndex', 0);
     $('#policy-group-editor #userRoles').tokenInput("clear");
-    $('.policy-group-xacml-rule').each(function(){
-        $(this).prop('checked', false)
-    });
+    prepareXACMLRulesDropdown();
     $('.authPolicies').show(200);
     hidePolicyGroupNotification();
 });
+
+
+/**
+* If there is only one option ('none' option) in the drop down, add XACML rules to the drop down.
+* Else reset the selection option to 'none'
+*/
+function prepareXACMLRulesDropdown(){
+    if($('#policy-group-editor #xacml-rule option').length == 1){
+        $.each(policyPartialsArray, function (index, obj) {
+            if (obj != null) {
+                $('#xacml-rule').append($('<option>', { 
+                    value: obj.id,
+                    text : obj.policyPartialName,
+                    title: obj.description
+                }));
+            }
+        });
+    }else{
+        $('#policy-group-editor #xacml-rule').val("-1");    
+    }
+}
 
 /**
  * Policy Group partial update

@@ -83,6 +83,47 @@ $(function() {
 
 	});
 
+    $('#overview_name').on('blur', function () {
+        if($(this).val() != ""){
+            $('#btn-create-asset').removeAttr('disabled');
+        }
+    });
+
+    $('.global_role').on('click', function () {
+            $('#btn-create-asset').removeAttr('disabled');
+    });
+
+    $('.controll_visibility').on('click', function () {
+            $('#btn-create-asset').removeAttr('disabled');
+    });
+
+    $('#overview_displayName').on('blur', function () {
+        if($(this).val() != ""){
+            $('#btn-create-asset').removeAttr('disabled');
+        }
+    });
+
+
+    $('#overview_webAppUrl').on('blur', function () {
+            if($(this).val() != ""){
+                $('#btn-create-asset').removeAttr('disabled');
+            }
+    });
+
+
+    $('#overview_version').on('blur', function () {
+        if($(this).val() != ""){
+            $('#btn-create-asset').removeAttr('disabled');
+        }
+    });
+
+
+
+    $('.trans_checkbox').on('click', function () {
+        if($(this).val() != ""){
+            $('#btn-create-asset').removeAttr('disabled');
+        }
+    });
 
 
 
@@ -122,6 +163,13 @@ $(function() {
 			showAlert("Webapp Name contains one or more illegal characters (~!@#;%^*()+={}|\\<>\"',)", 'error');
 			return;
 		}
+
+        if($('.controll_visibility').is(':checked') && $('#roles').val() == ""){
+            showAlert('Restrict Visibility should have value', 'error');
+            return;
+        }
+
+
 
 		var context = $('#overview_context').val();
 		if(context != null && context != '') {
@@ -170,15 +218,19 @@ $(function() {
 			$('#sso_ssoProvider').val(selectedProvider);
 		 }
 
-		 // Add entitlement policies.
-		 $('#entitlementPolicies').val(JSON.stringify(entitlementPolicies));
-
 		// AJAX request options.
  		var options = {
       
 			success: function(response) {
-
-				var result = JSON.parse(response);
+                var result = {};
+                try {
+                    result = JSON.parse(response);
+                }
+                catch (e) {
+                    //It always returns a malformed json when the session is expired
+                    alert('Sorry, your session has expired');
+                    location.reload();
+                }
 
 				//Check if the asset was added
 				if (result.ok) {

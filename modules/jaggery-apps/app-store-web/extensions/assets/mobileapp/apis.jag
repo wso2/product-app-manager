@@ -49,6 +49,17 @@ router.post('apps/devices/{deviceid}/install', function(ctx){
         enterpriseInstall.performAction('install', tenant.tenantId, 'device', asset, deviceId);
 });
 
+router.post('apps/user/install', function(ctx){
+    if (!user) {
+        response.sendError(401, 'Unauthorized');
+        return;
+    }
+    var tenant = server.tenant(request, session);
+    var asset =  ctx.asset;
+    enterpriseInstall.performAction('install', tenant.tenantId, 'user', asset, [user.username]);
+});
+
+
 
 router.post('apps/devices/uninstall', function(ctx){
     if (!user || mdmConfig.EnableSelfUnsubscription == false) {

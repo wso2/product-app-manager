@@ -256,9 +256,6 @@ $(function() {
 		//Extract the fields
 		var fields = $('#form-asset-edit :input');
 		
-		// Add entitlement policies.
-		$('#entitlementPolicies').val(JSON.stringify(entitlementPolicies));
-
 		if($('#autoConfig').is(':checked')){
 			var selectedProvider = $('#providers').val();
 			$('#sso_ssoProvider').val(selectedProvider);
@@ -341,7 +338,12 @@ $(function() {
 
 			},
 			error : function(response) {
-				createMessage(MSG_CONTAINER, ERROR_CSS, 'Asset was not updated successfully.');
+                if (response.status == 401) {
+                    alert('Sorry, your session has expired');
+                    location.reload();
+                } else {
+                    createMessage(MSG_CONTAINER, ERROR_CSS, 'Asset was not updated successfully.');
+                }
 			},
 
 			// other available options:

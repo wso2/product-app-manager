@@ -34,7 +34,7 @@
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
     <name>WSO2 APP Manager - Aggregator Module</name>
-    <url>http://wso2.com/products/api-manager</url>
+    <url>http://wso2.com/products/app-manager</url>
     <description>WSO2 App Manager</description>
 
     <scm>
@@ -57,8 +57,8 @@
         <module>modules/org.wso2.stratos.appmgt.login.ui</module>
         <module>modules/features</module>
         <module>modules/p2-profile</module>
-        <module>/modules/distribution/product/src/main/statistics</module>
-        <!--module>modules/jaggery-apps/api-provider-web</module>
+        <!--<module>/modules/distribution/product/src/main/statistics</module>
+        <module>modules/jaggery-apps/api-provider-web</module>
         <module>modules/jaggery-apps/api-store-web</module-->
         <module>modules/distribution</module>
         <module>modules/integration</module>

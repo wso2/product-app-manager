@@ -347,8 +347,6 @@
                         <td><input class="col-md-12" name="oauthapis_apiName1" type="text"
                                    value="{{{snoop "fields(name=oauthapis_apiName1).value" data}}}">
                         </td>
-                        <td><input class="col-md-12" name="oauthapis_apiTokenEndpoint1" type="text"
-                                   value="{{{snoop "fields(name=oauthapis_apiTokenEndpoint1).value" data}}}">
                         </td>
                         <td><input class="col-md-12" name="oauthapis_apiConsumerKey1" type="text"
                                    value="{{{snoop "fields(name=oauthapis_apiConsumerKey1).value" data}}}">
@@ -356,14 +354,13 @@
                         <td><input class="col-md-12" name="oauthapis_apiConsumerSecret1" type="text"
                                    value="{{{snoop "fields(name=oauthapis_apiConsumerSecret1).value" data}}}">
                         </td>
+                        <td><input class="col-md-12" name="oauthapis_apiTokenEndpoint1" type="text"
+                                   value="{{{snoop "fields(name=oauthapis_apiTokenEndpoint1).value" data}}}">
 
                     </tr>
                     <tr>
                         <td><input class="col-md-12" name="oauthapis_apiName2" type="text"
                                    value="{{{snoop "fields(name=oauthapis_apiName2).value" data}}}">
-                        </td>
-                        <td><input class="col-md-12" name="oauthapis_apiTokenEndpoint2" type="text"
-                                   value="{{{snoop "fields(name=oauthapis_apiTokenEndpoint2).value" data}}}">
                         </td>
                         <td><input class="col-md-12" name="oauthapis_apiConsumerKey2" type="text"
                                    value="{{{snoop "fields(name=oauthapis_apiConsumerKey2).value" data}}}">
@@ -371,14 +368,14 @@
                         <td><input class="col-md-12" name="oauthapis_apiConsumerSecret2" type="text"
                                    value="{{{snoop "fields(name=oauthapis_apiConsumerSecret2).value" data}}}">
                         </td>
+                        <td><input class="col-md-12" name="oauthapis_apiTokenEndpoint2" type="text"
+                                   value="{{{snoop "fields(name=oauthapis_apiTokenEndpoint2).value" data}}}">
+                        </td>
 
                     </tr>
                     <tr>
                         <td><input class="col-md-12" name="oauthapis_apiName3" type="text"
                                    value="{{{snoop "fields(name=oauthapis_apiName3).value" data}}}">
-                        </td>
-                        <td><input class="col-md-12" name="oauthapis_apiTokenEndpoint3" type="text"
-                                   value="{{{snoop "fields(name=oauthapis_apiTokenEndpoint3).value" data}}}">
                         </td>
                         <td><input class="col-md-12" name="oauthapis_apiConsumerKey3" type="text"
                                    value="{{{snoop "fields(name=oauthapis_apiConsumerKey3).value" data}}}">
@@ -386,7 +383,10 @@
                         <td><input class="col-md-12" name="oauthapis_apiConsumerSecret3" type="text"
                                    value="{{{snoop "fields(name=oauthapis_apiConsumerSecret3).value" data}}}">
                         </td>
-
+                        <td><input class="col-md-12" name="oauthapis_apiTokenEndpoint3" type="text"
+                                   value="{{{snoop "fields(name=oauthapis_apiTokenEndpoint3).value" data}}}">
+                        </td>
+                                
                     </tr>
                     </tbody>
                 </table>
@@ -403,7 +403,7 @@
     <input type="button" value="Update" class="btn btn-primary"
            name="editAssetButton" id="editAssetButton"> <input
         type="reset" value="Reset" class="btn">
-    <button class="btn btn-cancel" onclick="history.go(-1);">Cancel</button>
+    <button class="btn btn-cancel" onclick="history.go(-1); return false;">Cancel</button>
     <input
         type="hidden" value="{{shortName}}" name="{{shortName}}"
         id="meta-asset-type">

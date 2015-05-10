@@ -1,0 +1,84 @@
+{
+  "PlanYourTrip": {
+    "displayname": "Plan Your Trip",
+    "context": "/planYourTrip",
+    "version": "1.0.0",
+    "warfilename": "plan-your-trip-1.0",
+    "claims": {
+      "FrequentFlyerID": {
+        "url": "http://wso2.org/ffid",
+        "value": "019101910",
+        "isNew": true
+      },
+      "StreetAddress": {
+        "url": "http://wso2.org/claims/streetaddress",
+        "value": "Colombo 5",
+        "isNew": false
+      },
+      "Telephone": {
+        "url": "http://wso2.org/claims/telephone",
+        "value": "+94912233878",
+        "isNew": false
+      }
+    },
+    "pages": [["default",10]]
+  },
+  "TravelBooking": {
+    "displayname": "Travel Booking",
+    "context": "/travel",
+    "version": "1.0.0",
+    "warfilename": "travel-booking-1.0",
+    "claims": {
+      "FirstName": {
+        "url": "http://wso2.org/claims/givenname",
+        "value": "Sachith",
+        "isNew": false
+      },
+      "StreetAddress": {
+        "url": "http://wso2.org/claims/lastname",
+        "value": "Ushan",
+        "isNew": false
+      },
+      "EmailAddress": {
+        "url": "http://wso2.org/claims/emailaddress",
+        "value": "wso2@wso2.com",
+        "isNew": false
+      },
+      "StreetAddress": {
+        "url": "http://wso2.org/claims/streetaddress",
+        "value": "Colombo 5",
+        "isNew": false
+      },
+      "ZipCode": {
+        "url": "http://wso2.org/claims/zipcode",
+        "value": "800000",
+        "isNew": true
+      },
+      "Country": {
+        "url": "http://wso2.org/claims/country",
+        "value": "Sri Lanka",
+        "isNew": false
+      },
+      "CardNumber": {
+        "url": "http://wso2.org/claims/card_number",
+        "value": "908796546789",
+        "isNew": true
+      },
+      "CardHolder": {
+        "url": "http://wso2.org/claims/card_holder",
+        "value": "BOC",
+        "isNew": true
+      },
+      "ExpireDate": {
+        "url": "http://wso2.org/claims/expiration_date",
+        "value": "09/08/2020",
+        "isNew": true
+      }
+    },
+    "pages": [
+      ["default",10],
+      ["booking-step1.jsp",20],
+      ["booking-step2.jsp",15]
+    ]
+  }
+}

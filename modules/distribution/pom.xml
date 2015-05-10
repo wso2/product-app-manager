@@ -32,7 +32,7 @@
     <artifactId>eam-distribution-parent</artifactId>
     <packaging>pom</packaging>
     <name>WSO2 Enterprise APP Manager - Distribution Parent</name>
-    <url>http://wso2.com/products/api-manager</url>
+    <url>http://wso2.com/products/app-manager</url>
     <description>WSO2 Enterprise App Manager Distribution Parent</description>
 
     <licenses>
@@ -43,6 +43,7 @@
     </licenses>
 
     <modules>
+        <module>product/src/main/statistics</module>
         <module>product</module>
     </modules>
 

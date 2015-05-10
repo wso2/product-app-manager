@@ -5,7 +5,7 @@ var render=function(theme,data,meta,require){
   
    	var listPartial='inline-editor';
 
-	theme('single-fluid', {
+	theme('single-col-fluid', {
         title: data.title,
      	header: [
             {

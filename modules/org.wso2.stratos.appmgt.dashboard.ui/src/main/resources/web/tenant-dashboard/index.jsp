@@ -82,7 +82,7 @@
 				        <%
 							}
 						%>
-                        <p>Web Application hosting features in API Manager supports deployment of Jaggery Applications. Deployed Webapps can be easily managed using the Webapp management facilities available in the management console.</p>
+                        <p>Web Application hosting features in APP Manager supports deployment of Jaggery Applications. Deployed Webapps can be easily managed using the Webapp management facilities available in the management console.</p>
 
                     </div>
                 </td>

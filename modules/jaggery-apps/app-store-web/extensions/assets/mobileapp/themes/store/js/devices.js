@@ -101,6 +101,64 @@ function performInstalltion(device, app){
 }
 
 
+function performInstalltionUser(app){
+    noty({
+        text : 'Are you sure you want to install this app?',
+        'layout' : 'center',
+        'modal' : true,
+        buttons : [{
+            addClass : 'btn',
+            text : 'Yes',
+            onClick : function($noty) {
+
+                $noty.close();
+
+                jQuery.ajax({
+                    url: "/store/apps/user/install",
+                    type: "POST",
+                    dataType: "json",
+                    data : {"asset": app},
+
+                    success : function(data){
+
+                    }
+                });
+
+                $( document ).ajaxComplete(function(event, xhr, settings) {
+                    // asset.process("mobileapp",app, location.href);
+                    noty({
+                        text : 'You have installed the application successfully',
+                        'layout' : 'center',
+                        'timeout': 1500,
+                        'modal': false,
+                        'onClose': function() {
+                            try{
+                                if(JSON.parse(xhr.responseText).redirect != true){
+                                    location.reload();
+                                }else{
+                                    location.replace(JSON.parse(xhr.responseText).location);
+                                }
+                            }catch(e){
+                                location.reload();
+                            }
+
+                        }
+                    });
+                });
+
+            }
+        },
+            {
+                addClass : 'btn',
+                text : 'No',
+                onClick : function($noty) {
+                    $noty.close();
+                }
+            }]
+    });
+}
+
+
 $( document ).ready(function() {
     var id = getURLParameter("id");
 

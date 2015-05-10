@@ -57,7 +57,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.0-alpha-4</version>
                 <inherited>false</inherited>
                 <executions>
                     <execution>
@@ -170,7 +169,7 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>create-API-manager-database</id>
+                        <id>create-APP-manager-database</id>
                         <phase>package</phase>
                         <goals>
                             <goal>run</goal>
@@ -222,6 +221,16 @@
                                     </classpath>
                                     <fileset
                                             file="${basedir}/../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/dbscripts/identity/application-mgt/h2.sql"/>
+                                </sql>
+                                <sql
+                                        driver="org.h2.Driver"
+                                        url="jdbc:h2:${basedir}/target/repository/database/WSO2AM_DB"
+                                        userid="wso2carbon" password="wso2carbon" autocommit="true"
+                                        onerror="continue">
+                                    <classpath>
+                                        <path refid="h2.classpath"/>
+                                    </classpath>
+                                    <fileset file="${basedir}/../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/dbscripts/appmgt/h2.sql"/>
                                 </sql>
                                 <echo
                                         message="##################### END ########################"/>

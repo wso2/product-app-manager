@@ -6,52 +6,46 @@
                 response.sendRedirect('index.jag');
             }
 %>
-<div class="container-fluid">
-    <div class="row-fluid">
-
-        <div class="span6 ">
+    <div class="row login-main">
+        <div class="span10">
             <div class="title-section">
-                <h2>Login</h2>
+                <h1>Login to continue</h1>
             </div>
-
             <div class="clear"></div>
             <div class="content-section shadow-up">
                 <div class="content-data">
-                       <div class="alert alert-error" id="loginError" style="display:none">
-                           <span id="loginErrorSpan"></span>
-                       </div>
-                       <form class="" action="index.jag" id="loginForm">
-                           <label><%=i18n.localize("username")%>:<span class="requiredAstrix">*</span></label>
-                           <input type="text" id="username" autofocus="autofocus" validation="required"  />
-
-                           <label><%=i18n.localize("password")%>:<span class="requiredAstrix">*</span></label>
-                           <input type="password" id="pass" />
-                           <input type="hidden"  id="tenant" value="<%=request.getParameter("tenant")%>"/>
-                           <div>
-                               <input type="button" class="btn btn-primary" onclick="login()"  value="<%=i18n.localize("login")%>" id="loginButton" />
-                               <input type="reset" class="btn" value="<%=i18n.localize("reset")%>" />
-                           </div>
-                       </form>
+                    <div class="alert alert-error" id="loginError" style="display:none">
+                        <span id="loginErrorSpan"></span>
+                    </div>
+                    <form action="index.jag" id="loginForm" class="form-horizontal">
+                        <div class="control-group">
+                            <label class="control-label" for="username"><%=i18n.localize("username")%>:
+                                <span class="requiredAstrix">*</span>
+                            </label>
+                            <div class="controls">
+                                <input class="input-xlarge" type="text" id="username" name="username"
+                                size="30" autocomplete="off" validation="required">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="username"><%=i18n.localize("password")%>:
+                                <span class="requiredAstrix">*</span>
+                            </label>
+                            <div class="controls">
+                                <input class="input-xlarge" type="password"  id="pass" name="pass" size="30">
+                            </div>
+                        </div>
+                        <input type="hidden"  id="tenant" value="<%=request.getParameter("tenant")%>"/>
+                        <div class="form-actions">
+                            <input type="button" class="btn btn-primary" onclick="login()"  value="<%=i18n.localize("login")%>" id="loginButton" />
+                            <input type="reset" class="btn" value="<%=i18n.localize("reset")%>" />
+                        </div>
+                    </form>
                 </div>
             </div>
-            <style>
-                .api-count-display {
-                    color: #747474;
-                    font-size: 15px;
-                    padding: 10px 20px 5px;
-                }
-
-                .api-count-display span {
-                    font-size: 16px;
-                    font-weight: bold;
-                }
-            </style>
         </div>
-        <div class="span6">
-        </div>
+        <div class="span6"></div>
     </div>
-    <div id="push"></div>
-</div>
 <% } else {
         var mod,httpsUrl;
         mod = jagg.module("manager");

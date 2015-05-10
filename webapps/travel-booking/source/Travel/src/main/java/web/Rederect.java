@@ -24,8 +24,7 @@ public class Rederect extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 
 		request.getSession().setAttribute("loging", "true");
-		System.out.print("logged "
-				+ request.getSession().getAttribute("loging"));
+
 		RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
 
 		rd.forward(request, response);// method may be include or forward

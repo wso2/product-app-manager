@@ -68,7 +68,7 @@ function saveContent(provider, apiName, apiVersion, docName, mode) {
                      window.close();
 				 }else {
                      $('#docAddMessage').show();
-                     setTimeout("hideMsg()", 3000);
+                     setTimeout("hideMsg()", 6000);
                 }
 			 }
 			 else{
@@ -97,5 +97,5 @@ function saveContent(provider, apiName, apiVersion, docName, mode) {
 }
 
 var hideMsg=function () {
-    $('#docAddMessage').hide("fast");
+    $('#docAddMessage').hide();
 }

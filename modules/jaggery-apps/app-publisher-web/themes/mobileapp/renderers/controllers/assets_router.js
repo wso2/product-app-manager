@@ -55,6 +55,13 @@ var render = function (theme, data, meta, require) {
 		for(var j = 0; j < data.artifacts[i].lifecycleAvailableActions.length; j++){
 			var name = data.artifacts[i].lifecycleAvailableActions[j];
 
+
+            if(data.artifacts[i].lifecycleState == "Published" || data.artifacts[i].lifecycleState == "Deprecated" || data.artifacts[i].lifecycleState == "Retired" ){
+                data.artifacts[i].disableEdit = false;
+            }else{
+                data.artifacts[i].enableEdit = true;
+            }
+
 			for(var k = 0; k < data.roles.length; k++){
                 var skipFlag = false;
 

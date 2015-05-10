@@ -33,7 +33,6 @@ process.setProperty('http.port', httpPort.toString());
 process.setProperty('https.port', httpsPort.toString());
 
 var lifecycle = require('lifecycle');
-lifecycle.core.init();
 
 var pubConfig = require('/config/publisher.js').config();
 
@@ -44,7 +43,7 @@ mod.user.init(pubConfig);
 
 var publisher = require('/modules/publisher.js');
 publisher.init(pubConfig);
-
+lifecycle.core.init();
 
 
 

@@ -131,7 +131,11 @@ require('/modules/publisher.js').exec(function(ctx) {
     }
   });
 
-    routeManager.register('PUT', 'publisher', '/publisher/api/lifecycle/{action}/{type}/{id}', function(context) {
+
+/**
+ * API for handling API Lifecycle Transitions
+ */
+routeManager.register('PUT', 'publisher', '/publisher/api/lifecycle/{action}/{type}/{id}', function(context) {
         var shortName = context.params.type;
 
         if(shortName === "mobileapp"){
@@ -201,6 +205,26 @@ require('/modules/publisher.js').exec(function(ctx) {
                         require('/modules/comment.js').addLifecycleComment(artifactManager, artifact.path, comment, newChangeOrder);
                     }
 
+                    //Enforcing restrict visibility logic
+                    if(action=="Publish") {
+                        var registry = new carbon.registry.Registry(server, {
+                            username: server.current(session).username,
+                            tenantId: server.current(session).tenantId
+                        });
+
+                        var roleRestrictionPath = artifact.path + "role_restrictions";
+                        try{
+                            var permissionSet = registry.get(roleRestrictionPath);
+                            var content = '' + permissionSet.content;
+
+                            if (content != "{}") {
+                                um.denyRole('Internal/everyone', artifact.path, carbon.registry.actions.GET);
+                                um.denyRole('system/wso2.anonymous.role', artifact.path, carbon.registry.actions.GET);
+                            }
+                        } catch (e) {
+                            log.debug('No role restrictions found for APP ' + id);
+                        }
+                    }
                 } catch (e) {
                     log.debug('The asset with id: ' + id + ' could not be found.The following exception was thrown: ' + e);
                     response.sendError(404, 'The asset with id: ' + id + ' could not be found.Please refer to the server log.');
@@ -213,7 +237,7 @@ require('/modules/publisher.js').exec(function(ctx) {
         }
         print(msg);
 
-    });
+});
 
 /*
  The function returns the lifecycle structure of a given asset

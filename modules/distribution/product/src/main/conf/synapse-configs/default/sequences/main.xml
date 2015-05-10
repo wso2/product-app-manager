@@ -19,7 +19,7 @@
 
 <!-- Default main sequence shipped with the WSO2 ESB -->
 <sequence xmlns="http://ws.apache.org/ns/synapse" name="main">
-    <description>The default main sequence for API manager - Returns 404 Not Found</description>
+    <description>The default main sequence for APP manager - Returns 404 Not Found</description>
     <in>
         <log level="custom">
             <property name="STATUS" value="Message dispatched to the main sequence. Invalid URL."/>

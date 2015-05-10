@@ -69,7 +69,11 @@
         <fileSet>
             <directory>src/main/conf/synapse-configs</directory>
             <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/synapse-configs</outputDirectory>
+	    <excludes>
+		<exclude>**/main.xml</exclude>
+            </excludes>
         </fileSet>
+        
   	<fileSet>
             <directory>src/main/conf/synapse-configs/default/sequences</directory>
             <outputDirectory>wso2appm-${pom.version}/repository/resources/apim-synapse-config/</outputDirectory>
@@ -98,6 +102,10 @@
             <includes>
                 <include>**/**.sql</include>
             </includes>
+	    <excludes>
+                <exclude>**/application-mgt/oracle.sql</exclude>
+		<exclude>**/application-mgt/oracle_rac.sql</exclude>
+	    </excludes>
         </fileSet>
 	<fileSet>
             <directory>
@@ -225,13 +233,24 @@
 
         <fileSet>
             <directory>
-                ../resources/sql/
+                ../resources/sql/appmgt/
             </directory>
             <outputDirectory>wso2appm-${pom.version}/dbscripts/appmgt</outputDirectory>
             <includes>
                 <include>**/**.sql</include>
             </includes>
         </fileSet>
+
+	<!-- Include identity/application-mgt oracle script. This should move to take from identity feature from next release.-->
+	<fileSet>
+            <directory>
+                ../resources/sql/identity/application-mgt/
+            </directory>
+            <outputDirectory>wso2appm-${pom.version}/dbscripts/identity/application-mgt/</outputDirectory>
+            <includes>
+                <include>**/**.sql</include>
+            </includes>
+        </fileSet> 
 	<fileSet>
             <directory>../../p2-profile-gen/target/WSO2-CARBON-PATCH-${carbon.version}-0001/dbscripts</directory>
             <outputDirectory>wso2appm-${pom.version}/dbscripts</outputDirectory>
@@ -916,6 +935,12 @@
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file> 
+	<file>
+            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/social.xml</source>
+            <outputDirectory>wso2appm-${pom.version}/repository/conf</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file> 
          <!--file>
             <source>../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/security/idp-config.xml</source>
             <outputDirectory>wso2appm-${pom.version}/repository/conf/security</outputDirectory>
@@ -927,6 +952,14 @@
             <destName>message-tracer-config.xml</destName>
             <filtered>true</filtered>
 	    <fileMode>644</fileMode>
+        </file>
+	<!--Copy main sequence xml from gateway feature -->
+	<file>
+           <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/deployment/server/synapse-configs/default/sequences/main.xml</source>
+           <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/synapse-configs/default/sequences</outputDirectory>
+	   <destName>main.xml</destName>
+           <filtered>true</filtered>
+	   <fileMode>644</fileMode>
         </file>
 
     </files>

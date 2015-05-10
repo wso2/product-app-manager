@@ -49,6 +49,10 @@ var render=function(theme,data,meta,require){
         data = require('/helpers/edit-asset.js').screenshots(data);
 
         data = require('/helpers/splitter.js').splitData(data);
+        if(data.artifact.lifecycleState == "Published"){
+            response.sendError(400);
+            return;
+        }
         heading = data.newViewData.name.value;
         break;
     case 'lifecycle':

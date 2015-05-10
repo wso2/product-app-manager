@@ -4,7 +4,17 @@
 </div>
 <div class="asset-being-added">
 </div>
-
+{{#if deploysample.isSampleDeployed}}
+    {{#ifCond deploysample.isError "==" "false"}}
+        <div class="alert alert-dismissible alert-success" role="alert" id="policyGroup-notification-text" style="display: block;">
+            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true" class="close">x</span><span class="sr-only">Close</span></button>
+            <span id="policyGroup-notification-text-data">{{deploysample.response}}</span>
+        </div>
+    {{/ifCond}}
+    {{#ifCond deploysample.isError "==" "true"}}
+        <div class="info-div alert alert-error"> <a data-dismiss="alert" class="close">x</a><i class="icon-info-sign"></i> <span>{{deploysample.response}}</span></div>
+    {{/ifCond}}
+{{/if}}
 <div class="asset-thumb-container">
 	{{#if artifacts}}
         <div class="row-fluid">
@@ -111,7 +121,11 @@
         <div class="emptyAssets-MsgDiv">
             <i class="icon-inbox largeMsgIcon"></i>
             <br />
-            No web applications added yet. <a class="btn-deploySample" data-type="{{shortName}}">Click here</a> to deploy sample web applications.
+            No web applications added yet.
+            {{#ifCond cuser.um.tenantId "==" "-1234"}}
+                <a class="btn-deploySample" data-type="{{shortName}}">Click here</a> 
+                to deploy sample web applications.    
+            {{/ifCond}}
             <br />
             {{#if createPermission}}
             <a type="button" class="btn btn-addNewAssetLarge" href="/publisher/asset/{{shortName}}"><i class="icon-plus-sign-alt"></i>Add New Web Application</a>
@@ -158,6 +172,10 @@
             </div>
         </div>
     </div>
+</div>
+
+<div id="spinner" class="center-wrapper hide">
+    <i id="icon-spinner" class="icon-spinner icon-spin icon-4x"></i>
 </div>
 
 </div>

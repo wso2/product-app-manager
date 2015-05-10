@@ -1,0 +1,33 @@
+{ 
+                                         'name':'org_wso2_appmgt_statistics_request', 
+                                         'version':'1.0.0', 
+                                         'nickName': 'App Manager Request Data', 
+                                         'description': 'Request Data', 
+                                         'metaData':[ 
+                                                 {'name':'clientType','type':'STRING'} 
+                                         ], 
+                                         'payloadData':[ 
+                                                 {'name':'context','type':'STRING'}, 
+                                                 {'name':'api_version','type':'STRING'}, 
+                                                 {'name':'api','type':'STRING'}, 
+                                                 {'name':'resource','type':'STRING'}, 
+                                                 {'name':'method','type':'STRING'}, 
+                                                 {'name':'version','type':'STRING'}, 
+                                                 {'name':'request','type':'INT'}, 
+                                                 {'name':'requestTime','type':'LONG'}, 
+                                                 {'name':'userId','type':'STRING'},
+					         {'name':'tenantDomain','type':'STRING'},
+                    		                 {'name':'hostName','type':'STRING'},
+   		                                 {'name':'apiPublisher','type':'STRING'},
+				                 {'name':'applicationName','type':'STRING'},
+                    		                 {'name':'applicationId','type':'STRING'},
+						 {'name':'trackingCode','type':'STRING'},
+						 {'name':'referer','type':'STRING'},
+						 {'name':'serviceTimeOfPage','type':'LONG'}
+
+
+                                         ] 
+                                       }
+
+
+

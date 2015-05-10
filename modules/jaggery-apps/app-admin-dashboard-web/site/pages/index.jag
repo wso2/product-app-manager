@@ -20,9 +20,11 @@ middlePage="publishapp-task";
 middlePage="xacmlpolicy-task";
 }else if(pageName=="cacheHitMiss"){
   middlePage="cacheHitMiss-task";
+}else if(pageName=="xacmlpolicy-new"){
+    middlePage="xacmlpolicy-new";
 }else if(pageName=="sessionMgt"){
-middlePage="sessionMgt-task";
-}
+    middlePage="sessionMgt-task";
+  }
 
 (function () {
     var user = jagg.getUser();
