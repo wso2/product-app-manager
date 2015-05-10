@@ -10,6 +10,7 @@
     "userCreation": "Pending User Creations",
     "appCreation": "Application Creation",
     "appPublishHeader": "Pending Published Applications",
+    "sessionManagement" : "Session Management",
 
     "username": "Username",
     "password": "Password",

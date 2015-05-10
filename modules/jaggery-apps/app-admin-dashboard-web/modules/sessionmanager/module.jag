@@ -1,0 +1,7 @@
+<%
+jagg.module("sessionmanager", {
+    getSessions:function () {
+        return jagg.require(jagg.getModulesDir() + "sessionmanager/get.jag").getSessions.apply();
+    }
+});
+%>

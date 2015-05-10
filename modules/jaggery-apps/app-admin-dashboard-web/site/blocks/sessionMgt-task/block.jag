@@ -1,0 +1,21 @@
+<%
+include("/jagg/jagg.jag");
+
+jagg.block("sessionMgt-task", {
+    initializer:function (data) {
+    },
+
+     getInputs:function () {
+            return {
+                "tasks":null
+            }
+      },
+
+     getOutputs:function (inputs) {
+        var numberOfTasks, pageNumber, filterCategory,taskType, result, mod,tasks;
+        mod = jagg.module("sessionmanager");
+        result = mod.getSessions();
+        return result;
+     }
+});
+%>

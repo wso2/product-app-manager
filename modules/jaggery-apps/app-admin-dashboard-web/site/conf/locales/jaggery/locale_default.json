@@ -11,6 +11,7 @@
     "appCreation": "Application Creation",
     "appPublishHeader": "Pending Published Applications",
     "addXACMLRuleHeader" : "Add XACML Rule",
+    "sessionManagement" : "Session Management",
 
     "username": "Username",
     "password": "Password",
