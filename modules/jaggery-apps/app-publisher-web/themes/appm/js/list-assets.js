@@ -1,4 +1,5 @@
 $(".btn-action" ).click(function(e) {
+$(this).hide(); //to avoid user from click again before the operation proceeds
 var app = $(this).data("app");
 var action = $(this).data("action");
 
