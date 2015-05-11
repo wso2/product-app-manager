@@ -167,19 +167,6 @@
                             <goal>run</goal>
                         </goals>
                     </execution>
-                    <execution>
-                        <id>copy-aar</id>
-                        <phase>install</phase>
-                        <configuration>
-                            <tasks>
-                                <copy todir="/usr/local/wso2appm/wso2appm/repository/deployment/server/axis2services"
-                                      file="target/${pom.artifactId}-${pom.version}.aar"/>
-                            </tasks>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
                 </executions>
             </plugin>
         </plugins>
