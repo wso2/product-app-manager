@@ -21,7 +21,9 @@ package org.wso2.carbon.appmanager.integration.ui.TestCases;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.testng.annotations.AfterClass;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.appmanager.integration.ui.APPManagerIntegrationTest;
@@ -38,9 +40,10 @@ import static org.wso2.carbon.appmanager.integration.ui.Util.ExtendedAsserts.ass
  */
 public class AppDiscoveryUITestCase extends APPManagerIntegrationTest {
 
-    private static final String APP_SERVER_URL = "https://localhost:9443/services/";
     private static final String INFO_SUCCESS_DISCOVERY_START_WITH = "Successfully Queried the server";
     private String username;
+    private String appServerServiceUrl = "https://localhost:9443/services/";
+    private String appMServerUrl = "https://localhost:9443/";
     private String password;
     private APPMPublisherUIClient appmPublisherUIClient;
     private WebDriver webDriverForPublisher;
@@ -52,9 +55,16 @@ public class AppDiscoveryUITestCase extends APPManagerIntegrationTest {
         password = userInfo.getPassword();
         webDriverForPublisher = BrowserManager.getWebDriver();
         appmPublisherUIClient = new APPMPublisherUIClient();
+
+        appServerServiceUrl = getServerBackendUrlHttps() + "/services/";
+        appMServerUrl = getServerBackendUrlHttps();
     }
 
-    @Test
+    /**
+     * Tests the discovery application listing
+     * @throws Exception
+     */
+    @Test(groups = { "wso2.appmanager.discovery" }, description = "Tests Discovery app listing")
     public void testDiscoverListing() throws Exception {
         performInitialDiscovery();
 
@@ -64,9 +74,43 @@ public class AppDiscoveryUITestCase extends APPManagerIntegrationTest {
                 "The status in info box should be \"" + INFO_SUCCESS_DISCOVERY_START_WITH + "\"");
     }
 
+    /**
+     * Tests the pagination on the app discovery listing
+     * @throws Exception
+     */
+    @Test(groups = {
+            "wso2.appmanager.discovery" }, description = "Tests pagination on Discovery app listing")
     public void testPaging() throws Exception {
         performInitialDiscovery();
+        webDriverForPublisher.get(getDiscoverWebappUrl() + "?page=2");
+        String status = webDriverForPublisher.findElement(By.className("info-div"))
+                .findElement(By.tagName("span")).getText();
+        assertContains(status, INFO_SUCCESS_DISCOVERY_START_WITH,
+                "The status in info box should be \"" + INFO_SUCCESS_DISCOVERY_START_WITH + "\"");
+        webDriverForPublisher.get(getDiscoverWebappUrl() + "?page=1");
+        status = webDriverForPublisher.findElement(By.className("info-div"))
+                .findElement(By.tagName("span")).getText();
+        assertContains(status, INFO_SUCCESS_DISCOVERY_START_WITH,
+                "The status in info box should be \"" + INFO_SUCCESS_DISCOVERY_START_WITH + "\"");
+    }
 
+    /**
+     * Tests the pagination on the app discovery listing
+     * @throws Exception
+     */
+    @Test(groups = {
+            "wso2.appmanager.discovery" }, description = "Tests creation of discovered app")
+    public void testAppCreate() throws Exception {
+        performInitialDiscovery();
+        webDriverForPublisher.findElement(By.xpath("(//input[@name='createAsset'])[10]")).click();
+        WebDriverWait wait = new WebDriverWait(webDriverForPublisher, 30);
+
+        wait.until(ExpectedConditions
+                .visibilityOfElementLocated(By.id("discover-create-asset-status")));
+
+        String status = webDriverForPublisher.findElement(By.id("statusText")).getText();
+        assertContains(status, "is successfully created with proxy context",
+                "The proxy application created message should appear");
     }
 
     /**
@@ -74,12 +118,11 @@ public class AppDiscoveryUITestCase extends APPManagerIntegrationTest {
      *
      */
     private void performInitialDiscovery() {
-        appmPublisherUIClient
-                .login(webDriverForPublisher, "https://localhost:9443", username, password);
+        appmPublisherUIClient.login(webDriverForPublisher, appMServerUrl, username, password);
         // find element username
-        webDriverForPublisher.get("https://localhost:9443/publisher" + "/assets/discover/webapp/");
+        webDriverForPublisher.get(getDiscoverWebappUrl());
         WebElement usernameEle = webDriverForPublisher.findElement(By.id("server-url"));
-        usernameEle.sendKeys(APP_SERVER_URL);
+        usernameEle.sendKeys(appServerServiceUrl);
         webDriverForPublisher.findElement(By.id("server-username")).sendKeys("admin");
         webDriverForPublisher.findElement(By.id("server-password")).sendKeys("admin");
         webDriverForPublisher.findElement(By.id("btn-discover-asset")).sendKeys("admin");
@@ -88,11 +131,17 @@ public class AppDiscoveryUITestCase extends APPManagerIntegrationTest {
         webDriverForPublisher.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
     }
 
-    @AfterClass(alwaysRun = true)
+    @AfterTest
     public void destroy() throws Exception {
-        super.cleanup();
         webDriverForPublisher.close();
-        webDriverForPublisher.quit();
+    }
+
+    protected String getPublisherUrl() {
+        return appMServerUrl + "/publisher";
+    }
+
+    protected String getDiscoverWebappUrl() {
+        return getPublisherUrl() + "/assets/discover/webapp/";
     }
 
 }
