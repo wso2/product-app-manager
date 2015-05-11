@@ -217,7 +217,7 @@ routeManager.register('PUT', 'publisher', '/publisher/api/lifecycle/{action}/{ty
                             var permissionSet = registry.get(roleRestrictionPath);
                             var content = '' + permissionSet.content;
 
-                            if (content) {
+                            if (content != "{}") {
                                 um.denyRole('Internal/everyone', artifact.path, carbon.registry.actions.GET);
                                 um.denyRole('system/wso2.anonymous.role', artifact.path, carbon.registry.actions.GET);
                             }
