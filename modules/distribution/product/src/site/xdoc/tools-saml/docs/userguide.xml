@@ -1,0 +1,116 @@
+<!--
+  ~ Copyright 2008-2011 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1"></meta>
+  <title>Single Sign-On Configuration - User Guide</title>
+  <link href="../../admin/css/documentation.css" rel="stylesheet" type="text/css" media="all" />
+</head>
+
+<body style="font-family: Times New Roman,Times,serif; font-size: 12pt;">
+<h1>Single Sign-On Configuration</h1>
+<p>WSO2 Identity Server supports SAML2 based Single Sign-on. This implementation complies to the SAML2
+Web Browser SSO profile and Single Logout Profile.</p>
+<p><img alt="" src="../images/sso-config.png"/></p>
+<p>Figure 1: SSO Configuration</p>
+
+<p>This page is used for Single Sign-on configuration. Service Providers can be added and removed from this page. Following
+points should be taken into consideration when adding a service provider.</p>
+<ul>
+  <li>Issuer - The issuer value specified in the SAML Authentication Request issued by the Service Provider</li>
+  <li>Assertion Consumer URL - The URL of the assertion consumer service of the service provider.</li>
+  <li>Enable Signature Validation in Authentication Requests and Logout Requests - Enabling this option will make sure
+      that the integrity is protected in all the authentication and logout requests that WSO2 Cloud Identity SSO Service receives.</li>
+  <li>Certificate Alias - If the signature validation is enabled, the public key of the service provider is required to
+      do the signature validation of the SAML Tokens. So the publlic key of the service provider should be imported to
+      the keystore and point to that certificate using its alias.</li>
+  <li>Custom Logout URL - This URL will be used in Single Logout.</li>
+</ul>
+
+<h2>How to configure Single Sign-On across different Carbon Servers</h2>
+<p>With the SAML2 relying party capabilities of Carbon, it is possible to set up Single Sign-On between
+different Carbon instances where Identity Server acts as the Identity Provider while other Carbon Servers
+act as the relying party. Following is a guide to setup SSO between different Carbon Servers.</p>
+
+<h3>1. Installing the SAML2 relying party(SAML2 SSO Authenticator) feature in a Carbon Server.</h3>
+<p>SAML2 relying party components are not shipped with the default Carbon distribution. But these bundles
+   are packages as a feature, which is available in the online hosted P2 repository. So it is possible
+to install this feature through the Carbon Feature Manager without much effort.</p>
+<ul>
+    <li><p>First add the WSO2 online P2 repository as a new repository. Usually the hosted P2 repository
+    is available at the URL : http://dist.wso2.org/p2/carbon/releases/{Carbon-Release-Version}.</p>
+    <p><img alt="" src="../images/add-repo.png"/></p>
+        <p>Figure 2: Adding a new P2 repository</p>
+    </li>
+</ul>
+<ul>
+    <p>Next search for the word 'authenticator'. Select 'SAML2 SSO Authenticator' from the result and Click
+    Install.</p>
+    <p><img alt="" src="../images/install-feature.png"/></p>
+        <p>Figure 3: Installing the SAML2 SSO Authenticator Feature</p>
+</ul>
+<ul>Then proceed through the wizard to complete the installation. After installation is complete, restart the server.</ul>
+
+<h3>2. Configuring the Carbon Server to use the SAML2 based authentication instead of default username/password
+based authentication</h3>
+<p>After installing the SAML2 relying party components(SAML2 SSO authenticator), it is required to configure
+it to communicate with the Identity Server for user authentication.</p>
+<p>This can be configured in the authenticators.xml file which is available in {$CARBON_HOME}/repository/conf/advanced directory.</p>
+<p>This file will contain configurations for different authenticators. By default, it is shipped with a sample
+ configuration for SAML2 SSO authenticator which requires minor modifications to get the setup working.</p>
+<pre>
+    &lt;Authenticator name="SAML2SSOAuthenticator"&gt;
+        &lt;Priority>10&lt;/Priority&gt;
+        &lt;Config>
+            &lt;Parameter name="LoginPage">/carbon/admin/login.jsp&lt;/Parameter&gt;
+            &lt;Parameter name="ServiceProviderID">carbonServer&lt;/Parameter&gt;
+            &lt;Parameter name="IdentityProviderSSOServiceURL">https://localhost:9443/samlsso&lt;/Parameter&gt;
+        &lt;/Config&gt;
+    &lt;/Authenticator&gt;
+</pre>
+<p><b>Priority - </b>Priority of the authenticator. In the Carbon Runtime, the authenticator with the
+highest priority will be picked up. This value should be greater than 5 in order to supersede the default
+username/password based authenticator.</p>
+
+<p><b>[Parameter] LoginPage - </b> This is the default login page URL of Carbon. All the requests coming to this page
+will be intercepted for authentication. It is not required to change this value from the value given in the sample configuration.</p>
+
+<p><b>[Parameter] ServiceProviderID - </b> This is unique identifier for this Carbon Server in a SSO Set up. This value
+should be used as the value of Issuer at the identity Server configuration.</p>
+
+<p><b>[Parameter] IdentityProviderSSOServiceURL - </b> This is the Identity Server URL to which the users
+will be redirected for the authentication. It is of the form, <i>https://{host-name}:{port}/samlsso</i></p>
+
+<h2>3. Configuring the Identity Server as the single sign-on provider</h2>
+Finally, it is required to configure the Identity Server to act as the Single Sign-on provider. Each relying
+party should be registered as a service provider at the Identity Server end. Following is a sample configuration
+for registering a Carbon server as a service provider.
+<p><img alt="" src="../images/idp-settings.png"/></p>
+        <p>Figure 3: Registering the relying party as a service provider</p>
+
+<p><b>Issuer : </b> This should be equal to the ServiceProviderID value mentioned in the authenticators.xml
+of the relying party Carbon server.</p>
+<p><b>Assertion Consumer URL : </b> This is the URL to which the browser should be redirected after
+the authentication is successful. This is of the form <i>https://{host-name}:{port}/acs</i></p>
+
+<p>Select <b>'Enable Assertion Signing'</b> to sign the SAML2 Assertions returned after the authentication.
+SAML2 Relying party components expect these assertions to be signed by the Identity Server.</p>
+
+<p>Select <b>'Enable Single Logout'</b> so that all the sessions will be terminated once the user signs out
+from one server.</p>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!--
+  ~ Copyright 2008-2011 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1"></meta>
+  <title>Information Cards Issuer Configuration - User Guide</title>
+  <link href="../../admin/css/documentation.css" rel="stylesheet" type="text/css" media="all" />
+</head>
+
+<body style="font-family: Times New Roman,Times,serif; font-size: 12pt;">
+<h1>Information Cards Issuer Configuration</h1>
+
+<p>The Information Cards issuer component of the WSO2 Carbon enables to configure cards issuer settings</p>
+
+<p><img alt="" src="../images/cardissuerconf1.png"/></p>
+<p>Figure 1: Cards Issuer Configuration</p>
+
+<ul>  
+  <li><strong>Card Name</strong>: Display name of the downloaded Information Card</li>
+  <li><strong>Valid Period</strong>: Valid period of an issued card in number of days</li>
+  <li><strong>Sipporting Token Types</strong>: Tokens types being supported</li>
+  <li><strong>Symmetric binding used</strong>: Specifies whether to use symmetric binding or not</li>
+</ul>
+
+<p><img alt="" src="../images/cardissuerconf2.png"/></p>
+<p>Figure 2: Edit Cards Issuer Configuration</p>
+
+</body>
+</html>

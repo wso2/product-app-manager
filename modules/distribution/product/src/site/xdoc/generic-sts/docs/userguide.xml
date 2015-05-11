@@ -1,0 +1,117 @@
+<!--
+  ~ Copyright 2008-2011 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1"></meta>
+  <title>Security Token Service Configuration - User Guide</title>
+  <link href="../../admin/css/documentation.css" rel="stylesheet" type="text/css" media="all" />
+</head>
+
+<body style="font-family: Times New Roman,Times,serif; font-size: 10pt;">
+<h1>Security Token Service Configuration</h1>
+
+<p>The Security Token Service component of the WSO2 Carbon enables to configure the generic STS to issue claim based security tokens.
+This Security Token Service is capable of issuing SAML 1.1 and SAML 2.0 tokens as recommended in WS-Trust and
+    SAML Web Service Token Profile specifications.
+</p>
+
+<p>The WSDL of this service can be accessed by clicking through the URL : https://{hostname}:{port}/services/wso2carbon-sts?wsdl.
+For instance, with the default configuration it is https://localhost:9443/services/wso2carbon-sts?wsdl.</p>
+<br/>
+<h2>Different Token Types Supported</h2>
+<p>Both SAML 1.1 and SAML 2.0 token types are supported by default. The issued token type is decided
+based on the Token type defined in the RST(Request Security Token).</p>
+<br/>
+<h2>Different Subject Confirmation Types Supported</h2>
+<p>
+    Currently Bearer Subject Confirmation and Holder-Of-Key subject confirmation methods are supported. With
+    Holder-Of-Key, both Symmetric and Asymmetric key types are supported.
+</p>
+<br/>
+<h2>Obtaining Claim Aware Security Tokens</h2>
+<p>
+    It is possible to obtain tokens containing claims which hold certain information about the subject. These claims
+    can be extracted from the profiles or through custom claim callbacks which can be registered to the Carbon
+    runtime.
+</p>
+<br/>
+<h3>Configuring STS for obtaining tokens with Holder-Of-Key subject confirmation (Symmetric Key) </h3>
+<p>
+    This requires registration of relying party endpoint addresses and their corresponding public certificates.
+    In this scenario, STS will generate a symmetric key and encrypts it with the public key of the relying party.
+    This will be included in the subject confirmation section of the SAML token which will be validated at the
+    relying party end.
+</p>
+
+<p><img alt="" src="../images/sts1.png"/></p>
+<p style="font-family: Times New Roman,Times,serif; font-size: 8pt;">Figure 1: STS Configuration</p>
+
+<ul>  
+  <li><strong>End point address</strong>: Relying party service endpoint where the token being delivered to.</li>
+  <li><strong>Certficate Alias</strong>: Corresponding public certificate for the service endpoint.</li>
+</ul>
+
+<br/>
+<h2>Securing the Security Token Service</h2>
+<p>Most of the time it is required to secure the Security Token Service. According the Trust Brokering
+   model defined in WS-Trust specification, the subject(user) should authenticate him self to the STS
+   before obtaining its token. STS may use this authentication information when constructing the security
+   token. For example, STS may populate the required claims based on the username provided by subject.
+
+   You can apply a security policy for STS by clicking on 'Apply Security Policy' link and following the wizard.</p>
+<p><img alt="" src="../images/sts2.png"/></p>
+<p style="font-family: Times New Roman,Times,serif; font-size: 8pt;"> Figure 2: Securing the STS - Step 1</p>
+
+<p>
+    Then select a pre configured security scenario according to your requirements.
+</p>
+<p><img alt="" src="../images/sts3.png"/></p>
+<p style="font-family: Times New Roman,Times,serif; font-size: 8pt;"> Figure 3: Securing the STS - Step 2 - Selecting a security scenario</p>
+
+<h2>Passive STS Configuration</h2>
+
+<p>In the passive sts configuration, we can define the claims to be added for authentication
+   response. The realm name should be equal to the wtrealm
+   or wreply parameter as defined in <a
+            href="http://public.dhe.ibm.com/software/dw/specs/ws-fedpass/ws-fedpass.pdf">ws passive
+                                                                                         federation
+                                                                                         specification</a>.
+   The user claims can be from any claim dialect. The claim uri is used to name the claims in the
+   response element. Before requesting for passive sts for tokens, you need to register the realm
+   name. These realms can be deleted in below table.</p>
+
+<p><img alt="" src="../images/passive-sts.png"/></p>
+
+<p>Figure 4: Passive sts configuration</p>
+
+<p>External References:</p>
+<ul>
+    <li>
+        <a href="http://wso2.org/library/articles/2011/12/configuring-wso2-identity-server-passive-sts-aspnet-client">Configuring
+                                                                                                                      WSO2
+                                                                                                                      Identity
+                                                                                                                      Server
+                                                                                                                      Passive
+                                                                                                                      STS
+                                                                                                                      with
+                                                                                                                      an
+                                                                                                                      ASP.NET
+                                                                                                                      Client</a>
+    </li>
+</ul>
+</body>
+</html>
