@@ -23,9 +23,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import org.wso2.carbon.appmanager.integration.ui.APPManagerIntegrationTest;
 import org.wso2.carbon.appmanager.integration.ui.Util.APPMPublisherUIClient;
 import org.wso2.carbon.automation.core.BrowserManager;
@@ -48,7 +46,7 @@ public class AppDiscoveryUITestCase extends APPManagerIntegrationTest {
     private APPMPublisherUIClient appmPublisherUIClient;
     private WebDriver webDriverForPublisher;
 
-    @BeforeClass(alwaysRun = true)
+    @BeforeMethod(groups = { "wso2.appmanager.discovery" }, alwaysRun = true)
     public void init() throws Exception {
         super.init(0);
         username = userInfo.getUserName();
@@ -64,7 +62,8 @@ public class AppDiscoveryUITestCase extends APPManagerIntegrationTest {
      * Tests the discovery application listing
      * @throws Exception
      */
-    @Test(groups = { "wso2.appmanager.discovery" }, description = "Tests Discovery app listing")
+    @Test(groups = { "wso2.appmanager.discovery" }, description = "Tests Discovery app listing",
+            sequential = true, priority = 4)
     public void testDiscoverListing() throws Exception {
         performInitialDiscovery();
 
@@ -79,7 +78,8 @@ public class AppDiscoveryUITestCase extends APPManagerIntegrationTest {
      * @throws Exception
      */
     @Test(groups = {
-            "wso2.appmanager.discovery" }, description = "Tests pagination on Discovery app listing")
+            "wso2.appmanager.discovery" }, description = "Tests pagination on Discovery app listing",
+            sequential = true, priority = 4)
     public void testPaging() throws Exception {
         performInitialDiscovery();
         webDriverForPublisher.get(getDiscoverWebappUrl() + "?page=2");
@@ -99,7 +99,8 @@ public class AppDiscoveryUITestCase extends APPManagerIntegrationTest {
      * @throws Exception
      */
     @Test(groups = {
-            "wso2.appmanager.discovery" }, description = "Tests creation of discovered app")
+            "wso2.appmanager.discovery" }, description = "Tests creation of discovered app",
+            sequential = true, priority = 7)
     public void testAppCreate() throws Exception {
         performInitialDiscovery();
         webDriverForPublisher.findElement(By.xpath("(//input[@name='createAsset'])[10]")).click();
@@ -131,9 +132,9 @@ public class AppDiscoveryUITestCase extends APPManagerIntegrationTest {
         webDriverForPublisher.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
     }
 
-    @AfterTest
+    @AfterMethod(groups = { "wso2.appmanager.discovery" }, alwaysRun = true)
     public void destroy() throws Exception {
-        webDriverForPublisher.close();
+        webDriverForPublisher.quit();
     }
 
     protected String getPublisherUrl() {
