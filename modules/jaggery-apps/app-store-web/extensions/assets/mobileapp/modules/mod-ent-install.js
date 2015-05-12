@@ -114,7 +114,7 @@
                         var location = serverAddress +  asset.attributes.overview_url;
                     }else if(asset.attributes.overview_platform == "ios"){
                         var filename = asset.attributes.overview_url.split("/").pop();
-                        var location =  "itms-services://?action=download-manifest&amp;url=" + carbon.server.address('http') + "/" + mdmConfig.IosPlistPath + "/" + tenantId +  "/" + filename;
+                        var location =  "itms-services://?action=download-manifest&amp;url=" + carbon.server.address('https') + "/" + mdmConfig.IosPlistPath + "/" + tenantId +  "/" + filename;
                     }
                 }else if(asset.attributes.overview_type == "Web App"){
                     var location = asset.attributes.overview_url;
