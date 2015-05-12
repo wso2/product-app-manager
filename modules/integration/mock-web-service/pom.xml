@@ -161,6 +161,8 @@
                             <tasks>
                                 <copy tofile="target/${pom.artifactId}-${pom.version}.aar"
                                       file="target/${pom.artifactId}-${pom.version}.jar"/>
+                                <copy tofile="target/MockAdminService.aar"
+                                      file="target/${pom.artifactId}-${pom.version}.jar"/>
                             </tasks>
                         </configuration>
                         <goals>
