@@ -25,16 +25,12 @@
  {{/if}}
 
 
-
+ <div style="padding:10px 0;">
  {{#if canedit}}
-
-     <div style="padding:10px 0;">
          <button type="button" title="Save the changes to the document and stay in this tab" class="btn btn-primary" id="inline-apply-button" onclick="saveContent('{{artifact.attributes.overview_provider}}','{{artifact.attributes.overview_name}}','{{artifact.attributes.overview_version}}','{{data.docName}}','apply')">Save</button>
          <button type="button" title="Save the document and close this tab" class="btn btn-primary" id="inline-save-button" onclick="saveContent('{{artifact.attributes.overview_provider}}','{{artifact.attributes.overview_name}}','{{artifact.attributes.overview_version}}','{{data.docName}}','save')">Save and Close</button>
-     </div>
-
+     
+ {{/if}}
      <button type="button" title="Cancel all the unsaved changes and close this tab"  class="btn" id="inline-cancel-button" onclick="window.close()">Cancel</button>
 
-
- {{/if}}
-
+ </div>
