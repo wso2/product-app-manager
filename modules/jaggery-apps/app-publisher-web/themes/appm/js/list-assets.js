@@ -3,19 +3,19 @@ $(this).hide(); //to avoid user from click again before the operation proceeds
 var app = $(this).data("app");
 var action = $(this).data("action");
 
-//alert(app + action);
     if (action == "Reject") {
         showCommentModel("Reason for Rejection", action, app);
     } else {
         jQuery.ajax({
             url: '/publisher/api/lifecycle/' + action + '/webapp/' + app,
-            type: "PUT"
-        });
-
-        $(document).ajaxComplete(function () {
-            location.reload();
+            type: "PUT",
+            success: function(msg){ 
+                        location.reload();
+                     }
         });
     }
+    
+    // Stop even propagation since it would trigger the click event listeners for the table rows.
     e.stopPropagation();
 });
 
@@ -32,11 +32,10 @@ $( ".btn-reject-proceed" ).click(function() {
     jQuery.ajax({
         url: '/publisher/api/lifecycle/' + action + '/webapp/' + app,
         type: "PUT",
-        data: JSON.stringify({comment: comment})
-    });
-
-    $(document).ajaxComplete(function () {
-        location.reload();
+        data: JSON.stringify({comment: comment}),
+        success: function(msg){ 
+                    location.reload();
+                 }
     });
 
 });

@@ -129,7 +129,7 @@ $(function() {
         processImageURLs('images_banner');
 
         // Add entitlement policies.
-        $('#entitlementPolicies').val(JSON.stringify(entitlementPolicies));
+        //$('#entitlementPolicies').val(JSON.stringify(entitlementPolicies));
 
         // AJAX request options.
         if(version != '') {
