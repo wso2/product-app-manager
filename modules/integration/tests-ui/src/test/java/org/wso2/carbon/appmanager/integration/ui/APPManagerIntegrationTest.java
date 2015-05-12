@@ -726,6 +726,27 @@ public abstract class APPManagerIntegrationTest {
         return url;
     }
 
+    protected String getServerBackendUrlHttps() {
+        FrameworkProperties frameworkProperties = FrameworkFactory.getFrameworkProperties(ProductConstant.AM_SERVER_NAME);
+        boolean webContextEnabled = frameworkProperties.getEnvironmentSettings().isEnableCarbonWebContext();
+        boolean portEnabled = frameworkProperties.getEnvironmentSettings().isEnablePort();
+
+        ProductVariables amServerInfo = frameworkProperties.getProductVariables();
+        String webContextRoot = amServerInfo.getWebContextRoot();
+        String httpsPort = amServerInfo.getHttpsPort();
+        String hostName = amServerInfo.getHostName();
+
+        String url = "https://" + hostName;
+        if (portEnabled && httpsPort != null) {
+            url = url + ":" + httpsPort;
+        }
+        if (webContextEnabled && webContextRoot != null) {
+            url = url + "/" + webContextRoot;
+        }
+
+        return url;
+    }
+
     protected String getStoreServerURLHttp() {
         return ProductUrlGeneratorUtil.prop.get("appm.distributed.store.http.url").toString();
     }

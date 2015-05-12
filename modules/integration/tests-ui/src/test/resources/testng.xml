@@ -27,6 +27,8 @@
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.DocumentTestCase"/>
             <!--<class name="org.wso2.carbon.appmanager.integration.ui.TestCases.GoogleAnalyticsTestCase"/>-->
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.RatingTestCase"/>
+            <!--<class name="org.wso2.carbon.appmanager.integration.ui.TestCases.AppDiscoveryTestCase"/>-->
+            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.AppDiscoveryUITestCase"/>
 
 
             <!--This test case is not run with default APP manager integration tests. To run this test we assume that
