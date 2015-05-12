@@ -29,6 +29,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.AppCreateRequest;
+import org.wso2.carbon.appmanager.integration.ui.Util.Bean.AppDiscoveryListRequest;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.DocumentRequest;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.GetStatisticRequest;
 import org.wso2.carbon.automation.core.utils.HttpRequestUtil;
@@ -665,5 +666,26 @@ public class APPMPublisherRestClient {
             throw new Exception("API Subscription failed> " + response.getData());
         }
     }
+
+	/**
+	 * Returns the HTTP response for the discover request
+	 * @param appDiscoveryListRequest
+	 * @return
+	 * @throws Exception
+	 */
+	public HttpResponse getDiscoverableApplications(AppDiscoveryListRequest appDiscoveryListRequest) throws Exception {
+		checkAuthentication();
+		String payload = appDiscoveryListRequest.generatePostData();
+		requestHeaders.put("Content-Type", "application/x-www-form-urlencoded");
+		HttpResponse response =
+				HttpRequestUtil.doPost(new URL(backEndUrl
+								+ "/publisher/assets/discover/webapp/"),
+						payload, requestHeaders);
+		if (response.getResponseCode() == 200) {
+			return response;
+		} else {
+			throw new Exception("App discovery failed> " + response.getData());
+		}
+	}
 
 }

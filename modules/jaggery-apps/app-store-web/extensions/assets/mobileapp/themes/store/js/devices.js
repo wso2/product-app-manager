@@ -127,7 +127,7 @@ function performInstalltionUser(app){
                 $( document ).ajaxComplete(function(event, xhr, settings) {
                     // asset.process("mobileapp",app, location.href);
                     noty({
-                        text : 'You have installed the application successfully',
+                        text : 'You have been subscribed to the application successfully',
                         'layout' : 'center',
                         'timeout': 1500,
                         'modal': false,
