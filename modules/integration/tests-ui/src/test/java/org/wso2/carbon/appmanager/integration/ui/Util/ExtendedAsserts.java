@@ -34,7 +34,7 @@ public class ExtendedAsserts {
      */
     public static void assertContains(String subject, String expected, String message) {
         if (!subject.contains(expected)) {
-            fail(message);
+            fail(message +" But was :["+subject+"]");
         }
     }
 }
