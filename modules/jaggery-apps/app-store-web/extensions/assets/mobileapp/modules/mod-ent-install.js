@@ -109,7 +109,7 @@
                 }
 
                 asset = store.asset('mobileapp', app);
-                if( asset.attributes.overview_type == "Enterprise" ||  asset.attributes.overview_type == "Web App"){
+                if( asset.attributes.overview_type == "enterprise" ||  asset.attributes.overview_type == "webapp"){
                     if(asset.attributes.overview_platform == "android"){
                         var location = serverAddress +  asset.attributes.overview_url;
                     }else if(asset.attributes.overview_platform == "ios"){

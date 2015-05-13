@@ -326,7 +326,7 @@ $('#btn-app-upload').click(function () {
       }
 
 
-       if($('#txtMarket').val() == 'Enterprise' && $("#txtOS").val() != 'webapp' ){
+       if($('#txtMarket').val() == 'enterprise' && $("#txtOS").val() != 'webapp' ){
         $("#txtVersion").attr("disabled", "disabled");
        }
 
