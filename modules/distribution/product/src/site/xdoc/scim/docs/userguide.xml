@@ -1,0 +1,56 @@
+<!--
+  ~ Copyright 2008 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1"></meta>
+  <title>SCIM - User Guide</title>
+  <link href="../../admin/css/documentation.css" rel="stylesheet" type="text/css" media="all" />
+</head>
+
+<body style="font-family: Times New Roman,Times,serif; font-size: 12pt;">
+<h1>SCIM</h1>
+
+ <p>WSO2 Identity Server 4.0.0 supports SCIM 1.1 specifications.</p>
+ 
+ <P><h3>To provision user management operations, you need to configure SCIM providers either through UI or provisioning-config.xml</h3></P>
+ <p><img alt="" src="../images/scim_register_provider.png"/></p>
+ <p><caption align="bottom">Figure 1: Register New SCIM_Provider</caption></p>
+ <br /><br /> 
+ 
+ <p><h3>To register your SCIM Provider, you need to define a provider id and provide the credentials to authenticate to the SCIM endpoints and the URLS of the SCIM endpoints.</h3></p>
+ <p><img alt="" src="../images/add_scim_provider.png"/></p>
+ <p><caption align="bottom">Figure 2: Add New SCIM Provider</caption></p>
+ <br /><br />
+ 
+ <p><h3>To view your SCIM Provider configurations, click on the provider id.</h3></p>
+ <p><img alt="" src="../images/view_scim_provider.png"/></p>
+ <p><caption align="bottom">Figure 3: View SCIM Provider Configurations</caption></p>
+ <br /><br />
+ 
+ <p><h3>You can edit SCIM Provider configurations.</h3></p>
+ <p><img alt="" src="../images/edit_scim_provider.png"/></p>
+ <p><caption align="bottom">Figure 4: Edit SCIM Provider Configurations</caption></p>
+ <br /><br />
+ 
+ <p><h3>To remove SCIM Provider.</h3></p>
+ <p><img alt="" src="../images/remove_scim_provider.png"/></p>
+ <p><caption align="bottom">Figure 5: Delete SCIM Provider Application</caption></p>
+ <br /><br />
+ 
+ 
+</body>
+</html>
