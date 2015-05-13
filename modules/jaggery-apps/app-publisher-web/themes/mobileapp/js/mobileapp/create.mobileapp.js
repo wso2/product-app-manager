@@ -353,8 +353,8 @@ jQuery("#form-asset-create").submit(function(e) {
 
 
 	if($("#txtOS").val() == 'webapp'){
-		 $('#txtMarket').val("Web App");
-		 $("#txtMarketHidden").val("Web App");
+		 $('#txtMarket').val("webapp");
+		 $("#txtMarketHidden").val("webapp");
 	}
 
 	if($('#appmeta').val() == null || $('#appmeta').val() == ""){

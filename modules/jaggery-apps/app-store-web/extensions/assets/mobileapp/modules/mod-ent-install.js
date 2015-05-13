@@ -116,7 +116,7 @@
                         var filename = asset.attributes.overview_url.split("/").pop();
                         var location =  "itms-services://?action=download-manifest&amp;url=" + carbon.server.address('https') + "/" + mdmConfig.IosPlistPath + "/" + tenantId +  "/" + filename;
                     }
-                }else if(asset.attributes.overview_type == "Web App"){
+                }else if(asset.attributes.overview_type == "webapp"){
                     var location = asset.attributes.overview_url;
                 }
 
