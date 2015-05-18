@@ -28,7 +28,7 @@ var module = function () {
     //TODO: Change this method to take WebAppObj as argument instead of passing properties separately.
     function addToWebApp(uuid,webappProvider, webappName, webappVersion, webappContext,
                          webappTrackingCode,asset, ssoEnabled, idpProviderUrl, saml2SsoIssuer,
-                         logoutURL,allowAnonymous, skipGateway) {
+                         logoutURL,allowAnonymous, skipGateway, webAppEndpoint) {
 
         var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
         var apiIdentifierObj = new apiIdentifier(webappProvider, webappName, webappVersion);
@@ -43,6 +43,7 @@ var module = function () {
         webAppObj.setSaml2SsoIssuer(saml2SsoIssuer);
         webAppObj.setUUID(uuid);
         webAppObj.setLogoutURL(logoutURL);
+        webAppObj.setUrl(webAppEndpoint);
 
         if (allowAnonymous=="TRUE"){
             webAppObj.setAllowAnonymous(true);
@@ -217,7 +218,7 @@ var module = function () {
             //adding to database
             addToWebApp(id,provider, name, version, contextname, tracking_code,asset,
                         attributes['sso_singleSignOn'], attributes['sso_idpProviderUrl'],
-                        saml2SsoIssuer,revisedURL,allowAnonymous, skipGateway);
+                        saml2SsoIssuer,revisedURL,allowAnonymous, skipGateway, webappURL);
 
             //Save the id data to the model
             model.setField('*.id', id);
