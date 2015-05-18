@@ -606,7 +606,7 @@
 			 allow you to perform any operations on the apps -->	
 		   <Config name="IsCatalog">false</Config>
 
-		   <!-- Enables APPM to Force the app download direcly to the app from the App Manager -->		
+		   <!-- Enables app to download direcly to the mobile device from the App Manager without MDM -->		
 		   <Config name="EnableDirectDownload">false</Config>	
 
 		   <!-- Enables WSO2 AppM to communicate with the active MDM for performing operations on the mobile apps. -->	
