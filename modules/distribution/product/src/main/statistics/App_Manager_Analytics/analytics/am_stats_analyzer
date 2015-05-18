@@ -66,8 +66,8 @@ CREATE EXTERNAL TABLE IF NOT EXISTS APM_APP_HIT_TOTAL (uuid STRING,user_id STRIN
 'wso2.carbon.datasource.name'='WSO2AM_STATS_DB',
 'hive.jdbc.update.on.duplicate' = 'true',
 'hive.jdbc.primary.key.fields' = 'uuid,user_id',
-'hive.jdbc.table.create.query' ='CREATE TABLE IF NOT EXISTS APM_APP_HIT_TOTAL (uuid VARCHAR2(500) NOT NULL,
-user_id VARCHAR2(50) NOT NULL,hit_count BIGINT,tenant_id INTEGER,PRIMARY KEY (uuid, user_id))');                                                                   
+'hive.jdbc.table.create.query' ='CREATE TABLE IF NOT EXISTS APM_APP_HIT_TOTAL (uuid VARCHAR(500) NOT NULL,
+user_id VARCHAR(50) NOT NULL,hit_count BIGINT,tenant_id INT,PRIMARY KEY (uuid, user_id))');                                                                   
 
 insert overwrite table APM_APP_HIT_TOTAL  
 select uuid,user_id, count(*) as hit_count,tenant_id
