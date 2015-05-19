@@ -77,7 +77,7 @@ $(".device-image-block-modal").click(function(index) {
 
 function performInstalltion(device, app){
     jQuery.ajax({
-        url: "/store/apps/devices/" + device + "/install",
+        url: "/store/apps/devices/" + encodeURIComponent(device) + "/install",
         type: "POST",
         dataType: "json",
         data : {"asset": app}

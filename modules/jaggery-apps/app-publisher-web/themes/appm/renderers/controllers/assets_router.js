@@ -37,56 +37,59 @@ var render = function (theme, data, meta, require) {
         for(var i = 0; i < data.artifacts.length; i++){
             var lifecycleAvailableActionsButtons = new Array();
             if(permissions.isLCActionsPermitted(user.username,data.artifacts[i].path,um)) {
-                for (var j = 0; j < data.artifacts[i].lifecycleAvailableActions.length; j++) {
-                    var name = data.artifacts[i].lifecycleAvailableActions[j];
+                if(data.artifacts[i].lifecycleAvailableActions){
+
+                    for (var j = 0; j < data.artifacts[i].lifecycleAvailableActions.length; j++) {
+                        var name = data.artifacts[i].lifecycleAvailableActions[j];
 
 
-                    for(var k = 0; k < data.roles.length; k++){
-                        var skipFlag = false;
+                        for(var k = 0; k < data.roles.length; k++){
+                            var skipFlag = false;
 
-                        if(pubActions.indexOf(String(name)) > -1){
-                            if(!publishActionAuthorized) {
-                                skipFlag = true;
+                            if(pubActions.indexOf(String(name)) > -1){
+                                if(!publishActionAuthorized) {
+                                    skipFlag = true;
+                                }
                             }
-                        }
 
-                        if(!skipFlag) {
-                            if (name == "Publish") {
-                                lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                            if(!skipFlag) {
+                                if (name == "Publish") {
+                                    lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                                }
+                                if (name == "Reject" && isAsynchronousFlow) {
+                                    lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                                }
+                                if (name == "Submit for Review") {
+                                    lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                                }
+                                if (name == "Recycle") {
+                                    lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                                }
+                                if (name == "Deprecate") {
+                                    lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                                }
+                                if (name == "Re-Publish") {
+                                    lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                                }
+                                if (name == "Unpublish") {
+                                    lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                                }
+                                if (name == "Depreicate") {
+                                    lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                                }
+                                if (name == "Retire") {
+                                    lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                                }
+                                if (name == "Approve" && isAsynchronousFlow) {
+                                    lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
+                                }
+                                break;
                             }
-                            if (name == "Reject" && isAsynchronousFlow) {
-                                lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                            }
-                            if (name == "Submit for Review") {
-                                lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                            }
-                            if (name == "Recycle") {
-                                lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                            }
-                            if (name == "Deprecate") {
-                                lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                            }
-                            if (name == "Re-Publish") {
-                                lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                            }
-                            if (name == "Unpublish") {
-                                lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                            }
-                            if (name == "Depreicate") {
-                                lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                            }
-                            if (name == "Retire") {
-                                lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                            }
-                            if (name == "Approve" && isAsynchronousFlow) {
-                                lifecycleAvailableActionsButtons.push({name: name, style: lifecycleColors[name]});
-                            }
-                            break;
                         }
                     }
 
-
                 }
+
             }
 
             data.artifacts[i].lifecycleAvailableActions = lifecycleAvailableActionsButtons;

@@ -46,6 +46,12 @@ var generateLeftNavJson = function(data, listPartial) {
     if(data.artifact){
 
         editEnabled = permissions.isEditPermitted(user.username, data.artifact.path, um);
+        if(data.artifact.lifecycleState == "Published"){
+            editEnabled = false;
+        }
+        if(user.hasRoles(["admin"])){
+            editEnabled = true;
+        }
 
         if(createActionAuthorized) {
             if(editEnabled) {

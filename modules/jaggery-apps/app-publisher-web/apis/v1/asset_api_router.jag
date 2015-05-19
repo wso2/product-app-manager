@@ -879,7 +879,7 @@ require('/modules/publisher.js').exec(function(ctx) {
                 var version = ctx.version;
                 model.set('overview.bundleversion', version);
                 model.set('overview.packagename', meta.package);
-                if(ctx.markettype!='Enterprise' && ctx.platform.toUpperCase()=="IOS"){
+                if(ctx.markettype!='enterprise' && ctx.platform.toUpperCase()=="IOS"){
                     var bundleId = getBundleID(meta.package);
                     if(bundleId==null){
                         print({"ok" : false, "message" : "Validation failure", "report" : {"failed" : true, "name" : ["App ID is invalid"]}})
@@ -892,7 +892,7 @@ require('/modules/publisher.js').exec(function(ctx) {
                         model.set('overview.appid', meta.package);
                     }
                 }else if(ctx.platform.toUpperCase()=="ANDROID"){
-                    if(ctx.markettype=='Enterprise' ){
+                    if(ctx.markettype=='enterprise' ){
                         if(getExtensionText(meta.path)!="apk"){
                             print({"ok" : false, "message" : "Validation failure", "report" : {"failed" : true, "name" : ["File uploaded is not supported by Android"]}})
                             return;

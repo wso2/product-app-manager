@@ -85,8 +85,6 @@ public class AppDiscoveryUITestCase extends APPManagerIntegrationTest {
         waitForHttpGet(appServerServiceUrl + "WebappAdmin?wsdl", 200, 30000L);
     }
 
-    //Init method  appmPublisherUIClient = new APPMPublisherUIClient();
-
     /**
      * Tests the discovery application listing
      * @throws Exception
@@ -94,6 +92,23 @@ public class AppDiscoveryUITestCase extends APPManagerIntegrationTest {
     @Test(groups = { "wso2.appmanager.discovery" }, description = "Tests Discovery app listing",
             sequential = true, priority = 4)
     public void testDiscoverListing() throws Exception {
+        performInitialDiscovery();
+
+        String status = webDriverForPublisher.findElement(By.className("info-div"))
+                .findElement(By.tagName("span")).getText();
+        assertContains(status, INFO_SUCCESS_DISCOVERY_START_WITH,
+                "The status in info box should be \"" + INFO_SUCCESS_DISCOVERY_START_WITH + "\"");
+    }
+
+    /**
+     * Tests the discovery application listing, with the app server URL not ending with "\"
+     * @throws Exception
+     */
+    @Test(groups = { "wso2.appmanager.discovery" }, description = "Tests Discovery app listing",
+            sequential = true, priority = 4)
+    public void testDiscoverListing_AsUrlNotEndingWithSlash() throws Exception {
+        //Remove the trailing "/" from the URL
+        appServerServiceUrl = appServerServiceUrl.substring(0, appServerServiceUrl.length() - 1);
         performInitialDiscovery();
 
         String status = webDriverForPublisher.findElement(By.className("info-div"))
