@@ -1,5 +1,5 @@
 {
-	"filePreciseLocation": "/repository/resources/mobileapps/",
+	"filePreciseLocation": "repository/resources/mobileapps/",
     "fileAPILocation": "/api/mobileapp/getfile/",
 	"email": {
 	    "smtp":"smtp.gmail.com",

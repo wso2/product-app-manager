@@ -6,7 +6,12 @@ var matcher = new URIMatcher(request.getRequestURI());
 matcher.match('/{context}/api/mobileapp/getfile/{filename}');
 var fileName = matcher.elements().filename;
 
-var path = Packages.java.lang.System.getProperty("carbon.home") + mam_config.filePreciseLocation + fileName;
+if(mam_config.filePreciseLocation.substring(0, 1) === "/"){
+    var path = mam_config.filePreciseLocation + fileName;
+}else{
+    var path = Packages.java.lang.System.getProperty("carbon.home") + "/" + mam_config.filePreciseLocation + fileName;
+}
+
 
 var mime = "application/octet-stream"
 
