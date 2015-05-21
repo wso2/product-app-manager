@@ -2137,7 +2137,7 @@ and (max-device-width : 736px) {
         width: 368px;
     }
     .span3 {
-        width: 380px !important;
+        width: 80%;
     }
 
     .recent-asset-icon{
@@ -2155,5 +2155,53 @@ and (max-device-width : 736px) {
 
     .container-search {
         width: 324px !important;
+    }
+
+    .nav {float:left !important;}
+
+    .nav-tabs > li > a{
+        padding: 14px 8px;
+    }
+
+    .navbar .pull-right>li>.dropdown-menu, .navbar .nav>li>.dropdown-menu.pull-right {
+        right: 0;
+        left: 210px;
+    }
+
+    .row-fluid .span3 {float: none}
+}
+
+/*iPhone 6 Plus in landscape */
+@media only screen
+and (min-device-width : 414px)
+and (max-device-width : 736px)
+and (orientation : landscape) {
+    .assets-container {
+        margin-bottom: 1em;
+        width: 100%;
+    }
+
+    .recently-added {
+        width: 131px !important;
+    }
+
+    .container-assets .span3 {
+        width: 100% !important;
+    }
+
+    .assetp-properties .nav {
+        float: left !important;
+    }
+    .span3 {
+        width: 100%;
+    }
+
+    .navbar .pull-right>li>.dropdown-menu, .navbar .nav>li>.dropdown-menu.pull-right {
+        right: 0;
+        left: 210px;
+    }
+
+    .row-fluid .span3 {
+         float: left;
     }
 }
