@@ -2127,6 +2127,45 @@ and (max-device-width : 667px) {
     }
 }
 
+
+/*iPhone 6 */
+@media only screen
+and (min-device-width : 375px)
+and (max-device-width : 667px) {
+    #top-asset-slideshow-webapp, #top-asset-slideshow-mobileapp{
+        width: 375px;
+    }
+
+    .recently-added {
+        height: 151px !important;
+    }
+
+    .span3 {
+        width: 73%;
+    }
+
+    .navbar .nav > li > a{
+        width: 60px;
+    }
+
+    .nav {float:left !important;}
+
+    .nav-tabs > li > a{
+        padding: 14px 8px;
+    }
+
+    .navbar .pull-right>li>.dropdown-menu, .navbar .nav>li>.dropdown-menu.pull-right {
+        right: 0;
+        left: 210px;
+    }
+
+    #assets-container {
+        margin-left: -8px;
+        width: 55%;
+    }
+    
+}
+
 /* iphone 6 plus fix */
 @media only screen
 and (min-device-width : 414px)
