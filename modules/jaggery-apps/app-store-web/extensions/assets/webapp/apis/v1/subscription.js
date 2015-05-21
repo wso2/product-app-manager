@@ -21,6 +21,11 @@ var resource = (function () {
      */
     var addSubscription = function (context) {
 
+        if(authenticator.getLoggedInUser() == null){
+            response.sendRedirect("/store/login");
+            return;
+        }
+
         var parameters = context.request.getAllParameters();
         var subscription = {};
         subscription['apiName'] = parameters.apiName;

@@ -194,7 +194,7 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 		
         // Fetch all artifacts for the given criteria.
         var artifactsWithNoPagination = getArtifactsWithoutPagination(artifactManager, query, sortby, sort);
-        var filteredArtifacts = filterManager.filter(artifactsWithNoPagination,session);
+        var filteredArtifacts = filterManager.filter(artifactsWithNoPagination,session) || [];
 
         // Get the artifacts in the requested page.        
         var filteredArtifactsCount = filteredArtifacts.length;

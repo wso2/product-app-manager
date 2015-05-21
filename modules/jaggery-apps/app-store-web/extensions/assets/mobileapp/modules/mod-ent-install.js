@@ -100,17 +100,23 @@
 
             if(useragent.match(/iPad/i) || useragent.match(/iPhone/i) || useragent.match(/Android/i)) {
 
-
+                if(mdmConfig.AppDownloadURLHost == "%http%"){
+                    var serverAddress = carbon.server.address('http');
+                }else if(mdmConfig.AppDownloadURLHost == "%https%"){
+                    var serverAddress = carbon.server.address('https');
+                }else{
+                    var serverAddress = mdmConfig.AppDownloadURLHost;
+                }
 
                 asset = store.asset('mobileapp', app);
-                if( asset.attributes.overview_type == "Enterprise" ||  asset.attributes.overview_type == "Web App"){
+                if( asset.attributes.overview_type == "enterprise" ||  asset.attributes.overview_type == "webapp"){
                     if(asset.attributes.overview_platform == "android"){
-                        var location = asset.attributes.overview_url;
+                        var location = serverAddress +  asset.attributes.overview_url;
                     }else if(asset.attributes.overview_platform == "ios"){
                         var filename = asset.attributes.overview_url.split("/").pop();
-                        var location =  "/" + mdmConfig.IosPlistPath + "/" + tenantId +  "/" + filename;
+                        var location =  "itms-services://?action=download-manifest&amp;url=" + carbon.server.address('https') + "/" + mdmConfig.IosPlistPath + "/" + tenantId +  "/" + filename;
                     }
-                }else if(asset.attributes.overview_type == "Web App"){
+                }else if(asset.attributes.overview_type == "webapp"){
                     var location = asset.attributes.overview_url;
                 }
 

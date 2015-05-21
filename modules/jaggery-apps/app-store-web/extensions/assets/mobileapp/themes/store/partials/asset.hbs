@@ -83,8 +83,9 @@
                             <img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}">
 
                             <h3>{{overview_name}}</h3>
-                            <small> {{t "Version"}} {{overview_version}}</small>
-                            <small> {{t "by"}} {{overview_provider}} </small>
+                            <small> {{t "Type: "}} {{overview_type}} </small>
+                            <small> {{t "Version: "}} {{overview_version}}</small>
+                            <small> {{t "by "}} {{overview_provider}} </small>
                             <img src="{{url "/extensions/assets/mobileapp/themes/store/img/"}}{{overview_platform}}.png" style="width: 30px;"/>
 					<span class="asset-rating">
                         {{#if ../../user}}

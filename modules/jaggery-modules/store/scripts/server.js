@@ -238,13 +238,8 @@ var server = {};
      * @return {*}
      */
     server.userManager = function (tenantId) {
-        var carbon,
-            config = server.configs(tenantId);
-        if (!config || !config[USER_MANAGER]) {
-            carbon = require('carbon');
-            return new carbon.user.UserManager(server.instance(), tenantId);
-        }
-        return server.configs(tenantId)[USER_MANAGER];
+        var carbon = require('carbon');
+        return new carbon.user.UserManager(server.instance(), tenantId);
     };
 
     server.privileged = function (fn, username) {
