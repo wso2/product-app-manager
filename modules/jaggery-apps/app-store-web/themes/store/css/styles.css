@@ -2126,3 +2126,34 @@ and (max-device-width : 667px) {
         margin: 0px;
     }
 }
+
+/* iphone 6 plus fix */
+@media only screen
+and (min-device-width : 414px)
+and (max-device-width : 736px) {
+
+    .assets-container {
+        margin-bottom: 1em;
+        width: 368px;
+    }
+    .span3 {
+        width: 380px !important;
+    }
+
+    .recent-asset-icon{
+        width: 60px !important;
+    }
+
+    .recently-added {
+        float: left;
+        height: 150px !important;
+    }
+
+    .navbar .nav > li > a {
+        width: 72px;
+    }
+
+    .container-search {
+        width: 324px !important;
+    }
+}
