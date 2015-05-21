@@ -328,7 +328,7 @@ $(function() {
 						createServiceProvider();
 					}
 
-                    window.location = "/publisher/assets/webapp/";
+
 				} else {
                     var result = JSON.parse(response);
                     alert(result.message);
@@ -510,6 +510,7 @@ $(function() {
             data:JSON.stringify(sso_config),
             success: function(response) {
                 console.log("Added SSO config successfully");
+                window.location = "/publisher/assets/webapp/";
             },
             error: function(response) {
                 showAlert('Error adding service provider.', 'error');
