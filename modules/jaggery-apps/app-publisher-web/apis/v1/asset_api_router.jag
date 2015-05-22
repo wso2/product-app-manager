@@ -86,7 +86,13 @@ require('/modules/publisher.js').exec(function(ctx) {
                 return "";
             }
             var uid= makeid();
-            var file_name = Packages.java.lang.System.getProperty("carbon.home") + mam_config.filePreciseLocation+uid+file_n;
+
+            if(mam_config.filePreciseLocation.substring(0, 1) === "/"){
+                var file_name = mam_config.filePreciseLocation+uid+file_n;
+            }else{
+                var file_name = Packages.java.lang.System.getProperty("carbon.home") + "/" + mam_config.filePreciseLocation+uid+file_n;
+            }
+
 
             var fileTemp=new File( 'file://' + file_name);
             try{

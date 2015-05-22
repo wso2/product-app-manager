@@ -33,7 +33,14 @@
 				return "";
 			}
 			var uid= makeid();
-			var file_name = Packages.java.lang.System.getProperty("carbon.home") + mam_config.filePreciseLocation+uid+file_n;
+
+
+            if(mam_config.filePreciseLocation.substring(0, 1) === "/"){
+                var file_name = mam_config.filePreciseLocation+uid+file_n;
+            }else{
+                var file_name = Packages.java.lang.System.getProperty("carbon.home") + "/" + mam_config.filePreciseLocation+uid+file_n;
+            }
+
 
             var fileTemp=new File( 'file://' + file_name);
             try{
@@ -84,7 +91,15 @@
 
 			var zipFileReading = new Packages.org.wso2.mobile.utils.utilities.ZipFileReading();
 
-			var path =  Packages.java.lang.System.getProperty("carbon.home") + mam_config.filePreciseLocation + fileName;
+            if(mam_config.filePreciseLocation.substring(0, 1) === "/"){
+                var path = mam_config.filePreciseLocation + fileName;
+            }else{
+                var path = Packages.java.lang.System.getProperty("carbon.home") + "/" + mam_config.filePreciseLocation + fileName;
+            }
+
+
+
+
             log.debug("META PATH: " + path);
 			try{
 				if(ext=="ipa"){
