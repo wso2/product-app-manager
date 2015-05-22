@@ -25,9 +25,7 @@ $(function() {
 		  if(loggedUser == "" || loggedUser == null){
 			  var ssoEnabled = $('#sso').val();
 			  if(ssoEnabled == 'true'){
-				  var localIP = $("#localIP").val();
-				  var port = $("#httpsPort").val()
-				  location.href = localIP + ":" + port + "/store/login";	
+				  location.href = "/store/login";	
 			  }else{
 				  var assetId = $('#slideAsset').data('id');
 				  $('#modal-login').data('value', assetId);
@@ -44,9 +42,7 @@ $(function() {
 		  if(loggedUser == "" || loggedUser == null){
 			  var ssoEnabled = $('#sso').val();
 			  if(ssoEnabled == 'true'){
-				  var localIP = $("#localIP").val();
-				  var port = $("#httpsPort").val()
-				  location.href = localIP + ":" + port + "/store/login";	
+				  location.href = "/store/login";	
 			  }else{
 				  var assetId = $('#slideAsset').data('id');
 				  $('#modal-login').data('value', assetId);
@@ -63,9 +59,7 @@ $(function() {
 		  if(loggedUser == "" || loggedUser == null){
 			  var ssoEnabled = $('#sso').val();
 			  if(ssoEnabled == 'true'){
-				  var localIP = $("#localIP").val();
-				  var port = $("#httpsPort").val()
-				  location.href = localIP + ":" + port + "/store/login";	
+				  location.href = "/store/login";	
 			  }else{
 				  var assetId = $('#slideAsset').data('id');
 				  $('#modal-login').data('value', assetId);
@@ -83,9 +77,7 @@ $(function() {
 		  if(loggedUser == "" || loggedUser == null){
 			  var ssoEnabled = $('#sso').val();
 			  if (ssoEnabled == 'true'){
-			  var localIP = $("#localIP").val();
-			  var port = $("#httpsPort").val()
-			  location.href = localIP + ":" + port + "/store/login";
+			  	location.href = "/store/login";
 			  }else{
 				  var assetId = $('#slideAsset').data('id');
 				  $('#modal-login').data('value', assetId);
@@ -102,9 +94,7 @@ $(function() {
 		  if(loggedUser == "" || loggedUser == null){
 			  var ssoEnabled = $('#sso').val();
 			  if (ssoEnabled == 'true'){
-				  var localIP = $("#localIP").val();
-				  var port = $("#httpsPort").val()
-				  location.href = localIP + ":" + port + "/store/login";
+				  location.href = "/store/login";
 			  }else{
 				  var assetId = $('#slideAsset').data('id');
 				  $('#modal-login').data('value', assetId);
