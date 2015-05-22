@@ -46,7 +46,7 @@ var splitData = function(copyOfData){
         }else if (dataPart[i].name == "overview_webAppUrl") {
             overview_main.push(dataPart[i]);
         }else if (dataPart[i].name == "overview_tier") {
-            overview_main.push(dataPart[i]);
+           // overview_main.push(dataPart[i]);
         }else if (dataPart[i].name == "overview_trackingCode") {
             overview_main.push(dataPart[i]);
         }else if (dataPart[i].name == "overview_description") {

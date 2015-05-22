@@ -41,10 +41,10 @@
           </div>
           <div class='raw'>
               <div class="raw raw-space">
-                   <a href="admin" class="btn btn-default btn-lg">Login to Admin Panel</a>
+                   <a href="admin/" class="btn btn-default btn-lg">Login to Admin Panel</a>
               </div>
               <div class="raw raw-space">
-                   <a href="member" class="btn btn-default btn-lg">Login to Member Panel</a>
+                   <a href="member/" class="btn btn-default btn-lg">Login to Member Panel</a>
               </div>
           </div>
           
