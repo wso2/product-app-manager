@@ -643,6 +643,8 @@
 			<Property name="TokenApiURL">https://localhost:9448/oauth2/token</Property>	
 			<Property name="ClientKey">WjLm24IxBVLF0oz0VJfmtJbjJbka</Property>	
 			<Property name="ClientSecret">v3KkIQXkJ1SDp_Bf8uUQxu5p7TQa</Property>
+			<Property name="AuthUser">admin</Property>	
+			<Property name="AuthPass">admin</Property>
 		   </MDM>
 
 		    <MDM name="WSO2EMM" bundle="org.wso2.carbon.appmgt.mdm.wso2emm">
