@@ -969,7 +969,7 @@
             <destName>plan-your-trip-1.0.war</destName>
         </file>
 	<file>
-            <source>../../../webapps/plan-your-trip/travel-booking-1.0.war</source>
+            <source>../../../webapps/travel-booking/travel-booking-1.0.war</source>
             <outputDirectory>wso2appm-${pom.version}/samples</outputDirectory>
             <destName>travel-booking-1.0.war</destName>
         </file>
