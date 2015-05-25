@@ -132,7 +132,7 @@
 	<div class="main-search">
 		<form id="main-search" method="post"
 			action="authenticate<%if (header != null) {
-				out.print("?header=" + header);
+				out.print("?header=notnull");
 			}%>">
 			
 

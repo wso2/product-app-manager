@@ -31,10 +31,20 @@ include("/extensions/webapp/modules/jagg/jagg.jag");
             // validating the signature
             if (configs.ssoConfiguration.responseSigningEnabled) {
 
-                if (sso.client.validateSignature(samlRespObj, keyStoreProps)) {
-                	            	
-                	var sessionObj = sso.client.decodeSAMLLoginResponse(samlRespObj, samlResponse, sessionId);
+            if (sso.client.validateSignature(samlRespObj, keyStoreProps)) {
+            var sessionObj = sso.client.decodeSAMLLoginResponse(samlRespObj, samlResponse, sessionId);
 			if (sessionObj.sessionIndex != null || sessionObj.sessionIndex != 'undefined') {
+			                var MultitenantUtils = Packages.org.wso2.carbon.utils.multitenancy.MultitenantUtils;
+                            var MultitenantConstants = Packages.org.wso2.carbon.base.MultitenantConstants;
+                            var domainName = MultitenantUtils.getTenantDomain(sessionObj.loggedInUser);
+
+                            if (domainName != null && !MultitenantConstants.SUPER_TENANT_DOMAIN_NAME.equals(domainName)) {
+                                var service = server.osgiService('org.wso2.carbon.utils.ConfigurationContextService');
+                                var ctx = service.getServerConfigContext();
+                                var TenantAxisUtils = org.wso2.carbon.core.multitenancy.utils.TenantAxisUtils;
+                                TenantAxisUtils.setTenantAccessed(domainName, ctx);
+                            }
+
                     		jagg.setUser({username:sessionObj.loggedInUser});
                     	 	session.put("LOGGED_IN_USER", sessionObj.loggedInUser);
                         	session.put("Loged", "true");
