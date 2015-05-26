@@ -17,8 +17,13 @@
                 </li>
                 <li><a href="{{url "/assets/mobileapp/"}}"><i class="icon-mobile-phone"></i> Mobile Applications</a></li>
                 <li>
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i
-                            class="icon-user"></i> {{cuser.username}} <b class="caret"></b></a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i>
+                       {{#ifCond cuser.tenantDomain "==" "carbon.super"}}
+                           {{cuser.username}}
+                       {{else}}
+                           {{cuser.username}}@{{cuser.tenantDomain}}
+                       {{/ifCond}}
+                    <b class="caret"></b></a>
                     <ul class="dropdown-menu dropdown-account" role="menu" aria-labelledby="dLabel">
                         <li>
                             <a onclick="window.location.href='{{url "/logout"}}'" href="#"><i class="icon-signout"></i>{{t "Sign out"}}</a>

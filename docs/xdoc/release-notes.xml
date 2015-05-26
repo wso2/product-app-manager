@@ -43,7 +43,11 @@ Organizations possessing a large number of applications, may face challenges ari
 
 <p>
 WSO2 App Manager is created on top of the <a href="http://wso2.org/projects/carbon">WSO2 Carbon platform</a>, where it extends registry assets and provides the capability to add web applications. All the functionality can be extended with extension points provided by WSO2 App Manager. It is developed mainly using three technologies namely, SAML2 SSO, XACML policy definition and OAuth secured API invocations.  It is bundled with a set of features for app creation, publication, lifecycle management, versioning, monetization, governance, security etc. using proven WSO2 products such as, WSO2 Enterprise Store, WSO2 Enterprise Service Bus, WSO2 Identity Server, and WSO2 Governance Registry. In addition, it is also powered by the WSO2 Business Activity Monitor, and is immediately ready for massively scalable deployments.
-</P>
+</p>
+
+<p>
+WSO2 App Manager supports publishing iOS, Android, Hybrid and Web apps with app versioning and lifecycle management. The storefront enables directly downloading mobile apps with the support for self-subscription and app rating. WSO2 App Manager is easily configurable with WSO2 device management solutions or any third-party device management solutions for device management purposes. 
+</p>
 
 <p>
 WSO2 App Manager provides Web interfaces for publishers to add and manage apps, as well as for consumers to subscribe to, search and consume apps through a user-friendly storefront. The WSO2 App Manager is an on-going project with continuous improvements and enhancements introduced with each new release to address new business challenges and customer expectations. WSO2 invites users, developers and enthusiasts to  get involved or get the assistance of our development teams at many different levels through online forums, mailing lists and support options. 
@@ -79,7 +83,8 @@ WSO2 App Manager is released under Apache Software License Version 2.0, one of t
 </ol>
 
 <h2>Key Features in WSO2 App Manager 1.0.0</h2>
-<li>Multitenancy support</li>
+<h3>Web Apps</h3>
+<ul>
 <li>Application Discovery Support</li>
 <li>XACML Policy support</li>
 <li>Annonymous mode web app accessing capability</li>
@@ -98,6 +103,22 @@ WSO2 App Manager is released under Apache Software License Version 2.0, one of t
 <li>Capability to associate comprehensive documentation to a web app</li>
 <li>URL pattern based authorisation</li>
 <li>Integrate SAML2 OAuth2 Bearer Token exchange</li>
+</ul>
+
+<h3>Mobile Apps</h3>
+<ul>
+<li>Supports publishing iOS, Android, Hybrid and Web apps</li>
+<li>Supports publishing Enterprise and public apps in Goolge Play Store and  Apple iTunes</li>
+<li>App versioning and lifecycle management</li>
+<li>Directly downloading mobile apps to relevent devices</li>
+<li>Self-subscription and Self-unsubscription of apps</li>
+<li>Enterprise subscription and installation support in store</li>
+<li>Configurable with WSO2 device management solutions</li>
+<li>Mobile-apps rating support for store users</li>
+<li>Support for 3rd party device management solutions</li>
+<li>Multi-tenancy support</li>
+</ul>
+
 
 <h2>Known Issues</h2>
 <p>
