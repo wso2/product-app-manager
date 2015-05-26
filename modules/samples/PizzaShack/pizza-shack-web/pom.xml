@@ -12,7 +12,6 @@
 	<artifactId>pizza-shack-web</artifactId>
 	<name>PizzaShack Web Application</name>
         <packaging>war</packaging>
-	<!--version>1.0-SNAPSHOT</version-->
 	<url>http://maven.apache.org</url>
 	<dependencies>
 		<dependency>
