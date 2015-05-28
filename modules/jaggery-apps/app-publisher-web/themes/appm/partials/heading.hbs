@@ -1,16 +1,29 @@
-
 <h1 class="map-heading">
     {{title}}</h1>
 <ul class="nav nav-pills pull-right secondary-pills ">
         {{#each menuItems.leftNavLinks}}
-            <li class="{{this.additionalClasses}}" {{#if this.title}}title="{{this.title}}"{{/if}}>
-                <a href="{{this.url}}">
-                    {{#if this.iconClass}}
-                        <i class="{{this.iconClass}}"></i>
+                {{#ifCond this.name "==" "Edit"  }}
+                    {{#if this.isEditable}}
+                        <li class="{{this.additionalClasses}}" {{#if this.title}}title="{{this.title}}"{{/if}}>
+                            <a href="{{this.url}}">
+                                {{#if this.iconClass}}
+                                    <i class="{{this.iconClass}}"></i>
+                                {{/if}}
+                                {{this.name}}
+                            </a>
+                        </li>
                     {{/if}}
-                        {{this.name}}
-                </a>
-            </li>
+                {{else}}
+                    <li class="{{this.additionalClasses}}" {{#if this.title}}title="{{this.title}}"{{/if}}>
+                        <a href="{{this.url}}">
+                            {{#if this.iconClass}}
+                                <i class="{{this.iconClass}}"></i>
+                            {{/if}}
+                            {{this.name}}
+                        </a>
+                    </li>
+                {{/ifCond}}
+
         {{/each}}
 </ul>
 
