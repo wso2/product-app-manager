@@ -61,7 +61,8 @@ var generateLeftNavJson = function(data, listPartial) {
                             name: "Edit",
                             iconClass: "icon-edit",
                             additionalClasses: (listPartial == "edit-asset" ) ? "active" : null,
-                            url: "/publisher/asset/operations/edit/" + data.shortName + "/" + data.artifact.id + ""
+                            url: "/publisher/asset/operations/edit/" + data.shortName + "/" + data.artifact.id + "",
+                            isEditable : editEnabled
                         },
                         {
                             name: "Create New Version",
@@ -79,7 +80,8 @@ var generateLeftNavJson = function(data, listPartial) {
                             iconClass: "icon-edit",
                             additionalClasses: (listPartial == "edit-asset" ) ? "active" : false,
                             url: "#",
-                            title: "Edit Action not permitted."
+                            title: "Edit Action not permitted.",
+                            isEditable : editEnabled
                         },
                         {
                             name: "Create New Version",
