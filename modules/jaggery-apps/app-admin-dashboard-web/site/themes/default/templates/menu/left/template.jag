@@ -12,6 +12,7 @@
 <div class="sidebar-nav left-menu-back01">
     <ul class="nav nav-list">
     <!--<li class="nav-header"><%=i18n.localize("tasks")%></li>-->
+        
         <li class="dropdown custom-verticle">
             <a class="dropdown-toggle" data-toggle="dropdown">
             <i class="icon-flag"></i> <br>Pending Workflows  <i class="icon-chevron-right"></i>
@@ -57,6 +58,12 @@
                 %>?task=cacheHitMiss',e:event,ssoEnabled:<%=ssoEnabled%>})"><i class="icon-signal"></i><br>
                 <%=i18n.localize("cacheHitMissHeader")%></a>
          </li>
+
+        <li <%if(request.getParameter("task")=="sessionMgt"){%>class="active" id="lnk-sessionMgt"<% } %>>
+            <a href="<%=listMappedUrl%>?task=sessionMgt"  onclick="jagg.sessionAwareJS({redirect:'<%=listMappedUrl
+            %>?task=sessionMgt',e:event,ssoEnabled:<%=ssoEnabled%>});"><i class ="icon-time"></i><br>
+                <%=i18n.localize("sessionManagement")%></a>
+        </li>
 
      </ul>
 </div>

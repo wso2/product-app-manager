@@ -1,0 +1,101 @@
+<%
+var ws = require("ws");
+var log=new Log();
+
+var getSessions = function () {
+var version = new ws.WSRequest();
+var options = new Array();
+options.useSOAP = 1.2;
+var jSESSIONID=session.get("logged.user").cookie;
+jSESSIONID = jSESSIONID.split(":")[1].trim();
+options.action = "http://org.apache.axis2/xsd/getAllSessionInfo";
+var payload = '<xsd:getAllSessionInfo  xmlns:xsd="http://org.apache.axis2/xsd"/>';
+var result;
+var endpoint="https://localhost:9443/services/SessionManagementService/";
+if (jSESSIONID != null) {
+	options["HTTPHeaders"] = [
+		     { name : "Cookie", value :jSESSIONID}
+     ];
+
+    try {
+        version.open(options,endpoint, false);
+        version.send(payload);
+	    result = version.responseE4X;
+	    var jsonResponse = E4XtoJSON(result);
+	    if (jsonResponse.return instanceof Array) {
+            return convertJSONObjectToArray(jsonResponse);
+        } else {
+            var array = [];
+            array[0] = jsonResponse.return;
+            var json = {"return":array};
+            return convertJSONObjectToArray(json);
+         }
+	} catch (e) {
+	    log.error(e.toString());
+	    session.put("showLogin", "true");
+	    return null;
+	}
+ } else {
+    log.error("Authentication cookie is null");
+    return null;
+ }
+
+};
+
+var E4XtoJSON = function E4XtoJSON(xml, ignored) {
+    var r, children = xml.*, attributes = xml.@*, length = children.length();
+    if(length == 0) {
+        r = xml.toString();
+    } else if(length == 1) {
+        var text = xml.text().toString();
+        if(text) {
+            r = text;
+        }
+    }
+    if(r == undefined) {
+        r = {};
+        for each (var child in children) {
+             var name = child.localName();
+             var json = E4XtoJSON(child, ignored);
+             var value = r[name];
+             if(value) {
+               if(value.length && value.push) {
+                 value.push(json);
+               } else {
+                 r[name] = [value, json]
+               }
+             } else {
+               r[name] = json;
+             }
+        }
+    }
+    if(attributes.length()) {
+        var a = {}, c = 0;
+        for each (var attribute in attributes) {
+          var name = attribute.localName();
+          if(ignored && ignored.indexOf(name) == -1) {
+            a["_" + name] = attribute.toString();
+            c ++;
+          }
+        }
+        if(c) {
+          if(r) a._ = r;
+          return a;
+        }
+    }
+    return r;
+};
+
+var convertJSONObjectToArray = function convertJSONObjectToArray(jsonInput) {
+     for (var i in jsonInput.return) {
+        if (jsonInput.return[i].sessionsList instanceof Array) {
+              // return jsonInput;
+        } else {
+            var arraySessionList = [];
+            arraySessionList[0] = jsonInput.return[i].sessionsList;
+            jsonInput.return[i].sessionsList = arraySessionList;
+        }
+     }
+     return jsonInput;
+};
+%>

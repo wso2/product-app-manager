@@ -603,7 +603,7 @@
                                 </featureArtifactDef>
 				<featureArtifactDef>org.wso2.store.modules:claims.feature:${snapshot.feature.version}
                                 </featureArtifactDef>
-                                <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.identity.application.authentication.framework.server.feature:4.2.3</featureArtifactDef>
+                                <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.identity.application.authentication.framework.feature:${carbon.authentication.framework.version}</featureArtifactDef>
 				<featureArtifactDef>org.wso2.carbon:org.wso2.carbon.identity.user.profile.server.feature:4.2.2</featureArtifactDef>
                                 <featureArtifactDef>org.wso2.store:org.wso2.store.feature:1.1.0</featureArtifactDef>
 				<featureArtifactDef>org.wso2.carbon:org.wso2.carbon.social.feature:1.1.0</featureArtifactDef>
@@ -1266,8 +1266,8 @@
                                     <version>${snapshot.feature.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.identity.application.authentication.framework.server.feature.group</id>
-                                    <version>4.2.3</version>
+                                    <id>org.wso2.carbon.identity.application.authentication.framework.feature.group</id>
+                                    <version>${carbon.authentication.framework.version}</version>
                                 </feature>
 				<feature>
                                     <id>org.wso2.carbon.identity.user.profile.server.feature.group</id>
@@ -1485,6 +1485,7 @@
 	<caramel.feature.version>1.0.0</caramel.feature.version>
 	<carbon.deployment.feature.version>4.2.3-SNAPSHOT</carbon.deployment.feature.version>
 	<carbon.scim.feature.version>4.2.5-SNAPSHOT</carbon.scim.feature.version>
+    <carbon.authentication.framework.version>4.2.5-SNAPSHOT</carbon.authentication.framework.version>
 </properties>
 
 </project>

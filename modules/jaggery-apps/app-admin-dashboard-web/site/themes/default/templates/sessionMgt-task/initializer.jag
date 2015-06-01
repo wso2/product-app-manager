@@ -1,0 +1,8 @@
+<%
+jagg.initializer("sessionMgt-task", {
+    preInitialize:function () {
+        jagg.addFooterJS("application", "jagg", "templates/sessionMgt-task/js/sessionMgt.js");
+    }
+});
+%>
+

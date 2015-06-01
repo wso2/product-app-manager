@@ -1,0 +1,58 @@
+<% jagg.template("sessionMgt-task", function(inputs, outputs, jagg) {
+    var carbon = require('carbon');
+    var json=outputs;
+%>
+<div id="listing">
+    <div class="title-section">
+        <h2><%=i18n.localize("sessionManagement")%></h2>
+    </div>
+    <div class="content-section shadow-up">
+        <div class="content-data">
+            <div class="content-data">
+                <%
+                    if(json!=null) { %>
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>UserName</th>
+                                    <th>User Store Domain</th>
+                                    <th>Application</th>
+                                    <th>Application Tenant Domain</th>
+                                    <th>Time Created</th>
+                                    <th>Active Duration(Second)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <%
+                              var tenantDomain =  "";
+                              var userName, userStoreDomain = "";
+                              for (var i in json.return) {
+                                tenantDomain = json.return[i].tenantDomain;
+                                userName = json.return[i].userName;
+                                userStoreDomain = json.return[i].userStoreDomain;
+                                for (var b in json.return[i].sessionsList) {
+                           %>
+                            <tr>
+                          <%
+                              if (b == 0) {
+                           %>
+                                <td rowspan=" <%=json.return[i].sessionsList.length%> "><%=userName%></td>
+                                <td rowspan=" <%=json.return[i].sessionsList.length%> "><%=userStoreDomain%></td>
+                                <% }%>
+                                <td><%=json.return[i].sessionsList[b].applicationId%></td>
+                                <td><%=json.return[i].sessionsList[b].applicationTenantDomain%></td>
+                                <td><%=json.return[i].sessionsList[b].loggedInTimeStamp%></td>
+                                <td><%=json.return[i].sessionsList[b].loggedInDuration%></td>
+                           </tr>
+                        <%
+                            }
+                         }
+                     %>
+                    </tbody>
+                </table>
+                <%} else { %>
+                <div style='padding-bottom:10px'><b>There is no any active sessions.</b></div>
+                <%}%>
+            </div>
+        </div>
+        <% }); %>

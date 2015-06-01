@@ -9,6 +9,8 @@
     "subscriptionCreation": "Subscriptions",
     "userCreation": "User Creations",
     "appCreation": "Application Creation",
+    "appPublishHeader": "Pending Published Applications",
+    "sessionManagement" : "Session Management",
     "appPublishHeader": "Published Applications",
     "entitlementPoliciesHeader":"Entitlement Policies",
     "entitlementPoliciesHeaderNew":"Add New Entitlement Policy",
