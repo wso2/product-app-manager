@@ -143,7 +143,7 @@ var serviceModule = (function () {
                 components[SERVER_URL_DESCRIPTION_INDEX] :
                 MSG_UNABLE_TO_GET_API_DATA,
             productionURL: components[SERVER_URL_SANDBOX_INDEX] ?
-                components[SERVER_URL_SANDBOX_INDEX] + api.context + "/" + api.version + "/" :
+                components[SERVER_URL_SANDBOX_INDEX] + api.context + "/":
                 MSG_UNABLE_TO_GET_API_DATA
         };
         
