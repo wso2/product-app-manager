@@ -21,488 +21,742 @@
  Created Date: 6/8/2013
  */
 
-require('/modules/publisher.js').exec(function(ctx) {
+require('/modules/publisher.js').exec(function (ctx) {
 
-  var config = require('/config/publisher.json');
-  var caramel = require('caramel');
-  var router = require('/modules/router-g.js').router();
-  var routeManager = new router.Router();
-  var log = new Log();
-  var permissions=require('/modules/permissions.js').permissions;
+	var config = require('/config/publisher.json');
+	var caramel = require('caramel');
+	var router = require('/modules/router-g.js').router();
+	var routeManager = new router.Router();
+	var log = new Log();
+	var permissions = require('/modules/permissions.js').permissions;
 
-  routeManager.register('POST', 'publisher', '/publisher/api/lifecycle/{type}/{id}', function(context) {
-    var shortName = context.params.type;
-    var id = context.params.id;
-    var lifecycle = context.post.lifecycle;
-    //var autoPromote=context.post.promote||false;    //If promote is not specified do not auto promote
-    var invokeAction = '';
-    //Check the config for a lifeCycleBehaviour block
-    utility.isPresent(config, 'lifeCycleBehaviour', function(lifeCycleBehaviour) {
-      utility.isPresent(lifeCycleBehaviour, lifeCycle, function(lifeCycleData) {
-        utility.isPresent(lifeCycleData, 'onAttach', function(onAttach) {
-          invokeAction = onAttach.action || '';
-        });
-      });
+	routeManager.register('POST', 'publisher', '/publisher/api/lifecycle/{type}/{id}', function (context) {
+		var shortName = context.params.type;
+		var id = context.params.id;
+		var lifecycle = context.post.lifecycle;
+		//var autoPromote=context.post.promote||false;    //If promote is not specified do not auto promote
+		var invokeAction = '';
+		//Check the config for a lifeCycleBehaviour block
+		utility.isPresent(config, 'lifeCycleBehaviour', function (lifeCycleBehaviour) {
+			utility.isPresent(lifeCycleBehaviour, lifeCycle, function (lifeCycleData) {
+				utility.isPresent(lifeCycleData, 'onAttach', function (onAttach) {
+					invokeAction = onAttach.action || '';
+				});
+			});
 
-    });
+		});
 
-    if (!lifecycle) {
-        response.sendError(400, 'Missing required parameter: lifecycle');
-        return;
-    }
+		if (!lifecycle) {
+			response.sendError(400, 'Missing required parameter: lifecycle');
+			return;
+		}
 
-    var artifactManager = rxtManager.getArtifactManager(shortName);
-    try {
-      var artifact = artifactManager.get(id);
-      artifactManager.attachLifecycle(lifecycle, artifact);
-      //Perform the action if the user has specified an action
-      if (invokeAction != '') {
-        artifactManager.promoteLifecycleState(invokeAction, artifact);
-      }
+		var artifactManager = rxtManager.getArtifactManager(shortName);
+		try {
+			var artifact = artifactManager.get(id);
+			artifactManager.attachLifecycle(lifecycle, artifact);
+			//Perform the action if the user has specified an action
+			if (invokeAction != '') {
+				artifactManager.promoteLifecycleState(invokeAction, artifact);
+			}
 
-      var msg = {};
-      msg['status'] = 'ok';
+			var msg = {};
+			msg['status'] = 'ok';
 
-      print(msg);
-    } catch (e) {
-      log.debug('The asset with id: ' + id + ' could not be found.The following exception was thrown: ' + e);
-      response.sendError(404, 'The asset with id: ' + id + ' could not be found.Please refere to the server log.');
-    }
-  });
+			print(msg);
+		} catch (e) {
+			log.debug('The asset with id: ' + id + ' could not be found.The following exception was thrown: ' + e);
+			response.sendError(404, 'The asset with id: ' + id + ' could not be found.Please refere to the server log.');
+		}
+	});
 
-  /*
-        Ticks the check list item at the provided index
-*/
-  routeManager.register('POST', 'publisher', '/publisher/api/lifecycle/checklistitem/{index}/{type}/{id}', function(context) {
+	/*
+	 Ticks the check list item at the provided index
+	 */
+	routeManager.register('POST', 'publisher', '/publisher/api/lifecycle/checklistitem/{index}/{type}/{id}', function (context) {
 
-    var checkListItemIndex = context.params.index;
-    var shortName = context.params.type;
-    var id = context.params.id;
-    var artifactManager = rxtManager.getArtifactManager(shortName);
+		var checkListItemIndex = context.params.index;
+		var shortName = context.params.type;
+		var id = context.params.id;
+		var artifactManager = rxtManager.getArtifactManager(shortName);
 
-    try {
-      var artifact = artifactManager.get(id);
-      artifactManager.checkItem(checkListItemIndex, artifact);
-      var msg = {};
-      msg['status'] = 'ok';
-    } catch (e) {
-      log.debug('The asset with id: ' + id + ' could not be found.The following exception was thrown: ' + e);
-      response.sendError(404, 'The asset with id: ' + id + ' could not be found.Please refer to the server log.');
-    }
-  });
+		try {
+			var artifact = artifactManager.get(id);
+			artifactManager.checkItem(checkListItemIndex, artifact);
+			var msg = {};
+			msg['status'] = 'ok';
+		} catch (e) {
+			log.debug('The asset with id: ' + id + ' could not be found.The following exception was thrown: ' + e);
+			response.sendError(404, 'The asset with id: ' + id + ' could not be found.Please refer to the server log.');
+		}
+	});
 
-  routeManager.register('DELETE', 'publisher', '/publisher/api/lifecycle/{type}/{id}', function(context) {
+	routeManager.register('DELETE', 'publisher', '/publisher/api/lifecycle/{type}/{id}', function (context) {
 
-    var shortName = context.params.type;
-    var id = context.params.id;
-    var artifactManager = rxtManager.getArtifactManager(shortName);
-    try {
-      var artifact = artifactManager.get(id);
-      artifactManager.detachLifecycle(artifact);
+		var shortName = context.params.type;
+		var id = context.params.id;
+		var artifactManager = rxtManager.getArtifactManager(shortName);
+		try {
+			var artifact = artifactManager.get(id);
+			artifactManager.detachLifecycle(artifact);
 
-      var msg = {};
-      msg['status'] = 'ok';
+			var msg = {};
+			msg['status'] = 'ok';
 
-      print(msg);
-    } catch (e) {
-      log.debug('The asset with id: ' + id + ' could not be found.The following exception was thrown: ' + e);
-      response.sendError(404, 'The asset with id: ' + id + ' could not be found.Please refer to the server log.');
-    }
+			print(msg);
+		} catch (e) {
+			log.debug('The asset with id: ' + id + ' could not be found.The following exception was thrown: ' + e);
+			response.sendError(404, 'The asset with id: ' + id + ' could not be found.Please refer to the server log.');
+		}
 
-  });
+	});
 
-/*
-  Unticks the check list item at the given index
-*/
-  routeManager.register('DELETE', 'publisher', '/publisher/api/lifecycle/checklistitem/{index}/{type}/{id}', function(context) {
-    var checkListItemIndex = context.params.index;
-    var shortName = context.params.type;
-    var id = context.params.id;
-    var artifactManager = rxtManager.getArtifactManager(shortName);
+	/*
+	 Unticks the check list item at the given index
+	 */
+	routeManager.register('DELETE', 'publisher', '/publisher/api/lifecycle/checklistitem/{index}/{type}/{id}', function (context) {
+		var checkListItemIndex = context.params.index;
+		var shortName = context.params.type;
+		var id = context.params.id;
+		var artifactManager = rxtManager.getArtifactManager(shortName);
 
-    try {
-      var artifact = artifactManager.get(id);
-      artifactManager.uncheckItem(checkListItemIndex, artifact);
-      var msg = {};
-      msg['status'] = 'ok';
-    } catch (e) {
-      log.debug('The lifecyle check list item at index ' + checkListItemIndex + ' of asset id: ' + id + ' could not be unticked' + 'The following exception was thrown: ' + e);
-      response.sendError(404, 'The lifecycle check list item at index ' + checkListItemIndex + ' of asset id: ' + id + ' could not be unchecked' + '.Please refer to the server log');
-    }
-  });
+		try {
+			var artifact = artifactManager.get(id);
+			artifactManager.uncheckItem(checkListItemIndex, artifact);
+			var msg = {};
+			msg['status'] = 'ok';
+		} catch (e) {
+			log.debug('The lifecyle check list item at index ' + checkListItemIndex + ' of asset id: ' + id + ' could not be unticked' + 'The following exception was thrown: ' + e);
+			response.sendError(404, 'The lifecycle check list item at index ' + checkListItemIndex + ' of asset id: ' + id + ' could not be unchecked' + '.Please refer to the server log');
+		}
+	});
 
 
-/**
- * API for handling API Lifecycle Transitions
- */
-routeManager.register('PUT', 'publisher', '/publisher/api/lifecycle/{action}/{type}/{id}', function(context) {
-        var shortName = context.params.type;
+	/**
+	 * API for handling web/mobile apps lifecycle transitions
+	 */
+	routeManager.register('PUT', 'publisher', '/publisher/api/lifecycle/{action}/{type}/{id}', function (context) {
 
-        if(shortName === "mobileapp"){
+		var appType = context.params.type; // webapp, mobileapp
+		if (appType === "mobileapp") {
+			mobileAppsLifeCycleChange(context, rxtManager, utility);
+			return;
+		}
 
-            mobileAppsLifeCycleChange(context, rxtManager, utility);
-            return;
-        }
+		var action = context.params.action; // see '/config/publisher.json' --> publisherActions
+		var id = context.params.id; // UUID
+		var roles = context.content.roles || [];
 
-        var action = context.params.action;
-        var id = context.params.id;
+		var content = {};
+		content.message = [];
 
-        var roles = context.content.roles || [];
-        //var artifactManager = rxtManager.getArtifactManager(shortName);
+		// validating action
+		if (config.publisherActions.indexOf(action) == -1) {
+			log.error("Invalid action '" + action + "' invoked on a " + appType + " with UUID " +
+				id);
+			response.status = 422; // Unprocessable Entity (WebDAV; RFC 4918)
+			response.contentType = "application/json";
+			content.status = "Invalid Action";
+			content.message.push("Action '" + action + "' cannot be performed on " + appType + "s");
+			response.content = stringify(content);
+			return;
+		}
 
-        var artifactManager = rxtManager.getSystemArtifactManager(shortName,session);
-        var artifact = artifactManager.get(id);
-        var currentState = artifactManager.getLifecycleState(artifact).toString();
-        var carbon = require('carbon');
-        var um = server.userManager(server.current(session).tenantId);
-        var validRoles = um.allRoles();
-        var commentNeeded = false;
-        var publishAuthorized = true;
-        var msg={};
-        var publisherActions = config.publisherActions;
-        var user = server.current(session);
+		var carbon = require('carbon');
+		var userManager = server.userManager(server.current(session).tenantId);
+		var user = server.current(session);
 
-        if(publisherActions.indexOf(action) > -1) {
-            var um = server.userManager(server.current(session).tenantId);
-            var publishAuthorized = permissions.isAuthorized(user.username, config.permissions.webapp_publish, um);
-            log.debug("## Publish Authorized Check : " + publishAuthorized);
-        }
+		// check whether current user has publisher permissions
+		var authorizedPublisher = permissions.isAuthorized(user.username,
+			config.permissions.webapp_publish, userManager);
+		if (!authorizedPublisher) {
+			log.error("Insufficient permissions to perform '" + action + "' on " + appType);
+			response.status = 401;
+			response.contentType = "application/json";
+			content.status = "Access Denied";
+			content.message.push("You do not have publisher permissions to perform '" +
+				action + "' on " + appType + "s");
+			response.content = stringify(content);
+			return;
+		}
 
-        if (publishAuthorized) {
-            if (commentNeeded) {
-                response.sendError(400, 'This change requires that you insert a comment');
-            } else {
-                try {
-                    var artifact = artifactManager.get(id);
-                    var attributes = artifact.attributes;
+		// get artifact manager for appType
+		var artifactManager = rxtManager.getSystemArtifactManager(appType, session);
 
-                    var previourStatus = artifact['lifecycleState'];
-                    log.debug('Calling promoteLifecycleState for action : ' + action);
+		try {
+			var currentArtifact = artifactManager.get(id);
+		} catch (e) {
+			// this exception is thrown by
+			// GenericArtifactManager.getGenericArtifact(id) throws GovernanceException
+			log.error("The asset with UUID " + id + " could not be retrieved.");
+			log.error(e);
+			response.status = 404;
+			response.contentType = "application/json";
+			content.status = "Not Found";
+			content.message.push("The " + appType + " with UUID " + id + " cannot be retrieved");
+			response.content = stringify(content);
+			return;
+		}
 
-                    if (roles.length > 0) {
-                        roles.forEach(function (role) {
-                            um.authorizeRole(role, artifact.path, carbon.registry.actions.GET);
-                        });
-                    }
+		// grant permissions
+		if (roles.length > 0) {
+			var currentRole = null;
+			try {
+				roles.forEach(function (role) {
+					currentRole = role;
+					userManager.authorizeRole(currentRole, currentArtifact.path,
+						carbon.registry.actions.GET);
+				});
+			} catch (e) {
+				log.error("Cannot grant permissions to role '" + currentRole +
+					"' to perform action '" + carbon.registry.actions.GET + "'");
+				log.error(e);
+				// continue work flow
+			}
+		}
 
-                    if (permissions.isLCActionsPermitted(user.username, artifact.path, um)) {
-                        artifactManager.promoteLifecycleState(action, artifact);
-                        msg['status'] = 'ok';
-                        log.debug('Has permission to perform the action');
-                    } else {
-                        log.debug('Does not have permission to perform the action');
-                        msg['status'] = 'failed';
-                        msg['message'] = 'You do not have rights to perform the life-cycle operation';
-                        response.status = 401;
-                    }
+		// check permissions to perform life cycle action
+		try {
+			if (!permissions.isLCActionsPermitted(user.username, currentArtifact.path,
+					userManager)) {
+				log.error("Insufficient permissions to perform '" + action + "' on " + appType +
+					" for user " + user.username);
+				response.status = 401;
+				response.contentType = "application/json";
+				content.status = "Insufficient Permissions";
+				content.message.push("You do not have permissions to perform action '" + action +
+					"' on version " + currentArtifact.attributes.overview_version + " of '" +
+					currentArtifact.attributes.overview_name + "' " + appType);
+				response.content = stringify(content);
+				return;
+			}
+		} catch (e) {
+			// this exception is thrown by
+			// org.wso2.carbon.user.core.AuthorizationManager.isRoleAuthorized(roleName,
+			// 										resourceId, action) throws UserStoreException
+			log.error("Cannot retrieve permissions for action '" + action + "' on artifact '" +
+				currentArtifact.path + "' for user " + user.username);
+			log.error(e);
+			response.status = 500;
+			response.contentType = "application/json";
+			content.status = "Error";
+			content.message = "Cannot retrieve permissions for action '" + action + "'";
+			response.content = stringify(content);
+			return;
+		}
 
-                    var comment;
-                    if (context.content && (comment = parse(context.content).comment)) {
-                        var lcHistory = artifactManager.getLifecycleHistory(artifact);
-                        var lcHistoryXML = new XML(lcHistory.content);
-                        lcHistoryJSON = utility.xml.convertE4XtoJSON(lcHistoryXML);
-                        var newChangeOrder = lcHistoryJSON.item[0].order;
-                        require('/modules/comment.js').addLifecycleComment(artifactManager, artifact.path, comment, newChangeOrder);
-                    }
+		// retrieve previously published web app versions (same provider & name)
 
-                    //Enforcing restrict visibility logic
-                    if(action=="Publish") {
-                        var registry = new carbon.registry.Registry(server, {
-                            username: server.current(session).username,
-                            tenantId: server.current(session).tenantId
-                        });
+		// If everything went correctly in previous executions, previousArtifacts array should
+		// contain only 1 item. However due to some failure previousArtifacts can contain
+		// multiple items, that means there are more than 1 published version of this app.
+		// In order to handle these situation previousArtifacts array is processed as a
+		// multi-item array in the following code.
+		var previousArtifacts = [];
 
-                        var roleRestrictionPath = artifact.path + "role_restrictions";
-                        try{
-                            var permissionSet = registry.get(roleRestrictionPath);
-                            var content = '' + permissionSet.content;
+		try {
+			previousArtifacts = artifactManager.find(function (artifact) {
+				var provider = (artifact.attributes.overview_provider ==
+				currentArtifact.attributes.overview_provider);
+				var name = (artifact.attributes.overview_name ==
+				currentArtifact.attributes.overview_name);
+				return (provider && name && (artifact.lifecycleState == 'Published'));
+			}, null);
+		} catch (e) {
+			log.error("Cannot retrieve previously published " + appType + " " +
+				currentArtifact.attributes.overview_provider + "-" +
+				currentArtifact.attributes.overview_provider);
+			log.error(e);
+			// continue work flow
+		}
 
-                            if (content != "{}") {
-                                um.denyRole('Internal/everyone', artifact.path, carbon.registry.actions.GET);
-                                um.denyRole('system/wso2.anonymous.role', artifact.path, carbon.registry.actions.GET);
-                            }
-                        } catch (e) {
-                            log.debug('No role restrictions found for APP ' + id);
-                        }
-                    }
-                } catch (e) {
-                    log.debug('The asset with id: ' + id + ' could not be found.The following exception was thrown: ' + e);
-                    response.sendError(404, 'The asset with id: ' + id + ' could not be found.Please refer to the server log.');
-                }
-            }
+		var operationResult; // {isSuccess: true/false, message: ""}
 
-        } else {
-            msg['status'] = 'error';
-            msg['message'] = 'Action not permitted. Insufficient privileges.';
-        }
-        print(msg);
+		// for all previously published apps when publishing or re-publishing current app
+		// unpublish previously published version of this app
+		if (((action == "Publish") || (action == "Re-Publish")) && (previousArtifacts.length > 0)) {
+			var i;
+			for (i = 0; i < previousArtifacts.length; i++) {
+				operationResult = promoteArtifactLifeCycle(artifactManager, previousArtifacts[i],
+					appType, "Unpublish");
+				if (operationResult.isSuccess) {
+					content.message.push(operationResult.message);
+				} else {
+					// some error occurred in promoteArtifactLifeCycle function,
+					// abort further unpublishing previousArtifacts
+					break;
+				}
+			}
+			if (!operationResult.isSuccess) {
+				// something went wrong in the above loop, revert changes
+				for (var j = 0; j < i; j++) {
+					promoteArtifactLifeCycle(artifactManager, previousArtifacts[j], appType,
+						"Re-Publish");
+					// ignore errors when reverting changes
+				}
+				response.status = 500;
+				response.contentType = "application/json";
+				content.status = "Error";
+				content.message.push(operationResult.message); // error message from last operation
+				response.content = stringify(content);
+				return;
+			}
+		}
 
-});
+		// promote lifecycle of this app (current artifact)
+		operationResult = promoteArtifactLifeCycle(artifactManager, currentArtifact, appType, action);
+		if (operationResult.isSuccess) {
+			content.message.push(operationResult.message);
+		} else {
+			// some error occurred in promoteArtifactLifeCycle function,
+			// revert previously unpublished artifacts to Publish state
+			for (i = 0; i < previousArtifacts.length; i++) {
+				promoteArtifactLifeCycle(artifactManager, previousArtifacts[i], appType,
+					"Re-Publish");
+				// ignore errors when reverting changes
+			}
+			response.status = 500;
+			response.contentType = "application/json";
+			content.status = "Error";
+			content.message.push(operationResult.message); // error message from last operation
+			response.content = stringify(content);
+			return;
+		}
 
-/*
- The function returns the lifecycle structure of a given asset
- */
-  function obtainLifeCycle(type) {
-    CommonUtil = Packages.org.wso2.carbon.governance.lcm.util.CommonUtil;
-    var rootReg = rxtManager.registry.registry;
-    var configReg = rootReg.getChrootedRegistry('/_system/config');
+		// add comments for life cycle promotion
+		try {
+			var comment = null;
+			if (context.content && (comment = parse(context.content).comment)) {
+				var lcHistory = artifactManager.getLifecycleHistory(currentArtifact);
+				var lcHistoryXML = new XML(lcHistory.content);
+				lcHistoryJSON = utility.xml.convertE4XtoJSON(lcHistoryXML);
+				var newChangeOrder = lcHistoryJSON.item[0].order;
+				var commentHandler = require('/modules/comment.js');
+				commentHandler.addLifecycleComment(artifactManager, currentArtifact.path, comment,
+					newChangeOrder);
+			}
+		} catch (e) {
+			log.error("Cannot add comment '" + comment + " for action '" + action + "' on " +
+				"artifact '" + currentArtifact.path + "' for user " + user.username);
+			log.error(e);
+			// continue work flow
+		}
 
-    //Obtain a model of the type
-    var model = modelManager.getModel(type);
+		// only when publishing
+		if (action == "Publish") {
 
-    var lifecycle = model.get('*.lifeCycle').value;
+			//Enforcing restrict visibility logic
+			var registry = new carbon.registry.Registry(server, {
+				username: server.current(session).username,
+				tenantId: server.current(session).tenantId
+			});
+			var roleRestrictionPath = currentArtifact.path + "role_restrictions";
+			try {
+				var permissionSet = registry.get(roleRestrictionPath);
+				var permissionContent = '' + permissionSet.content;
+				if (permissionContent) {
+					userManager.denyRole('Internal/everyone', currentArtifact.path,
+						carbon.registry.actions.GET);
+					userManager.denyRole('system/wso2.anonymous.role', currentArtifact.path,
+						carbon.registry.actions.GET);
+				}
+			} catch (e) {
+				log.debug('No role restrictions found for APP ' + id);
+				// continue work flow
+			}
+		}
 
-    var data = CommonUtil.getLifecycleConfiguration(lifecycle, configReg);
+		// for all previously published apps when publishing or re-publishing current app
+		// move subscriptions of that app version to this app version
+		if (((action == "Publish") || (action == "Re-Publish")) && (previousArtifacts.length > 0)) {
 
-    //Convert to an xml
-    data = '<?xml version="1.0" encoding="ISO-8859-1"?>' + data;
-    var xml = new XML(data);
+			for (i = 0; i < previousArtifacts.length; i++) {
+				operationResult = moveSubscriptions(previousArtifacts[i], currentArtifact, appType);
+				if (operationResult.isSuccess) {
+					content.message.push(operationResult.message);
+				} else {
+					// some error occurred in moveSubscriptions function
+					// abort further subscription moving
+					break;
+				}
+			}
+			if (!operationResult.isSuccess) {
+				// something went wrong in the above loop, revert subscription moving
+				if (previousArtifacts.length == 1) {
+					// if there are more than 1 previously published app, then we cannot revert
+					// moved subscriptions :(
+					moveSubscriptions(currentArtifact, previousArtifacts[0], appType);
+					// ignore errors when reverting changes
+				}
+				// revert this app (current artifact) to unpublish state
+				promoteArtifactLifeCycle(artifactManager, currentArtifact, appType, "Unpublish");
+				// revert previously unpublished artifacts to Publish state
+				for (i = 0; i < previousArtifacts.length; i++) {
+					promoteArtifactLifeCycle(artifactManager, previousArtifacts[i], appType,
+						"Re-Publish");
+					// ignore errors when reverting changes
+				}
+				response.status = 500;
+				response.contentType = "application/json";
+				content.status = "Error";
+				content.message.push(operationResult.message); // error message from last operation
+				response.content = stringify(content);
+				return;
+			}
 
-    //Convert to a json
-    data = data.replace('<?xml version="1.0" encoding="ISO-8859-1"?>', '');
-    var lcJSON = utility.xml.convertE4XtoJSON(xml);
+		}
 
-    return lcJSON;
-  }
+		// everything went great
+		response.status = 200;
+		response.contentType = "application/json";
+		content.status = "Success";
+		response.content = stringify(content);
 
-		routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/{type}/{id}', function(context) {
-    try {
+	});
 
-        appPublishWFExecutor = org.wso2.carbon.appmgt.impl.workflow.WorkflowExecutorFactory.getInstance().getWorkflowExecutor("AM_APPLICATION_PUBLISH");
-        var isAsynchronousFlow = appPublishWFExecutor.isAsynchronus();
-        var shortName=context.params.type;
-        var id=context.params.id;
-        var artifactManager=rxtManager.getArtifactManager(shortName);
-        var artifact=artifactManager.get(id);
-        var state=artifactManager.getLifecycleState(artifact);
-        var actions=artifactManager.availableActions(artifact);
-        var lcJSON=obtainLifeCycle(shortName);
-
-        var msg={};
-        msg['status']='ok';
-        msg['state']=state;
-        msg['actions']=actions;
-        msg['lifecycle']=lcJSON;
-        msg['asynch']=isAsynchronousFlow;
-
-        log.debug(msg);
-        print(msg);
-    } catch(e){
-        log.debug('The asset with id: '+id+' could not be found.The following exception was thrown: '+e);
-        response.sendError(404,'The asset with id: '+id+' could not be found.Please refere to the server log.');
-    }
-});
-  
-routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/subscribe/{type}/{id}', function(context) {
-    try {
-	var shortName=context.params.type;
-  	var id=context.params.id;
-  	var artifactManager=rxtManager.getArtifactManager(shortName);
-  	var artifact=artifactManager.get(id);
-  	var state=artifactManager.getLifecycleState(artifact);
-	var webappProvider = artifact.attributes['overview_provider'];
-  	var webappName = artifact.attributes['overview_name'];
-  	var webappVersion = artifact.attributes['overview_version'];
-  	
-	var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
-  	var apiIdentifierObj = new apiIdentifier(webappProvider, webappName, webappVersion);
-  	       
-  	var appMDAO = Packages.org.wso2.carbon.appmgt.impl.dao.AppMDAO;
-  	var appMDAOObj = new appMDAO();
-  	var count = appMDAOObj.getAPISubscriptionCountByAPI(apiIdentifierObj);
-  	var subscribed = false;
-  	if(count > 0){
-		subscribed = true;
-  	}
-  	        
-  	var msg={};
-  	msg['subscribed'] = subscribed;
-  	msg['state'] = state;
-  	 	
-  	log.debug(msg);
-  	print(msg);
-    } catch(e){	
-	log.debug('The asset with id: '+id+' could not be found.The following exception was thrown: '+e);
-  	response.sendError(404,'The asset with id: '+id+' could not be found.Please refere to the server log.');
-    }
-});
- 
-routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/information/meta/{type}/roles', function(context) {
-    var shortName = context.params.type;
-    var carbon = require('carbon');
-    var realmService = carbon.server.osgiService('org.wso2.carbon.user.core.service.RealmService');
-    var realm = realmService.getTenantUserRealm(server.current(session).tenantId);
-
-    var allRoles = realm.getUserStoreManager().getRoleNames();
-
-    var lifecycleJSON = obtainLifeCycle(shortName);
-    var relatedRoles = [];
-
-    // TODO: needs to go in a config
-    var criticalRoles = ['admin'];
-
-    lifecycleJSON.configuration[0].lifecycle[0].scxml[0].state.forEach(function(state) {
-      if (state.id != "Retired") {
-	      state.datamodel.forEach(function(dataModel) {
-		dataModel.data.forEach(function(data) {
-		  data.execution.forEach(function(execution) {
-		    execution.parameter.forEach(function(parameter) {
-		      if (parameter.name.indexOf('STATE_RULE') > -1) {
-		        var role = parameter.value.split(':')[0];
-		        if (role.indexOf('{') === -1) {
-		          relatedRoles.push(parameter.value.split(':')[0]);
-		        }
-		      }
-		    })
-		  })
-		})
-	      })
+	function promoteArtifactLifeCycle(artifactManager, artifact, artifactType, action) {
+		var result = {};
+		try {
+			artifactManager.promoteLifecycleState(action, artifact);
+			result.isSuccess = true;
+			result.message = getMessageForLifeCyclePromotion(artifact, artifactType, action, true);
+		} catch (e) {
+			// GovernanceArtifactImpl.invokeAction(action) throws GovernanceException
+			result.isSuccess = false;
+			result.message = getMessageForLifeCyclePromotion(artifact, artifactType, action, false);
+			log.error(result.message);
+			log.error(e);
+		}
+		return result;
 	}
-    });
 
-    for (var i = 0; i < criticalRoles.length; i++) {
-      if (allRoles.indexOf(criticalRoles[i]) > -1) {
-        allRoles.splice(i, 1);
-      }
-    };
+	function getMessageForLifeCyclePromotion(artifact, artifactType, action, isSuccess) {
+		// actions (from '/config/publisher.json' --> publisherActions):
+		// Submit for Review, Approve , Reject, Publish, Unpublish, Re-Publish, Deprecate, Retire, Recycle
+		if (isSuccess) {
+			var msgAction = null;
+			if (action == "Submit for Review") {
+				msgAction = "submitted for review"
+			} else if ((action == "Approve") || (action == "Deprecate") ||
+				(action == "Retire") || (action == "Recycle")) {
+				msgAction = action.toLowerCase() + "d";
+			} else {
+				// Reject, Publish, Unpublish, Re-Publish
+				msgAction = action.toLowerCase() + "ed";
+			}
+			return "Version " + artifact.attributes.overview_version + " of '" +
+				artifact.attributes.overview_name + "' " + artifactType + " " +
+				msgAction + " successfully.";
+		} else {
+			return "Cannot perform action '" + action + "' on version " +
+				artifact.attributes.overview_version + " of '" +
+				artifact.attributes.overview_name + "' " + artifactType +
+				" which is in '" + artifact.lifecycleState + "' state";
+		}
+	}
 
-    // TODO: needs to go in a config
-    if (relatedRoles.indexOf('Internal/everyone') === -1 && relatedRoles.indexOf('system/wso2.anonymous.role') === -1) {
-      // if there are no permissions for anoanymous users and registered users
+	function moveSubscriptions(fromArtifact, toArtifact, artifactType) {
+		var result = {};
+		try {
+			var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
+			var apiProviderImpl = Packages.org.wso2.carbon.appmgt.impl.APIProviderImpl;
+			var provider = new apiProviderImpl(jagg.getUser());
 
-      for (var i = 0; i < allRoles.length; i++) {
-        if (relatedRoles.indexOf(allRoles[i]) === -1) {
-          // if the role is not included in the lifecycle, remove the role from the list of possible roles
-          allRoles.splice(i, 1);
-        }
-      }
-    }
+			var fromIdentifier = new apiIdentifier(fromArtifact.attributes.overview_provider,
+				fromArtifact.attributes.overview_name,
+				fromArtifact.attributes.overview_version);
+			var toIdentifier = new apiIdentifier(toArtifact.attributes.overview_provider,
+				toArtifact.attributes.overview_name,
+				toArtifact.attributes.overview_version);
 
-    var matchedRoles = [];
+			var count = provider.moveSubscriptions(fromIdentifier, toIdentifier);
+			result.isSuccess = true;
+			result.message = count + " subscription(s) moved from version " +
+				fromArtifact.attributes.overview_version + " to " +
+				toArtifact.attributes.overview_version + " of '" +
+				fromArtifact.attributes.overview_name + "' " + artifactType + ".";
+		} catch (e) {
+			// this exception is thrown by
+			// APIProviderImpl.moveSubscriptions(fromIdentifier, toIdentifier) throws
+			//														AppManagementException
+			result.isSuccess = false;
+			result.message = "Cannot move subscriptions from version " +
+				fromArtifact.attributes.overview_version + " of '" +
+				fromArtifact.attributes.overview_name + "' " + artifactType + " to " +
+				toArtifact.attributes.overview_version + " of '" +
+				toArtifact.attributes.overview_name + "' " + artifactType;
+			log.error(result.message);
+			log.error(e);
+		}
+		return result;
+	}
 
-    var query = request.getQueryString() && request.getQueryString().split('=')[1];
+	/*
+	 The function returns the lifecycle structure of a given asset
+	 */
+	function obtainLifeCycle(type) {
+		CommonUtil = Packages.org.wso2.carbon.governance.lcm.util.CommonUtil;
+		var rootReg = rxtManager.registry.registry;
+		var configReg = rootReg.getChrootedRegistry('/_system/config');
 
-    if (!query) {
-      query = '';
-    }
+		//Obtain a model of the type
+		var model = modelManager.getModel(type);
 
-    for (var i = 0; i < allRoles.length; i++) {
-      if (allRoles[i].indexOf(query) > -1) {
-        matchedRoles.push({
-          id: allRoles[i],
-          name: allRoles[i]
-        });
-      }
-    };
+		var lifecycle = model.get('*.lifeCycle').value;
 
-    matchedRoles = parse(stringify(matchedRoles));
+		var data = CommonUtil.getLifecycleConfiguration(lifecycle, configReg);
 
-    var hiddenRoles = config.hiddenRoles;
+		//Convert to an xml
+		data = '<?xml version="1.0" encoding="ISO-8859-1"?>' + data;
+		var xml = new XML(data);
 
-    var filteredRoles = [];
+		//Convert to a json
+		data = data.replace('<?xml version="1.0" encoding="ISO-8859-1"?>', '');
+		var lcJSON = utility.xml.convertE4XtoJSON(xml);
 
-    if(matchedRoles.length > 0) {
-        for (var i = 0; i < matchedRoles.length; i++) {
-            if ((matchedRoles[i].id.indexOf("Internal/private_") == -1) && (hiddenRoles.indexOf(matchedRoles[i].id) == -1)) {
-                filteredRoles.push(matchedRoles[i]);
-            }
-        }
-    }
+		return lcJSON;
+	}
+
+	routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/{type}/{id}', function (context) {
+		try {
+
+			appPublishWFExecutor = org.wso2.carbon.appmgt.impl.workflow.WorkflowExecutorFactory.getInstance().getWorkflowExecutor("AM_APPLICATION_PUBLISH");
+			var isAsynchronousFlow = appPublishWFExecutor.isAsynchronus();
+			var shortName = context.params.type;
+			var id = context.params.id;
+			var artifactManager = rxtManager.getArtifactManager(shortName);
+			var artifact = artifactManager.get(id);
+			var state = artifactManager.getLifecycleState(artifact);
+			var actions = artifactManager.availableActions(artifact);
+			var lcJSON = obtainLifeCycle(shortName);
+
+			var msg = {};
+			msg['status'] = 'ok';
+			msg['state'] = state;
+			msg['actions'] = actions;
+			msg['lifecycle'] = lcJSON;
+			msg['asynch'] = isAsynchronousFlow;
+
+			log.debug(msg);
+			print(msg);
+		} catch (e) {
+			log.debug('The asset with id: ' + id + ' could not be found.The following exception was thrown: ' + e);
+			response.sendError(404, 'The asset with id: ' + id + ' could not be found.Please refere to the server log.');
+		}
+	});
+
+	routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/subscribe/{type}/{id}', function (context) {
+		try {
+			var shortName = context.params.type;
+			var id = context.params.id;
+			var artifactManager = rxtManager.getArtifactManager(shortName);
+			var artifact = artifactManager.get(id);
+			var state = artifactManager.getLifecycleState(artifact);
+			var webappProvider = artifact.attributes['overview_provider'];
+			var webappName = artifact.attributes['overview_name'];
+			var webappVersion = artifact.attributes['overview_version'];
+
+			var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
+			var apiIdentifierObj = new apiIdentifier(webappProvider, webappName, webappVersion);
+
+			var appMDAO = Packages.org.wso2.carbon.appmgt.impl.dao.AppMDAO;
+			var appMDAOObj = new appMDAO();
+			var count = appMDAOObj.getAPISubscriptionCountByAPI(apiIdentifierObj);
+			var subscribed = false;
+			if (count > 0) {
+				subscribed = true;
+			}
+
+			var msg = {};
+			msg['subscribed'] = subscribed;
+			msg['state'] = state;
+
+			log.debug(msg);
+			print(msg);
+		} catch (e) {
+			log.debug('The asset with id: ' + id + ' could not be found.The following exception was thrown: ' + e);
+			response.sendError(404, 'The asset with id: ' + id + ' could not be found.Please refere to the server log.');
+		}
+	});
+
+	routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/information/meta/{type}/roles', function (context) {
+		var shortName = context.params.type;
+		var carbon = require('carbon');
+		var realmService = carbon.server.osgiService('org.wso2.carbon.user.core.service.RealmService');
+		var realm = realmService.getTenantUserRealm(server.current(session).tenantId);
+
+		var allRoles = realm.getUserStoreManager().getRoleNames();
+
+		var lifecycleJSON = obtainLifeCycle(shortName);
+		var relatedRoles = [];
+
+		// TODO: needs to go in a config
+		var criticalRoles = ['admin'];
+
+		lifecycleJSON.configuration[0].lifecycle[0].scxml[0].state.forEach(function (state) {
+			if (state.id != "Retired") {
+				state.datamodel.forEach(function (dataModel) {
+					dataModel.data.forEach(function (data) {
+						data.execution.forEach(function (execution) {
+							execution.parameter.forEach(function (parameter) {
+								if (parameter.name.indexOf('STATE_RULE') > -1) {
+									var role = parameter.value.split(':')[0];
+									if (role.indexOf('{') === -1) {
+										relatedRoles.push(parameter.value.split(':')[0]);
+									}
+								}
+							})
+						})
+					})
+				})
+			}
+		});
+
+		for (var i = 0; i < criticalRoles.length; i++) {
+			if (allRoles.indexOf(criticalRoles[i]) > -1) {
+				allRoles.splice(i, 1);
+			}
+		}
+		;
+
+		// TODO: needs to go in a config
+		if (relatedRoles.indexOf('Internal/everyone') === -1 && relatedRoles.indexOf('system/wso2.anonymous.role') === -1) {
+			// if there are no permissions for anoanymous users and registered users
+
+			for (var i = 0; i < allRoles.length; i++) {
+				if (relatedRoles.indexOf(allRoles[i]) === -1) {
+					// if the role is not included in the lifecycle, remove the role from the list of possible roles
+					allRoles.splice(i, 1);
+				}
+			}
+		}
+
+		var matchedRoles = [];
+
+		var query = request.getQueryString() && request.getQueryString().split('=')[1];
+
+		if (!query) {
+			query = '';
+		}
+
+		for (var i = 0; i < allRoles.length; i++) {
+			if (allRoles[i].indexOf(query) > -1) {
+				matchedRoles.push({
+					id: allRoles[i],
+					name: allRoles[i]
+				});
+			}
+		}
+		;
+
+		matchedRoles = parse(stringify(matchedRoles));
+
+		var hiddenRoles = config.hiddenRoles;
+
+		var filteredRoles = [];
+
+		if (matchedRoles.length > 0) {
+			for (var i = 0; i < matchedRoles.length; i++) {
+				if ((matchedRoles[i].id.indexOf("Internal/private_") == -1) && (hiddenRoles.indexOf(matchedRoles[i].id) == -1)) {
+					filteredRoles.push(matchedRoles[i]);
+				}
+			}
+		}
 
 
-    response.contentType = 'application/json';
-    response.status = 200;
-    response.content = filteredRoles;
-});
+		response.contentType = 'application/json';
+		response.status = 200;
+		response.content = filteredRoles;
+	});
 
-routeManager.register('GET','publisher','/publisher/api/lifecycle/checklist/{type}/{id}',function(context){
-   //log.debug('short name: '+context.params.type);
+	routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/checklist/{type}/{id}', function (context) {
+		//log.debug('short name: '+context.params.type);
 
-    try {
-      log.debug('Entered check list/type/id ');
-      var shortName = context.params.type;
-      var id = context.params.id;
-      var artifactManager = rxtManager.getArtifactManager(shortName);
-      var artifact = artifactManager.get(id);
-      var checkListItems = artifactManager.getCheckListItemNames(artifact);
-      var msg = {};
-      msg['status'] = 'ok';
-      msg['checkListItems'] = checkListItems;
-      print(msg);
-    } catch (e) {
-      log.debug('The check list names were not retrieved for artifact: ' + id + ' .The following exception was thrown: ' + e);
-      response.sendError(404, 'The check list item names could not be retrieved for artifact: ' + id + ' .Please refer to the server log.');
-    }
-  });
+		try {
+			log.debug('Entered check list/type/id ');
+			var shortName = context.params.type;
+			var id = context.params.id;
+			var artifactManager = rxtManager.getArtifactManager(shortName);
+			var artifact = artifactManager.get(id);
+			var checkListItems = artifactManager.getCheckListItemNames(artifact);
+			var msg = {};
+			msg['status'] = 'ok';
+			msg['checkListItems'] = checkListItems;
+			print(msg);
+		} catch (e) {
+			log.debug('The check list names were not retrieved for artifact: ' + id + ' .The following exception was thrown: ' + e);
+			response.sendError(404, 'The check list item names could not be retrieved for artifact: ' + id + ' .Please refer to the server log.');
+		}
+	});
 
-/*
-  Gets the checked or unchecked state of a check list item
-*/
-  routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/checklistitem/{index}/{type}/{id}', function(context) {
-    try {
-      log.debug('Entered checklistitem/index/type/id ');
-      var checkListItemIndex = context.params.index;
-      var shortName = context.params.type;
-      var id = context.params.id;
+	/*
+	 Gets the checked or unchecked state of a check list item
+	 */
+	routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/checklistitem/{index}/{type}/{id}', function (context) {
+		try {
+			log.debug('Entered checklistitem/index/type/id ');
+			var checkListItemIndex = context.params.index;
+			var shortName = context.params.type;
+			var id = context.params.id;
 
-      var artifactManager = rxtManager.getArtifactManager(shortName);
+			var artifactManager = rxtManager.getArtifactManager(shortName);
 
-      var artifact = artifactManager.get(id);
-      var isChecked = artifactManager.isItemChecked(checkListItemIndex, artifact);
-      var msg = {};
-      msg['status'] = 'ok';
-      msg['index'] = checkListItemIndex;
-      msg['isChecked'] = isChecked;
-      print(msg);
-    } catch (e) {
-      log.debug('The check list item index state could not be  retrieved for aritfact: ' + id + ' .The following exception was thrown: ' + e);
-      response.sendError(404, 'The check list item state could not be retrieved for artifact: ' + id + ' .Please refer to the server log.');
-    }
-  });
+			var artifact = artifactManager.get(id);
+			var isChecked = artifactManager.isItemChecked(checkListItemIndex, artifact);
+			var msg = {};
+			msg['status'] = 'ok';
+			msg['index'] = checkListItemIndex;
+			msg['isChecked'] = isChecked;
+			print(msg);
+		} catch (e) {
+			log.debug('The check list item index state could not be  retrieved for aritfact: ' + id + ' .The following exception was thrown: ' + e);
+			response.sendError(404, 'The check list item state could not be retrieved for artifact: ' + id + ' .Please refer to the server log.');
+		}
+	});
 
-routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/information/history/{type}/{id}/{version}', function(context) {
-    try {
-      var shortName = context.params.type;
-      var id = context.params.id;
-      var artifactManager = rxtManager.getArtifactManager(shortName);
-      var artifact = artifactManager.get(id);
-      var historyRes = artifactManager.getLifecycleHistory(artifact);
-      var historyComments = require('/modules/comment.js').getLifecycleComments(artifactManager, artifact);
-      var json = {};
+	routeManager.register('GET', 'publisher', '/publisher/api/lifecycle/information/history/{type}/{id}/{version}', function (context) {
+		try {
+			var shortName = context.params.type;
+			var id = context.params.id;
+			var artifactManager = rxtManager.getArtifactManager(shortName);
+			var artifact = artifactManager.get(id);
+			var historyRes = artifactManager.getLifecycleHistory(artifact);
+			var historyComments = require('/modules/comment.js').getLifecycleComments(artifactManager, artifact);
+			var json = {};
 
-      if (historyRes != undefined) {
-        var xml = new XML(historyRes.content);
-        json = utility.xml.convertE4XtoJSON(xml);
-      }
-      print(json);
-   }catch(e){
-       log.debug('The lifecycle history for artifact: '+id+' could not be found.The following exception was thrown: '+e);
-       response.sendError(404,'The lifecycle history details could not be retrieved for artifact: '+id+'.Pleas refer to the server log.');
-   }
-});
+			if (historyRes != undefined) {
+				var xml = new XML(historyRes.content);
+				json = utility.xml.convertE4XtoJSON(xml);
+			}
+			print(json);
+		} catch (e) {
+			log.debug('The lifecycle history for artifact: ' + id + ' could not be found.The following exception was thrown: ' + e);
+			response.sendError(404, 'The lifecycle history details could not be retrieved for artifact: ' + id + '.Pleas refer to the server log.');
+		}
+	});
 
-var securityModule=require('/modules/security/security.manager.js').securityManagementModule();
+	var securityModule = require('/modules/security/security.manager.js').securityManagementModule();
 
-var sm=securityModule.cached();
+	var sm = securityModule.cached();
 
 //This will short circuit the handling of the requests
-var passed=sm.check(session,function(){
-    response.sendError(401);
-});
+	var passed = sm.check(session, function () {
+		response.sendError(401);
+	});
 
-  //Stop servicing the request if the check failed
-  if (passed) {
-    var store = require('store');
-    var user = store.user;
-    var utility = require('/modules/utility.js').rxt_utility();
-    var server = store.server;
+	//Stop servicing the request if the check failed
+	if (passed) {
+		var store = require('store');
+		var user = store.user;
+		var utility = require('/modules/utility.js').rxt_utility();
+		var server = store.server;
 
-    var publisher = require('/modules/publisher.js').publisher(request, session);
-    var rxtManager = publisher.rxtManager;
-    var modelManager = publisher.modelManager;
+		var publisher = require('/modules/publisher.js').publisher(request, session);
+		var rxtManager = publisher.rxtManager;
+		var modelManager = publisher.modelManager;
 
-    routeManager.handle(request, response);
-  }
+		routeManager.handle(request, response);
+	}
 
 }, request, response, session);
 
@@ -513,61 +767,59 @@ var passed=sm.check(session,function(){
 
 
 
-function mobileAppsLifeCycleChange(context, rxtManager, utility){
+function mobileAppsLifeCycleChange(context, rxtManager, utility) {
 
-    var store = require('store');
-    var server = store.server;
-	var msg={};
+	var store = require('store');
+	var server = store.server;
+	var msg = {};
 
-    var permissions=require('/modules/permissions.js').permissions;
-    var user = server.current(session);
-    var um = server.userManager(server.current(session).tenantId);
-    var log = new Log();
-
-
-    var shortName = context.params.type;
-    var action = context.params.action;
-    var id = context.params.id;
-
-    //var artifactManager = rxtManager.getArtifactManager(shortName);
-    var artifactManager = rxtManager.getSystemArtifactManager(shortName,session);
-
-    try {
-        var artifact = artifactManager.get(id);
-        log.debug('Calling promoteLifecycleState for action : '+action);
-        var attributes = artifact.attributes;
-
-        if (permissions.isLCActionsPermitted(user.username, artifact.path, um)) {
-        var previourStatus = artifact['lifecycleState'];
-        log.info('Calling promoteLifecycleState for action mobile : ' + action);
-
-        artifactManager.promoteLifecycleState(action,artifact);
-
-        var comment;
-        if (context.content && (comment=parse(context.content).comment) ) {
-            var lcHistory = artifactManager.getLifecycleHistory(artifact);
-            var lcHistoryXML = new XML(lcHistory.content);
-
-            lcHistoryJSON = utility.xml.convertE4XtoJSON(lcHistoryXML);
-            var newChangeOrder = lcHistoryJSON.item[0].order;
-            require('/modules/comment.js').addLifecycleComment(artifactManager, artifact.path, comment, newChangeOrder);
-        }
-        msg['status']='ok';
-        print(msg);
-        } else {
-            log.debug('Does not have permission to perform the action');
-		    msg['status'] = 'failed';
-            msg['message'] = 'You do not have rights to perform the life-cycle operation';
-		    print(msg);
-            response.status = 401;
-        }
-    }
-    catch (e) {
-        log.debug('The asset with id: '+id+' could not be found.The following exception was thrown: '+e);
-        response.sendError(404,'The asset with id: '+id+' could not be found.Please refer to the server log.');
-    }
+	var permissions = require('/modules/permissions.js').permissions;
+	var user = server.current(session);
+	var um = server.userManager(server.current(session).tenantId);
+	var log = new Log();
 
 
+	var shortName = context.params.type;
+	var action = context.params.action;
+	var id = context.params.id;
+
+	//var artifactManager = rxtManager.getArtifactManager(shortName);
+	var artifactManager = rxtManager.getSystemArtifactManager(shortName, session);
+
+	try {
+		var artifact = artifactManager.get(id);
+		log.debug('Calling promoteLifecycleState for action : ' + action);
+		var attributes = artifact.attributes;
+
+		if (permissions.isLCActionsPermitted(user.username, artifact.path, um)) {
+			var previourStatus = artifact['lifecycleState'];
+			log.info('Calling promoteLifecycleState for action mobile : ' + action);
+
+			artifactManager.promoteLifecycleState(action, artifact);
+
+			var comment;
+			if (context.content && (comment = parse(context.content).comment)) {
+				var lcHistory = artifactManager.getLifecycleHistory(artifact);
+				var lcHistoryXML = new XML(lcHistory.content);
+
+				lcHistoryJSON = utility.xml.convertE4XtoJSON(lcHistoryXML);
+				var newChangeOrder = lcHistoryJSON.item[0].order;
+				require('/modules/comment.js').addLifecycleComment(artifactManager, artifact.path, comment, newChangeOrder);
+			}
+			msg['status'] = 'ok';
+			print(msg);
+		} else {
+			log.debug('Does not have permission to perform the action');
+			msg['status'] = 'failed';
+			msg['message'] = 'You do not have rights to perform the life-cycle operation';
+			print(msg);
+			response.status = 401;
+		}
+	}
+	catch (e) {
+		log.debug('The asset with id: ' + id + ' could not be found.The following exception was thrown: ' + e);
+		response.sendError(404, 'The asset with id: ' + id + ' could not be found.Please refer to the server log.');
+	}
 
 
 }
