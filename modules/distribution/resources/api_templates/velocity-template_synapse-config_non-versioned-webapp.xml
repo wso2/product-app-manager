@@ -1,0 +1,110 @@
+<!--
+ ~ Copyright (c) 2005-2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ ~
+ ~ WSO2 Inc. licenses this file to you under the Apache License,
+ ~ Version 2.0 (the "License"); you may not use this file except
+ ~ in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~    http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing,
+ ~ software distributed under the License is distributed on an
+ ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ ~ KIND, either express or implied.  See the License for the
+ ~ specific language governing permissions and limitations
+ ~ under the License.
+ -->
+
+<api xmlns="http://ws.apache.org/ns/synapse"
+	 name="$!apiName" context="$!apiContext" transports="$!transport">
+
+	#foreach($resource in $resources)
+		<resource xmlns="http://ws.apache.org/ns/synapse"
+		#if($resource.getUriTemplate().contains("{") ||
+				($resource.getUriTemplate().contains("*") && !$resource.getUriTemplate().endsWith("/*")))
+			uri-template="$resource.getUriTemplate()"
+		#else
+			url-mapping="$resource.getUriTemplate()"
+		#end
+		methods="$resource.getMethodsAsString()" faultSequence="fault">
+
+		<inSequence>
+			<property name="noVersion"
+					  expression="get-property('transport', 'WSO2_APPM_INVOKED_WITHOUT_VERSION')"/>
+			<filter source="get-property('noVersion')" regex="true">
+				<then>
+					<log level="custom">
+						<property name="STATUS"
+								  value="Faulty invoking through non-versioned webapp configuration. Dropping message to avoid recursion."/>
+					</log>
+					<payloadFactory media-type="xml">
+						<format>
+							<am:fault xmlns:am="http://wso2.org/appmanager">
+								<am:code>500</am:code>
+								<am:type>Status report</am:type>
+								<am:message>Internal Server Error</am:message>
+								<am:description>
+									Faulty invoking through non-versioned webapp configuration
+								</am:description>
+							</am:fault>
+						</format>
+						<args/>
+					</payloadFactory>
+					<property name="HTTP_SC" value="500" scope="axis2"/>
+					<property name="RESPONSE" value="true"/>
+					<header name="To" action="remove"/>
+					<property name="NO_ENTITY_BODY" scope="axis2" action="remove"/>
+					<property name="ContentType" scope="axis2" action="remove"/>
+					<property name="Authorization" scope="transport" action="remove"/>
+					<property name="Host" scope="transport" action="remove"/>
+					<property name="Accept" scope="transport" action="remove"/>
+					<send/>
+				</then>
+				<else>
+					<header name="WSO2_APPM_INVOKED_WITHOUT_VERSION" scope="transport" value="true"/>
+					<!--synapse variables in 'uri-template' tags MUST begin with 'uri.var.'-->
+					<property name="uri.var.ip" expression="get-property('synapse.host.ip')"/>
+					#if( $transport == "https" )
+					<property name="uri.var.portnum" expression="get-property('https.nio.port')"/>
+					#else
+					<property name="uri.var.portnum" expression="get-property('http.nio.port')"/>
+					#end
+					<send>
+						<endpoint>
+							## change localhost to ip address
+							#if( $transport == "https" )
+							<http uri-template="https://{uri.var.ip}:{uri.var.portnum}/$!{forwardAppContext}/${forwardAppVersion}">
+							#else
+							<http uri-template="http://{uri.var.ip}:{uri.var.portnum}/$!{forwardAppContext}/${forwardAppVersion}">
+								#end
+								<timeout>
+									<duration>60000</duration>
+									<responseAction>fault</responseAction>
+								</timeout>
+								<suspendOnFailure>
+									<progressionFactor>1.0</progressionFactor>
+								</suspendOnFailure>
+								<markForSuspension>
+									<retriesBeforeSuspension>0</retriesBeforeSuspension>
+									<retryDelay>0</retryDelay>
+								</markForSuspension>
+							</http>
+						</endpoint>
+					</send>
+				</else>
+			</filter>
+		</inSequence>
+
+		<outSequence>
+			<send/>
+		</outSequence>
+
+		</resource>
+	#end  ## end of resource iterator
+
+	<handlers>
+		<handler class="org.wso2.carbon.appmgt.gateway.handlers.common.SynapsePropertiesHandler"/>
+	</handlers>
+
+</api>
