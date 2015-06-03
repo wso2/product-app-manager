@@ -80,6 +80,6 @@
       "mobileapp_publish": "/permission/admin/manage/mobileapp/publish",
       "mobileapp_delete": "/permission/admin/manage/mobileapp/delete"
     },
-    "publisherActions":["Publish","Approve","Reject","Unpublish","Deprecate","Retire","Recycle","Re-Publish"],
+    "publisherActions":["Publish","Approve","Reject","Unpublish","Deprecate","Retire","Recycle","Re-Publish","Submit for Review"],
     "hiddenRoles":["admin","Internal/subscriber","Internal/publisher","Internal/creator"]
 }
