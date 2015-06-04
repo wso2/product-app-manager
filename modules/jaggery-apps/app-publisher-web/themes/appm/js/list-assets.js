@@ -4,7 +4,7 @@ $(".btn-action").click(function (e) {
 	var action = $(this).data("action");
 
 	if (action == "Reject") {
-		showCommentModel("Reason for Rejection", action, app);
+		showCommentModel("Reason for Rejection", action, app, "webapp");
 	} else {
 		jQuery.ajax({
 			url: '/publisher/api/lifecycle/' + action + '/webapp/' + app,
@@ -133,12 +133,15 @@ var showMessageModel = function (msg, head, type) {
 
 };
 
-var showCommentModel = function (head, action, app) {
+var showCommentModel = function (head, action, app, type) {
 	$('#messageModal3').html($('#confirmation-data1').html());
 	$('#messageModal3 h4.modal-title').html((head));
 	$('#messageModal3 #webappName').val(app);
 	$('#messageModal3 #action').val(action);
 	$('#messageModal3').modal();
+	$("#messageModal3").on('hidden.bs.modal', function () {
+		window.location = '/publisher/assets/' + type + '/';
+	});
 };
 
 function updateQRCode(text) {
