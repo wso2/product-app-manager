@@ -86,7 +86,13 @@ require('/modules/publisher.js').exec(function(ctx) {
                 return "";
             }
             var uid= makeid();
-            var file_name = Packages.java.lang.System.getProperty("carbon.home") + mam_config.filePreciseLocation+uid+file_n;
+
+            if(mam_config.filePreciseLocation.substring(0, 1) === "/"){
+                var file_name = mam_config.filePreciseLocation+uid+file_n;
+            }else{
+                var file_name = Packages.java.lang.System.getProperty("carbon.home") + "/" + mam_config.filePreciseLocation+uid+file_n;
+            }
+
 
             var fileTemp=new File( 'file://' + file_name);
             try{
@@ -187,13 +193,30 @@ require('/modules/publisher.js').exec(function(ctx) {
         request["webapps"] = stringify(webapps); 
         var deployerClass = Packages.org.wso2.carbon.appmgt.sample.deployer.deploy.Deployer; 
         var deployerObj = new deployerClass();
-        var msg={};             
+        var msg={};
+        msg["isSampleDeployed"] = true;
+        msg["isError"] = "true";
+        msg["isNew"] = "true";
+        var response;
         try {
-            msg["response"] = deployerObj.deploySample(request);
+            response = deployerObj.deploySample(request);
+            if(response){
+                msg["response"] = "Samples deployed succesfully. " +
+                        "You can login to store using UserName : subscriber_" +username+
+                        " Password : subscriber"
+                msg["isError"] = "false";        
+            }else{
+                msg["response"] = username+" has already created a sample web application"
+                msg["isError"] = "true";
+            }
+            
             print(msg);
+            session.put("deploysample", msg);
         } catch (error){
             msg["response"] = error.message;
+            msg["isError"] = "true";
             print(msg);
+            session.put("deploysample", msg);
         }
         
     });
@@ -862,7 +885,7 @@ require('/modules/publisher.js').exec(function(ctx) {
                 var version = ctx.version;
                 model.set('overview.bundleversion', version);
                 model.set('overview.packagename', meta.package);
-                if(ctx.markettype!='Enterprise' && ctx.platform.toUpperCase()=="IOS"){
+                if(ctx.markettype!='enterprise' && ctx.platform.toUpperCase()=="IOS"){
                     var bundleId = getBundleID(meta.package);
                     if(bundleId==null){
                         print({"ok" : false, "message" : "Validation failure", "report" : {"failed" : true, "name" : ["App ID is invalid"]}})
@@ -875,7 +898,7 @@ require('/modules/publisher.js').exec(function(ctx) {
                         model.set('overview.appid', meta.package);
                     }
                 }else if(ctx.platform.toUpperCase()=="ANDROID"){
-                    if(ctx.markettype=='Enterprise' ){
+                    if(ctx.markettype=='enterprise' ){
                         if(getExtensionText(meta.path)!="apk"){
                             print({"ok" : false, "message" : "Validation failure", "report" : {"failed" : true, "name" : ["File uploaded is not supported by Android"]}})
                             return;

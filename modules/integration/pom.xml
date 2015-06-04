@@ -18,6 +18,7 @@
 
     <modules>
        <!-- <module>backend-service</module>-->
+        <module>mock-web-service</module>
         <module>tests-ui</module>
     </modules>
 

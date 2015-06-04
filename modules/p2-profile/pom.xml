@@ -32,7 +32,7 @@
     <artifactId>eam-profile-gen-parent</artifactId>
     <packaging>pom</packaging>
     <name>WSO2 APP Manager - P2 Profile Generation Parent</name>
-    <url>http://wso2.com/products/api-manager</url>
+    <url>http://wso2.com/products/app-manager</url>
     <description>WSO2 App  Manager P2 Profile Generation Parent</description>
 
     <licenses>

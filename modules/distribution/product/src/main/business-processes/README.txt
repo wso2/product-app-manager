@@ -1,21 +1,24 @@
-Work Flow integration for API manager
-=====================================
+Work Flow integration for Application manager
+=============================================
 
-We can engage business process execution for API management releated operations. With API manager 1.6.0 we have added 3 workflow plug points for below operations.
+We can engage business process execution for App management releated operations.
+With Application manager 1.0.0 we have added 3 workflow plug points for below operations.
 01. User creation process.
 02. Application creation process.
 03. Subscription process.
 
-If we performed any of above operations with properly configured API Manager to integrate web service based workflow executor[which is default ship with AM 1.6.0],then API manager will execute business process workflow for each of above operations. Each business process has 4 main operations.
-01. Accept workflow request coming from API manager to BPS.
+If we performed any of above operations with properly configured Application Manager to integrate
+web service based workflow executor[which is default ship with APPM 1.0.0],then APP manager will
+execute business process workflow for each of above operations. Each business process has 4 main operations.
+01. Accept workflow request coming from App manager to BPS.
 02. Create human tasks instance in BPS.
-03. User interaction to approve workflow. User can log in to "Workflow-Admin" jaggery app which is default ship with API manager 1.6.0 and approve process.The url for "workflow-admin" jaggery application is "http[s]://ip:port/workflow-admin"
-04. Call back to API manager after workflow execution.
+03. User interaction to approve workflow. User can log in to "Workflow-Admin" jaggery app which is default ship with APP manager 1.0.0 and approve process.The url for "workflow-admin" jaggery application is "http[s]://ip:port/workflow-admin"
+04. Call back to Application manager after workflow execution.
 
 
 Configure workflow execution
 ============================
-In order to run this we will assume users running API manager with port offset 0 and Business Process server with port offset 02.
+In order to run this we will assume users running Application manager with port offset 0 and Business Process server with port offset 02.
 
 Business Process Server Configurations 
 ======================================
@@ -32,9 +35,9 @@ should aware about exact service location of workflow.
  
 
 
-API Manager Configurations 
+Application Manager Configurations
 ==========================
-Edit API manager configuration file to enable web service based workflow execution. For this we need to edit api-manager.xml located inside repository/conf of API Manager product.
+Edit Application manager configuration file to enable web service based workflow execution. For this we need to edit app-manager.xml located inside repository/conf of Application Manager product.
 All work flow related configurations are located inside <WorkFlowExtensions> section. Edit WorkFlowExtensions as follows. Please note that all workflow process services
 are running on port 9765 of Business Process Server(as it is running with port offset2). 
 

@@ -2,8 +2,8 @@ How to Deploy & User Creation Workflow Sample
 =============================================
 
 This sample contains sample BPS workflow source and back end service. This sample workflow accept web service call from
-API Manager(When user creation process strats) and call to sample echo service hosted in stratos Live(https://stratoslive.wso2.com). 
-This is just example demostrate how we can plug external workflow into user creation process of WSO2 API Manager. Follow given 
+Application Manager(When user creation process strats) and call to sample echo service hosted in stratos Live(https://stratoslive.wso2.com).
+This is just example demostrate how we can plug external workflow into user creation process of WSO2 Application Manager. Follow given
 instructions to run sample.
 
 
@@ -21,7 +21,7 @@ Steps:
 4. Upload business process into WSO2 BPS using management console of WSO2 BPS. Now you will see UserCreationProcess 
    deployed as a service. To verify this step you can invoke web service using embeded tryit user interface.  
 
-5. To enable user add listner we have to change some additional configurations. For that we have to edit api-manager.xml
+5. To enable user add listner we have to change some additional configurations. For that we have to edit app-manager.xml
    file. See following section of that file. Set Business Process Server URL into <ServerURL> section.
    <WorkFlowExtensions>
       <SelfSignIn>

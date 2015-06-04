@@ -28,13 +28,13 @@ $(function () {
     $('#wrap').css('visibility', 'hidden');
 
     if (loggedUser == "" || loggedUser == null) {
-        if (allowAnonymous.toUpperCase() != "TRUE") {
-            var localIP = $("#assetsLocalIP").val();
-            var port = $("#assetshttpsPort").val()
-            location.href = localIP + ":" + port + "/store/login";
-        }
-        e.preventDefault();
-        e.stopPropagation();
+//        if (allowAnonymous.toUpperCase() != "TRUE") {
+//            var localIP = $("#assetsLocalIP").val();
+//            var port = $("#assetshttpsPort").val()
+//            location.href = localIP + ":" + port + "/store/login";
+//        }
+//        e.preventDefault();
+//        e.stopPropagation();
     }
 
     //show html body after loading
@@ -58,8 +58,8 @@ $(function () {
 
     $("#gatewayURL").on('click', function (e) {
         //check if subscribed only if skip gateway disabled
-        if (skipGateway == "false") {
-            if ($('#hdnUsertId').val() != "") {
+        if ((skipGateway == "false")) {
+            if ($('#hdnUsertId').val() != ""  && (allowAnonymous != "TRUE")) {
                 var isSubscribed = $('#subscribed').val();
                 if (isSubscribed.toLowerCase() === 'false') {
                     $('#messageModal2').html($('#confirmation-data2').html());

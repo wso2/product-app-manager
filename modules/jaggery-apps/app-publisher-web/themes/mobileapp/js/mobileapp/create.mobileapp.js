@@ -50,7 +50,7 @@ $('#txtOS').on("change",function() {
 	   if($('#txtOS').val() == 'android'){
 	   		$('#txtNameLabel').html('Package Name <span style="color:#FF0000">*</span></label>');
 		   	if($('#txtMarket').val() == "VPP"){
-		   		$('#txtMarket').val('Market');
+		   		$('#txtMarket').val('public');
 		   	}
 	   		$('#file-upload-text').html('<i class="icon-plus-sign"></i> SELECT .APK FILE');
            $('#txtAppUpload').attr('accept', 'application/vnd.android.package-archive,.apk');
@@ -68,7 +68,7 @@ $('#txtOS').on("change",function() {
 
 
 $('#txtMarket').on("change",function() {
-	  if($('#txtMarket').val() == 'Market' || $('#txtMarket').val() == 'VPP'){
+	  if($('#txtMarket').val() == 'public' || $('#txtMarket').val() == 'VPP'){
 		  $('#file-upload-block').css('display', 'none');
 		  $('#package-select-block').css('display', 'block');
 	  }else{
@@ -272,7 +272,7 @@ $('#btn-app-upload').click(function () {
     $('#txtOS').attr("disabled", "disabled");
     $('#txtMarket').attr("disabled", "disabled");
 
-    if(($('#txtOS').val() != 'webapp' && $('#txtMarket').val() == 'Market') && $('#txtPackagename').val() === ""){
+    if(($('#txtOS').val() != 'webapp' && $('#txtMarket').val() == 'public') && $('#txtPackagename').val() === ""){
         noty({
             text: 'Please enter a correct value as Package Name or App Identifier',
             template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
@@ -326,7 +326,7 @@ $('#btn-app-upload').click(function () {
       }
 
 
-       if($('#txtMarket').val() == 'Enterprise' && $("#txtOS").val() != 'webapp' ){
+       if($('#txtMarket').val() == 'enterprise' && $("#txtOS").val() != 'webapp' ){
         $("#txtVersion").attr("disabled", "disabled");
        }
 
@@ -342,7 +342,7 @@ jQuery("#form-asset-create").submit(function(e) {
 		$('#appmeta').val(JSON.stringify({package: $("#txtPackagename").val(), version: $("#txtVersion").val()}));
 	}
 
-	if($("#txtMarketHidden").val() == 'Market'){
+	if($("#txtMarketHidden").val() == 'public'){
 		$('#appmeta').val(JSON.stringify({package: $("#txtPackagename").val(), version: $("#txtVersion").val()}));
 	}
 
@@ -353,8 +353,8 @@ jQuery("#form-asset-create").submit(function(e) {
 
 
 	if($("#txtOS").val() == 'webapp'){
-		 $('#txtMarket').val("Web App");
-		 $("#txtMarketHidden").val("Web App");
+		 $('#txtMarket').val("webapp");
+		 $("#txtMarketHidden").val("webapp");
 	}
 
 	if($('#appmeta').val() == null || $('#appmeta').val() == ""){

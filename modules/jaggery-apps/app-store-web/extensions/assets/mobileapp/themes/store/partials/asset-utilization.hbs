@@ -8,10 +8,22 @@
                data-platform="{{../../../attributes.overview_platform}}"
                data-aid="{{../../../id}}" data-type="{{../../../type}}"> {{t "Installed"}}</a>
             {{else}}
-                <a id="btn-add-gadget-disabled" class="btn disabled"
-                   data-app="{{../../../id}}"
-                   data-platform="{{../../../attributes.overview_platform}}"
-                   data-aid="{{../../../id}}" data-type="{{../../../type}}"> {{t "Installed"}}</a>
+                {{#if ../../../../isDirectDownloadEnabled}}
+
+                    <a id="btn-add-gadget-install" class="btn btn-primary"
+                       data-app="{{../../../../id}}"
+                       data-platform="{{../../../../attributes.overview_platform}}"
+                       data-aid="{{../../../../id}}" data-type="{{../../../../type}}"> {{t "Installed"}}</a>
+
+                    {{else}}
+
+                    <a id="btn-add-gadget-install-disabled" class="btn disabled"
+                       data-app="{{../../../../id}}"
+                       data-platform="{{../../../../attributes.overview_platform}}"
+                       data-aid="{{../../../../id}}" data-type="{{../../../../type}}"> {{t "Installed"}}</a>
+
+
+                {{/if}}
             {{/if}}
 
             {{#if ../../../isEnterpriseInstallEnabled}}

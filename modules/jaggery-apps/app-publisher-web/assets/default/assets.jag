@@ -45,6 +45,60 @@ var DEFAULT_PAGING = {'sortOrder':'desc','sortBy': 'overview_createdtime', 'pagi
 
  });*/
 var log = new Log();
+
+/**
+ * Returns all the artifacts which matchs the given criteria.
+ */
+var getArtifactsWithoutPagination = function(artifactManager, query, sortby, sort){
+
+    DEFAULT_PAGING.start = 0;
+    DEFAULT_PAGING.count = artifactManager.count();
+
+    var artifacts;
+
+    if(query) {
+        artifacts = artifactManager.search(query, DEFAULT_PAGING) || [];
+    } else if (sortby && sort){
+        DEFAULT_PAGING.sortBy = 'overview_'+sortby;
+        DEFAULT_PAGING.sortOrder = sort.toUpperCase();
+        artifacts = artifactManager.search(null,DEFAULT_PAGING) || [];
+    } else {
+        artifacts = artifactManager.search(null, DEFAULT_PAGING) || [];
+    }
+
+    return artifacts;
+}
+
+/**
+ * Returns the artifacts for the requested page.
+ */
+var getArtifactsInPage = function(filteredArtifacts, paginationContext){
+
+	if(!filteredArtifacts){
+		return [];
+	}
+
+    var artifactsInPage = new Array();
+
+    var i;
+    var startIndex = paginationContext.start;
+    var pageSize = paginationContext.count;
+
+    // Available elements counts in the original list, to be added to the page.
+    var nAvailableElements = filteredArtifacts.length - startIndex;
+
+    // If the available count is less than the page size, then add the available elements, else the page size.
+    var elementCountTobeAdded = (nAvailableElements < pageSize) ? nAvailableElements : pageSize;
+
+    // Add the elements to the page.
+    for(i = startIndex; i < startIndex + elementCountTobeAdded; i++){
+        artifactsInPage.push(filteredArtifacts[i]);
+    }
+
+    return artifactsInPage;
+
+}
+
     /**
      * The function will create an array of page indices upto the page count
      * @param pageCount The max page count
@@ -82,6 +136,35 @@ var getAvailablePages = function(appCount){
     return availablePages;
 }
 
+var getPaginationContext = function(availablePages, page){
+
+    var startVal;
+    if(page) {
+        if(page>=0) {
+            var appliedPageValue;
+            if(page > availablePages){
+                appliedPageValue = availablePages - 1;
+                startVal = PAGE_SIZE * appliedPageValue;
+            } else if (page > 1) {
+                appliedPageValue = page - 1;
+                startVal = PAGE_SIZE * appliedPageValue;
+            }else{
+                startVal = 0;
+            }
+        }else {
+            startVal = 0;
+        }
+    }else{
+        startVal = 0;
+    }
+
+    DEFAULT_PAGING.start = startVal;
+    DEFAULT_PAGING.count = PAGE_SIZE;
+
+    return DEFAULT_PAGING;
+
+}
+
 var getCurrentPage = function(currentIndex){
     var pageNumber = Math.floor(currentIndex/PAGE_SIZE);
     var remainder = (currentIndex/PAGE_SIZE) % 1;
@@ -104,56 +187,24 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
 	var um = server.userManager(server.current(session).tenantId);
     var createActionAuthorized = permissions.isAuthorized(user.username, config.permissions.webapp_create, um);
     var createMobileAppAuthorized = permissions.isAuthorized(user.username, config.permissions.mobileapp_create, um);
-
-	try {
+    
+    try {
 		//TODO: Check for valid asset types
 		var artifactManager = rxtManager.getArtifactManager(type);
-		var artifacts = artifactManager.list(null) || [];
-        //var DEFAULT_PAGIN = {'start':0, 'count':20 , 'sortOrder':'desc','sortBy': 'overview_createdtime', 'paginationLimit':1000};
-        var startVal;
-        var appCount = artifactManager.count();
-        var availablePages = getAvailablePages(appCount);
-        if(page) {
-            if(page>=0) {
-                var appliedPageValue;
-                if(page > availablePages){
-                    appliedPageValue = availablePages - 1;
-                    startVal = PAGE_SIZE * appliedPageValue;
-                } else if (page > 1) {
-                    appliedPageValue = page - 1;
-                    startVal = PAGE_SIZE * appliedPageValue;
-                }else{
-                    startVal = 0;
-                }
-            }else {
-                startVal = 0;
-            }
-        }else{
-            startVal = 0;
-        }
+		
+        // Fetch all artifacts for the given criteria.
+        var artifactsWithNoPagination = getArtifactsWithoutPagination(artifactManager, query, sortby, sort);
+        var filteredArtifacts = filterManager.filter(artifactsWithNoPagination,session) || [];
 
-        DEFAULT_PAGING.start = startVal;
-        DEFAULT_PAGING.count = PAGE_SIZE;
-
-		// for queries
-		if(query) {
-			assets = artifactManager.search(query, DEFAULT_PAGING);
-			artifacts = assets;
-		} else if (sortby && sort){
-            DEFAULT_PAGING.sortBy = 'overview_'+sortby;
-            DEFAULT_PAGING.sortOrder = sort.toUpperCase();
-			var artifacts = artifactManager.search(null,DEFAULT_PAGING) || [];
-		} else {
-			//normal list for asserts			
-			var queryz = {};
-			assets = artifactManager.search(queryz, DEFAULT_PAGING);
-			artifacts = assets;
-		}
-		dataInjector.inject(artifacts, DataInjectorModes.DISPLAY);
-        	//Perform some filtering logic on the artifacts
-        	artifacts=filterManager.filter(artifacts,session);
-
-        var currIndex = startVal + 1;
+        // Get the artifacts in the requested page.        
+        var filteredArtifactsCount = filteredArtifacts.length;
+        var availablePages = getAvailablePages(filteredArtifactsCount);
+        var paginationContext = getPaginationContext(availablePages, page);
+        var artifactsInPage = getArtifactsInPage(filteredArtifacts, paginationContext);
+		
+		dataInjector.inject(artifactsInPage, DataInjectorModes.DISPLAY);
+        
+        var currIndex = paginationContext.start + 1;
 
         var indices = pageIndexPopulator(availablePages,currIndex);
         var pageIndices;
@@ -162,8 +213,7 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
         }
 
         var currentPage = getCurrentPage(currIndex);
-        //currentPage = parseInt(currentPage, 10);
-
+        
         if(currentPage-1 >= 0){
             var leftnav = currentPage-1;
         }
@@ -174,7 +224,7 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{type}/', function(co
         var sortIcon = (sort == 'asc'? 'down': 'up');
 
 		caramel.render({op : 'list',cuser : server.current(session), roles : server.current(session).getRoles(),
-		shortName : type,artifacts : artifacts,query : query,title : type, pageIndices:pageIndices,
+		shortName : type,artifacts : artifactsInPage,query : query,title : type, pageIndices:pageIndices,
 		leftNav:leftnav, rightNav:rightnav, createPermission:createActionAuthorized, mobileAppCreatePermission:createMobileAppAuthorized,
 		sortOptions:{sortBy: sortby, sort: sortOpposite, icon: sortIcon}
 		});

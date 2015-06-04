@@ -1,20 +1,21 @@
 $(".btn-action" ).click(function(e) {
+$(this).hide(); //to avoid user from click again before the operation proceeds
 var app = $(this).data("app");
 var action = $(this).data("action");
 
-//alert(app + action);
     if (action == "Reject") {
         showCommentModel("Reason for Rejection", action, app);
     } else {
         jQuery.ajax({
             url: '/publisher/api/lifecycle/' + action + '/webapp/' + app,
-            type: "PUT"
-        });
-
-        $(document).ajaxComplete(function () {
-            location.reload();
+            type: "PUT",
+            success: function(msg){ 
+                        location.reload();
+                     }
         });
     }
+    
+    // Stop even propagation since it would trigger the click event listeners for the table rows.
     e.stopPropagation();
 });
 
@@ -31,11 +32,10 @@ $( ".btn-reject-proceed" ).click(function() {
     jQuery.ajax({
         url: '/publisher/api/lifecycle/' + action + '/webapp/' + app,
         type: "PUT",
-        data: JSON.stringify({comment: comment})
-    });
-
-    $(document).ajaxComplete(function () {
-        location.reload();
+        data: JSON.stringify({comment: comment}),
+        success: function(msg){ 
+                    location.reload();
+                 }
     });
 
 });
@@ -46,18 +46,16 @@ $(".btn-deploySample").click(function(e) {
         url : '/publisher/api/asset/webapp/deploySample',
         type: "GET",
         dataType:"json",
-        async : false,            
-        success: function(msg){
-            if(msg.response != "admin is already created sample web application"){
-                showMessageModel(msg.response,"Samples Deployed Successfully","webapp");        
-            }else{
-                showMessageModel(msg.response,"Deployment of samples failed","webapp");    
+        async : false,
+        success: function(msg){ 
+            if (msg.isError == "true"){
+                $(document).ajaxComplete(function () {
+                    location.reload();
+                });
             }
-        },
-        error: function(error){
-            showMessageModel("error in response","Deployment of samples failed","webapp");
-        }
+        }            
     });
+    
 });
 
 $( ".tab-button" ).click(function() {

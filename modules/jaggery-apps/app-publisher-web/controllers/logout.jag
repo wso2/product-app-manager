@@ -8,11 +8,13 @@
         } else {
             var config = require('/config/publisher.js').config(),
                     sso = require('sso'),
+                    process = require("process"),
                     sso_sessions = application.get('sso_sessions'),
                     sessionId = session.getId(),
                     encodedSAMLLogoutRequest = sso.client.getEncodedSAMLLogoutRequest(user, sso_sessions[session.getId()], config.ssoConfiguration.issuer),
                     relayState = '/publisher',
-                    postUrl = "https://" + process.getProperty('carbon.local.ip') + ":" + process.getProperty('https.port');
+                    serverHost = process.getProperty('server.host'),
+                    postUrl = config.ssoConfiguration.identityProviderURL;
 
             var log = new Log();
 
@@ -23,8 +25,7 @@
                <p>You are now redirected to Stratos Identity. If the
                redirection fails, please click the post button.</p>
 
-                <form id="logoutForm" method="post" action="<%=postUrl
-            %>/samlsso">
+                <form id="logoutForm" method="post" action="<%=postUrl%>">
                         <p>
                             <input type="hidden" name="SAMLRequest"
                                   value="<%=

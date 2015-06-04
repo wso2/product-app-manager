@@ -11,6 +11,7 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
             samlRequest = request.getParameter('SAMLRequest'),
             relayState = request.getParameter('RelayState'),
             sso = require('sso'),
+            server = require('carbon').server,
             samlRespObj,
             keyStoreProps = {
                 KEY_STORE_NAME: process.getProperty('carbon.home') + configs.ssoConfiguration.keyStoreName,
@@ -41,7 +42,18 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
                     var username = sessionObj.loggedInUser;                                   
 
                     if (sessionObj.sessionIndex != null || sessionObj.sessionIndex != 'undefined') {
-                    	
+
+                        var MultitenantUtils = Packages.org.wso2.carbon.utils.multitenancy.MultitenantUtils;
+                        var MultitenantConstants = Packages.org.wso2.carbon.base.MultitenantConstants;
+                        var domainName = MultitenantUtils.getTenantDomain(sessionObj.loggedInUser);
+
+                        if (domainName != null && !MultitenantConstants.SUPER_TENANT_DOMAIN_NAME.equals(domainName)) {
+                            var service = server.osgiService('org.wso2.carbon.utils.ConfigurationContextService');
+                            var ctx = service.getServerConfigContext();
+                            var TenantAxisUtils = org.wso2.carbon.core.multitenancy.utils.TenantAxisUtils;
+                            TenantAxisUtils.setTenantAccessed(domainName, ctx);
+                        }
+
                         session.put("LOGGED_IN_USER", sessionObj.loggedInUser);
                         session.put("Loged", "true");
                         

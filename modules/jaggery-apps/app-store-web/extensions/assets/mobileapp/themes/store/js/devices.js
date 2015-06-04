@@ -77,7 +77,7 @@ $(".device-image-block-modal").click(function(index) {
 
 function performInstalltion(device, app){
     jQuery.ajax({
-        url: "/store/apps/devices/" + device + "/install",
+        url: "/store/apps/devices/" + encodeURIComponent(device) + "/install",
         type: "POST",
         dataType: "json",
         data : {"asset": app}
@@ -103,7 +103,7 @@ function performInstalltion(device, app){
 
 function performInstalltionUser(app){
     noty({
-        text : 'Are you sure you want to install and subscribe to this app?',
+        text : 'Are you sure you want to install this app?',
         'layout' : 'center',
         'modal' : true,
         buttons : [{
@@ -117,10 +117,14 @@ function performInstalltionUser(app){
                     url: "/store/apps/user/install",
                     type: "POST",
                     dataType: "json",
-                    data : {"asset": app}
+                    data : {"asset": app},
+
+                    success : function(data){
+
+                    }
                 });
 
-                $( document ).ajaxComplete(function() {
+                $( document ).ajaxComplete(function(event, xhr, settings) {
                     // asset.process("mobileapp",app, location.href);
                     noty({
                         text : 'You have been subscribed to the application successfully',
@@ -128,7 +132,16 @@ function performInstalltionUser(app){
                         'timeout': 1500,
                         'modal': false,
                         'onClose': function() {
-                            location.reload();
+                            try{
+                                if(JSON.parse(xhr.responseText).redirect != true){
+                                    location.reload();
+                                }else{
+                                    location.replace(JSON.parse(xhr.responseText).location);
+                                }
+                            }catch(e){
+                                location.reload();
+                            }
+
                         }
                     });
                 });

@@ -92,9 +92,9 @@ var engine = caramel.engine('handlebars', (function () {
 
                     } else if (items[index].sourceType == "INLINE") {
                         if (docPermissions.canEdit) {
-                            source = '<a href="javascript:editInlineContent(\'' + output.artifact.id + '\',\'' + output.shortName + '\',\'' + items[index].docName + '\',\'edit\'' + ',\'' + urlPostfix + '\')"><i class="icon-edit"></i>Edit Content</a>';
+                            source = '<a href="javascript:editInlineContent(\'' + output.artifact.id + '\',\'' + output.shortName + '\',\'' + items[index].docName + '\',\'edit\'' + ',\'' + urlPostfix + '\')"><i class="icon-edit"></i> Edit Content</a>';
                         }else{
-                            source = '<a href="javascript:editInlineContent(\'' + output.artifact.id + '\',\'' + output.shortName + '\',\'' + items[index].docName + '\',\'edit\'' + ',\'' + urlPostfix + '\')"><i class="icon-edit"></i>View Content</a>';
+                            source = '<a href="javascript:editInlineContent(\'' + output.artifact.id + '\',\'' + output.shortName + '\',\'' + items[index].docName + '\',\'edit\'' + ',\'' + urlPostfix + '\')"><i class="icon-edit"></i> View Content</a>';
                         }
                     }
 

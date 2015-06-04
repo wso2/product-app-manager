@@ -34,7 +34,7 @@
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
     <name>WSO2 APP Manager - Aggregator Module</name>
-    <url>http://wso2.com/products/api-manager</url>
+    <url>http://wso2.com/products/app-manager</url>
     <description>WSO2 App Manager</description>
 
     <scm>

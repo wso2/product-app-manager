@@ -38,6 +38,16 @@ var render=function(theme,data,meta,require){
             heading = data.newViewData.displayName.value;
             break;
         case 'edit':
+            var editEnabled = permissions.isEditPermitted(user.username, data.artifact.path, um);
+            if(data.artifact.lifecycleState == "Published"){
+                editEnabled = false;
+            }
+            if(user.hasRoles(["admin"])){
+                editEnabled = true;
+            }
+            if(!editEnabled){
+                response.sendError(404);
+            }
             data = require('/helpers/edit-asset.js').processData(data);
             listPartial='edit-asset';
             var copyOfData = parse(stringify(data));

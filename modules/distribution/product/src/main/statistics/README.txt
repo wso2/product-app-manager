@@ -3,9 +3,9 @@
 ---------------------------------------------------------------------------------
 
 This document describes how to setup WSO2 Business Activity Monitor (BAM) to collect
-and analyze runtime statistics from the WSO2 API Manager. Thrift protocol is used
-to publish data from the API Manager to BAM. Information processed at BAM are stored
-in a database from which the API Publisher can retrieve them and display in the
+and analyze runtime statistics from the WSO2 APP Manager. Thrift protocol is used
+to publish data from the APP Manager to BAM. Information processed at BAM are stored
+in a database from which the APP Publisher can retrieve them and display in the
 corresponding UI screens.
 
 ---------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ Configuring BAM
    (By default port is set to 9161 assuming port offset is one)
   <datasource>
           <name>WSO2AM_STATS_DB</name>
-          <description>The datasource used for getting statistics to API Manager</description>
+          <description>The datasource used for getting statistics to APP Manager</description>
 	    <jndiConfig>
                 <name>jdbc/WSO2AM_STATS_DB</name>
             </jndiConfig>
@@ -67,14 +67,14 @@ Configuring BAM
 5. Start WSO2 BAM server
 
 ---------------------------------------------------------------------------------
-Configuring API Manager
+Configuring APP Manager
 ---------------------------------------------------------------------------------
 
-To enable API statistics collection you need to configure the following properties in the
-api-manager.xml file of API Manager.
+To enable Application statistics collection you need to configure the following properties in the
+app-manager.xml file of APP Manager.
 
     <!--
-	    Enable/Disable the API usage tracker.
+	    Enable/Disable the Application usage tracker.
     -->
 	<Enabled>true</Enabled>
 
@@ -85,13 +85,13 @@ api-manager.xml file of API Manager.
     <DataSourceName>jdbc/WSO2AM_STATS_DB</DataSourceName>
 
 And you need to configure the data source definition in the master-datasources.xml file
-of API Manager.
+of APP Manager.
 
     <datasource>
          <name>WSO2AM_STATS_DB</name>
-         <description>The datasource used for getting statistics to API Manager</description>
+         <description>The datasource used for getting statistics to APP Manager</description>
          <jndiConfig>
-            <!-- This jndi name should be same as the DataSourceName defined in api-manager.xml -->
+            <!-- This jndi name should be same as the DataSourceName defined in app-manager.xml -->
             <name>jdbc/WSO2AM_STATS_DB</name>
          </jndiConfig>
          <definition type="RDBMS">
@@ -113,7 +113,7 @@ of API Manager.
 
 NOTE: 1) Replace <BAM_HOME> with the absolute path to the installation directory of BAM.
 
-      2) <DataSourceName> of <APIUsageTracking> entry in api-manager.xml should be same as the
+      2) <DataSourceName> of <APIUsageTracking> entry in app-manager.xml should be same as the
          JNDI config name in master-datasources.xml
 
 ---------------------------------------------------------------------------------
