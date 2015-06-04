@@ -40,7 +40,7 @@ var tasks=outputs.tasks;
                                             <i id="icon-spinner" class="icon-spinner icon-spin icon-4x"></i>
                                         </div>
 
-                                        <div class="graph-container pull-left">
+                                        <div class="graph-container">
 
                                         </div>
                                     </div>
