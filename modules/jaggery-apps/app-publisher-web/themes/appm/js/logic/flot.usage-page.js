@@ -79,9 +79,11 @@ var drawAPIUsageByPage = function (response) {
     var filterData = [];
 
     var defaultChartData = [];
+    if(data.length > 0){
+        $('#checkboxContainer').append($dataTable);
+        $('#checkboxContainer').show();
+    }
 
-    $('#checkboxContainer').append($dataTable);
-    $('#checkboxContainer').show();
     data.sort(function(obj1, obj2) {
         return obj2[1] - obj1[1];
     });
@@ -125,27 +127,28 @@ var drawAPIUsageByPage = function (response) {
             state_array.push(false);
         }
     }
-    $('#checkboxContainer').append($dataTable);
-    $('#checkboxContainer').show();
-    $('#apiSelectTable').DataTable({
-        retrieve: true,
-        "order": [
-            [ 2, "desc" ]
-        ],
-        "aoColumns": [
-            { "bSortable": false },
-            null,
-            null
-        ],
-        "fnDrawCallback": function(){
-             if(this.fnSettings().fnRecordsDisplay()<=$("#webAppTable2_length option:selected" ).val()
-             || $("#webAppTable2_length option:selected" ).val()==-1)
-                 $('#webAppTable2_paginate').hide();
-             else
-                 $('#webAppTable2_paginate').show();
-        }
-    });
-
+    if(data.length > 0) {
+        $('#checkboxContainer').append($dataTable);
+        $('#checkboxContainer').show();
+        $('#apiSelectTable').DataTable({
+            retrieve: true,
+            "order": [
+                [2, "desc"]
+            ],
+            "aoColumns": [
+                {"bSortable": false},
+                null,
+                null
+            ],
+            "fnDrawCallback": function () {
+                if (this.fnSettings().fnRecordsDisplay() <= $("#webAppTable2_length option:selected").val()
+                    || $("#webAppTable2_length option:selected").val() == -1)
+                    $('#webAppTable2_paginate').hide();
+                else
+                    $('#webAppTable2_paginate').show();
+            }
+        });
+    }
 
 
     var defaultOptions = {

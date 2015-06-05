@@ -123,8 +123,10 @@
             <br />
             No web applications added yet.
             {{#ifCond cuser.um.tenantId "==" "-1234"}}
-                <a class="btn-deploySample" data-type="{{shortName}}">Click here</a> 
-                to deploy sample web applications.    
+                {{#if createPermission}}
+                    <a class="btn-deploySample" data-type="{{shortName}}">Click here</a>
+                    to deploy sample web applications.
+                {{/if}}
             {{/ifCond}}
             <br />
             {{#if createPermission}}
