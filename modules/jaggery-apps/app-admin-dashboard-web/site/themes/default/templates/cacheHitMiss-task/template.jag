@@ -4,6 +4,7 @@ var tasks=outputs.tasks;
 <div id="listing">
     <div class="title-section">
         <h2>Web Application Statistics - Cache Hits/Miss</h2>
+        sdfsd
     </div>
     <div class="content-section shadow-up">
         <div class="content-data">
@@ -39,7 +40,7 @@ var tasks=outputs.tasks;
                                             <i id="icon-spinner" class="icon-spinner icon-spin icon-4x"></i>
                                         </div>
 
-                                        <div class="graph-container pull-left">
+                                        <div class="graph-container">
 
                                         </div>
                                     </div>
