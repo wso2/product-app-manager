@@ -125,25 +125,6 @@
                 <include>**/**.sql</include>
             </includes>
         </fileSet>
-	<!--<fileSet>-->
-            <!--<directory>-->
-                <!--../../jaggery-apps/app-publisher-web/</directory>-->
-            <!--<outputDirectory>wso2appm-${pom.version}/repository/deployment/server/jaggeryapps/publisher</outputDirectory>-->
-            <!--<includes>-->
-                <!--<include>**/config/ext/webapp.json</include>-->
-		<!--<include>**/config/lifecycles/WebAppLifeCycle.xml</include>-->
-		<!--<include>**/config/publisher.json</include>-->
-		<!--<include>**/config/publisher-tenant.json</include>-->
-		<!--<include>**/controllers/login.jag</include>-->
-		<!--<include>**/controllers/logout.jag</include>-->
-		<!--<include>**/controllers/index_router.jag</include>-->
-		<!--<include>**/modules/ext/scripts/webapp.action.save.js</include>-->
-		<!--<include>**/apis/v1/lifecycle_api_router.jag</include>-->
-		<!--<include>**/apis/v1/assets_api_router.jag</include>-->
-		<!--<include>**/themes/appm/**</include>-->
-		<!--<include>**/themes/default/**</include>-->
-            <!--</includes>-->
-        <!--</fileSet>-->
 
         <!--fileSet>
             <directory>../../jaggery-apps/user-dashboard/dashboard</directory>
