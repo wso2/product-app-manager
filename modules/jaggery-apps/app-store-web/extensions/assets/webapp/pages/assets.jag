@@ -1,6 +1,6 @@
 <%
 /*
- *  Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *  Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  *  WSO2 Inc. licenses this file to you under the Apache License,
  *  Version 2.0 (the "License"); you may not use this file except
@@ -217,23 +217,27 @@ require('/modules/store.js').exec(function (ctx) {
                     var appMgtDaoService = Packages.org.wso2.carbon.appmgt.impl.dao.AppMDAO;
                     var appMgtDaoObj = new appMgtDaoService();
 
-                    var result = appMgtDaoObj.getAppsByHitCount(userName, (paging.start + index), 12);
+                    var result = appMgtDaoObj.getAppsByHitCount(userName, (paging.start + index), PAGE_SIZE);
                     if (log.isDebugEnabled()) {
-                        log.debug("Query executed successfully to get the assets hit count");
+                        var recordCount = 0;
+                        if (result != null) {
+                            recordCount = result.length;
+                        }
+                        log.debug("Query executed successfully to get the assets hit count. " + recordCount
+                        + " records found");
                     }
                     index += 12;
                     return JSON.parse(result);
                 };
 
                 assets = [];
-                var aid, asset;
-                while (assets.length < 12 && maxTry < 10) {
+                while (assets.length < PAGE_SIZE && maxTry < 10) {
                     maxTry++;
                     var result = getNextassetSet();
-                    for (var n = 0; n < result.length && assets.length < 12; n++) {
-                        aid = String(result[n].UUID);
+                    for (var n = 0; n < result.length && assets.length < PAGE_SIZE; n++) {
+                        var aid = String(result[n].UUID);
                         try {
-                            asset = store.asset(type, aid);
+                            var asset = store.asset(type, aid);
                             asset.indashboard = store.isuserasset(aid, type);
                             if (configs.lifeCycleBehaviour.visibleIn.indexOf(String(asset.lifecycleState), 0) >= 0) {
                                 assets.push(asset);

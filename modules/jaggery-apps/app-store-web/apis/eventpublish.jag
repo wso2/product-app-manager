@@ -38,11 +38,11 @@
         return;
     }
 
-    var appMgtDaoService = Packages.org.wso2.carbon.appmgt.usage.publisher.APPMgtUiActivitiesBamDataPublisher;
-    var appMgtDaoObj = new appMgtDaoService();
+    var appMgtBAMPublishService = Packages.org.wso2.carbon.appmgt.usage.publisher.APPMgtUiActivitiesBamDataPublisher;
+    var appMgtBAMPublishObj = new appMgtBAMPublishService();
 
     //Pass data to java class to save
-    appMgtDaoObj.processUiActivityObject(parseJSON);
+    appMgtBAMPublishObj.processUiActivityObject(parseJSON);
     if (log.isDebugEnabled()) {
         log.debug("UI Activity change data sent to process");
     }

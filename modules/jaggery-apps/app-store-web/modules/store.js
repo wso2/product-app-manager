@@ -961,7 +961,7 @@ function PaginationFormBuilder(pagin) {
             DEFAULT_PAGIN.sortBy = 'overview_displayName';
             break;
         case 'usage':
-            // no regsiter pagination support, socail feature need to check
+            // no register pagination support,  Separately handled the pagination in assets.jag
             break;
         default:
             DEFAULT_PAGIN.sortOrder = 'ASC';

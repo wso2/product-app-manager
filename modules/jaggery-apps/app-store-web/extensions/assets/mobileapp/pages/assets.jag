@@ -137,30 +137,31 @@ require('/modules/store.js').exec(function (ctx) {
                 var getNextassetSet = function () {
                     var bamService = Packages.org.wso2.carbon.appmgt.impl.dao.AppMDAO;
                     var bamServiceObj = new bamService();
-                    log.debug("Object initialized successfully : org.wso2.carbon.appmgt.impl.dao.AppMDAO ");
-
-                    var result = bamServiceObj.getAppsByHitCount(userName, (paging.start + index), 12, config.uiActivityPublishDataSource);
-                    log.debug("query executed successfully to get the assets hit count");
-
+                    if (log.isDebugEnabled()) {
+                        log.debug("Object initialized successfully : org.wso2.carbon.appmgt.impl.dao.AppMDAO ");
+                    }
+                    var result = bamServiceObj.getAppsByHitCount(userName, (paging.start + index), PAGE_SIZE, config.uiActivityPublishDataSource);
+                    if (log.isDebugEnabled()) {
+                        log.debug("query executed successfully to get the assets hit count");
+                    }
                     index += store.getPageSize();
                     return JSON.parse(result);
                 };
 
                 assets = [];
-                var aid, asset;
                 while (assets.length < PAGE_SIZE && maxTry < 10) {
                     maxTry++;
                     var result = getNextassetSet();
                     for (var n = 0; n < result.length && assets.length < PAGE_SIZE; n++) {
-                        aid = String(result[n].UUID);
+                        var aid = String(result[n].UUID);
                         try {
-                            asset = store.asset(type, aid);
+                            var asset = store.asset(type, aid);
                             asset.indashboard = store.isuserasset(aid, type);
                             if (configs.lifeCycleBehaviour.visibleIn.indexOf(String(asset.lifecycleState), 0) >= 0) {
                                 assets.push(asset);
                             }
                         } catch (e) {
-                            log.warn("error retrieving asset from store ,information might be stale in table. id=" +
+                            log.error("error retrieving asset from store ,information might be stale in table. id=" +
                             aid);
                         }
                     }
