@@ -26,9 +26,9 @@ var module = function () {
 	}
 
     //TODO: Change this method to take WebAppObj as argument instead of passing properties separately.
-    function addToWebApp(uuid,webappProvider, webappName, webappVersion, webappContext,
-                         webappTrackingCode,asset, ssoEnabled, idpProviderUrl, saml2SsoIssuer,
-                         logoutURL,allowAnonymous, skipGateway, webAppEndpoint) {
+    function addToWebApp(uuid, webappProvider, webappName, webappVersion, webappContext,
+                         webappTrackingCode, asset, ssoEnabled, idpProviderUrl, saml2SsoIssuer,
+                         logoutURL, allowAnonymous, skipGateway, webAppEndpoint) {
 
         var apiIdentifier = Packages.org.wso2.carbon.appmgt.api.model.APIIdentifier;
         var apiIdentifierObj = new apiIdentifier(webappProvider, webappName, webappVersion);
@@ -44,20 +44,8 @@ var module = function () {
         webAppObj.setUUID(uuid);
         webAppObj.setLogoutURL(logoutURL);
         webAppObj.setUrl(webAppEndpoint);
-
-        if (allowAnonymous=="TRUE"){
-            webAppObj.setAllowAnonymous(true);
-        }
-        else{
-            webAppObj.setAllowAnonymous(false);
-        }
-
-        if (skipGateway == "true") {
-            webAppObj.setSkipGateway(true);
-        }
-        else {
-            webAppObj.setSkipGateway(false);
-        }
+        webAppObj.setAllowAnonymous(allowAnonymous == "TRUE");
+        webAppObj.setSkipGateway(skipGateway == "true");
 
         var appMDAO = Packages.org.wso2.carbon.appmgt.impl.dao.AppMDAO;
         var appMDAOObj = new appMDAO();
@@ -216,9 +204,9 @@ var module = function () {
 
 
             //adding to database
-            addToWebApp(id,provider, name, version, contextname, tracking_code,asset,
-                        attributes['sso_singleSignOn'], attributes['sso_idpProviderUrl'],
-                        saml2SsoIssuer,revisedURL,allowAnonymous, skipGateway, webappURL);
+            addToWebApp(id, provider, name, version, contextname, tracking_code, asset,
+                attributes['sso_singleSignOn'], attributes['sso_idpProviderUrl'],
+                saml2SsoIssuer, revisedURL, allowAnonymous, skipGateway, webappURL);
 
             //Save the id data to the model
             model.setField('*.id', id);
