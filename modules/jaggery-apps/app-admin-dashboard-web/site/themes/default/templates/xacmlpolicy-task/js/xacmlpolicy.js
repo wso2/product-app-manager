@@ -289,7 +289,8 @@ function savePolicyPartial() {
                 Showalert("Policy Saved Successfully", "alert-error", "statusError");
                 $('#policy-name').prop("readonly", true);
             },
-            error: function () {
+            error: function (response) {
+                Showalert('Error occurred while saving entitlement policy content', "alert-error", "statusError");
             }
         });
 
@@ -312,41 +313,40 @@ function savePolicyPartial() {
             contentType: 'application/json',
             dataType: 'json',
             success: function (response) {
-
-                var apps = "";
-                if (response.length != 0) {
-                    // construct and show the  the warning message with app names which use this partial before update
-                    for (var i = 0; i < response.length; i++) {
-                        var j = i + 1;
-                        apps = apps + j + ". " + response[i].appName + "\n";
-                    }
-
-                    var msg = "policy " + policyPartialName + " is used in following apps " +
-                        apps +
-                        "Are you sure you want to modify the policy " + policyPartialName + "?";
-
-                    var conf = confirm(msg);
-                    if (conf == true) {
-                        updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, generatedRule, ruleCondition, ruleEffect, isSharedPartial, policyPartialDesc);
-                    }
-                }
-                else {
-                    updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, generatedRule, ruleCondition, ruleEffect, isSharedPartial, policyPartialDesc);
-                }
-
-
+                SavePolicyPartialsOnSuccess(response, policyPartialName, generatedRule, ruleCondition, ruleEffect, isSharedPartial, policyPartialDesc);
             },
             error: function (response) {
+                Showalert('Error occurred while updating entitlement policy content', "alert-error", "statusError");
             }
         });
-
-
     }
 
     resetControls();
 
 }
 
+function SavePolicyPartialsOnSuccess(response, policyPartialName, generatedRule, ruleCondition, ruleEffect, isSharedPartial, policyPartialDesc) {
+    var apps = "";
+    if (response.length != 0) {
+        // construct and show the  the warning message with app names which use this partial before update
+        for (var i = 0; i < response.length; i++) {
+            var j = i + 1;
+            apps = apps + j + ". " + response[i].appName + "\n";
+        }
+
+        var msg = "policy " + policyPartialName + " is used in following apps " +
+            apps +
+            "Are you sure you want to modify the policy " + policyPartialName + "?";
+
+        var conf = confirm(msg);
+        if (conf == true) {
+            updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, generatedRule, ruleCondition, ruleEffect, isSharedPartial, policyPartialDesc);
+        }
+    }
+    else {
+        updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, generatedRule, ruleCondition, ruleEffect, isSharedPartial, policyPartialDesc);
+    }
+}
 
 function updateModifiedPolicyPartial(editedpolicyPartialId, policyPartialName, generatedRule, ruleCondition, ruleEffect, isSharedPartial, policyPartialDesc) {
     $.ajax({
@@ -479,7 +479,7 @@ $(document).on("click", ".policy-delete-button", function () {
     var policyId = $(this).data("policyId");
     var policyPartial;
     var arrayIndex;
-    var conf;
+    var isConfirmed;
     $.each(policyPartialsArray, function (index, obj) {
         if (obj != null && obj.id == policyId) {
             policyPartial = obj;
@@ -513,7 +513,7 @@ $(document).on("click", ".policy-delete-button", function () {
 
                 } else {
                     $(".alert").alert();
-                    conf = confirm("Are you sure you want to delete the policy " + policyName + "?");
+                    isConfirmed = confirm("Are you sure you want to delete the policy " + policyName + "?");
                 }
 
             },
@@ -527,7 +527,7 @@ $(document).on("click", ".policy-delete-button", function () {
 
     }
 
-    if (conf == true) {
+    if (isConfirmed == true) {
 
         $.ajax({
 

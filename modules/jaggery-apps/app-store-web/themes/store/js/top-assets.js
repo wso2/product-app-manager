@@ -29,7 +29,7 @@ $(function() {
 		  var loggedUser = $("#loggedinuser").val();
 		  if(loggedUser == "" || loggedUser == null){
 			  var allowAnonymous = $(this).find("input").val();
-			  if (allowAnonymous.toUpperCase()!="TRUE") {
+			  if (allowAnonymous.toUpperCase() != "TRUE") {
 				  var ssoEnabled = $('#sso').val();
 				  if (ssoEnabled == 'true') {
 				  	location.href = "/store/login";
@@ -49,7 +49,7 @@ $(function() {
 		  var loggedUser = $("#loggedinuser").val();
 		  if(loggedUser == "" || loggedUser == null){
 			  var allowAnonymous = $(this).find("input").val();
-			  if (allowAnonymous.toUpperCase()!="TRUE") {
+              if (allowAnonymous.toUpperCase() != "TRUE") {
 				  var ssoEnabled = $('#sso').val();
 				  if (ssoEnabled == 'true') {
 					  location.href = "/store/login";
@@ -69,7 +69,7 @@ $(function() {
 		  var loggedUser = $("#loggedinuser").val();
 		  if(loggedUser == "" || loggedUser == null){
 			  var allowAnonymous = $(this).find("input").val();
-			  if (allowAnonymous.toUpperCase()!="TRUE") {
+              if (allowAnonymous.toUpperCase() != "TRUE") {
 				  var ssoEnabled = $('#sso').val();
 				  if (ssoEnabled == 'true') {
 					  location.href = "/store/login";
@@ -96,7 +96,7 @@ $(function() {
 		  var loggedUser = $("#loggedinuser").val();
 		  if(loggedUser == "" || loggedUser == null){
 			  var allowAnonymous = $(this).find("input").val();
-			  if (allowAnonymous.toUpperCase()!="TRUE") {
+              if (allowAnonymous.toUpperCase() != "TRUE") {
 				  var ssoEnabled = $('#sso').val();
 				  if (ssoEnabled == 'true') {
 					  location.href = "/store/login";
@@ -116,7 +116,7 @@ $(function() {
 		  var loggedUser = $("#loggedinuser").val();
 		  if(loggedUser == "" || loggedUser == null){
 			  var allowAnonymous = $(this).find("input").val();
-			  if (allowAnonymous.toUpperCase()!="TRUE") {
+              if (allowAnonymous.toUpperCase() != "TRUE") {
 				  var ssoEnabled = $('#sso').val();
 				  if (ssoEnabled == 'true') {
 					  location.href = "/store/login";

@@ -84,6 +84,11 @@ require('/modules/store.js').exec(function (ctx) {
     var subscriptionService = new subscriptionServiceModule.SubscriptionService();
     subscriptionService.init(jagg, session);
 
+    var username = null;
+    if (authenticator.getLoggedInUser()) {
+        username = authenticator.getLoggedInUser().username;
+    }
+
     /*
      The function obtains the assets published by the given provider
      */
@@ -130,24 +135,10 @@ require('/modules/store.js').exec(function (ctx) {
         var defaultApplicationName = "DefaultApplication";
 
         var enterpriseSubscription;
-        if (authenticator.getLoggedInUser()) {
-            enterpriseSubscription = subscriptionService.getSubscription(appInfo, defaultApplicationName, "ENTERPRISE", authenticator.getLoggedInUser().username).subscription;
-        }
-        else
-        {
-            enterpriseSubscription = subscriptionService.getSubscription(appInfo, defaultApplicationName, "ENTERPRISE", null).subscription;
-        }
+        enterpriseSubscription = subscriptionService.getSubscription(appInfo, defaultApplicationName, "ENTERPRISE", username).subscription;
 
         var individualSubscription;
-        if (authenticator.getLoggedInUser()) {
-            individualSubscription = subscriptionService.getSubscription(appInfo, defaultApplicationName, "INDIVIDUAL", authenticator.getLoggedInUser().username).subscription;
-        }
-        else
-        {
-            individualSubscription = subscriptionService.getSubscription(appInfo, defaultApplicationName, "INDIVIDUAL", null).subscription;
-        }
-
-
+        individualSubscription = subscriptionService.getSubscription(appInfo, defaultApplicationName, "INDIVIDUAL", username).subscription;
 
         // Get all available IDPs (enterprises)
         var enterprises = getEnterprises();
@@ -225,14 +216,11 @@ require('/modules/store.js').exec(function (ctx) {
         return viewData;
     }
 
-    function isStoreAdmin(){
-        if(authenticator.getLoggedInUser()) {
+    function isStoreAdmin() {
+        if (authenticator.getLoggedInUser()) {
             return hasUserRole("Internal/store-admin");
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     function hasUserRole(userRoleName){
@@ -265,7 +253,7 @@ require('/modules/store.js').exec(function (ctx) {
                 asset.attributes.overview_version,
                 authenticator.getLoggedInUser().username);
     }
-    else{
+    else {
         docs = docsManager.getAllDocumentation(asset.attributes.overview_provider,
                 asset.attributes.overview_name,
                 asset.attributes.overview_version,
@@ -277,13 +265,7 @@ require('/modules/store.js').exec(function (ctx) {
            asset.attributes.overview_version);
 
     var myapps;
-    if (authenticator.getLoggedInUser()) {
-        myapps = appInfoApi.getApplications(authenticator.getLoggedInUser().username);
-    }
-    else
-    {
-        myapps = appInfoApi.getApplications(null);
-    }
+    myapps = appInfoApi.getApplications(username);
 
     var availableTiers=apiInfoManager.getTiers();
 
