@@ -145,6 +145,17 @@ $(document).ready(function(){
 	// $("#app-upload-progress").css("display", "block");
 	 //$("#app-upload-progress-done").css("display", "none");
 
+
+        if($('#app_type').val()){
+           $("#txtOS").val($('#app_platform').val());
+            $("#txtOS").prop('disabled', true);
+            $( "#txtOS" ).trigger( "change" );
+
+            $("#txtMarket").val($('#app_type').val());
+            $("#txtMarket").prop('disabled', true);
+            $( "#txtMarket" ).trigger( "change" );
+        }
+
 	    $(document).ready(function() {
             // bind 'myForm' and provide a simple callback function
             $('#form-asset-create').ajaxForm(function(data) {

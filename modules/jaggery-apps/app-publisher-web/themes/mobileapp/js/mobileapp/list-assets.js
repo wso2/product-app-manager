@@ -26,7 +26,6 @@ var action = $(this).data("action");
 });
 
 
-
 $( ".tab-button" ).click(function() {
 	
 	var status = $(this).data("status");
