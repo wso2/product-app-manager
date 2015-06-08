@@ -1,9 +1,0 @@
-<%
-jagg.initializer("xacmlpolicy-task", {
-
-    preInitialize:function () {
-        jagg.addFooterJS("application", "jagg", "templates/xacmlpolicy-task/js/xacmlpolicy.js");
-    }
-});
-%>
-
