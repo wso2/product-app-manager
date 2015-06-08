@@ -125,86 +125,7 @@
                 <include>**/**.sql</include>
             </includes>
         </fileSet>
-	<fileSet>
-            <directory>
-                ../../jaggery-apps/app-publisher-web/</directory>
-            <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/jaggeryapps/publisher</outputDirectory>
-            <!--<includes>-->
-                <!--<include>**/config/ext/webapp.json</include>-->
-		<!--<include>**/config/lifecycles/WebAppLifeCycle.xml</include>-->
-		<!--<include>**/config/publisher.json</include>-->
-		<!--<include>**/config/publisher-tenant.json</include>-->
-		<!--<include>**/controllers/login.jag</include>-->
-		<!--<include>**/controllers/logout.jag</include>-->
-		<!--<include>**/controllers/index_router.jag</include>-->
-		<!--<include>**/modules/ext/scripts/webapp.action.save.js</include>-->
-		<!--<include>**/apis/v1/lifecycle_api_router.jag</include>-->
-		<!--<include>**/apis/v1/assets_api_router.jag</include>-->
-		<!--<include>**/themes/appm/**</include>-->
-		<!--<include>**/themes/default/**</include>-->
-            <!--</includes>-->
-        </fileSet>
-	<fileSet>
-            <directory>
-                ../../jaggery-apps/app-store-web/</directory>
-            <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/jaggeryapps/store</outputDirectory>
-            <!--<includes>-->
-                <!--<include>**/config/ext/webapp.json</include>-->
-		<!--<include>**/config/store-tenant.json</include>-->
-		<!--<include>**/config/store.json</include>-->
-		<!--<include>**/controllers/login.jag</include>-->
-		<!--<include>**/controllers/logout.jag</include>-->
-		<!--<include>**/controllers/routers/**</include>-->
-		<!--<include>**/extensions/assets/webapp/**</include>-->
-		<!--<include>**/modules/contextualizer/**</include>-->
-		<!--<include>**/themes/store/img/logo.png</include>-->
-		<!--<include>**/themes/store/helpers/rating-provider.js</include>-->
-		<!--<include>**/themes/store/partials/morefromprovider-widget.hbs</include>-->
-		<!--<include>**/themes/store/partials/footer.hbs</include>-->
-		<!--<include>**/jaggery.conf</include>-->
-		<!--<include>**/apis/user.jag</include>-->
-            <!--</includes>-->
-	</fileSet>
-	<fileSet>
-            <directory>
-                ../../jaggery-apps/app-admin-dashboard-web/</directory>
-            <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/jaggeryapps/admin-dashboard</outputDirectory>
-            <!--<includes>-->
-                <!--<include>**/config/ext/webapp.json</include>-->
-                <!--<include>**/config/lifecycles/WebAppLifeCycle.xml</include>-->
-                <!--<include>**/config/publisher.json</include>-->
-                <!--<include>**/config/publisher-tenant.json</include>-->
-                <!--<include>**/controllers/login.jag</include>-->
-                <!--<include>**/controllers/logout.jag</include>-->
-                <!--<include>**/controllers/index_router.jag</include>-->
-                <!--<include>**/modules/ext/scripts/webapp.action.save.js</include>-->
-                <!--<include>**/apis/v1/lifecycle_api_router.jag</include>-->
-                <!--<include>**/apis/v1/assets_api_router.jag</include>-->
-                <!--<include>**/themes/appm/**</include>-->
-                <!--<include>**/themes/default/**</include>-->
-            <!--</includes>-->
-        </fileSet>
-	<fileSet>
-            <directory>
-                ../../jaggery-apps/app-social-web/</directory>
-            <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/jaggeryapps/social</outputDirectory>
-            <!--<includes>-->
-                <!--<include>**/config/ext/webapp.json</include>-->
-                <!--<include>**/config/lifecycles/WebAppLifeCycle.xml</include>-->
-                <!--<include>**/config/publisher.json</include>-->
-                <!--<include>**/config/publisher-tenant.json</include>-->
-                <!--<include>**/controllers/login.jag</include>-->
-                <!--<include>**/controllers/logout.jag</include>-->
-                <!--<include>**/controllers/index_router.jag</include>-->
-                <!--<include>**/modules/ext/scripts/webapp.action.save.js</include>-->
-                <!--<include>**/apis/v1/lifecycle_api_router.jag</include>-->
-                <!--<include>**/apis/v1/assets_api_router.jag</include>-->
-                <!--<include>**/themes/appm/**</include>-->
-                <!--<include>**/themes/default/**</include>-->
-            <!--</includes>-->
 
-            <!-- IS JAGGERY APPS -->
-        </fileSet>
         <!--fileSet>
             <directory>../../jaggery-apps/user-dashboard/dashboard</directory>
             <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/jaggeryapps/dashboard</outputDirectory>
@@ -419,6 +340,17 @@
         <fileSet>
             <directory>src/main/statistics/target</directory>
             <outputDirectory>wso2appm-${pom.version}/statistics</outputDirectory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+        </fileSet>
+
+        <!-- Copy publisher, store and social apps -->
+        <fileSet>
+            <directory>
+                ../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/deployment/server/jaggeryapps
+            </directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps</outputDirectory>
             <includes>
                 <include>**/*.*</include>
             </includes>
@@ -935,12 +867,12 @@
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file> 
-	<file>
-            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/social.xml</source>
-            <outputDirectory>wso2appm-${pom.version}/repository/conf</outputDirectory>
-            <filtered>true</filtered>
-            <fileMode>644</fileMode>
-        </file> 
+	<!--<file>-->
+            <!--<source>../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/social.xml</source>-->
+            <!--<outputDirectory>wso2appm-${pom.version}/repository/conf</outputDirectory>-->
+            <!--<filtered>true</filtered>-->
+            <!--<fileMode>644</fileMode>-->
+        <!--</file> -->
          <!--file>
             <source>../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/security/idp-config.xml</source>
             <outputDirectory>wso2appm-${pom.version}/repository/conf/security</outputDirectory>
