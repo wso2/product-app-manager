@@ -282,7 +282,7 @@ var drawSubscribedAPIsByUsers = function (response, usageByContext) {
                                         chart.y2Axis.tickFormat(d3.format(',d'));
                                         chart.yAxis.axisLabel('Hits');
                                         chart.xAxis.tickFormat(function (d) {
-                                            return d3.time.format('%d %b %Y %H:%M')(new Date(d))
+                                            return d3.time.format('%d %b ')(new Date(d))
                                         });
 
 
