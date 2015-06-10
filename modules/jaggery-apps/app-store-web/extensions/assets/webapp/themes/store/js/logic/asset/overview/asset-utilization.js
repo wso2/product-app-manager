@@ -134,36 +134,52 @@ $(function(){
     The method invokes the API call which will subscribe the provided application to the given api
      */
     var subscribeToApi=function(subscription){
+
         $.ajax({
            url:API_URL,
+            dataType: 'JSON',
            type:'POST',
            data:subscription,
-           success:function(response){
-        	   if(JSON.parse(response).error == false){
-        		console.info('Successfully subscribed to Web app: '+subscription.apiName);
-        		//alert('Succsessfully subscribed to the '+subscription.apiName+' Web App.');
-        		   
-                	// Update UI based on the subscription type.
-                	if(subscription['subscriptionType'] == "INDIVIDUAL"){
-                    		showIndividualSubscriptionSuccessfulMessage(subscription.apiName);
-                	}else if(subscription['subscriptionType'] == "ENTERPRISE"){
-                    		updateUIAfterEnterpriseSubscription(subscription);
-                	}
-        		    
-        	}else{
-     			console.info('Error occured in subscribe to web app: '+subscription.apiName);
-               }
-           },
+            complete: function(response, textStatus) {
+                if(textStatus == "success") {
+                    console.info('Successfully subscribed to Web app: ' + subscription.apiName);
+
+                    // Update UI based on the subscription type.
+                    if (subscription['subscriptionType'] == "INDIVIDUAL") {
+                        $('#messageModal1').html($('#confirmation-data1').html());
+                        $('#messageModal1 h3.modal-title').html(('Subscription Successful'));
+                        $('#messageModal1 div.modal-body').html('\n\n' + ('You have successfully subscribed to the ') + '<b>"' + subscription.apiName + '</b>"');
+                        $('#messageModal1 a.btn-other').html('OK');
+
+                        $('#messageModal1').modal();
+
+                        $('#btnUnsubscribe').show();
+                        $('#btnSubscribe').hide();
+                        $('#subscribed').val(true);
+                        $("#messageModal1 a.btn-other").click(function () {
+                           // location.reload();
+                        });
+
+                    } else if (subscription['subscriptionType'] == "ENTERPRISE") {
+                        updateUIAfterEnterpriseSubscription(subscription);
+                    }
+                }else{
+                    alert("response error true")
+                    console.info('Error occured in subscribe to web app: '+subscription.apiName);
+                }
+            },
            error : function(response) {
       			alert('Error occured in subscribe');
+
       	   },
            success : function(e){
-               location.reload();
+               //location.reload();
            }
         });
     };
-    
+
     var showIndividualSubscriptionSuccessfulMessage = function(apiName){
+
     	  $.ajax({
               url:API_SUBSCRIPTION_WORKFLOW,
               type:'POST',
@@ -180,7 +196,7 @@ $(function(){
 			alert('Error occured in subscribe');
 	      }
            });
-    	
+
     
     }
     
@@ -212,7 +228,7 @@ $(function(){
       var subscribedEnterprisesSet = {};
       for(var i = 0; i < subscribedEnterprises.length; i++){
         subscribedEnterprisesSet[subscribedEnterprises[i]] = true;
-      }      
+      }
 
       // Iterate throgh the check boxes and update them accordingly.
       var checkboxContainer = $('#enterpriseSubscriptionManagementPanel #enterprises');
@@ -236,20 +252,19 @@ $(function(){
            success:function(response){
         	   if(JSON.parse(response).error == false){
                	  	console.info('Successfully unsubscribed to web app: '+subscription.apiName);
-                	//alert('Succsessfully unsubscribed to the '+subscription.apiName+' Web App.');
-               	
               		$('#messageModal1').html($('#confirmation-data1').html());
     		    	$('#messageModal1 h3.modal-title').html(('Unsubscription Successful'));
     		    	$('#messageModal1 div.modal-body').html('\n\n'+ ('You have successfully unsubscribed to the ')+'<b>"' + subscription.apiName + '</b>"');
     		    	$('#messageModal1 a.btn-other').html('OK');
-
     		    	$('#messageModal1').modal();
-              
+                    $('#btnSubscribe').show();
               		$('#btnUnsubscribe').hide();
-              		$('#btnSubscribe').show();
 	            	$('#subscribed').val(false);
-              
-		   }else{
+                   $("#messageModal1 a.btn-other").click(function () {
+                        location.reload();
+                   });
+
+               }else{
            		console.info('Error occured in unsubscribe to web app: '+subscription.apiName);
            	   }
         	   
