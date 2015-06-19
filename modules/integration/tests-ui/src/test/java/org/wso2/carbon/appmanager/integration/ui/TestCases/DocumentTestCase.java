@@ -75,8 +75,8 @@ public class DocumentTestCase extends APPManagerIntegrationTest {
         super.init(0);
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
-        baseUtil.testApplicationCreation("doc");
-        baseUtil.testApplicationPublish();
+        baseUtil.createWebApplicationWithExistingUser("doc");
+        baseUtil.testWebApplicationPublish();
         appName = ApplicationInitializingUtil.appName;
         appVersion = ApplicationInitializingUtil.version;
         username = userInfo.getUserName();

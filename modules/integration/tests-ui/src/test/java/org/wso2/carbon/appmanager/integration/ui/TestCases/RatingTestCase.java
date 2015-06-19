@@ -46,8 +46,8 @@ public class RatingTestCase extends APPManagerIntegrationTest {
         super.init(0);
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
-        baseUtil.testApplicationCreation("15");
-        baseUtil.testApplicationPublish();
+        baseUtil.createWebApplicationWithExistingUser("15");
+        baseUtil.testWebApplicationPublish();
         baseUtil.testApplicationSubscription();
         appType = "webapp";
         userInfo1 = UserListCsvReader.getUserInfo(1);

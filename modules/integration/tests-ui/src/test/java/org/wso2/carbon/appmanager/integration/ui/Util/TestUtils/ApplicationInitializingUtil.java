@@ -1,5 +1,5 @@
 /*
- *Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *Copyright (c) 2005-2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  *WSO2 Inc. licenses this file to you under the Apache License,
  *Version 2.0 (the "License"); you may not use this file except
@@ -20,14 +20,12 @@ package org.wso2.carbon.appmanager.integration.ui.Util.TestUtils;
 
 import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 import org.wso2.carbon.appmanager.integration.ui.APPManagerIntegrationTest;
 import org.wso2.carbon.appmanager.integration.ui.Util.APPMPublisherRestClient;
 import org.wso2.carbon.appmanager.integration.ui.Util.APPMStoreRestClient;
 import org.wso2.carbon.appmanager.integration.ui.Util.APPMStoreUIClient;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.AppCreateRequest;
+import org.wso2.carbon.appmanager.integration.ui.Util.Bean.MobileApplicationBean;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.SubscriptionRequest;
 import org.wso2.carbon.automation.core.BrowserManager;
 import org.wso2.carbon.automation.core.ProductConstant;
@@ -62,8 +60,14 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
     private String password;
     private WebDriver driver;
     private APPMStoreUIClient storeUIClient;
+    private String mobileAppName;
+    private static final String BANNER = "banner.png";
+    private static final String ICON = "icon.png";
+    private static final String SCREEN1 = "screen1.png";
+    private static final String SCREEN2 = "screen2.png";
+    private String mobileAppDescription;
 
-    @BeforeClass(alwaysRun = true)
+
     public void init() throws Exception {
         super.init(0);
         if (isBuilderEnabled()) {
@@ -73,7 +77,6 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
         } else {
             storeURLHttp = getStoreServerURLHttp();
         }
-
         username = userInfo.getUserName();
         password = userInfo.getPassword();
         appMStore = new org.wso2.carbon.appmanager.integration.ui.Util.APPMStoreRestClient(storeURLHttp);
@@ -81,6 +84,8 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
         appURL = appProp.getAppURL();
         appName = appProp.getAppName();
         appDisplayName = appProp.getAppDisplayName();
+        mobileAppName = appProp.getMobileAppName();
+        mobileAppDescription = appProp.getMobileAppDescription();
         version = appProp.getVersion();
         transport = appProp.getTransports();
         anonymousAccessToUrlPattern = appProp.getAnonymousAccessToUrlPattern();
@@ -92,52 +97,41 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
         driver = BrowserManager.getWebDriver();
     }
 
-    @Test(groups = {"wso2.appmanager.appCreate"}, description = "Application Creation")
-    public void testApplicationCreation(String prefix) throws Exception {
+    public HttpResponse createWebApplicationWithExistingUser(String prefix)
+            throws Exception {
+       return createWebApplication(prefix,username,password);
+    }
+    /**
+     * This method is use to create web application in given user
+     *
+     * @param prefix prefix for web application name
+     *
+     * @param creatorUserName username
+     *
+     * @param creatorPasssword password
+     *
+     * @throws java.lang.Exception on error
+     */
 
-        appMPublisher.login(username, password);
-
-        String root = ProductConstant.getSystemResourceLocation();
-        String policyPath = root+"samples"+File.separator+"policy.xml";
-        String xml = convertXMLFileToString(policyPath);
-
-        HttpResponse response = appMPublisher.validatePolicy(xml);
-        JSONObject validateObject = new JSONObject(response.getData());
-        boolean validateSucceed = validateObject.getBoolean("success");
-        assertTrue(validateSucceed, "Policy validation failed.");
-        String policyPartialId = "";
-
-        if (validateSucceed) {
-            HttpResponse partialIdResponse = appMPublisher.savePolicy("testPolicy", xml);
-            JSONObject saveObject = new JSONObject(partialIdResponse.getData());
-            JSONObject responseId = saveObject.optJSONObject("response");
-            policyPartialId = responseId.getString("id");
-        }
-
-        String policyGropuId = appMPublisher.savePolicyGroup(xml, anonymousAccessToUrlPattern, policyGroupName,
-                throttlingTier, objPartialMappings, policyGroupDesc);
-
-        int hostPort = 8080;
-        AppCreateRequest appCreateRequest = createSingleApp(appName+prefix, appDisplayName, version, transport, appURL, hostPort,
-                appProp.getTier(), policyPartialId, policyGropuId);
-        appName = appCreateRequest.getOverview_name();
-        version = appCreateRequest.getOverview_version();
-        HttpResponse appCreateResponse = appMPublisher.createApp(appCreateRequest);
-        JSONObject jsonObject = new JSONObject(appCreateResponse.getData());
-        appId = (String) jsonObject.get("id");
-        assertEquals(appCreateResponse.getResponseCode(), 200, "Application creation failed");
+    public HttpResponse createWebApplicationWithGivenUser(String prefix, String creatorUserName, String creatorPasssword)
+            throws Exception {
+        return createWebApplication(prefix,creatorUserName,creatorPasssword);
     }
 
-    @Test(groups = {"wso2.appmanager.appPublish"}, description = "Application Publish")
-    public void testApplicationPublish() throws Exception {
-
-
-
-        HttpResponse appPublishResponse = appMPublisher.publishApp(appId);
+    /**
+     * This method is use to publish web application
+     *
+     * @throws java.lang.Exception on error
+     */
+    public void testWebApplicationPublish() throws Exception {
+        HttpResponse appPublishResponse = appMPublisher.publishApp(appId,"webapp");
         assertEquals(appPublishResponse.getResponseCode(), 200, "Application publishing failed");
     }
-
-    @Test(groups = {"wso2.appmanager.appSubscribe"}, description = "Application Subscribe")
+    /**
+     * This method is use to application subscription
+     *
+     * @throws java.lang.Exception on error
+     */
     public void testApplicationSubscription() throws Exception {
 
         appMStore.login(username, password);
@@ -164,7 +158,90 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
         }
     }
 
-    @AfterClass(alwaysRun = true)
+    /**
+     * This method is use to subscribe application for given id
+     *
+     * @throws java.lang.Exception on error
+     */
+    public HttpResponse testApplicationSubscription(String applicationID) throws Exception {
+
+        appMStore.login(username, password);
+
+        long timeBefore = System.nanoTime();
+        long timeElapsed = 0;
+        while (true) {
+            storeUIClient.accessStore(driver, storeURLHttp);
+            Thread.sleep(1000);
+            if (driver.getPageSource().contains(applicationID)) {
+                SubscriptionRequest appSubscriptionRequest = new SubscriptionRequest(appName, username, version);
+                HttpResponse appSubscriptionResponse = appMStore.subscribeForApplication(appSubscriptionRequest);
+                return  appSubscriptionResponse;
+            } else if (timeElapsed >= 6.0e+10 && timeElapsed != 0) {
+                return  null;
+            }
+            timeElapsed = System.nanoTime() - timeBefore;
+        }
+    }
+
+    /**
+     * This method is use to create mobile application
+     *
+     * @throws java.lang.Exception on error
+     */
+    public  String createMobileApplication() throws Exception {
+        MobileApplicationBean mobileApplicationBean = new MobileApplicationBean();
+        JSONObject appmetaData = new JSONObject();
+        appmetaData.put("package","com.google.android.maps.mytracks");
+        appmetaData.put("version","1.0");
+        mobileApplicationBean.setAppmeta(appmetaData.toString());
+        mobileApplicationBean.setVersion(version);
+        mobileApplicationBean.setProvider("1WSO2Mobile");
+        mobileApplicationBean.setPlatform("android");
+        mobileApplicationBean.setMarkettype("public");
+        mobileApplicationBean.setName(mobileAppName);
+        mobileApplicationBean.setDescription(mobileAppDescription);
+        mobileApplicationBean.setBannerFilePath(getFileFromResources(BANNER));
+        mobileApplicationBean.setIconFile(getFileFromResources(ICON));
+        mobileApplicationBean.setScreenShot1File(getFileFromResources(SCREEN1));
+        mobileApplicationBean.setScreenShot2File(getFileFromResources(SCREEN2));
+        mobileApplicationBean.setScreenShot3File(getFileFromResources(SCREEN2));
+        mobileApplicationBean.setMobileapp("mobileapp");
+        return appMPublisher.
+                createMobileApplicatopn(mobileApplicationBean);
+    }
+
+    private HttpResponse createWebApplication(String prefix,String creatorUserName,String creatorPassword) throws Exception {
+        appMPublisher.login(creatorUserName,creatorPassword);
+        String root = ProductConstant.getSystemResourceLocation();
+        String policyPath = root+"samples"+File.separator+"policy.xml";
+        String xml = convertXMLFileToString(policyPath);
+        HttpResponse response = appMPublisher.validatePolicy(xml);
+        JSONObject validateObject = new JSONObject(response.getData());
+        boolean validateSucceed = validateObject.getBoolean("success");
+        assertTrue(validateSucceed, "Policy validation failed.");
+        String policyPartialId = "";
+
+        if (validateSucceed) {
+            HttpResponse partialIdResponse = appMPublisher.savePolicy("testPolicy", xml);
+            JSONObject saveObject = new JSONObject(partialIdResponse.getData());
+            JSONObject responseId = saveObject.optJSONObject("response");
+            policyPartialId = responseId.getString("id");
+        }
+
+        String policyGropuId = appMPublisher.savePolicyGroup(xml, anonymousAccessToUrlPattern, policyGroupName,
+                throttlingTier, objPartialMappings, policyGroupDesc);
+
+        int hostPort = 8080;
+        AppCreateRequest appCreateRequest = createSingleApp(appName+prefix, appDisplayName, version, transport, appURL, hostPort,
+                appProp.getTier(), policyPartialId, policyGropuId);
+        appName = appCreateRequest.getOverview_name();
+        version = appCreateRequest.getOverview_version();
+        HttpResponse appCreateResponse = appMPublisher.createApp(appCreateRequest);
+        JSONObject jsonObject = new JSONObject(appCreateResponse.getData());
+        appId = (String) jsonObject.get("id");
+        return  appCreateResponse;
+    }
+
     public void destroy() throws Exception {
         super.cleanup();
         String parentWindow = driver.getWindowHandle();
@@ -177,5 +254,14 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
         }
         driver.switchTo().window(parentWindow);
         driver.close();
+    }
+
+    /**
+     * This method is use to get a file that has given name from resources folder
+     */
+    private File getFileFromResources(String fileName){
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource(fileName).getFile());
+        return file;
     }
 }

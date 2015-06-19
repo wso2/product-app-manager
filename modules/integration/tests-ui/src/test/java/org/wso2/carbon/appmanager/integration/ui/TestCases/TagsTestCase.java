@@ -51,8 +51,8 @@ public class TagsTestCase extends APPManagerIntegrationTest {
         super.init(0);
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
-        baseUtil.testApplicationCreation("7");
-        baseUtil.testApplicationPublish();
+        baseUtil.createWebApplicationWithExistingUser("7");
+        baseUtil.testWebApplicationPublish();
         baseUtil.testApplicationSubscription();
         username = userInfo.getUserName();
         password = userInfo.getPassword();

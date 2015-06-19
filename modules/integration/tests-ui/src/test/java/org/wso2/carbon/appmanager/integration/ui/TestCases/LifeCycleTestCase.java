@@ -52,8 +52,8 @@ public class LifeCycleTestCase extends APPManagerIntegrationTest {
         super.init(0);
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
-        baseUtil.testApplicationCreation("3");
-        baseUtil.testApplicationPublish();
+        baseUtil.createWebApplicationWithExistingUser("3");
+        baseUtil.testWebApplicationPublish();
         baseUtil.testApplicationSubscription();
         username = userInfo.getUserName();
         password = userInfo.getPassword();
@@ -78,14 +78,14 @@ public class LifeCycleTestCase extends APPManagerIntegrationTest {
         //Un subscribe the Application
         SubscriptionRequest appUnSubscriptionRequest = new SubscriptionRequest(ApplicationInitializingUtil.appName,
                 username, ApplicationInitializingUtil.version);
-        HttpResponse unSubscriptionResponse = appMStore.unsubscribeForApplication(appUnSubscriptionRequest);
+        HttpResponse unSubscriptionResponse = appMStore.unsubscribeForApplication(appUnSubscriptionRequest,"webapp");
         JSONObject unSubscriptionJsonObject = new JSONObject(unSubscriptionResponse.getData());
         assertFalse((Boolean) unSubscriptionJsonObject.get("error"), "Error while updating tier permission");
         assertTrue((Boolean) unSubscriptionJsonObject.get("status"),
                 "Application " + appProp.getAppName() + " is already un subscribed");
 
         //Un publish the app
-        HttpResponse appUnPublishResponse = appMPublisher.unPublishApp(ApplicationInitializingUtil.appId);
+        HttpResponse appUnPublishResponse = appMPublisher.unPublishApp(ApplicationInitializingUtil.appId,"webapp");
         assertEquals(appUnPublishResponse.getResponseCode(), 200, "Response code mismatch");
 
         //Test app is subscribe

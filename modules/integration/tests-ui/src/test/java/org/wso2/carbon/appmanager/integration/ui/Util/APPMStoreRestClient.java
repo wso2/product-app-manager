@@ -130,10 +130,11 @@ public class APPMStoreRestClient {
      * @throws Exception
      */
 
-    public HttpResponse unsubscribeForApplication(SubscriptionRequest unsubscriptionRequest)
+    public HttpResponse unsubscribeForApplication(SubscriptionRequest unsubscriptionRequest,String appType)
             throws Exception {
         checkAuthentication();
-        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl+"/store/resources/webapp/v1/unsubscription/app")
+        HttpResponse response = HttpRequestUtil.doPost
+                (new URL(backEndUrl+"/store/resources/"+appType+"/v1/unsubscription/app")
                 ,unsubscriptionRequest.generateRequestParameters()
                 , requestHeaders);
         if (response.getResponseCode() == 200) {

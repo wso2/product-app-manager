@@ -83,8 +83,8 @@ public class GoogleAnalyticsTestCase extends APPManagerIntegrationTest {
         //create,publish and subscribe to app
         ApplicationInitializingUtil baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
-        baseUtil.testApplicationCreation("GoogleAnalytic");
-        baseUtil.testApplicationPublish();
+        baseUtil.createWebApplicationWithExistingUser("GoogleAnalytic");
+        baseUtil.testWebApplicationPublish();
         baseUtil.testApplicationSubscription();
         storeUIClient = new APPMStoreUIClient();
         userName = userInfo.getUserName();

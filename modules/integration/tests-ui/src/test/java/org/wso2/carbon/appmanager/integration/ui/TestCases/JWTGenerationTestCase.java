@@ -48,8 +48,8 @@ public class JWTGenerationTestCase extends APPManagerIntegrationTest {
         super.init(0);
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
-        baseUtil.testApplicationCreation("2");
-        baseUtil.testApplicationPublish();
+        baseUtil.createWebApplicationWithExistingUser("2");
+        baseUtil.testWebApplicationPublish();
         baseUtil.testApplicationSubscription();
         username = userInfo.getUserName();
         password = userInfo.getPassword();

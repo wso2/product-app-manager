@@ -46,7 +46,7 @@ public class SSOTestCase extends APPManagerIntegrationTest {
         super.init(0);
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
-        baseUtil.testApplicationCreation("11");
+        baseUtil.createWebApplicationWithExistingUser("11");
         username = userInfo.getUserName();
         password = userInfo.getPassword();
         driver = BrowserManager.getWebDriver();
