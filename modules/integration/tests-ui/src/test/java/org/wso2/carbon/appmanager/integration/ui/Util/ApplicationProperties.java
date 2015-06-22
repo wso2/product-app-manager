@@ -43,6 +43,9 @@ public class ApplicationProperties {
     private String throttlingTier;
     private String objPartialMappings;
     private String policyGroupDesc;
+    private String mobileAppName;
+    private String mobileAppDescription;
+
 
     public ApplicationProperties() throws IOException {
         appProp = new Properties();
@@ -70,6 +73,8 @@ public class ApplicationProperties {
         setThrottlingTier(appProp.getProperty("throttlingTier"));
         setObjPartialMappings(appProp.getProperty("objPartialMappings"));
         setPolicyGroupDesc(appProp.getProperty("policyGroupDesc"));
+        setMobileAppName(appProp.getProperty("mobileAppName"));
+        setMobileAppDescription(appProp.getProperty("mobileAppDescription"));
     }
 
     public String getAppURL() {
@@ -198,5 +203,23 @@ public class ApplicationProperties {
 
     public void setPolicyGroupDesc(String policyGroupDesc) {
         this.policyGroupDesc = policyGroupDesc;
+    }
+
+
+    public String getMobileAppName() {
+        return mobileAppName;
+    }
+
+    public void setMobileAppName(String mobileAppName) {
+        this.mobileAppName = mobileAppName;
+    }
+
+
+    public String getMobileAppDescription() {
+        return mobileAppDescription;
+    }
+
+    public void setMobileAppDescription(String mobileAppDescription) {
+        this.mobileAppDescription = mobileAppDescription;
     }
 }

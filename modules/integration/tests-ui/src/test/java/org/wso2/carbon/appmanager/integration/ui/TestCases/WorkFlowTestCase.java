@@ -19,7 +19,6 @@
 package org.wso2.carbon.appmanager.integration.ui.TestCases;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -38,7 +37,6 @@ import javax.activation.DataHandler;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Set;
 
 import static org.testng.Assert.assertTrue;
 
@@ -88,8 +86,8 @@ public class WorkFlowTestCase extends APPManagerIntegrationTest {
         ApplicationInitializingUtil baseUtil;
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
-        baseUtil.testApplicationCreation("workflow");
-        baseUtil.testApplicationPublish();
+        baseUtil.createWebApplicationWithExistingUser("workflow");
+        baseUtil.testWebApplicationPublish();
         appName = ApplicationInitializingUtil.appName;
         appId = ApplicationInitializingUtil.appId;
         baseUrl = getServerURLHttp();

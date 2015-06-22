@@ -49,7 +49,7 @@ public class SSOutTestCase extends APPManagerIntegrationTest {
         super.init(0);
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
-        baseUtil.testApplicationCreation("12");
+        baseUtil.createWebApplicationWithExistingUser("12");
         username = userInfo.getUserName();
         password = userInfo.getPassword();
         driver = BrowserManager.getWebDriver();

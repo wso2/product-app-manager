@@ -51,8 +51,8 @@ public class ResourceAuthRolesTestCase extends APPManagerIntegrationTest {
         super.init(0);
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
-        baseUtil.testApplicationCreation("4");
-        baseUtil.testApplicationPublish();
+        baseUtil.createWebApplicationWithExistingUser("4");
+        baseUtil.testWebApplicationPublish();
         baseUtil.testApplicationSubscription();
         username = userInfo.getUserName();
         password = userInfo.getPassword();

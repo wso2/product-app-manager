@@ -45,8 +45,8 @@ public class AppDeleteTestCase extends APPManagerIntegrationTest {
         super.init(0);
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
-        baseUtil.testApplicationCreation(appPrefix);
-        baseUtil.testApplicationPublish();
+        baseUtil.createWebApplicationWithExistingUser(appPrefix);
+        baseUtil.testWebApplicationPublish();
         baseUtil.testApplicationSubscription();
         username = userInfo.getUserName();
         password = userInfo.getPassword();

@@ -53,8 +53,8 @@ public class ResourceAuthXCMLTestCase extends APPManagerIntegrationTest {
         super.init(0);
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
-        baseUtil.testApplicationCreation("5");
-        baseUtil.testApplicationPublish();
+        baseUtil.createWebApplicationWithExistingUser("5");
+        baseUtil.testWebApplicationPublish();
         baseUtil.testApplicationSubscription();
         username = userInfo.getUserName();
         password = userInfo.getPassword();

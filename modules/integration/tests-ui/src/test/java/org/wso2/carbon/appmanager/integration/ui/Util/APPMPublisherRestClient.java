@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2005-2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  * 
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,24 +28,24 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.wso2.carbon.appmanager.integration.ui.Util.Bean.AppCreateRequest;
-import org.wso2.carbon.appmanager.integration.ui.Util.Bean.AppDiscoveryListRequest;
-import org.wso2.carbon.appmanager.integration.ui.Util.Bean.DocumentRequest;
-import org.wso2.carbon.appmanager.integration.ui.Util.Bean.GetStatisticRequest;
+import org.wso2.carbon.appmanager.integration.ui.Util.Bean.*;
 import org.wso2.carbon.automation.core.utils.HttpRequestUtil;
 import org.wso2.carbon.automation.core.utils.HttpResponse;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public class APPMPublisherRestClient {
 	private String backEndUrl;
 	private Map<String, String> requestHeaders = new HashMap<String, String>();
 	private WebDriver driver;
+    private Logger log = Logger.getLogger("APPMPublisherRestClient");
 
 
 	public APPMPublisherRestClient(String backEndUrl) throws MalformedURLException {
@@ -60,7 +60,7 @@ public class APPMPublisherRestClient {
 	}
 
 	/**
-	 * logs in to the user store
+	 * logs in to the publisher
 	 * 
 	 * @param userName
 	 * @param password
@@ -74,12 +74,12 @@ public class APPMPublisherRestClient {
 		// find element username
 		WebElement usernameEle = driver.findElement(By.id("username"));
 		// fill user name
-		usernameEle.sendKeys("admin");
+		usernameEle.sendKeys(userName);
 		// find element password
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("password")));
 		WebElement passwordEle = driver.findElement(By.id("password"));
 		// fill element
-		passwordEle.sendKeys("admin");
+		passwordEle.sendKeys(password);
 		// find submit button and click on it.
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("btn-primary")));
 		driver.findElement(By.className("btn-primary")).click();
@@ -100,7 +100,7 @@ public class APPMPublisherRestClient {
 
 		String urlPath = aURL.getPath();
 
-		driver.quit();
+		//driver.quit();
 
 		if ((urlPath.equals("/publisher/assets/webapp/"))) {
 			return "logged in";
@@ -109,6 +109,17 @@ public class APPMPublisherRestClient {
 		}
 
 	}
+
+    public  String logout() throws Exception {
+        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl +
+                        "/publisher/logout"),"",
+                requestHeaders);
+        if (response.getResponseCode() == 200) {
+            this.requestHeaders.clear();
+            return "log out";
+        }
+        return "log out failed";
+    }
 
 
 	/**
@@ -422,10 +433,10 @@ public class APPMPublisherRestClient {
 	 * @return -response
 	 * @throws Exception
 	 */
-	public HttpResponse publishApp(String appId) throws Exception {
-		changeState(appId, "Submit%20for%20Review");
-		changeState(appId, "Approve");
-		HttpResponse response = changeState(appId, "Publish");
+	public HttpResponse publishApp(String appId,String appType) throws Exception {
+		changeState(appId, "Submit%20for%20Review",appType);
+		changeState(appId, "Approve",appType);
+		HttpResponse response = changeState(appId, "Publish",appType);
 		return response;
 	}
 
@@ -433,12 +444,14 @@ public class APPMPublisherRestClient {
      * unpublish an application which is in created state
      * @param appId
      *            - application id
+     * @param  appType
+     *             - type of the appliction
      * @return -response
      * @throws Exception
      */
-    public HttpResponse unPublishApp(String appId) throws Exception {
+    public HttpResponse unPublishApp(String appId,String appType) throws Exception {
         // publish to unpublish
-        HttpResponse response = changeState(appId, "Unpublish");
+        HttpResponse response = changeState(appId, "Unpublish",appType);
         return response;
     }
 
@@ -451,7 +464,7 @@ public class APPMPublisherRestClient {
         ///publisher/api/asset/delete/{type}/{id}
 
         //TODO delte the app and do gett. check for null
-
+        this.requestHeaders.put("Content-Type","application/json");
         HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl +
                 "/publisher/api/asset/delete/webapp/"+appId+""),"",requestHeaders);
 
@@ -472,10 +485,10 @@ public class APPMPublisherRestClient {
 	 * @return -response 
 	 * @throws Exception
 	 */
-	public HttpResponse getCurrentState(String appId) throws Exception {
-		HttpResponse response =
+	public HttpResponse getCurrentState(String appId,String  appType) throws Exception {
+        HttpResponse response =
 		                        HttpRequestUtil.doGet(backEndUrl +
-		                                              "/publisher/api/lifecycle/subscribe/webapp/" +
+		                                              "/publisher/api/lifecycle/subscribe/"+appType+"/" +
 		                                              appId, requestHeaders);
 		if (response.getResponseCode() == 200) {
 
@@ -495,11 +508,11 @@ public class APPMPublisherRestClient {
 	 * @return
 	 * @throws Exception
 	 */
-	public HttpResponse changeState(String appId, String toSate) throws Exception {
+	public HttpResponse changeState(String appId, String toSate,String appType) throws Exception {
 		this.requestHeaders.put("Content-Type", "");
 		HttpResponse response =
 		                        HttpUtil.doPut(new URL(backEndUrl + "/publisher/api/lifecycle/" +
-		                                               toSate + "/webapp/" + appId), "",
+		                                               toSate + "/"+appType+"/" + appId), "",
 		                                       requestHeaders);
 
 		if (response.getResponseCode() == 200) {
@@ -687,5 +700,11 @@ public class APPMPublisherRestClient {
 			throw new Exception("App discovery failed> " + response.getData());
 		}
 	}
+
+    public String createMobileApplicatopn(MobileApplicationBean mobileApplicationBean) throws IOException {
+        this.requestHeaders.remove("Content-Type");
+        return HttpUtil.doPostMultiData
+                (backEndUrl+"/publisher/api/asset/mobileapp",mobileApplicationBean,this.requestHeaders);
+    }
 
 }

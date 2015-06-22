@@ -20,7 +20,6 @@
 
 package org.wso2.carbon.appmanager.integration.ui.TestCases;
 
-import net.minidev.json.JSONObject;
 import org.apache.catalina.startup.Tomcat;
 import org.json.JSONArray;
 import org.openqa.selenium.WebDriver;
@@ -92,8 +91,8 @@ public class RuntimeStatisticsTestCase extends APPManagerIntegrationTest {
         ApplicationInitializingUtil baseUtil;
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
-        baseUtil.testApplicationCreation("16");
-        baseUtil.testApplicationPublish();
+        baseUtil.createWebApplicationWithExistingUser("16");
+        baseUtil.testWebApplicationPublish();
         baseUtil.testApplicationSubscription();
         username = userInfo.getUserName();
         password = userInfo.getPassword();
