@@ -58,15 +58,14 @@ import java.util.Date;
  */
 public class RuntimeStatisticsTestCase extends APPManagerIntegrationTest {
 
+    public static String publisherURLHttp;
+    TomcatDeployer deployer;
+    Tomcat tomcat;
     private ServerConfigurationManager serverConfigurationManager;
     private WebDriver driver;
     private APPMStoreUIClient storeUIClient;
     private String username;
     private String password;
-
-    TomcatDeployer deployer;
-    Tomcat tomcat;
-    public static String publisherURLHttp;
     private APPMPublisherRestClient appMPublisher;
 
 
@@ -98,6 +97,11 @@ public class RuntimeStatisticsTestCase extends APPManagerIntegrationTest {
         password = userInfo.getPassword();
     }
 
+    /**
+     * This method is use to test runtime statistics in appm
+     *
+     * @throws java.lang.Exception on error
+     */
     @Test(groups = {"wso2.appmanager.statistics"}, description = "Test web application runtime statistics")
     public void testWebAppStatistics() throws Exception {
 
@@ -134,13 +138,19 @@ public class RuntimeStatisticsTestCase extends APPManagerIntegrationTest {
         Assert.assertEquals(getAppUsageByUserResponse.getResponseCode(), 200, "Response code mismatch");
         JSONArray getAppUsageByUserResponseData = new JSONArray(getAppUsageByUserResponse.getData());
         Assert.assertNotEquals(getAppUsageByUserResponseData.toString(), "[]", "Response object is null");
-        Assert.assertEquals(getAppUsageByUserResponseData.getJSONArray(0).get(0), "testApp16","Application Name mismatch" );
+        Assert.assertEquals(getAppUsageByUserResponseData.getJSONArray(0).get(0), "testApp16", "Application Name mismatch");
         Object countValue = getAppUsageByUserResponseData.getJSONArray(0).getJSONArray(1).getJSONArray(0).
                 getJSONArray(1).getJSONArray(0).get(1);
         Assert.assertEquals(Integer.parseInt(countValue.toString()), 1, "Application usage count mismatch");
 
     }
 
+    /**
+     * This method is use to copy given datasource file to given path
+     *
+     * @param sourcePath - datasource file path
+     * @param destPath   - destination path
+     */
     private void copyDataSourceFile(String sourcePath, String destPath) {
         File sourceFile = new File(sourcePath);
         File destFile = new File(destPath);
@@ -151,6 +161,11 @@ public class RuntimeStatisticsTestCase extends APPManagerIntegrationTest {
         }
     }
 
+    /**
+     * This method is use to check exsistance of the given file
+     *
+     * @param fileName - name of the datasource file
+     */
     private String computeDestinationPathForDataSource(String fileName) {
         String serverRoot = System.getProperty(ServerConstants.CARBON_HOME);
         String deploymentPath = serverRoot + "/repository/conf/datasources";
@@ -162,6 +177,11 @@ public class RuntimeStatisticsTestCase extends APPManagerIntegrationTest {
         return deploymentPath + File.separator + fileName;
     }
 
+    /**
+     * This method is use to build a path for given file name
+     *
+     * @param fileName - name of the datasource file path
+     */
     private String computeDataSourceResourcePath(String fileName) {
 
         String sourcePath = ProductConstant.getResourceLocations(ProductConstant.AM_SERVER_NAME)
@@ -169,6 +189,11 @@ public class RuntimeStatisticsTestCase extends APPManagerIntegrationTest {
         return sourcePath;
     }
 
+    /**
+     * This method is use to calulate date for given offset
+     *
+     * @param offset - offset
+     */
     private String getDate(int offset) {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -178,6 +203,12 @@ public class RuntimeStatisticsTestCase extends APPManagerIntegrationTest {
         return sdf.format(cal.getTime());
     }
 
+    /**
+     * This method is use to generate index.html file with tracking id
+     *
+     * @param trackingId - trackingId
+     * @param filePath   - path of the sample webapp folder
+     */
     private void generateHTMLFile(String trackingId, String filePath) {
         String ipAddress = getNetworkIPAddress();
         StringBuilder sb = new StringBuilder();
@@ -208,9 +239,14 @@ public class RuntimeStatisticsTestCase extends APPManagerIntegrationTest {
         }
     }
 
+    /**
+     * This method is use to deploy given web application tomcat in server
+     *
+     * @param webAppPath - web application path
+     * @throws java.lang.Exception on error
+     */
     private void deploy(String webAppPath) throws Exception {
-
-        Tomcat tomcat = new Tomcat();
+        tomcat = new Tomcat();
         tomcat.stop();
         tomcat.setBaseDir(".");
         tomcat.addWebapp("/sample", webAppPath);
