@@ -799,12 +799,12 @@ public class AppCreateRequest extends AbstractRequest {
         this.uritemplate_entitlementPolicyPartialMappings4 = uritemplate_entitlementPolicyPartialMappings4;
     }
 
-    public String getVerview_allowAnonymous() {
+    public String getOverview_allowAnonymous() {
         return overview_allowAnonymous;
     }
 
-    public void setVerview_allowAnonymous(String verview_allowAnonymous) {
-        this.overview_allowAnonymous = verview_allowAnonymous;
+    public void setOverview_allowAnonymous(String overview_allowAnonymous) {
+        this.overview_allowAnonymous = overview_allowAnonymous;
     }
 
     public String getUritemplate_allowAnonymous4() {

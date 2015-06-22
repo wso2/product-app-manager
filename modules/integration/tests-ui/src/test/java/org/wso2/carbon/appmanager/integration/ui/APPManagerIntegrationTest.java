@@ -22,12 +22,10 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.json.JSONObject;
 import org.testng.Assert;
-import org.w3c.dom.Document;
-import org.wso2.carbon.appmanager.integration.ui.Util.*;
+import org.wso2.carbon.appmanager.integration.ui.Util.ApplicationProperties;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.AppCreateRequest;
-import org.wso2.carbon.appmanager.integration.ui.Util.TestUtils.ApplicationInitializingUtil;
+import org.wso2.carbon.appmanager.integration.ui.Util.VerificationUtil;
 import org.wso2.carbon.automation.api.clients.security.SecurityAdminServiceClient;
 import org.wso2.carbon.automation.core.ProductConstant;
 import org.wso2.carbon.automation.core.annotations.ExecutionEnvironment;
@@ -48,16 +46,9 @@ import org.wso2.carbon.automation.utils.services.ServiceDeploymentUtil;
 import org.wso2.carbon.security.mgt.stub.config.SecurityAdminServiceSecurityConfigExceptionException;
 import org.wso2.carbon.sequences.stub.types.SequenceEditorException;
 
-
 import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.net.*;
 import java.rmi.RemoteException;
@@ -108,7 +99,8 @@ public abstract class APPManagerIntegrationTest {
         try {
             if (synapseConfiguration != null) {
                 esbUtils.deleteArtifact(synapseConfiguration, amServer.getBackEndUrl(), amServer.getSessionCookie());
-                if (ExecutionEnvironment.stratos.name().equalsIgnoreCase(getExecutionEnvironment()) || isClusterEnabled()) {
+                if (ExecutionEnvironment.stratos.name()
+                        .equalsIgnoreCase(getExecutionEnvironment()) || isClusterEnabled()) {
 
                     long deploymentDelay = FrameworkFactory.getFrameworkProperties(
                             ProductConstant.ESB_SERVER_NAME).getEnvironmentVariables().getDeploymentDelay();
@@ -194,7 +186,8 @@ public abstract class APPManagerIntegrationTest {
     }
 
     protected String getServerURLHttps() {
-        String serverUrl = FrameworkFactory.getFrameworkProperties(ProductConstant.AM_SERVER_NAME).getProductVariables().getBackendUrl();
+        String serverUrl = FrameworkFactory.getFrameworkProperties(ProductConstant.AM_SERVER_NAME).getProductVariables()
+                .getBackendUrl();
         if (serverUrl.endsWith("/services")) {
             serverUrl = serverUrl.replace("/services", "/services/");
         }
@@ -248,7 +241,8 @@ public abstract class APPManagerIntegrationTest {
                 synapseConfiguration.addChild(itr.next());
             }
         }
-        esbUtils.updateESBConfiguration(setEndpoints(synapseConfig), amServer.getBackEndUrl(), amServer.getSessionCookie());
+        esbUtils.updateESBConfiguration(setEndpoints(synapseConfig), amServer.getBackEndUrl(),
+                                        amServer.getSessionCookie());
 
         if (ExecutionEnvironment.stratos.name().equalsIgnoreCase(getExecutionEnvironment()) || isClusterEnabled()) {
             long deploymentDelay = FrameworkFactory.getFrameworkProperties(
@@ -295,14 +289,14 @@ public abstract class APPManagerIntegrationTest {
 
     protected void isProxyDeployed(String proxyServiceName) throws Exception {
         Assert.assertTrue(esbUtils.isProxyDeployed(amServer.getBackEndUrl(), amServer.getSessionCookie(),
-                proxyServiceName), "Proxy Deployment failed or time out");
+                                                   proxyServiceName), "Proxy Deployment failed or time out");
     }
 
     protected void deleteProxyService(String proxyServiceName) throws Exception {
         if (esbUtils.isProxyServiceExist(amServer.getBackEndUrl(), amServer.getSessionCookie(), proxyServiceName)) {
             esbUtils.deleteProxyService(amServer.getBackEndUrl(), amServer.getSessionCookie(), proxyServiceName);
             Assert.assertTrue(esbUtils.isProxyUnDeployed(amServer.getBackEndUrl(), amServer.getSessionCookie(),
-                    proxyServiceName), "Proxy Deletion failed or time out");
+                                                         proxyServiceName), "Proxy Deletion failed or time out");
         }
         if (proxyServicesList != null && proxyServicesList.contains(proxyServiceName)) {
             proxyServicesList.remove(proxyServiceName);
@@ -360,10 +354,13 @@ public abstract class APPManagerIntegrationTest {
 
     protected void addMessageProcessor(OMElement messageProcessorConfig) throws Exception {
         String messageProcessorName = messageProcessorConfig.getAttributeValue(new QName("name"));
-        if (esbUtils.isMessageProcessorExist(amServer.getBackEndUrl(), amServer.getSessionCookie(), messageProcessorName)) {
-            esbUtils.deleteMessageProcessor(amServer.getBackEndUrl(), amServer.getSessionCookie(), messageProcessorName);
+        if (esbUtils.isMessageProcessorExist(amServer.getBackEndUrl(), amServer.getSessionCookie(),
+                                             messageProcessorName)) {
+            esbUtils.deleteMessageProcessor(amServer.getBackEndUrl(), amServer.getSessionCookie(),
+                                            messageProcessorName);
         }
-        esbUtils.addMessageProcessor(amServer.getBackEndUrl(), amServer.getSessionCookie(), setEndpoints(messageProcessorConfig));
+        esbUtils.addMessageProcessor(amServer.getBackEndUrl(), amServer.getSessionCookie(),
+                                     setEndpoints(messageProcessorConfig));
         if (messageProcessorsList == null) {
             messageProcessorsList = new ArrayList<String>();
         }
@@ -375,7 +372,8 @@ public abstract class APPManagerIntegrationTest {
         if (esbUtils.isMessageStoreExist(amServer.getBackEndUrl(), amServer.getSessionCookie(), messageStoreName)) {
             esbUtils.deleteMessageStore(amServer.getBackEndUrl(), amServer.getSessionCookie(), messageStoreName);
         }
-        esbUtils.addMessageStore(amServer.getBackEndUrl(), amServer.getSessionCookie(), setEndpoints(messageStoreConfig));
+        esbUtils.addMessageStore(amServer.getBackEndUrl(), amServer.getSessionCookie(),
+                                 setEndpoints(messageStoreConfig));
         if (messageStoresList == null) {
             messageStoresList = new ArrayList<String>();
         }
@@ -387,7 +385,8 @@ public abstract class APPManagerIntegrationTest {
         if (esbUtils.isSequenceTemplateExist(amServer.getBackEndUrl(), amServer.getSessionCookie(), name)) {
             esbUtils.deleteSequenceTemplate(amServer.getBackEndUrl(), amServer.getSessionCookie(), name);
         }
-        esbUtils.addSequenceTemplate(amServer.getBackEndUrl(), amServer.getSessionCookie(), setEndpoints(sequenceTemplate));
+        esbUtils.addSequenceTemplate(amServer.getBackEndUrl(), amServer.getSessionCookie(),
+                                     setEndpoints(sequenceTemplate));
 
         if (sequenceTemplateList == null) {
             sequenceTemplateList = new ArrayList<String>();
@@ -426,13 +425,14 @@ public abstract class APPManagerIntegrationTest {
             InterruptedException {
         SecurityAdminServiceClient securityAdminServiceClient =
                 new SecurityAdminServiceClient(amServer.getBackEndUrl(), amServer.getSessionCookie());
-        if (FrameworkFactory.getFrameworkProperties(ProductConstant.ESB_SERVER_NAME).getEnvironmentSettings().is_runningOnStratos()) {
+        if (FrameworkFactory.getFrameworkProperties(ProductConstant.ESB_SERVER_NAME).getEnvironmentSettings()
+                .is_runningOnStratos()) {
 
             securityAdminServiceClient.applySecurity(serviceName, policyId + "", userGroups,
-                    new String[]{"service.jks"}, "service.jks");
+                                                     new String[]{"service.jks"}, "service.jks");
         } else {
             securityAdminServiceClient.applySecurity(serviceName, policyId + "", userGroups,
-                    new String[]{"wso2carbon.jks"}, "wso2carbon.jks");
+                                                     new String[]{"wso2carbon.jks"}, "wso2carbon.jks");
         }
         log.info("Security Scenario " + policyId + " Applied");
 
@@ -445,7 +445,7 @@ public abstract class APPManagerIntegrationTest {
             throws XMLStreamException, FileNotFoundException {
         String config = esbUtils.loadClasspathResource(relativePathToConfigFile).toString();
         config = config.replace("http://localhost:" + port + "/services/" + serviceName,
-                getBackEndServiceUrl(serviceName));
+                                getBackEndServiceUrl(serviceName));
 
         return AXIOMUtil.stringToOM(config);
     }
@@ -456,8 +456,10 @@ public abstract class APPManagerIntegrationTest {
             while (itr.hasNext()) {
                 String messageProcessor = itr.next();
                 try {
-                    if (esbUtils.isMessageProcessorExist(amServer.getBackEndUrl(), amServer.getSessionCookie(), messageProcessor)) {
-                        esbUtils.deleteMessageProcessor(amServer.getBackEndUrl(), amServer.getSessionCookie(), messageProcessor);
+                    if (esbUtils.isMessageProcessorExist(amServer.getBackEndUrl(), amServer.getSessionCookie(),
+                                                         messageProcessor)) {
+                        esbUtils.deleteMessageProcessor(amServer.getBackEndUrl(), amServer.getSessionCookie(),
+                                                        messageProcessor);
                     }
                 } catch (Exception e) {
                     Assert.fail("while undeploying Message Processor. " + e.getMessage());
@@ -473,8 +475,10 @@ public abstract class APPManagerIntegrationTest {
             while (itr.hasNext()) {
                 String messageStore = itr.next();
                 try {
-                    if (esbUtils.isMessageStoreExist(amServer.getBackEndUrl(), amServer.getSessionCookie(), messageStore)) {
-                        esbUtils.deleteMessageStore(amServer.getBackEndUrl(), amServer.getSessionCookie(), messageStore);
+                    if (esbUtils.isMessageStoreExist(amServer.getBackEndUrl(), amServer.getSessionCookie(),
+                                                     messageStore)) {
+                        esbUtils.deleteMessageStore(amServer.getBackEndUrl(), amServer.getSessionCookie(),
+                                                    messageStore);
                     }
                 } catch (Exception e) {
                     Assert.fail("while undeploying Message store. " + e.getMessage());
@@ -509,7 +513,8 @@ public abstract class APPManagerIntegrationTest {
             while (itr.hasNext()) {
                 String proxyName = itr.next();
                 try {
-                    if (esbUtils.isProxyServiceExist(amServer.getBackEndUrl(), amServer.getSessionCookie(), proxyName)) {
+                    if (esbUtils
+                            .isProxyServiceExist(amServer.getBackEndUrl(), amServer.getSessionCookie(), proxyName)) {
                         esbUtils.deleteProxyService(amServer.getBackEndUrl(), amServer.getSessionCookie(), proxyName);
 
                         if (ExecutionEnvironment.stratos.name().equalsIgnoreCase(getExecutionEnvironment())) {
@@ -573,8 +578,10 @@ public abstract class APPManagerIntegrationTest {
             while (itr.hasNext()) {
                 String localEntry = itr.next();
                 try {
-                    if (esbUtils.isSequenceTemplateExist(amServer.getBackEndUrl(), amServer.getSessionCookie(), localEntry)) {
-                        esbUtils.deleteSequenceTemplate(amServer.getBackEndUrl(), amServer.getSessionCookie(), localEntry);
+                    if (esbUtils.isSequenceTemplateExist(amServer.getBackEndUrl(), amServer.getSessionCookie(),
+                                                         localEntry)) {
+                        esbUtils.deleteSequenceTemplate(amServer.getBackEndUrl(), amServer.getSessionCookie(),
+                                                        localEntry);
                     }
                 } catch (Exception e) {
                     Assert.fail("while undeploying Sequence Template. " + e.getMessage());
@@ -607,7 +614,8 @@ public abstract class APPManagerIntegrationTest {
             while (itr.hasNext()) {
                 String executor = itr.next();
                 try {
-                    if (esbUtils.isPriorityExecutorExist(amServer.getBackEndUrl(), amServer.getSessionCookie(), executor)) {
+                    if (esbUtils.isPriorityExecutorExist(amServer.getBackEndUrl(), amServer.getSessionCookie(),
+                                                         executor)) {
                         esbUtils.deleteProxyService(amServer.getBackEndUrl(), amServer.getSessionCookie(), executor);
                     }
                 } catch (Exception e) {
@@ -619,7 +627,8 @@ public abstract class APPManagerIntegrationTest {
     }
 
     protected boolean isRunningOnStratos() {
-        return FrameworkFactory.getFrameworkProperties(ProductConstant.AM_SERVER_NAME).getEnvironmentSettings().is_runningOnStratos();
+        return FrameworkFactory.getFrameworkProperties(ProductConstant.AM_SERVER_NAME).getEnvironmentSettings()
+                .is_runningOnStratos();
     }
 
     protected String getResourceLocation() {
@@ -657,15 +666,18 @@ public abstract class APPManagerIntegrationTest {
     }
 
     public boolean isBuilderEnabled() {
-        return FrameworkFactory.getFrameworkProperties(ProductConstant.AM_SERVER_NAME).getEnvironmentSettings().is_builderEnabled();
+        return FrameworkFactory.getFrameworkProperties(ProductConstant.AM_SERVER_NAME).getEnvironmentSettings()
+                .is_builderEnabled();
     }
 
     private boolean isClusterEnabled() {
-        return FrameworkFactory.getFrameworkProperties(ProductConstant.AM_SERVER_NAME).getEnvironmentSettings().isClusterEnable();
+        return FrameworkFactory.getFrameworkProperties(ProductConstant.AM_SERVER_NAME).getEnvironmentSettings()
+                .isClusterEnable();
     }
 
     private String getExecutionEnvironment() {
-        return FrameworkFactory.getFrameworkProperties(ProductConstant.AM_SERVER_NAME).getEnvironmentSettings().executionEnvironment();
+        return FrameworkFactory.getFrameworkProperties(ProductConstant.AM_SERVER_NAME).getEnvironmentSettings()
+                .executionEnvironment();
     }
 
     private boolean isProxyWSDlExist(String serviceUrl, long synchronizingDelay)
@@ -706,7 +718,8 @@ public abstract class APPManagerIntegrationTest {
     }
 
     private String getServerBackendUrlHttp() {
-        FrameworkProperties frameworkProperties = FrameworkFactory.getFrameworkProperties(ProductConstant.AM_SERVER_NAME);
+        FrameworkProperties frameworkProperties = FrameworkFactory
+                .getFrameworkProperties(ProductConstant.AM_SERVER_NAME);
         boolean webContextEnabled = frameworkProperties.getEnvironmentSettings().isEnableCarbonWebContext();
         boolean portEnabled = frameworkProperties.getEnvironmentSettings().isEnablePort();
 
@@ -727,7 +740,8 @@ public abstract class APPManagerIntegrationTest {
     }
 
     protected String getServerBackendUrlHttps() {
-        FrameworkProperties frameworkProperties = FrameworkFactory.getFrameworkProperties(ProductConstant.AM_SERVER_NAME);
+        FrameworkProperties frameworkProperties = FrameworkFactory
+                .getFrameworkProperties(ProductConstant.AM_SERVER_NAME);
         boolean webContextEnabled = frameworkProperties.getEnvironmentSettings().isEnableCarbonWebContext();
         boolean portEnabled = frameworkProperties.getEnvironmentSettings().isEnablePort();
 
@@ -819,7 +833,8 @@ public abstract class APPManagerIntegrationTest {
     }
 
     protected AppCreateRequest createSingleApp(String appName, String appDisplayName, String version, String transport,
-                                               String hostURL, int hostPort, String tier, String partialId, String policyGroupId)
+                                               String hostURL, int hostPort, String tier, String partialId,
+                                               String policyGroupId)
             throws Exception {
 
         AppCreateRequest appRequest = new AppCreateRequest();
@@ -833,7 +848,7 @@ public abstract class APPManagerIntegrationTest {
         appRequest.setOverview_version(version);
         appRequest.setOverview_context("/" + appName);
         appRequest.setEntitlementPolicies("[]");
-        appRequest.setUritemplate_policyPartialIds("["+partialId+"]");
+        appRequest.setUritemplate_policyPartialIds("[" + partialId + "]");
 
         appRequest.setUritemplate_tier0(tier);
         appRequest.setUritemplate_tier1(tier);
@@ -851,7 +866,73 @@ public abstract class APPManagerIntegrationTest {
         appRequest.setUritemplate_urlPattern4("/images");
 
         appRequest.setUritemplate_entitlementPolicyPartialMappings4
-                ("[{\"entitlementPolicyPartialId\":"+partialId+",\"effect\":\"Permit\"}]");
+                ("[{\"entitlementPolicyPartialId\":" + partialId + ",\"effect\":\"Permit\"}]");
+        appRequest.setUritemplate_entitlementPolicyPartialMappings3("[]");
+        appRequest.setUritemplate_entitlementPolicyPartialMappings2("[]");
+        appRequest.setUritemplate_entitlementPolicyPartialMappings1("[]");
+        appRequest.setUritemplate_entitlementPolicyPartialMappings0("[]");
+
+
+        appRequest.setTags(appProp.getTags());
+
+        appRequest.setAutoConfig("on");
+
+        appRequest.setProviders(getSSOProvider());
+        appRequest.setSso_ssoProvider(getSSOProvider());
+
+        appRequest.setSso_singleSignOn("Enabled");
+        appRequest.setClaims("http://wso2.org/claims/role");
+        appRequest.setClaimPropertyCounter("1");
+        appRequest.setSso_idpProviderUrl("http://localhost:9773/samlsso/");
+
+        appRequest.setUritemplate_policygroupid0(policyGroupId);
+        appRequest.setUritemplate_policygroupid1(policyGroupId);
+        appRequest.setUritemplate_policygroupid2(policyGroupId);
+        appRequest.setUritemplate_policygroupid3(policyGroupId);
+        appRequest.setUritemplate_policygroupid4(policyGroupId);
+
+        appRequest.setUritemplate_policyGroupIds("[" + policyGroupId + "]");
+        appRequest.setUritemplate_javaPolicyIds("[1]");
+
+        return appRequest;
+    }
+
+    protected AppCreateRequest createSingleApp(String appName, String appDisplayName, String
+            version, String transport, String hostURL, int hostPort, String tier, String partialId, String
+                                                       policyGroupId, String isAnonymousAccess)
+            throws Exception {
+
+        AppCreateRequest appRequest = new AppCreateRequest();
+
+        String webAppUrl = hostURL + ":" + hostPort + appProp.getPath();
+
+        appRequest.setOverview_webAppUrl(webAppUrl);
+        appRequest.setOverview_transports(transport);
+        appRequest.setOverview_name(appName);
+        appRequest.setOverview_displayName(appDisplayName);
+        appRequest.setOverview_version(version);
+        appRequest.setOverview_context("/" + appName);
+        appRequest.setEntitlementPolicies("[]");
+        appRequest.setUritemplate_policyPartialIds("[" + partialId + "]");
+        appRequest.setOverview_allowAnonymous(isAnonymousAccess);
+
+        appRequest.setUritemplate_tier0(tier);
+        appRequest.setUritemplate_tier1(tier);
+        appRequest.setUritemplate_tier2(tier);
+        appRequest.setUritemplate_tier3(tier);
+        appRequest.setUritemplate_tier4(tier);
+
+        appRequest.setUritemplate_userRoles0(appProp.getRole());
+        appRequest.setUritemplate_userRoles1(appProp.getRole());
+        appRequest.setUritemplate_userRoles2(appProp.getRole());
+        appRequest.setUritemplate_userRoles3(appProp.getRole());
+        appRequest.setUritemplate_userRoles4(appProp.getRole());
+
+        appRequest.setUritemplate_httpVerb4("GET");
+        appRequest.setUritemplate_urlPattern4("/images");
+
+        appRequest.setUritemplate_entitlementPolicyPartialMappings4
+                ("[{\"entitlementPolicyPartialId\":" + partialId + ",\"effect\":\"Permit\"}]");
         appRequest.setUritemplate_entitlementPolicyPartialMappings3("[]");
         appRequest.setUritemplate_entitlementPolicyPartialMappings2("[]");
         appRequest.setUritemplate_entitlementPolicyPartialMappings1("[]");
@@ -917,8 +998,8 @@ public abstract class APPManagerIntegrationTest {
         this.requestHeaders.put("Content-Type", "application/x-www-form-urlencoded");
         HttpResponse response =
                 HttpRequestUtil.doPost(new URL(amServer.getBackEndUrl() +
-                        "/publisher/api/entitlement/policy/validate"), payLoad,
-                        requestHeaders);
+                                                       "/publisher/api/entitlement/policy/validate"), payLoad,
+                                       requestHeaders);
         if (response.getResponseCode() == 200) {
 
             return response;
@@ -944,8 +1025,8 @@ public abstract class APPManagerIntegrationTest {
         this.requestHeaders.put("Content-Type", "application/x-www-form-urlencoded");
         HttpResponse response =
                 HttpRequestUtil.doPost(new URL(amServer.getBackEndUrl() +
-                        "/publisher/api/entitlement/policy/partial/save"), payLoad,
-                        requestHeaders);
+                                                       "/publisher/api/entitlement/policy/partial/save"), payLoad,
+                                       requestHeaders);
         if (response.getResponseCode() == 200) {
 
             // if ok == false this will return an exception then test fail!

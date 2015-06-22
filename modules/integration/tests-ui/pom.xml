@@ -309,6 +309,12 @@
             <artifactId>httpmime</artifactId>
             <version>4.3.6</version>
         </dependency>
+        <dependency>
+            <!-- jsoup HTML parser library @ http://jsoup.org/ -->
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.8.2</version>
+        </dependency>
     </dependencies>
     <properties>
         <test-automation-framework-version>4.2.7</test-automation-framework-version>

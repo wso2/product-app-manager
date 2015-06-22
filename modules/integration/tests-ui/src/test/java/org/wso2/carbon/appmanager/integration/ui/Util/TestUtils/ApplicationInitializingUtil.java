@@ -99,23 +99,27 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
 
     public HttpResponse createWebApplicationWithExistingUser(String prefix)
             throws Exception {
-       return createWebApplication(prefix,username,password);
+        return createWebApplication(prefix, username, password);
     }
+
+    public HttpResponse createWebApplicationWithAnonymousAccess(String prefix, String allowAnonymousAccess)
+            throws Exception {
+        return createWebApplication(prefix, username, password, allowAnonymousAccess);
+    }
+
     /**
      * This method is use to create web application in given user
      *
-     * @param prefix prefix for web application name
-     *
-     * @param creatorUserName username
-     *
+     * @param prefix           prefix for web application name
+     * @param creatorUserName  username
      * @param creatorPasssword password
-     *
      * @throws java.lang.Exception on error
      */
 
-    public HttpResponse createWebApplicationWithGivenUser(String prefix, String creatorUserName, String creatorPasssword)
+    public HttpResponse createWebApplicationWithGivenUser(String prefix, String creatorUserName,
+                                                          String creatorPasssword)
             throws Exception {
-        return createWebApplication(prefix,creatorUserName,creatorPasssword);
+        return createWebApplication(prefix, creatorUserName, creatorPasssword);
     }
 
     /**
@@ -124,9 +128,10 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
      * @throws java.lang.Exception on error
      */
     public void testWebApplicationPublish() throws Exception {
-        HttpResponse appPublishResponse = appMPublisher.publishApp(appId,"webapp");
+        HttpResponse appPublishResponse = appMPublisher.publishApp(appId, "webapp");
         assertEquals(appPublishResponse.getResponseCode(), 200, "Application publishing failed");
     }
+
     /**
      * This method is use to application subscription
      *
@@ -147,7 +152,7 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
                 JSONObject subscriptionJsonObjectPublished = new JSONObject(appSubscriptionResponse.getData());
                 appSubscriptionStatus = (Boolean) subscriptionJsonObjectPublished.get("status");
                 assertFalse((Boolean) subscriptionJsonObjectPublished.get("error"),
-                        "Error while updating tier permission");
+                            "Error while updating tier permission");
                 assertEquals(appSubscriptionResponse.getResponseCode(), 200, "Application subscription failed");
                 break;
             } else if (timeElapsed >= 6.0e+10 && timeElapsed != 0) {
@@ -175,9 +180,9 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
             if (driver.getPageSource().contains(applicationID)) {
                 SubscriptionRequest appSubscriptionRequest = new SubscriptionRequest(appName, username, version);
                 HttpResponse appSubscriptionResponse = appMStore.subscribeForApplication(appSubscriptionRequest);
-                return  appSubscriptionResponse;
+                return appSubscriptionResponse;
             } else if (timeElapsed >= 6.0e+10 && timeElapsed != 0) {
-                return  null;
+                return null;
             }
             timeElapsed = System.nanoTime() - timeBefore;
         }
@@ -188,11 +193,11 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
      *
      * @throws java.lang.Exception on error
      */
-    public  String createMobileApplication() throws Exception {
+    public String createMobileApplication() throws Exception {
         MobileApplicationBean mobileApplicationBean = new MobileApplicationBean();
         JSONObject appmetaData = new JSONObject();
-        appmetaData.put("package","com.google.android.maps.mytracks");
-        appmetaData.put("version","1.0");
+        appmetaData.put("package", "com.google.android.maps.mytracks");
+        appmetaData.put("version", "1.0");
         mobileApplicationBean.setAppmeta(appmetaData.toString());
         mobileApplicationBean.setVersion(version);
         mobileApplicationBean.setProvider("1WSO2Mobile");
@@ -210,10 +215,11 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
                 createMobileApplicatopn(mobileApplicationBean);
     }
 
-    private HttpResponse createWebApplication(String prefix,String creatorUserName,String creatorPassword) throws Exception {
-        appMPublisher.login(creatorUserName,creatorPassword);
+    private HttpResponse createWebApplication(String prefix, String creatorUserName, String creatorPassword) throws
+            Exception {
+        appMPublisher.login(creatorUserName, creatorPassword);
         String root = ProductConstant.getSystemResourceLocation();
-        String policyPath = root+"samples"+File.separator+"policy.xml";
+        String policyPath = root + "samples" + File.separator + "policy.xml";
         String xml = convertXMLFileToString(policyPath);
         HttpResponse response = appMPublisher.validatePolicy(xml);
         JSONObject validateObject = new JSONObject(response.getData());
@@ -229,25 +235,62 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
         }
 
         String policyGropuId = appMPublisher.savePolicyGroup(xml, anonymousAccessToUrlPattern, policyGroupName,
-                throttlingTier, objPartialMappings, policyGroupDesc);
+                                                             throttlingTier, objPartialMappings, policyGroupDesc);
 
         int hostPort = 8080;
-        AppCreateRequest appCreateRequest = createSingleApp(appName+prefix, appDisplayName, version, transport, appURL, hostPort,
-                appProp.getTier(), policyPartialId, policyGropuId);
+        AppCreateRequest appCreateRequest = createSingleApp(appName + prefix, appDisplayName, version, transport,
+                                                            appURL, hostPort,
+                                                            appProp.getTier(), policyPartialId, policyGropuId);
         appName = appCreateRequest.getOverview_name();
         version = appCreateRequest.getOverview_version();
         HttpResponse appCreateResponse = appMPublisher.createApp(appCreateRequest);
         JSONObject jsonObject = new JSONObject(appCreateResponse.getData());
         appId = (String) jsonObject.get("id");
-        return  appCreateResponse;
+        return appCreateResponse;
+    }
+
+    private HttpResponse createWebApplication(String prefix, String creatorUserName, String
+            creatorPassword, String allowAnonymousAccess)
+            throws Exception {
+        appMPublisher.login(creatorUserName, creatorPassword);
+        String root = ProductConstant.getSystemResourceLocation();
+        String policyPath = root + "samples" + File.separator + "policy.xml";
+        String xml = convertXMLFileToString(policyPath);
+        HttpResponse response = appMPublisher.validatePolicy(xml);
+        JSONObject validateObject = new JSONObject(response.getData());
+        boolean validateSucceed = validateObject.getBoolean("success");
+        assertTrue(validateSucceed, "Policy validation failed.");
+        String policyPartialId = "";
+
+        if (validateSucceed) {
+            HttpResponse partialIdResponse = appMPublisher.savePolicy("testPolicy", xml);
+            JSONObject saveObject = new JSONObject(partialIdResponse.getData());
+            JSONObject responseId = saveObject.optJSONObject("response");
+            policyPartialId = responseId.getString("id");
+        }
+
+        String policyGropuId = appMPublisher.savePolicyGroup(xml, anonymousAccessToUrlPattern, policyGroupName,
+                                                             throttlingTier, objPartialMappings, policyGroupDesc);
+
+        int hostPort = 8080;
+        AppCreateRequest appCreateRequest = createSingleApp(appName + prefix, appDisplayName, version, transport,
+                                                            appURL, hostPort,
+                                                            appProp.getTier(), policyPartialId, policyGropuId,
+                                                            allowAnonymousAccess);
+        appName = appCreateRequest.getOverview_name();
+        version = appCreateRequest.getOverview_version();
+        HttpResponse appCreateResponse = appMPublisher.createApp(appCreateRequest);
+        JSONObject jsonObject = new JSONObject(appCreateResponse.getData());
+        appId = (String) jsonObject.get("id");
+        return appCreateResponse;
     }
 
     public void destroy() throws Exception {
         super.cleanup();
         String parentWindow = driver.getWindowHandle();
-        Set<String> handles =  driver.getWindowHandles();
-        for(String windowHandle  : handles) {
-            if(!windowHandle.equals(parentWindow)) {
+        Set<String> handles = driver.getWindowHandles();
+        for (String windowHandle : handles) {
+            if (!windowHandle.equals(parentWindow)) {
                 driver.switchTo().window(windowHandle);
                 driver.close();
             }
@@ -259,7 +302,7 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
     /**
      * This method is use to get a file that has given name from resources folder
      */
-    private File getFileFromResources(String fileName){
+    private File getFileFromResources(String fileName) {
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource(fileName).getFile());
         return file;

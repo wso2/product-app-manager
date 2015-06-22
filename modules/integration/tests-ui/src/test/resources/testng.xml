@@ -31,6 +31,8 @@
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.RatingTestCase"/>
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.AppDiscoveryTestCase"/>
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.AppDiscoveryUITestCase"/>
+            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.AnonymousAccessTestCase"/>
+
             <!--This test case is not run with default APP manager integration tests. To run this test we assume that
             BPS server  is  running with port offset 2 and all the configurations are done to the BPS as mentioned in
             the work flow extension  doc-->
