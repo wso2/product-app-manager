@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.appmanager.integration.ui.Util.TestUtils;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
 import org.wso2.carbon.appmanager.integration.ui.APPManagerIntegrationTest;
@@ -34,12 +35,17 @@ import org.wso2.carbon.automation.core.utils.HttpResponse;
 import java.io.File;
 import java.util.Set;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
+/**
+ * This class is use to manage application
+ */
 public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
 
+    private static final String BANNER = "banner.png";
+    private static final String ICON = "icon.png";
+    private static final String SCREEN1 = "screen1.png";
+    private static final String SCREEN2 = "screen2.png";
     public static String storeURLHttp;
     public static String publisherURLHttp;
     public static String appId;
@@ -61,10 +67,6 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
     private WebDriver driver;
     private APPMStoreUIClient storeUIClient;
     private String mobileAppName;
-    private static final String BANNER = "banner.png";
-    private static final String ICON = "icon.png";
-    private static final String SCREEN1 = "screen1.png";
-    private static final String SCREEN2 = "screen2.png";
     private String mobileAppDescription;
 
 
@@ -97,25 +99,29 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
         driver = BrowserManager.getWebDriver();
     }
 
+    /**
+     * This method is use to create web application with given prefix
+     *
+     * @param prefix prefix for web application name
+     * @throws java.lang.Exception on error
+     */
     public HttpResponse createWebApplicationWithExistingUser(String prefix)
             throws Exception {
-       return createWebApplication(prefix,username,password);
+        return createWebApplication(prefix, username, password);
     }
+
     /**
      * This method is use to create web application in given user
      *
-     * @param prefix prefix for web application name
-     *
-     * @param creatorUserName username
-     *
+     * @param prefix           prefix for web application name
+     * @param creatorUserName  username
      * @param creatorPasssword password
-     *
      * @throws java.lang.Exception on error
      */
 
     public HttpResponse createWebApplicationWithGivenUser(String prefix, String creatorUserName, String creatorPasssword)
             throws Exception {
-        return createWebApplication(prefix,creatorUserName,creatorPasssword);
+        return createWebApplication(prefix, creatorUserName, creatorPasssword);
     }
 
     /**
@@ -124,9 +130,10 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
      * @throws java.lang.Exception on error
      */
     public void testWebApplicationPublish() throws Exception {
-        HttpResponse appPublishResponse = appMPublisher.publishApp(appId,"webapp");
+        HttpResponse appPublishResponse = appMPublisher.publishApp(appId, "webapp");
         assertEquals(appPublishResponse.getResponseCode(), 200, "Application publishing failed");
     }
+
     /**
      * This method is use to application subscription
      *
@@ -175,9 +182,9 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
             if (driver.getPageSource().contains(applicationID)) {
                 SubscriptionRequest appSubscriptionRequest = new SubscriptionRequest(appName, username, version);
                 HttpResponse appSubscriptionResponse = appMStore.subscribeForApplication(appSubscriptionRequest);
-                return  appSubscriptionResponse;
+                return appSubscriptionResponse;
             } else if (timeElapsed >= 6.0e+10 && timeElapsed != 0) {
-                return  null;
+                return null;
             }
             timeElapsed = System.nanoTime() - timeBefore;
         }
@@ -188,11 +195,11 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
      *
      * @throws java.lang.Exception on error
      */
-    public  String createMobileApplication() throws Exception {
+    public String createMobileApplication() throws Exception {
         MobileApplicationBean mobileApplicationBean = new MobileApplicationBean();
         JSONObject appmetaData = new JSONObject();
-        appmetaData.put("package","com.google.android.maps.mytracks");
-        appmetaData.put("version","1.0");
+        appmetaData.put("package", "com.google.android.maps.mytracks");
+        appmetaData.put("version", "1.0");
         mobileApplicationBean.setAppmeta(appmetaData.toString());
         mobileApplicationBean.setVersion(version);
         mobileApplicationBean.setProvider("1WSO2Mobile");
@@ -210,10 +217,20 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
                 createMobileApplicatopn(mobileApplicationBean);
     }
 
-    private HttpResponse createWebApplication(String prefix,String creatorUserName,String creatorPassword) throws Exception {
-        appMPublisher.login(creatorUserName,creatorPassword);
+    /**
+     * This method is use to create web application for given details
+     *
+     * @param prefix          perfix for web application
+     * @param creatorUserName username
+     * @param creatorPassword password
+     * @throws java.lang.Exception on error
+     */
+    private HttpResponse createWebApplication(String prefix, String creatorUserName, String creatorPassword)
+            throws Exception {
+        appMPublisher.login(creatorUserName, creatorPassword);
         String root = ProductConstant.getSystemResourceLocation();
-        String policyPath = root+"samples"+File.separator+"policy.xml";
+
+        String policyPath = root + "samples" + File.separator + "policy.xml";
         String xml = convertXMLFileToString(policyPath);
         HttpResponse response = appMPublisher.validatePolicy(xml);
         JSONObject validateObject = new JSONObject(response.getData());
@@ -230,24 +247,35 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
 
         String policyGropuId = appMPublisher.savePolicyGroup(xml, anonymousAccessToUrlPattern, policyGroupName,
                 throttlingTier, objPartialMappings, policyGroupDesc);
-
+        //make publish Statistics enabled in web application when we passed application id null for this method it will
+        //return all available global policies
+        JSONArray globalPolicies = appMPublisher.getGlobalPolicies(null, "true");
+        JSONObject publishStatisticGlobalPolicy = null;
+        for (int i = 0; i < globalPolicies.length(); i++) {
+            publishStatisticGlobalPolicy = new JSONObject(globalPolicies.get(i).toString());
+            if (publishStatisticGlobalPolicy.toString().contains("Publish Statistics:")) break;
+        }
+        String publishStaticsPolicyID = publishStatisticGlobalPolicy.get("javaPolicyId").toString();
+        ;
         int hostPort = 8080;
-        AppCreateRequest appCreateRequest = createSingleApp(appName+prefix, appDisplayName, version, transport, appURL, hostPort,
+        AppCreateRequest appCreateRequest = createSingleApp(appName + prefix, appDisplayName, version, transport, appURL
+                , hostPort,
                 appProp.getTier(), policyPartialId, policyGropuId);
+        appCreateRequest.setUritemplate_javaPolicyIds("[" + publishStaticsPolicyID + "]");
         appName = appCreateRequest.getOverview_name();
         version = appCreateRequest.getOverview_version();
         HttpResponse appCreateResponse = appMPublisher.createApp(appCreateRequest);
         JSONObject jsonObject = new JSONObject(appCreateResponse.getData());
         appId = (String) jsonObject.get("id");
-        return  appCreateResponse;
+        return appCreateResponse;
     }
 
     public void destroy() throws Exception {
         super.cleanup();
         String parentWindow = driver.getWindowHandle();
-        Set<String> handles =  driver.getWindowHandles();
-        for(String windowHandle  : handles) {
-            if(!windowHandle.equals(parentWindow)) {
+        Set<String> handles = driver.getWindowHandles();
+        for (String windowHandle : handles) {
+            if (!windowHandle.equals(parentWindow)) {
                 driver.switchTo().window(windowHandle);
                 driver.close();
             }
@@ -259,7 +287,7 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
     /**
      * This method is use to get a file that has given name from resources folder
      */
-    private File getFileFromResources(String fileName){
+    private File getFileFromResources(String fileName) {
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource(fileName).getFile());
         return file;
