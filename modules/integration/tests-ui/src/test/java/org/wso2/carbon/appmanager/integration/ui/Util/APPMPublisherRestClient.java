@@ -21,6 +21,7 @@ package org.wso2.carbon.appmanager.integration.ui.Util;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -253,25 +254,56 @@ public class APPMPublisherRestClient {
 			throw new Exception("App creation failed> " + response.getData());
 		}
 	}
-
+    /**
+     * This will return the tracking id for given application id
+     *
+     * @param appId
+     *            - application id
+     * @return tracking id
+     * @throws Exception
+     */
 	public String getWebappTrackingId(String appId) throws Exception {
 		checkAuthentication();
 		HttpResponse response =
 				HttpRequestUtil.doGet(backEndUrl +
-						"/publisher/api/asset/webapp/" +
+						"/publisher/api/asset/webapp/trackingid/" +
 						appId, requestHeaders);
-		if (response.getResponseCode() == 200) {
+        if (response.getResponseCode() == 200) {
 			JSONObject jsonObject = new JSONObject(response.getData());
-
-			org.json.JSONArray jsonArray = new org.json.JSONArray( jsonObject.get("fields").toString());
-			JSONObject trackingIdObj = new JSONObject(jsonArray.get(10).toString());
-			return trackingIdObj.get("value").toString();
-
-		} else {
+            return jsonObject.get("TrackingID").toString();
+        } else {
 			System.out.println(response);
 			throw new Exception("Error occurred while retrieving tracking id of webapp with id :" + appId);
 		}
 	}
+
+    /**
+     * This method is use to get optional assigned global policies for given application id.when we passed application
+     * id as null to this method it will return all available global policies
+     *
+     * @param appId
+     *            - application id
+     * @param isGlobalPolicy
+     *            - whether need to retrieve resource policies or only javapolicies
+     * @return optional global policies json array
+     * @throws Exception
+     */
+    public JSONArray getGlobalPolicies(String appId,String isGlobalPolicy) throws Exception {
+        checkAuthentication();
+        HttpResponse response =
+                HttpRequestUtil.doGet(backEndUrl +
+                        "/publisher/api/entitlement/get/all/available/java/policy/handlers/details/list/" +
+                        appId+"/"+isGlobalPolicy, requestHeaders);
+        if (response.getResponseCode() == 200) {
+
+            JSONArray jsonArray =  new JSONArray(response.getData());
+            return  jsonArray;
+        } else {
+            System.out.println(response);
+            throw new Exception("Error occurred while retrieving tracking id of webapp with id :" + appId);
+        }
+
+    }
 
 	/**
      * this method validate the method
@@ -482,7 +514,7 @@ public class APPMPublisherRestClient {
 	/**
 	 * this method gives  the current life cycle state of the application	 
 	 * @param appId -application id	
-	 * @return -response 
+	 * @return -response
 	 * @throws Exception
 	 */
 	public HttpResponse getCurrentState(String appId,String  appType) throws Exception {
