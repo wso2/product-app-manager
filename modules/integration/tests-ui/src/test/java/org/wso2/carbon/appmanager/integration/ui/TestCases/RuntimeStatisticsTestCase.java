@@ -60,7 +60,7 @@ public class RuntimeStatisticsTestCase extends APPManagerIntegrationTest {
 
     public static String publisherURLHttp;
     TomcatDeployer deployer;
-    Tomcat tomcat;
+    private Tomcat tomcat;
     private ServerConfigurationManager serverConfigurationManager;
     private WebDriver driver;
     private APPMStoreUIClient storeUIClient;
