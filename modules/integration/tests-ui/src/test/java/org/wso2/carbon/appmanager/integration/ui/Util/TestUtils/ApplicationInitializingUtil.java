@@ -256,7 +256,6 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
             if (publishStatisticGlobalPolicy.toString().contains("Publish Statistics:")) break;
         }
         String publishStaticsPolicyID = publishStatisticGlobalPolicy.get("javaPolicyId").toString();
-        ;
         int hostPort = 8080;
         AppCreateRequest appCreateRequest = createSingleApp(appName + prefix, appDisplayName, version, transport, appURL
                 , hostPort,
