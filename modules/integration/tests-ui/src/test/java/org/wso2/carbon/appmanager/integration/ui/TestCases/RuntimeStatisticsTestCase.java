@@ -58,8 +58,7 @@ import java.util.Date;
  */
 public class RuntimeStatisticsTestCase extends APPManagerIntegrationTest {
 
-    public static String publisherURLHttp;
-    TomcatDeployer deployer;
+    private String publisherURLHttp;
     private Tomcat tomcat;
     private ServerConfigurationManager serverConfigurationManager;
     private WebDriver driver;
@@ -67,6 +66,7 @@ public class RuntimeStatisticsTestCase extends APPManagerIntegrationTest {
     private String username;
     private String password;
     private APPMPublisherRestClient appMPublisher;
+    private ApplicationInitializingUtil baseUtil;
 
 
     @BeforeClass(alwaysRun = true)
@@ -87,7 +87,6 @@ public class RuntimeStatisticsTestCase extends APPManagerIntegrationTest {
         }
         driver = BrowserManager.getWebDriver();
         storeUIClient = new APPMStoreUIClient();
-        ApplicationInitializingUtil baseUtil;
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
         baseUtil.createWebApplicationWithExistingUser("16");
@@ -109,7 +108,6 @@ public class RuntimeStatisticsTestCase extends APPManagerIntegrationTest {
         String webAppPath = root + "samples" + File.separator + "usageMonitorTest" + File.separator + "sample";
         String htmlFilePath = webAppPath;
         String appTrackingId;
-
         appMPublisher.login(username, password);
         appTrackingId = appMPublisher.getWebappTrackingId(ApplicationInitializingUtil.appId);
         generateHTMLFile(appTrackingId, htmlFilePath);
@@ -257,7 +255,11 @@ public class RuntimeStatisticsTestCase extends APPManagerIntegrationTest {
     public void destroy() throws Exception {
         super.cleanup();
         if (driver != null) driver.quit();
-        if (tomcat != null) tomcat.stop();
+        if (tomcat != null){
+            tomcat.stop();
+            tomcat.destroy();
+        }
+        baseUtil.destroy();
     }
 
 }
