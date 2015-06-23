@@ -177,7 +177,6 @@ public class APPMPublisherRestClient {
                                 "/publisher/api/assets/statistics/webapp/getSubscriberCountByAPIs/"), payload,
                         requestHeaders);
         if (response.getResponseCode() == 200) {
-
             return response;
         } else {
             throw new Exception("App creation failed> " + response.getData());
@@ -200,7 +199,6 @@ public class APPMPublisherRestClient {
                                 "/publisher/api/assets/statistics/webapp/getSubscribedAPIsByUsers/"), payload,
                         requestHeaders);
         if (response.getResponseCode() == 200) {
-
             return response;
         } else {
             throw new Exception("App creation failed> " + response.getData());
@@ -223,7 +221,6 @@ public class APPMPublisherRestClient {
                                 "/publisher/api/assets/statistics/webapp/getAPIUsageByUser/"), payload,
                         requestHeaders);
         if (response.getResponseCode() == 200) {
-
             return response;
         } else {
             throw new Exception("App creation failed> " + response.getData());
@@ -246,7 +243,6 @@ public class APPMPublisherRestClient {
                                 "/publisher/api/assets/statistics/webapp/getAPIResponseTime/"), payload,
                         requestHeaders);
         if (response.getResponseCode() == 200) {
-
             return response;
         } else {
             throw new Exception("App creation failed> " + response.getData());
@@ -290,7 +286,6 @@ public class APPMPublisherRestClient {
                         "/publisher/api/entitlement/get/all/available/java/policy/handlers/details/list/" +
                         appId + "/" + isGlobalPolicy, requestHeaders);
         if (response.getResponseCode() == 200) {
-
             JSONArray jsonArray = new JSONArray(response.getData());
             return jsonArray;
         } else {
@@ -315,7 +310,6 @@ public class APPMPublisherRestClient {
                                 "/publisher/api/entitlement/policy/validate"), payLoad,
                         requestHeaders);
         if (response.getResponseCode() == 200) {
-
             return response;
         } else {
             throw new Exception("App creation failed> " + response.getData());
@@ -365,7 +359,6 @@ public class APPMPublisherRestClient {
                                 "\",\"permissions\":[\"GET\",\"PUT\",\"DELETE\",\"AUTHORIZE\"]}]",
                         requestHeaders);
         if (response.getResponseCode() == 200) {
-
             return response;
         } else {
             throw new Exception("Add role failed> " + response.getData());
@@ -442,7 +435,6 @@ public class APPMPublisherRestClient {
                 HttpUtil.doPost(new URL(backEndUrl + "/publisher/api/sso/addConfig"), requestBody,
                         requestHeaders);
         if (response.getResponseCode() == 200) {
-
             return response;
         } else {
             throw new Exception("Add role failed> " + response.getData());
@@ -511,7 +503,6 @@ public class APPMPublisherRestClient {
                         "/publisher/api/lifecycle/subscribe/" + appType + "/" +
                         appId, requestHeaders);
         if (response.getResponseCode() == 200) {
-
             // if subscribed == true this will return an exception then test
             VerificationUtil.checkCurrentAppState(response);
             return response;
@@ -559,7 +550,6 @@ public class APPMPublisherRestClient {
                 + "/publisher/api/tag/webapp/" + id), "{\"tags\":[\" " + tagName + " \"]}", requestHeaders);
 
         if (response.getResponseCode() == 200) {
-            //VerificationUtil.checkErrors(response);
             return response;
         } else {
             throw new Exception("Get Api Information failed> "
