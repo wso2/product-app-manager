@@ -13,7 +13,7 @@
             with port offset one. Then enable this test. This will take some time as it take time to generate summery
             -->
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.AppCreateAndPublishTestCase"/>
-            <!--<class name="org.wso2.carbon.appmanager.integration.ui.TestCases.RuntimeStatisticsTestCase"/>-->
+            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.RuntimeStatisticsTestCase"/>
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.SAMLtoBackendTestCase"/>
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.JWTGenerationTestCase"/>
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.ResourceAuthXCMLTestCase"/>
