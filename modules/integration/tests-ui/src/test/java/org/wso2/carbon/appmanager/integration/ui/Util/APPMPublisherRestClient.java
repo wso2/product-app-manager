@@ -255,22 +255,15 @@ public class APPMPublisherRestClient {
 	}
 
 	public String getWebappTrackingId(String appId) throws Exception {
-		checkAuthentication();
-		HttpResponse response =
-				HttpRequestUtil.doGet(backEndUrl +
-						"/publisher/api/asset/webapp/" +
-						appId, requestHeaders);
-		if (response.getResponseCode() == 200) {
-			JSONObject jsonObject = new JSONObject(response.getData());
-
-			org.json.JSONArray jsonArray = new org.json.JSONArray( jsonObject.get("fields").toString());
-			JSONObject trackingIdObj = new JSONObject(jsonArray.get(10).toString());
-			return trackingIdObj.get("value").toString();
-
-		} else {
-			System.out.println(response);
-			throw new Exception("Error occurred while retrieving tracking id of webapp with id :" + appId);
-		}
+        checkAuthentication();
+        HttpResponse response = HttpRequestUtil.doGet(backEndUrl +"/publisher/api/asset/webapp/trackingid/" +
+                                                                                      appId, requestHeaders);
+        if (response.getResponseCode() == 200) {
+            JSONObject jsonObject = new JSONObject(response.getData());
+            return jsonObject.get("TrackingID").toString();
+        } else {
+            throw new Exception("Error occurred while retrieving tracking id of webapp with id :" + appId);
+        }
 	}
 
 	/**
@@ -287,7 +280,7 @@ public class APPMPublisherRestClient {
         HttpResponse response =
                 HttpRequestUtil.doPost(new URL(backEndUrl +
                         "/publisher/api/entitlement/policy/validate"), payLoad,
-                        requestHeaders);
+                                       requestHeaders);
         if (response.getResponseCode() == 200) {
 
             return response;
@@ -560,9 +553,9 @@ public class APPMPublisherRestClient {
 		requestHeaders.put("Content-Type", "application/json");
 		HttpResponse response = HttpUtil.doDelete(new URL(backEndUrl
 				+ "/publisher/api/tag/webapp/" + id + "/" + tagName), requestHeaders);
-	
-		if (response.getResponseCode() == 200) {
-			//VerificationUtil.checkErrors(response);
+
+        if (response.getResponseCode() == 200) {
+            //VerificationUtil.checkErrors(response);
 			return response;
 		} else {
 			throw new Exception("Get Api Information failed> "
@@ -642,8 +635,9 @@ public class APPMPublisherRestClient {
         HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl +
                 "/publisher/api/doc")
                 , "action=addInlineContent" + "&provider=" + provider +
-                "&apiName=" + appName + "&version=" + appVersion + "&docName="
-                + docName + "&content=" + content
+                                                               "&apiName=" + appName + "&version=" + appVersion +
+                                                               "&docName="
+                                                               + docName + "&content=" + content
                 , requestHeaders);
         if (response.getResponseCode() == 200) {
             VerificationUtil.checkErrors(response);
