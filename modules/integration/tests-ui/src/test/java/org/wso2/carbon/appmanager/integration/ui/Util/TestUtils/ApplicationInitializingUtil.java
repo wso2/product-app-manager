@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.appmanager.integration.ui.Util.TestUtils;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
 import org.wso2.carbon.appmanager.integration.ui.APPManagerIntegrationTest;
@@ -34,12 +35,17 @@ import org.wso2.carbon.automation.core.utils.HttpResponse;
 import java.io.File;
 import java.util.Set;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
+/**
+ * This class is use to manage application
+ */
 public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
 
+    private static final String BANNER = "banner.png";
+    private static final String ICON = "icon.png";
+    private static final String SCREEN1 = "screen1.png";
+    private static final String SCREEN2 = "screen2.png";
     public static String storeURLHttp;
     public static String publisherURLHttp;
     public static String appId;
@@ -61,10 +67,6 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
     private WebDriver driver;
     private APPMStoreUIClient storeUIClient;
     private String mobileAppName;
-    private static final String BANNER = "banner.png";
-    private static final String ICON = "icon.png";
-    private static final String SCREEN1 = "screen1.png";
-    private static final String SCREEN2 = "screen2.png";
     private String mobileAppDescription;
 
 
@@ -97,10 +99,17 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
         driver = BrowserManager.getWebDriver();
     }
 
+    /**
+     * This method is use to create web application with given prefix
+     *
+     * @param prefix prefix for web application name
+     * @throws java.lang.Exception on error
+     */
     public HttpResponse createWebApplicationWithExistingUser(String prefix)
             throws Exception {
         return createWebApplication(prefix, username, password);
     }
+
 
     public HttpResponse createWebApplicationWithAnonymousAccess(String prefix, String allowAnonymousAccess)
             throws Exception {
@@ -215,6 +224,7 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
                 createMobileApplicatopn(mobileApplicationBean);
     }
 
+
     private HttpResponse createWebApplication(String prefix, String creatorUserName, String creatorPassword) throws
             Exception {
         appMPublisher.login(creatorUserName, creatorPassword);
@@ -254,6 +264,7 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
             throws Exception {
         appMPublisher.login(creatorUserName, creatorPassword);
         String root = ProductConstant.getSystemResourceLocation();
+
         String policyPath = root + "samples" + File.separator + "policy.xml";
         String xml = convertXMLFileToString(policyPath);
         HttpResponse response = appMPublisher.validatePolicy(xml);
@@ -270,6 +281,7 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
         }
 
         String policyGropuId = appMPublisher.savePolicyGroup(xml, anonymousAccessToUrlPattern, policyGroupName,
+
                                                              throttlingTier, objPartialMappings, policyGroupDesc);
 
         int hostPort = 8080;
@@ -277,6 +289,7 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
                                                             appURL, hostPort,
                                                             appProp.getTier(), policyPartialId, policyGropuId,
                                                             allowAnonymousAccess);
+
         appName = appCreateRequest.getOverview_name();
         version = appCreateRequest.getOverview_version();
         HttpResponse appCreateResponse = appMPublisher.createApp(appCreateRequest);
