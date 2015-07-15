@@ -49,15 +49,17 @@
 			<field type="text">
 				<name>Visibility</name>
 			</field>
-			<field type="text">
-				<name>Kind</name>
-			</field>
+			
+		
 			<field type="options">
 				<name label="Category">Category</name>
 				<values>
-					<value>iOS</value>
-					<value>Android</value>
-					<value>Webapp</value>
+					<value>Business</value>
+					<value>Communication</value>
+					<value>Finance</value>
+					<value>Productivity</value>
+					<value>Tools</value>
+					<value>Travel</value>	
 				</values>
 			</field>
 			<!-- 
