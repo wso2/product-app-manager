@@ -260,7 +260,7 @@ org.wso2.carbon.databridge.agent.thrift_4.2.1.jar                               
 org.wso2.carbon.databridge.commons.thrift_4.2.0.jar                             bundle         apache2   
 org.wso2.carbon.databridge.commons_4.2.1.jar                                    bundle         apache2   
 org.wso2.carbon.datasource_4.2.1.jar                                            bundle         apache2   
-org.wso2.carbon.deployment.synchronizer.subversion_4.2.0.jar                    bundle         apache2   
+˜org.wso2.carbon.deployment.synchronizer.subversion_4.2.0.jar                    bundle         apache2
 org.wso2.carbon.deployment.synchronizer_4.2.1.jar                               bundle         apache2   
 org.wso2.carbon.ec2-client_4.2.0.jar                                            bundle         apache2   
 org.wso2.carbon.ec2.client.stub_4.2.0.jar                                       bundle         apache2   

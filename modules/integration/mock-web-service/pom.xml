@@ -32,9 +32,6 @@
     <artifactId>org.wso2.appmanager.mock.web.services</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <org.apache.tomcat>7.0.34</org.apache.tomcat>
-    </properties>
     <repositories>
         <repository>
             <id>maven2-repository.dev.java.net</id>
@@ -87,19 +84,18 @@
         <dependency>
             <groupId>org.wso2.carbon</groupId>
             <artifactId>org.wso2.carbon.webapp.mgt.stub</artifactId>
-            <version>4.2.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
-            <version>${org.apache.tomcat}</version>
+            <version>${org.apache.tomcat.embed.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-logging-juli</artifactId>
-            <version>${org.apache.tomcat}</version>
+            <version>${org.apache.tomcat.embed.version}</version>
         </dependency>
 
         <dependency>
@@ -130,8 +126,8 @@
                 <version>3.2</version>
                 <configuration>
                     <compilerVersion>1.6</compilerVersion>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
 
             </plugin>

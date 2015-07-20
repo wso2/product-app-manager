@@ -211,17 +211,17 @@
                                     </classpath>
                                     <fileset file="${basedir}/../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/dbscripts/social/h2/resource.sql"/>
                                 </sql>
-				<sql
-                                        driver="org.h2.Driver"
-                                        url="jdbc:h2:${basedir}/target/wso2carbon-core-${carbon.platform.version}/repository/database/WSO2CARBON_DB"
-                                        userid="wso2carbon" password="wso2carbon" autocommit="true"
-                                        onerror="continue">
-                                    <classpath>
-                                        <path refid="h2.classpath"/>
-                                    </classpath>
-                                    <fileset
-                                            file="${basedir}/../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/dbscripts/identity/application-mgt/h2.sql"/>
-                                </sql>
+                                <!--<sql-->
+                                        <!--driver="org.h2.Driver"-->
+                                        <!--url="jdbc:h2:${basedir}/target/wso2carbon-core-${carbon.platform.version}/repository/database/WSO2CARBON_DB"-->
+                                        <!--userid="wso2carbon" password="wso2carbon" autocommit="true"-->
+                                        <!--onerror="continue">-->
+                                    <!--<classpath>-->
+                                        <!--<path refid="h2.classpath"/>-->
+                                    <!--</classpath>-->
+                                    <!--<fileset-->
+                                            <!--file="${basedir}/../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/dbscripts/identity/application-mgt/h2.sql"/>-->
+                                <!--</sql>-->
                                 <sql
                                         driver="org.h2.Driver"
                                         url="jdbc:h2:${basedir}/target/repository/database/WSO2AM_DB"
@@ -257,6 +257,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2-beta-2</version>
                 <executions>
                     <execution>
                         <id>pre_dist</id>
