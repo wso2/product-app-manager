@@ -37,6 +37,9 @@
     UserManager.prototype.addUser = function (username, password, roles, claims, profile) {
         this.manager.addUser(username, password, roles || [], claims || null, profile);
     };
+    UserManager.prototype.changePassword = function (username, newPassword, oldPassword) {
+        this.manager.updateCredential(username, newPassword, oldPassword);
+    };
 
     UserManager.prototype.removeUser = function (username) {
         this.manager.deleteUser(username);
@@ -160,6 +163,17 @@
                 that.authorizer.denyRole(role, id, action);
             });
         }
+    };
+
+    /**
+     * getAllowedUIResources      This will return all allowed UI resource for given user
+     * @param  userName           User name
+     * @param  permissionRootPath User permission root path
+     * @return                    Array with permission resource paths
+     */
+    UserManager.prototype.getAllowedUIResources = function(userName, permissionRootPath){
+        var allowedResources = this.authorizer.getAllowedUIResourcesForUser(userName, permissionRootPath);
+        return allowedResources;
     };
 
 }(server, user));

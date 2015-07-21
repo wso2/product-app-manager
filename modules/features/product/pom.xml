@@ -24,7 +24,7 @@
     <parent>
         <groupId>org.wso2.appmanager</groupId>
     	<artifactId>eam-features-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -39,7 +39,7 @@
             <dependency>
                 <groupId>org.wso2.appmanager</groupId>
                 <artifactId>org.wso2.appmanager.styles</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <version>${carbon.appmgt.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

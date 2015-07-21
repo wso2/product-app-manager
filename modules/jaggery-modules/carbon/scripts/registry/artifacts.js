@@ -32,6 +32,7 @@
             id: String(artifact.id),
             type: String(manager.type),
             path: "/_system/governance" + String(artifact.getPath()),
+            resourceId: "/_system/governance" + String(artifact.getPath()),
             lifecycle: artifact.getLifecycleName(),
             lifecycleState: artifact.getLifecycleState(),
             mediaType: String(artifact.getMediaType()),
@@ -99,6 +100,21 @@
         return artifact;
     };
 
+    /**
+     * Determines if there is a lifecycle argument provided
+     * when the function is invoked
+     * @param  {Array} args  The function arguments array
+     * @param  {Object} artifact  The artifact instance
+     * @param  {Number} index The index at which the lifecycle name must be checked
+     * @return {String|NULL}       If the lifecycle name is provided it is returned else NULL
+     */
+    var resolveLCName = function(args,artifact,index){
+        if((args.length -1) < index){
+            var lc =getLifecycleName(artifact);
+            return lc;
+        }
+        return args[index];
+    };
     var ArtifactManager = function (registry, type) {
         this.registry = registry;
         this.manager = new GenericArtifactManager(registry.registry.getChrootedRegistry("/_system/governance"), type);
@@ -130,7 +146,7 @@
      *
      */
     ArtifactManager.prototype.search = function (query, paging) {
-    	var log = new Log();
+
         var list, map, key, artifacts, pagination, value, that,
             artifactz = [];
         pagination = generatePaginationForm(paging);
@@ -182,6 +198,54 @@
         }
         return artifactz;
     };
+
+    ArtifactManager.prototype.strictSearch = function(query,paging){
+        var list, map, key, artifacts, pagination, value, that,
+            artifactz = [];
+        pagination = generatePaginationForm(paging);
+        try {
+            PaginationContext.init(pagination.start, pagination.count, pagination.sortOrder,
+                pagination.sortBy, pagination.paginationLimit);
+            map = HashMap();
+            //case senstive search as it using greg with solr 1.4.1
+            if (!query) {
+                //listing for sorting
+                map = java.util.Collections.emptyMap();
+            } else if (query instanceof String || typeof query === 'string') {
+                list = new ArrayList();
+                list.add(query);
+                map.put('overview_name', list);
+            } else {
+                //support for only on name of attribut -
+                for (key in query) {
+                    // if attribute is string values
+                    if (query.hasOwnProperty(key)) {
+                        value = query[key];
+                        list = new ArrayList();
+                        if (value instanceof Array) {
+                            value.forEach(function (val) {
+                                //solr config update need have '*' as first char in below line
+                                //check life_cycle state
+                                list.add(key == 'lcState' ? val : '' + val );
+                            });
+                        } else {
+                            //solr config update need have '*' as first char in below line
+                            list.add(key == 'lcState' ? value : '' + value );
+                        }
+                        map.put(key, list);
+                    }
+                }//end of attribut looping (all attributes)
+            }
+            artifacts = this.manager.findGenericArtifacts(map);
+            that = this;
+            artifacts.forEach(function (artifact) {
+                artifactz.push(buildArtifact(that, artifact));
+            });
+        } finally {
+            PaginationContext.destroy();
+        }
+        return artifactz;
+    }
 
     ArtifactManager.prototype.get = function (id) {
         return buildArtifact(this, this.manager.getGenericArtifact(id))
@@ -237,7 +301,9 @@
      }
      */
     ArtifactManager.prototype.add = function (options) {
-        this.manager.addGenericArtifact(createArtifact(this.manager, options));
+        var asset=createArtifact(this.manager, options);
+        this.manager.addGenericArtifact(asset);
+        return asset.getId();
     };
 
     ArtifactManager.prototype.update = function (options) {
@@ -271,7 +337,8 @@
         if (!artifact) {
             throw new Error('Specified artifact cannot be found : ' + JSON.stringify(options));
         }
-        artifact.detachLifecycle();
+	    var lifecycleName = resolveLCName(arguments,artifact,1);//getLifecycleName(artifact);
+        artifact.detachLifecycle(lifecycleName);
     };
 
     /*
@@ -285,9 +352,9 @@
             throw new Error('Specified artifact cannot be found : ' + JSON.stringify(options));
         }
         //checkListItems = artifact.getAllCheckListItemNames();
-        artifact.invokeAction(state);
+	    var lifecycleName = resolveLCName(arguments,artifact,2);//getLifecycleName(artifact);
+        artifact.invokeAction(state,lifecycleName);
     };
-
     /*
      Gets the current lifecycle state
      @options: An artifact object
@@ -295,10 +362,11 @@
      */
     ArtifactManager.prototype.getLifecycleState = function (options) {
         var artifact = getArtifactFromImage(this.manager, options);
+        var lifecycleName = resolveLCName(arguments,artifact,1);
         if (!artifact) {
             throw new Error('Specified artifact cannot be found : ' + JSON.stringify(options));
         }
-        return artifact.getLifecycleState();
+        return artifact.getLifecycleState(lifecycleName);
     };
 
     /*
@@ -308,21 +376,41 @@
      */
     ArtifactManager.prototype.getCheckListItemNames = function (options) {
         var artifact = getArtifactFromImage(this.manager, options);
-
-        var checkListItems = artifact.getAllCheckListItemNames() || [];
+	    var lifecycleName = resolveLCName(arguments,artifact,1);//getLifecycleName(artifact);
+        var checkListItems = artifact.getAllCheckListItemNames(lifecycleName) || [];
 
         var checkListItemArray = [];
 
         //Go through each check list item
         for (var index in checkListItems) {
             //Get whether the check list item is checked
-            var state = artifact.isLCItemChecked(index);
+            var state = artifact.isLCItemChecked(index,lifecycleName);
             checkListItemArray.push({ 'name': checkListItems[index], 'checked': state });
         }
 
         return checkListItemArray;
     };
 
+    /**
+     * Returns a list of all lifecycles that have been attached to the provided asset.
+     * @param  {Number} assetId UUID
+     * @return {Array}         An array containing all attached lifecycles
+     */
+    ArtifactManager.prototype.listAllAttachedLifecycles = function(id){
+        var artifact = this.manager.getGenericArtifact(id);
+        var lcs = [];
+        if(!artifact){
+            log.error('Asset with id '+assetId+' was not located thus the available lifecycles could not be returned.'
+                +'Please make sure that a valid id is provided and the asset manager is of the same type as the asset.');
+            return lcs;
+        }
+        var availableLifecycles = artifact.getLifecycleNames(); 
+        //The returned object is a Java String array so must be converted
+        for(var index = 0 ; index< availableLifecycles.length; index++){
+            lcs.push(String(availableLifecycles[index]));
+        }
+        return lcs;
+    };
     /*
      The function checks whether a given check list item at the provided index is checked for the current state
      @index: The index of the check list item.This must be a value between 0 and the maximum check list item
@@ -331,9 +419,8 @@
      @throws Exception: If the index is not within 0 and the max check list item or if there is an issue ticking the item
      */
     ArtifactManager.prototype.isItemChecked = function (index, options) {
-
         var artifact = getArtifactFromImage(this.manager, options);
-
+	    var lifecycleName = resolveLCName(arguments,artifact,2);//getLifecycleName(artifact);
         var checkListItems = artifact.getAllCheckListItemNames();
 
         var checkListLength = checkListItems.length;
@@ -341,8 +428,7 @@
         if ((index < 0) || (index > checkListLength)) {
             throw "The index value: " + index + " must be between 0 and " + checkListLength + ".Please refer to the lifecycle definition in the registry.xml for the number of check list items.";
         }
-
-        var result = artifact.isLCItemChecked(index);
+        var result = artifact.isLCItemChecked(index,lifecycleName);
 
         return result;
     };
@@ -355,18 +441,16 @@
      @throws Exception: If the index is not within 0 and max check list item or if there is an issue ticking the item.
      */
     ArtifactManager.prototype.checkItem = function (index, options) {
-
         var artifact = getArtifactFromImage(this.manager, options);
-
-        var checkListItems = artifact.getAllCheckListItemNames();
+	    var lifecycleName = resolveLCName(arguments,artifact,2);//getLifecycleName(artifact);
+        var checkListItems = artifact.getAllCheckListItemNames(lifecycleName);
 
         var checkListLength = checkListItems.length;
 
         if ((index < 0) || (index > checkListLength)) {
             throw "The index value: " + index + " must be between 0 and " + checkListLength + ".Please refer to the lifecycle definition in the registry.xml for the number of check list items.";
         }
-
-        artifact.checkLCItem(index);
+        artifact.checkLCItem(index,lifecycleName);
     };
 
     /*
@@ -377,18 +461,16 @@
      @throws Exception: If the index is not within 0 and max check list item or if there is an issue ticking the item
      */
     ArtifactManager.prototype.uncheckItem = function (index, options) {
-
         var artifact = getArtifactFromImage(this.manager, options);
-
-        var checkListItems = artifact.getAllCheckListItemNames();
+	    var lifecycleName = resolveLCName(arguments,artifact,2);//getLifecycleName(artifact);
+        var checkListItems = artifact.getAllCheckListItemNames(lifecycleName);
 
         var checkListLength = checkListItems.length;
 
         if ((index < 0) || (index > checkListLength)) {
             throw "The index value: " + index + " must be between 0 and " + checkListLength + ".Please refer to the lifecycle definition in the registry.xml for the number of check list items.";
         }
-
-        artifact.uncheckLCItem(index);
+        artifact.uncheckLCItem(index,lifecycleName);
     };
 
     /*
@@ -401,7 +483,8 @@
         if (!artifact) {
             throw new Error('Specified artifact cannot be found : ' + JSON.stringify(options));
         }
-        return artifact.getAllLifecycleActions() || [];
+	    var lifecycleName = resolveLCName(arguments,artifact,1);//getLifecycleName(artifact);
+        return artifact.getAllLifecycleActions(lifecycleName) || [];
     };
 
     /*
@@ -576,4 +659,24 @@
         return artifact;
     };
 
+    /**
+     * The function was introduced as a fix to accomadate the goveerance API
+     * changes to support multiple lifecycles
+     * @param  {Object artifact A governance artifact instance
+     * @return {String}          The name of the default lifecycle
+     */
+    var getLifecycleName = function(artifact){
+        var lifecycleName;
+        if(!artifact){
+            throw "The artifact is null, cannot retrieve the lifecycle name for lifecycle operations";
+        }
+        try {
+            lifecycleName = artifact.getLifecycleName();
+        }
+        catch(e){
+            log.error(e);
+            throw e;
+        }
+        return lifecycleName;
+    };
 }(server, registry));
