@@ -1227,7 +1227,7 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.store.feature.group</id>
-                                    <version>${carbon.store.version}</version>
+                                    <version>${carbon.store.feature.version}</version>
                                 </feature>
 				                <feature>
                                     <id>org.wso2.carbon.social.feature.group</id>
