@@ -53,10 +53,10 @@ System Requirements
 1. Minimum memory - 1GB
 2. Processor      - Core 2 1.2GHz or equivalent at minimum
 3. Java SE Development Kit 1.7.0 or higher
-4. The Management Console requires you to enable Javascript of the Web browser,
+4. The Management Console requires you to enable Javascript on the Web browser,
    with MS IE 9 or above. This can be easily achieved by using the default settings of your browser.
-5. To compile and run the sample clients, an Ant version is required. Ant 1.7.0
-   version is recommended
+5. An Ant, which is a build tool, is required to compile and run the sample clients.
+   Ant version 1.7.0 is recommended.
 6. To build WSO2 Application Manager from the Source distribution, it is necessary that
    you have JDK 1.7.x version and Maven 3.0.0 or later
 
@@ -76,7 +76,7 @@ Documentation
 ==============
 
 On-line product documentation is available at:
-        <https://docs.wso2.com/display/APPM100/WSO2+App+Manager+Documentation>
+    <https://docs.wso2.com/display/APPM100/WSO2+App+Manager+Documentation>
 
 Support
 ==================================
@@ -101,7 +101,6 @@ Issue Tracker
 
 Help us make our software better. Please submit any bug reports or feature
 requests through the WSO2 JIRA system:
-
     <https://wso2.org/jira/browse/APPM>
 
 
@@ -130,10 +129,10 @@ Crypto Notice
    The following provides more details on the included cryptographic
    software:
 
-   Apache Rampart   : http://ws.apache.org/rampart/
-   Apache WSS4J     : http://ws.apache.org/wss4j/
-   Apache Santuario : http://santuario.apache.org/
-   Bouncycastle     : http://www.bouncycastle.org/
+   Apache Rampart   : <http://ws.apache.org/rampart/>
+   Apache WSS4J     : <http://ws.apache.org/wss4j/>
+   Apache Santuario : <http://santuario.apache.org/>
+   Bouncycastle     : <http://www.bouncycastle.org/>
 
 --------------------------------------------------------------------------------
 (c) Copyright 2015 WSO2 Inc.
