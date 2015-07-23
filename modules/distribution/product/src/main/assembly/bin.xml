@@ -334,7 +334,7 @@
         <!-- App Manager keeps authenticationendpoint.war itself, since login page has customized. -->
         <fileSet>
             <directory>
-                src/main/repository/deployment/server/webapps
+                target
             </directory>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/webapps
             </outputDirectory>
