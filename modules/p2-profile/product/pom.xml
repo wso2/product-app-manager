@@ -301,10 +301,6 @@
                                 <!-- APIM 2.0.0-M1 <featureArtifactDef>-->
                                     <!--org.wso2.carbon:org.wso2.carbon.ec2.client.feature:${carbon.platform.version}-->
                                 <!--</featureArtifactDef>-->
-                                <featureArtifactDef>
-                                    org.wso2.carbon.appmgt:org.wso2.carbon.throttle.server.feature:${carbon.throttle.version}
-                                </featureArtifactDef>
-
 
                                 <!-- reporting features -->
                                 <!-- <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.reporting.feature:${carbon.patch.version.401}</featureArtifactDef>-->
@@ -743,10 +739,6 @@
                                <feature>
                                     <id>org.wso2.carbon.databridge.datapublisher.feature.group</id>
                                     <version>${carbon.commons.version}</version>
-                                </feature> 
-                                <feature>
-                                    <id>org.wso2.carbon.throttle.server.feature.group</id>
-                                    <version>${carbon.throttle.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.apache.synapse.wso2.feature.group</id>
