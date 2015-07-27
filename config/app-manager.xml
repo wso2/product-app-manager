@@ -139,28 +139,12 @@
         </Environments>
     </APIGateway>
 
-    <!-- TODO : Rename this config names to app manager related names -->
-    <APIStreamNameDefinition>
-        <ApiManagerRequestStreamName>org.wso2.appmgt.statistics.request</ApiManagerRequestStreamName>
-        <ApiManagerRequestStreamVersion>1.0.0</ApiManagerRequestStreamVersion>
-        <ApiManagerResponseStreamName>org.wso2.appmgt.statistics.response</ApiManagerResponseStreamName>
-        <ApiManagerResponseStreamVersion>1.0.0</ApiManagerResponseStreamVersion>
-        <ApiManagerFaultStreamName>org.wso2.appmgt.statistics.fault</ApiManagerFaultStreamName>
-        <ApiManagerFaultStreamVersion>1.0.0</ApiManagerFaultStreamVersion>
-        <ApiManagerCacheStatStreamName>org.wso2.appmgt.statistics.cache</ApiManagerCacheStatStreamName>
-        <ApiManagerCacheStatStreamVersion>1.0.0</ApiManagerCacheStatStreamVersion>
-
-        <!-- Used when publishing AppManager UI activities to BAM   -->
-        <ApiManagerBamUiActivityStreamName>org.wso2.appmgt.bam.uiactivitypublish</ApiManagerBamUiActivityStreamName>
-        <ApiManagerBamUiActivityStreamVersion>1.0.0</ApiManagerBamUiActivityStreamVersion>
-    </APIStreamNameDefinition>
-
     <!-- TODO : Rename the parent element to AppUsageTracking -->
     <!--
     API usage tracker configuration used by the BAM data publisher and
     Google Analytics publisher in API gateway.
     -->
-    <APIUsageTracking>
+    <Analytics>
         <!--
 			  Enable UI Activity Data publish to BAM
 		    -->
@@ -211,6 +195,26 @@
         -->
         <BAMPassword>admin</BAMPassword>
 
+        <!-- TODO : Rename this config names to app manager related names -->
+        <BAMEventStreams>
+            <RequestStreamName>org.wso2.appmgt.statistics.request</RequestStreamName>
+            <RequestStreamVersion>1.0.0</RequestStreamVersion>
+
+            <ResponseStreamName>org.wso2.appmgt.statistics.response</ResponseStreamName>
+            <ResponseStreamVersion>1.0.0</ResponseStreamVersion>
+
+            <FaultStreamName>org.wso2.appmgt.statistics.fault</FaultStreamName>
+            <FaultStreamVersion>1.0.0</FaultStreamVersion>
+
+            <CacheStatStreamName>org.wso2.appmgt.statistics.cache</CacheStatStreamName>
+            <CacheStatStreamVersion>1.0.0</CacheStatStreamVersion>
+
+            <!-- Used when publishing AppManager UI activities to BAM   -->
+            <UIActivityStreamName>org.wso2.appmgt.bam.uiactivitypublish</UIActivityStreamName>
+            <UIActivityStreamVersion>1.0.0</UIActivityStreamVersion>
+        </BAMEventStreams>
+
+
         <!--
         JNDI name of the data source to be used for getting BAM statistics.
         This data source should be defined in the master-datasources.xml file in conf/datasources directory.
@@ -234,7 +238,7 @@
             -->
             <TrackingID>UA-XXXXXXXX-X</TrackingID>
         </GoogleAnalyticsTracking>
-    </APIUsageTracking>
+    </Analytics>
 
     <!--
     Settings related to managing API access tiers.
