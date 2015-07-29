@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.wso2.appmanager</groupId>
         <artifactId>wso2stratos-appmgt-features</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.1.0-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -35,12 +35,18 @@
         <dependency>
             <groupId>org.wso2.appmanager</groupId>
             <artifactId>org.wso2.stratos.appmgt.dashboard.ui</artifactId>
-             <version>1.0.0-SNAPSHOT</version>
+             <version>${carbon.appmgt.version}</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon</groupId>
             <artifactId>org.wso2.carbon.ui.menu.stratos</artifactId>
-             <version>${stratos.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.wso2.carbon.commons</groupId>
+                    <artifactId>org.wso2.carbon.statistics.ui</artifactId>
+                </exclusion>
+            </exclusions>
+            <version>${stratos.version}</version>
         </dependency>
     </dependencies>
 
@@ -67,7 +73,7 @@
                             </adviceFile>                            
                             <bundles>
                                 <bundleDef>org.wso2.appmanager:org.wso2.stratos.appmgt.dashboard.ui</bundleDef>
-                                <bundleDef>org.wso2.carbon:org.wso2.carbon.ui.menu.stratos:${stratos.version}</bundleDef>
+                                <bundleDef>org.wso2.carbon:org.wso2.carbon.ui.menu.stratos</bundleDef>
                             </bundles>
                             <importFeatures>
                                 <importFeatureDef>org.wso2.carbon.core.ui:${carbon.platform.version}</importFeatureDef>

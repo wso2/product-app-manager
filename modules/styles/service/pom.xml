@@ -22,13 +22,13 @@
     <parent>
         <groupId>org.wso2.appmanager</groupId>
     	<artifactId>appmgt-styles-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.wso2.stratos.appmgt.styles</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <name>WSO2 Stratos  APP Manager - UI styles</name>
     <url>http://wso2.org</url>
@@ -39,8 +39,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
 
@@ -90,25 +90,5 @@
             <artifactId>org.osgi.compendium</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.eclipse.equinox</groupId>
-            <artifactId>org.eclipse.equinox.http.servlet</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.equinox</groupId>
-            <artifactId>org.eclipse.equinox.http.helper</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.equinox</groupId>
-            <artifactId>org.eclipse.equinox.jsp.jasper</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.equinox</groupId>
-            <artifactId>javax.servlet.jsp</artifactId>
-            <version>${javax.servlet.jsp.version}</version>
-        </dependency>
     </dependencies>
 </project>
