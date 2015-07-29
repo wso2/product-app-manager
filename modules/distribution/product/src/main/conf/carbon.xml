@@ -34,7 +34,7 @@
     -->
     <Version>1.0.0</Version>
 
-    <ServerKey>AM</ServerKey>
+    <ServerKey>AppM</ServerKey>
 
     <!--
        Host name or IP address of the machine hosting this server
