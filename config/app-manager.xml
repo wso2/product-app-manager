@@ -44,24 +44,17 @@
         </DiscoveryHandlers>
     </DiscoveryConfiguration>
 
-    <!-- TODO : Do we need this config ? -->
-    <!-- This parameter is used when adding api/app management capability to other products like GReg, AS, DSS etc.-->
-    <GatewayType>Synapse</GatewayType>
-
-    <!-- TODO : Do we need this config ? -->
     <!-- This parameter is used to enable the securevault support when try to publish endpoint secured APIs. Values should be "true" or "false".
     By default secure vault is disabled.-->
     <EnableSecureVault>false</EnableSecureVault>
 
-    <!-- TODO : Rename the parent element to something which refect gateway authentication. -->
     <!--
-    Configuration parameters for the authentication handler of the relevant proxy web app.
-    This is an optional configuration for the API Gateway component.
+    Configuration parameters for security handlers of the relevant proxy web apps.
     -->
-    <APIConsumerAuthentication>
+    <AppConsumerAuthConfiguration>
 
         <!--
-  		  Enable/Disable JWT generation. Default is false.
+  	Enable/Disable JWT generation. Default is false.
         -->
         <EnableTokenGeneration>true</EnableTokenGeneration>
 
@@ -71,21 +64,21 @@
         <SecurityContextHeader>X-JWT-Assertion</SecurityContextHeader>
 
         <!--
-    		Fully qualified name of the class that will retrieve additional user claims to be appended to the JWT.
+    	Fully qualified name of the class that will retrieve additional user claims to be appended to the JWT.
         If not specified no claims will be appended.
-    		The DefaultClaimsRetriever class adds user claims from the default carbon user store.
+    	The DefaultClaimsRetriever class adds user claims from the default carbon user store.
     	  -->
         <ClaimsRetrieverImplClass>org.wso2.carbon.appmgt.impl.token.DefaultClaimsRetriever</ClaimsRetrieverImplClass>
 
         <!--
-    		The dialectURI under which the claimURIs that need to be appended to the JWT are defined.
+    	The dialectURI under which the claimURIs that need to be appended to the JWT are defined.
         Not used with custom ClaimsRetriever implementations.
         The same value is used in the keys for appending the default properties to the JWT.
     	  -->
         <ConsumerDialectURI>http://wso2.org/claims</ConsumerDialectURI>
 
         <!--
-		    Signature algorithm for signing the JWT. Accepts "SHA256withRSA" or "NONE".
+        Signature algorithm for signing the JWT. Accepts "SHA256withRSA" or "NONE".
         To disable signing explicitly specify "NONE".
 	     -->
         <SignatureAlgorithm>SHA256withRSA</SignatureAlgorithm>
@@ -96,15 +89,12 @@
       	-->
         <AddClaimsSelectively>false</AddClaimsSelectively>
 
-        <!-- TODO : Check whether this is redundant -->
-        <Authenticator>SAML2</Authenticator>
-
         <!--
-    		Add SAML response as transport header in outgoing message.
-    	  -->
+    	Add SAML response as transport header in outgoing message.
+    	-->
         <AddSAMLResponseHeaderToOutMessage>true</AddSAMLResponseHeaderToOutMessage>
 
-    </APIConsumerAuthentication>
+    </AppConsumerAuthConfiguration>
 
     <APIGateway>
 

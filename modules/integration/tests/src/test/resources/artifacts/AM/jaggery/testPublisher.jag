@@ -47,8 +47,6 @@ print(publisherHostObj.getCustomOutSequences());
 print("==");
 print(publisherHostObj.getHTTPsURL());
 print("==");
-print(publisherHostObj.isSynapseGateway());
-print("==");
 print(publisherHostObj.loadRegistryOfTenant("carbon.super"));
 print("==");
 print(publisherHostObj.updateDocumentation("admin","HostObjectTestAPI","1.0.0","Doc-Name", "How To", "summary","In-line"));
