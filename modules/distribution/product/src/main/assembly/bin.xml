@@ -680,19 +680,19 @@
             <fileMode>644</fileMode>
         </file>
         <file>
-            <source>../../../config/app-manager.xml</source>
+            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/app-manager.xml</source>
             <outputDirectory>wso2appm-${pom.version}/repository/conf</outputDirectory>
             <filtered>true</filtered>
             <fileMode>755</fileMode>
         </file>
 	<file>
-            <source>../../../config/wso2server.sh</source>
+            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/bin/wso2server.sh</source>
             <outputDirectory>wso2appm-${pom.version}/bin</outputDirectory>
             <filtered>true</filtered>
             <fileMode>755</fileMode>
         </file>
 	<file>
-            <source>../../../config/wso2server.bat</source>
+            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/bin/wso2server.bat</source>
             <outputDirectory>wso2appm-${pom.version}/bin</outputDirectory>
             <filtered>true</filtered>
         </file>
