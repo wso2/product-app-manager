@@ -51,6 +51,7 @@
                 <exclude>**/repository/deployment/server/jaggeryapps/publisher/**</exclude>
                 <exclude>**/repository/deployment/server/jaggeryapps/store/**</exclude>
 		<exclude>**/lib/org.wso2.carbon.server-${carbon.version}.jar</exclude>
+                <exclude>**/repository/components/plugins/wadl-core_1.1.3.wso2v2.jar</exclude>
             </excludes>
         </fileSet>
         <fileSet>
