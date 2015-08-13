@@ -263,9 +263,9 @@
                                 <featureArtifactDef>
                                     org.wso2.appmanager:org.wso2.appmanager.styles.feature:${appmanagerserver.version}
                                 </featureArtifactDef>
-                                <featureArtifactDef>
-                                    org.wso2.carbon.mediation:org.wso2.carbon.relay.feature:${carbon.mediation.version}
-                                </featureArtifactDef>
+                                <!--<featureArtifactDef>-->
+                                    <!--org.wso2.carbon.mediation:org.wso2.carbon.relay.feature:${carbon.mediation.version}-->
+                                <!--</featureArtifactDef>-->
                                 <featureArtifactDef>
                                     org.wso2.carbon.mediation:org.wso2.carbon.relay.server.feature:${carbon.mediation.version}
                                 </featureArtifactDef>
@@ -805,10 +805,10 @@
                                     <id>org.wso2.carbon.mediation.ui.feature.group</id>
                                     <version>${carbon.mediation.version}</version>
                                 </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.relay.feature.group</id>
-                                    <version>${carbon.mediation.version}</version>
-                                </feature>
+                                <!--<feature>-->
+                                    <!--<id>org.wso2.carbon.relay.feature.group</id>-->
+                                    <!--<version>${carbon.mediation.version}</version>-->
+                                <!--</feature>-->
                                 <feature>
                                     <id>org.wso2.carbon.relay.server.feature.group</id>
                                     <version>${carbon.mediation.version}</version>
