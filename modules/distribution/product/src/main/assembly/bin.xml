@@ -85,11 +85,14 @@
                <include>**/qpid-virtualhosts.xml</include>
            </includes>
         </fileSet>
-	<fileSet>
+	    <fileSet>
             <directory>
                 ../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/identity/
             </directory>
             <outputDirectory>wso2appm-${pom.version}/repository/conf/identity</outputDirectory>
+            <excludes>
+                <exclude>**/sso-idp-config.xml</exclude>
+            </excludes>
         </fileSet>
         <!-- Start APP Manager related -->
         <fileSet>
@@ -498,23 +501,13 @@
         </file>
 
         <file>
-            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/security/identity-mgt.properties</source>
-            <outputDirectory>wso2appm-${pom.version}/repository/conf/security</outputDirectory>
+            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/resources/identity/pages/samlsso_federate.html</source>
+            <outputDirectory>wso2appm-${pom.version}/repository/resources/identity/pages</outputDirectory>
             <fileMode>644</fileMode>
         </file>
         <file>
-            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/security/entitlement.properties</source>
-            <outputDirectory>wso2appm-${pom.version}/repository/conf/security</outputDirectory>
-            <fileMode>644</fileMode>
-        </file>
-        <file>
-            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/security/saml2.federation.properties</source>
-            <outputDirectory>wso2appm-${pom.version}/repository/conf/security</outputDirectory>
-            <fileMode>644</fileMode>
-        </file>
-    <file>
-            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/resources/security/sso_redirect.html</source>
-            <outputDirectory>wso2appm-${pom.version}/repository/resources/security</outputDirectory>
+            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/resources/identity/pages/samlsso_response.html</source>
+            <outputDirectory>wso2appm-${pom.version}/repository/resources/identity/pages</outputDirectory>
             <fileMode>644</fileMode>
         </file>
     <!--copy scim-consumer-config.xml-->
@@ -541,8 +534,8 @@
             <outputDirectory>wso2appm-${pom.version}/repository/conf</outputDirectory>
         </file>
 	    <file>
-            <source>src/main/conf/security/sso-idp-config.xml</source>
-            <outputDirectory>wso2appm-${pom.version}/repository/conf/security/</outputDirectory>
+            <source>src/main/conf/identity/sso-idp-config.xml</source>
+            <outputDirectory>wso2appm-${pom.version}/repository/conf/identity/</outputDirectory>
             <destName>sso-idp-config.xml</destName>
         </file>
         <file>
@@ -726,17 +719,12 @@
         </file>
         <file>
             <source>../../../config/application-authenticators.xml</source>
-	        <outputDirectory>wso2appm-${pom.version}/repository/conf/security</outputDirectory>
+	        <outputDirectory>wso2appm-${pom.version}/repository/conf/identity</outputDirectory>
             <fileMode>644</fileMode>
         </file>
 	    <file>
             <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/thrift-authentication.xml</source>
             <outputDirectory>wso2appm-${pom.version}/repository/conf</outputDirectory>
-            <fileMode>644</fileMode>
-        </file>
-	    <file>
-            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/security/application-authentication.xml</source>
-            <outputDirectory>wso2appm-${pom.version}/repository/conf/security</outputDirectory>
             <fileMode>644</fileMode>
         </file>
         <!-- Carbon 4.4.0 <file>-->
