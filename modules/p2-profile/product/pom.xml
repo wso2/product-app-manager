@@ -1428,6 +1428,24 @@
                             <goal>run</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>patching-components</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <echo message="########### Applying depending component config patches ##############"/>
+                                <!-- commenting "GetAllRolesOfUserEnabled" property to fix
+                                https://wso2.org/jira/browse/IDENTITY-3489 -->
+                                <replace
+                                        file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/user-mgt.xml"
+                                        token="&lt;Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property&gt;"
+                                        value="&lt;!--Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property--&gt;"/>
+                            </tasks>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
