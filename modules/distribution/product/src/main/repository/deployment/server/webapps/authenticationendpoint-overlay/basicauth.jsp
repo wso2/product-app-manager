@@ -5,23 +5,24 @@
         if (loginFailed != null) {
 
     %>
-            <div class="alert alert-error">
-                <fmt:message key='<%=CharacterEncoder.getSafeText(request.getParameter
-                ("errorMessage"))%>'/>
+            <div class="wr-validation-summary">
+               <p> <fmt:message key='<%=CharacterEncoder.getSafeText(request.getParameter
+                ("errorMessage"))%>'/></p>
             </div>
+
     <% } %>
 
     <% if (CharacterEncoder.getSafeText(request.getParameter("username")) == null || "".equals
     (CharacterEncoder.getSafeText(request.getParameter("username")).trim())) { %>
 
-        <!-- Username -->
-        <div class="control-group">
-            <label class="control-label" for="username"><fmt:message key='username'/>:</label>
 
-            <div class="controls">
-                <input class="input-xlarge" type="text" id='username' name="username" size='30'/>
-            </div>
-        </div>
+
+            <label class="wr-input-label"><fmt:message key='username'/>:</label>
+                <div class="wr-input-control">
+                    <input class="wr-input-control" type="text" id='username' name="username"/>
+                </div>
+        
+      
 
     <%} else { %>
 
@@ -30,12 +31,16 @@
 
     <% } %>
 
+     <label class="wr-input-label"><fmt:message key='password'/>:</label>
+                <div class="wr-input-control">
+                   <input type="password" id='password' name="password"  class="wr-input-control"/>
+                </div>
+
     <!--Password-->
     <div class="control-group">
-        <label class="control-label" for="password"><fmt:message key='password'/>:</label>
+        <label class="control-label" for="password"></label>
 
         <div class="controls">
-            <input type="password" id='password' name="password"  class="input-xlarge" size='30'/>
             <input type="hidden" name="sessionDataKey" value='<%=CharacterEncoder.getSafeText(request.getParameter("sessionDataKey"))%>'/>
             <label class="checkbox" style="margin-top:10px"><input type="checkbox" id="chkRemember" name="chkRemember"><fmt:message key='remember.me'/></label>
         </div>
@@ -44,7 +49,7 @@
     <div class="form-actions">
         <input type="submit" value='<fmt:message key='login'/>' class="btn btn-primary">
         <% if(request.getParameter("RelayState") != null && !request.getParameter("RelayState").equals("/publisher") ){ %>
-        <input type="button" value="Back to Store" class="btn btn-default" onclick="location.href='<%=request.getParameter("RelayState")%>';">
+        <input type="button" value="Back to Store" class="btn btn-default btn-primary" onclick="location.href='<%=request.getParameter("RelayState")%>';">
         <% } %>
     </div>
 
