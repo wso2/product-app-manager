@@ -43,14 +43,17 @@
                 <exclude>**/release-notes.html</exclude>
                 <exclude>**/carbon.xml</exclude>
                 <exclude>**/registry.xml</exclude>
-		<exclude>**/email/email-admin-config.xml</exclude>
-		<exclude>**/user-mgt.xml</exclude>
+		        <exclude>**/email/email-admin-config.xml</exclude>
+		        <exclude>**/user-mgt.xml</exclude>
                 <exclude>**/identity.xml</exclude>
                 <exclude>**/embedded-ldap.xml</exclude>
-		<exclude>**/master-datasources.xml</exclude>
+		        <exclude>**/master-datasources.xml</exclude>
                 <exclude>**/repository/deployment/server/jaggeryapps/publisher/**</exclude>
                 <exclude>**/repository/deployment/server/jaggeryapps/store/**</exclude>
-		<exclude>**/lib/org.wso2.carbon.server-${carbon.version}.jar</exclude>
+		        <exclude>**/lib/org.wso2.carbon.server-${carbon.version}.jar</exclude>
+                <!-- TODO: Excluding wadl-core 1.1.3 is a temporary fix to get rid of CNF error
+                need to remove duplicate classes with jaxb-* bundle -->
+                <exclude>**/repository/components/plugins/wadl-core_1.1.3.wso2v2.jar</exclude>
             </excludes>
         </fileSet>
         <fileSet>
@@ -68,15 +71,11 @@
         <fileSet>
             <directory>src/main/conf/synapse-configs</directory>
             <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/synapse-configs</outputDirectory>
-	    <excludes>
-		<exclude>**/main.xml</exclude>
+	        <excludes>
+		        <exclude>**/main.xml</exclude>
             </excludes>
         </fileSet>
-        
-  	<fileSet>
-            <directory>src/main/conf/synapse-configs/default/sequences</directory>
-            <outputDirectory>wso2appm-${pom.version}/repository/resources/apim-synapse-config/</outputDirectory>
-        </fileSet>
+
 	    <fileSet>
            <directory>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/advanced/</directory>
            <outputDirectory>wso2appm-${pom.version}/repository/conf/advanced</outputDirectory>
@@ -86,11 +85,14 @@
                <include>**/qpid-virtualhosts.xml</include>
            </includes>
         </fileSet>
-	<fileSet>
+	    <fileSet>
             <directory>
                 ../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/identity/
             </directory>
             <outputDirectory>wso2appm-${pom.version}/repository/conf/identity</outputDirectory>
+            <excludes>
+                <exclude>**/sso-idp-config.xml</exclude>
+            </excludes>
         </fileSet>
         <!-- Start APP Manager related -->
         <fileSet>
@@ -364,6 +366,13 @@
                 <include>**/eula.xml</include>
             </includes>
         </fileSet>
+        <fileSet>
+            <directory>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/multitenancy/</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf</outputDirectory>
+            <includes>
+                <include>**/tenant-mgt.xml</include>
+            </includes>
+        </fileSet>
 
 
         <!--fileSet>
@@ -480,8 +489,8 @@
         <!--End of claim management feature-->
 
 
-    <!-- PROPERTIES FROM IS START -->
- 	<file>
+        <!-- PROPERTIES FROM IS START -->
+ 	    <file>
             <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/data/is-default-schema.zip</source>
             <outputDirectory>wso2appm-${pom.version}/repository/data</outputDirectory>
         </file>
@@ -492,23 +501,13 @@
         </file>
 
         <file>
-            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/security/identity-mgt.properties</source>
-            <outputDirectory>wso2appm-${pom.version}/repository/conf/security</outputDirectory>
+            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/resources/identity/pages/samlsso_federate.html</source>
+            <outputDirectory>wso2appm-${pom.version}/repository/resources/identity/pages</outputDirectory>
             <fileMode>644</fileMode>
         </file>
         <file>
-            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/security/entitlement.properties</source>
-            <outputDirectory>wso2appm-${pom.version}/repository/conf/security</outputDirectory>
-            <fileMode>644</fileMode>
-        </file>
-        <file>
-            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/security/saml2.federation.properties</source>
-            <outputDirectory>wso2appm-${pom.version}/repository/conf/security</outputDirectory>
-            <fileMode>644</fileMode>
-        </file>
-    <file>
-            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/resources/security/sso_redirect.html</source>
-            <outputDirectory>wso2appm-${pom.version}/repository/resources/security</outputDirectory>
+            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/resources/identity/pages/samlsso_response.html</source>
+            <outputDirectory>wso2appm-${pom.version}/repository/resources/identity/pages</outputDirectory>
             <fileMode>644</fileMode>
         </file>
     <!--copy scim-consumer-config.xml-->
@@ -530,13 +529,13 @@
 
         <!-- END OF IS FILES -->
 
-	<file>
+	    <file>
             <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/event-broker.xml</source>
             <outputDirectory>wso2appm-${pom.version}/repository/conf</outputDirectory>
         </file>
-	<file>
-            <source>src/main/conf/security/sso-idp-config.xml</source>
-            <outputDirectory>wso2appm-${pom.version}/repository/conf/security/</outputDirectory>
+	    <file>
+            <source>src/main/conf/identity/sso-idp-config.xml</source>
+            <outputDirectory>wso2appm-${pom.version}/repository/conf/identity/</outputDirectory>
             <destName>sso-idp-config.xml</destName>
         </file>
         <file>
@@ -679,19 +678,19 @@
             <fileMode>644</fileMode>
         </file>
         <file>
-            <source>../../../config/app-manager.xml</source>
+            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/app-manager.xml</source>
             <outputDirectory>wso2appm-${pom.version}/repository/conf</outputDirectory>
             <filtered>true</filtered>
             <fileMode>755</fileMode>
         </file>
 	<file>
-            <source>../../../config/wso2server.sh</source>
+            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/bin/wso2server.sh</source>
             <outputDirectory>wso2appm-${pom.version}/bin</outputDirectory>
             <filtered>true</filtered>
             <fileMode>755</fileMode>
         </file>
 	<file>
-            <source>../../../config/wso2server.bat</source>
+            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/bin/wso2server.bat</source>
             <outputDirectory>wso2appm-${pom.version}/bin</outputDirectory>
             <filtered>true</filtered>
         </file>
@@ -720,17 +719,12 @@
         </file>
         <file>
             <source>../../../config/application-authenticators.xml</source>
-	    <outputDirectory>wso2appm-${pom.version}/repository/conf/security</outputDirectory>
+	        <outputDirectory>wso2appm-${pom.version}/repository/conf/identity</outputDirectory>
             <fileMode>644</fileMode>
         </file>
-	<file>
-            <source>../../../config/thrift-authentication.xml</source>
+	    <file>
+            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/thrift-authentication.xml</source>
             <outputDirectory>wso2appm-${pom.version}/repository/conf</outputDirectory>
-            <fileMode>644</fileMode>
-        </file>
-	<file>
-            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/security/application-authentication.xml</source>
-            <outputDirectory>wso2appm-${pom.version}/repository/conf/security</outputDirectory>
             <fileMode>644</fileMode>
         </file>
         <!-- Carbon 4.4.0 <file>-->

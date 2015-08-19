@@ -27,6 +27,9 @@
             <directory>target/site</directory>
             <outputDirectory>wso2appm-${pom.version}-docs</outputDirectory>
             <fileMode>755</fileMode>
+            <excludes>
+                <exclude>endpoints/**</exclude>
+            </excludes>
         </fileSet>
     </fileSets>
 </assembly>

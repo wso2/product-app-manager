@@ -272,7 +272,7 @@
                 <version>3.3</version>
                 <executions>
                     <execution>
-                        <phase>package</phase>
+                        <phase>site</phase>
                         <goals>
                             <goal>site</goal>
                         </goals>
