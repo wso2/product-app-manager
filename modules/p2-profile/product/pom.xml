@@ -509,8 +509,8 @@
                                 <featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.application.authentication.framework.server.feature:${carbon.identity.version}</featureArtifactDef>
                                 <!--<featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.application.authentication.framework.server.feature:${carbon.identity.4_2.version}</featureArtifactDef>-->
 				<featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.user.profile.server.feature:${carbon.identity.version}</featureArtifactDef>
-                                <featureArtifactDef>org.wso2.store:org.wso2.store.feature:${carbon.store.version}</featureArtifactDef>
-				<featureArtifactDef>org.wso2.carbon:org.wso2.carbon.social.feature:${carbon.social.version}</featureArtifactDef>
+                                <featureArtifactDef>org.wso2.carbon.store:org.wso2.store.feature:${carbon.store.version}</featureArtifactDef>
+				<featureArtifactDef>org.wso2.carbon.store:org.wso2.carbon.social.feature:${carbon.social.version}</featureArtifactDef>
 
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.cassandra-jdbc-1.1.1.server.feature:4.0.1
@@ -527,7 +527,7 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.identity:org.wso2.carbon.identity.authenticator.saml2.sso.feature:${carbon.identity.version}
                                 </featureArtifactDef>
-                                <featureArtifactDef>caramel:caramel.feature:1.0.0</featureArtifactDef>
+                                <featureArtifactDef>caramel:caramel.feature:${caramel.feature.version}</featureArtifactDef>
                                 <!--<featureArtifactDef>org.wso2.carbon:org.wso2.carbon.cassandra.explorer.feature:4.2.3
                                 </featureArtifactDef>-->
                                 <!-- APIM 2.0.0-M1 <featureArtifactDef>-->
@@ -1242,7 +1242,7 @@
                                     <version>${carbon.identity.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.store.feature.group</id>
+                                    <id>org.wso2.carbon.store.feature.group</id>
                                     <version>${carbon.store.feature.version}</version>
                                 </feature>
 				                <feature>
@@ -1275,7 +1275,7 @@
                                 </feature>
                                 <feature>
                                     <id>caramel.feature.group</id>
-                                    <version>1.0.0</version>
+                                    <version>${caramel.feature.version}</version>
                                 </feature>
                                <!-- <feature>
                                     <id>org.wso2.carbon.cassandra.explorer.feature.group</id>
