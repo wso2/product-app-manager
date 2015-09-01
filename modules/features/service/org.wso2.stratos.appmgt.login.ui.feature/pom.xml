@@ -35,7 +35,7 @@
         <dependency>
             <groupId>org.wso2.appmanager</groupId>
             <artifactId>org.wso2.stratos.appmgt.login.ui</artifactId>
-            <version>${carbon.appmgt.version}</version>
+            <version>${appmanagerserver.version}</version>
         </dependency>
     </dependencies>
 

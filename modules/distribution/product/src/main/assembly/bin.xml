@@ -208,14 +208,17 @@
             <outputDirectory>wso2appm-${pom.version}/resources/allthemes/Default/admin</outputDirectory>            
         </fileSet>
         <fileSet>
-            <directory>../../../config/rxts</directory>
+            <directory>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/resources/rxts</directory>
             <outputDirectory>wso2appm-${pom.version}/repository/resources/rxts</outputDirectory>
             <includes>
-                <include>**/**.rxt</include>
+                <include>**/mobileapp.rxt</include>
+                <include>**/webapp.rxt</include>
+                <include>**/documentation.rxt</include>
+                <include>**/provider.rxt</include>
             </includes>
         </fileSet>
         <fileSet>
-            <directory>../../../config/lifecycles</directory>
+            <directory>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/resources/lifecycles</directory>
             <outputDirectory>wso2appm-${pom.version}/repository/resources/lifecycles</outputDirectory>
             <includes>
                 <include>**/**.xml</include>
@@ -241,7 +244,7 @@
                 <include>**/**.jmx</include>
             </includes>
         </fileSet>
-       <!--  XACML Policy templates -->
+        <!-- API Templates -->
         <fileSet>
             <directory>../resources/api_templates</directory>
             <outputDirectory>wso2appm-${pom.version}/repository/resources/api_templates</outputDirectory>
@@ -249,9 +252,9 @@
                 <include>**/**.xml</include>
             </includes>
         </fileSet>
-	    <!-- API Templates -->
+        <!--  XACML Policy templates -->
 	   <fileSet>
-            <directory>../resources/entitlement-templates</directory>
+            <directory>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/resources/entitlement-templates</directory>
             <outputDirectory>wso2appm-${pom.version}/repository/resources/entitlement-templates</outputDirectory>
             <includes>
                 <include>**/**.xml</include>
