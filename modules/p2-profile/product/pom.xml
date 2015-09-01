@@ -312,29 +312,29 @@
                                 <!--APP Management related feature-->
                                 <featureArtifactDef>org.jaggeryjs:org.jaggeryjs.feature:${jaggery.js.version}
                                 </featureArtifactDef>
-                                <featureArtifactDef>org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.feature:${appmanagerserver.version}
+                                <featureArtifactDef>org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.feature:${carbon.appmgt.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.appmanager:org.wso2.stratos.appmgt.dashboard.ui.feature:${appmanagerserver.version}
                                 </featureArtifactDef>
 
 				                <featureArtifactDef>
-                                    org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.mobile.feature:${appmanagerserver.version}
+                                    org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.mobile.feature:${carbon.appmgt.version}
                                 </featureArtifactDef>
 				                <featureArtifactDef>
-                                    org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.mdm.wso2mdm.feature:${appmanagerserver.version}
+                                    org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.mdm.wso2mdm.feature:${carbon.appmgt.version}
                                 </featureArtifactDef>
 				                <featureArtifactDef>
-                                    org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.mdm.wso2emm.feature:${appmanagerserver.version}
+                                    org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.mdm.wso2emm.feature:${carbon.appmgt.version}
                                 </featureArtifactDef>
 				                <featureArtifactDef>
-                                    org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.services.api.feature:${appmanagerserver.version}
+                                    org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.services.api.feature:${carbon.appmgt.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.publisher.feature:${appmanagerserver.version}
+                                    org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.publisher.feature:${carbon.appmgt.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.store.feature:${appmanagerserver.version}
+                                    org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.store.feature:${carbon.appmgt.version}
                                 </featureArtifactDef>
                                 <!--featureArtifactDef>org.wso2.am:org.wso2.stratos.apimgt.dashboard.ui.feature:${stratos.version}</featureArtifactDef-->
 
@@ -439,7 +439,7 @@
                                     org.wso2.carbon.identity:org.wso2.carbon.user.mgt.server.feature:${carbon.identity.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon.commons:org.wso2.carbon.tenant.mgt.common.server.feature:4.4.3
+                                    org.wso2.carbon.commons:org.wso2.carbon.tenant.mgt.common.server.feature:${carbon.tenant.mgt.common.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>org.wso2.carbon.commons:org.wso2.carbon.ntask.core.feature:${carbon.commons.version}
                                 </featureArtifactDef>
@@ -484,11 +484,11 @@
 				<featureArtifactDef>org.wso2.store.modules:store.feature:${es.feature.version}</featureArtifactDef>
 				<featureArtifactDef>org.jaggeryjs.modules:handlebars.feature:${handlebars.feature.version}</featureArtifactDef>
 				<featureArtifactDef>org.wso2.store.modules:login.feature:${es.feature.version}</featureArtifactDef>
-				<featureArtifactDef>org.jaggeryjs.modules:markdown.feature:${es.feature.version}</featureArtifactDef>
+				<featureArtifactDef>org.jaggeryjs.modules:markdown.feature:${jaggeryjs.markdown.feature.version}</featureArtifactDef>
 				<featureArtifactDef>org.wso2.store.modules:event.feature:${es.feature.version}</featureArtifactDef>
 				<featureArtifactDef>org.wso2.store.modules:registration.feature:${es.feature.version}
                                 </featureArtifactDef>
-				<featureArtifactDef>org.jaggeryjs.modules:caramel.feature:${caramel.feature.version}
+				<featureArtifactDef>org.jaggeryjs.modules:caramel.feature:${jaggeryjs.caramel.feature.version}
                                 </featureArtifactDef>
 				<featureArtifactDef>org.jaggeryjs.modules:carbon.feature:${jaggeryjs.carbon.feature.version}
                                 </featureArtifactDef>
@@ -509,12 +509,12 @@
                                 <featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.application.authentication.framework.server.feature:${carbon.identity.version}</featureArtifactDef>
                                 <!--<featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.application.authentication.framework.server.feature:${carbon.identity.4_2.version}</featureArtifactDef>-->
 				<featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.user.profile.server.feature:${carbon.identity.version}</featureArtifactDef>
-                                <featureArtifactDef>org.wso2.store:org.wso2.store.feature:${carbon.store.version}</featureArtifactDef>
-				<featureArtifactDef>org.wso2.carbon:org.wso2.carbon.social.feature:${carbon.social.version}</featureArtifactDef>
+                                <featureArtifactDef>org.wso2.carbon.store:org.wso2.store.feature:${carbon.store.version}</featureArtifactDef>
+				<featureArtifactDef>org.wso2.carbon.store:org.wso2.carbon.social.feature:${carbon.store.version}</featureArtifactDef>
 
-                                <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.cassandra-jdbc-1.1.1.server.feature:4.0.1
-                                </featureArtifactDef>
+                                <!--<featureArtifactDef>-->
+                                    <!--org.wso2.carbon:org.wso2.carbon.cassandra-jdbc-1.1.1.server.feature:4.0.1-->
+                                <!--</featureArtifactDef>-->
                                 <!--<featureArtifactDef>org.wso2.carbon:org.wso2.carbon.cassandra.dataaccess.feature:4.2.1</featureArtifactDef> -->
                                <!-- <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.databridge.streamdefn.cassandra.feature:4.2.2
@@ -527,7 +527,7 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.identity:org.wso2.carbon.identity.authenticator.saml2.sso.feature:${carbon.identity.version}
                                 </featureArtifactDef>
-                                <featureArtifactDef>caramel:caramel.feature:1.0.0</featureArtifactDef>
+                                <featureArtifactDef>caramel:caramel.feature:${jaggeryjs.caramel.feature.version}</featureArtifactDef>
                                 <!--<featureArtifactDef>org.wso2.carbon:org.wso2.carbon.cassandra.explorer.feature:4.2.3
                                 </featureArtifactDef>-->
                                 <!-- APIM 2.0.0-M1 <featureArtifactDef>-->
@@ -962,27 +962,27 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.appmgt.mobile.feature.group</id>
-                                    <version>${appmanagerserver.version}</version>
+                                    <version>${carbon.appmgt.version}</version>
                                 </feature>
 				                <feature>
                                     <id>org.wso2.carbon.appmgt.mdm.wso2mdm.feature.group</id>
-                                    <version>${appmanagerserver.version}</version>
+                                    <version>${carbon.appmgt.version}</version>
                                 </feature>
 				                <feature>
                                     <id>org.wso2.carbon.appmgt.mdm.wso2emm.feature.group</id>
-                                    <version>${appmanagerserver.version}</version>
+                                    <version>${carbon.appmgt.version}</version>
                                 </feature>
  				                <feature>
                                     <id>org.wso2.carbon.appmgt.services.api.feature.group</id>
-                                    <version>${appmanagerserver.version}</version>
+                                    <version>${carbon.appmgt.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.appmgt.publisher.feature.group</id>
-                                    <version>${appmanagerserver.version}</version>
+                                    <version>${carbon.appmgt.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.appmgt.store.feature.group</id>
-                                    <version>${appmanagerserver.version}</version>
+                                    <version>${carbon.appmgt.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.event.feature.group</id>
@@ -1098,7 +1098,7 @@
                                 </feature>                               
                                 <feature>
                                     <id>org.wso2.carbon.appmgt.feature.group</id>
-                                    <version>${appmanagerserver.version}</version>
+                                    <version>${carbon.appmgt.version}</version>
                                 </feature>
 
                                 <!--Governance Feature-->
@@ -1199,7 +1199,7 @@
                                 </feature>
 				<feature>
                                     <id>org.jaggeryjs.modules.caramel.feature.group</id>
-                                    <version>${caramel.feature.version}</version>
+                                    <version>${jaggeryjs.caramel.feature.version}</version>
                                 </feature>
 				<feature>
                                     <id>org.jaggeryjs.modules.carbon.feature.group</id>
@@ -1242,17 +1242,17 @@
                                     <version>${carbon.identity.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.store.feature.group</id>
-                                    <version>${carbon.store.feature.version}</version>
+                                    <id>org.wso2.carbon.store.feature.group</id>
+                                    <version>${carbon.store.version}</version>
                                 </feature>
 				                <feature>
                                     <id>org.wso2.carbon.social.feature.group</id>
-                                    <version>${carbon.social.version}</version>
+                                    <version>${carbon.store.version}</version>
                                 </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.cassandra-jdbc-1.1.1.server.feature.group</id>
-                                    <version>4.0.1</version>
-                                </feature>
+                                <!--<feature>-->
+                                    <!--<id>org.wso2.carbon.cassandra-jdbc-1.1.1.server.feature.group</id>-->
+                                    <!--<version>4.0.1</version>-->
+                                <!--</feature>-->
                                 <!--<feature>
                                                    <id>org.wso2.carbon.cassandra.dataaccess.feature.group</id>
                                                    <version>4.2.1</version>
@@ -1275,7 +1275,7 @@
                                 </feature>
                                 <feature>
                                     <id>caramel.feature.group</id>
-                                    <version>1.0.0</version>
+                                    <version>${jaggeryjs.caramel.feature.version}</version>
                                 </feature>
                                <!-- <feature>
                                     <id>org.wso2.carbon.cassandra.explorer.feature.group</id>
