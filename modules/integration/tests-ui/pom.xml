@@ -244,7 +244,7 @@
             <version>${carbon.platform.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon</groupId>
+            <groupId>org.wso2.carbon.multitenancy</groupId>
             <artifactId>org.wso2.carbon.tenant.mgt.stub</artifactId>
             <version>${carbon.platform.version}</version>
         </dependency>
@@ -274,6 +274,12 @@
             <artifactId>gson</artifactId>
             <version>1.7.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.gdata</groupId>
+            <artifactId>core</artifactId>
+            <version>1.47.1</version>
+        </dependency>
+
         <dependency>
             <groupId>org.wso2.carbon.automationutils</groupId>
             <artifactId>org.wso2.carbon.integration.common.admin.client</artifactId>

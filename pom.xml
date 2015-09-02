@@ -336,12 +336,82 @@
                 <artifactId>org.wso2.carbon.webapp.mgt.stub</artifactId>
                 <version>${carbon.webapp.mgt.stub}</version>
             </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.automationutils</groupId>
-                <artifactId>org.wso2.carbon.integration.common.admin.client</artifactId>
-                <version>${carbon.automation.version}</version>
-                <scope>test</scope>
-            </dependency>
+
+		<!-- Dependencies for Automation Test Framework -->
+		<dependency>
+			<groupId>org.apache.rampart</groupId>
+			<artifactId>rampart</artifactId>
+			<type>mar</type>
+			<version>1.6.1-wso2v8</version>
+		</dependency>
+		<dependency>
+			<groupId>org.wso2.carbon.automation</groupId>
+			<artifactId>org.wso2.carbon.automation.engine</artifactId>
+			<version>${carbon.automation.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.wso2.carbon.automation</groupId>
+			<artifactId>org.wso2.carbon.automation.extensions</artifactId>
+			<version>${carbon.automation.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.wso2.carbon.automation</groupId>
+			<artifactId>org.wso2.carbon.automation.test.utils</artifactId>
+			<version>${carbon.automation.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.wso2.carbon.automationutils</groupId>
+			<artifactId>org.wso2.carbon.integration.common.utils</artifactId>
+			<version>${carbon.automation.utils.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.wso2.carbon.automationutils</groupId>
+			<artifactId>org.wso2.carbon.integration.common.admin.client</artifactId>
+			<version>${carbon.automation.utils.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.wso2.carbon.automationutils</groupId>
+			<artifactId>org.wso2.carbon.integration.common.extensions</artifactId>
+			<version>${carbon.automation.utils.version}</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.rampart</groupId>
+					<artifactId>rampart-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.rampart</groupId>
+					<artifactId>rampart-policy</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.rampart</groupId>
+					<artifactId>rampart-trust</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.jmeter</groupId>
+					<artifactId>ApacheJMeter</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.jmeter</groupId>
+					<artifactId>ApacheJMeter_core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>${selenium.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-api</artifactId>
+			<version>${selenium.version}</version>
+		</dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -349,7 +419,12 @@
     <properties>
         <carbon.kernel.version>4.4.1</carbon.kernel.version>
         <carbon.platform.version>4.4.1</carbon.platform.version>
-        <carbon.automation.version>4.3.0</carbon.automation.version>
+
+        <!-- Integration Test Dependency versions -->
+	<carbon.automation.version>4.4.1</carbon.automation.version>
+	<carbon.automation.utils.version>4.4.1</carbon.automation.utils.version>
+	<selenium.version>2.41.0</selenium.version>
+
         <carbon.appmgt.version>1.1.1-SNAPSHOT</carbon.appmgt.version>
         <carbon.appmgt.bundle.version>1.1.1</carbon.appmgt.bundle.version>
         <carbon.proxyadmin.server.version>4.2.2</carbon.proxyadmin.server.version>
