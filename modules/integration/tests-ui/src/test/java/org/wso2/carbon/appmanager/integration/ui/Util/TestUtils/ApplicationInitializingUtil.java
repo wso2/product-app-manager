@@ -110,6 +110,12 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
         return createWebApplication(prefix, username, password);
     }
 
+
+    public HttpResponse createWebApplicationWithAnonymousAccess(String prefix, String allowAnonymousAccess)
+            throws Exception {
+        return createWebApplication(prefix, username, password, allowAnonymousAccess);
+    }
+
     /**
      * This method is use to create web application in given user
      *
@@ -119,7 +125,8 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
      * @throws java.lang.Exception on error
      */
 
-    public HttpResponse createWebApplicationWithGivenUser(String prefix, String creatorUserName, String creatorPasssword)
+    public HttpResponse createWebApplicationWithGivenUser(String prefix, String creatorUserName,
+                                                          String creatorPasssword)
             throws Exception {
         return createWebApplication(prefix, creatorUserName, creatorPasssword);
     }
@@ -154,7 +161,7 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
                 JSONObject subscriptionJsonObjectPublished = new JSONObject(appSubscriptionResponse.getData());
                 appSubscriptionStatus = (Boolean) subscriptionJsonObjectPublished.get("status");
                 assertFalse((Boolean) subscriptionJsonObjectPublished.get("error"),
-                        "Error while updating tier permission");
+                            "Error while updating tier permission");
                 assertEquals(appSubscriptionResponse.getResponseCode(), 200, "Application subscription failed");
                 break;
             } else if (timeElapsed >= 6.0e+10 && timeElapsed != 0) {
@@ -217,15 +224,43 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
                 createMobileApplicatopn(mobileApplicationBean);
     }
 
-    /**
-     * This method is use to create web application for given details
-     *
-     * @param prefix          perfix for web application
-     * @param creatorUserName username
-     * @param creatorPassword password
-     * @throws java.lang.Exception on error
-     */
-    private HttpResponse createWebApplication(String prefix, String creatorUserName, String creatorPassword)
+
+    private HttpResponse createWebApplication(String prefix, String creatorUserName, String creatorPassword) throws
+            Exception {
+        appMPublisher.login(creatorUserName, creatorPassword);
+        String root = ProductConstant.getSystemResourceLocation();
+        String policyPath = root + "samples" + File.separator + "policy.xml";
+        String xml = convertXMLFileToString(policyPath);
+        HttpResponse response = appMPublisher.validatePolicy(xml);
+        JSONObject validateObject = new JSONObject(response.getData());
+        boolean validateSucceed = validateObject.getBoolean("success");
+        assertTrue(validateSucceed, "Policy validation failed.");
+        String policyPartialId = "";
+
+        if (validateSucceed) {
+            HttpResponse partialIdResponse = appMPublisher.savePolicy("testPolicy", xml);
+            JSONObject saveObject = new JSONObject(partialIdResponse.getData());
+            JSONObject responseId = saveObject.optJSONObject("response");
+            policyPartialId = responseId.getString("id");
+        }
+
+        String policyGropuId = appMPublisher.savePolicyGroup(xml, anonymousAccessToUrlPattern, policyGroupName,
+                                                             throttlingTier, objPartialMappings, policyGroupDesc);
+
+        int hostPort = 8080;
+        AppCreateRequest appCreateRequest = createSingleApp(appName + prefix, appDisplayName, version, transport,
+                                                            appURL, hostPort,
+                                                            appProp.getTier(), policyPartialId, policyGropuId);
+        appName = appCreateRequest.getOverview_name();
+        version = appCreateRequest.getOverview_version();
+        HttpResponse appCreateResponse = appMPublisher.createApp(appCreateRequest);
+        JSONObject jsonObject = new JSONObject(appCreateResponse.getData());
+        appId = (String) jsonObject.get("id");
+        return appCreateResponse;
+    }
+
+    private HttpResponse createWebApplication(String prefix, String creatorUserName, String
+            creatorPassword, String allowAnonymousAccess)
             throws Exception {
         appMPublisher.login(creatorUserName, creatorPassword);
         String root = ProductConstant.getSystemResourceLocation();
@@ -246,21 +281,15 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
         }
 
         String policyGropuId = appMPublisher.savePolicyGroup(xml, anonymousAccessToUrlPattern, policyGroupName,
-                throttlingTier, objPartialMappings, policyGroupDesc);
-        //make publish Statistics enabled in web application when we passed application id null for this method it will
-        //return all available global policies
-        JSONArray globalPolicies = appMPublisher.getGlobalPolicies(null, "true");
-        JSONObject publishStatisticGlobalPolicy = null;
-        for (int i = 0; i < globalPolicies.length(); i++) {
-            publishStatisticGlobalPolicy = new JSONObject(globalPolicies.get(i).toString());
-            if (publishStatisticGlobalPolicy.toString().contains("Publish Statistics:")) break;
-        }
-        String publishStaticsPolicyID = publishStatisticGlobalPolicy.get("javaPolicyId").toString();
+
+                                                             throttlingTier, objPartialMappings, policyGroupDesc);
+
         int hostPort = 8080;
-        AppCreateRequest appCreateRequest = createSingleApp(appName + prefix, appDisplayName, version, transport, appURL
-                , hostPort,
-                appProp.getTier(), policyPartialId, policyGropuId);
-        appCreateRequest.setUritemplate_javaPolicyIds("[" + publishStaticsPolicyID + "]");
+        AppCreateRequest appCreateRequest = createSingleApp(appName + prefix, appDisplayName, version, transport,
+                                                            appURL, hostPort,
+                                                            appProp.getTier(), policyPartialId, policyGropuId,
+                                                            allowAnonymousAccess);
+
         appName = appCreateRequest.getOverview_name();
         version = appCreateRequest.getOverview_version();
         HttpResponse appCreateResponse = appMPublisher.createApp(appCreateRequest);
