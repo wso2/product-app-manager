@@ -443,7 +443,6 @@
         <carbon.governance.version>4.5.1</carbon.governance.version>
         <carbon.store.version>1.4.0</carbon.store.version>
         <carbon.webapp.mgt.stub>4.2.0</carbon.webapp.mgt.stub>
-        <carbon.throttle.version>4.3.0-SNAPSHOT</carbon.throttle.version>
 
         <version.javax.servlet.jsp>${javax.servlet.jsp.version}</version.javax.servlet.jsp>
         <!--<version.equinox.osgi>3.8.1.v20120830-144521</version.equinox.osgi>-->
