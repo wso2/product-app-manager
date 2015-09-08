@@ -60,7 +60,7 @@
         <module>modules/jaggery-apps/api-provider-web</module>
         <module>modules/jaggery-apps/api-store-web</module-->
         <module>modules/distribution</module>
-        <!--<module>modules/integration</module>-->
+        <module>modules/integration</module>
     </modules>
 
     <repositories>
@@ -412,6 +412,25 @@
 			<artifactId>selenium-api</artifactId>
 			<version>${selenium.version}</version>
 		</dependency>
+			<dependency>
+		        <groupId>org.jacoco</groupId>
+		        <artifactId>org.jacoco.agent</artifactId>
+		        <version>${jacoco.agent.version}</version>
+		        <scope>test</scope>
+            	</dependency>
+		<dependency>
+                <groupId>com.opera</groupId>
+                <artifactId>operadriver</artifactId>
+                <version>${operadriver.version}</version>
+                <scope>test</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.seleniumhq.selenium</groupId>
+                        <artifactId>selenium-remote-driver</artifactId>
+                    </exclusion>
+                </exclusions>
+            	</dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -421,9 +440,11 @@
         <carbon.platform.version>4.4.1</carbon.platform.version>
 
         <!-- Integration Test Dependency versions -->
-	<carbon.automation.version>4.4.1</carbon.automation.version>
-	<carbon.automation.utils.version>4.4.1</carbon.automation.utils.version>
+	<carbon.automation.version>4.4.2</carbon.automation.version>
+	<carbon.automation.utils.version>4.4.2</carbon.automation.utils.version>
 	<selenium.version>2.41.0</selenium.version>
+	<jacoco.agent.version>0.7.4.201502262128</jacoco.agent.version>
+        <operadriver.version>0.8.1</operadriver.version>
 
         <carbon.appmgt.version>1.1.1-SNAPSHOT</carbon.appmgt.version>
         <carbon.appmgt.bundle.version>1.1.1</carbon.appmgt.bundle.version>
