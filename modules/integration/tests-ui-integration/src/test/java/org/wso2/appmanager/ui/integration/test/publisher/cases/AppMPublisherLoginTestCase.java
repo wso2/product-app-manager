@@ -55,8 +55,10 @@ public class AppMPublisherLoginTestCase extends AppManagerIntegrationTest {
 
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
-        driver.close();
-        driver.quit();
+        if(driver != null){
+            driver.close();
+            driver.quit();
+        }
     }
 
 
