@@ -11,7 +11,7 @@
     <groupId>org.wso2.appmanager</groupId>
     <artifactId>org.wso2.appmanager.ui.integration.test</artifactId>
     <packaging>jar</packaging>
-    <name>org.wso2.appmanager.ui.integration.test</name>
+    <name>WSO2 APP Manager - Integration UI Tests</name>
 
     <build>
         <plugins>
