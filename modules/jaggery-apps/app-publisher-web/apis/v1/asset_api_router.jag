@@ -183,7 +183,7 @@ require('/modules/publisher.js').exec(function(ctx) {
         print(response);
     });
 
-    routeManager.register('GET', 'publisher', '/publisher/api/asset/{type}/deploySample', function (context) {
+    routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/deploySample', function (context) {
         var webapps = require('/config/SampleWebappConfiguration.json');
         var sessionID=session.getId();
         var username=require('store').server.current(session).username;
@@ -326,17 +326,10 @@ require('/modules/publisher.js').exec(function(ctx) {
                 return;
             }
 
-            var model = modelManager.getModel(shortName);
-
             //Customize the resource for the current app
             dataInjector.inject(artifact,DataInjectorModes.DISPLAY);
 
-            model.import('asset', artifact);
-
-
-            var result = model.export('form');
-
-            print(result);
+            print(artifact);
         } catch (e) {
 
             log.debug('The asset type: ' + shortName + ' with id: ' + id + ' could not be found.The following exception was thrown: ' + e);
