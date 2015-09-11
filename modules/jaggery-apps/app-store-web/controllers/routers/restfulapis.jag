@@ -3,7 +3,7 @@
 var API_FOLDER = 'apis/';
 var MANIFEST_FILE = 'manifest.json';
 var INIT_FILE='init.jag';
-var URL_PATTERN = "/{context}/resources/{asset}/{version}/{resource}/{any}";
+var URL_PATTERN = "/{context}/resources/{asset}/{version}/{resource}/{+any}";
 var EXTENSION_DIR = '/extensions/assets/';
 var requestMethod;
 var matcher;

@@ -15,7 +15,7 @@ require('/modules/store.js').exec(function (ctx) {
                 if (!user) {
                     return server.anonRegistry();
                 }
-                return new carbon.registry.Registry(server.server(), {
+                return new carbon.registry.Registry(server, {
                     username: user.username,
                     tenantId: user.tenantId
                 });
