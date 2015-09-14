@@ -227,9 +227,11 @@ $( document ).ready(function() {
     var skipGateway = $('#overview_skipGateway').val();
     if (skipGateway == "true") {
         $('.skip_gateway_checkbox').prop('checked', true);
+        $('#overview_acsUrl').show();
     }
     else {
         $('.skip_gateway_checkbox').prop('checked', false);
+        $('#overview_acsUrl').hide();
     }
 
 
