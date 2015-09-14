@@ -44,7 +44,7 @@ $( ".btn-reject-proceed" ).click(function() {
 $(".btn-deploySample").click(function(e) {
     jQuery.ajax({
         url : '/publisher/api/asset/webapp/deploySample',
-        type: "POST",
+        type: "PUT",
         dataType:"json",
         async : false,
         success: function(msg){ 

@@ -183,7 +183,7 @@ require('/modules/publisher.js').exec(function(ctx) {
         print(response);
     });
 
-    routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/deploySample', function (context) {
+    routeManager.register('PUT', 'publisher', '/publisher/api/asset/{type}/deploySample', function (context) {
         var webapps = require('/config/SampleWebappConfiguration.json');
         var sessionID=session.getId();
         var username=require('store').server.current(session).username;

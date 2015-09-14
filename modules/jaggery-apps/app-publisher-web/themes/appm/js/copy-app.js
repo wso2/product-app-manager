@@ -340,6 +340,7 @@ $(function() {
         var app_context = $('#overview_context').val();
         var app_provider = $('#overview_provider').val();
         var app_allowAnonymous=$('#overview_allowAnonymous').val();
+        var app_acsURL = $('#overview_acsUrl').val();
 
         var claims = [];
         var index = 0;
@@ -362,6 +363,7 @@ $(function() {
         sso_config.app_context = app_context;
         sso_config.app_provider = app_provider;
         sso_config.app_allowAnonymous=app_allowAnonymous;
+        sso_config.app_acsURL = app_acsURL;
 
         $.ajax({
             url: '/publisher/api/sso/addConfig',

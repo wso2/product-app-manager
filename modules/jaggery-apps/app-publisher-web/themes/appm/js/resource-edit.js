@@ -238,9 +238,11 @@ $( document ).ready(function() {
         var output = [];
         if ($('.skip_gateway_checkbox').is(':checked')) {
             output.push("true");
+             $('#overview_acsUrl').show();
         }
         else {
             output.push("false");
+             $('#overview_acsUrl').hide();
         }
         $('#overview_skipGateway').val(output);
     });
