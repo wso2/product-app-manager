@@ -80,24 +80,24 @@ require('/modules/publisher.js').exec(function(ctx) {
 	
         var appId = new APIIdentifier(params.sso_idpProviderUrl, params.app_name, params.app_verison);
         var webApp = new WebAppModel(appId);
+        webApp.setAcsURL(params.app_acsURL);
         var ssoProvider = new SSOProvider();
+        var app_provider = params.app_provider;
+        var result = null;
+        var store = jagg.module("manager").getAPIStoreObj();
+        var isEmailLoginEnabled = store.isEnableEmailUsername();
 
-	var app_provider = params.app_provider;
-	var result = null;
-	var store = jagg.module("manager").getAPIStoreObj();
-    var isEmailLoginEnabled = store.isEnableEmailUsername();
-    
-	if (!isEmailLoginEnabled && app_provider != null && app_provider.indexOf("-AT-") != -1) {
-		result = app_provider.split("-AT-");	
-	}
+        if (!isEmailLoginEnabled && app_provider != null && app_provider.indexOf("-AT-") != -1) {
+            result = app_provider.split("-AT-");
+        }
 
         ssoProvider.setProviderName(params.provider.split("-")[0]);
         ssoProvider.setProviderVersion(params.provider.split("-")[1]);
         if (result != null ) {
-	    ssoProvider.setIssuerName(params.app_name + "-" + result[1] + "-" + params.app_verison);
-	} else {
-	    ssoProvider.setIssuerName(params.app_name + "-" + params.app_verison);
-	}
+            ssoProvider.setIssuerName(params.app_name + "-" + result[1] + "-" + params.app_verison);
+        } else {
+            ssoProvider.setIssuerName(params.app_name + "-" + params.app_verison);
+        }
         //ssoProvider.setAssertionConsumerURL();
         ssoProvider.setClaims(params.claims);
 
@@ -111,11 +111,10 @@ require('/modules/publisher.js').exec(function(ctx) {
 
         var ssoConfigUtil = Packages.org.wso2.carbon.appmgt.impl.idp.sso.SSOConfiguratorUtil;
         if(type == 'editConfig'){
-			ssoConfigUtil.createSSOProvider(webApp, true);
+            ssoConfigUtil.createSSOProvider(webApp, true);
         }else {
-        	ssoConfigUtil.createSSOProvider(webApp, false);
+            ssoConfigUtil.createSSOProvider(webApp, false);
         }
-        
     }
     
     function createResponseObject(object) {

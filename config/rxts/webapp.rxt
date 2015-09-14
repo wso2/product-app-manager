@@ -60,6 +60,9 @@
             <name>Web App URL</name>
         </field>
         <field type="text" url="true">
+            <name>Acs URL</name>
+        </field>
+        <field type="text" url="true">
             <name>Logout URL</name>
         </field>
 
