@@ -33,11 +33,9 @@ public class PublisherCreateWebAppPage extends Page {
     private static final Log log = LogFactory.getLog(PublisherWebAppsListPage.class);
     private WebDriver driver;
     private boolean isCloudEnvironment = false;
-
+    private static PublisherCreateWebAppPage page;
     public static final String PAGE = "/publisher/asset/webapp";
 
-
-    private static PublisherCreateWebAppPage page;
     public static PublisherCreateWebAppPage getPage(WebDriver driver) throws IOException{
        if(page == null || page.driver != driver){
            page = new PublisherCreateWebAppPage(driver) ;

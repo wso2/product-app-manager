@@ -33,17 +33,15 @@ public class LoginPage extends Page {
     private static final Log log = LogFactory.getLog(LoginPage.class);
     private WebDriver driver;
     private boolean isCloudEnvironment = false;
+    private static LoginPage page;
+    private static final String PUBLISHER_LOGIN_URI = "/publisher/login";
+    private static final String STORE_LOGIN_URI = "/store/login";
 
     public enum LoginTo{
         PUBLISHER, STORE
     }
 
-    private static final String PUBLISHER_LOGIN_URI = "/publisher/login";
-    private static final String STORE_LOGIN_URI = "/store/login";
-
-    private static LoginPage page;
     public static LoginPage getPage(WebDriver driver, AutomationContext appMServer, LoginTo loginTo) throws IOException, XPathExpressionException {
-
         if(loginTo == LoginTo.PUBLISHER){
             driver.get(appMServer.getContextUrls().getWebAppURLHttps() + PUBLISHER_LOGIN_URI);
         }else{

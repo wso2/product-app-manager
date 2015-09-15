@@ -26,7 +26,6 @@ public class AppManagerIntegrationTest {
 
     protected static final String TEST_GROUP = "wso2.appm";
 
-
     protected AutomationContext appMServer;
 
     protected void init() throws Exception {

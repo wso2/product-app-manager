@@ -27,13 +27,10 @@ import java.io.IOException;
 
 public class StoreHomePage extends Page {
 
-
     private static final Log log = LogFactory.getLog(StoreHomePage.class);
-
-
+    private static StoreHomePage page;
     public static final String PAGE = "/store";
 
-    private static StoreHomePage page;
     public static StoreHomePage getPage(WebDriver driver) throws IOException{
         if(page == null || page.driver != driver){
             page = new StoreHomePage(driver) ;

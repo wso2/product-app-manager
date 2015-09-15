@@ -30,10 +30,9 @@ import java.io.IOException;
 public class PublisherWebAppsListPage  extends Page {
 
     private static final Log log = LogFactory.getLog(PublisherWebAppsListPage.class);
-
+    private static PublisherWebAppsListPage page;
     public static final String PAGE = "/publisher/assets/webapp/";
 
-    private static PublisherWebAppsListPage page;
     public static PublisherWebAppsListPage getPage(WebDriver driver) throws IOException{
         if(page == null || page.driver != driver){
             page = new PublisherWebAppsListPage(driver) ;

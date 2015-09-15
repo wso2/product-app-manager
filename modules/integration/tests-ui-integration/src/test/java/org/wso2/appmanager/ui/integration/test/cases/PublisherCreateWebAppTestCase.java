@@ -36,7 +36,6 @@ public class PublisherCreateWebAppTestCase extends AppManagerIntegrationTest {
     private static final String TEST_DESCRIPTION = "Verify Creating a Web App";
     private static final Log log = LogFactory.getLog(PublisherCreateWebAppTestCase.class);
 
-
     private LoginPage loginPage;
     private PublisherWebAppsListPage webAppsListPage;
     private PublisherCreateWebAppPage createWebAppPage;
