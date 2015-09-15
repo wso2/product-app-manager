@@ -14,9 +14,11 @@
 
 
     <test name="AppM-UI-tests" parallel="false" verbose="2">
-        <packages>
-            <package name="org.wso2.appmanager.ui.integration.test.publisher.cases.*"/>
-        </packages>
+        <classes>
+            <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherLoginTestCase"/>
+            <class name="org.wso2.appmanager.ui.integration.test.cases.StoreLoginTestCase"/>
+            <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherCreateWebAppTestCase"/>
+        </classes>
     </test>
 
 

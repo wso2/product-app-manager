@@ -15,36 +15,42 @@
 *specific language governing permissions and limitations
 *under the License.
 */
+package org.wso2.appmanager.ui.integration.test.pages;
 
-package org.wso2.appmanager.ui.integration.test.publisher.pages;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.WebDriver;
+import org.wso2.appmanager.ui.integration.utils.Page;
 
 import java.io.IOException;
 
-
-public class WebAppsListPage {
-
-    private static final Log log = LogFactory.getLog(WebAppsListPage.class);
-    private WebDriver driver;
-    private boolean isCloudEnvironment = false;
+public class StoreHomePage extends Page {
 
 
-    public WebAppsListPage(WebDriver driver) throws IOException {
+    private static final Log log = LogFactory.getLog(StoreHomePage.class);
+
+
+    public static final String PAGE = "/store";
+
+    private static StoreHomePage page;
+    public static StoreHomePage getPage(WebDriver driver) throws IOException{
+        if(page == null || page.driver != driver){
+            page = new StoreHomePage(driver) ;
+        }
+        return page;
+    }
+
+    private StoreHomePage(WebDriver driver) throws IOException {
         this.driver = driver;
-
         //check that we are on the correct page
-        if (!(driver.getCurrentUrl().contains("/assets/webapp"))) {
-            throw new IllegalStateException("This is not the web app list page");
+        if (!(driver.getCurrentUrl().contains(PAGE))) {
+            throw new IllegalStateException("This is not " + this.getClass().getSimpleName());
         }
     }
 
-    public WebAppsListPage(WebDriver driver, boolean isCloudEnvironment) throws IOException {
+    private StoreHomePage(WebDriver driver, boolean isCloudEnvironment) throws IOException {
         this.driver = driver;
         this.isCloudEnvironment = isCloudEnvironment;
     }
-
-
 }

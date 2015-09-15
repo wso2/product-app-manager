@@ -16,7 +16,7 @@
 *under the License.
 */
 
-package org.wso2.appmanager.ui.integration.test.publisher.cases;
+package org.wso2.appmanager.ui.integration.test.cases;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -24,19 +24,18 @@ import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.wso2.appmanager.ui.integration.test.publisher.pages.WebAppsListPage;
-import org.wso2.appmanager.ui.integration.test.publisher.pages.LoginPage;
+import org.wso2.appmanager.ui.integration.test.pages.LoginPage;
 import org.wso2.appmanager.ui.integration.utils.AppManagerIntegrationTest;
 import org.wso2.carbon.automation.extensions.selenium.BrowserManager;
 
-public class AppMPublisherLoginTestCase extends AppManagerIntegrationTest {
+public class PublisherLoginTestCase extends AppManagerIntegrationTest {
 
     private static final String TEST_DESCRIPTION = "Verify login to App Manager Publisher";
-    private static final Log log = LogFactory.getLog(AppMPublisherLoginTestCase.class);
-
-    private static final String LOGIN_URI = "/publisher/login";
+    private static final Log log = LogFactory.getLog(PublisherLoginTestCase.class);
 
     private WebDriver driver = null;
+
+    private  LoginPage loginPage;
 
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
@@ -46,10 +45,11 @@ public class AppMPublisherLoginTestCase extends AppManagerIntegrationTest {
 
     @Test(groups = TEST_GROUP, description = TEST_DESCRIPTION)
     public void testPublisherLogin() throws Exception {
-        driver.get(appMServer.getContextUrls().getWebAppURLHttps() + LOGIN_URI);
-        LoginPage loginPage = new LoginPage(driver);
-        WebAppsListPage webAppsListPage = loginPage.loginAs(appMServer.getSuperTenant().getTenantAdmin().getUserName(),
-                appMServer.getSuperTenant().getTenantAdmin().getPassword());
+
+        loginPage = LoginPage.getPage(driver, appMServer, LoginPage.LoginTo.PUBLISHER);
+        loginPage.login(appMServer.getSuperTenant().getTenantAdmin().getUserName(),
+                appMServer.getSuperTenant().getTenantAdmin().getPassword(), LoginPage.LoginTo.PUBLISHER);
+        Thread.sleep(6000);
 
     }
 

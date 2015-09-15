@@ -18,23 +18,10 @@
 
 package org.wso2.appmanager.ui.integration.utils;
 
-import org.wso2.carbon.automation.engine.context.AutomationContext;
-import org.wso2.carbon.automation.engine.context.TestUserMode;
+import org.openqa.selenium.WebDriver;
 
-
-public class AppManagerIntegrationTest {
-
-    protected static final String TEST_GROUP = "wso2.appm";
-
-
-    protected AutomationContext appMServer;
-
-    protected void init() throws Exception {
-        init(TestUserMode.SUPER_TENANT_ADMIN);
-    }
-
-    protected void init(TestUserMode testUserMode) throws Exception {
-        appMServer = new AutomationContext("App Manager", testUserMode);
-    }
+public class Page {
+    public WebDriver driver;
+    protected boolean isCloudEnvironment = false;
 
 }
