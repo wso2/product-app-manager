@@ -19,6 +19,7 @@
 package org.wso2.carbon.appmanager.integration.ui.Util;
 
 
+import org.json.JSONArray;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.SubscriptionRequest;
 import org.wso2.carbon.automation.core.utils.HttpRequestUtil;
 import org.wso2.carbon.automation.core.utils.HttpResponse;
@@ -141,6 +142,44 @@ public class APPMStoreRestClient {
             return response;
         } else {
             throw new Exception("Application Unsubscription failed> " + response.getData());
+        }
+    }
+
+    public JSONArray retrieveUserSubscribedApp(String userName) throws Exception {
+        checkAuthentication();
+        HttpResponse response = HttpRequestUtil.doGet(backEndUrl
+                + "/store/resources/webapp/v1/subscription/" + userName, requestHeaders);
+        if (response.getResponseCode() == 200) {
+            JSONArray jsonArray = new JSONArray(response.getData());
+            return jsonArray;
+        } else {
+            throw new Exception("Retrieve User Subscribed Apps failed. " + response.getData());
+        }
+    }
+
+    public JSONArray retrieveSubscribedUsers(String appProvider, String appName, String appVersion)
+            throws Exception {
+        checkAuthentication();
+        HttpResponse response = HttpRequestUtil.doGet(backEndUrl + "/store/resources/webapp/v1/subscriptions/"
+                + appProvider + "/" + appName + "/" + appVersion, requestHeaders);
+        if (response.getResponseCode() == 200) {
+            JSONArray jsonArray = new JSONArray(response.getData());
+            return jsonArray;
+        } else {
+            throw new Exception("Retrieve Subscribed Users of " + appName + " failed. " + response.getData());
+        }
+    }
+
+    public JSONArray getAllWebAppsProperties(int startingApp, int count) throws Exception {
+        boolean con = checkAuthentication();
+        HttpResponse httpResponse = HttpRequestUtil.doGet(backEndUrl + "/store/apis/v1/assets/webapp?start=0&count=1"
+                , requestHeaders);
+        if (httpResponse.getResponseCode() == 200) {
+            JSONArray jsonArray = new JSONArray(httpResponse.getData());
+            return jsonArray;
+        } else {
+            System.out.println(httpResponse);
+            throw new Exception("Error occurred while retrieving all webapps properties:");
         }
     }
 
