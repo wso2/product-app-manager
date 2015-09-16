@@ -20,46 +20,36 @@ package org.wso2.appmanager.ui.integration.test.cases;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.appmanager.ui.integration.test.pages.LoginPage;
-import org.wso2.appmanager.ui.integration.utils.AppManagerIntegrationTest;
-import org.wso2.carbon.automation.extensions.selenium.BrowserManager;
+import org.wso2.appmanager.ui.integration.test.pages.PublisherWebAppsListPage;
+import org.wso2.appmanager.ui.integration.test.utils.AppManagerIntegrationTest;
 
 public class PublisherLoginTestCase extends AppManagerIntegrationTest {
 
     private static final String TEST_DESCRIPTION = "Verify login to App Manager Publisher";
     private static final Log log = LogFactory.getLog(PublisherLoginTestCase.class);
 
-    private WebDriver driver = null;
-
-    private  LoginPage loginPage;
+    private PublisherWebAppsListPage webAppsListPage;
 
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
         super.init();
-        driver = BrowserManager.getWebDriver();
     }
 
     @Test(groups = TEST_GROUP, description = TEST_DESCRIPTION)
     public void testPublisherLogin() throws Exception {
 
-        loginPage = LoginPage.getPage(driver, appMServer, LoginPage.LoginTo.PUBLISHER);
-        loginPage.login(appMServer.getSuperTenant().getTenantAdmin().getUserName(),
-                appMServer.getSuperTenant().getTenantAdmin().getPassword(), LoginPage.LoginTo.PUBLISHER);
+        //login to publisher
+        webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER);
         Thread.sleep(6000);
 
     }
 
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
-        if(driver != null){
-            driver.close();
-            driver.quit();
-        }
+        closeDriver(driver);
     }
-
-
 }

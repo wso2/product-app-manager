@@ -22,7 +22,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.wso2.appmanager.ui.integration.utils.Page;
+import org.wso2.appmanager.ui.integration.test.utils.Page;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 
 import javax.xml.xpath.XPathExpressionException;
@@ -31,8 +31,6 @@ import java.io.IOException;
 public class LoginPage extends Page {
 
     private static final Log log = LogFactory.getLog(LoginPage.class);
-    private WebDriver driver;
-    private boolean isCloudEnvironment = false;
     private static LoginPage page;
     private static final String PUBLISHER_LOGIN_URI = "/publisher/login";
     private static final String STORE_LOGIN_URI = "/store/login";
@@ -41,7 +39,8 @@ public class LoginPage extends Page {
         PUBLISHER, STORE
     }
 
-    public static LoginPage getPage(WebDriver driver, AutomationContext appMServer, LoginTo loginTo) throws IOException, XPathExpressionException {
+    public static LoginPage getPage(WebDriver driver, AutomationContext appMServer, LoginTo loginTo) throws
+            IOException, XPathExpressionException {
         if(loginTo == LoginTo.PUBLISHER){
             driver.get(appMServer.getContextUrls().getWebAppURLHttps() + PUBLISHER_LOGIN_URI);
         }else{
@@ -49,23 +48,18 @@ public class LoginPage extends Page {
         }
 
         if(page == null || page.driver != driver){
-            page = new LoginPage(driver) ;
+            page = new LoginPage(driver, appMServer) ;
         }
         return page;
     }
 
-    private LoginPage(WebDriver driver) throws IOException {
+    private LoginPage(WebDriver driver,  AutomationContext appMServer) throws IOException {
         this.driver = driver;
-
+        this.appMServer= appMServer;
         //check that we are on the correct page
         if (!(driver.getCurrentUrl().contains("/login.do"))) {
             throw new IllegalStateException("This is not " + this.getClass().getSimpleName());
         }
-    }
-
-    private LoginPage(WebDriver driver, boolean isCloudEnvironment) throws IOException {
-        this.driver = driver;
-        this.isCloudEnvironment = isCloudEnvironment;
     }
 
     public Page login(String userName, String password, LoginTo loginTo) throws IOException, InterruptedException {
@@ -76,11 +70,10 @@ public class LoginPage extends Page {
         driver.findElement(By.className("btn")).click();
 
         if(loginTo == LoginTo.PUBLISHER){
-            return  PublisherWebAppsListPage.getPage(driver);
+            return  PublisherWebAppsListPage.getPage(driver, appMServer);
         }else{
-            return  StoreHomePage.getPage(driver);
+            return  StoreHomePage.getPage(driver, appMServer);
         }
     }
-
 }
 

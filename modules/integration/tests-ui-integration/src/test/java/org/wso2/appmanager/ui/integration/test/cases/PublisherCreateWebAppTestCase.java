@@ -20,7 +20,6 @@ package org.wso2.appmanager.ui.integration.test.cases;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -28,39 +27,36 @@ import org.wso2.appmanager.ui.integration.test.dto.WebApp;
 import org.wso2.appmanager.ui.integration.test.pages.LoginPage;
 import org.wso2.appmanager.ui.integration.test.pages.PublisherCreateWebAppPage;
 import org.wso2.appmanager.ui.integration.test.pages.PublisherWebAppsListPage;
-import org.wso2.appmanager.ui.integration.utils.AppManagerIntegrationTest;
-import org.wso2.carbon.automation.extensions.selenium.BrowserManager;
+import org.wso2.appmanager.ui.integration.test.utils.AppManagerIntegrationTest;
 
 public class PublisherCreateWebAppTestCase extends AppManagerIntegrationTest {
 
     private static final String TEST_DESCRIPTION = "Verify Creating a Web App";
     private static final Log log = LogFactory.getLog(PublisherCreateWebAppTestCase.class);
 
-    private LoginPage loginPage;
     private PublisherWebAppsListPage webAppsListPage;
     private PublisherCreateWebAppPage createWebAppPage;
-
-    private WebDriver driver = null;
 
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
         super.init();
-        driver = BrowserManager.getWebDriver();
 
-        loginPage = LoginPage.getPage(driver, appMServer, LoginPage.LoginTo.PUBLISHER);
-        webAppsListPage = (PublisherWebAppsListPage) loginPage.login(appMServer.getSuperTenant().getTenantAdmin().getUserName(),
-                appMServer.getSuperTenant().getTenantAdmin().getPassword(), LoginPage.LoginTo.PUBLISHER);
+        //login to publisher
+        webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER);
     }
 
     @Test(groups = TEST_GROUP, description = TEST_DESCRIPTION)
     public void testPublisherCreateWebApp() throws Exception {
 
-        createWebAppPage = webAppsListPage.gotoCreateWebAppPage(appMServer);
+        createWebAppPage = webAppsListPage.gotoCreateWebAppPage();
+
+        //create first web app
         createWebAppPage.createWebApp(new WebApp("Test1", "Test1", "/test1",
                             "1.0", "http://wso2.com", "http"));
         Thread.sleep(12000);
 
-        createWebAppPage = webAppsListPage.gotoCreateWebAppPage(appMServer);
+        //create second web app
+        createWebAppPage = webAppsListPage.gotoCreateWebAppPage();
         webAppsListPage = createWebAppPage.createWebApp(new WebApp("Test2", "Test2", "/test2",
                 "2.0", "http://wso2.org", "http"));
         Thread.sleep(12000);
@@ -68,9 +64,6 @@ public class PublisherCreateWebAppTestCase extends AppManagerIntegrationTest {
 
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
-        if(driver != null){
-            driver.close();
-            driver.quit();
-        }
+       closeDriver(driver);
     }
 }

@@ -16,24 +16,46 @@
 *under the License.
 */
 
-package org.wso2.appmanager.ui.integration.utils;
+package org.wso2.appmanager.ui.integration.test.utils;
 
+import org.openqa.selenium.WebDriver;
+import org.wso2.appmanager.ui.integration.test.pages.LoginPage;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
+import org.wso2.carbon.automation.extensions.selenium.BrowserManager;
+
+import javax.xml.xpath.XPathExpressionException;
+import java.io.IOException;
 
 
 public class AppManagerIntegrationTest {
 
     protected static final String TEST_GROUP = "wso2.appm";
-
     protected AutomationContext appMServer;
+    protected WebDriver driver = null;
+    protected LoginPage loginPage;
 
     protected void init() throws Exception {
         init(TestUserMode.SUPER_TENANT_ADMIN);
+        driver = BrowserManager.getWebDriver();
     }
 
     protected void init(TestUserMode testUserMode) throws Exception {
         appMServer = new AutomationContext("App Manager", testUserMode);
+    }
+
+    protected void closeDriver(WebDriver driver){
+        if(driver != null){
+            driver.close();
+            driver.quit();
+        }
+    }
+
+    protected Page login(WebDriver driver, LoginPage.LoginTo loginTo) throws IOException, XPathExpressionException,
+                        InterruptedException {
+        loginPage = LoginPage.getPage(driver, appMServer, loginTo);
+        return loginPage.login(appMServer.getSuperTenant().getTenantAdmin().getUserName(),
+                appMServer.getSuperTenant().getTenantAdmin().getPassword(), loginTo);
     }
 
 }

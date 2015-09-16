@@ -20,13 +20,12 @@ package org.wso2.appmanager.ui.integration.test.cases;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.appmanager.ui.integration.test.pages.LoginPage;
-import org.wso2.appmanager.ui.integration.utils.AppManagerIntegrationTest;
-import org.wso2.carbon.automation.extensions.selenium.BrowserManager;
+import org.wso2.appmanager.ui.integration.test.pages.StoreHomePage;
+import org.wso2.appmanager.ui.integration.test.utils.AppManagerIntegrationTest;
 
 
 public class StoreLoginTestCase extends AppManagerIntegrationTest {
@@ -34,31 +33,24 @@ public class StoreLoginTestCase extends AppManagerIntegrationTest {
     private static final String TEST_DESCRIPTION = "Verify login to App Manager Store";
     private static final Log log = LogFactory.getLog(PublisherLoginTestCase.class);
 
-    private WebDriver driver = null;
-
-    private LoginPage loginPage;
+    private StoreHomePage homePage;
 
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
         super.init();
-        driver = BrowserManager.getWebDriver();
     }
 
     @Test(groups = TEST_GROUP, description = TEST_DESCRIPTION)
     public void testStoreLogin() throws Exception {
 
-        loginPage = LoginPage.getPage(driver, appMServer, LoginPage.LoginTo.STORE);
-        loginPage.login(appMServer.getSuperTenant().getTenantAdmin().getUserName(),
-                appMServer.getSuperTenant().getTenantAdmin().getPassword(), LoginPage.LoginTo.STORE);
+        //login to store
+        homePage = (StoreHomePage) login(driver, LoginPage.LoginTo.STORE);
         Thread.sleep(6000);
 
     }
 
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
-        if(driver != null){
-            driver.close();
-            driver.quit();
-        }
+        closeDriver(driver);
     }
 }

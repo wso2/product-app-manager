@@ -16,12 +16,14 @@
 *under the License.
 */
 
-package org.wso2.appmanager.ui.integration.utils;
+package org.wso2.appmanager.ui.integration.test.utils;
 
 import org.openqa.selenium.WebDriver;
+import org.wso2.carbon.automation.engine.context.AutomationContext;
 
-public class Page {
+public abstract class Page {
+
     public WebDriver driver;
-    protected boolean isCloudEnvironment = false;
+    public AutomationContext appMServer;
 
 }

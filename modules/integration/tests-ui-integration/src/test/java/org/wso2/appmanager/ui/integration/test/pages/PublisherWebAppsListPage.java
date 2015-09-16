@@ -21,7 +21,7 @@ package org.wso2.appmanager.ui.integration.test.pages;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.WebDriver;
-import org.wso2.appmanager.ui.integration.utils.Page;
+import org.wso2.appmanager.ui.integration.test.utils.Page;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 
 import java.io.IOException;
@@ -30,34 +30,28 @@ import java.io.IOException;
 public class PublisherWebAppsListPage  extends Page {
 
     private static final Log log = LogFactory.getLog(PublisherWebAppsListPage.class);
+
     private static PublisherWebAppsListPage page;
     public static final String PAGE = "/publisher/assets/webapp/";
 
-    public static PublisherWebAppsListPage getPage(WebDriver driver) throws IOException{
+    public static PublisherWebAppsListPage getPage(WebDriver driver,  AutomationContext appMServer) throws IOException{
         if(page == null || page.driver != driver){
-            page = new PublisherWebAppsListPage(driver) ;
+            page = new PublisherWebAppsListPage(driver, appMServer) ;
         }
         return page;
     }
 
-    private PublisherWebAppsListPage(WebDriver driver) throws IOException {
+    private PublisherWebAppsListPage(WebDriver driver,  AutomationContext appMServer) throws IOException {
         this.driver = driver;
-
+        this.appMServer = appMServer;
         //check that we are on the correct page
         if (!(driver.getCurrentUrl().contains(PAGE))) {
             throw new IllegalStateException("This is not " + this.getClass().getSimpleName());
         }
     }
 
-    private PublisherWebAppsListPage(WebDriver driver, boolean isCloudEnvironment) throws IOException {
-        this.driver = driver;
-        this.isCloudEnvironment = isCloudEnvironment;
-    }
-
-    public PublisherCreateWebAppPage gotoCreateWebAppPage(AutomationContext appMServer) throws Exception{
+    public PublisherCreateWebAppPage gotoCreateWebAppPage() throws Exception{
         driver.get(appMServer.getContextUrls().getWebAppURLHttps() + PublisherCreateWebAppPage.PAGE);
-        return PublisherCreateWebAppPage.getPage(driver);
+        return PublisherCreateWebAppPage.getPage(driver, appMServer);
     }
-
-
 }
