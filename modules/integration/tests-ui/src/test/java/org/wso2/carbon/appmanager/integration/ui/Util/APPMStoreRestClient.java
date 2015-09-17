@@ -19,6 +19,7 @@
 package org.wso2.carbon.appmanager.integration.ui.Util;
 
 
+import org.apache.commons.codec.binary.Base64;
 import org.json.JSONArray;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.SubscriptionRequest;
 import org.wso2.carbon.automation.core.utils.HttpRequestUtil;
@@ -170,16 +171,23 @@ public class APPMStoreRestClient {
         }
     }
 
-    public JSONArray getAllWebAppsProperties(int startingApp, int count) throws Exception {
-        boolean con = checkAuthentication();
-        HttpResponse httpResponse = HttpRequestUtil.doGet(backEndUrl + "/store/apis/v1/assets/webapp?start=0&count=1"
-                , requestHeaders);
-        if (httpResponse.getResponseCode() == 200) {
-            JSONArray jsonArray = new JSONArray(httpResponse.getData());
+    public JSONArray getAllWebAppsProperties(String username, String password, int startingApp, int count)
+                                                                                    throws Exception {
+        checkAuthentication();
+
+        //Set Basic Authentication to request header
+        String usernameAndPassword = username + ":" + password;
+        byte[] authEncBytes = Base64.encodeBase64(usernameAndPassword.getBytes());
+        String authStringEnc = new String(authEncBytes);
+        this.requestHeaders.put("Authorization", "Basic " + authStringEnc);
+
+        HttpResponse response = HttpUtil.doGet(backEndUrl + "/store/apis/v1/assets/webapp?start=" + startingApp +
+                                                "&count=" + count, requestHeaders);
+        if (response.getResponseCode() == 200) {
+            JSONArray jsonArray = new JSONArray(response.getData());
             return jsonArray;
         } else {
-            System.out.println(httpResponse);
-            throw new Exception("Error occurred while retrieving all webapps properties:");
+            throw new Exception("Retrieve User Subscribed Apps failed. " + response.getData());
         }
     }
 
