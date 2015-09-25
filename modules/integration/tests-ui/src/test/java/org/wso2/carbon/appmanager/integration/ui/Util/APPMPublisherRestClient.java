@@ -262,6 +262,21 @@ public class APPMPublisherRestClient {
 		}
 	}
 
+    public JSONObject getWebAppProperty(String appId) throws Exception {
+        checkAuthentication();
+        HttpResponse httpResponse = HttpRequestUtil.doGet(backEndUrl + "/publisher/api/asset/webapp/"
+                + appId, requestHeaders);
+        if (httpResponse.getResponseCode() == 200) {
+            JSONObject jsonObject = new JSONObject(httpResponse.getData());
+            return jsonObject ;
+        } else {
+            System.out.println(httpResponse);
+            throw new Exception("Error occurred while retrieving webapp properties by app Id :" + appId);
+        }
+    }
+
+
+
 	/**
      * this method validate the method
      * @param policyPartial

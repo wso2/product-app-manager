@@ -19,6 +19,8 @@
 package org.wso2.carbon.appmanager.integration.ui.Util;
 
 
+import org.apache.commons.codec.binary.Base64;
+import org.json.JSONArray;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.SubscriptionRequest;
 import org.wso2.carbon.automation.core.utils.HttpRequestUtil;
 import org.wso2.carbon.automation.core.utils.HttpResponse;
@@ -141,6 +143,51 @@ public class APPMStoreRestClient {
             return response;
         } else {
             throw new Exception("Application Unsubscription failed> " + response.getData());
+        }
+    }
+
+    public JSONArray retrieveUserSubscribedApp(String userName) throws Exception {
+        checkAuthentication();
+        HttpResponse response = HttpRequestUtil.doGet(backEndUrl
+                + "/store/resources/webapp/v1/subscription/" + userName, requestHeaders);
+        if (response.getResponseCode() == 200) {
+            JSONArray jsonArray = new JSONArray(response.getData());
+            return jsonArray;
+        } else {
+            throw new Exception("Retrieve User Subscribed Apps failed. " + response.getData());
+        }
+    }
+
+    public JSONArray retrieveSubscribedUsers(String appProvider, String appName, String appVersion)
+            throws Exception {
+        checkAuthentication();
+        HttpResponse response = HttpRequestUtil.doGet(backEndUrl + "/store/resources/webapp/v1/subscriptions/"
+                + appProvider + "/" + appName + "/" + appVersion, requestHeaders);
+        if (response.getResponseCode() == 200) {
+            JSONArray jsonArray = new JSONArray(response.getData());
+            return jsonArray;
+        } else {
+            throw new Exception("Retrieve Subscribed Users of " + appName + " failed. " + response.getData());
+        }
+    }
+
+    public JSONArray getAllWebAppsProperties(String username, String password, int startingApp, int count)
+                                                                                    throws Exception {
+        checkAuthentication();
+
+        //Set Basic Authentication to request header
+        String usernameAndPassword = username + ":" + password;
+        byte[] authEncBytes = Base64.encodeBase64(usernameAndPassword.getBytes());
+        String authStringEnc = new String(authEncBytes);
+        this.requestHeaders.put("Authorization", "Basic " + authStringEnc);
+
+        HttpResponse response = HttpUtil.doGet(backEndUrl + "/store/apis/v1/assets/webapp?start=" + startingApp +
+                                                "&count=" + count, requestHeaders);
+        if (response.getResponseCode() == 200) {
+            JSONArray jsonArray = new JSONArray(response.getData());
+            return jsonArray;
+        } else {
+            throw new Exception("Retrieve User Subscribed Apps failed. " + response.getData());
         }
     }
 
