@@ -60,6 +60,7 @@ public class RetrieveAllAppsTestCase extends APPManagerIntegrationTest {
                 ApplicationInitializingUtil.storeURLHttp);
     }
 
+    // TODO : This test case should be re-written, ApplicationInitializingUtil only holds the information of the last created app.
     @Test(groups = {"wso2.appmanager.allappsretrieval"}, description = "Retrieve All Apps test")
     public void testAllAppsRetrieval() throws Exception {
         appMPublisher.login(username, password);

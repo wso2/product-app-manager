@@ -43,7 +43,7 @@ public class SelfSignUpTestCase extends APPManagerIntegrationTest {
         super.init(0);
         driver = BrowserManager.getWebDriver();
         storeUIClient = new APPMStoreUIClient();
-        newUsername = "testUser";
+        newUsername = "testUser_selfSignup";
         newPassword = "testUser123";
     }
 

@@ -212,12 +212,6 @@ public class APPMStoreUIClient {
         usernameEle.sendKeys(username);
 
         waitElem.until(ExpectedConditions.visibilityOfElementLocated(
-                By.id(uiElementMapper.getElement("store_reg_username_id_locator"))));
-        WebElement usernameEle1 = driver.findElement(By.id(
-                uiElementMapper.getElement("store_reg_username_id_locator")));
-        usernameEle1.sendKeys(username);
-
-        waitElem.until(ExpectedConditions.visibilityOfElementLocated(
                 By.id(uiElementMapper.getElement("store_reg_password_id_locator"))));
         WebElement passwordEle = driver.findElement(By.id(
                 uiElementMapper.getElement("store_reg_password_id_locator")));

@@ -408,8 +408,11 @@ public class APPMPublisherRestClient {
         String version = appCreateRequest.getOverview_version();
         String transport = appCreateRequest.getOverview_transports();
         String context = appCreateRequest.getOverview_context();
+		String acsUrl = appCreateRequest.getOverview_acsUrl();
+
         String requestBody = "{\"provider\":\"" + provider +
                 "\",\"logout_url\":\""+logOutUrl+
+				"\",\"app_acsURL\":\""+acsUrl+
                 "\",\"claims\":[\""+claims+"\"],\"app_name\":\""+appName+
                 "\",\"app_verison\":\""+version+
                 "\",\"app_transport\":\""+transport+
