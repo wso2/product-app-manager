@@ -327,6 +327,6 @@
     </dependencies>
     <properties>
         <test-automation-framework-version>4.2.7</test-automation-framework-version>
-        <selenium-version>2.38.0</selenium-version>
+        <selenium-version>2.41.0</selenium-version>
     </properties>
 </project>
