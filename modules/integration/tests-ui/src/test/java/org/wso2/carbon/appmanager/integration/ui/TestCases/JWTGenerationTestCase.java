@@ -31,7 +31,10 @@ import org.wso2.carbon.appmanager.integration.ui.Util.WireMonitorServer;
 import org.wso2.carbon.automation.core.BrowserManager;
 
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 public class JWTGenerationTestCase extends APPManagerIntegrationTest {
@@ -71,15 +74,26 @@ public class JWTGenerationTestCase extends APPManagerIntegrationTest {
         driver.switchTo().alert().accept();
 
         String serverMessage = server.getCapturedMessage();
-        String[] i = serverMessage.split("==.");
-        String jwtEncodedString = i[1];
 
+        String jwtBodyRegex =  "X-JWT-Assertion: ([^\\.]+)\\.([^\\.]+)";
+        Pattern pattern = Pattern.compile(jwtBodyRegex);
+        Matcher matcher = pattern.matcher(serverMessage);
+
+        boolean isJWTPresent = matcher.find();
+        assertTrue(isJWTPresent, "JWT header is not present.");
+
+        String jwtEncodedString = matcher.group(2);
         byte[] jwtByteArray = Base64.decodeBase64(jwtEncodedString.getBytes());
         String decodedJWTString = new String(jwtByteArray);
-        JSONObject roleJson = new JSONObject(decodedJWTString);
-        String roles = roleJson.get(claim).toString();
 
-        assertTrue(roles.contains("Internal/" + appProp.getAppName()), "JWT Generation fails");
+        JSONObject parsedJWT = new JSONObject(decodedJWTString);
+
+        assertNotNull(parsedJWT.get(claim), String.format("%s claim is not present in the JWT", claim));
+
+        String roles = parsedJWT.get(claim).toString();
+
+        String expectedRole = "Internal/" + appProp.getAppName();
+        assertTrue(roles.contains(expectedRole), String.format("Expected role '%s' doesn't exist", expectedRole));
     }
 
     @AfterClass(alwaysRun = true)

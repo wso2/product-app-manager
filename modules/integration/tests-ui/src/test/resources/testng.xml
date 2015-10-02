@@ -27,7 +27,7 @@
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.SelfSignUpTestCase"/>
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.DocumentTestCase"/>
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.RatingTestCase"/>
-            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.AppDiscoveryUITestCase"/>
+            <!--<class name="org.wso2.carbon.appmanager.integration.ui.TestCases.AppDiscoveryUITestCase"/>-->
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.AppSubscriptionTestCase"/>
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.RetrieveAppPropertyTestCase"/>
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.RetrieveSubscribedUsersTestCase"/>
