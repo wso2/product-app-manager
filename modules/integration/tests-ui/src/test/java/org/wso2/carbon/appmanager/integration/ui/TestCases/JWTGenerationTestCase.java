@@ -45,6 +45,9 @@ public class JWTGenerationTestCase extends APPManagerIntegrationTest {
     private APPMStoreUIClient storeUIClient;
     private String claim;
     private ApplicationInitializingUtil baseUtil;
+    private static final String ISSUER = "wso2.org/products/appm";
+    private static final String SUBJECT = "sub";
+    private static final String ISS = "iss";
 
     @BeforeClass(alwaysRun = true)
     public void init() throws Exception {
@@ -89,11 +92,14 @@ public class JWTGenerationTestCase extends APPManagerIntegrationTest {
         JSONObject parsedJWT = new JSONObject(decodedJWTString);
 
         assertNotNull(parsedJWT.get(claim), String.format("%s claim is not present in the JWT", claim));
+        assertNotNull(parsedJWT.get(ISS), String.format("%s issuer is not present in the JWT", ISS));
+        assertNotNull(parsedJWT.get(SUBJECT), String.format("%s subject is not present in the JWT", SUBJECT));
 
         String roles = parsedJWT.get(claim).toString();
-
+        String issuer= parsedJWT.get(ISS).toString();
         String expectedRole = "Internal/" + appProp.getAppName();
         assertTrue(roles.contains(expectedRole), String.format("Expected role '%s' doesn't exist", expectedRole));
+        assertTrue(ISSUER.equals(issuer), String.format("Expected issuer '%s' doesn't exist", ISSUER));
     }
 
     @AfterClass(alwaysRun = true)

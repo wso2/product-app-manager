@@ -235,7 +235,7 @@ public class APPMStoreRestClient {
 	public HttpResponse getAllTags() throws Exception {
 		checkAuthentication();
 		HttpResponse response = HttpRequestUtil.doGet(backEndUrl
-				+ "/store/apis/tag", requestHeaders);
+				+ "/store/apis/tag/webapp", requestHeaders);
 		if (response.getResponseCode() == 200) {
 			// VerificationUtil.checkErrors(response);
 			return response;
@@ -244,6 +244,23 @@ public class APPMStoreRestClient {
 		}
 
 	}
+
+    /**
+     * return all the tags of anonymous web apps
+     * @return
+     * @throws Exception
+     */
+    public HttpResponse getVisbileTagsForAnonymousUser() throws Exception {
+        HttpResponse response = HttpRequestUtil.doGet(backEndUrl
+                + "/store/apis/tag/webapp", requestHeaders);
+        if (response.getResponseCode() == 200) {
+            // VerificationUtil.checkErrors(response);
+            return response;
+        } else {
+            throw new Exception("Get all tags failed> " + response.getData());
+        }
+
+    }
 
 	/**
 	 * get the selected tag info

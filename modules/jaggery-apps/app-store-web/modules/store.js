@@ -414,36 +414,17 @@ Store.prototype.tags = function (type) {
     // If type = undefined retrieve tags without any filtering.
 	
 	if(type == RESOURCE_TYPE_WEBAPP){
-		mediaType = "application/vnd.wso2-webapp+xml", 
-		lifeCycleStateKey = "registry.lifecycle.WebAppLifeCycle.state", 
-		lifeCycleStateValue = "Published";
-	}else if (type == RESOURCE_TYPE_MOBILEAPP){
+        var carbonContext = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext();
+        var tenantdomain = carbonContext.getTenantDomain();
+        var storeObj = jagg.module("manager").getAPIStoreObj();
+        tagz = storeObj.getAllTags(String(tenantdomain));
+        return tagz;
+    }else if (type == RESOURCE_TYPE_MOBILEAPP){
         return tagz;
     }else if(type){
 		log.warn("Retrieving tags : Type " + type +  " is not supported.");
 		return tagz;
 	}
-
-	queryParameters = {1:mediaType, 2:lifeCycleStateKey, 3:lifeCycleStateValue};
-	tags = registry.query(QUERY_PATH_TAGS_BY_TYPE_AND_LIFECYCLE, queryParameters);
-	
-	length = tags.length;
-	for (i = 0; i < length; i++) {
-		tag = tags[i].split(';')[1].split(':')[1];
-	    count = tz[tag];
-	    count = count ? count + 1 : 1;
-	    tz[tag] = count;
-	}
-
-    //api setter
-	for (tag in tz) {
-	    if (tz.hasOwnProperty(tag)) {
-	        tagz.push({
-                name: String(tag),
-                count: tz[tag]
-            });
-        }
-    }
 
     return tagz;
 };
