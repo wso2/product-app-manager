@@ -117,7 +117,7 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
         String policyGropuId = appMPublisher.savePolicyGroup(xml, anonymousAccessToUrlPattern, policyGroupName,
                 throttlingTier, objPartialMappings, policyGroupDesc);
 
-        int hostPort = 8080;
+        int hostPort = 8181;
         AppCreateRequest appCreateRequest = createSingleApp(appName+prefix, appDisplayName, version, transport, appURL, hostPort,
                 appProp.getTier(), policyPartialId, policyGropuId);
         appName = appCreateRequest.getOverview_name();
@@ -160,7 +160,7 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
         String policyGropuId = appMPublisher.savePolicyGroup(xml, anonymousAccessToUrlPattern, policyGroupName,
                 throttlingTier, objPartialMappings, policyGroupDesc);
 
-        int hostPort = 8080;
+        int hostPort = 8181;
         AppCreateRequest appCreateRequest = createSingleApp(appName + prefix, appDisplayName, version, transport, appURL, hostPort,
                 appProp.getTier(), policyPartialId, policyGropuId);
         appCreateRequest.setRoles(roles);

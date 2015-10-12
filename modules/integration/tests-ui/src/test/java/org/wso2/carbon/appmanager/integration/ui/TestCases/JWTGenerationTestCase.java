@@ -67,7 +67,7 @@ public class JWTGenerationTestCase extends APPManagerIntegrationTest {
     @Test(groups = {"wso2.appmanager.JWTGenration"}, description = "JWT Generation Test Case")
     public void testJWTGeneration() throws Exception {
 
-        int hostPort = 8080;
+        int hostPort = 8181;
 
         WireMonitorServer server = new WireMonitorServer(hostPort);
         server.start();

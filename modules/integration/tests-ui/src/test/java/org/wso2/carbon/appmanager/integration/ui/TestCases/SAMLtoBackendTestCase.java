@@ -57,7 +57,7 @@ public class SAMLtoBackendTestCase extends APPManagerIntegrationTest {
 
     @Test(groups = {"wso2.appmanager.samlTest"}, description = "SAML to backend Test Case")
     public void testSAMLToBackend() throws Exception {
-        int hostPort = 8080;
+        int hostPort = 8181;
         WireMonitorServer server = new WireMonitorServer(hostPort);
         server.start();
 

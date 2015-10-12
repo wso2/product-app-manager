@@ -34,7 +34,7 @@ public class TomcatDeployer {
     public Tomcat getTomcat() {
         Tomcat tomcat = new Tomcat();
         tomcat.getService().setContainer(tomcat.getEngine());
-        tomcat.setPort(8080);
+        tomcat.setPort(8181);
         tomcat.setBaseDir(".");
 
         StandardHost stdHost = (StandardHost) tomcat.getHost();
