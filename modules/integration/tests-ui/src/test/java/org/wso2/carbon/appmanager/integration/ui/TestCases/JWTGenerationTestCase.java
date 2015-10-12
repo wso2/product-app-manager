@@ -83,7 +83,7 @@ public class JWTGenerationTestCase extends APPManagerIntegrationTest {
         Matcher matcher = pattern.matcher(serverMessage);
 
         boolean isJWTPresent = matcher.find();
-        assertTrue(isJWTPresent, "JWT header is not present.");
+        assertTrue(isJWTPresent, "JWT header is not present in server message : " + serverMessage);
 
         String jwtEncodedString = matcher.group(2);
         byte[] jwtByteArray = Base64.decodeBase64(jwtEncodedString.getBytes());
@@ -91,15 +91,19 @@ public class JWTGenerationTestCase extends APPManagerIntegrationTest {
 
         JSONObject parsedJWT = new JSONObject(decodedJWTString);
 
-        assertNotNull(parsedJWT.get(claim), String.format("%s claim is not present in the JWT", claim));
-        assertNotNull(parsedJWT.get(ISS), String.format("%s issuer is not present in the JWT", ISS));
-        assertNotNull(parsedJWT.get(SUBJECT), String.format("%s subject is not present in the JWT", SUBJECT));
+        assertNotNull(parsedJWT.get(claim), String.format("%s claim is not present in the JWT : %s",
+                claim, decodedJWTString));
+        assertNotNull(parsedJWT.get(ISS), String.format("%s issuer is not present in the JWT : %s",
+                ISS, decodedJWTString));
+        assertNotNull(parsedJWT.get(SUBJECT), String.format("%s subject is not present in the JWT : %s",
+                SUBJECT, decodedJWTString));
 
         String roles = parsedJWT.get(claim).toString();
         String issuer= parsedJWT.get(ISS).toString();
         String expectedRole = "Internal/" + appProp.getAppName();
-        assertTrue(roles.contains(expectedRole), String.format("Expected role '%s' doesn't exist", expectedRole));
-        assertTrue(ISSUER.equals(issuer), String.format("Expected issuer '%s' doesn't exist", ISSUER));
+        assertTrue(roles.contains(expectedRole), String.format("Expected role '%s' doesn't exist : %s",
+                expectedRole, decodedJWTString));
+        assertTrue(ISSUER.equals(issuer), String.format("Expected issuer '%s' doesn't exist : %s ", ISSUER, decodedJWTString));
     }
 
     @AfterClass(alwaysRun = true)

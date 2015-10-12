@@ -64,7 +64,8 @@ public class SAMLtoBackendTestCase extends APPManagerIntegrationTest {
         storeUIClient.loginDriver(driver, ApplicationInitializingUtil.storeURLHttp, username, password);
         storeUIClient.selectApplication(driver, ApplicationInitializingUtil.appId);
         driver.switchTo().alert().accept();
-        assertTrue(server.getCapturedMessage().contains("AppMgtSAML2Response"), "SAML to backend pass failed");
+        String serverMessage = server.getCapturedMessage();
+        assertTrue(serverMessage.contains("AppMgtSAML2Response"), "SAML to backend pass failed : " + serverMessage);
     }
 
     @AfterClass(alwaysRun = true)
