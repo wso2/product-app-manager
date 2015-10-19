@@ -500,6 +500,8 @@
                                 </featureArtifactDef>
 				<featureArtifactDef>org.jaggeryjs.modules:uuid.feature:${jaggeryjs.uuid.feature.version}
                                 </featureArtifactDef>
+                <featureArtifactDef>org.jaggeryjs.modules:ws.feature:${jaggeryjs.ws.feature.version}
+                                </featureArtifactDef>
 				<featureArtifactDef>org.wso2.store.modules:permission.feature:${es.feature.version}
                                 </featureArtifactDef>
 				<featureArtifactDef>org.wso2.store.modules:sso.feature:${es.feature.version}
@@ -1216,6 +1218,10 @@
 				<feature>
                                     <id>org.jaggeryjs.modules.uuid.feature.group</id>
                                     <version>${jaggeryjs.uuid.feature.version}</version>
+                                </feature>
+                <feature>
+                                    <id>org.jaggeryjs.modules.ws.feature.group</id>
+                                    <version>${jaggeryjs.ws.feature.version}</version>
                                 </feature>
 				<feature>
                                     <id>org.wso2.store.modules.registration.feature.group</id>

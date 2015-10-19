@@ -489,6 +489,7 @@
         <jaggeryjs.i18n.feature.version>1.3.0</jaggeryjs.i18n.feature.version>
         <jaggeryjs.process.feature.version>1.3.0</jaggeryjs.process.feature.version>
         <jaggeryjs.uuid.feature.version>1.3.0</jaggeryjs.uuid.feature.version>
+        <jaggeryjs.ws.feature.version>1.3.0</jaggeryjs.ws.feature.version>
         <caramel.feature.version>1.0.0</caramel.feature.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
