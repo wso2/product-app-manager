@@ -76,6 +76,11 @@
             </excludes>
         </fileSet>
 
+        <fileSet>
+            <directory>src/main/conf/synapse-configs/default/sequences</directory>
+            <outputDirectory>wso2appm-${pom.version}/repository/resources/appm-synapse-config/</outputDirectory>
+        </fileSet>
+
 	    <fileSet>
            <directory>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/advanced/</directory>
            <outputDirectory>wso2appm-${pom.version}/repository/conf/advanced</outputDirectory>
