@@ -819,7 +819,8 @@ public abstract class APPManagerIntegrationTest {
     }
 
     protected AppCreateRequest createSingleApp(String appName, String appDisplayName, String version, String transport,
-                                               String hostURL, int hostPort, String tier, String partialId, String policyGroupId)
+                                               String hostURL, int hostPort, String tier, String partialId, String policyGroupId,
+                                               String javaPolicyIds)
             throws Exception {
 
         AppCreateRequest appRequest = new AppCreateRequest();
@@ -877,8 +878,11 @@ public abstract class APPManagerIntegrationTest {
         appRequest.setUritemplate_policygroupid4(policyGroupId);
 
         appRequest.setUritemplate_policyGroupIds("[" + policyGroupId + "]");
-        appRequest.setUritemplate_javaPolicyIds("[1]");
-
+        if (javaPolicyIds == null || javaPolicyIds.isEmpty()) {
+            appRequest.setUritemplate_javaPolicyIds("[1]");
+        } else {
+            appRequest.setUritemplate_javaPolicyIds(javaPolicyIds);
+        }
         return appRequest;
     }
 

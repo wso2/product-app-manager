@@ -243,6 +243,25 @@ public class APPMPublisherRestClient {
 		}
 	}
 
+	/**
+	* Get web applications popularity over time.
+	* @param getAppPopularityOverTimeRequest payload to get web application popularity over time.
+	* @return HTTP Response with web application popularity.
+	* @throws Exception
+	*/
+	public HttpResponse getAppPopularityOverTime(GetStatisticRequest getAppPopularityOverTimeRequest) throws Exception {
+		checkAuthentication();
+		String payload = getAppPopularityOverTimeRequest.generateRequestParameters();
+		this.requestHeaders.put("Content-Type", "application/x-www-form-urlencoded");
+		HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl +
+			"/publisher/api/assets/statistics/webapp/getAppsPopularity/"), payload, requestHeaders);
+		if (response.getResponseCode() == 200) {
+			return response;
+		} else {
+			throw new Exception("App creation failed> " + response.getData());
+		}
+	}
+
 	public String getWebappTrackingId(String appId) throws Exception {
 		checkAuthentication();
 		HttpResponse response =
@@ -251,11 +270,9 @@ public class APPMPublisherRestClient {
 						appId, requestHeaders);
 		if (response.getResponseCode() == 200) {
 			JSONObject jsonObject = new JSONObject(response.getData());
-
-			org.json.JSONArray jsonArray = new org.json.JSONArray( jsonObject.get("fields").toString());
-			JSONObject trackingIdObj = new JSONObject(jsonArray.get(10).toString());
-			return trackingIdObj.get("value").toString();
-
+			JSONObject attributeValueJSON = new JSONObject(jsonObject.get("attributes").toString());
+			String trackingId = attributeValueJSON.getString("overview_trackingCode");
+			return trackingId;
 		} else {
 			System.out.println(response);
 			throw new Exception("Error occurred while retrieving tracking id of webapp with id :" + appId);

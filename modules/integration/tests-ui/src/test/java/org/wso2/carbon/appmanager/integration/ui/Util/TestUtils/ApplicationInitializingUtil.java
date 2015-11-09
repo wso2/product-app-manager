@@ -27,6 +27,7 @@ import org.wso2.carbon.appmanager.integration.ui.APPManagerIntegrationTest;
 import org.wso2.carbon.appmanager.integration.ui.Util.APPMPublisherRestClient;
 import org.wso2.carbon.appmanager.integration.ui.Util.APPMStoreRestClient;
 import org.wso2.carbon.appmanager.integration.ui.Util.APPMStoreUIClient;
+import org.wso2.carbon.appmanager.integration.ui.Util.ApplicationProperties;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.AppCreateRequest;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.SubscriptionRequest;
 import org.wso2.carbon.automation.core.BrowserManager;
@@ -92,6 +93,35 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
         driver = BrowserManager.getWebDriver();
     }
 
+    public void init(String propertyFile) throws Exception {
+        super.init(0);
+        appProp = new ApplicationProperties(propertyFile);
+        if (isBuilderEnabled()) {
+            storeURLHttp = getServerURLHttp();
+            publisherURLHttp = getServerURLHttp();
+
+        } else {
+            storeURLHttp = getStoreServerURLHttp();
+        }
+
+        username = userInfo.getUserName();
+        password = userInfo.getPassword();
+        appMStore = new org.wso2.carbon.appmanager.integration.ui.Util.APPMStoreRestClient(storeURLHttp);
+        appMPublisher = new APPMPublisherRestClient(publisherURLHttp);
+        appURL = appProp.getAppURL();
+        appName = appProp.getAppName();
+        appDisplayName = appProp.getAppDisplayName();
+        version = appProp.getVersion();
+        transport = appProp.getTransports();
+        anonymousAccessToUrlPattern = appProp.getAnonymousAccessToUrlPattern();
+        policyGroupName = appProp.getPolicyGroupName();
+        throttlingTier = appProp.getThrottlingTier();
+        objPartialMappings = appProp.getObjPartialMappings();
+        policyGroupDesc = appProp.getPolicyGroupDesc();
+        storeUIClient = new APPMStoreUIClient();
+        driver = BrowserManager.getWebDriver();
+    }
+
     @Test(groups = {"wso2.appmanager.appCreate"}, description = "Application Creation")
     public void testApplicationCreation(String prefix) throws Exception {
 
@@ -119,7 +149,7 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
 
         int hostPort = 8181;
         AppCreateRequest appCreateRequest = createSingleApp(appName+prefix, appDisplayName, version, transport, appURL, hostPort,
-                appProp.getTier(), policyPartialId, policyGropuId);
+                appProp.getTier(), policyPartialId, policyGropuId, appProp.getJavaPolicyIds());
         appName = appCreateRequest.getOverview_name();
         version = appCreateRequest.getOverview_version();
         HttpResponse appCreateResponse = appMPublisher.createApp(appCreateRequest);
@@ -162,7 +192,7 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
 
         int hostPort = 8181;
         AppCreateRequest appCreateRequest = createSingleApp(appName + prefix, appDisplayName, version, transport, appURL, hostPort,
-                appProp.getTier(), policyPartialId, policyGropuId);
+                appProp.getTier(), policyPartialId, policyGropuId, appProp.getJavaPolicyIds());
         appCreateRequest.setRoles(roles);
         appCreateRequest.setTags(tags);
         appName = appCreateRequest.getOverview_name();

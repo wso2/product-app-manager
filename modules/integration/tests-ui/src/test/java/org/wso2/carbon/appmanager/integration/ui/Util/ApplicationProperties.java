@@ -43,6 +43,7 @@ public class ApplicationProperties {
     private String throttlingTier;
     private String objPartialMappings;
     private String policyGroupDesc;
+    private String javaPolicyIds;
 
     public ApplicationProperties() throws IOException {
         appProp = new Properties();
@@ -70,6 +71,35 @@ public class ApplicationProperties {
         setThrottlingTier(appProp.getProperty("throttlingTier"));
         setObjPartialMappings(appProp.getProperty("objPartialMappings"));
         setPolicyGroupDesc(appProp.getProperty("policyGroupDesc"));
+    }
+
+    public ApplicationProperties(String propFileName) throws IOException {
+        appProp = new Properties();
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+        appProp.load(inputStream);
+
+        if (inputStream == null) {
+            throw new FileNotFoundException("Property file '" + propFileName + "' is not found in the classpath");
+        }
+
+        setAppURL(appProp.getProperty("appURL"));
+        setTransports(appProp.getProperty("appTransport"));
+        setVersion(appProp.getProperty("appVersion"));
+        setTier(appProp.getProperty("tier"));
+        setAppName(appProp.getProperty("appName"));
+        setAppDisplayName(appProp.getProperty("appDisplayName"));
+        setTags(appProp.getProperty("tags"));
+        setRole(appProp.getProperty("role"));
+        setPath(appProp.getProperty("path"));
+        setPolicyPath(appProp.getProperty("policyFile"));
+        setAppSample(appProp.getProperty("appSample"));
+        setAnonymousAccessToUrlPattern(appProp.getProperty("anonymousAccessToUrlPattern"));
+        setPolicyGroupName(appProp.getProperty("policyGroupName"));
+        setThrottlingTier(appProp.getProperty("throttlingTier"));
+        setObjPartialMappings(appProp.getProperty("objPartialMappings"));
+        setPolicyGroupDesc(appProp.getProperty("policyGroupDesc"));
+        setJavaPolicyIds(appProp.getProperty("javaPolicyIds"));
+
     }
 
     public String getAppURL() {
@@ -198,5 +228,13 @@ public class ApplicationProperties {
 
     public void setPolicyGroupDesc(String policyGroupDesc) {
         this.policyGroupDesc = policyGroupDesc;
+    }
+
+    public String getJavaPolicyIds() {
+        return javaPolicyIds;
+    }
+
+    public void setJavaPolicyIds(String javaPolicyIds) {
+        this.javaPolicyIds = javaPolicyIds;
     }
 }
