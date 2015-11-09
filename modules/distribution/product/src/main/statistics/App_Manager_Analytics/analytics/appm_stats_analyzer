@@ -59,7 +59,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS APM_APP_HITS_TEMP (key STRING,uuid STRING,ap
 user_id STRING,tenant_id INT,hit_time BIGINT) STORED BY
 	'org.apache.hadoop.hive.cassandra.CassandraStorageHandler' WITH SERDEPROPERTIES ('wso2.carbon.datasource.name'='WSO2BAM_CASSANDRA_DATASOURCE',
 	"cassandra.cf.name" = "org_wso2_appmgt_bam_uiactivitypublish",
-	"cassandra.columns.mapping" = ":key,payload_appId,payload_appName,payload_appVersion,payload_userId,payload_tenantId,Timestamp");
+	"cassandra.columns.mapping" = ":key,payload_appId,payload_appName,payload_appVersion,payload_userId,payload_tenantId,payload_Timestamp");
 
 CREATE EXTERNAL TABLE IF NOT EXISTS APM_APP_HITS (uuid STRING, app_name STRING, version STRING,user_id STRING,tenant_id INT, hit_time STRING) STORED BY
 'org.wso2.carbon.hadoop.hive.jdbc.storage.JDBCStorageHandler' TBLPROPERTIES (

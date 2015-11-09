@@ -21,8 +21,7 @@ function drawGraphs() {
         type: 'POST',
         data: {
             'startDate': from,
-            'endDate': to,
-            "checked" : false
+            'endDate': to
         },
         success: function (response) {
             parsedResponse = JSON.parse(response);
