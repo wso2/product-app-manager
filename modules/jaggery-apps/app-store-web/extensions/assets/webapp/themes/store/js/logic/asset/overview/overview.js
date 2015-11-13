@@ -50,7 +50,8 @@ $(function () {
             "userId": $('#hdnUsertId').val(),
             "tenantId": $('#hdnTenantId').val(),
             "appName": $('#hdnOverviewName').val(),
-            "appVersion" : $("#hdnOverviewVersion").val()
+            "appVersion" : $("#hdnOverviewVersion").val(),
+            "context": $("#hdnOverviewContext").val()
         },
         "appControls": {"0": "a"},
         "publishedPeriod": "1200000",

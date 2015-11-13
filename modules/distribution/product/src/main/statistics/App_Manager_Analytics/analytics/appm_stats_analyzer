@@ -56,21 +56,21 @@ CREATE EXTERNAL TABLE IF NOT EXISTS AppResponseSummaryData ( api STRING, version
 insert overwrite table  AppResponseSummaryData select api,version,api_version,apiPublisher,context,trackingCode,referer,hostName,avg(serviceTime) as serviceTime  from AppRequestData  group by api,version,api_version,apiPublisher,context,trackingCode,referer,hostName;
 
 CREATE EXTERNAL TABLE IF NOT EXISTS APM_APP_HITS_TEMP (key STRING,uuid STRING,app_name STRING,version STRING,
-user_id STRING,tenant_id INT,hit_time BIGINT) STORED BY
+context STRING,user_id STRING,tenant_id INT,hit_time BIGINT) STORED BY
 	'org.apache.hadoop.hive.cassandra.CassandraStorageHandler' WITH SERDEPROPERTIES ('wso2.carbon.datasource.name'='WSO2BAM_CASSANDRA_DATASOURCE',
 	"cassandra.cf.name" = "org_wso2_appmgt_bam_uiactivitypublish",
-	"cassandra.columns.mapping" = ":key,payload_appId,payload_appName,payload_appVersion,payload_userId,payload_tenantId,payload_Timestamp");
+	"cassandra.columns.mapping" = ":key,payload_appId,payload_appName,payload_appVersion,payload_context,payload_userId,payload_tenantId,payload_timestamp");
 
-CREATE EXTERNAL TABLE IF NOT EXISTS APM_APP_HITS (uuid STRING, app_name STRING, version STRING,user_id STRING,tenant_id INT, hit_time STRING) STORED BY
+CREATE EXTERNAL TABLE IF NOT EXISTS APM_APP_HITS (uuid STRING, app_name STRING, version STRING, context STRING, user_id STRING,tenant_id INT, hit_time STRING) STORED BY
 'org.wso2.carbon.hadoop.hive.jdbc.storage.JDBCStorageHandler' TBLPROPERTIES (
 'wso2.carbon.datasource.name'='WSO2AM_STATS_DB',
 'hive.jdbc.update.on.duplicate' = 'true',
 'hive.jdbc.primary.key.fields' = 'uuid,user_id,tenant_id,hit_time',
 'hive.jdbc.table.create.query' ='CREATE TABLE APM_APP_HITS (uuid VARCHAR(500), app_name VARCHAR(200), version VARCHAR(50),
-user_id VARCHAR(50) NOT NULL,tenant_id INT, hit_time VARCHAR(500))');
+context VARCHAR(256), user_id VARCHAR(50) NOT NULL,tenant_id INT, hit_time VARCHAR(500))');
 
 insert overwrite table APM_APP_HITS
-select uuid,app_name,version,user_id,tenant_id,
+select uuid,app_name,version,context,user_id,tenant_id,
  concat(substring(from_unixtime(cast(hit_time/1000 as BIGINT),'yyyy-MM-dd HH:mm:ss'),0,19)) as hit_time
 from APM_APP_HITS_TEMP;
 

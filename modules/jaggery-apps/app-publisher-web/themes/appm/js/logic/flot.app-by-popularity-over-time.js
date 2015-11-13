@@ -353,7 +353,7 @@ function drawPopupChart(parsedResponse, appName, holderId) {
     var table = $('#apiSelectTable').DataTable({
         retrieve: true,
         "order": [
-            [ 1, "desc" ]
+            [ 2, "desc" ]
         ],
         "fnDrawCallback": function () {
             if (this.fnSettings().fnRecordsDisplay() <= $("#apiSelectTable_length option:selected").val()
