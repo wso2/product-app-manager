@@ -93,35 +93,6 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
         driver = BrowserManager.getWebDriver();
     }
 
-    public void init(String propertyFile) throws Exception {
-        super.init(0);
-        appProp = new ApplicationProperties(propertyFile);
-        if (isBuilderEnabled()) {
-            storeURLHttp = getServerURLHttp();
-            publisherURLHttp = getServerURLHttp();
-
-        } else {
-            storeURLHttp = getStoreServerURLHttp();
-        }
-
-        username = userInfo.getUserName();
-        password = userInfo.getPassword();
-        appMStore = new org.wso2.carbon.appmanager.integration.ui.Util.APPMStoreRestClient(storeURLHttp);
-        appMPublisher = new APPMPublisherRestClient(publisherURLHttp);
-        appURL = appProp.getAppURL();
-        appName = appProp.getAppName();
-        appDisplayName = appProp.getAppDisplayName();
-        version = appProp.getVersion();
-        transport = appProp.getTransports();
-        anonymousAccessToUrlPattern = appProp.getAnonymousAccessToUrlPattern();
-        policyGroupName = appProp.getPolicyGroupName();
-        throttlingTier = appProp.getThrottlingTier();
-        objPartialMappings = appProp.getObjPartialMappings();
-        policyGroupDesc = appProp.getPolicyGroupDesc();
-        storeUIClient = new APPMStoreUIClient();
-        driver = BrowserManager.getWebDriver();
-    }
-
     @Test(groups = {"wso2.appmanager.appCreate"}, description = "Application Creation")
     public void testApplicationCreation(String prefix) throws Exception {
 
@@ -149,7 +120,7 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
 
         int hostPort = 8181;
         AppCreateRequest appCreateRequest = createSingleApp(appName+prefix, appDisplayName, version, transport, appURL, hostPort,
-                appProp.getTier(), policyPartialId, policyGropuId, appProp.getJavaPolicyIds());
+                appProp.getTier(), policyPartialId, policyGropuId);
         appName = appCreateRequest.getOverview_name();
         version = appCreateRequest.getOverview_version();
         HttpResponse appCreateResponse = appMPublisher.createApp(appCreateRequest);
@@ -192,7 +163,7 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
 
         int hostPort = 8181;
         AppCreateRequest appCreateRequest = createSingleApp(appName + prefix, appDisplayName, version, transport, appURL, hostPort,
-                appProp.getTier(), policyPartialId, policyGropuId, appProp.getJavaPolicyIds());
+                appProp.getTier(), policyPartialId, policyGropuId);
         appCreateRequest.setRoles(roles);
         appCreateRequest.setTags(tags);
         appName = appCreateRequest.getOverview_name();
@@ -202,6 +173,46 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
         appId = (String) jsonObject.get("id");
         assertEquals(appCreateResponse.getResponseCode(), 200, "Application creation failed");
     }
+
+    @Test(groups = {"wso2.appmanager.appCreate"}, description = "Application Creation")
+    public void testApplicationCreation(String prefix, String javaPolicyId) throws Exception {
+
+        appMPublisher.login(username, password);
+
+        String root = ProductConstant.getSystemResourceLocation();
+        String policyPath = root+"samples"+File.separator+"policy.xml";
+        String xml = convertXMLFileToString(policyPath);
+
+        HttpResponse response = appMPublisher.validatePolicy(xml);
+        JSONObject validateObject = new JSONObject(response.getData());
+        boolean validateSucceed = validateObject.getBoolean("success");
+        assertTrue(validateSucceed, "Policy validation failed.");
+        String policyPartialId = "";
+
+        if (validateSucceed) {
+            HttpResponse partialIdResponse = appMPublisher.savePolicy("testPolicy", xml);
+            JSONObject saveObject = new JSONObject(partialIdResponse.getData());
+            JSONObject responseId = saveObject.optJSONObject("response");
+            policyPartialId = responseId.getString("id");
+        }
+
+        String policyGropuId = appMPublisher.savePolicyGroup(xml, anonymousAccessToUrlPattern,
+                                                policyGroupName, throttlingTier, objPartialMappings,
+                                                policyGroupDesc);
+
+        int hostPort = 8181;
+        AppCreateRequest appCreateRequest = createSingleApp(appName+prefix, appDisplayName, version,
+                                                  transport, appURL, hostPort,
+                                                  appProp.getTier(), policyPartialId, policyGropuId);
+        appCreateRequest.setUritemplate_javaPolicyIds(javaPolicyId);
+        appName = appCreateRequest.getOverview_name();
+        version = appCreateRequest.getOverview_version();
+        HttpResponse appCreateResponse = appMPublisher.createApp(appCreateRequest);
+        JSONObject jsonObject = new JSONObject(appCreateResponse.getData());
+        appId = (String) jsonObject.get("id");
+        assertEquals(appCreateResponse.getResponseCode(), 200, "Application creation failed");
+    }
+
 
     @Test(groups = {"wso2.appmanager.appPublish"}, description = "Application Publish")
     public void testApplicationPublish() throws Exception {

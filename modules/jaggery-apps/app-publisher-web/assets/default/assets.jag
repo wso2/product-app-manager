@@ -284,7 +284,7 @@ routeMnger.register('GET', 'publisher', '/publisher/assets/{operation}/{type}/',
         try {
             caramel.render({op: operation,cuser: server.current(session),shortName: type,title: type});
         } catch (e) {
-            response.sendError(404, 'Asset type not found'); //TODO: Replace
+            response.sendError(404, 'Asset type not found');
         }
     }
     if (operation == 'app-by-endpoint') {

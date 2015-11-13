@@ -72,8 +72,8 @@ public class RuntimeStatisticsTestCase extends APPManagerIntegrationTest {
     Tomcat tomcat;
     public static String publisherURLHttp;
     private APPMPublisherRestClient appMPublisher;
-    private static String appPrefix = "16";
-    private static String appPropertiesFile = "statsappconfig.properties";
+    private static String appPrefix = "RuntimeStatisticsTestCase";
+    private static String javaPolicyId = "[5]";
 
 
     @BeforeClass(alwaysRun = true)
@@ -92,13 +92,13 @@ public class RuntimeStatisticsTestCase extends APPManagerIntegrationTest {
             publisherURLHttp = getServerURLHttp();
             appMPublisher = new APPMPublisherRestClient(publisherURLHttp);
         }
-        appProp = new ApplicationProperties(appPropertiesFile);
+        appProp = new ApplicationProperties();
         driver = BrowserManager.getWebDriver();
         storeUIClient = new APPMStoreUIClient();
         ApplicationInitializingUtil baseUtil;
         baseUtil = new ApplicationInitializingUtil();
-        baseUtil.init(appPropertiesFile);
-        baseUtil.testApplicationCreation(appPrefix);
+        baseUtil.init();
+        baseUtil.testApplicationCreation(appPrefix,javaPolicyId);
         baseUtil.testApplicationPublish();
         baseUtil.testApplicationSubscription();
         username = userInfo.getUserName();
@@ -123,6 +123,7 @@ public class RuntimeStatisticsTestCase extends APPManagerIntegrationTest {
         storeUIClient.loginDriver(driver, ApplicationInitializingUtil.storeURLHttp, username, password);
         storeUIClient.selectApplication(driver, ApplicationInitializingUtil.appId);
         driver.switchTo().alert().accept();
+        //Wait until the statics get published to BAM.
         Thread.sleep(120000);
         storeUIClient.logout(driver, ApplicationInitializingUtil.storeURLHttp);
 

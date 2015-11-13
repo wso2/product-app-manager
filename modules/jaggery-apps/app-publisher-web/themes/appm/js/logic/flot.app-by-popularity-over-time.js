@@ -16,8 +16,7 @@ function drawGraphs() {
 
     $.ajax({
         async: false,
-        url: '/publisher/api/assets/' + operation + '/' + type + '/' + action
-            + '/',
+        url: '/publisher/api/assets/' + operation + '/' + type + '/' + action + '/',
         type: 'POST',
         data: {
             'startDate': from,
@@ -29,7 +28,7 @@ function drawGraphs() {
             $('#spinner').hide();
         },
         error: function (response) {
-            alert('Error occured at statistics graph rendering');
+            alert('Error occurred at statistics graph rendering');
         }
     });
 
@@ -67,7 +66,8 @@ var drawPopularityOverTime = function (parsedResponse) {
     x = chart.addCategoryAxis("x", "App");
 
     y = chart.addMeasureAxis("y", "Hits");
-    y.title = "Hit Count";    var data = [];
+    y.title = "Hit Count";    
+    var data = [];
     var length = parsedResponse.length;
 
     var dataStructure = [];
@@ -390,8 +390,7 @@ function drawPopupChart(parsedResponse, appName, holderId) {
                 row.child.hide();
                 tr.removeClass('shown');
             });
-        }
-        else {
+        } else {
             row.child(format(row.data()), 'no-padding').show();
             tr.addClass('shown');
             $('div.slider', row.child()).slideDown();
