@@ -16,15 +16,15 @@ A. If App Manager is configured with BAM, please follow below guidelines.
 
     7. Browse new 'App_Manager_Analytics' toolbox and install.(You'll have to wait few seconds until installation is completed.)
 
-    8. Start Aoo Manager
+    8. Start App Manager
 
 B. If App Manager is not configured with BAM, please follow below guidelines.
 
     1. Stop App Manager, if it is running.
 
-    2. Execute corresponding db script file in WSO2AM_DB.
+    2. Execute corresponding db script (h2/mysql/oracle) file in WSO2AM_DB.
 
-    3. Start the server.
+    3. Start App Manager.
 
 
 
