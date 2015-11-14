@@ -168,6 +168,8 @@ public class APPMStoreUIClient {
                         + appId
                         + "']/div[@class='asset-details']/div[@class='asset-name']/a"))
                 .click();
+        driver.navigate().refresh();
+
 
         //select the link
         driver.findElement(By.xpath(uiElementMapper.getElement("store_app_gateway_url_xpath_locator"))).click();
