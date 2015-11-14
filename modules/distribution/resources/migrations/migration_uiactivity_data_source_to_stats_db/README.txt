@@ -8,7 +8,7 @@ A. If App Manager is configured with BAM, please follow below guidelines.
 
     3. Log in to Management console. (ex: http://<ip_address>:<port>/carbon)
 
-    4. Go to Home > Manage	> BAM Toolbox > List
+    4. Go to Home> Manage> BAM Toolbox> List
 
     5. Uninstall the existing 'App_Manager_Analytics' toolbox.
 
