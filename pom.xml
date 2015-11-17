@@ -430,6 +430,27 @@
                     </exclusion>
                 </exclusions>
             	</dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>1.7.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>6.1.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jettison.wso2</groupId>
+            <artifactId>jettison</artifactId>
+            <version>${orbit.version.jettison}</version>
+       </dependency>
+       <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20080701</version>
+       </dependency>
 
         </dependencies>
     </dependencyManagement>
