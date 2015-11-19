@@ -1,5 +1,5 @@
 /*
-*Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *WSO2 Inc. licenses this file to you under the Apache License,
 *Version 2.0 (the "License"); you may not use this file except
@@ -23,32 +23,32 @@ import org.json.JSONObject;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
 public class VerificationUtil {
+    /**
+     * Check for error in http response data.
+     *
+     * @param response HttpResponse.
+     * @throws Exception on errors.
+     */
     public static void checkErrors(HttpResponse response) throws Exception {
         JSONObject jsonObject = new JSONObject(response.getData());
         if ((Boolean) jsonObject.get("error")) {
-            throw new Exception("Operation not successful: " + jsonObject.get("message").toString());
+            throw new Exception("Operation not successful: " + jsonObject.get("message")
+                    .toString());
         }
     }
-    
-    public static void checkAppCreateRes(HttpResponse response) throws Exception {
-        JSONObject jsonObject = new JSONObject(response.getData());
-        if (!(Boolean) jsonObject.get("ok")) {
-            throw new Exception("Operation not successful: " + jsonObject.get("message").toString());
-        }
-    }
-    
+
+    /**
+     * Check whether application state change done successfully.
+     *
+     * @param response HttpResponse.
+     * @throws Exception on errors.
+     */
     public static void checkAppStateChange(HttpResponse response) throws Exception {
         JSONObject jsonObject = new JSONObject(response.getData());
-        String status=(String)jsonObject.get("status");
-        if (!status.equals("ok")) {
-            throw new Exception("Operation not successful: " + jsonObject.get("message").toString());
+        String status = (String) jsonObject.get("status");
+        if (!status.equalsIgnoreCase("success")) {
+            throw new Exception("Operation not successful: " + jsonObject.get("messages")
+                    .toString());
         }
-    }
-    
-    public static void checkCurrentAppState(HttpResponse response) throws Exception  {
-        JSONObject jsonObject = new JSONObject(response.getData());
-        if ((Boolean) jsonObject.get("subscribed")) {
-            throw new Exception("Operation not successful: " + jsonObject.get("message").toString());
-        }           
     }
 }

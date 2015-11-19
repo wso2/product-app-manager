@@ -22,11 +22,15 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.pagefactory.ByAll;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.wso2.appmanager.ui.integration.test.utils.Page;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 
 import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class LoginPage extends Page {
 
@@ -64,10 +68,21 @@ public class LoginPage extends Page {
 
     public Page login(String userName, String password, LoginTo loginTo) throws IOException, InterruptedException {
         log.info("login as " + userName);
+        // Wait until login page loading is completed.
+        WebDriverWait wait = new WebDriverWait(driver, 30);
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("username")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("password")));
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                        new ByAll(By.className("btn-primary"), By.tagName("input"))));
+
         driver.findElement(By.id("username")).sendKeys(userName);
         driver.findElement(By.id("password")).sendKeys(password);
 
-        driver.findElement(By.className("btn")).click();
+        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+
+        driver.findElement(By.className("btn-primary")).click();
 
         if(loginTo == LoginTo.PUBLISHER){
             return  PublisherWebAppsListPage.getPage(driver, appMServer);

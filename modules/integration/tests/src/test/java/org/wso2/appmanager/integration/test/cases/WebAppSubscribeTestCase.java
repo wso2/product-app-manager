@@ -18,30 +18,31 @@
 
 package org.wso2.appmanager.integration.test.cases;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.appmanager.integration.utils.APPMPublisherRestClient;
+import org.wso2.appmanager.integration.utils.APPMStoreRestClient;
 import org.wso2.appmanager.integration.utils.bean.AppCreateRequest;
+import org.wso2.appmanager.integration.utils.bean.SubscriptionRequest;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
 
-public class PublisherCreateWebAppTestCase {
+public class WebAppSubscribeTestCase {
 
-    private static final String TEST_DESCRIPTION = "Verify Creating a Web App";
+    private static final String TEST_DESCRIPTION = "Verify Subscribing to a Web App";
     private APPMPublisherRestClient appmPublisherRestClient;
-    private String appName = "PublisherCreateWebAppTestCase";
-    private String context = "/PublisherCreateWebAppTestCase";
-    private String trackingCode = "AM_PublisherCreateWebAppTestCase";
+    private APPMStoreRestClient appmStoreRestClient;
+    private String appName = "WebAppSubscribeTestCase";
     private String appVersion = "1.0.0";
+    private String context = "/WebAppSubscribeTestCase";
+    private String trackingCode = "WebAppSubscribeTestCase";
+    private String userName = "admin";
+    private String password = "admin";
     private String backEndUrl;
 
 
@@ -51,21 +52,24 @@ public class PublisherCreateWebAppTestCase {
                                                              TestUserMode.SUPER_TENANT_ADMIN);
         backEndUrl = appMServer.getContextUrls().getWebAppURLHttps();
         appmPublisherRestClient = new APPMPublisherRestClient(backEndUrl);
-        appmPublisherRestClient.login("admin", "admin");
-
+        appmPublisherRestClient.login(userName, password);
+        appmStoreRestClient = new APPMStoreRestClient(backEndUrl);
+        appmStoreRestClient.login(userName, password);
     }
 
     @Test(description = TEST_DESCRIPTION)
     public void testPublisherCreateWebApp() throws Exception {
-        AppCreateRequest appRequest = new AppCreateRequest(appName, context, appVersion,
-                                                           trackingCode);
+        AppCreateRequest appRequest = new AppCreateRequest(appName, context, appVersion, trackingCode);
         HttpResponse response = appmPublisherRestClient.webAppCreate(appRequest);
 
-        assertTrue(response.getResponseCode() == 200, "Non 200 status code received.");
         JSONObject responseData = new JSONObject(response.getData());
-        assertEquals(responseData.getString("message"), "asset added",
-                     "Asset has not added successfully");
-        assertNotNull(responseData.getString("id"), "app id is null");
+        String uuid = responseData.getString("id");
+        appmPublisherRestClient.publishWebApp(uuid);
+
+        SubscriptionRequest subscriptionRequest = new SubscriptionRequest(appName, userName, appVersion);
+        HttpResponse subscriptionResponse= appmStoreRestClient.subscribeForApplication(subscriptionRequest);
+        JSONObject subscribedData = new JSONObject(subscriptionResponse.getData());
+        assertEquals(subscribedData.get("status"), "true", "User hasn't subscribed successfully" );
     }
 
     @AfterClass(alwaysRun = true)

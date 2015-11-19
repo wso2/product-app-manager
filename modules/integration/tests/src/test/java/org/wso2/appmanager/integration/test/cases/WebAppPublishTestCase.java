@@ -18,8 +18,6 @@
 
 package org.wso2.appmanager.integration.test.cases;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -31,17 +29,16 @@ import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
-public class PublisherCreateWebAppTestCase {
+public class WebAppPublishTestCase {
 
-    private static final String TEST_DESCRIPTION = "Verify Creating a Web App";
+    private static final String TEST_DESCRIPTION = "Verify Publishing a Web App";
     private APPMPublisherRestClient appmPublisherRestClient;
-    private String appName = "PublisherCreateWebAppTestCase";
-    private String context = "/PublisherCreateWebAppTestCase";
-    private String trackingCode = "AM_PublisherCreateWebAppTestCase";
-    private String appVersion = "1.0.0";
+    private String appName = "WebAppPublishTestCase";
+    private String context = "/WebAppPublishTestCase";
+    private String trackingCode = "AM_WebAppPublishTestCase";
+    private String version = "1.0.0";
     private String backEndUrl;
 
 
@@ -57,15 +54,31 @@ public class PublisherCreateWebAppTestCase {
 
     @Test(description = TEST_DESCRIPTION)
     public void testPublisherCreateWebApp() throws Exception {
-        AppCreateRequest appRequest = new AppCreateRequest(appName, context, appVersion,
-                                                           trackingCode);
+        AppCreateRequest appRequest = new AppCreateRequest(appName, context, version, trackingCode);
         HttpResponse response = appmPublisherRestClient.webAppCreate(appRequest);
 
-        assertTrue(response.getResponseCode() == 200, "Non 200 status code received.");
         JSONObject responseData = new JSONObject(response.getData());
-        assertEquals(responseData.getString("message"), "asset added",
-                     "Asset has not added successfully");
-        assertNotNull(responseData.getString("id"), "app id is null");
+        String uuid = responseData.getString("id");
+
+        HttpResponse submitHttpResponse = appmPublisherRestClient.changeState(uuid,
+                                                                              "Submit for Review");
+
+        assertTrue(submitHttpResponse.getResponseCode() == 200, "Non 200 status code received.");
+        JSONObject submittedResponseData = new JSONObject(submitHttpResponse.getData());
+        assertEquals(submittedResponseData.getString("status") , "Success",
+                     "Asset has not submitted for review successfully" );
+
+        HttpResponse approvedHttpResponse = appmPublisherRestClient.changeState(uuid, "Approve");
+        assertTrue(approvedHttpResponse.getResponseCode() == 200, "Non 200 status code received.");
+        JSONObject approvedResponseData = new JSONObject(approvedHttpResponse.getData());
+        assertEquals(approvedResponseData.getString("status") , "Success",
+                     "Asset has not approved" );
+
+        HttpResponse publishedHttpResponse = appmPublisherRestClient.changeState(uuid, "Publish");
+        assertTrue(publishedHttpResponse.getResponseCode() == 200, "Non 200 status code received.");
+        JSONObject publishedResponseData = new JSONObject(publishedHttpResponse.getData());
+        assertEquals(publishedResponseData.getString("status") , "Success",
+                     "Asset has not published" );
     }
 
     @AfterClass(alwaysRun = true)
