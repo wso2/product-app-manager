@@ -22,11 +22,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.wso2.appmanager.ui.integration.test.dto.WebApp;
 import org.wso2.appmanager.ui.integration.test.utils.Page;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 
 public class PublisherCreateWebAppPage extends Page {
@@ -52,6 +55,16 @@ public class PublisherCreateWebAppPage extends Page {
     }
 
     public PublisherWebAppsListPage createWebApp(WebApp webapp) throws Exception{
+        WebDriverWait wait = new WebDriverWait(driver, 30);
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("overview_name")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("overview_displayName")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("overview_context")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("overview_version")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("overview_webAppUrl")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("optradio")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("btn-create-asset")));
+
         driver.findElement(By.id("overview_name")).sendKeys(webapp.getName());
         driver.findElement(By.id("overview_displayName")).sendKeys(webapp.getDisplayName());
         driver.findElement(By.id("overview_context")).sendKeys(webapp.getContext());
@@ -61,6 +74,7 @@ public class PublisherCreateWebAppPage extends Page {
             driver.findElement(By.name("optradio")).click();
         }
         driver.findElement(By.id("btn-create-asset")).click();
+        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
         return  PublisherWebAppsListPage.getPage(driver, appMServer);
     }
 }
