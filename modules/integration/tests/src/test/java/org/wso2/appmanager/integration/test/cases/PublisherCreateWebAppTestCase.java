@@ -71,12 +71,12 @@ public class PublisherCreateWebAppTestCase {
         //Web app create.
         AppCreateRequest appRequest = new AppCreateRequest(appName, context, appVersion,
                                                            trackingCode);
-        appRequest.setUritemplate_policyGroupId0(policyId);
-        appRequest.setUritemplate_policyGroupId1(policyId);
-        appRequest.setUritemplate_policyGroupId2(policyId);
-        appRequest.setUritemplate_policyGroupId3(policyId);
-        appRequest.setUritemplate_policyGroupId4(policyId);
-        appRequest.setUritemplate_policyGroupIds(policyGroupId);
+        appRequest.setUriTemplatePolicyGroupId0(policyId);
+        appRequest.setUriTemplatePolicyGroupId1(policyId);
+        appRequest.setUriTemplatePolicyGroupId2(policyId);
+        appRequest.setUriTemplatePolicyGroupId3(policyId);
+        appRequest.setUriTemplatePolicyGroupId4(policyId);
+        appRequest.setUriTemplatePolicyGroupIds(policyGroupId);
         HttpResponse appCreateResponse = appmPublisherRestClient.createApp(appRequest);
 
         assertTrue(appCreateResponse.getResponseCode() == 200, "Non 200 status code received.");

@@ -31,12 +31,12 @@ import java.util.Map;
 public class HttpUtil {
 
     /**
-     *
+     * Send a PUT request.
      * @param endpoint Url.
      * @param postBody String.
      * @param headers Map<String, String>.
      * @return httpResponse HttpResponse.
-     * @throws Exception
+     * @throws Exception on errors.
      */
     public static HttpResponse doPut(URL endpoint, String postBody,
                                      Map<String, String> headers) throws Exception {
@@ -109,6 +109,13 @@ public class HttpUtil {
         }
     }
 
+    /**
+     * Send a DELETE request.
+     * @param endpoint URL.
+     * @param headers  Map<String, String>.
+     * @return httpResponse HttpResponse.
+     * @throws Exception on errors.
+     */
     public static HttpResponse doDelete(URL endpoint,
                                         Map<String, String> headers) throws Exception {
         HttpURLConnection urlConnection = null;
@@ -173,6 +180,14 @@ public class HttpUtil {
         }
     }
 
+    /**
+     * Send a POST request.
+     * @param endpoint URL.
+     * @param postBody String.
+     * @param headers Map<String, String>.
+     * @return httpResponse HttpResponse.
+     * @throws Exception on errors.
+     */
     public static HttpResponse doPost(URL endpoint, String postBody,
                                       Map<String, String> headers) throws Exception {
         HttpURLConnection urlConnection = null;
@@ -250,6 +265,13 @@ public class HttpUtil {
         }
     }
 
+    /**
+     * send a GET request.
+     * @param endpoint String.
+     * @param headers  Map<String, String>.
+     * @return httpResponse HttpResponse.
+     * @throws IOException on errors.
+     */
     public static HttpResponse doGet(String endpoint,
                                      Map<String, String> headers) throws IOException {
         HttpResponse httpResponse;
@@ -298,7 +320,6 @@ public class HttpUtil {
                     rd.close();
                 }
             }
-
             return httpResponse;
         }
         return null;

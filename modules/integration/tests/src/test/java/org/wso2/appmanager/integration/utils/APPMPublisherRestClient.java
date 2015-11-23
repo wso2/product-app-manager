@@ -34,13 +34,13 @@ public class APPMPublisherRestClient {
 
     public APPMPublisherRestClient(String backEndUrl) throws MalformedURLException {
         this.backEndUrl = backEndUrl;
-        if (requestHeaders.get("Content-Type") == null) {
-            this.requestHeaders.put("Content-Type", "application/json");
+        if (requestHeaders.get(AppmTestConstants.CONTENT_TYPE) == null) {
+            this.requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/json");
         }
     }
 
     /**
-     * logs in to publisher.
+     * Log in to publisher.
      *
      * @param userName String.
      * @param password String.
@@ -70,7 +70,12 @@ public class APPMPublisherRestClient {
 
     /**
      * Create New Web application.
-     * @return httpResponse HttpResponse.
+     *
+     * @param appName      String.
+     * @param context      String.
+     * @param appVersion   String.
+     * @param trackingCode String.
+     * @return appCreateResponse HttpResponse.
      * @throws Exception on errors.
      */
     public HttpResponse webAppCreate(String appName, String context, String appVersion,
@@ -81,22 +86,22 @@ public class APPMPublisherRestClient {
         String httpResponseData = httpResponse.getData();
         if (httpResponse.getResponseCode() == 200) {
             JSONObject responseData = new JSONObject(httpResponseData);
-            String response = responseData.getString("response");
+            String response = responseData.getString(AppmTestConstants.RESPONSE);
             JSONObject responseObject = new JSONObject(response);
 
             //Retrieve the policy group id.
-            String policyId = responseObject.getString("id");
+            String policyId = responseObject.getString(AppmTestConstants.ID);
             String policyGroupId = "[" + policyId + "]";
 
             //Set new policy Id to AppCreateRequest;
             AppCreateRequest appRequest = new AppCreateRequest(appName, context, appVersion,
                                                                trackingCode);
-            appRequest.setUritemplate_policyGroupId0(policyId);
-            appRequest.setUritemplate_policyGroupId1(policyId);
-            appRequest.setUritemplate_policyGroupId2(policyId);
-            appRequest.setUritemplate_policyGroupId3(policyId);
-            appRequest.setUritemplate_policyGroupId4(policyId);
-            appRequest.setUritemplate_policyGroupIds(policyGroupId);
+            appRequest.setUriTemplatePolicyGroupId0(policyId);
+            appRequest.setUriTemplatePolicyGroupId1(policyId);
+            appRequest.setUriTemplatePolicyGroupId2(policyId);
+            appRequest.setUriTemplatePolicyGroupId3(policyId);
+            appRequest.setUriTemplatePolicyGroupId4(policyId);
+            appRequest.setUriTemplatePolicyGroupIds(policyGroupId);
 
             HttpResponse appCreateResponse = createApp(appRequest);
             if (appCreateResponse.getResponseCode() == 200) {
@@ -117,46 +122,45 @@ public class APPMPublisherRestClient {
     }
 
     /**
-     * Add policy group before create the application.
+     * Add policy group before creating the application.
+     *
      * @param policyDesc String.
      * @return httpResponse.
      * @throws Exception on errors.
      */
     public HttpResponse addPoicyGroup(String policyDesc) throws Exception {
-        requestHeaders.put("Content-Type", "application/x-www-form-urlencoded");
+        requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/x-www-form-urlencoded");
 
         String payload = "policyGroupName=Default&throttlingTier=Unlimited&userRoles"
-                    + "=&anonymousAccessToUrlPattern=false&objPartialMappings"
-                    + "=[]&policyGroupDesc="
-                    + policyDesc;
+                + "=&anonymousAccessToUrlPattern=false&objPartialMappings"
+                + "=[]&policyGroupDesc="
+                + policyDesc;
 
         HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
-                                                                       +
-                                                                       "/publisher/api/entitlement/policy/partial/"
-                                                                       + "policyGroup/save"),
-                                                       payload, requestHeaders);
+                                             + "/publisher/api/entitlement/policy/partial/"
+                                             + "policyGroup/save"),
+                                             payload, requestHeaders);
         return response;
-
     }
 
     /**
-     * creating an application
+     * creating web application.
      *
-     * @param appRequest - to create the payload
-     * @return response
-     * @throws Exception
+     * @param appRequest - to create the payload.
+     * @return response HttpResponse.
+     * @throws Exception on errors.
      */
     public HttpResponse createApp(AppCreateRequest appRequest) throws Exception {
         String payload = appRequest.generateRequestParameters();
         String roles = appRequest.getRoles();
-        this.requestHeaders.put("Content-Type", "application/x-www-form-urlencoded");
+        this.requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/x-www-form-urlencoded");
         HttpResponse response =
-                HttpRequestUtil.doPost(new URL(backEndUrl +
-                                                       "/publisher/asset/webapp"), payload,
-                                       requestHeaders);
+                HttpRequestUtil.doPost(new URL(backEndUrl
+                                                       + "/publisher/asset/webapp"), payload,
+                                                         requestHeaders);
         if (response.getResponseCode() == 200) {
             JSONObject jsonObject = new JSONObject(response.getData());
-            String appId = (String) jsonObject.get("id");
+            String appId = (String) jsonObject.get(AppmTestConstants.ID);
 
             if (!roles.equals("")) {
                 this.addRole(roles, appId);
@@ -172,38 +176,34 @@ public class APPMPublisherRestClient {
         }
     }
 
-    //{"provider":"wso2is-5.0.0","logout_url":"https://sampleapp.com","claims":["http://wso2.org/claims/role","http://wso2.org/claims/otherphone"],"app_name":"WebAppPublishTestCase","app_verison":"1.0.0",
-     //"app_transport":"http","app_context":"/WebAppPublishTestCase","app_provider":"admin","app_allowAnonymous":"false","app_acsURL":"https://sampleapp.com/acs"}
-
-    //action=null&app_provider=admin&claims=["http://wso2.org/claims/role","http://wso2.org/claims/otherphone"]&app_allowAnonymous=false&app_verison=1.0.0&logout_url=https://sampleapp.com&app_context=/WebAppPublishTestCase&app_transport=http
-    // &provider=wso2is-5.0.0&app_name=WebAppPublishTestCase&app_acsURL=https://sampleapp.com/acs
+    /**
+     * Add Sso Provider when creating new web app.
+     * @param appCreateRequest AppCreateRequest.
+     * @return ssoProviderAddingResponse HttpResponse.
+     * @throws Exception
+     */
     public HttpResponse addSsoProvider(AppCreateRequest appCreateRequest) throws Exception {
-        String provider = appCreateRequest.getSso_ssoProvider();
-        String logOutUrl = appCreateRequest.getOverview_logoutUrl();
-        if (logOutUrl==null){
+        String provider = appCreateRequest.getSsoProvider();
+        String logOutUrl = appCreateRequest.getOverviewLogoutUrl();
+        if (logOutUrl == null) {
             logOutUrl = "";
         }
         String claims = appCreateRequest.getClaims();
-        String appName = appCreateRequest.getOverview_name();
-        String version = appCreateRequest.getOverview_version();
-        String transport = appCreateRequest.getOverview_transports();
-        String context = appCreateRequest.getOverview_context();
-        String acsUrl = appCreateRequest.getOverview_acsUrl();
+        String appName = appCreateRequest.getOverviewName();
+        String version = appCreateRequest.getOverviewVersion();
+        String transport = appCreateRequest.getOverviewTransports();
+        String context = appCreateRequest.getOverviewContext();
+        String acsUrl = appCreateRequest.getOverviewAcsUrl();
 
         String requestBody = "{\"provider\":\"" + provider +
-                "\",\"logout_url\":\""+logOutUrl+
-                "\",\"app_acsURL\":\""+acsUrl+
-                "\",\"claims\":[\""+claims+"\"],\"app_name\":\""+appName+
-                "\",\"app_verison\":\""+version+
-                "\",\"app_transport\":\""+transport+
-                "\",\"app_context\":\""+context+
+                "\",\"logout_url\":\"" + logOutUrl +
+                "\",\"app_acsURL\":\"" + acsUrl +
+                "\",\"claims\":[\"" + claims + "\"],\"app_name\":\"" + appName +
+                "\",\"app_verison\":\"" + version +
+                "\",\"app_transport\":\"" + transport +
+                "\",\"app_context\":\"" + context +
                 "\"}";
-
-
-
-  //       SPCreateRequest spCreateRequest = new SPCreateRequest(appName,version,context,provider);
-       // String payload = spCreateRequest.generateRequestParameters();
-        this.requestHeaders.put("Content-Type", "application/json");
+        this.requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/json");
         HttpResponse response =
                 HttpUtil.doPost(new URL(backEndUrl + "/publisher/api/sso/addConfig"),
                                 requestBody, requestHeaders);
@@ -211,25 +211,24 @@ public class APPMPublisherRestClient {
     }
 
     /**
-     * this method adds the roles to an application
+     * Add the roles to an application.
      *
-     * @param roles
-     * @param appId
-     * @return
-     * @throws Exception
+     * @param roles String.
+     * @param appId String.
+     * @return roleAddedResponse HttpResponse.
+     * @throws Exception on errors.
      */
     private HttpResponse addRole(String roles, String appId) throws Exception {
         String role = roles;
         this.requestHeaders.put("Content-Type", "application/json");
         HttpResponse response =
                 HttpUtil.doPost(new URL(backEndUrl + "/publisher/asset/webapp/id/" +
-                                                appId + "/permissions"),
+                                 appId + "/permissions"),
                                 "[{\"role\":\"" + role +
-                                        "\",\"permissions\":[\"GET\",\"PUT\",\"DELETE\"," +
-                                        "\"AUTHORIZE\"]}]",
+                                "\",\"permissions\":[\"GET\",\"PUT\",\"DELETE\"," +
+                                "\"AUTHORIZE\"]}]",
                                 requestHeaders);
         if (response.getResponseCode() == 200) {
-
             return response;
         } else {
             throw new Exception("Add role failed> " + response.getData());
@@ -237,11 +236,10 @@ public class APPMPublisherRestClient {
     }
 
     /**
-     * publish an application which is in created state
-     *
-     * @param appId - application id
-     * @return -response
-     * @throws Exception
+     * Publish an application.
+     * @param appId  String.
+     * @return appPublishedResponse String.
+     * @throws Exception on errors.
      */
     public HttpResponse publishWebApp(String appId) throws Exception {
 
@@ -255,20 +253,19 @@ public class APPMPublisherRestClient {
     }
 
     /**
-     * change the life cycle state from current state to next state	 *
-     *
-     * @param appId
-     * @param toState
-     * @return
-     * @throws Exception
+     * Change the life cycle state from current state to next state
+     * @param appId String.
+     * @param toState String.
+     * @return changedStateResponse HttpResponse.
+     * @throws Exception on errors.
      */
     public HttpResponse changeState(String appId, String toState) throws Exception {
-        this.requestHeaders.put("Content-Type", "");
+        this.requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "");
         String encodedState = toState.replaceAll(" ", "%20");
 
         HttpResponse response =
                 HttpUtil.doPut(new URL(backEndUrl + "/publisher/api/lifecycle/" +
-                                               encodedState + "/webapp/" + appId), "",
+                              encodedState + "/webapp/" + appId), "",
                                requestHeaders);
 
         if (response.getResponseCode() == 200) {
@@ -281,12 +278,12 @@ public class APPMPublisherRestClient {
     }
 
     /**
-     * add a new tag
+     * Add a new tag
      *
-     * @param id      application id
-     * @param tagName tag name
-     * @return
-     * @throws Exception
+     * @param id      String.
+     * @param tagName String.
+     * @return tagsAddedResponse HttpResponse.
+     * @throws Exception on errors.
      */
     public HttpResponse addNewTag(String id, String tagName) throws Exception {
         checkAuthentication();
@@ -297,46 +294,29 @@ public class APPMPublisherRestClient {
                                                requestHeaders);
 
         if (response.getResponseCode() == 200) {
-            //VerificationUtil.checkErrors(response);
             return response;
         } else {
-            throw new Exception("Get Api Information failed> "
-                                        + response.getData());
+            throw new Exception("Get Api Information failed> " + response.getData());
         }
 
     }
 
-    /*
-     * Application deletion request
+    /**
+     * Get Web app Properties.
+     * @param appId String.
+     * @return
+     * @throws Exception
      */
-
-    public HttpResponse deleteApp(String appId) throws Exception{
-
-        ///publisher/api/asset/delete/{type}/{id}
+    public HttpResponse getWebAppProperty(String appId) throws Exception {
         checkAuthentication();
-
-        //TODO delte the app and do gett. check for null
-
-        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl +
-                                                                       "/publisher/api/asset/delete/webapp/"+appId),"",requestHeaders);
-
-        if (response.getResponseCode() == 200) {
-            return response;
-        } else {
-            throw new Exception("App deletion failed>" + response.getData());
-        }
-    }
-
-    public JSONObject getWebAppProperty(String appId) throws Exception {
-        checkAuthentication();
-        HttpResponse httpResponse = HttpRequestUtil.doGet(backEndUrl + "/publisher/api/asset/webapp/"
-                                                                  + appId, requestHeaders);
+        HttpResponse httpResponse = HttpRequestUtil.doGet(
+                backEndUrl + "/publisher/api/asset/webapp/"
+                        + appId, requestHeaders);
         if (httpResponse.getResponseCode() == 200) {
-            JSONObject jsonObject = new JSONObject(httpResponse.getData());
-            return jsonObject ;
+            return httpResponse;
         } else {
-            System.out.println(httpResponse);
-            throw new Exception("Error occurred while retrieving webapp properties by app Id :" + appId);
+            throw new Exception(
+                    "Error occurred while retrieving webapp properties by app Id :" + appId);
         }
     }
 
@@ -354,24 +334,24 @@ public class APPMPublisherRestClient {
     }
 
     private String setSession(String session) {
-        return requestHeaders.put("Cookie", session);
-    }
-
-    /**
-     * method to check whether user is logged in
-     *
-     * @return
-     * @throws Exception
-     */
-    private boolean checkAuthentication() throws Exception {
-        if (requestHeaders.get("Cookie") == null) {
-            throw new Exception("No Session Cookie found. Please login first");
-        }
-        return true;
+        return requestHeaders.put(AppmTestConstants.COOKIE, session);
     }
 
     private String getSession(Map<String, String> responseHeaders) {
-        return responseHeaders.get("Set-Cookie");
+        return responseHeaders.get(AppmTestConstants.SET_COOKIE);
+    }
+
+    /**
+     * Check whether user is log in.
+     *
+     * @return true/false.
+     * @throws Exception on errors.
+     */
+    private boolean checkAuthentication() throws Exception {
+        if (requestHeaders.get(AppmTestConstants.COOKIE) == null) {
+            throw new Exception("No Session Cookie found. Please login first");
+        }
+        return true;
     }
 
 }

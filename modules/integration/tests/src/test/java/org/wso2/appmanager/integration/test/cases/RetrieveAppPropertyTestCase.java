@@ -15,35 +15,27 @@
 *specific language governing permissions and limitations
 *under the License.
 */
-
 package org.wso2.appmanager.integration.test.cases;
 
 import org.json.JSONObject;
-import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.appmanager.integration.utils.APPMPublisherRestClient;
-import org.wso2.appmanager.integration.utils.APPMStoreRestClient;
 import org.wso2.appmanager.integration.utils.AppmTestConstants;
-import org.wso2.appmanager.integration.utils.bean.AppCreateRequest;
-import org.wso2.appmanager.integration.utils.bean.SubscriptionRequest;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.automation.engine.context.beans.User;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
-import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
-public class WebAppSubscribeTestCase {
-
-    private static final String TEST_DESCRIPTION = "Verify Subscribing to a Web App";
+public class RetrieveAppPropertyTestCase {
+    private static final String TEST_DESCRIPTION = "Verify Retrieving Web Apps Properties";
     private APPMPublisherRestClient appmPublisherRestClient;
-    private APPMStoreRestClient appmStoreRestClient;
-    private String appName = "WebAppSubscribeTestCase";
+    private String appName = "RetrieveAppPropertyTestCase";
     private String appVersion = "1.0.0";
-    private String context = "/WebAppSubscribeTestCase";
-    private String trackingCode = "WebAppSubscribeTestCase";
+    private String context = "/RetrieveAppPropertyTestCase";
+    private String trackingCode = "RetrieveAppPropertyTestCase";
     private User adminUser;
     private String userName;
     private String password;
@@ -62,36 +54,38 @@ public class WebAppSubscribeTestCase {
         password = adminUser.getPassword();
 
         appmPublisherRestClient.login(userName, password);
-        appmStoreRestClient = new APPMStoreRestClient(backEndUrl);
-        appmStoreRestClient.login(userName, password);
     }
 
     @Test(description = TEST_DESCRIPTION)
-    public void testPublisherCreateWebApp() throws Exception {
-        HttpResponse response = appmPublisherRestClient.webAppCreate(appName,context,appVersion,trackingCode);
+
+    public void testAppPropertyRetrieval() throws Exception {
+        HttpResponse response = appmPublisherRestClient.webAppCreate(appName, context, appVersion,
+                                                                     trackingCode);
 
         JSONObject responseData = new JSONObject(response.getData());
         String uuid = responseData.getString(AppmTestConstants.ID);
+        String appType = AppmTestConstants.WEB_APP;
         appmPublisherRestClient.publishWebApp(uuid);
 
-        SubscriptionRequest subscriptionRequest = new SubscriptionRequest(appName, userName, appVersion);
-        //Send Subscription request.
-        HttpResponse subscriptionResponse= appmStoreRestClient.subscribeForApplication(subscriptionRequest);
-        JSONObject subscriptionJsonObject = new JSONObject(subscriptionResponse.getData());
-        Assert.assertTrue(!(Boolean) subscriptionJsonObject.get("error"), "Error while updating tier permission");
-        Assert.assertTrue((Boolean) subscriptionJsonObject.get(AppmTestConstants.STATUS),
-                          "Application is already subscribed");
+        HttpResponse appPropertyResponse = appmPublisherRestClient.getWebAppProperty(uuid);
+        JSONObject jsonObject = new JSONObject(appPropertyResponse.getData());
 
-        //Send Unsubscription Request
-        HttpResponse unSubscriptionResponse = appmStoreRestClient.unsubscribeForApplication(subscriptionRequest);
-        JSONObject unSubscriptionJsonObject = new JSONObject(unSubscriptionResponse.getData());
-        Assert.assertTrue(!(Boolean) unSubscriptionJsonObject.get("error"), "Error while updating tier permission");
-        Assert.assertTrue((Boolean) subscriptionJsonObject.get(AppmTestConstants.STATUS),
-                          "Application is already unsubscribed");
-    }
+        //Check App Id
+        String appId = (String) jsonObject.get(AppmTestConstants.ID);
+        assertTrue((appId.equals(uuid) == true), "Unable to Retrieve application property.");
 
-    @AfterClass(alwaysRun = true)
-    public void closeDown() throws Exception {
+        //Check App Type
+        String type = (String) jsonObject.get(AppmTestConstants.TYPE);
+        assertTrue((type.equals(appType) == true), "Unable to Retrieve application property.");
 
+        //Check lifecycleState
+        String lifecycleState = (String) jsonObject.get(AppmTestConstants.LIFE_CYCLE_STATE);
+        assertTrue((lifecycleState.equalsIgnoreCase(AppmTestConstants.PUBLISHED) == true),
+                   "Unable to Retrieve application property.");
+
+        //Check Path attribute
+        String appPropertyString = userName + "/" + appName + "/" + appVersion + "/" + appType;
+        String path = (String) jsonObject.get("path");
+        assertTrue(path.endsWith(appPropertyString), "Unable to Retrieve application property.");
     }
 }

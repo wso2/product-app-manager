@@ -32,13 +32,13 @@ public class APPMStoreRestClient {
 
     public APPMStoreRestClient(String backEndUrl) {
         this.backEndUrl = backEndUrl;
-        if (requestHeaders.get("Content-Type") == null) {
-            this.requestHeaders.put("Content-Type", "application/json");
+        if (requestHeaders.get(AppmTestConstants.CONTENT_TYPE) == null) {
+            this.requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/json");
         }
     }
 
     /**
-     * log in to the user store.
+     * Log in to the user store.
      *
      * @param userName String.
      * @param password String.
@@ -49,21 +49,19 @@ public class APPMStoreRestClient {
             throws Exception {
 
         HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
-                                                                       + "/store/apis/user/login"),
-                                                       "{\"username\":\""
-                                                               + userName
-                                                               + "\""
-                                                               + ",\"password\":"
-                                                               + "\""
-                                                               + password
-                                                               + "\""
-                                                               + "}", requestHeaders);
+                                                     + "/store/apis/user/login"), "{\"username\":\""
+                                                     + userName
+                                                     + "\""
+                                                     + ",\"password\":"
+                                                     + "\""
+                                                     + password
+                                                     + "\""
+                                                     + "}", requestHeaders);
         /*
          * On Success {"error" : false, "message" : null} status code 200 On
 		 * Failure {"error" : true, "message" : null} status code 200
 		 */
         if (response.getResponseCode() == 200) {
-
             // if error == true this will return an exception then test fail!
             VerificationUtil.checkErrors(response);
             String session = getSession(response.getHeaders());
@@ -89,7 +87,7 @@ public class APPMStoreRestClient {
     public HttpResponse subscribeForApplication(SubscriptionRequest subscriptionRequest)
             throws Exception {
         checkAuthentication();
-        requestHeaders.put("Content-Type", "application/x-www-form-urlencoded");
+        requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/x-www-form-urlencoded");
         String payload = subscriptionRequest.generateRequestParameters();
         HttpResponse response = HttpRequestUtil.doPost(new URL(
                 backEndUrl + "/store/resources/webapp/v1/subscription/app")
@@ -147,20 +145,22 @@ public class APPMStoreRestClient {
 
     /**
      * Get Cookies.
+     *
      * @param responseHeaders Map<String, String>.
      * @return cookie String.
      */
     private String getSession(Map<String, String> responseHeaders) {
-        return responseHeaders.get("Set-Cookie");
+        return responseHeaders.get(AppmTestConstants.SET_COOKIE);
     }
 
     /**
      * Set Cookie.
+     *
      * @param session String.
      * @return
      */
     private String setSession(String session) {
-        return requestHeaders.put("Cookie", session);
+        return requestHeaders.put(AppmTestConstants.COOKIE, session);
     }
 
     /**
@@ -170,7 +170,7 @@ public class APPMStoreRestClient {
      * @throws Exception on errors.
      */
     private boolean checkAuthentication() throws Exception {
-        if (requestHeaders.get("Cookie") == null) {
+        if (requestHeaders.get(AppmTestConstants.COOKIE) == null) {
             throw new Exception("No Session Cookie found. Please login first");
         }
         return true;

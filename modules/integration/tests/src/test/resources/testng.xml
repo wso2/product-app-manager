@@ -19,6 +19,7 @@
             <class name="org.wso2.appmanager.integration.test.cases.PublisherCreateWebAppTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.WebAppPublishTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.WebAppSubscribeTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.RetrieveAppPropertyTestCase"/>
         </classes>
     </test>
 
