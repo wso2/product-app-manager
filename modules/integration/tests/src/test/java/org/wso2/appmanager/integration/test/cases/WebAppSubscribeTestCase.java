@@ -19,15 +19,18 @@
 package org.wso2.appmanager.integration.test.cases;
 
 import org.json.JSONObject;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.appmanager.integration.utils.APPMPublisherRestClient;
 import org.wso2.appmanager.integration.utils.APPMStoreRestClient;
+import org.wso2.appmanager.integration.utils.AppmTestConstants;
 import org.wso2.appmanager.integration.utils.bean.AppCreateRequest;
 import org.wso2.appmanager.integration.utils.bean.SubscriptionRequest;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
+import org.wso2.carbon.automation.engine.context.beans.User;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
 import static org.testng.Assert.assertEquals;
@@ -41,8 +44,9 @@ public class WebAppSubscribeTestCase {
     private String appVersion = "1.0.0";
     private String context = "/WebAppSubscribeTestCase";
     private String trackingCode = "WebAppSubscribeTestCase";
-    private String userName = "admin";
-    private String password = "admin";
+    private User adminUser;
+    private String userName;
+    private String password;
     private String backEndUrl;
 
 
@@ -52,6 +56,10 @@ public class WebAppSubscribeTestCase {
                                                              TestUserMode.SUPER_TENANT_ADMIN);
         backEndUrl = appMServer.getContextUrls().getWebAppURLHttps();
         appmPublisherRestClient = new APPMPublisherRestClient(backEndUrl);
+        adminUser = appMServer.getSuperTenant().getTenantAdmin();
+        userName = adminUser.getUserName();
+        password = adminUser.getPassword();
+
         appmPublisherRestClient.login(userName, password);
         appmStoreRestClient = new APPMStoreRestClient(backEndUrl);
         appmStoreRestClient.login(userName, password);
@@ -59,17 +67,26 @@ public class WebAppSubscribeTestCase {
 
     @Test(description = TEST_DESCRIPTION)
     public void testPublisherCreateWebApp() throws Exception {
-        AppCreateRequest appRequest = new AppCreateRequest(appName, context, appVersion, trackingCode);
-        HttpResponse response = appmPublisherRestClient.webAppCreate(appRequest);
+        HttpResponse response = appmPublisherRestClient.webAppCreate(appName,context,appVersion,trackingCode);
 
         JSONObject responseData = new JSONObject(response.getData());
-        String uuid = responseData.getString("id");
+        String uuid = responseData.getString(AppmTestConstants.ID);
         appmPublisherRestClient.publishWebApp(uuid);
 
         SubscriptionRequest subscriptionRequest = new SubscriptionRequest(appName, userName, appVersion);
+        //Send Subscription request.
         HttpResponse subscriptionResponse= appmStoreRestClient.subscribeForApplication(subscriptionRequest);
-        JSONObject subscribedData = new JSONObject(subscriptionResponse.getData());
-        assertEquals(subscribedData.get("status"), "true", "User hasn't subscribed successfully" );
+        JSONObject subscriptionJsonObject = new JSONObject(subscriptionResponse.getData());
+        Assert.assertTrue(!(Boolean) subscriptionJsonObject.get("error"), "Error while updating tier permission");
+        Assert.assertTrue((Boolean) subscriptionJsonObject.get(AppmTestConstants.STATUS),
+                          "Application is already subscribed");
+
+        //Send Unsubscription Request
+        HttpResponse unSubscriptionResponse = appmStoreRestClient.unsubscribeForApplication(subscriptionRequest);
+        JSONObject unSubscriptionJsonObject = new JSONObject(unSubscriptionResponse.getData());
+        Assert.assertTrue(!(Boolean) unSubscriptionJsonObject.get("error"), "Error while updating tier permission");
+        Assert.assertTrue((Boolean) subscriptionJsonObject.get(AppmTestConstants.STATUS),
+                          "Application is already unsubscribed");
     }
 
     @AfterClass(alwaysRun = true)

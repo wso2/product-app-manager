@@ -70,13 +70,13 @@ public class APPMPublisherRestClient {
 
     /**
      * Create New Web application.
-     * @param appRequest AppCreateRequest.
      * @return httpResponse HttpResponse.
      * @throws Exception on errors.
      */
-    public HttpResponse webAppCreate(AppCreateRequest appRequest) throws Exception {
+    public HttpResponse webAppCreate(String appName, String context, String appVersion,
+                                     String trackingCode) throws Exception {
         checkAuthentication();
-        String appDescription = "default app description for " + appRequest.getOverview_name();
+        String appDescription = "default app description for " + appName;
         HttpResponse httpResponse = addPoicyGroup(appDescription);
         String httpResponseData = httpResponse.getData();
         if (httpResponse.getResponseCode() == 200) {
@@ -89,6 +89,8 @@ public class APPMPublisherRestClient {
             String policyGroupId = "[" + policyId + "]";
 
             //Set new policy Id to AppCreateRequest;
+            AppCreateRequest appRequest = new AppCreateRequest(appName, context, appVersion,
+                                                               trackingCode);
             appRequest.setUritemplate_policyGroupId0(policyId);
             appRequest.setUritemplate_policyGroupId1(policyId);
             appRequest.setUritemplate_policyGroupId2(policyId);
@@ -98,7 +100,13 @@ public class APPMPublisherRestClient {
 
             HttpResponse appCreateResponse = createApp(appRequest);
             if (appCreateResponse.getResponseCode() == 200) {
-                return appCreateResponse;
+                HttpResponse addSsoProviderResponse = addSsoProvider(appRequest);
+                if (addSsoProviderResponse.getResponseCode() == 200) {
+                    return appCreateResponse;
+                } else {
+                    throw new Exception("Error occurred while service provider creating! "
+                                                + appCreateResponse.getData());
+                }
             } else {
                 throw new Exception("Error occurred while new web app creating! "
                                             + appCreateResponse.getData());
@@ -114,7 +122,7 @@ public class APPMPublisherRestClient {
      * @return httpResponse.
      * @throws Exception on errors.
      */
-    private HttpResponse addPoicyGroup(String policyDesc) throws Exception {
+    public HttpResponse addPoicyGroup(String policyDesc) throws Exception {
         requestHeaders.put("Content-Type", "application/x-www-form-urlencoded");
 
         String payload = "policyGroupName=Default&throttlingTier=Unlimited&userRoles"
@@ -123,8 +131,10 @@ public class APPMPublisherRestClient {
                     + policyDesc;
 
         HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
-                                              + "/publisher/api/entitlement/policy/partial/"
-                                              + "policyGroup/save"), payload, requestHeaders);
+                                                                       +
+                                                                       "/publisher/api/entitlement/policy/partial/"
+                                                                       + "policyGroup/save"),
+                                                       payload, requestHeaders);
         return response;
 
     }
@@ -136,7 +146,7 @@ public class APPMPublisherRestClient {
      * @return response
      * @throws Exception
      */
-    private HttpResponse createApp(AppCreateRequest appRequest) throws Exception {
+    public HttpResponse createApp(AppCreateRequest appRequest) throws Exception {
         String payload = appRequest.generateRequestParameters();
         String roles = appRequest.getRoles();
         this.requestHeaders.put("Content-Type", "application/x-www-form-urlencoded");
@@ -160,6 +170,44 @@ public class APPMPublisherRestClient {
         } else {
             throw new Exception("App creation failed> " + response.getData());
         }
+    }
+
+    //{"provider":"wso2is-5.0.0","logout_url":"https://sampleapp.com","claims":["http://wso2.org/claims/role","http://wso2.org/claims/otherphone"],"app_name":"WebAppPublishTestCase","app_verison":"1.0.0",
+     //"app_transport":"http","app_context":"/WebAppPublishTestCase","app_provider":"admin","app_allowAnonymous":"false","app_acsURL":"https://sampleapp.com/acs"}
+
+    //action=null&app_provider=admin&claims=["http://wso2.org/claims/role","http://wso2.org/claims/otherphone"]&app_allowAnonymous=false&app_verison=1.0.0&logout_url=https://sampleapp.com&app_context=/WebAppPublishTestCase&app_transport=http
+    // &provider=wso2is-5.0.0&app_name=WebAppPublishTestCase&app_acsURL=https://sampleapp.com/acs
+    public HttpResponse addSsoProvider(AppCreateRequest appCreateRequest) throws Exception {
+        String provider = appCreateRequest.getSso_ssoProvider();
+        String logOutUrl = appCreateRequest.getOverview_logoutUrl();
+        if (logOutUrl==null){
+            logOutUrl = "";
+        }
+        String claims = appCreateRequest.getClaims();
+        String appName = appCreateRequest.getOverview_name();
+        String version = appCreateRequest.getOverview_version();
+        String transport = appCreateRequest.getOverview_transports();
+        String context = appCreateRequest.getOverview_context();
+        String acsUrl = appCreateRequest.getOverview_acsUrl();
+
+        String requestBody = "{\"provider\":\"" + provider +
+                "\",\"logout_url\":\""+logOutUrl+
+                "\",\"app_acsURL\":\""+acsUrl+
+                "\",\"claims\":[\""+claims+"\"],\"app_name\":\""+appName+
+                "\",\"app_verison\":\""+version+
+                "\",\"app_transport\":\""+transport+
+                "\",\"app_context\":\""+context+
+                "\"}";
+
+
+
+  //       SPCreateRequest spCreateRequest = new SPCreateRequest(appName,version,context,provider);
+       // String payload = spCreateRequest.generateRequestParameters();
+        this.requestHeaders.put("Content-Type", "application/json");
+        HttpResponse response =
+                HttpUtil.doPost(new URL(backEndUrl + "/publisher/api/sso/addConfig"),
+                                requestBody, requestHeaders);
+        return response;
     }
 
     /**
@@ -257,6 +305,41 @@ public class APPMPublisherRestClient {
         }
 
     }
+
+    /*
+     * Application deletion request
+     */
+
+    public HttpResponse deleteApp(String appId) throws Exception{
+
+        ///publisher/api/asset/delete/{type}/{id}
+        checkAuthentication();
+
+        //TODO delte the app and do gett. check for null
+
+        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl +
+                                                                       "/publisher/api/asset/delete/webapp/"+appId),"",requestHeaders);
+
+        if (response.getResponseCode() == 200) {
+            return response;
+        } else {
+            throw new Exception("App deletion failed>" + response.getData());
+        }
+    }
+
+    public JSONObject getWebAppProperty(String appId) throws Exception {
+        checkAuthentication();
+        HttpResponse httpResponse = HttpRequestUtil.doGet(backEndUrl + "/publisher/api/asset/webapp/"
+                                                                  + appId, requestHeaders);
+        if (httpResponse.getResponseCode() == 200) {
+            JSONObject jsonObject = new JSONObject(httpResponse.getData());
+            return jsonObject ;
+        } else {
+            System.out.println(httpResponse);
+            throw new Exception("Error occurred while retrieving webapp properties by app Id :" + appId);
+        }
+    }
+
 
     public void setHttpHeader(String headerName, String value) {
         this.requestHeaders.put(headerName, value);

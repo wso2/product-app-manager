@@ -21,8 +21,10 @@ package org.wso2.appmanager.integration.test.cases;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.wso2.appmanager.integration.utils.AppmTestConstants;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
+import org.wso2.carbon.automation.engine.context.beans.User;
 import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
@@ -37,18 +39,20 @@ public class PublisherLoginTestCase {
 
     private static final String TEST_DESCRIPTION = "Verify login to App Manager Publisher";
     private String backEndUrl;
+    private User adminUser;
 
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
-        AutomationContext appMServer = new AutomationContext("App Manager",
+        AutomationContext appMServer = new AutomationContext(AppmTestConstants.APP_MANAGER,
                                                              TestUserMode.SUPER_TENANT_ADMIN);
         backEndUrl = appMServer.getContextUrls().getWebAppURLHttps();
+        adminUser = appMServer.getSuperTenant().getTenantAdmin();
     }
 
     @Test(description = TEST_DESCRIPTION)
     public void testPublisherLogin() throws Exception {
-        String userName = "admin";
-        String password = "admin";
+        String userName = adminUser.getUserName();
+        String password = adminUser.getPassword();
 
         Map<String, String> requestHeaders = new HashMap<String, String>();
         requestHeaders.put("Content-Type", "application/json");
@@ -62,7 +66,7 @@ public class PublisherLoginTestCase {
                                                        requestHeaders);
 
         assertTrue(response.getResponseCode() == 200, "Non 200 status code received.");
-        String session = response.getHeaders().get("Set-Cookie");
+        String session = response.getHeaders().get(AppmTestConstants.SET_COOKIE);
         assertNotNull(session, "Session is null");
     }
 

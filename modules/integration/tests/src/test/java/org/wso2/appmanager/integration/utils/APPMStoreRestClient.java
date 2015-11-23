@@ -38,26 +38,27 @@ public class APPMStoreRestClient {
     }
 
     /**
-     * logs in to the user store
+     * log in to the user store.
      *
-     * @param userName
-     * @param password
-     * @return
-     * @throws Exception
+     * @param userName String.
+     * @param password String.
+     * @return httpResponse HttpResponse.
+     * @throws Exception on errors.
      */
     public HttpResponse login(String userName, String password)
             throws Exception {
 
         HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
-                                      + "/store/apis/user/login"), "{\"username\":\""
-                                      + userName
-                                      + "\""
-                                      + ",\"password\":"
-                                      + "\""
-                                      + password
-                                      + "\""
-                                      + "}", requestHeaders);
-		/*
+                                                                       + "/store/apis/user/login"),
+                                                       "{\"username\":\""
+                                                               + userName
+                                                               + "\""
+                                                               + ",\"password\":"
+                                                               + "\""
+                                                               + password
+                                                               + "\""
+                                                               + "}", requestHeaders);
+        /*
          * On Success {"error" : false, "message" : null} status code 200 On
 		 * Failure {"error" : true, "message" : null} status code 200
 		 */
@@ -79,18 +80,20 @@ public class APPMStoreRestClient {
     }
 
     /**
-     * Subscribe application
+     * Subscribe for application.
      *
-     * @param subscriptionRequest
-     * @return
-     * @throws Exception
+     * @param subscriptionRequest SubscriptionRequest.
+     * @return httpResponse HttpResponse.
+     * @throws Exception on errors.
      */
-  public HttpResponse subscribeForApplication(SubscriptionRequest subscriptionRequest)
+    public HttpResponse subscribeForApplication(SubscriptionRequest subscriptionRequest)
             throws Exception {
         checkAuthentication();
+        requestHeaders.put("Content-Type", "application/x-www-form-urlencoded");
+        String payload = subscriptionRequest.generateRequestParameters();
         HttpResponse response = HttpRequestUtil.doPost(new URL(
                 backEndUrl + "/store/resources/webapp/v1/subscription/app")
-                , subscriptionRequest.generateRequestParameters()
+                , payload
                 , requestHeaders);
         if (response.getResponseCode() == 200) {
             VerificationUtil.checkErrors(response);
@@ -100,19 +103,71 @@ public class APPMStoreRestClient {
         }
     }
 
+    /**
+     * Unsubscribe application.
+     *
+     * @param unsubscriptionRequest SubscriptionRequest.
+     * @return HttpResponse HttpResponse.
+     * @throws Exception on errors.
+     */
+
+    public HttpResponse unsubscribeForApplication(SubscriptionRequest unsubscriptionRequest)
+            throws Exception {
+        checkAuthentication();
+        HttpResponse response = HttpRequestUtil.doPost(new URL(
+                backEndUrl + "/store/resources/webapp/v1/unsubscription/app")
+                , unsubscriptionRequest.generateRequestParameters()
+                , requestHeaders);
+        if (response.getResponseCode() == 200) {
+            VerificationUtil.checkErrors(response);
+            return response;
+        } else {
+            throw new Exception("Application Unsubscription failed> " + response.getData());
+        }
+    }
+
+    /**
+     * Rate a given application with a given rating value.
+     *
+     * @param id          application id.
+     * @param appType     application type.
+     * @param ratingValue rating value (0-5).
+     * @return response with average rating value and user rating value.
+     * @throws Exception on errors.
+     */
+    public HttpResponse rateApplication(String id, String appType, int ratingValue)
+            throws Exception {
+        checkAuthentication();
+        HttpResponse response = HttpRequestUtil.doGet(backEndUrl + "/store/apis/rate?id=" +
+                                                              id + "&type=" + appType + "&value=" +
+                                                              ratingValue, requestHeaders);
+        return response;
+    }
+
+
+    /**
+     * Get Cookies.
+     * @param responseHeaders Map<String, String>.
+     * @return cookie String.
+     */
     private String getSession(Map<String, String> responseHeaders) {
         return responseHeaders.get("Set-Cookie");
     }
 
+    /**
+     * Set Cookie.
+     * @param session String.
+     * @return
+     */
     private String setSession(String session) {
         return requestHeaders.put("Cookie", session);
     }
 
     /**
-     * method to check whether user is logged in
+     * method to check whether user is logged in.
      *
-     * @return
-     * @throws Exception
+     * @return whether user log in or not.
+     * @throws Exception on errors.
      */
     private boolean checkAuthentication() throws Exception {
         if (requestHeaders.get("Cookie") == null) {

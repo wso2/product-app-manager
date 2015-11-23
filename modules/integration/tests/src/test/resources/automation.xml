@@ -114,6 +114,10 @@
                 </admin>
                 <users>
 
+                    <user key="testuser1">
+                        <userName>testuser1</userName>
+                        <password>testuser1pass</password>
+                    </user>
                 </users>
             </tenant>
         </superTenant>

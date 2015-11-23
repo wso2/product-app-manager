@@ -19,8 +19,7 @@
 package org.wso2.appmanager.integration.utils.bean;
 
 /**
- * action=addAPISubscription&name=appName&version=1.0
- * .0&provider=provider&tier=Gold&applicationName=DefaultApplication
+ * This class is used to generate the payload for user subscription.
  */
 public class SubscriptionRequest extends AbstractRequest {
 
@@ -51,34 +50,66 @@ public class SubscriptionRequest extends AbstractRequest {
 
     }
 
+    /**
+     * Get Api Name.
+     * @return Api Name String.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Get App Provider.
+     * @return provider String.
+     */
     public String getProvider() {
         return provider;
     }
 
+    /**
+     * Get App Version.
+     * @return version String.
+     */
     public String getVersion() {
         return version;
     }
 
+    /**
+     * Set App Version.
+     * @param version String.
+     */
     public void setVersion(String version) {
         this.version = version;
     }
 
+    /**
+     * Get Application Name.
+     * @return applicationName String.
+     */
     public String getApplicationName() {
         return applicationName;
     }
 
+    /**
+     * Set Application Name.
+     * @param applicationName String.
+     */
     public void setApplicationName(String applicationName) {
         this.applicationName = applicationName;
     }
 
+    /**
+     * Get Tier.
+     * @return tier String.
+     */
     public String getTier() {
         return tier;
     }
 
+    /**
+     * Set Tier.
+     * @param tier String.
+     */
     public void setTier(String tier) {
         this.tier = tier;
     }

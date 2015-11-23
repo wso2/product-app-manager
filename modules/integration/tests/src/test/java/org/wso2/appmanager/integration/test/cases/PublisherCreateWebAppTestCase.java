@@ -18,16 +18,16 @@
 
 package org.wso2.appmanager.integration.test.cases;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.appmanager.integration.utils.APPMPublisherRestClient;
+import org.wso2.appmanager.integration.utils.AppmTestConstants;
 import org.wso2.appmanager.integration.utils.bean.AppCreateRequest;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
+import org.wso2.carbon.automation.engine.context.beans.User;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
 import static org.testng.Assert.assertEquals;
@@ -47,29 +47,51 @@ public class PublisherCreateWebAppTestCase {
 
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
-        AutomationContext appMServer = new AutomationContext("App Manager",
+        AutomationContext appMServer = new AutomationContext(AppmTestConstants.APP_MANAGER,
                                                              TestUserMode.SUPER_TENANT_ADMIN);
         backEndUrl = appMServer.getContextUrls().getWebAppURLHttps();
         appmPublisherRestClient = new APPMPublisherRestClient(backEndUrl);
-        appmPublisherRestClient.login("admin", "admin");
-
+        User adminUser = appMServer.getSuperTenant().getTenantAdmin();
+        appmPublisherRestClient.login(adminUser.getUserName(), adminUser.getPassword());
     }
 
     @Test(description = TEST_DESCRIPTION)
     public void testPublisherCreateWebApp() throws Exception {
+        //Policy Adding before app creating.
+        String appDescription = "default app description for " + appName;
+        HttpResponse policyAddingResponse = appmPublisherRestClient.addPoicyGroup(appDescription);
+        assertTrue(policyAddingResponse.getResponseCode() == 200, "Non 200 status code received.");
+        String httpResponseData = policyAddingResponse.getData();
+        JSONObject responseData = new JSONObject(httpResponseData);
+        String response = responseData.getString(AppmTestConstants.RESPONSE);
+        JSONObject responseObject = new JSONObject(response);
+        String policyId = responseObject.getString(AppmTestConstants.ID);
+        String policyGroupId = "[" + policyId + "]";
+
+        //Web app create.
         AppCreateRequest appRequest = new AppCreateRequest(appName, context, appVersion,
                                                            trackingCode);
-        HttpResponse response = appmPublisherRestClient.webAppCreate(appRequest);
+        appRequest.setUritemplate_policyGroupId0(policyId);
+        appRequest.setUritemplate_policyGroupId1(policyId);
+        appRequest.setUritemplate_policyGroupId2(policyId);
+        appRequest.setUritemplate_policyGroupId3(policyId);
+        appRequest.setUritemplate_policyGroupId4(policyId);
+        appRequest.setUritemplate_policyGroupIds(policyGroupId);
+        HttpResponse appCreateResponse = appmPublisherRestClient.createApp(appRequest);
 
-        assertTrue(response.getResponseCode() == 200, "Non 200 status code received.");
-        JSONObject responseData = new JSONObject(response.getData());
-        assertEquals(responseData.getString("message"), "asset added",
-                     "Asset has not added successfully");
-        assertNotNull(responseData.getString("id"), "app id is null");
+        assertTrue(appCreateResponse.getResponseCode() == 200, "Non 200 status code received.");
+        JSONObject appCreateResponseData = new JSONObject(appCreateResponse.getData());
+        assertEquals(appCreateResponseData.getString(AppmTestConstants.MESSAGE), "asset added",
+                                   "Asset has not added successfully");
+        assertNotNull(appCreateResponseData.getString(AppmTestConstants.ID), "app id is null");
+
+        // Create Service provider for the created web app.
+        HttpResponse ssoProviderAddedResponse = appmPublisherRestClient.addSsoProvider(appRequest);
+        assertTrue(ssoProviderAddedResponse.getResponseCode() == 200, "Non 200 status code received.");
+
     }
 
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
-
     }
 }

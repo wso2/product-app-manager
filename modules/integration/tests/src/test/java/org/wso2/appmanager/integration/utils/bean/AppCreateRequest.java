@@ -67,12 +67,14 @@ public class AppCreateRequest extends AbstractRequest {
     private String uritemplate_httpVerb0 = "GET";
     private String uritemplate_policyGroupId0;
 
+    private String uritemplate_javaPolicyIds="[]";
     private String overview_logoutUrl;
 
 
     private String entitlementPolicies;
     private String autoConfig = "on";
     private String providers = "wso2is-5.0.0";
+
     private String sso_ssoProvider = "wso2is-5.0.0";
     private String claims = "http://wso2.org/claims/otherphone";
 
@@ -121,20 +123,27 @@ public class AppCreateRequest extends AbstractRequest {
         addParameter("overview_acsUrl", overview_acsUrl);
         addParameter("overview_skipGateway", overview_skipGateway);
 
+        addParameter("uritemplate_policyGroupIds" , uritemplate_policyGroupIds);
+
         addParameter("uritemplate_urlPattern4", uritemplate_urlPattern4);
         addParameter("uritemplate_httpVerb4", uritemplate_httpVerb4);
+        addParameter("uritemplate_policyGroupId4" , uritemplate_policyGroupId4);
 
         addParameter("uritemplate_urlPattern3", uritemplate_urlPattern3);
         addParameter("uritemplate_httpVerb3", uritemplate_httpVerb3);
+        addParameter("uritemplate_policyGroupId3" , uritemplate_policyGroupId3);
 
         addParameter("uritemplate_urlPattern2", uritemplate_urlPattern2);
         addParameter("uritemplate_httpVerb2", uritemplate_httpVerb2);
+        addParameter("uritemplate_policyGroupId2" , uritemplate_policyGroupId2);
 
         addParameter("uritemplate_urlPattern1", uritemplate_urlPattern1);
         addParameter("uritemplate_httpVerb1", uritemplate_httpVerb1);
+        addParameter("uritemplate_policyGroupId1" , uritemplate_policyGroupId1);
 
         addParameter("uritemplate_urlPattern0", uritemplate_urlPattern0);
         addParameter("uritemplate_httpVerb0", uritemplate_httpVerb0);
+        addParameter("uritemplate_policyGroupId0" , uritemplate_policyGroupId0);
 
         addParameter("overview_logoutUrl", overview_logoutUrl);
         addParameter("claimPropertyCounter", claimPropertyCounter);
@@ -145,6 +154,8 @@ public class AppCreateRequest extends AbstractRequest {
         addParameter("sso_ssoProvider", sso_ssoProvider);
         addParameter("claims", claims);
         addParameter("claimPropertyName0", claimPropertyName0);
+
+        addParameter("uritemplate_javaPolicyIds", uritemplate_javaPolicyIds);
 
         addParameter("sso_idpProviderUrl", sso_idpProviderUrl);
         addParameter("sso_saml2SsoIssuer", sso_saml2SsoIssuer);
@@ -206,10 +217,18 @@ public class AppCreateRequest extends AbstractRequest {
         return overview_name;
     }
 
+    /**
+     * Set Overview Name.
+     * @param overview_name String.
+     */
     public void setOverview_name(String overview_name) {
         this.overview_name = overview_name;
     }
 
+    /**
+     * Get Overview Context.
+     * @return overview_context String.
+     */
     public String getOverview_context() {
         return overview_context;
     }
@@ -600,6 +619,86 @@ public class AppCreateRequest extends AbstractRequest {
 
     public void setEntitlementPolicies(String entitlementPolicies) {
         this.entitlementPolicies = entitlementPolicies;
+    }
+
+    public String getSso_ssoProvider() {
+        return sso_ssoProvider;
+    }
+
+    public void setSso_ssoProvider(String sso_ssoProvider) {
+        this.sso_ssoProvider = sso_ssoProvider;
+    }
+
+    public String getClaims() {
+        return claims;
+    }
+
+    public void setClaims(String claims) {
+        this.claims = claims;
+    }
+
+    public String getOverview_displayName() {
+        return overview_displayName;
+    }
+
+    public void setOverview_displayName(String overview_displayName) {
+        this.overview_displayName = overview_displayName;
+    }
+
+    public String getOverview_allowAnonymous() {
+        return overview_allowAnonymous;
+    }
+
+    public void setOverview_allowAnonymous(String overview_allowAnonymous) {
+        this.overview_allowAnonymous = overview_allowAnonymous;
+    }
+
+    public String getOverview_acsUrl() {
+        return overview_acsUrl;
+    }
+
+    public void setOverview_acsUrl(String overview_acsUrl) {
+        this.overview_acsUrl = overview_acsUrl;
+    }
+
+    public String getOverview_skipGateway() {
+        return overview_skipGateway;
+    }
+
+    public void setOverview_skipGateway(String overview_skipGateway) {
+        this.overview_skipGateway = overview_skipGateway;
+    }
+
+    public String getAutoConfig() {
+        return autoConfig;
+    }
+
+    public void setAutoConfig(String autoConfig) {
+        this.autoConfig = autoConfig;
+    }
+
+    public String getUritemplate_javaPolicyIds() {
+        return uritemplate_javaPolicyIds;
+    }
+
+    public void setUritemplate_javaPolicyIds(String uritemplate_javaPolicyIds) {
+        this.uritemplate_javaPolicyIds = uritemplate_javaPolicyIds;
+    }
+
+    public String getProviders() {
+        return providers;
+    }
+
+    public void setProviders(String providers) {
+        this.providers = providers;
+    }
+
+    public String getClaimPropertyName0() {
+        return claimPropertyName0;
+    }
+
+    public void setClaimPropertyName0(String claimPropertyName0) {
+        this.claimPropertyName0 = claimPropertyName0;
     }
 
 }

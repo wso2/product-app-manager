@@ -23,9 +23,10 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.appmanager.integration.utils.APPMPublisherRestClient;
-import org.wso2.appmanager.integration.utils.bean.AppCreateRequest;
+import org.wso2.appmanager.integration.utils.AppmTestConstants;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
+import org.wso2.carbon.automation.engine.context.beans.User;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
 import static org.testng.Assert.assertEquals;
@@ -40,44 +41,45 @@ public class WebAppPublishTestCase {
     private String trackingCode = "AM_WebAppPublishTestCase";
     private String version = "1.0.0";
     private String backEndUrl;
+    private User adminUser;
 
 
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
-        AutomationContext appMServer = new AutomationContext("App Manager",
+        AutomationContext appMServer = new AutomationContext(AppmTestConstants.APP_MANAGER,
                                                              TestUserMode.SUPER_TENANT_ADMIN);
         backEndUrl = appMServer.getContextUrls().getWebAppURLHttps();
         appmPublisherRestClient = new APPMPublisherRestClient(backEndUrl);
-        appmPublisherRestClient.login("admin", "admin");
+        adminUser = appMServer.getSuperTenant().getTenantAdmin();
+        appmPublisherRestClient.login(adminUser.getUserName(), adminUser.getPassword());
 
     }
 
     @Test(description = TEST_DESCRIPTION)
     public void testPublisherCreateWebApp() throws Exception {
-        AppCreateRequest appRequest = new AppCreateRequest(appName, context, version, trackingCode);
-        HttpResponse response = appmPublisherRestClient.webAppCreate(appRequest);
+        HttpResponse response = appmPublisherRestClient.webAppCreate(appName,context,version,trackingCode);
 
         JSONObject responseData = new JSONObject(response.getData());
-        String uuid = responseData.getString("id");
+        String uuid = responseData.getString(AppmTestConstants.ID);
 
         HttpResponse submitHttpResponse = appmPublisherRestClient.changeState(uuid,
                                                                               "Submit for Review");
 
         assertTrue(submitHttpResponse.getResponseCode() == 200, "Non 200 status code received.");
         JSONObject submittedResponseData = new JSONObject(submitHttpResponse.getData());
-        assertEquals(submittedResponseData.getString("status") , "Success",
+        assertEquals(submittedResponseData.getString(AppmTestConstants.STATUS) , "Success",
                      "Asset has not submitted for review successfully" );
 
         HttpResponse approvedHttpResponse = appmPublisherRestClient.changeState(uuid, "Approve");
         assertTrue(approvedHttpResponse.getResponseCode() == 200, "Non 200 status code received.");
         JSONObject approvedResponseData = new JSONObject(approvedHttpResponse.getData());
-        assertEquals(approvedResponseData.getString("status") , "Success",
+        assertEquals(approvedResponseData.getString(AppmTestConstants.STATUS) , "Success",
                      "Asset has not approved" );
 
         HttpResponse publishedHttpResponse = appmPublisherRestClient.changeState(uuid, "Publish");
         assertTrue(publishedHttpResponse.getResponseCode() == 200, "Non 200 status code received.");
         JSONObject publishedResponseData = new JSONObject(publishedHttpResponse.getData());
-        assertEquals(publishedResponseData.getString("status") , "Success",
+        assertEquals(publishedResponseData.getString(AppmTestConstants.STATUS) , "Success",
                      "Asset has not published" );
     }
 
