@@ -59,6 +59,16 @@
                name="overview_trackingCode" id="overview_trackingCode"/>
         <input type='hidden' value="{{{snoop "fields(name=sso_ssoProvider).value" data}}}"
                name="sso_ssoProvider" id="sso_ssoProvider"/>
+        <input type='hidden' value="{{{snoop "fields(name=overview_appOwner).value" data}}}"
+               name="overview_appOwner" id="app_owner"/>
+        <input type='hidden' value="{{{snoop "fields(name=overview_appTenant).value" data}}}"
+               name="overview_appTenant" id="app_tenant"/>
+        <input type='hidden' value="{{{snoop "fields(name=overview_advertiseOnly).value" data}}}"
+               name="overview_advertiseOnly" id="advertise_only"/>
+        <input type='hidden' value="{{{snoop "fields(name=overview_redirectUrl).value" data}}}"
+               name="overview_redirectUrl" id="redirect_url"/>
+        <input type='hidden' value="{{{snoop "fields(name=overview_subscriptionAvailability).value" data}}}"
+               name="overview_subscriptionAvailability" id="subscription_availability"/>
 
         <div class="form-group">
             <b><label class="control-label col-sm-2">Tags: </label></b>
@@ -135,6 +145,30 @@
 
                 <div id="divJavaPolicies">
 
+                </div>
+
+                <div class="form-group" id="sub-group">
+                    <label class="control-label col-sm-4 col-md-4">Subscription Availability: </label>
+
+                    <div class="col-md-2">
+                        <select id="sub-availability">
+                            <option value="all_tenants">Allow all tenants</option>
+                            <option value="current_tenant">Current tenant only</option>
+                            <option value="specific_tenants">Specific tenants</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        {{#compare artifact.attributes.overview_subscriptionAvailability "specific_tenants" operator="=="}}
+                            <input type="text" id="tenant-list" name="overview_tenants" class='col-md-6 col-lg-6 col-sm-8 col-xs-6'
+                                   placeholder="e.g teant1.com,tenat2.com" value="{{artifact.attributes.overview_tenants}}"/>
+                        {{else}}
+                            <input type="text" id="tenant-list" name="overview_tenants" class='col-md-6 col-lg-6 col-sm-8 col-xs-6'
+                                   placeholder="e.g teant1.com,tenat2.com" style="display: none"/>
+                        {{/compare}}
+
+                    </div>
                 </div>
 
             </div>

@@ -128,6 +128,8 @@ $(function() {
 
 
 	$('#btn-create-asset').on('click', function(e) {
+        var subAvailability = $('#sub-availability').val();
+        $('#subscription_availability').val(subAvailability);
         //trim the value of all the text field and text area
         var fields = $('#form-asset-create :input');
         fields.each(function () {
@@ -212,7 +214,7 @@ $(function() {
         var tracking_code_id = "AM_"+code;
 
 		$('#tracking_code').val(tracking_code_id);
-		
+
 		 if($('#autoConfig').is(':checked')){
 			var selectedProvider = $('#providers').val();
 			$('#sso_ssoProvider').val(selectedProvider);

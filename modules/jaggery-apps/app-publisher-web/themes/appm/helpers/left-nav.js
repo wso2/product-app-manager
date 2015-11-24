@@ -46,9 +46,6 @@ var generateLeftNavJson = function(data, listPartial) {
     if(data.artifact){
 
         editEnabled = permissions.isEditPermitted(user.username, data.artifact.path, um);
-        if(data.artifact.lifecycleState == "Published"){
-            editEnabled = false;
-        }
         if(user.hasRoles(["admin"])){
             editEnabled = true;
         }
@@ -74,13 +71,6 @@ var generateLeftNavJson = function(data, listPartial) {
             }else{
                 leftNavItems = {
                     leftNavLinks: [
-                        {
-                            name: "Edit",
-                            iconClass: "icon-edit",
-                            additionalClasses: (listPartial == "edit-asset" ) ? "active" : false,
-                            url: "#",
-                            title: "Edit Action not permitted."
-                        },
                         {
                             name: "Create New Version",
                             iconClass: "icon-file",
