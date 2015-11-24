@@ -100,7 +100,10 @@
       </field>
       <field type="text">
             <name>Tenants</name>
-      </field>	
+      </field>
+      <field type="text">
+            <name>Visible Roles</name>
+      </field>		
     </table>
     <table name="URITemplate" columns="6">
             <subheading>

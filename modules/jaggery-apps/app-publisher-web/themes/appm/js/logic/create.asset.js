@@ -130,6 +130,9 @@ $(function() {
 	$('#btn-create-asset').on('click', function(e) {
         var subAvailability = $('#sub-availability').val();
         $('#subscription_availability').val(subAvailability);
+	
+        var visibleRoles = $('#roles').val();
+        $('#visible_roles').val(visibleRoles);
         //trim the value of all the text field and text area
         var fields = $('#form-asset-create :input');
         fields.each(function () {

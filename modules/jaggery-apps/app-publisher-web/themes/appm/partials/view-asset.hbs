@@ -41,7 +41,9 @@
                             <li><a href="#nav-pills-tab-3" data-toggle="tab">Single Sign On Configuration</a></li>
                             <li><a href="#nav-pills-tab-4" data-toggle="tab">OAUTH Parameters</a></li>
                         {{#compare artifact.lifecycleState "Published" operator="=="}}
+                            {{#compare artifact.attributes.overview_visibleRoles " " operator="=="}}
                             <li><a href="#nav-pills-tab-5" data-toggle="tab">External Stores</a></li>
+                            {{/compare}}
                         {{/compare}}
                         </ul>
                         <div class="tab-content app-overview-inner">
@@ -176,7 +178,7 @@
                                 {{else}}
                                     <div class="row">
                                         <div class="col-md-4 col-sm-4 col-xs-4 col-md-offset-0">
-                                            {{t "No External stores found"}}
+                                            {{t "No external stores found"}}
                                         </div>
                                     </div>
                                 {{/if}}

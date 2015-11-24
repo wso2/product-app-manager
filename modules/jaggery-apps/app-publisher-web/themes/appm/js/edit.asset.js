@@ -219,8 +219,11 @@ $(function() {
     
 
 	$('#editAssetButton').on('click', function() {
-        var subAvailability = $('#sub-availability').val();
-        $('#subscription_availability').val(subAvailability);
+		var subAvailability = $('#sub-availability').val();
+		$('#subscription_availability').val(subAvailability);
+	  
+		var visibleRoles = $('#roles').val();
+		$('#visible_roles').val(visibleRoles);
 		//check if there are any url which doesn't have a policy group
 		var countResourcePolicies = 0;
 		var result = true;
