@@ -29,7 +29,7 @@ var tenantIdVal = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalC
 
 
 require('/modules/store.js').exec(function (ctx) {
-    var asset, aid, title,
+    var asset, aid, title,currentTenant,userTenant,
             log = ctx.log,
             sso = ctx.sso,
             store = ctx.store,
@@ -48,10 +48,13 @@ require('/modules/store.js').exec(function (ctx) {
                         
     caramel = require('caramel');
     var tenantedUrl = '/{context}/t/{domain}' + configs.assetsUrlPrefix + '/{type}/{aid}'
-
     if(matcher.match('/{context}' + configs.assetsUrlPrefix + '/{type}/{aid}') || matcher.match(tenantedUrl)){
         aid = matcher.elements().aid;
         title = store.assetLinks(type).title;
+        currentTenant = matcher.elements().domain;
+    }
+    if (user) {
+        userTenant = user.tenantDomain;
     }
     try {
         asset = store.asset(type, aid);
@@ -336,7 +339,20 @@ require('/modules/store.js').exec(function (ctx) {
             recentAssets[i].rating = 0;
         }
     }
-    
+
+    var subVisibility = true;
+    var subAvailability = asset.attributes.overview_subscriptionAvailability;
+    if (subAvailability && currentTenant) {
+        if (subAvailability == "current_tenant") {
+            if(userTenant != currentTenant)
+                subVisibility = false;
+
+        } else if (subAvailability == "specific_tenants") {
+            var tenants = stringify(asset.attributes.overview_tenants);
+            if((userTenant != currentTenant) && !(tenants.indexOf(userTenant) > -1))
+                subVisibility = false;
+        }
+    }
     caramel.render({
         title: 'Store | ' + type,
         user: user,
@@ -381,7 +397,8 @@ require('/modules/store.js').exec(function (ctx) {
             tiers:availableTiers,
             api:apiData,
             apiAssetData:asset
-        }
+        },
+        subVisibility:subVisibility
     });
 
 
