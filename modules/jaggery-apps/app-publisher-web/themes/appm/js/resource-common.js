@@ -19,42 +19,42 @@ function updateVisuals() {
 }
 
 function updateSubscriptionVisuals() {
-    var restricted =  $('.controll_visibility').is(":checked");
-    var skipGateway =  $('.skip_gateway_checkbox').is(":checked");
-    var anonymous =  $('.anonymous_checkbox').is(":checked");
+    var restricted = $('.controll_visibility').is(":checked");
+    var skipGateway = $('.skip_gateway_checkbox').is(":checked");
+    var anonymous = $('.anonymous_checkbox').is(":checked");
 
-    if(restricted || skipGateway || anonymous) {
+    if (restricted || skipGateway || anonymous) {
         $('#sub-group').hide();
     } else {
         $("#tenant-list").hide();
         $('#sub-group').show();
     }
 
-    if(restricted) {
+    if (restricted) {
         $('#sub-availability').val('current_tenant');
     } else {
         $('#sub-availability').val('all_tenants');
     }
 }
 
-$("#sub-availability").change(function(){
+$("#sub-availability").change(function () {
     var selected = this.value;
-    if(selected == 'specific_tenants') {
+    if (selected == 'specific_tenants') {
         $("#tenant-list").show();
     } else {
-       // $("#tenant-list").val("");
+        // $("#tenant-list").val("");
         $("#tenant-list").hide();
     }
 });
 
-$(".anonymous_checkbox").click(function(){
+$(".anonymous_checkbox").click(function () {
     updateSubscriptionVisuals();
 });
 
-$(".controll_visibility").click(function(){
+$(".controll_visibility").click(function () {
     updateSubscriptionVisuals();
 });
 
-$(".skip_gateway_checkbox").click(function(){
+$(".skip_gateway_checkbox").click(function () {
     updateSubscriptionVisuals();
 });

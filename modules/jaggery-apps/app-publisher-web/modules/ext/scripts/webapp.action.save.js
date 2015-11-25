@@ -176,18 +176,17 @@ var module = function () {
             var asset = context.parent.export('asset.exporter');
 
 
-
             var appOwner = (asset.attributes.overview_appOwner).trim();
-            if(appOwner.length == 0){
+            if (appOwner.length == 0) {
                 asset.attributes.overview_appOwner = provider;
             }
             var appTenant = (asset.attributes.overview_appTenant).trim();
-            if(appTenant.length == 0){
+            if (appTenant.length == 0) {
                 asset.attributes.overview_appTenant = tenantDomain;
             }
 
             var isAdvertiseOnly = (asset.attributes.overview_advertiseOnly).trim();
-            if(isAdvertiseOnly.toLowerCase() != "true"){
+            if (isAdvertiseOnly.toLowerCase() != "true") {
                 asset.attributes.overview_advertiseOnly = "false";
             }
 
@@ -231,11 +230,11 @@ var module = function () {
             var artifact1 = artifactManager.get(id);
             var attributes = artifact1.attributes;
 
-            if(attributes.overview_advertiseOnly.toLowerCase() == "false") {
+            if (attributes.overview_advertiseOnly.toLowerCase() != "true") {
                 //adding to database
-                addToWebApp(id,provider, name, version, contextname, tracking_code,asset,
+                addToWebApp(id, provider, name, version, contextname, tracking_code, asset,
                     attributes['sso_singleSignOn'], attributes['sso_idpProviderUrl'],
-                    saml2SsoIssuer,revisedURL,allowAnonymous, skipGateway, webappURL);
+                    saml2SsoIssuer, revisedURL, allowAnonymous, skipGateway, webappURL);
             }
 
 

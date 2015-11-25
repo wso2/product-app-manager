@@ -7,16 +7,14 @@ var version = $(this).data("version");
 
 var action = $(this).data("action");
 
-    var status = isPublishedToExternalStore(action,provider,name,version);
+    var status = isPublishedToExternalStore(action, provider, name, version);
 
     if(status) {
         var msg = "This app is published to one or more external stores .\n" +
             "Please remove this app from external stores before " +action;
         var head = action +"Asset";
-        showMessageModel(msg,head,"webapp");
-//        location.reload();
-//        e.stopPropagation();
-          return false;
+        showMessageModel(msg, head, "webapp");
+        return false;
     }
     if (action == "Reject") {
         showCommentModel("Reason for Rejection", action, app);
@@ -155,22 +153,22 @@ function updateQRCode(text) {
 
 }
 
-function isPublishedToExternalStore(action,provider,name,version){
-    var publishedInExternalStores=false;
-    if(action == "Unpublish" || action == "Deprecate") {
+function isPublishedToExternalStore(action, provider, name, version) {
+    var publishedInExternalStores = false;
+    if (action == "Unpublish" || action == "Deprecate") {
 
         $.ajax({
             async: false,
-            url: '/publisher/api/asset/get/external/stores/webapp/'+provider+'/'+name+'/'+version,
+            url: '/publisher/api/asset/get/external/stores/webapp/' + provider + '/' + name + '/' + version,
             type: 'GET',
             processData: true,
             success: function (response) {
-                if(!response.error) {
+                if (!response.error) {
                     var appStores = response.appStores;
 
-                    if(appStores!=null && appStores != undefined){
-                        for(var i=0;i<appStores.length;i++){
-                            if(appStores[i].published){
+                    if (appStores != null && appStores != undefined) {
+                        for (var i = 0; i < appStores.length; i++) {
+                            if (appStores[i].published) {
                                 publishedInExternalStores = true;
                                 break;
                             }

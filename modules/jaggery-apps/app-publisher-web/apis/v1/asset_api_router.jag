@@ -275,8 +275,8 @@ require('/modules/publisher.js').exec(function(ctx) {
 
                 var isDeleted = false;
                 var isAdvertiseOnly = attributes["overview_advertiseOnly"].trim();
-                if(isAdvertiseOnly.toLowerCase() == "true"){
-                    isDeleted = removeArtifactOnly(shortName,id);
+                if (isAdvertiseOnly.toLowerCase() == "true") {
+                    isDeleted = removeArtifactOnly(shortName, id);
                 } else {
                     isDeleted = apiProvider.deleteApp(apiIdentifierObj, stringify(username), ssoProviderObj);
                 }
@@ -810,34 +810,34 @@ require('/modules/publisher.js').exec(function(ctx) {
 
     //get uuid of given asset for-> provider,name,version
     routeManager.register('GET', 'publisher', '/publisher/api/asset/get/uuid/{type}/{provider}/{name}/{version}',
-        function (context) {
-            var assetProvider = context.params.provider;
-            var assetName = context.params.name;
-            var assetVersion = context.params.version;
-            var shortName = context.params.type;
-            var artifactManager = rxtManager.getArtifactManager(shortName);
+            function (context) {
+                var assetProvider = context.params.provider;
+                var assetName = context.params.name;
+                var assetVersion = context.params.version;
+                var shortName = context.params.type;
+                var artifactManager = rxtManager.getArtifactManager(shortName);
 
-            var fn = function (asset) {
-                var cond1 = (asset.attributes.overview_provider == assetProvider ) ? true : false;
-                var cond2 = (asset.attributes.overview_name == assetName ) ? true : false;
-                var cond3 = (asset.attributes.overview_version == assetVersion ) ? true : false;
-                return (cond1 && cond2 && cond3);
-            }
+                var fn = function (asset) {
+                    var cond1 = (asset.attributes.overview_provider == assetProvider ) ? true : false;
+                    var cond2 = (asset.attributes.overview_name == assetName ) ? true : false;
+                    var cond3 = (asset.attributes.overview_version == assetVersion ) ? true : false;
+                    return (cond1 && cond2 && cond3);
+                }
 
-            var artifact = artifactManager.find(fn, null);
-            if(artifact && artifact != null && artifact.length > 0) {
-                var artifactId = artifact[0].id;
-                var res = {error:false ,uuid:artifactId};
-                response.contentType = "application/json";
-                print(res);
-            } else {
-                var res = {error:true ,uuid:null};
-                response.contentType = "application/json";
-                print(res);
-            }
+                var artifact = artifactManager.find(fn, null);
+                if (artifact && artifact != null && artifact.length > 0) {
+                    var artifactId = artifact[0].id;
+                    var res = {error: false, uuid: artifactId};
+                    response.contentType = "application/json";
+                    print(res);
+                } else {
+                    var res = {error: true, uuid: null};
+                    response.contentType = "application/json";
+                    print(res);
+                }
 
 
-    });
+            });
 
     //Get external
     routeManager.register('GET', 'publisher', '/publisher/api/asset/get/external/stores/{type}/{provider}/{name}/{version}',
@@ -846,9 +846,9 @@ require('/modules/publisher.js').exec(function(ctx) {
                 var appName = context.params.name;
                 var appVersion = context.params.version;
 
-                try{
-                    var externalAppStores = apiProvider.getExternalAPPStoresList(appProvider,appName,appVersion);
-                    if(externalAppStores && externalAppStores!=null){
+                try {
+                    var externalAppStores = apiProvider.getExternalAPPStoresList(appProvider, appName, appVersion);
+                    if (externalAppStores && externalAppStores != null) {
                         var res = {};
                         res.error = false;
                         res.appStores = externalAppStores;
@@ -856,59 +856,56 @@ require('/modules/publisher.js').exec(function(ctx) {
                         print(res);
                     }
                 } catch (e) {
-                    if(log.isDebugEnabled()){
-                        log.debug('Could not get external app store details for app:' +appProvider+'-'+appName+'' +
-                                '-'+appVersion+"->" + e);
+                    if (log.isDebugEnabled()) {
+                        log.debug('Could not get external app store details for app:' + appProvider + '-' + appName + '' +
+                                '-' + appVersion + "->" + e);
                     }
                     response.contentType = "application/json";
-                    var res = {error:true , appStores:null}
+                    var res = {error: true, appStores: null}
                 }
 
-    });
+            });
 
     //update external app stores
     routeManager.register('POST', 'publisher', '/publisher/api/asset/{type}/update/external/stores/{provider}/{name}/{version}',
-            function(context) {
-        var provider = context.params.provider;
-        var name = context.params.name;
-        var version = context.params.version;
-        var data = context.request.getContent();
-        var status = false;
+            function (context) {
+                var provider = context.params.provider;
+                var name = context.params.name;
+                var version = context.params.version;
+                var data = context.request.getContent();
+                var status = false;
 
-        try {
-            status = apiProvider.updateExternalAPPStores(provider,name,version,data);
-            var res = {};
-            res.success = status;
-            response.contentType = "application/json";
-            print(res);
-        } catch (e) {
-            if(log.isDebugEnabled()) {
-                log.debug('Could not update the external stores for app :'+provider+'-'+name+'' +
-                        '-'+version+".An exception was thrown:" + e);
-            }
-            status = false;
-            var res = {};
-            res.success = status;
-            res.message = e.message;
-            response.contentType = "application/json";
-            print(res);
-        }
+                try {
+                    status = apiProvider.updateExternalAPPStores(provider, name, version, data);
+                    var res = {};
+                    res.success = status;
+                    response.contentType = "application/json";
+                    print(res);
+                } catch (e) {
+                    if (log.isDebugEnabled()) {
+                        log.debug('Could not update the external stores for app :' + provider + '-' + name + '' +
+                                '-' + version + ".An exception was thrown:" + e);
+                    }
+                    status = false;
+                    var res = {};
+                    res.success = status;
+                    res.message = e.message;
+                    response.contentType = "application/json";
+                    print(res);
+                }
 
+            });
 
-
-    });
-
-    function removeArtifactOnly(type,uuid){
+    function removeArtifactOnly(type, uuid) {
         var shortName = type;
         var id = uuid;
-
         var artifactManager = rxtManager.getArtifactManager(shortName);
 
         try {
             artifactManager.remove(id);
             return true;
         } catch (e) {
-            if(log.isDebugEnabled()) {
+            if (log.isDebugEnabled()) {
                 log.debug('Asset ' + id + 'could not be removed.An exception was thrown: ' + e);
             }
             return false;

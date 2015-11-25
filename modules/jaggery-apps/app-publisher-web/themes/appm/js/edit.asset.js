@@ -219,11 +219,11 @@ $(function() {
     
 
 	$('#editAssetButton').on('click', function() {
-		var subAvailability = $('#sub-availability').val();
-		$('#subscription_availability').val(subAvailability);
-	  
-		var visibleRoles = $('#roles').val();
-		$('#visible_roles').val(visibleRoles);
+        var subAvailability = $('#sub-availability').val();
+        $('#subscription_availability').val(subAvailability);
+
+        var visibleRoles = $('#roles').val();
+        $('#visible_roles').val(visibleRoles);
 		//check if there are any url which doesn't have a policy group
 		var countResourcePolicies = 0;
 		var result = true;
@@ -616,19 +616,19 @@ function removeClaimTable() {
 }
 
 
-window.onload = function updateSubsVisibility(){
-    var restricted =  $('.controll_visibility').is(":checked");
-    var skipGateway =  $('.skip_gateway_checkbox').is(":checked");
-    var anonymous =  $('.anonymous_checkbox').is(":checked");
-    if(restricted || skipGateway || anonymous) {
+window.onload = function updateSubsVisibility() {
+    var restricted = $('.controll_visibility').is(":checked");
+    var skipGateway = $('.skip_gateway_checkbox').is(":checked");
+    var anonymous = $('.anonymous_checkbox').is(":checked");
+    if (restricted || skipGateway || anonymous) {
         $('#sub-group').hide();
     } else {
-        var subscription_availability =$('#subscription_availability').val();
-        if(subscription_availability == 'all_tenants' ) {
+        var subscription_availability = $('#subscription_availability').val();
+        if (subscription_availability == 'all_tenants') {
             $("#sub-availability").val("all_tenants");
-        } else if(subscription_availability == 'current_tenant') {
+        } else if (subscription_availability == 'current_tenant') {
             $("#sub-availability").val("current_tenant");
-        } else if(subscription_availability =='specific_tenants' ){
+        } else if (subscription_availability == 'specific_tenants') {
             $("#sub-availability").val("specific_tenants");
         }
         $('#sub-group').show();
