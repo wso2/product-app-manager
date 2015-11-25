@@ -199,4 +199,5 @@ public class ApplicationProperties {
     public void setPolicyGroupDesc(String policyGroupDesc) {
         this.policyGroupDesc = policyGroupDesc;
     }
+
 }

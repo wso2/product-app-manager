@@ -20,9 +20,9 @@
 
 package org.wso2.carbon.appmanager.integration.ui.TestCases;
 
-import net.minidev.json.JSONObject;
 import org.apache.catalina.startup.Tomcat;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -31,6 +31,7 @@ import org.testng.annotations.Test;
 import org.wso2.carbon.appmanager.integration.ui.APPManagerIntegrationTest;
 import org.wso2.carbon.appmanager.integration.ui.Util.APPMPublisherRestClient;
 import org.wso2.carbon.appmanager.integration.ui.Util.APPMStoreUIClient;
+import org.wso2.carbon.appmanager.integration.ui.Util.ApplicationProperties;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.GetStatisticRequest;
 import org.wso2.carbon.appmanager.integration.ui.Util.TestUtils.ApplicationInitializingUtil;
 import org.wso2.carbon.appmanager.integration.ui.Util.TomcatDeployer;
@@ -64,11 +65,15 @@ public class RuntimeStatisticsTestCase extends APPManagerIntegrationTest {
     private APPMStoreUIClient storeUIClient;
     private String username;
     private String password;
+    private String appName;
+    private String appVersion;
 
     TomcatDeployer deployer;
     Tomcat tomcat;
     public static String publisherURLHttp;
     private APPMPublisherRestClient appMPublisher;
+    private static String appPrefix = "RuntimeStatisticsTestCase";
+    private static String javaPolicyId = "[5]";
 
 
     @BeforeClass(alwaysRun = true)
@@ -87,16 +92,19 @@ public class RuntimeStatisticsTestCase extends APPManagerIntegrationTest {
             publisherURLHttp = getServerURLHttp();
             appMPublisher = new APPMPublisherRestClient(publisherURLHttp);
         }
+        appProp = new ApplicationProperties();
         driver = BrowserManager.getWebDriver();
         storeUIClient = new APPMStoreUIClient();
         ApplicationInitializingUtil baseUtil;
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
-        baseUtil.testApplicationCreation("16");
+        baseUtil.testApplicationCreation(appPrefix,javaPolicyId);
         baseUtil.testApplicationPublish();
         baseUtil.testApplicationSubscription();
         username = userInfo.getUserName();
         password = userInfo.getPassword();
+        appName = appProp.getAppName() + appPrefix;
+        appVersion = appProp.getVersion();
     }
 
     @Test(groups = {"wso2.appmanager.statistics"}, description = "Test web application runtime statistics")
@@ -115,6 +123,8 @@ public class RuntimeStatisticsTestCase extends APPManagerIntegrationTest {
         storeUIClient.loginDriver(driver, ApplicationInitializingUtil.storeURLHttp, username, password);
         storeUIClient.selectApplication(driver, ApplicationInitializingUtil.appId);
         driver.switchTo().alert().accept();
+        //Wait until the statics get published to BAM.
+        Thread.sleep(120000);
         storeUIClient.logout(driver, ApplicationInitializingUtil.storeURLHttp);
 
         //Wait until the statics get published
@@ -135,11 +145,21 @@ public class RuntimeStatisticsTestCase extends APPManagerIntegrationTest {
         Assert.assertEquals(getAppUsageByUserResponse.getResponseCode(), 200, "Response code mismatch");
         JSONArray getAppUsageByUserResponseData = new JSONArray(getAppUsageByUserResponse.getData());
         Assert.assertNotEquals(getAppUsageByUserResponseData.toString(), "[]", "Response object is null");
-        Assert.assertEquals(getAppUsageByUserResponseData.getJSONArray(0).get(0), "testApp16","Application Name mismatch" );
+        Assert.assertEquals(getAppUsageByUserResponseData.getJSONArray(0).get(0), appName, "Application Name mismatch");
         Object countValue = getAppUsageByUserResponseData.getJSONArray(0).getJSONArray(1).getJSONArray(0).
                 getJSONArray(1).getJSONArray(0).get(1);
         Assert.assertEquals(Integer.parseInt(countValue.toString()), 1, "Application usage count mismatch");
 
+        HttpResponse getAppPopularityOverTimeResponse = appMPublisher.getAppPopularityOverTime(getStatisticRequest);
+        Assert.assertEquals(getAppPopularityOverTimeResponse.getResponseCode(), 200, "Response code mismatch");
+        JSONArray appPopularityOverTimeResponseData = new JSONArray(getAppPopularityOverTimeResponse.getData());
+        JSONObject appStatsJsonObject = appPopularityOverTimeResponseData.getJSONObject(0);
+        Assert.assertEquals(appStatsJsonObject.get("AppName"), appName, "Application Name mismatch" );
+        Assert.assertEquals(appStatsJsonObject.get("AppVersion"), appVersion, "Application version mismatch" );
+        Assert.assertTrue((Integer) appStatsJsonObject.get("TotalHits") > 0, "Total Hit count is not greater than zero");
+        JSONObject userHitsJsonObject = appStatsJsonObject.getJSONArray("UserHits").getJSONObject(0);
+        Assert.assertEquals(userHitsJsonObject.get("UserName"), username, "User name mismatch");
+        Assert.assertTrue((Integer) userHitsJsonObject.get("Hits") > 0, "User Hit count is not greater than zero");
     }
 
     private void copyDataSourceFile(String sourcePath, String destPath) {
@@ -210,8 +230,7 @@ public class RuntimeStatisticsTestCase extends APPManagerIntegrationTest {
     }
 
     private void deploy(String webAppPath) throws Exception {
-
-        Tomcat tomcat = new Tomcat();
+        Tomcat tomcat = new TomcatDeployer().getTomcat();
         tomcat.stop();
         tomcat.setBaseDir(".");
         tomcat.addWebapp("/sample", webAppPath);

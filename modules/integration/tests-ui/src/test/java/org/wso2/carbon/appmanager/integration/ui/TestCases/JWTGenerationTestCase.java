@@ -31,7 +31,10 @@ import org.wso2.carbon.appmanager.integration.ui.Util.WireMonitorServer;
 import org.wso2.carbon.automation.core.BrowserManager;
 
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 public class JWTGenerationTestCase extends APPManagerIntegrationTest {
@@ -42,6 +45,9 @@ public class JWTGenerationTestCase extends APPManagerIntegrationTest {
     private APPMStoreUIClient storeUIClient;
     private String claim;
     private ApplicationInitializingUtil baseUtil;
+    private static final String ISSUER = "wso2.org/products/appm";
+    private static final String SUBJECT = "sub";
+    private static final String ISS = "iss";
 
     @BeforeClass(alwaysRun = true)
     public void init() throws Exception {
@@ -61,7 +67,7 @@ public class JWTGenerationTestCase extends APPManagerIntegrationTest {
     @Test(groups = {"wso2.appmanager.JWTGenration"}, description = "JWT Generation Test Case")
     public void testJWTGeneration() throws Exception {
 
-        int hostPort = 8080;
+        int hostPort = 8181;
 
         WireMonitorServer server = new WireMonitorServer(hostPort);
         server.start();
@@ -71,15 +77,33 @@ public class JWTGenerationTestCase extends APPManagerIntegrationTest {
         driver.switchTo().alert().accept();
 
         String serverMessage = server.getCapturedMessage();
-        String[] i = serverMessage.split("==.");
-        String jwtEncodedString = i[1];
 
+        String jwtBodyRegex =  "X-JWT-Assertion: ([^\\.]+)\\.([^\\.]+)";
+        Pattern pattern = Pattern.compile(jwtBodyRegex);
+        Matcher matcher = pattern.matcher(serverMessage);
+
+        boolean isJWTPresent = matcher.find();
+        assertTrue(isJWTPresent, "JWT header is not present in server message : " + serverMessage);
+
+        String jwtEncodedString = matcher.group(2);
         byte[] jwtByteArray = Base64.decodeBase64(jwtEncodedString.getBytes());
         String decodedJWTString = new String(jwtByteArray);
-        JSONObject roleJson = new JSONObject(decodedJWTString);
-        String roles = roleJson.get(claim).toString();
 
-        assertTrue(roles.contains("Internal/" + appProp.getAppName()), "JWT Generation fails");
+        JSONObject parsedJWT = new JSONObject(decodedJWTString);
+
+        assertNotNull(parsedJWT.get(claim), String.format("%s claim is not present in the JWT : %s",
+                claim, decodedJWTString));
+        assertNotNull(parsedJWT.get(ISS), String.format("%s issuer is not present in the JWT : %s",
+                ISS, decodedJWTString));
+        assertNotNull(parsedJWT.get(SUBJECT), String.format("%s subject is not present in the JWT : %s",
+                SUBJECT, decodedJWTString));
+
+        String roles = parsedJWT.get(claim).toString();
+        String issuer= parsedJWT.get(ISS).toString();
+        String expectedRole = "Internal/" + appProp.getAppName();
+        assertTrue(roles.contains(expectedRole), String.format("Expected role '%s' doesn't exist : %s",
+                expectedRole, decodedJWTString));
+        assertTrue(ISSUER.equals(issuer), String.format("Expected issuer '%s' doesn't exist : %s ", ISSUER, decodedJWTString));
     }
 
     @AfterClass(alwaysRun = true)

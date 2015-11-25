@@ -168,6 +168,8 @@ public class APPMStoreUIClient {
                         + appId
                         + "']/div[@class='asset-details']/div[@class='asset-name']/a"))
                 .click();
+        driver.navigate().refresh();
+
 
         //select the link
         driver.findElement(By.xpath(uiElementMapper.getElement("store_app_gateway_url_xpath_locator"))).click();
@@ -210,12 +212,6 @@ public class APPMStoreUIClient {
         WebElement usernameEle = driver.findElement(By.id(
                 uiElementMapper.getElement("store_reg_username_id_locator")));
         usernameEle.sendKeys(username);
-
-        waitElem.until(ExpectedConditions.visibilityOfElementLocated(
-                By.id(uiElementMapper.getElement("store_reg_username_id_locator"))));
-        WebElement usernameEle1 = driver.findElement(By.id(
-                uiElementMapper.getElement("store_reg_username_id_locator")));
-        usernameEle1.sendKeys(username);
 
         waitElem.until(ExpectedConditions.visibilityOfElementLocated(
                 By.id(uiElementMapper.getElement("store_reg_password_id_locator"))));

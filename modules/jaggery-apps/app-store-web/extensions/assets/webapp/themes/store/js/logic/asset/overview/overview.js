@@ -48,7 +48,10 @@ $(function () {
         "appData": {
             "appId": $('#hdnAssetId').val(),
             "userId": $('#hdnUsertId').val(),
-            "tenantId": $('#hdnTenantId').val()
+            "tenantId": $('#hdnTenantId').val(),
+            "appName": $('#hdnOverviewName').val(),
+            "appVersion" : $("#hdnOverviewVersion").val(),
+            "context": $("#hdnOverviewContext").val()
         },
         "appControls": {"0": "a"},
         "publishedPeriod": "1200000",

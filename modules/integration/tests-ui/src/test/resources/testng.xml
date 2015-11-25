@@ -13,6 +13,7 @@
             with port offset one. Then enable this test. This will take some time as it take time to generate summery
             -->
             <!--<class name="org.wso2.carbon.appmanager.integration.ui.TestCases.RuntimeStatisticsTestCase"/>-->
+
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.SAMLtoBackendTestCase"/>
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.JWTGenerationTestCase"/>
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.ResourceAuthXCMLTestCase"/>
@@ -25,10 +26,12 @@
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.AppDeleteTestCase"/>
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.SelfSignUpTestCase"/>
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.DocumentTestCase"/>
-            <!--<class name="org.wso2.carbon.appmanager.integration.ui.TestCases.GoogleAnalyticsTestCase"/>-->
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.RatingTestCase"/>
-            <!--<class name="org.wso2.carbon.appmanager.integration.ui.TestCases.AppDiscoveryTestCase"/>-->
-            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.AppDiscoveryUITestCase"/>
+            <!--<class name="org.wso2.carbon.appmanager.integration.ui.TestCases.AppDiscoveryUITestCase"/>-->
+            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.AppSubscriptionTestCase"/>
+            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.RetrieveAppPropertyTestCase"/>
+            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.RetrieveSubscribedUsersTestCase"/>
+            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.RetrieveUserAppsTestCase"/>
 
 
             <!--This test case is not run with default APP manager integration tests. To run this test we assume that
