@@ -88,6 +88,8 @@ public class AppCreateRequest extends AbstractRequest {
     private String autoConfig = "on";
     private String claims = "http://wso2.org/claims/role";
     private String overview_allowAnonymous="false";
+    private String overview_acsUrl = "";
+    private String overview_skipGateway = "false";
     private String uritemplate_allowAnonymous4="False";
     private String uritemplate_allowAnonymous3="False";
     private String uritemplate_allowAnonymous2="False";
@@ -178,6 +180,8 @@ public class AppCreateRequest extends AbstractRequest {
         addParameter("uritemplate_entitlementPolicyPartialMappings3",uritemplate_entitlementPolicyPartialMappings3);
         addParameter("uritemplate_entitlementPolicyPartialMappings4",uritemplate_entitlementPolicyPartialMappings4);
         addParameter("overview_allowAnonymous",overview_allowAnonymous);
+        addParameter("overview_acsUrl", overview_acsUrl);
+        addParameter("overview_skipGateway", overview_skipGateway);
         addParameter("uritemplate_allowAnonymous4",uritemplate_allowAnonymous4);
         addParameter("uritemplate_allowAnonymous4",uritemplate_allowAnonymous3);
         addParameter("uritemplate_allowAnonymous4",uritemplate_allowAnonymous2);
@@ -901,4 +905,21 @@ public class AppCreateRequest extends AbstractRequest {
     public void setUritemplate_javaPolicyIds(String uritemplate_javaPolicyIds) {
         this.uritemplate_javaPolicyIds = uritemplate_javaPolicyIds;
     }
+
+    public String getOverview_acsUrl() {
+        return overview_acsUrl;
+    }
+
+    public void setOverview_acsUrl(String overview_acsUrl) {
+        this.overview_acsUrl = overview_acsUrl;
+    }
+
+    public String getOverview_skipGateway() {
+        return overview_skipGateway;
+    }
+
+    public void setOverview_skipGateway(String overview_skipGateway) {
+        this.overview_skipGateway = overview_skipGateway;
+    }
+
 }

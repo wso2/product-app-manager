@@ -469,58 +469,57 @@ $(function() {
 	    	$('#claimTableTbody').parent().show();
 	}
 	
-	
 
 	function createServiceProvider(){
-        	var sso_config = {};
-        	var provider_name  = $('#providers').val();
-        	var logout_url = $('#overview_logoutUrl').val();
-        	var idp_provider = $('#sso_idpProviderUrl').val();
-		var app_name = $('#overview_name').val();
-		var app_version = $('#overview_version').val();
-		var app_transport = $('#overview_transports').val();
-		var app_context = $('#overview_context').val();
-		var app_provider = $('#overview_provider').val();
-		var app_allowAnonymous=$('#overview_allowAnonymous').val();
+	    var sso_config = {};
+	    var provider_name  = $('#providers').val();
+	    var logout_url = $('#overview_logoutUrl').val();
+	    var idp_provider = $('#sso_idpProviderUrl').val();
+	    var app_name = $('#overview_name').val();
+	    var app_version = $('#overview_version').val();
+	    var app_transport = $('#overview_transports').val();
+	    var app_context = $('#overview_context').val();
+	    var app_provider = $('#overview_provider').val();
+	    var app_allowAnonymous=$('#overview_allowAnonymous').val();
+	    var app_acsURL = $('#overview_acsUrl').val();
 
-		var claims = [];
-		var index=0;
-		var propertyCount = document.getElementById("claimPropertyCounter").value;
-		while(index < propertyCount){
-				var claim = $("#claimPropertyName"+index).val();
-				if(claim != null){
-					claims[claims.length] = claim;
-				}
-				index++;
-		}
+	    var claims = [];
+	    var index=0;
+	    var propertyCount = document.getElementById("claimPropertyCounter").value;
+	    while(index < propertyCount){
+	        var claim = $("#claimPropertyName"+index).val();
+	        if(claim != null){
+	            claims[claims.length] = claim;
+	        }
+	        index++;
+          }
 
-        	sso_config.provider = provider_name;
-        	sso_config.logout_url = logout_url;
-        	sso_config.claims = claims;
-		sso_config.idp_provider = idp_provider;
-		sso_config.app_name = app_name;
-		sso_config.app_verison = app_version;
-		sso_config.app_transport = app_transport;
-		sso_config.app_context = app_context;
-		sso_config.app_provider = app_provider;
-		sso_config.app_allowAnonymous=app_allowAnonymous;
+        sso_config.provider = provider_name;
+        sso_config.logout_url = logout_url;
+        sso_config.claims = claims;
+        sso_config.idp_provider = idp_provider;
+        sso_config.app_name = app_name;
+        sso_config.app_verison = app_version;
+        sso_config.app_transport = app_transport;
+        sso_config.app_context = app_context;
+        sso_config.app_provider = app_provider;
+        sso_config.app_allowAnonymous=app_allowAnonymous;
+        sso_config.app_acsURL = app_acsURL;
 
-        	$.ajax({
-            		url: '/publisher/api/sso/addConfig',
-            		type: 'POST',
-            		contentType: 'application/json',
-            		data:JSON.stringify(sso_config),
-            		success: function(response) {
-                		console.log("Added SSO config successfully");
-            		},
-            		error: function(response) {
-                		showAlert('Error adding service provider.', 'error');
-            		}
-        	});
+        $.ajax({
+            url: '/publisher/api/sso/addConfig',
+            type: 'POST',
+            contentType: 'application/json',
+            data:JSON.stringify(sso_config),
+            success: function(response) {
+                console.log("Added SSO config successfully");
+            },
+            error: function(response) {
+                showAlert('Error adding service provider.', 'error');
+            }
+        });
 	}
 
-	
-	
 	/*
 	 The function is used to build a report message indicating the errors in the form
 	 @report: The report to be processed

@@ -878,7 +878,6 @@ public abstract class APPManagerIntegrationTest {
 
         appRequest.setUritemplate_policyGroupIds("[" + policyGroupId + "]");
         appRequest.setUritemplate_javaPolicyIds("[1]");
-
         return appRequest;
     }
 

@@ -18,6 +18,8 @@
 
 package org.wso2.carbon.appmanager.integration.ui.TestCases;
 
+import org.apache.catalina.startup.Tomcat;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -25,47 +27,61 @@ import org.testng.annotations.Test;
 import org.wso2.carbon.appmanager.integration.ui.APPManagerIntegrationTest;
 import org.wso2.carbon.appmanager.integration.ui.Util.APPMStoreUIClient;
 import org.wso2.carbon.appmanager.integration.ui.Util.TestUtils.ApplicationInitializingUtil;
-import org.wso2.carbon.appmanager.integration.ui.Util.WireMonitorServer;
+import org.wso2.carbon.appmanager.integration.ui.Util.TomcatDeployer;
+import org.wso2.carbon.appmanager.integration.ui.Util.UIElementMapper;
 import org.wso2.carbon.automation.core.BrowserManager;
+import org.wso2.carbon.automation.core.ProductConstant;
 
+import java.io.File;
 import java.util.Set;
 
 import static org.testng.Assert.assertTrue;
 
-public class SAMLtoBackendTestCase extends APPManagerIntegrationTest {
+public class AppAccessTestCase extends APPManagerIntegrationTest {
 
     private String username;
     private String password;
     private WebDriver driver;
     private APPMStoreUIClient storeUIClient;
-    ApplicationInitializingUtil baseUtil;
+    private UIElementMapper uiElementMapper;
+    TomcatDeployer deployer;
+    Tomcat tomcat;
+    private ApplicationInitializingUtil baseUtil;
 
     @BeforeClass(alwaysRun = true)
     public void init() throws Exception {
         super.init(0);
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
-        baseUtil.testApplicationCreation("6");
+        baseUtil.testApplicationCreation("4");
         baseUtil.testApplicationPublish();
         baseUtil.testApplicationSubscription();
         username = userInfo.getUserName();
         password = userInfo.getPassword();
         driver = BrowserManager.getWebDriver();
         storeUIClient = new APPMStoreUIClient();
-
+        uiElementMapper = new UIElementMapper();
     }
 
-    @Test(groups = {"wso2.appmanager.samlTest"}, description = "SAML to backend Test Case")
-    public void testSAMLToBackend() throws Exception {
-        int hostPort = 8181;
-        WireMonitorServer server = new WireMonitorServer(hostPort);
-        server.start();
+    // TODO : Needs to improve this test case to test accessing few application in one session.
+    @Test(groups = {"wso2.appmanager.access"}, description = "Checks the very first access of the app")
+    public void testAppAccess() throws Exception {
 
-        storeUIClient.loginDriver(driver, ApplicationInitializingUtil.storeURLHttp, username, password);
+        String webAppUrl = appProp.getPath();
+        String root = ProductConstant.getSystemResourceLocation();
+        String webAppPath = root + "samples" + File.separator + "sample.war";
+
+        deployer = new TomcatDeployer();
+        tomcat = deployer.getTomcat();
+        deployer.startTomcat(tomcat, webAppUrl, webAppPath);
+
+        storeUIClient.login(driver, ApplicationInitializingUtil.storeURLHttp, username, password);
+
         storeUIClient.selectApplication(driver, ApplicationInitializingUtil.appId);
         driver.switchTo().alert().accept();
-        String serverMessage = server.getCapturedMessage();
-        assertTrue(serverMessage.contains("AppMgtSAML2Response"), "SAML to backend pass failed : " + serverMessage);
+        assertTrue(driver.findElements(By.xpath(uiElementMapper.getElement("tomcat_resource_locator"))).size() == 0,
+                "Resource is available.");
+
     }
 
     @AfterClass(alwaysRun = true)
@@ -82,6 +98,7 @@ public class SAMLtoBackendTestCase extends APPManagerIntegrationTest {
         driver.switchTo().window(parentWindow);
         driver.close();
         baseUtil.destroy();
+        tomcat.stop();
     }
 
 }

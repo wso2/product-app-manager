@@ -1,6 +1,6 @@
 <%
 response.addHeader("Access-Control-Allow-Origin", "*");
-
+include('../jagg/jagg.jag');
 require('/modules/store.js').exec(function (ctx) {
     var server = require('store').server;
 

@@ -175,6 +175,9 @@ var render = function (theme, data, meta, require) {
         case 'app-by-endpoint':
             listPartial = 'app-by-endpoint';
             break;
+        case 'app-by-popularity-over-time':
+            listPartial = 'app-by-popularity-over-time';
+            break;
 
         default:
             break;

@@ -27,6 +27,7 @@ import org.wso2.carbon.appmanager.integration.ui.APPManagerIntegrationTest;
 import org.wso2.carbon.appmanager.integration.ui.Util.APPMPublisherRestClient;
 import org.wso2.carbon.appmanager.integration.ui.Util.APPMStoreRestClient;
 import org.wso2.carbon.appmanager.integration.ui.Util.APPMStoreUIClient;
+import org.wso2.carbon.appmanager.integration.ui.Util.ApplicationProperties;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.AppCreateRequest;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.SubscriptionRequest;
 import org.wso2.carbon.automation.core.BrowserManager;
@@ -117,7 +118,7 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
         String policyGropuId = appMPublisher.savePolicyGroup(xml, anonymousAccessToUrlPattern, policyGroupName,
                 throttlingTier, objPartialMappings, policyGroupDesc);
 
-        int hostPort = 8080;
+        int hostPort = 8181;
         AppCreateRequest appCreateRequest = createSingleApp(appName+prefix, appDisplayName, version, transport, appURL, hostPort,
                 appProp.getTier(), policyPartialId, policyGropuId);
         appName = appCreateRequest.getOverview_name();
@@ -127,6 +128,91 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
         appId = (String) jsonObject.get("id");
         assertEquals(appCreateResponse.getResponseCode(), 200, "Application creation failed");
     }
+
+    /**
+     * create a webapp with role restricted
+     *
+     * @param prefix - prefix which should be appended to webapp name
+     * @param roles  - roles
+     * @param roles  - tags
+     * @throws Exception
+     */
+    public void testApplicationCreation(String prefix, String roles, String tags) throws Exception {
+
+        appMPublisher.login(username, password);
+
+        String root = ProductConstant.getSystemResourceLocation();
+        String policyPath = root + "samples" + File.separator + "policy.xml";
+        String xml = convertXMLFileToString(policyPath);
+
+        HttpResponse response = appMPublisher.validatePolicy(xml);
+        JSONObject validateObject = new JSONObject(response.getData());
+        boolean validateSucceed = validateObject.getBoolean("success");
+        assertTrue(validateSucceed, "Policy validation failed.");
+        String policyPartialId = "";
+
+        if (validateSucceed) {
+            HttpResponse partialIdResponse = appMPublisher.savePolicy("testPolicy", xml);
+            JSONObject saveObject = new JSONObject(partialIdResponse.getData());
+            JSONObject responseId = saveObject.optJSONObject("response");
+            policyPartialId = responseId.getString("id");
+        }
+
+        String policyGropuId = appMPublisher.savePolicyGroup(xml, anonymousAccessToUrlPattern, policyGroupName,
+                throttlingTier, objPartialMappings, policyGroupDesc);
+
+        int hostPort = 8181;
+        AppCreateRequest appCreateRequest = createSingleApp(appName + prefix, appDisplayName, version, transport, appURL, hostPort,
+                appProp.getTier(), policyPartialId, policyGropuId);
+        appCreateRequest.setRoles(roles);
+        appCreateRequest.setTags(tags);
+        appName = appCreateRequest.getOverview_name();
+        version = appCreateRequest.getOverview_version();
+        HttpResponse appCreateResponse = appMPublisher.createApp(appCreateRequest);
+        JSONObject jsonObject = new JSONObject(appCreateResponse.getData());
+        appId = (String) jsonObject.get("id");
+        assertEquals(appCreateResponse.getResponseCode(), 200, "Application creation failed");
+    }
+
+    @Test(groups = {"wso2.appmanager.appCreate"}, description = "Application Creation")
+    public void testApplicationCreation(String prefix, String javaPolicyId) throws Exception {
+
+        appMPublisher.login(username, password);
+
+        String root = ProductConstant.getSystemResourceLocation();
+        String policyPath = root+"samples"+File.separator+"policy.xml";
+        String xml = convertXMLFileToString(policyPath);
+
+        HttpResponse response = appMPublisher.validatePolicy(xml);
+        JSONObject validateObject = new JSONObject(response.getData());
+        boolean validateSucceed = validateObject.getBoolean("success");
+        assertTrue(validateSucceed, "Policy validation failed.");
+        String policyPartialId = "";
+
+        if (validateSucceed) {
+            HttpResponse partialIdResponse = appMPublisher.savePolicy("testPolicy", xml);
+            JSONObject saveObject = new JSONObject(partialIdResponse.getData());
+            JSONObject responseId = saveObject.optJSONObject("response");
+            policyPartialId = responseId.getString("id");
+        }
+
+        String policyGropuId = appMPublisher.savePolicyGroup(xml, anonymousAccessToUrlPattern,
+                                                policyGroupName, throttlingTier, objPartialMappings,
+                                                policyGroupDesc);
+
+        int hostPort = 8181;
+        AppCreateRequest appCreateRequest = createSingleApp(appName+prefix, appDisplayName, version,
+                                                  transport, appURL, hostPort,
+                                                  appProp.getTier(), policyPartialId, policyGropuId);
+        appCreateRequest.setUritemplate_javaPolicyIds(javaPolicyId);
+        appName = appCreateRequest.getOverview_name();
+        version = appCreateRequest.getOverview_version();
+        HttpResponse appCreateResponse = appMPublisher.createApp(appCreateRequest);
+        JSONObject jsonObject = new JSONObject(appCreateResponse.getData());
+        appId = (String) jsonObject.get("id");
+        assertEquals(appCreateResponse.getResponseCode(), 200, "Application creation failed");
+    }
+
 
     @Test(groups = {"wso2.appmanager.appPublish"}, description = "Application Publish")
     public void testApplicationPublish() throws Exception {

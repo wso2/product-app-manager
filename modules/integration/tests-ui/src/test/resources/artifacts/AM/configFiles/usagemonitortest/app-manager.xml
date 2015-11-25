@@ -10,9 +10,9 @@
     This parameter used in App Store. This data source is used to write/read UI Activity changes (eg: App Hit count) 
     to seperate database. When using BAM to analyze the changes it needs to configure this data source appropriately.
     -->
-    <UiActivityPublishDataSourceName>jdbc/WSO2AM_DB</UiActivityPublishDataSourceName>
+    <UiActivityPublishDataSourceName>jdbc/WSO2AM_STATS_DB</UiActivityPublishDataSourceName>
 
-    <!-- This parameter is used when adding app management capability to other products like GReg, AS, DSS etc.-->
+    <!-- This parameter is used when adding api/app management capability to other products like GReg, AS, DSS etc.-->
     <GatewayType>Synapse</GatewayType>
 
     <!-- This parameter is used to enable the securevault support when try to publish endpoint secured APIs. Values should be "true" or "false".
@@ -81,7 +81,7 @@
             to be appended to the JWT. If not specified no claims will be appended.
             The DefaultClaimsRetriever class adds user claims from the default carbon user store.
         -->
-        <!--ClaimsRetrieverImplClass>org.wso2.carbon.appmgt.impl.token.DefaultClaimsRetriever</ClaimsRetrieverImplClass-->
+        <ClaimsRetrieverImplClass>org.wso2.carbon.appmgt.impl.token.DefaultClaimsRetriever</ClaimsRetrieverImplClass>
 
         <!--
             The dialectURI under which the claimURIs that need to be appended to the
@@ -100,6 +100,12 @@
             Enable/Disable JWT generation. Default is false.
         -->
         <EnableTokenGeneration>true</EnableTokenGeneration>
+
+        <!-- By default all claim values of default claim dialect uri which mapped to the user profile get added to the JWT token.
+             By setting "AddClaimsSelectively" attribute to true, publisher can select only required claim attributes to each App
+             and include into JWT token.
+        -->
+        <AddClaimsSelectively>false</AddClaimsSelectively>
 
         <!--
             Remove OAuth headers from outgoing message or keep with it.
@@ -177,6 +183,9 @@
         <ApiManagerFaultStreamName>org.wso2.appmgt.statistics.fault</ApiManagerFaultStreamName>
         <ApiManagerFaultStreamVersion>1.0.0</ApiManagerFaultStreamVersion>
 
+        <ApiManagerCacheStatStreamName>org.wso2.appmgt.statistics.cache</ApiManagerCacheStatStreamName>
+        <ApiManagerCacheStatStreamVersion>1.0.0</ApiManagerCacheStatStreamVersion>
+
         <!-- Used when publishing AppManager UI activities to BAM   -->
         <ApiManagerBamUiActivityStreamName>org.wso2.appmgt.bam.uiactivitypublish</ApiManagerBamUiActivityStreamName>
         <ApiManagerBamUiActivityStreamVersion>1.0.0</ApiManagerBamUiActivityStreamVersion>
@@ -196,12 +205,17 @@
         <!--
             Enable UI Activity Data publish to BAM
         -->
-        <UIActivityBAMPublishEnabled>false</UIActivityBAMPublishEnabled>
+        <UIActivityBAMPublishEnabled>true</UIActivityBAMPublishEnabled>
 
         <!--
             Enable/Disable the API usage tracker.
         -->
         <Enabled>true</Enabled>
+
+        <!--
+                Enable/Disable Publishing Cache Hit/Miss Statistics
+            -->
+        <CacheStatsEnabled>true</CacheStatsEnabled>
 
         <!--
             API Usage Data Publisher.
@@ -581,5 +595,92 @@
 
     </EntitlementServiceConfiguration>
 
-</APIManager>
 
+    <!-- Configuration to handle Mobile apps and MDM. -->
+    <MobileAppsConfiguration>
+
+        <MDMConfig>
+
+            <!-- Enables the catalog mode of the Mobile App Store. If you change the value of this to true,
+              the Mobile App Store acts as a catalog, which allows you to view apps. However, it doesn't
+              allow you to perform any operations on the apps -->
+            <Config name="IsCatalog">false</Config>
+
+            <!-- Enables app to download direcly to the mobile device from the App Manager without MDM -->
+            <Config name="EnableDirectDownload">false</Config>
+
+            <!-- Enables WSO2 AppM to communicate with the active MDM for performing operations on the mobile apps. -->
+            <Config name="EnableMDMOperations">true</Config>
+            <!-- Name of the MDM, which is currently active. You need to define the MDM within the <MDMProperties> element.
+             For information on defining a MDM to integrate it with WSO2 AppM, see Integrating a Mobile Device Manager -->
+            <Config name="ActiveMDM">WSO2EMM</Config>
+            <!-- Ability for users to self-unsubscribe from mobile apps -->
+            <Config name="EnableSelfUnsubscription">false</Config>
+
+            <!-- Ability for users to subscribe to mobile apps using mobile devices -->
+            <Config name="EnableSubscriptionFromDevices">false</Config>
+            <!-- Enables the sample devices for testing purposes -->
+            <Config name="EnableSampleDevices">false</Config>
+
+            <!-- Host of the installation URL of the mobile app, which is sent to the MDM:
+              (E.g. %http%, %https%, or a custom host URL) -->
+            <Config name="AppDownloadURLHost">%http%</Config>
+            <!-- Path of the Property List file generated using the PLIST template for iOS apps. -->
+            <Config name="IosPlistPath">publisher/api/mobileapp/getplist</Config>
+
+            <!-- Ability to enable the enterprise-wide operations on mobile apps -->
+            <Config name="EnterpriseOperations_Enabled">true</Config>
+            <!-- The user role, which has the privileges to perform enterprise-wide operations on mobile apps. -->
+            <Config name="EnterpriseOperations_AuthorizedRole">Internal/store-admin</Config>
+
+        </MDMConfig>
+
+        <!-- The properties of the MDMs you need to connect with WSO2 AppM. For information on defining a MDM to integrate it with WSO2 AppM -->
+        <MDMProperties>
+
+            <MDM name="WSO2MDM" bundle="org.wso2.carbon.appmgt.mdm.wso2mdm">
+                <Property name="ServerURL">https://localhost:9450</Property>
+                <Property name="TokenApiURL">https://localhost:9448/oauth2/token</Property>
+                <Property name="ClientKey">WjLm24IxBVLF0oz0VJfmtJbjJbka</Property>
+                <Property name="ClientSecret">v3KkIQXkJ1SDp_Bf8uUQxu5p7TQa</Property>
+                <Property name="AuthUser">admin</Property>
+                <Property name="AuthPass">admin</Property>
+            </MDM>
+
+            <MDM name="WSO2EMM" bundle="org.wso2.carbon.appmgt.mdm.wso2emm">
+                <Property name="ServerURL">https://localhost:9451</Property>
+                <Property name="ImageURL">https://localhost:9451/emm/assets/wso2mobile/img/models/%s.png</Property>
+                <Property name="AuthUser">admin</Property>
+                <Property name="AuthPass">admin</Property>
+            </MDM>
+
+            <!-- Please uncommnent this and define the name in ActiveMDM to activate this MDM
+            <MDM name="WSO2MDM" bundle="org.wso2.carbon.appmgt.mdm.othermdm">
+             <Property name="serverUrl">https://localhost:9454</Property>
+            </MDM>
+            -->
+
+        </MDMProperties>
+
+    </MobileAppsConfiguration>
+
+
+
+    <!-- Configuration to handle Services.-->
+    <ServicesAPI>
+        <AuthorizedRole>admin</AuthorizedRole>
+    </ServicesAPI>
+
+    <!-- The configuration for discovery service -->
+    <DiscoveryConfiguration>
+        <!--
+            Configures the discovery handlers. Discovery handlers are the ones connecting remote servers
+            and discover the applications
+        -->
+        <DiscoveryHandlers>
+            <!-- List of discovery handlers. name is the key being used. Class is the handler class -->
+            <Handler name="WSO2-AS" class="org.wso2.carbon.appmgt.impl.discovery.Wso2AppServerDiscoveryHandler" />
+        </DiscoveryHandlers>
+    </DiscoveryConfiguration>
+
+</APIManager>

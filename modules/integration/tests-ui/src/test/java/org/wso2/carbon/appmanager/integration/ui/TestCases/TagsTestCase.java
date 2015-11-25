@@ -21,19 +21,14 @@ package org.wso2.carbon.appmanager.integration.ui.TestCases;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.appmanager.integration.ui.APPManagerIntegrationTest;
 import org.wso2.carbon.appmanager.integration.ui.Util.APPMStoreRestClient;
-import org.wso2.carbon.appmanager.integration.ui.Util.APPMStoreUIClient;
 import org.wso2.carbon.appmanager.integration.ui.Util.TestUtils.ApplicationInitializingUtil;
-import org.wso2.carbon.automation.core.BrowserManager;
 import org.wso2.carbon.automation.core.utils.HttpResponse;
 
-import java.util.Set;
 
 import static org.testng.Assert.assertTrue;
 
@@ -42,63 +37,75 @@ public class TagsTestCase extends APPManagerIntegrationTest {
     private String username;
     private String password;
     private APPMStoreRestClient appMStore;
-    private APPMStoreUIClient storeUIClient;
-    private WebDriver driver;
     private ApplicationInitializingUtil baseUtil;
+    private String tag = "testTag";
 
     @BeforeClass(alwaysRun = true)
     public void init() throws Exception {
         super.init(0);
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
-        baseUtil.testApplicationCreation("7");
+        //create a webapp which is restricted to role -internal/reviewer
+        baseUtil.testApplicationCreation("tags", "internal/reviewer",tag);
         baseUtil.testApplicationPublish();
-        baseUtil.testApplicationSubscription();
         username = userInfo.getUserName();
         password = userInfo.getPassword();
-        appMStore = new org.wso2.carbon.appmanager.integration.ui.Util.
-                APPMStoreRestClient(ApplicationInitializingUtil.storeURLHttp);
-        storeUIClient = new APPMStoreUIClient();
-        storeUIClient = new APPMStoreUIClient();
-        driver = BrowserManager.getWebDriver();
+        appMStore = new APPMStoreRestClient(ApplicationInitializingUtil.storeURLHttp);
     }
 
-    @Test(groups = {"wso2.appmanager.tags"}, description = "Test tags")
-    public void testTags() throws Exception {
+    @Test(groups = {"wso2.appmanager.tags"}, description = "Check whether tags of" +
+            "role(internal/reviewer) restricted web app is visible to anonymous user")
+    public void testTagsForAnonymousUser() throws Exception {
+
+        HttpResponse response = appMStore.getVisbileTagsForAnonymousUser();
+        JSONArray jsonArray = new JSONArray(response.getData());
+        boolean tagExist = false;
+        JSONObject jObj = null;
+        String tempTag = "";
+        for (int i = 0; i < jsonArray.length(); i++) {
+            jObj = jsonArray.getJSONObject(i);
+            tempTag = jObj.getString("name");
+            if (tag.equals(tempTag)) {
+                tagExist = true;
+            }
+
+        }
+
+        assertTrue(!tagExist,
+                "Tag of role restricted web app is visible to anonymous user");
+
+    }
+
+    @Test(groups = {"wso2.appmanager.tags"}, description = "Check whether tags of role restricted" +
+            "web app is visible to user with correct role")
+    public void testTagsForRoleAssignedUser() throws Exception {
 
         appMStore.login(username, password);
-        storeUIClient.login(driver, ApplicationInitializingUtil.storeURLHttp, username, password);
-        storeUIClient.selectAppGadget(driver, ApplicationInitializingUtil.appId);
-
         HttpResponse response = appMStore.getAllTags();
-
         JSONArray jsonArray = new JSONArray(response.getData());
-
+        appMStore.logout();
+        assertTrue(jsonArray.length() > 0,
+                "Tags of role restricted web app is not visible to user with correct role");
+        //check whether created tags are visible
+        boolean tagExist = false;
+        JSONObject jObj = null;
+        String tempTag = "";
         for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject jObj = jsonArray.getJSONObject(i);
-            if (appProp.getTags().equals(jObj.getString("name"))) {
-                assertTrue(appProp.getTags().equals(jObj.getString("name")) &&
-                        driver.findElement(By.xpath("//a[contains(.,'" + appProp.getTags() + "')]")) != null,
-                        "Tag is not created during the app creation time");
-                break;
+            jObj = jsonArray.getJSONObject(i);
+            tempTag = jObj.getString("name");
+            if (tag.equals(tempTag)) {
+                tagExist = true;
             }
         }
+
+        assertTrue(tagExist,
+                "Tag of role restricted web app is not visible to  user with correct role");
 
     }
 
     @AfterClass(alwaysRun = true)
     public void destroy() throws Exception {
         super.cleanup();
-        String parentWindow = driver.getWindowHandle();
-        Set<String> handles =  driver.getWindowHandles();
-        for(String windowHandle  : handles) {
-            if(!windowHandle.equals(parentWindow)) {
-                driver.switchTo().window(windowHandle);
-                driver.close();
-            }
-        }
-        driver.switchTo().window(parentWindow);
-        driver.close();
         baseUtil.destroy();
     }
 }

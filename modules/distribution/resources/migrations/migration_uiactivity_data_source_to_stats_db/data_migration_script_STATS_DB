@@ -1,0 +1,35 @@
+drop table APM_APP_TEMP;
+
+drop table APM_APP_HITS_TEMP;
+
+drop table APM_APP_HIT_TOTAL;
+
+drop table APM_APP_HIT_TOTAL_TEMP;
+
+CREATE EXTERNAL TABLE IF NOT EXISTS APM_APP_TEMP( UUID STRING, APP_NAME STRING, APP_VERSION STRING, CONTEXT STRING) 
+STORED BY 'org.wso2.carbon.hadoop.hive.jdbc.storage.JDBCStorageHandler'        
+             TBLPROPERTIES (                
+                    'wso2.carbon.datasource.name'='WSO2AM_DB',
+                    'mapred.jdbc.input.table.name' = 'APM_APP');
+
+CREATE EXTERNAL TABLE IF NOT EXISTS APM_APP_HITS_TEMP (key STRING, uuid STRING, app_name STRING,app_version STRING,context STRING,user_id STRING,tenant_id INT, hit_time BIGINT) STORED BY
+	'org.apache.hadoop.hive.cassandra.CassandraStorageHandler' WITH SERDEPROPERTIES ( 'wso2.carbon.datasource.name'='WSO2BAM_CASSANDRA_DATASOURCE',
+	"cassandra.cf.name" = "org_wso2_appmgt_bam_uiactivitypublish",
+	"cassandra.columns.mapping" = ":key,payload_appId,payload_appName,payload_appVersion,payload_context,payload_userId,payload_tenantId,payload_timestamp"); 
+
+CREATE EXTERNAL TABLE IF NOT EXISTS APM_APP_HITS (uuid STRING, app_name STRING, version STRING, context STRING, user_id STRING,tenant_id INT, hit_time STRING) STORED BY
+'org.wso2.carbon.hadoop.hive.jdbc.storage.JDBCStorageHandler' TBLPROPERTIES ( 
+'wso2.carbon.datasource.name'='WSO2AM_STATS_DB',
+'hive.jdbc.update.on.duplicate' = 'true',
+'hive.jdbc.primary.key.fields' = 'uuid,user_id,tenant_id,hit_time',
+'hive.jdbc.table.create.query' ='CREATE TABLE APM_APP_HITS (uuid VARCHAR(500), app_name VARCHAR(200), version VARCHAR(50),context VARCHAR(256),
+user_id VARCHAR(50) NOT NULL,tenant_id INT, hit_time VARCHAR(500))'); 
+
+
+insert overwrite table APM_APP_HITS_TEMP
+select key,APM_APP_HITS_TEMP.uuid, APM_APP_TEMP.APP_NAME, APM_APP_TEMP.APP_VERSION,APM_APP_TEMP.CONTEXT, user_id,tenant_id,
+ concat(substring(from_unixtime(cast(hit_time/1000 as BIGINT), 'yyyy-MM-dd HH:mm:ss'),0,19)) as hit_time
+from APM_APP_HITS_TEMP JOIN APM_APP_TEMP ON APM_APP_TEMP.UUID=APM_APP_HITS_TEMP.uuid;
+
+
+

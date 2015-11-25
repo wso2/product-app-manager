@@ -243,6 +243,25 @@ public class APPMPublisherRestClient {
 		}
 	}
 
+	/**
+	* Get web applications popularity over time.
+	* @param getAppPopularityOverTimeRequest payload to get web application popularity over time.
+	* @return HTTP Response with web application popularity.
+	* @throws Exception
+	*/
+	public HttpResponse getAppPopularityOverTime(GetStatisticRequest getAppPopularityOverTimeRequest) throws Exception {
+		checkAuthentication();
+		String payload = getAppPopularityOverTimeRequest.generateRequestParameters();
+		this.requestHeaders.put("Content-Type", "application/x-www-form-urlencoded");
+		HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl +
+			"/publisher/api/assets/statistics/webapp/getAppsPopularity/"), payload, requestHeaders);
+		if (response.getResponseCode() == 200) {
+			return response;
+		} else {
+			throw new Exception("App creation failed> " + response.getData());
+		}
+	}
+
 	public String getWebappTrackingId(String appId) throws Exception {
 		checkAuthentication();
 		HttpResponse response =
@@ -251,16 +270,29 @@ public class APPMPublisherRestClient {
 						appId, requestHeaders);
 		if (response.getResponseCode() == 200) {
 			JSONObject jsonObject = new JSONObject(response.getData());
-
-			org.json.JSONArray jsonArray = new org.json.JSONArray( jsonObject.get("fields").toString());
-			JSONObject trackingIdObj = new JSONObject(jsonArray.get(10).toString());
-			return trackingIdObj.get("value").toString();
-
+			JSONObject attributeValueJSON = new JSONObject(jsonObject.get("attributes").toString());
+			String trackingId = attributeValueJSON.getString("overview_trackingCode");
+			return trackingId;
 		} else {
 			System.out.println(response);
 			throw new Exception("Error occurred while retrieving tracking id of webapp with id :" + appId);
 		}
 	}
+
+    public JSONObject getWebAppProperty(String appId) throws Exception {
+        checkAuthentication();
+        HttpResponse httpResponse = HttpRequestUtil.doGet(backEndUrl + "/publisher/api/asset/webapp/"
+                + appId, requestHeaders);
+        if (httpResponse.getResponseCode() == 200) {
+            JSONObject jsonObject = new JSONObject(httpResponse.getData());
+            return jsonObject ;
+        } else {
+            System.out.println(httpResponse);
+            throw new Exception("Error occurred while retrieving webapp properties by app Id :" + appId);
+        }
+    }
+
+
 
 	/**
      * this method validate the method
@@ -393,8 +425,11 @@ public class APPMPublisherRestClient {
         String version = appCreateRequest.getOverview_version();
         String transport = appCreateRequest.getOverview_transports();
         String context = appCreateRequest.getOverview_context();
+		String acsUrl = appCreateRequest.getOverview_acsUrl();
+
         String requestBody = "{\"provider\":\"" + provider +
                 "\",\"logout_url\":\""+logOutUrl+
+				"\",\"app_acsURL\":\""+acsUrl+
                 "\",\"claims\":[\""+claims+"\"],\"app_name\":\""+appName+
                 "\",\"app_verison\":\""+version+
                 "\",\"app_transport\":\""+transport+

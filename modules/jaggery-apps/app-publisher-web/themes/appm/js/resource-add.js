@@ -204,10 +204,16 @@ $( document ).ready(function() {
         }
     });
 
+    $(document).on("click", '.skip_gateway_checkbox', function () {
+        $(this).context.checked ? $('#overview_acsUrl').show() : $('#overview_acsUrl').hide();
+    });
+
     $(document).on("click", '.controll_overview_logoutUrl', function () {
         $(this).context.checked ? $('#overview_logoutUrl').show() : $('#overview_logoutUrl').hide();
-    })
+    });
+
     //set default on loading
+    $('#overview_acsUrl').hide();
     $('#token-input-roles').hide();
     $('#overview_logoutUrl').hide();
     $('.global_role>ul.token-input-list-facebook').css('border','none');
