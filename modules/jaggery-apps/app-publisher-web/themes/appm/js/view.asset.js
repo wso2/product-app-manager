@@ -17,7 +17,6 @@
  */
 
 
-
 $('#update-store').click(function () {
     var provider = $("#app-provider").val();
     var appName = $("#app-name").val();
@@ -26,7 +25,7 @@ $('#update-store').click(function () {
     var externalAPIStores = new Array();
 
 
-    $("input:checkbox[name=externalStore]:checked").each(function(){
+    $("input:checkbox[name=externalStore]:checked").each(function () {
         externalAPIStores.push($(this).val());
     });
 
@@ -36,28 +35,28 @@ $('#update-store').click(function () {
     var head = "External Stores";
     $('#spinner').show();
     $.ajax({
-        url: '/publisher/api/asset/webapp/update/external/stores/'+provider+'/'+appName+'/'+version,
+        url: '/publisher/api/asset/webapp/update/external/stores/' + provider + '/' + appName + '/' + version,
         type: 'POST',
         processData: false,
         contentType: 'application/json',
         data: JSON.stringify(externalAPIStores),
         success: function (response) {
-            if(response.success){
+            if (response.success) {
                 $('#spinner').hide();
                 var msg = "Successfully updated external stores.";
-                showMessageModel(msg,head,pathname);
+                showMessageModel(msg, head, pathname);
                 e.stopPropagation();
             } else {
                 $('#spinner').hide();
                 var msg = "Error adding external stores.";
-                showMessageModel(msg,head,pathname);
+                showMessageModel(msg, head, pathname);
                 e.stopPropagation();
             }
 
         },
         error: function (response) {
             var msg = "Error adding external stores.";
-            showMessageModel(msg,head,pathname);
+            showMessageModel(msg, head, pathname);
             e.stopPropagation();
         }
     });
