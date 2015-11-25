@@ -21,6 +21,11 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
             },
             sso_sessions = application.get('sso_sessions');
 
+    localIP = "https://" + process.getProperty('server.host'),
+            httpsPort = process.getProperty('https.port');
+    var relayStateUrlMatcher = new URIMatcher(relayState);
+    var tenantUrlPattern = localIP+':'+httpsPort+'/{context}/t/{domain}/'; //https://localhost:9443/store/t/wso2.com/
+
    var AuthService=require('../extensions/assets/webapp/services/authentication.js').serviceModule;
    var authenticator=new AuthService.Authenticator();
    authenticator.init(jagg,session);
@@ -43,11 +48,22 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
                     var username = sessionObj.loggedInUser;                                   
 
                     if (sessionObj.sessionIndex != null || sessionObj.sessionIndex != 'undefined') {
-
+                        var urlTenantDomain = 'carbon.super';
+                        if(relayStateUrlMatcher.match(tenantUrlPattern)){
+                            var elements = relayStateUrlMatcher.elements();
+                            urlTenantDomain = elements.domain;
+                        }
                         var MultitenantUtils = Packages.org.wso2.carbon.utils.multitenancy.MultitenantUtils;
                         var MultitenantConstants = Packages.org.wso2.carbon.base.MultitenantConstants;
                         var domainName = MultitenantUtils.getTenantDomain(sessionObj.loggedInUser);
                         var tenantedUrlPrefix = null;
+
+                        if(urlTenantDomain != domainName){
+                            log.warn('User '+sessionObj.loggedInUser+' does not have permission to access the store application. Make sure the user has the store role.');
+                            session.invalidate();
+                            response.sendError(403,'You do not have permission to login to this application.Please contact your administrator and request permission.');
+                            return;
+                        }
 
                         if (domainName != null && !MultitenantConstants.SUPER_TENANT_DOMAIN_NAME.equals(domainName)) {
                             var service = server.osgiService('org.wso2.carbon.utils.ConfigurationContextService');
