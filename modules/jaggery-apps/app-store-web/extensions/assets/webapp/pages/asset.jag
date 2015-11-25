@@ -47,10 +47,12 @@ require('/modules/store.js').exec(function (ctx) {
             social = carbon.server.osgiService('org.wso2.carbon.social.core.service.SocialActivityService');
                         
     caramel = require('caramel');
+    var tenantedUrl = '/{context}/t/{domain}' + configs.assetsUrlPrefix + '/{type}/{aid}'
 
-    matcher.match('/{context}' + configs.assetsUrlPrefix + '/{type}/{aid}');
-    aid = matcher.elements().aid;
-    title = store.assetLinks(type).title;
+    if(matcher.match('/{context}' + configs.assetsUrlPrefix + '/{type}/{aid}') || matcher.match(tenantedUrl)){
+        aid = matcher.elements().aid;
+        title = store.assetLinks(type).title;
+    }
     try {
         asset = store.asset(type, aid);
     } catch (e) {

@@ -13,6 +13,7 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
             sso = require('sso'),
             server = require('carbon').server,
             samlRespObj,
+            tenantPrefix = '/t/',
             keyStoreProps = {
                 KEY_STORE_NAME: process.getProperty('carbon.home') + configs.ssoConfiguration.keyStoreName,
                 KEY_STORE_PASSWORD: configs.ssoConfiguration.keyStorePassword,
@@ -46,12 +47,14 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
                         var MultitenantUtils = Packages.org.wso2.carbon.utils.multitenancy.MultitenantUtils;
                         var MultitenantConstants = Packages.org.wso2.carbon.base.MultitenantConstants;
                         var domainName = MultitenantUtils.getTenantDomain(sessionObj.loggedInUser);
+                        var tenantedUrlPrefix = null;
 
                         if (domainName != null && !MultitenantConstants.SUPER_TENANT_DOMAIN_NAME.equals(domainName)) {
                             var service = server.osgiService('org.wso2.carbon.utils.ConfigurationContextService');
                             var ctx = service.getServerConfigContext();
                             var TenantAxisUtils = org.wso2.carbon.core.multitenancy.utils.TenantAxisUtils;
                             TenantAxisUtils.setTenantAccessed(domainName, ctx);
+                            tenantedUrlPrefix = tenantPrefix + domainName;
                         }
 
                         session.put("LOGGED_IN_USER", sessionObj.loggedInUser);
@@ -73,9 +76,11 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
                         if(role){
                         	var user = require('store').user;
                             log.debug('user is set :::' + sessionObj.loggedInUser);
-
-                        	response.sendRedirect('/store');
-
+                            if(tenantedUrlPrefix != null) {
+                                response.sendRedirect('/store'+tenantedUrlPrefix);
+                            }else {
+                                response.sendRedirect('/store');
+                            }
 
 						
                         } else {

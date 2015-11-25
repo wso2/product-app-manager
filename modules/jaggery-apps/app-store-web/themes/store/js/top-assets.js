@@ -5,6 +5,7 @@
  ;
  */
 var opened = false;
+var tenantedPrefix = '/t/';
 
 $(function() {
 	var details;
@@ -32,7 +33,7 @@ $(function() {
 			  if (allowAnonymous.toUpperCase()!="TRUE") {
 				  var ssoEnabled = $('#sso').val();
 				  if (ssoEnabled == 'true') {
-				  	location.href = "/store/login";
+				  	location.href = getTenantedLoginURL();
 				  } else {
 					  var assetId = $('#slideAsset').data('id');
 					  $('#modal-login').data('value', assetId);
@@ -52,7 +53,7 @@ $(function() {
 			  if (allowAnonymous.toUpperCase()!="TRUE") {
 				  var ssoEnabled = $('#sso').val();
 				  if (ssoEnabled == 'true') {
-					  location.href = "/store/login";
+					  location.href = getTenantedLoginURL();
 				  } else {
 					  var assetId = $('#slideAsset').data('id');
 					  $('#modal-login').data('value', assetId);
@@ -72,7 +73,7 @@ $(function() {
 			  if (allowAnonymous.toUpperCase()!="TRUE") {
 				  var ssoEnabled = $('#sso').val();
 				  if (ssoEnabled == 'true') {
-					  location.href = "/store/login";
+					  location.href = getTenantedLoginURL();
 				  } else {
 					  var assetId = $('#slideAsset').data('id');
 					  $('#modal-login').data('value', assetId);
@@ -99,7 +100,7 @@ $(function() {
 			  if (allowAnonymous.toUpperCase()!="TRUE") {
 				  var ssoEnabled = $('#sso').val();
 				  if (ssoEnabled == 'true') {
-					  location.href = "/store/login";
+					  location.href = getTenantedLoginURL();
 				  } else {
 					  var assetId = $('#slideAsset').data('id');
 					  $('#modal-login').data('value', assetId);
@@ -119,7 +120,7 @@ $(function() {
 			  if (allowAnonymous.toUpperCase()!="TRUE") {
 				  var ssoEnabled = $('#sso').val();
 				  if (ssoEnabled == 'true') {
-					  location.href = "/store/login";
+					  location.href = getTenantedLoginURL();
 				  } else {
 					  var assetId = $('#slideAsset').data('id');
 					  $('#modal-login').data('value', assetId);
@@ -223,6 +224,24 @@ var applyTopAssetsSlideshow = function(){
 	}, function() {
 		$(this).find(".asset-intro-box").slideUp("fast");
 	});
-	
-	
+}
+
+var isAnonymousTenantStore = function (loggedUser){
+	var context,
+		urlDomain = 'carbon.super',
+		userDomain = 'carbon.super',
+		tenantURL = location.pathname;
+
+    //regex to match super tenant urls '/{context}/{+any}
+	var tenantedURLRegex = '([0-9A-Za-z-\\.@:%_\+~#=]+)/t/{1}([0-9A-Za-z-\\.@:%_\+~#=]+)';
+	var tenantUserRegex = '([0-9A-Za-z-\\.@:%_\+~#=]+)@{1}([0-9A-Za-z-\\.@:%_\+~#=]+)';
+	if (tenantURL.match(tenantedURLRegex)) { //if matches to tenanted url pattern
+		context = tenantURL.match(tenantedURLRegex)[1];
+		urlDomain = tenantURL.match(tenantedURLRegex)[2];
+	}
+	if(loggedUser.match(tenantUserRegex)){
+		userDomain = loggedUser.match(tenantUserRegex)[2];
+	}
+
+	return ((urlDomain !== userDomain));
 }

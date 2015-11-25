@@ -7,15 +7,15 @@
                         			<a class="brand" href="{{url "/"}}"></a>
                         			<ul class="nav menu pull-right">
                                             <li class="nav-separator">
-                                                <a href="{{url "/assets/webapp"}}"><i class="icon-cog store-topnav-bookmark"></i> {{t "Web Applications"}}</a>
+                                                <a href="{{tenantedUrl "/assets/webapp"}}"><i class="icon-cog store-topnav-bookmark"></i> {{t "Web Applications"}}</a>
                                             </li>
                             				<li class="nav-separator">
-                                				<a href="{{url "/assets/mobileapp"}}"><i class="icon-mobile-phone store-topnav-bookmark"></i> {{t "Mobile Applications"}}</a>
+                                				<a href="{{tenantedUrl "/assets/mobileapp"}}"><i class="icon-mobile-phone store-topnav-bookmark"></i> {{t "Mobile Applications"}}</a>
                             				</li>
 
                             				{{#if user}}
                             					<li class="nav-separator">
-                                					<a href="{{url "/extensions/assets/webapp/subscriptions"}}"><i class="icon-tags store-topnav-bookmark"></i> {{t "My Subscriptions"}}</a>
+                                					<a href="{{tenantedUrl "/extensions/assets/webapp/subscriptions"}}"><i class="icon-tags store-topnav-bookmark"></i> {{t "My Subscriptions"}}</a>
                             					</li>
                             					<li>
 									                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i> {{user.username}} <b class="caret"></b></a>

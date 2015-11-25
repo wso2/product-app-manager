@@ -8,22 +8,22 @@
 			{{#each .}}
 			<div class="span3 asset" data-id="{{id}}" data-type="{{type}}">
 				{{#attributes}}
-				<a href="{{url "/assets"}}/{{../type}}/{{../id}}">
+				<a href="{{tenantedUrl "/assets"}}/{{../type}}/{{../id}}">
 				<div class="asset-icon">
 					<input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
 					{{#if ../indashboard}}
 						<i class="icon-bookmark store-bookmark-icon"></i>
 					{{/if}}
-				<img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}">
+				<img src="{{#if images_thumbnail}}{{tenantedUrl images_thumbnail}}{{/if}}">
 				</div> </a>
 
 				<div class="asset-details">
 					<div class="asset-name">
 						<input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
-						<a href="{{url "/assets"}}/{{../type}}/{{../id}}"> <h4>{{overview_displayName}}</h4> </a>
+						<a href="{{tenantedUrl "/assets"}}/{{../type}}/{{../id}}"> <h4>{{overview_displayName}}</h4> </a>
 					</div>
 					<div class="asset-rating">
-						<div class="asset-rating-{{../rating/average}}star">
+						<div class="asset-rating-{{../../rating/average}}star">
 
 						</div>
 					</div>

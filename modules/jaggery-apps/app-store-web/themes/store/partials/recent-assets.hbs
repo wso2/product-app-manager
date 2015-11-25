@@ -7,11 +7,11 @@
                     {{#attributes}}
                         <div class="span3 recent-asset-icon">
 			    <input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
-                            <a href="{{url "/assets"}}/{{../type}}/{{../id}}"><img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}"></a>
+                            <a href="{{tenantedUrl "/assets"}}/{{../type}}/{{../id}}"><img src="{{#if images_thumbnail}}{{tenantedUrl images_thumbnail}}{{/if}}"></a>
                         </div>
                         <div class="span9 recent-asset-details">
 			    <input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
-                            <strong><a href="{{url "/assets"}}/{{../type}}/{{../id}}">
+                            <strong><a href="{{tenantedUrl "/assets"}}/{{../type}}/{{../id}}">
                                 {{#compare "mobileapp" ../type}}
                                     {{overview_name}}
                                 {{/compare}}
