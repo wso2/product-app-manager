@@ -264,6 +264,10 @@ var registry = registry || {};
         return this.registry.resourceExists(path);
     };
 
+    Registry.prototype.invokeAspect = function (path, aspectName, action, parameters) {
+        this.registry.invokeAspect(path, aspectName, action, parameters);
+    };
+
     Registry.prototype.content = function (path, paging) {
         if (!this.exists(path)) {
             return null;
