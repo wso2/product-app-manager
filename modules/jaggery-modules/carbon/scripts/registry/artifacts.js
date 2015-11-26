@@ -24,7 +24,7 @@
     var HISTORY_PATH_SEPERATOR = '_';
     var ASSET_PATH_SEPERATOR = '/';
     var lcHistoryRegExpression = new RegExp(ASSET_PATH_SEPERATOR, 'g');
-    var HISTORY_PATH = '/_system/governance/_system/governance/repository/components/org.wso2.carbon.governance/lifecycles/history/';
+    var HISTORY_PATH = '/_system/governance/repository/components/org.wso2.carbon.governance/lifecycles/history/';
 
 
     var buildArtifact = function (manager, artifact) {
@@ -352,8 +352,8 @@
             throw new Error('Specified artifact cannot be found : ' + JSON.stringify(options));
         }
         //checkListItems = artifact.getAllCheckListItemNames();
-	    var lifecycleName = resolveLCName(arguments,artifact,2);//getLifecycleName(artifact);
-        artifact.invokeAction(state,lifecycleName);
+        var lifecycleName = resolveLCName(arguments, artifact, 2);
+        this.registry.invokeAspect(options.path, lifecycleName, state, {});
     };
     /*
      Gets the current lifecycle state
