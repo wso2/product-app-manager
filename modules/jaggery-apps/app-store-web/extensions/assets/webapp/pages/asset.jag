@@ -48,6 +48,7 @@ require('/modules/store.js').exec(function (ctx) {
                         
     caramel = require('caramel');
     var tenantedUrl = '/{context}/t/{domain}' + configs.assetsUrlPrefix + '/{type}/{aid}'
+
     if(matcher.match('/{context}' + configs.assetsUrlPrefix + '/{type}/{aid}') || matcher.match(tenantedUrl)){
         aid = matcher.elements().aid;
         title = store.assetLinks(type).title;

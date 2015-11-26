@@ -19,20 +19,20 @@
                         <div class="ribbon-wrapper-green"><div class="ribbon-green">Subscribed</div></div>
 					{{/if}}
 
-				<a href="{{url "/assets"}}/{{../type}}/{{../id}}" id="assetsLink">
+				<a href="{{tenantedUrl "/assets"}}/{{../type}}/{{../id}}" id="assetsLink">
 	                		<div class="asset-icon">
                                 <input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
 	                    			{{#if ../indashboard}}
 	                    
 	                    			{{/if}}
-	                    			<img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}">
+	                    			<img src="{{#if images_thumbnail}}{{tenantedUrl images_thumbnail}}{{/if}}">
 	                		</div>
 				</a>
 	
 	            		<div class="asset-details">
 					<div class="asset-name">
 						<input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
-						<a href="{{url "/assets"}}/{{../type}}/{{../id}}" id="assetDeatils"> <h4>{{overview_displayName}}</h4></a>
+						<a href="{{tenantedUrl "/assets"}}/{{../type}}/{{../id}}" id="assetDeatils"> <h4>{{overview_displayName}}</h4></a>
 	                		</div>
 	                		<div class="asset-rating">
 						<div class="asset-rating-{{../rating}}star"></div>
@@ -77,17 +77,17 @@
     <div id="paging-indices">
         <ul class="pagination">
             {{#if leftNav}}
-                <li><a href="{{url "/assets/webapp?page="}}{{this.leftNav}}"><span aria-hidden="true">&laquo;</span><span class="sr-only"></span></a></li>
+                <li><a href="{{tenantedUrl "/assets/webapp?page="}}{{this.leftNav}}"><span aria-hidden="true">&laquo;</span><span class="sr-only"></span></a></li>
             {{/if}}
             {{#each pageIndeces}}
                 {{#if this.isDisabled}}
                     <li class="disabled"><a>{{this.index}}</a></li>
                 {{else}}
-                    <li><a href="{{url "/assets/webapp?page="}}{{this.index}}">{{this.index}}</a></li>
+                    <li><a href="{{tenantedUrl "/assets/webapp?page="}}{{this.index}}">{{this.index}}</a></li>
                 {{/if}}
             {{/each}}
             {{#if rightNav}}
-                <li><a href="{{url "/assets/webapp?page="}}{{this.rightNav}}"><span aria-hidden="true">&raquo;</span><span class="sr-only"></span></a></li>
+                <li><a href="{{tenantedUrl "/assets/webapp?page="}}{{this.rightNav}}"><span aria-hidden="true">&raquo;</span><span class="sr-only"></span></a></li>
             {{/if}}
         </ul>
     </div>

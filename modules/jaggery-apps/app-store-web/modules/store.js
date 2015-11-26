@@ -144,14 +144,17 @@ var init = function (options) {
 var currentAsset = function () {
     var prefix = require('/config/store.js').config().assetsUrlPrefix,
         matcher = new URIMatcher(request.getRequestURI());
-
-    if (matcher.match('/{context}' + prefix + '/{type}/{+any}') || matcher.match('/{context}' + prefix + '/{type}') ||
-        matcher.match('/{context}/t/{domain}' + prefix + '/{type}/{+any}')) {
+    if (matcher.match('/{context}' + prefix + '/{type}/{+any}') || matcher.match('/{context}' + prefix + '/{type}')) {
+        return matcher.elements().type;
+    }else if(matcher.match('/{context}/t/{domain}' + prefix + '/{type}/') ||
+        matcher.match('/{context}/t/{domain}' + prefix + '/{type}/{+any}')){
         return matcher.elements().type;
     }
     prefix = require('/config/store.js').config().extensionsUrlPrefix + prefix;
-    if (matcher.match('/{context}' + prefix + '/{type}/{+any}') || matcher.match('/{context}' + prefix + '/{type}') ||
-        matcher.match('/{context}/t/{domain}' + prefix + '/{type}/{+any}')) {
+    if (matcher.match('/{context}' + prefix + '/{type}/{+any}') || matcher.match('/{context}' + prefix + '/{type}')) {
+        return matcher.elements().type;
+    }else if(matcher.match('/{context}/t/{domain}' + prefix + '/{type}/') ||
+        matcher.match('/{context}/t/{domain}' + prefix + '/{type}/{+any}')){
         return matcher.elements().type;
     }
     return null;
@@ -1100,7 +1103,7 @@ function obtainTenantDetails(req, session, user) {
     var tenantPatternStore = '/{context}/t/{domain}/';
     var tenantPatternStoreWithSuffix = '/{context}/t/{domain}/{+suffix}';
     var uriMatcher = new URIMatcher(req.getRequestURI());
-    var domain;
+    var domain = carbon.server.superTenant.domain ;
     if (uriMatcher.match(tenantPatternStore) || uriMatcher.match(tenantPatternStoreWithSuffix)) {
         domain = uriMatcher.elements().domain;
     }

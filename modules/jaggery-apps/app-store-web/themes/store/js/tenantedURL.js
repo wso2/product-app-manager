@@ -1,6 +1,7 @@
 var getTenantedLoginURL = function () {
     var context,
         urlDomain = 'carbon.super',
+        tenantedPrefix = '/t/',
         currentUrl = location.pathname;
 
     //regex to match super tenant urls '/{context}/{+any}

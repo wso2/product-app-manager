@@ -48,9 +48,17 @@ var engine = caramel.engine('handlebars', (function () {
                 var context, domain, output;
                 var matcher = new URIMatcher(uri);
                 var storageMatcher = new URIMatcher(path);
-                //Resolving tenanted storage URI
+                var mobileApiMatcher = new URIMatcher(path);
+
+                //Resolving tenanted storage URI for webapps
                 if (storageMatcher.match('/store/storage/{+any}')) {
-                    path = "/storage/" + storageMatcher.elements().any
+                    path = "/storage/" + storageMatcher.elements().any;
+                }
+                //TODO: This url pattern has been hard coded due to pattern mismatch in between mobile and webapp image urls
+
+                //Resolving mobile app image urls
+                if(mobileApiMatcher.match('/publisher/api/{+any}')){
+                    return path;
                 }
                 if (matcher.match('/{context}/t/{domain}/') || matcher.match('/{context}/t/{domain}/{+any}')) {
                     context = matcher.elements().context;

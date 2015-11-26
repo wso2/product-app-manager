@@ -21,6 +21,10 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
             },
             sso_sessions = application.get('sso_sessions');
 
+    
+    var AuthService=require('../extensions/assets/webapp/services/authentication.js').serviceModule;
+    var authenticator=new AuthService.Authenticator();
+
     localIP = "https://" + process.getProperty('server.host'),
             httpsPort = process.getProperty('https.port');
     var relayStateUrlMatcher = new URIMatcher(relayState);
@@ -49,7 +53,7 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
 
                     if (sessionObj.sessionIndex != null || sessionObj.sessionIndex != 'undefined') {
                         var urlTenantDomain = 'carbon.super';
-                        if(relayStateUrlMatcher.match(tenantUrlPattern)){
+                        if(relayStateUrlMatcher.match(tenantUrlPattern) || relayStateUrlMatcher.match(tenantUrlPattern+'{+any}')){
                             var elements = relayStateUrlMatcher.elements();
                             urlTenantDomain = elements.domain;
                         }
