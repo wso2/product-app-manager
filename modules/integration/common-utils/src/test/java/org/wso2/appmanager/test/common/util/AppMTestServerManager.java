@@ -1,5 +1,5 @@
 /*
-*Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *WSO2 Inc. licenses this file to you under the Apache License,
 *Version 2.0 (the "License"); you may not use this file except
@@ -37,20 +37,18 @@ public class AppMTestServerManager extends TestServerManager {
         super(context, portOffset);
     }
 
-    public AppMTestServerManager(AutomationContext context, String carbonZip,
-                                 Map<String, String> commandMap) {
+    public AppMTestServerManager(AutomationContext context, String carbonZip, Map<String, String> commandMap) {
         super(context, carbonZip, commandMap);
     }
 
     public String configureTestServer() throws IOException, AutomationFrameworkException {
-        if (this.carbonHome == null) {
-            if (this.carbonZip == null) {
+        if(this.carbonHome == null) {
+            if(this.carbonZip == null) {
                 this.carbonZip = System.getProperty("carbon.zip");
             }
 
-            if (this.carbonZip == null) {
-                throw new IllegalArgumentException(
-                        "carbon zip file cannot find in the given location");
+            if(this.carbonZip == null) {
+                throw new IllegalArgumentException("carbon zip file cannot find in the given location");
             }
 
             this.carbonHome = this.carbonServer.setUpCarbonHome(this.carbonZip);

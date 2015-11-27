@@ -1,5 +1,5 @@
 /*
-*Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *WSO2 Inc. licenses this file to you under the Apache License,
 *Version 2.0 (the "License"); you may not use this file except
@@ -37,21 +37,19 @@ public class AppMServerExtension extends ExecutionListenerExtension {
 
     public void initiate() {
         try {
-            if (getParameters().get(ExtensionConstants.SERVER_STARTUP_PORT_OFFSET_COMMAND) ==
-                    null) {
+            if(getParameters().get(ExtensionConstants.SERVER_STARTUP_PORT_OFFSET_COMMAND) == null) {
                 getParameters().put(ExtensionConstants.SERVER_STARTUP_PORT_OFFSET_COMMAND, "0");
             }
-            serverManager = new AppMTestServerManager(getAutomationContext(), null,
-                                                      getParameters());
+            serverManager = new AppMTestServerManager(getAutomationContext(), null, getParameters());
             executionEnvironment =
-                    getAutomationContext().getConfigurationValue(
-                            ContextXpathConstants.EXECUTION_ENVIRONMENT);
+                    getAutomationContext().getConfigurationValue(ContextXpathConstants.EXECUTION_ENVIRONMENT);
         } catch (XPathExpressionException e) {
             handleException("Error while initiating test environment", e);
         }
     }
 
     public void onExecutionStart() {
+
         try {
             if (executionEnvironment.equalsIgnoreCase(ExecutionEnvironment.STANDALONE.name())) {
                 String carbonHome = serverManager.configureTestServer();
@@ -59,14 +57,10 @@ public class AppMServerExtension extends ExecutionListenerExtension {
 
 
                 changePortOffsets(carbonHome + "/repository/conf/app-manager.xml", portOffset);
-                changePortOffsets(carbonHome + "/repository/conf/identity/sso-idp-config.xml",
-                                  portOffset);
+                changePortOffsets(carbonHome + "/repository/conf/identity/sso-idp-config.xml", portOffset);
 
-                if (log.isDebugEnabled()) {
-                    log.debug(
-                            "Changed port values of app-manager.xml and sso-idp-config.xml for " +
-                                    "offset " +
-                                    portOffset);
+                if(log.isDebugEnabled()){
+                    log.debug("Changed port values of app-manager.xml and sso-idp-config.xml for offset " + portOffset);
                 }
 
                 serverManager.startServer();
@@ -112,9 +106,9 @@ public class AppMServerExtension extends ExecutionListenerExtension {
             br.close();
         }
 
-        BufferedWriter bw = new BufferedWriter(new FileWriter(path));
+        BufferedWriter bw = new BufferedWriter( new FileWriter(path));
         bw.write(xmlDoc);
-        bw.close();
+        bw.close( );
 
     }
 }
