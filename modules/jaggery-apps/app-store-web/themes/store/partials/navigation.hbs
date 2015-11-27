@@ -9,9 +9,11 @@
                         {{/itr}}
                     </h1>
 				</div>
-				<div class="span3">
-					{{>search}}
-				</div>
+                {{#if search}}
+                    <div class="span3">
+                        {{>search}}
+                    </div>
+                {{/if}}
 
 				<div class="modal fade" id="messageModal" style="display: none"></div>
 					<div id="confirmation-data" style="display: none;">

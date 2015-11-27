@@ -16,8 +16,7 @@ var executeMethod=function(methodType,script,request,response,session){
         case 'GET':
             output=script.get(context);
             break;
-        case 'POST':
-            log.info('calling post method');
+        case 'POST':            
             output=script.post(context);
             break;
         case 'PUT':

@@ -7,11 +7,26 @@
                     {{#attributes}}
                         <div class="span3 recent-asset-icon">
 			    <input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
-                            <a href="{{tenantedUrl "/assets"}}/{{../type}}/{{../id}}"><img src="{{#if images_thumbnail}}{{tenantedUrl images_thumbnail}}{{/if}}"></a>
+                            {{#compare  overview_advertiseOnly "true" operator="=="}}
+                                <a href="../{{overview_appTenant}}/assets/{{../../type}}/{{overview_uuid}}">
+                                    <img src="{{#if images_thumbnail}}{{tenantedUrl images_thumbnail}}{{/if}}"></a>
+                            {{else}}
+                                <a href="{{tenantedUrl "/assets"}}/{{../../type}}/{{../../id}}">
+                                    <img src="{{#if images_thumbnail}}{{tenantedUrl images_thumbnail}}{{/if}}"></a>
+                            {{/compare}}
                         </div>
                         <div class="span9 recent-asset-details">
 			    <input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
-                            <strong><a href="{{tenantedUrl "/assets"}}/{{../type}}/{{../id}}">
+                            <strong>
+
+                                {{#compare  overview_advertiseOnly "true" operator="=="}}
+                                    <a href="../{{overview_appTenant}}/assets/{{../../type}}/{{overview_uuid}}">
+
+                                {{else}}
+                                    <a href="{{tenantedUrl "/assets"}}/{{../../type}}/{{../../id}}">
+
+                                {{/compare}}
+
                                 {{#compare "mobileapp" ../type}}
                                     {{overview_name}}
                                 {{/compare}}

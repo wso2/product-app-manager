@@ -786,8 +786,7 @@ require('/modules/publisher.js').exec(function(ctx) {
 
     routeManager.register('DELETE', 'publisher', '/publisher/api/asset/{type}/{id}', function (context) {
         var shortName = context.params.type;
-        var id = context.params.id;
-
+        var id = context.params.id;        
         var artifactManager = rxtManager.getArtifactManager(shortName);
 
         try {

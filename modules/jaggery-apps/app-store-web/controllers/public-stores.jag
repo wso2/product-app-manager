@@ -1,0 +1,37 @@
+<%
+var a;
+include('/extensions/assets/webapp/modules/jagg/jagg.jag');
+var manager = jagg.module("manager");
+var tenantDomains = manager.getActiveTenantDomains().tenantDomains;
+
+if (Array.isArray(tenantDomains) && (tenantDomains.length > 1)) {
+    require('/modules/store.js').exec(function (ctx) {
+        var PAGE_SIZE = 10;
+        var pageParam = parseInt(request.getParameter("page"));
+        var currentPageNumber = (isNaN(pageParam) || (pageParam < 1)) ? 1 : pageParam;
+        //tenantDomains.sort();
+        var numberOfTenantDomains = tenantDomains.length;
+        var stores = [];
+        for (var i = ((currentPageNumber - 1) * PAGE_SIZE); i < numberOfTenantDomains; i++) {
+            stores.push(tenantDomains[i]);
+        }
+
+        var caramel = require('caramel');
+        caramel.render({
+            title: 'Stores | WSO2 Enterprise Store',
+            user: ctx.user,
+            sso: ctx.sso,
+            header: ctx.site.header(ctx.tenantId, {
+                sso: ctx.sso,
+                user: ctx.user
+            }),
+            currentPage: currentPageNumber,
+            stores: stores,
+            type: "webapps"
+        });
+    }, request, response, session);
+} else {
+    response.sendRedirect(request.getContextPath() + "/assets/");
+}
+
+%>

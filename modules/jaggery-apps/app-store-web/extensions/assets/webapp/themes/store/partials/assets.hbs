@@ -19,7 +19,11 @@
                         <div class="ribbon-wrapper-green"><div class="ribbon-green">Subscribed</div></div>
 					{{/if}}
 
-				<a href="{{tenantedUrl "/assets"}}/{{../type}}/{{../id}}" id="assetsLink">
+                    {{#compare  overview_advertiseOnly "true" operator="=="}}
+                        <a href="../../{{overview_appTenant}}/assets/{{../../type}}/{{overview_uuid}} " id="assetsLink">
+                    {{else}}
+                        <a href="{{tenantedUrl "/assets"}}/{{../../type}}/{{../../id}}" id="assetsLink">
+                    {{/compare}}
 	                		<div class="asset-icon">
                                 <input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
 	                    			{{#if ../indashboard}}
@@ -32,7 +36,11 @@
 	            		<div class="asset-details">
 					<div class="asset-name">
 						<input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
-						<a href="{{tenantedUrl "/assets"}}/{{../type}}/{{../id}}" id="assetDeatils"> <h4>{{overview_displayName}}</h4></a>
+                        {{#compare  overview_advertiseOnly "true" operator="=="}}
+                            <a href="../../{{overview_appTenant}}/assets/{{../../type}}/{{overview_uuid}} " id="assetDeatils"> <h4>{{overview_displayName}}</h4></a>
+                        {{else}}
+                            <a href="{{tenantedUrl "/assets"}}/{{../../type}}/{{../../id}}" id="assetDeatils"> <h4>{{overview_displayName}}</h4></a>
+                        {{/compare}}
 	                		</div>
 	                		<div class="asset-rating">
 						<div class="asset-rating-{{../rating}}star"></div>
