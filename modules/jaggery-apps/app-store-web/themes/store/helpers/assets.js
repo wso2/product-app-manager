@@ -1,7 +1,7 @@
 var resources = function (block, page, area, meta) {
     return {
         template: 'assets.hbs',
-        js: ['asset-core.js', 'asset-helpers.js', 'assets.js'],
+        js: ['asset-core.js', 'asset-helpers.js', 'assets.js', 'tenantedURL.js'],
         css: ['assets.css'],
         code: ['store.asset.hbs']
     };

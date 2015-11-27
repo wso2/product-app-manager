@@ -175,6 +175,22 @@ var module = function () {
             //Export the model to an asset
             var asset = context.parent.export('asset.exporter');
 
+
+            var appOwner = (asset.attributes.overview_appOwner).trim();
+            if (appOwner.length == 0) {
+                asset.attributes.overview_appOwner = provider;
+            }
+            var appTenant = (asset.attributes.overview_appTenant).trim();
+            if (appTenant.length == 0) {
+                asset.attributes.overview_appTenant = tenantDomain;
+            }
+
+            var isAdvertiseOnly = (asset.attributes.overview_advertiseOnly).trim();
+            if (isAdvertiseOnly.toLowerCase() != "true") {
+                asset.attributes.overview_advertiseOnly = "false";
+            }
+
+
             log.debug('Finished exporting model to an artifact');
 
             //Save the artifact
@@ -214,11 +230,13 @@ var module = function () {
             var artifact1 = artifactManager.get(id);
             var attributes = artifact1.attributes;
 
+            if (attributes.overview_advertiseOnly.toLowerCase() != "true") {
+                //adding to database
+                addToWebApp(id, provider, name, version, contextname, tracking_code, asset,
+                    attributes['sso_singleSignOn'], attributes['sso_idpProviderUrl'],
+                    saml2SsoIssuer, revisedURL, allowAnonymous, skipGateway, webappURL);
+            }
 
-            //adding to database
-            addToWebApp(id,provider, name, version, contextname, tracking_code,asset,
-                        attributes['sso_singleSignOn'], attributes['sso_idpProviderUrl'],
-                        saml2SsoIssuer,revisedURL,allowAnonymous, skipGateway, webappURL);
 
             //Save the id data to the model
             model.setField('*.id', id);

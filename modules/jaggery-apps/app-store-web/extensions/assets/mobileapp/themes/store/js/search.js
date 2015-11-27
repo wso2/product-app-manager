@@ -123,7 +123,7 @@ $(function () {
         //var url, searchVal = test($('#search').val());
         currentPage = 1;
         if (store.asset) {
-            url = caramel.url('/assets/' + store.asset.type + '/?' + buildParams(searchVal));
+            url = caramel.tenantedUrl('/assets/' + store.asset.type + '/?' + buildParams(searchVal));
             caramel.data({
                 title: null,
                 header: ['header'],
@@ -148,7 +148,7 @@ $(function () {
             });
             theme.loading($('#assets-container').parent());
         } else if (searchVal.length > 0 && searchVal != undefined) {
-            url = caramel.url('/?' + buildParams(searchVal));
+            url = caramel.tenantedUrl('/?' + buildParams(searchVal));
             caramel.data({
                 title: null,
                 header: ['header'],

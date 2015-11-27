@@ -15,7 +15,7 @@ require('/modules/store.js').exec(function (ctx) {
             sso = ctx.sso,
             store = ctx.store,
             user = ctx.user,
-            tenantId = ctx.tenantId,
+            tenantId = ctx.tenant.tenantId || -1234,
             configs = ctx.configs,
             site = ctx.site,
             matcher = ctx.matcher,

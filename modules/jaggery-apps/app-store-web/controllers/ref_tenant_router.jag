@@ -1,0 +1,74 @@
+<%
+/*
+ *  Copyright (c) 2005-2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ *  WSO2 Inc. licenses this file to you under the Apache License,
+ *  Version 2.0 (the "License"); you may not use this file except
+ *  in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ *
+ */
+
+var log = new Log('assets');
+var matcher = new URIMatcher(request.getRequestURI());
+var carbon = require('carbon');
+
+var store = '/{context}/t/{domain}/';
+var apiEndpoint = '/{context}/t/{domain}/assets/{type}/api/{+suffix}';
+var assetEndpoint = '/{context}/t/{domain}/assets/{type}';
+var assetsEndpoint = '/{context}/t/{domain}/assets/{type}/{+suffix}';
+var extensionsEndpoint = '/{context}/t/{domain}/extensions/{+suffix}';
+var storageEndpoint = '/{context}/t/{domain}/storage/{+suffix}';
+var storeLogin = '/{context}/t/{domain}/login';
+
+
+var mapper = function (path) {
+    return function () {
+        return path;
+    };
+};
+if (matcher.match(apiEndpoint)) {
+    loadTenant(matcher.elements().domain);
+    include('ref_apis_router.jag');
+} else if (matcher.match(assetEndpoint) || matcher.match(assetsEndpoint)) {
+    loadTenant(matcher.elements().domain);
+    request.getMappedPath = mapper("/controllers/routers/assets.jag");
+    include('routers/assets.jag');
+} else if (matcher.match(storageEndpoint)) {
+    loadTenant(matcher.elements().domain);
+    include('routers/storage_router.jag');
+}else if (matcher.match(store)) {
+    loadTenant(matcher.elements().domain);
+    request.getMappedPath = mapper("/controllers/top-assets.jag");
+    include('top-assets.jag');
+}else if(matcher.match(storeLogin)){
+    request.getMappedPath = mapper("/controllers/login.jag");
+    include('login.jag');
+}else if(matcher.match(extensionsEndpoint)){
+    loadTenant(matcher.elements().domain);
+    request.getMappedPath = mapper("/controllers/routers/extensions.jag");
+    include('/controllers/routers/extensions.jag');
+}
+else {
+    response.sendError(404, 'Tenant Domain not found');
+}
+
+function loadTenant(domain) {
+
+    var tenantId = carbon.server.tenantId({domain: domain});
+    var event = require('event');
+    event.emit('tenantLoad', tenantId);
+
+};
+
+
+%>

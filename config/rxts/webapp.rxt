@@ -83,6 +83,30 @@
       <field type="text">
             <name>Permissions</name>
       </field>
+      <field type="text">
+            <name>Redirect URL</name>
+      </field>
+      <field type="text" default="false">
+            <name>Advertise Only</name>
+      </field>
+      <field type="text">
+            <name>APP Owner</name>
+      </field>
+      <field type="text">
+            <name>APP Tenant</name>
+      </field>
+      <field type="text">
+            <name>uuid</name>
+      </field>
+      <field type="text">
+            <name>Subscription Availability</name>
+      </field>
+      <field type="text">
+            <name>Tenants</name>
+      </field>
+      <field type="text">
+            <name>Visible Roles</name>
+      </field>		
     </table>
     <table name="URITemplate" columns="6">
             <subheading>

@@ -1,7 +1,7 @@
 {{#if user}}
 
 <input type="hidden" value="Unlimited" id="subsAppTier" name="subsAppTier">
-
+{{#if subVisibility}}
 <div id="subscriptionActions">
 	{{#if isSubscribed}}
 		<a href="#" class="btn btn-primary" id='btnUnsubscribe'>{{t "Unsubscribe Me"}}</a>
@@ -25,5 +25,5 @@
 	{{/if}}  
 
 </div>
-	
+{{/if}}
 {{/if}}

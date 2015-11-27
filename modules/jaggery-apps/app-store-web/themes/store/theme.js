@@ -38,7 +38,41 @@ var engine = caramel.engine('handlebars', (function () {
                 return accum;
             });
 
+            /**
+             * Registers  'tenantedUrl' handler for resolving tenanted urls '{context}/t/{domain}/
+             */
+            Handlebars.registerHelper('tenantedUrl', function (path) {
 
+                var log = new Log();
+                var uri = request.getRequestURI();//current page path
+                var context, domain, output;
+                var matcher = new URIMatcher(uri);
+                var storageMatcher = new URIMatcher(path);
+                var mobileApiMatcher = new URIMatcher(path);
+
+                //Resolving tenanted storage URI for webapps
+                if (storageMatcher.match('/store/storage/{+any}')) {
+                    path = "/storage/" + storageMatcher.elements().any;
+                }
+                //TODO: This url pattern has been hard coded due to pattern mismatch in between mobile and webapp image urls
+
+                //Resolving mobile app image urls
+                if(mobileApiMatcher.match('/publisher/api/{+any}')){
+                    return path;
+                }
+                if (matcher.match('/{context}/t/{domain}/') || matcher.match('/{context}/t/{domain}/{+any}')) {
+                    context = matcher.elements().context;
+                    domain = matcher.elements().domain;
+                    output = '/' + context + '/t/' + domain;
+                    return output + path;
+                } else {
+                    if (path.indexOf('http://') === 0 || path.indexOf('https://') === 0) {
+                        return path;
+                    }
+                    return caramel.url(path);
+                }
+
+            });
 
             Handlebars.registerHelper('compare', function (lvalue, rvalue, options) {
 

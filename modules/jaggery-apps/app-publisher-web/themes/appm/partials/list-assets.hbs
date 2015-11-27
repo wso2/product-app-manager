@@ -58,7 +58,7 @@
                 </thead>
                 <tbody>
                  {{#each artifacts}}
-                
+
                     <tr>
                         <td>
                         <img src="{{this.attributes.images_thumbnail}}" class="" />
@@ -83,7 +83,11 @@
                          <td>
 
                              {{#this.lifecycleAvailableActions}}
-                                 <a  data-action="{{name}}" data-app="{{../this.id}}" class="btn {{style}} btn-action" name="addNewAssetButton">{{name}}</a>
+                                 <a  data-action="{{name}}" data-app="{{../this.id}}"
+                                     data-name="{{../this.attributes.overview_name}}"
+                                     data-provider="{{../this.attributes.overview_provider}}"
+                                     data-version="{{../this.attributes.overview_version}}"
+                                     class="btn {{style}} btn-action" name="addNewAssetButton">{{name}}</a>
                              {{/this.lifecycleAvailableActions}}
 
                              {{#this.deleteButtonAvailability}}

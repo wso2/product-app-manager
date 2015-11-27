@@ -17,7 +17,7 @@
 						<ul aria-labelledby="dLabel" role="menu" class="dropdown-menu">
 						{{#each value.categories}}
 						<li>
-						<a href='{{url "/assets"}}/{{../../key}}?query=category:"{{this}}"'>{{this}}</a>
+						<a href='{{tenantedUrl "/assets"}}/{{../../key}}?query=category:"{{this}}"'>{{this}}</a>
 						</li>
 						{{/each}}
 						</ul>
@@ -32,14 +32,18 @@
 						<ul class="nav menu pull-right">
 
 
-
+                            <li class="nav-separator">
+                                <a href="{{url "/"}}">
+                                    <i class="icon-suitcase store-topnav-bookmark"></i> {{t "Public Store"}}
+                                </a>
+                            </li>
 							{{#if user}}
 
                                 <li class="nav-separator">
-                                    <a href="{{url "/assets/webapp"}}"><i class="icon-cog store-topnav-bookmark"></i> {{t "Web Applications"}}</a>
+                                    <a href="{{tenantedUrl "/assets/webapp"}}"><i class="icon-cog store-topnav-bookmark"></i> {{t "Web Applications"}}</a>
                                 </li>
                                 <li class="nav-separator">
-                                    <a href="{{url "/assets/mobileapp"}}"><i class="icon-mobile-phone store-topnav-bookmark"></i> {{t "Mobile Applications"}}</a>
+                                    <a href="{{tenantedUrl "/assets/mobileapp"}}"><i class="icon-mobile-phone store-topnav-bookmark"></i> {{t "Mobile Applications"}}</a>
                                 </li>
 
 
@@ -60,10 +64,10 @@
 							</li>
 							{{else}}
                                     <li class="nav-separator">
-                                        <a href="{{url "/assets/webapp"}}"><i class="icon-globe icon store-topnav-bookmark"></i> {{t "Web Applications"}}</a>
+                                        <a href="{{tenantedUrl "/assets/webapp"}}"><i class="icon-globe icon store-topnav-bookmark"></i> {{t "Web Applications"}}</a>
                                     </li>
                                     <li class="nav-separator">
-                                        <a href="{{url "/assets/mobileapp"}}"><i class="icon-mobile-phone store-topnav-bookmark"></i> {{t "Mobile Applications"}}</a>
+                                        <a href="{{tenantedUrl "/assets/mobileapp"}}"><i class="icon-mobile-phone store-topnav-bookmark"></i> {{t "Mobile Applications"}}</a>
                                     </li>
 								{{#if sso}}
 									<li>

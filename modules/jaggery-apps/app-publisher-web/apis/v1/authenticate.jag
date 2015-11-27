@@ -94,9 +94,8 @@ switch (METHOD) {
                 var isAuthenticated = user.login(credentials.username, credentials.password, session);//authenticate the user
                 if (isAuthenticated) {
                     session.put("LOGGED_IN_USER", credentials.username);
-                    session.put("logged.user", credentials.username);
+                    jagg.setUser({username:credentials.username});
                     session.put("Logged", "true");
-                    
                     //Add to the session map as it is required by the session listener
                     var manager = jagg.module("manager");
                     var provider = manager.getAPIProviderObj();

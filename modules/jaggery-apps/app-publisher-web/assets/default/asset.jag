@@ -80,8 +80,8 @@ require('/modules/publisher.js').exec(function(ctx) {
     }
 });
 
-routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', function (context) {
 
+routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', function (context) {
     var shortName = context.params.type;
     //print(context.params);
     var id = context.params.id;
@@ -137,6 +137,12 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
         apiData.version = model.get('overview.version').value;
         var result = mod.getAllDocumentation(apiData);
 
+        //get external store details
+        var externalAppStores = apiProvider.getExternalAPPStoresList(apiData.provider, apiData.name, apiData.version);
+        var appStoresDetail = {};
+        appStoresDetail.app = apiData;
+        appStoresDetail.externalStores = externalAppStores;
+
         // getting the user roles
         var server = require('store').server;
         var user = server.current(session);
@@ -157,6 +163,7 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
             tags:tags,
             title:title,
             docs: result.docs,
+            appStores:appStoresDetail,
             permissions: {canCreate: docCreateAuth, canEdit: docEditAuth, canDelete:docDeleteAuth}
         });
     } catch (e) {
@@ -782,6 +789,8 @@ routeManager.register('DELETE', 'publisher', '/publisher/asset/{type}/{id}', fun
 
 
 });
+
+
 routeManager.handle(request, response);
 
 }, request, response, session);

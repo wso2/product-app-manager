@@ -7,11 +7,21 @@
             {{#attributes}}
             <div class="span4 recent-asset-icon">
 		<input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
-                <a href="{{url "/assets"}}/{{../type}}/{{../id}}"><img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}"></a>
+                {{#compare  overview_advertiseOnly "true" operator="=="}}
+                    <a href="../../{{overview_appTenant}}/assets/{{../../type}}/{{overview_uuid}} ">
+                        <img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}"></a>
+                {{else}}
+                    <a href="{{tenantedUrl "/assets"}}/{{../../type}}/{{../../id}}"><img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}"></a>
+                {{/compare}}
             </div>
             <div class="span8 recent-asset-details">
 		<input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
-                <strong><a href="{{url "/assets"}}/{{../type}}/{{../id}}">{{overview_displayName}}</a></strong>
+                {{#compare  overview_advertiseOnly "true" operator="=="}}
+                    <strong><a href="../../{{overview_appTenant}}/assets/{{../../type}}/{{overview_uuid}} ">
+                        {{overview_displayName}} </a></strong>
+                {{else}}
+                    <strong><a href="{{tenantedUrl "/assets"}}/{{../../type}}/{{../../id}}">{{overview_displayName}}</a></strong>
+                {{/compare}}
                 <small>by <a href="#">{{overview_provider}}</a></small>
                             <span class="star-rating">
                             	<div class="asset-rating">

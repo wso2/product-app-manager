@@ -121,7 +121,14 @@ var server = {};
             };
         } else {
             carbon = require('carbon');
+            matcher = new URIMatcher(request.getRequestURI());
+
             domain = request.getParameter('domain') || carbon.server.superTenant.domain;
+            if (matcher.match('/{context}/t/{domain}/{+any}') || matcher.match('/{context}/t/{domain}') ) { //'/{context}/t/{domain}/{+any}'
+                domain = matcher.elements().domain;
+            } else {
+                domain = request.getParameter('domain') || carbon.server.superTenant.domain;
+            }
             obj = {
                 tenantId: carbon.server.tenantId({
                     domain: domain

@@ -37,7 +37,7 @@
                                                 {{#if ../../indashboard}}
                                                     <i class="icon-mobile-phone store-mobileapp-icon"></i>
                                                 {{/if}}
-                                                <a href="{{url "/assets"}}/{{../../type}}/{{../../id}}"><img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}"></a>
+                                                <a href="{{tenantedUrl "/assets"}}/{{../../type}}/{{../../id}}"><img src="{{#if images_thumbnail}}{{tenantedUrl images_thumbnail}}{{/if}}"></a>
                                             </div>
                                         </a>
 
@@ -45,7 +45,7 @@
                                             <img src="{{url "/extensions/assets/mobileapp/themes/store/img/"}}{{overview_platform}}.png" style="width: 30px; float:right"/>
                                             <div class="asset-name">
                                                 <input type="hidden"  value="{{../overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
-                                                <a href="{{url "/assets"}}/{{../../type}}/{{../../id}}"><h4>{{../overview_name}}</h4></a>
+                                                <a href="{{tenantedUrl "/assets"}}/{{../../type}}/{{../../id}}"><h4>{{../overview_name}}</h4></a>
 
                                             </div>
 
@@ -68,7 +68,12 @@
                                                 {{#if ../indashboard}}
                                                     <i class=""></i>
                                                 {{/if}}
-                                                <a href="{{url "/assets"}}/{{../../type}}/{{../../id}}"><img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}"></a>
+                                                    {{#compare  overview_advertiseOnly "true" operator="=="}}
+                                                        <a href="../{{overview_appTenant}}/assets/{{../../../type}}/{{overview_uuid}}"><img src="{{#if images_thumbnail}}{{tenantedUrl images_thumbnail}}{{/if}}"></a>
+                                                    {{else}}
+                                                        <a href="{{tenantedUrl "/assets"}}/{{../../../type}}/{{../../../id}}"><img src="{{#if images_thumbnail}}{{tenantedUrl images_thumbnail}}{{/if}}"></a>
+                                                    {{/compare}}
+
                                             </div>
                                         </a>
 
@@ -76,7 +81,11 @@
                                         <div class="asset-details" data-type="{{../../type}}">
                                             <div class="asset-name">
                                                 <input type="hidden"  value="{{../overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
-                                                <a href="{{url "/assets"}}/{{../../type}}/{{../../id}}"><h4>{{../overview_displayName}}</h4></a>
+                                                {{#compare  overview_advertiseOnly "true" operator="=="}}
+                                                    <a href="../{{overview_appTenant}}/assets/{{../../../type}}/{{overview_uuid}}"><h4>{{../overview_displayName}}</h4></a>
+                                                {{else}}
+                                                    <a href="{{tenantedUrl "/assets"}}/{{../../../type}}/{{../../../id}}"><h4>{{../overview_displayName}}</h4></a>
+                                                {{/compare}}
                                             </div>
                                             <div class="asset-rating">
                                                 <div class="asset-rating-{{../../rating}}star"></div>

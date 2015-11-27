@@ -42,7 +42,8 @@ var render = function(theme, data, meta, require) {
                 },
                 apiData:data.apiData,
                 myapps:data.metadata.myapps,
-                tiers:data.metadata.tiers
+                tiers:data.metadata.tiers,
+                subVisibility:data.subVisibility
             })
         }],
 		right : [

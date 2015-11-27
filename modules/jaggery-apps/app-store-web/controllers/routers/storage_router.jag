@@ -16,12 +16,24 @@ var ERROR_NOT_FOUND='The requested resource was not found.';
 var ERROR_AUTH_REQ="You must be logged in to access this resource";
 
 var log=new Log('storage.router');
-
+var tenantId = -1234;
 var storageModule = require('/modules/data/storage.js').storageModule();
+var uriMatcher = new URIMatcher(request.getRequestURI());
+var tenantedStorageEndpoint = '/{context}/t/{domain}/storage/{type}/{id}/{uuid}/{fileName}';
+var storageEndpoint = '/{context}/storage/{type}/{id}/{uuid}/{fileName}';
+var matchedElements;
 
 var store=require('/modules/store.js').storeManagers(request,session);
 
-var storageSecurityProvider=store.storageSecurityProvider;
+if (uriMatcher.match(tenantedStorageEndpoint)) {
+    matchedElements = uriMatcher.elements();
+    tenantId = obtainTenantIdByRequest(matchedElements);
+} else if(uriMatcher.match(storageEndpoint)){
+    matchedElements = uriMatcher.elements();
+}
+var store=require('/modules/store.js').storeManagers(request,session, tenantId);
+
+var storageSecurityProvider = store.storageSecurityProvider;
 
 var storageManager = new storageModule.StorageManager({
     context: 'storage',
@@ -32,20 +44,12 @@ var storageManager = new storageModule.StorageManager({
 });
 
 var value = {};
-
-//Obtain the tenantId and the uuid from the url
-var uriMatcher=new URIMatcher(request.getRequestURI());
-
-var isMatch=uriMatcher.match('/{context}/storage/{type}/{id}/{uuid}/{fileName}');
-
-//Handle the request only if the url matches
-if(isMatch){
-    var matchedElements=uriMatcher.elements();
+if (matchedElements) {
 
     handleResourceRequest(matchedElements);
 }
-else{
-    response.sendError(404,ERROR_NOT_FOUND);
+else {
+    response.sendError(404, ERROR_NOT_FOUND);
 }
 
 
@@ -60,15 +64,15 @@ function handleResourceRequest(matchedElements){
     var id=matchedElements['id'];
 
     //log.debug(compoundKey);
-    var isAllowed=storageSecurityProvider.execute(type,id,compoundKey,session);
+   // var isAllowed=storageSecurityProvider.execute(type,id,compoundKey,session);
 
     //log.debug(isAllowed);
 
-    if(!isAllowed){
+    /**if(!isAllowed){
          response.sendError(401,ERROR_AUTH_REQ);
          return isAllowed;
         //return;
-    }
+    }**/
 
     var storedValue = storageManager.get(key);
 
@@ -93,6 +97,14 @@ function handleResourceRequest(matchedElements){
 
         }
     }
+}
+/**
+ * Obtain tenant id from the given tenant domain
+ * @param matchedElements
+ * @returns {*}
+ */
+function obtainTenantIdByRequest(matchedElements) {
+    return carbon.server.tenantId({domain: matchedElements.domain});
 }
 
 %>

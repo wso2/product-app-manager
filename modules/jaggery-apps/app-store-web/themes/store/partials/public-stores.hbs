@@ -1,0 +1,33 @@
+<h1 class="asset-type-default asset-title-separator">
+    Available Stores
+    <div class="pagination top-asset-slideshow-pag"></div>
+</h1>
+<div class="assets-container">
+    <div class="top-asset-slideshow-cont">
+        <div class="html_carousel">
+            <div>
+                {{#if stores}}
+                    {{#each stores}}
+                        <div class="slide asset">
+                            <a href="{{url "/t/"}}{{this}}/" style="color: #005580 !important;">
+                                <div class="asset-icon">
+                                    <img src="{{url "/themes/store/img/default_thumb.jpg"}}" />
+                                </div>
+
+                                <div class="asset-details" style="text-align: center !important;">
+                                    <h4 style="font-weight: normal !important;">{{this}}</h4>
+                                </div>
+                            </a>
+                        </div>
+                    {{/each}}
+                {{else}}
+                    <div class="top-assets-empty-assert">
+                        {{t "We couldn't find anything for you."}}
+                    </div>
+                {{/if}}
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
