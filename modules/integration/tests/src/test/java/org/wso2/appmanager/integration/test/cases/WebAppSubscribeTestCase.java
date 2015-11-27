@@ -26,14 +26,11 @@ import org.testng.annotations.Test;
 import org.wso2.appmanager.integration.utils.APPMPublisherRestClient;
 import org.wso2.appmanager.integration.utils.APPMStoreRestClient;
 import org.wso2.appmanager.integration.utils.AppmTestConstants;
-import org.wso2.appmanager.integration.utils.bean.AppCreateRequest;
 import org.wso2.appmanager.integration.utils.bean.SubscriptionRequest;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.automation.engine.context.beans.User;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
-
-import static org.testng.Assert.assertEquals;
 
 public class WebAppSubscribeTestCase {
 

@@ -111,8 +111,7 @@ public class APPMStoreRestClient {
             throws Exception {
         checkAuthentication();
        requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/x-www-form-urlencoded");
-        String payload = "apiName="+subscriptionRequest.getName()+"&apiVersion=1.0.0&apiTier=Unlimited&subscriptionType=INDIVIDUAL&apiProvider=admin&appName=DefaultApplication";
-              //  subscriptionRequest.generateRequestParameters();
+        String payload =  subscriptionRequest.generateRequestParameters();
         HttpResponse response = HttpRequestUtil.doPost(new URL(
                 backEndUrl + "/store/resources/webapp/v1/subscription/app")
                 , payload
@@ -164,39 +163,6 @@ public class APPMStoreRestClient {
                                                               id + "&type=" + appType + "&value=" +
                                                               ratingValue, requestHeaders);
         return response;
-    }
-
-    public HttpResponse retrieveSubscribedUsers(String appProvider, String appName, String appVersion)
-            throws Exception {
-        checkAuthentication();
-        HttpResponse response = HttpRequestUtil.doGet(backEndUrl + "/store/resources/webapp/v1/subscriptions/"
-                                                              + appProvider + "/" + appName + "/" + appVersion, requestHeaders);
-        if (response.getResponseCode() == 200) {
-            JSONArray jsonArray = new JSONArray(response.getData());
-            return response;
-        } else {
-            throw new Exception("Retrieve Subscribed Users of " + appName + " failed. " + response.getData());
-        }
-    }
-
-    public JSONArray getAllWebAppsProperties(String username, String password, int startingApp, int count)
-            throws Exception {
-        checkAuthentication();
-
-        //Set Basic Authentication to request header
-        String usernameAndPassword = username + ":" + password;
-        byte[] authEncBytes = Base64.encodeBase64(usernameAndPassword.getBytes());
-        String authStringEnc = new String(authEncBytes);
-        this.requestHeaders.put("Authorization", "Basic " + authStringEnc);
-
-        HttpResponse response = HttpUtil.doGet(backEndUrl + "/store/apis/v1/assets/webapp?start=" + startingApp +
-                                                       "&count=" + count, requestHeaders);
-        if (response.getResponseCode() == 200) {
-            JSONArray jsonArray = new JSONArray(response.getData());
-            return jsonArray;
-        } else {
-            throw new Exception("Retrieve User Subscribed Apps failed. " + response.getData());
-        }
     }
 
     /**

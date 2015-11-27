@@ -338,28 +338,6 @@ public class APPMPublisherRestClient {
         }
     }
 
-    /*
-     * Application deletion request
-     */
-
-    public HttpResponse deleteApp(String appId) throws Exception{
-
-        ///publisher/api/asset/delete/{type}/{id}
-
-        //TODO delte the app and do gett. check for null
-
-        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl +
-                                                                       "/publisher/api/asset/delete/webapp/"+appId+""),"",requestHeaders);
-
-        if (response.getResponseCode() == 200) {
-            return response;
-        } else {
-            throw new Exception("App deletion failed>" + response.getData());
-        }
-    }
-
-
-
     public void setHttpHeader(String headerName, String value) {
         this.requestHeaders.put(headerName, value);
     }
