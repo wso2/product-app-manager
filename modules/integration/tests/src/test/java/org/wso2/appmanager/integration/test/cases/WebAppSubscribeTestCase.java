@@ -68,30 +68,37 @@ public class WebAppSubscribeTestCase {
 
     @Test(description = TEST_DESCRIPTION)
     public void testPublisherCreateWebApp() throws Exception {
-        HttpResponse response = appmPublisherRestClient.webAppCreate(appName,context,appVersion,trackingCode);
+        HttpResponse response = appmPublisherRestClient.webAppCreate(appName, context, appVersion,
+                                                                     trackingCode);
 
         JSONObject responseData = new JSONObject(response.getData());
         String uuid = responseData.getString(AppmTestConstants.ID);
         appmPublisherRestClient.publishWebApp(uuid);
 
-        SubscriptionRequest subscriptionRequest = new SubscriptionRequest(appName, userName, appVersion);
+        SubscriptionRequest subscriptionRequest = new SubscriptionRequest(appName, userName,
+                                                                          appVersion);
         //Send Subscription request.
-        HttpResponse subscriptionResponse= appmStoreRestClient.subscribeForApplication(subscriptionRequest);
+        HttpResponse subscriptionResponse = appmStoreRestClient.subscribeForApplication(
+                subscriptionRequest);
         JSONObject subscriptionJsonObject = new JSONObject(subscriptionResponse.getData());
-        Assert.assertTrue(!(Boolean) subscriptionJsonObject.get("error"), "Error while updating tier permission");
+        Assert.assertTrue(!(Boolean) subscriptionJsonObject.get("error"),
+                          "Error while updating tier permission.");
         Assert.assertTrue((Boolean) subscriptionJsonObject.get(AppmTestConstants.STATUS),
-                          "Application is already subscribed");
+                          "Application is already subscribed.");
 
         //Send Unsubscription Request
-        HttpResponse unSubscriptionResponse = appmStoreRestClient.unsubscribeForApplication(subscriptionRequest);
+        HttpResponse unSubscriptionResponse = appmStoreRestClient.unsubscribeForApplication(
+                subscriptionRequest);
         JSONObject unSubscriptionJsonObject = new JSONObject(unSubscriptionResponse.getData());
-        Assert.assertTrue(!(Boolean) unSubscriptionJsonObject.get("error"), "Error while updating tier permission");
+        Assert.assertTrue(!(Boolean) unSubscriptionJsonObject.get("error"),
+                          "Error while updating tier permission.");
         Assert.assertTrue((Boolean) subscriptionJsonObject.get(AppmTestConstants.STATUS),
-                          "Application is already unsubscribed");
+                          "Application is already unsubscribed.");
     }
 
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
-
+        appmPublisherRestClient.logout();
+        appmStoreRestClient.logout();
     }
 }

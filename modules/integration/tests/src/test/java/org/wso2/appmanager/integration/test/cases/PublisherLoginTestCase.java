@@ -55,7 +55,7 @@ public class PublisherLoginTestCase {
         String password = adminUser.getPassword();
 
         Map<String, String> requestHeaders = new HashMap<String, String>();
-        requestHeaders.put("Content-Type", "application/json");
+        requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/json");
 
         HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
                                                        + "/publisher/api/authenticate?action=login"
@@ -70,8 +70,4 @@ public class PublisherLoginTestCase {
         assertNotNull(session, "Session is null");
     }
 
-    @AfterClass(alwaysRun = true)
-    public void closeDown() throws Exception {
-
-    }
 }

@@ -57,7 +57,8 @@ public class WebAppPublishTestCase {
 
     @Test(description = TEST_DESCRIPTION)
     public void testPublisherCreateWebApp() throws Exception {
-        HttpResponse response = appmPublisherRestClient.webAppCreate(appName,context,version,trackingCode);
+        HttpResponse response = appmPublisherRestClient.webAppCreate(appName, context, version,
+                                                                     trackingCode);
 
         JSONObject responseData = new JSONObject(response.getData());
         String uuid = responseData.getString(AppmTestConstants.ID);
@@ -85,6 +86,6 @@ public class WebAppPublishTestCase {
 
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
-
+        appmPublisherRestClient.logout();
     }
 }

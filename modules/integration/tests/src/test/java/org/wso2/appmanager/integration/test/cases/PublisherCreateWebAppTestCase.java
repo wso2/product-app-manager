@@ -93,5 +93,6 @@ public class PublisherCreateWebAppTestCase {
 
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
+        appmPublisherRestClient.logout();
     }
 }

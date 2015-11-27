@@ -42,7 +42,6 @@ public class StoreLoginTestCase{
     private String backEndUrl;
     private User adminUser;
 
-
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
         AutomationContext appMServer = new AutomationContext(AppmTestConstants.APP_MANAGER,
@@ -57,7 +56,7 @@ public class StoreLoginTestCase{
         String password = adminUser.getPassword();
 
         Map<String, String> requestHeaders = new HashMap<String, String>();
-        requestHeaders.put("Content-Type", "application/json");
+        requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/json");
 
         HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
                                                 + "/store/apis/user/login"), "{\"username\":" + "\""

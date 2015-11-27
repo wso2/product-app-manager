@@ -18,6 +18,8 @@
 
 package org.wso2.appmanager.integration.utils;
 
+import org.apache.commons.codec.binary.Base64;
+import org.json.JSONArray;
 import org.wso2.appmanager.integration.utils.bean.SubscriptionRequest;
 import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
@@ -47,7 +49,9 @@ public class APPMStoreRestClient {
      */
     public HttpResponse login(String userName, String password)
             throws Exception {
-
+        if (requestHeaders.get(AppmTestConstants.CONTENT_TYPE) == null) {
+            this.requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/json");
+        }
         HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
                                                      + "/store/apis/user/login"), "{\"username\":\""
                                                      + userName
@@ -74,6 +78,25 @@ public class APPMStoreRestClient {
             System.out.println(response);
             throw new Exception("User Login failed! " + response.getData());
         }
+    }
+
+    /**
+     * Log out from the user store
+     * @return HttpResponse
+     * @throws Exception
+     */
+    public HttpResponse logout() throws Exception {
+        this.requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "text/html");
+
+        HttpResponse response = HttpRequestUtil.doGet(backEndUrl
+                                                              + "/store/logout", requestHeaders);
+        if (response.getResponseCode() == 200) {
+            this.requestHeaders.clear();
+            return response;
+        } else {
+            System.out.println(response);
+            throw new Exception("User Logout failed from Store! " + response.getData());
+        }
 
     }
 
@@ -87,8 +110,9 @@ public class APPMStoreRestClient {
     public HttpResponse subscribeForApplication(SubscriptionRequest subscriptionRequest)
             throws Exception {
         checkAuthentication();
-        requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/x-www-form-urlencoded");
-        String payload = subscriptionRequest.generateRequestParameters();
+       requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/x-www-form-urlencoded");
+        String payload = "apiName="+subscriptionRequest.getName()+"&apiVersion=1.0.0&apiTier=Unlimited&subscriptionType=INDIVIDUAL&apiProvider=admin&appName=DefaultApplication";
+              //  subscriptionRequest.generateRequestParameters();
         HttpResponse response = HttpRequestUtil.doPost(new URL(
                 backEndUrl + "/store/resources/webapp/v1/subscription/app")
                 , payload
@@ -142,6 +166,38 @@ public class APPMStoreRestClient {
         return response;
     }
 
+    public HttpResponse retrieveSubscribedUsers(String appProvider, String appName, String appVersion)
+            throws Exception {
+        checkAuthentication();
+        HttpResponse response = HttpRequestUtil.doGet(backEndUrl + "/store/resources/webapp/v1/subscriptions/"
+                                                              + appProvider + "/" + appName + "/" + appVersion, requestHeaders);
+        if (response.getResponseCode() == 200) {
+            JSONArray jsonArray = new JSONArray(response.getData());
+            return response;
+        } else {
+            throw new Exception("Retrieve Subscribed Users of " + appName + " failed. " + response.getData());
+        }
+    }
+
+    public JSONArray getAllWebAppsProperties(String username, String password, int startingApp, int count)
+            throws Exception {
+        checkAuthentication();
+
+        //Set Basic Authentication to request header
+        String usernameAndPassword = username + ":" + password;
+        byte[] authEncBytes = Base64.encodeBase64(usernameAndPassword.getBytes());
+        String authStringEnc = new String(authEncBytes);
+        this.requestHeaders.put("Authorization", "Basic " + authStringEnc);
+
+        HttpResponse response = HttpUtil.doGet(backEndUrl + "/store/apis/v1/assets/webapp?start=" + startingApp +
+                                                       "&count=" + count, requestHeaders);
+        if (response.getResponseCode() == 200) {
+            JSONArray jsonArray = new JSONArray(response.getData());
+            return jsonArray;
+        } else {
+            throw new Exception("Retrieve User Subscribed Apps failed. " + response.getData());
+        }
+    }
 
     /**
      * Get Cookies.

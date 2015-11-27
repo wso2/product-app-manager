@@ -121,11 +121,18 @@
                         <userName>testuser2</userName>
                         <password>testuser2pass</password>
                     </user>
+                    <user key="testuser3">
+                        <userName>testuser3</userName>
+                        <password>testuser3pass</password>
+                    </user>
+                    <user key="testuser4">
+                        <userName>testuser4</userName>
+                        <password>testuser4pass</password>
+                    </user>
                 </users>
             </tenant>
         </superTenant>
         <tenants>
-
         </tenants>
     </userManagement>
     <!--
@@ -164,9 +171,9 @@
                     <parameter name="-DportOffset" value="600" />
                     <!--<parameter name="cmdArg" value="debug 5005" />-->
                 </class>
-                <!--<class>-->
-                <!--<name>org.wso2.carbon.integration.common.extensions.usermgt.UserPopulateExtension</name>-->
-                <!--</class>-->
+                <class>
+                    <name>org.wso2.carbon.integration.common.extensions.usermgt.UserPopulateExtension</name>
+                </class>
             </extentionClasses>
         </platformExecutionManager>
 

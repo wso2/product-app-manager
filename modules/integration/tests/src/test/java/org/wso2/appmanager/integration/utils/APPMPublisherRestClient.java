@@ -40,11 +40,11 @@ public class APPMPublisherRestClient {
     }
 
     /**
-     * Log in to publisher.
+     * Login to publisher.
      *
      * @param userName String.
      * @param password String.
-     * @return HttpResponse httpResponse.
+     * @return httpResponse HttpResponse.
      * @throws Exception on errors.
      */
     public HttpResponse login(String userName, String password) throws Exception {
@@ -65,7 +65,24 @@ public class APPMPublisherRestClient {
         } else {
             throw new Exception("User Login failed! " + response.getData());
         }
+    }
 
+    /**
+     * Logout from publisher.
+     * @return httpResponse HttpResponse.
+     * @throws Exception on errors.
+     */
+    public HttpResponse logout() throws Exception {
+        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
+                                                                + "/publisher/api/authenticate"
+                                                                + "?action=logout"
+                                                               ), "{}", requestHeaders);
+        if (response.getResponseCode() == 200) {
+            this.requestHeaders.clear();
+            return response;
+        } else {
+            throw new Exception("User Logout failed! " + response.getData());
+        }
     }
 
     /**
@@ -159,6 +176,7 @@ public class APPMPublisherRestClient {
                                                        + "/publisher/asset/webapp"), payload,
                                                          requestHeaders);
         if (response.getResponseCode() == 200) {
+            VerificationUtil.checkAppCreateRes(response);
             JSONObject jsonObject = new JSONObject(response.getData());
             String appId = (String) jsonObject.get(AppmTestConstants.ID);
 
@@ -319,6 +337,27 @@ public class APPMPublisherRestClient {
                     "Error occurred while retrieving webapp properties by app Id :" + appId);
         }
     }
+
+    /*
+     * Application deletion request
+     */
+
+    public HttpResponse deleteApp(String appId) throws Exception{
+
+        ///publisher/api/asset/delete/{type}/{id}
+
+        //TODO delte the app and do gett. check for null
+
+        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl +
+                                                                       "/publisher/api/asset/delete/webapp/"+appId+""),"",requestHeaders);
+
+        if (response.getResponseCode() == 200) {
+            return response;
+        } else {
+            throw new Exception("App deletion failed>" + response.getData());
+        }
+    }
+
 
 
     public void setHttpHeader(String headerName, String value) {

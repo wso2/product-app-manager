@@ -22,7 +22,9 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.appmanager.integration.utils.APPMPublisherRestClient;
+import org.wso2.appmanager.integration.utils.APPMStoreRestClient;
 import org.wso2.appmanager.integration.utils.AppmTestConstants;
+import org.wso2.appmanager.integration.utils.bean.SubscriptionRequest;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.automation.engine.context.beans.User;
@@ -30,13 +32,14 @@ import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
 import static org.testng.Assert.assertTrue;
 
-public class RetrieveAppPropertyTestCase {
-    private static final String TEST_DESCRIPTION = "Verify Retrieving Web Apps Properties";
+public class StoreLogoutTestCase {
+    private static final String TEST_DESCRIPTION = "Verify Store Logout";
     private APPMPublisherRestClient appmPublisherRestClient;
-    private String appName = "RetrieveAppPropertyTestCase";
+    private APPMStoreRestClient appmStoreRestClient;
+    private String appName = "StoreLogoutTestCase";
     private String appVersion = "1.0.0";
-    private String context = "/RetrieveAppPropertyTestCase";
-    private String trackingCode = "RetrieveAppPropertyTestCase";
+    private String context = "/StoreLogoutTestCase";
+    private String trackingCode = "StoreLogoutTestCase";
     private User adminUser;
     private String userName;
     private String password;
@@ -55,37 +58,26 @@ public class RetrieveAppPropertyTestCase {
         password = adminUser.getPassword();
 
         appmPublisherRestClient.login(userName, password);
+        appmStoreRestClient = new APPMStoreRestClient(backEndUrl);
+        appmStoreRestClient.login(userName, password);
     }
 
     @Test(description = TEST_DESCRIPTION)
-    public void testAppPropertyRetrieval() throws Exception {
-        HttpResponse response = appmPublisherRestClient.webAppCreate(appName, context, appVersion,
+    public void StoreLogoutTestCase() throws Exception {
+        HttpResponse appCreateResponse = appmPublisherRestClient.webAppCreate(appName, context, appVersion,
                                                                      trackingCode);
-        JSONObject responseData = new JSONObject(response.getData());
+
+        JSONObject responseData = new JSONObject(appCreateResponse.getData());
         String uuid = responseData.getString(AppmTestConstants.ID);
-        String appType = AppmTestConstants.WEB_APP;
         appmPublisherRestClient.publishWebApp(uuid);
 
-        HttpResponse appPropertyResponse = appmPublisherRestClient.getWebAppProperty(uuid);
-        JSONObject jsonObject = new JSONObject(appPropertyResponse.getData());
+        SubscriptionRequest subscriptionRequest = new SubscriptionRequest(appName, userName,
+                                                                          appVersion);
+        //Send Subscription request.
+        appmStoreRestClient.subscribeForApplication(subscriptionRequest);
 
-        //Check App Id
-        String appId = (String) jsonObject.get(AppmTestConstants.ID);
-        assertTrue((appId.equals(uuid) == true), "Unable to Retrieve application property.");
-
-        //Check App Type
-        String type = (String) jsonObject.get(AppmTestConstants.TYPE);
-        assertTrue((type.equals(appType) == true), "Unable to Retrieve application property.");
-
-        //Check lifecycleState
-        String lifecycleState = (String) jsonObject.get(AppmTestConstants.LIFE_CYCLE_STATE);
-        assertTrue((lifecycleState.equalsIgnoreCase(AppmTestConstants.PUBLISHED) == true),
-                   "Unable to Retrieve application property.");
-
-        //Check Path attribute
-        String appPropertyString = userName + "/" + appName + "/" + appVersion + "/" + appType;
-        String path = (String) jsonObject.get("path");
-        assertTrue(path.endsWith(appPropertyString), "Unable to Retrieve application property.");
+        HttpResponse storeLogoutResponse = appmStoreRestClient.logout();
+        assertTrue(storeLogoutResponse.getResponseCode() == 200, "Non 200 status code received.");
     }
 
     @AfterClass(alwaysRun = true)

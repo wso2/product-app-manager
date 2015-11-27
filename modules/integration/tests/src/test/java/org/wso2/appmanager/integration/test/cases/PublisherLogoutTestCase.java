@@ -28,20 +28,20 @@ import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.automation.engine.context.beans.User;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-public class RetrieveAppPropertyTestCase {
-    private static final String TEST_DESCRIPTION = "Verify Retrieving Web Apps Properties";
+public class PublisherLogoutTestCase {
+    private static final String TEST_DESCRIPTION = "Verify Publisher Logout";
     private APPMPublisherRestClient appmPublisherRestClient;
-    private String appName = "RetrieveAppPropertyTestCase";
+    private String appName = "PublisherLogoutTestCase";
     private String appVersion = "1.0.0";
-    private String context = "/RetrieveAppPropertyTestCase";
-    private String trackingCode = "RetrieveAppPropertyTestCase";
+    private String context = "/PublisherLogoutTestCase";
+    private String trackingCode = "PublisherLogoutTestCase";
     private User adminUser;
     private String userName;
     private String password;
     private String backEndUrl;
-
 
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
@@ -58,38 +58,16 @@ public class RetrieveAppPropertyTestCase {
     }
 
     @Test(description = TEST_DESCRIPTION)
-    public void testAppPropertyRetrieval() throws Exception {
-        HttpResponse response = appmPublisherRestClient.webAppCreate(appName, context, appVersion,
-                                                                     trackingCode);
-        JSONObject responseData = new JSONObject(response.getData());
-        String uuid = responseData.getString(AppmTestConstants.ID);
-        String appType = AppmTestConstants.WEB_APP;
-        appmPublisherRestClient.publishWebApp(uuid);
+    public void PublisherLogoutTestCase() throws Exception {
+        appmPublisherRestClient.webAppCreate(appName, context, appVersion, trackingCode);
 
-        HttpResponse appPropertyResponse = appmPublisherRestClient.getWebAppProperty(uuid);
-        JSONObject jsonObject = new JSONObject(appPropertyResponse.getData());
-
-        //Check App Id
-        String appId = (String) jsonObject.get(AppmTestConstants.ID);
-        assertTrue((appId.equals(uuid) == true), "Unable to Retrieve application property.");
-
-        //Check App Type
-        String type = (String) jsonObject.get(AppmTestConstants.TYPE);
-        assertTrue((type.equals(appType) == true), "Unable to Retrieve application property.");
-
-        //Check lifecycleState
-        String lifecycleState = (String) jsonObject.get(AppmTestConstants.LIFE_CYCLE_STATE);
-        assertTrue((lifecycleState.equalsIgnoreCase(AppmTestConstants.PUBLISHED) == true),
-                   "Unable to Retrieve application property.");
-
-        //Check Path attribute
-        String appPropertyString = userName + "/" + appName + "/" + appVersion + "/" + appType;
-        String path = (String) jsonObject.get("path");
-        assertTrue(path.endsWith(appPropertyString), "Unable to Retrieve application property.");
+        HttpResponse publisherLogoutResponseData = appmPublisherRestClient.logout();
+        assertTrue(publisherLogoutResponseData.getResponseCode() == 200, "Non 200 status code received.");
+        JSONObject publisherLogoutJsonObject = new JSONObject(publisherLogoutResponseData.getData());
+        String dataResponse = publisherLogoutJsonObject.getString(AppmTestConstants.DATA);
+        JSONObject dataJsonObject = new JSONObject(dataResponse);
+        assertEquals(dataJsonObject.getString(AppmTestConstants.MESSAGE), "User Logged out successfully",
+                     "User didn't logout successfully");
     }
 
-    @AfterClass(alwaysRun = true)
-    public void closeDown() throws Exception {
-        appmPublisherRestClient.logout();
-    }
 }

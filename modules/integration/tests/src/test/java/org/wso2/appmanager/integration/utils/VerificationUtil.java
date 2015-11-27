@@ -51,4 +51,16 @@ public class VerificationUtil {
                     .toString());
         }
     }
+
+    /**
+     * Check whether application create done successfully.
+     * @param response HttpResponse.
+     * @throws Exception on errors.
+     */
+    public static void checkAppCreateRes(HttpResponse response) throws Exception {
+        JSONObject jsonObject = new JSONObject(response.getData());
+        if (!(Boolean) jsonObject.get("ok")) {
+            throw new Exception("Operation not successful: " + jsonObject.get("message").toString());
+        }
+    }
 }
