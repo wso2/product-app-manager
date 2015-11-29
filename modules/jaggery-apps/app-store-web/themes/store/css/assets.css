@@ -86,3 +86,57 @@
 .ribbon-green:after {
     right: 0;
 }
+
+.ribbon-wrapper-orange {
+    font-family: "Open Sans";
+    font-size: 12px;
+    width: 88px;
+    height: 122px;
+    overflow: hidden;
+    position: absolute;
+    top: 0px;
+    right: -3px;
+    z-index: 99;
+}
+
+.ribbon-orange {
+    font: bold 12px "Open Sans";
+    color: #333;
+    text-align: center;
+    text-shadow: rgba(255,255,255,0.5) 0px 1px 0px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform:    rotate(45deg);
+    -ms-transform:     rotate(45deg);
+    -o-transform:      rotate(45deg);
+    position: relative;
+    padding: 7px 0;
+    left: -5px;
+    top: 15px;
+    width: 120px;
+    background-color: #ffb733;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#ffb733), to(#ffa500));
+    background-image: -webkit-linear-gradient(top, #ffb733, #ffa500);
+    background-image:    -moz-linear-gradient(top, #ffb733, #ffa500);
+    background-image:     -ms-linear-gradient(top, #ffb733, #ffa500);
+    background-image:      -o-linear-gradient(top, #ffb733, #ffa500);
+    color: #6a6340;
+    -webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.3);
+    -moz-box-shadow:    0px 0px 3px rgba(0,0,0,0.3);
+    box-shadow:         0px 0px 3px rgba(0,0,0,0.3);
+}
+
+.ribbon-orange:before, .ribbon-orange:after {
+    content: "";
+    border-top:   3px solid #6e8900;
+    border-left:  3px solid transparent;
+    border-right: 3px solid transparent;
+    position:absolute;
+    bottom: -3px;
+}
+
+.ribbon-orange:before {
+    left: 0;
+}
+.ribbon-orange:after {
+    right: 0;
+}
