@@ -15,6 +15,10 @@
 		{{#each .}}
 			<div class="span3 asset" data-id="{{id}}" data-type="{{type}}" id="asset">
 				{{#attributes}}
+                    {{#compare  overview_advertiseOnly "true" operator="=="}}
+                        <div class="ribbon-wrapper-orange"><div class="ribbon-orange">Advertised</div></div>
+                    {{/compare}}
+
 					{{#if ../isSubscribed}}
                         <div class="ribbon-wrapper-green"><div class="ribbon-green">Subscribed</div></div>
 					{{/if}}

@@ -22,6 +22,11 @@
                         {{#each assets}}
                             {{#attributes}}
                                 <div class="slide asset" data-id="{{../id}}" data-type="{{../type}}" id="slideAsset">
+                                    {{#compare  overview_advertiseOnly "true" operator="=="}}
+                                        <div class="ribbon-wrapper-orange">
+                                            <div class="ribbon-orange">Advertised</div>
+                                        </div>
+                                    {{/compare}}
                                     {{#if ../isSubscribed}}
                                         <div class="ribbon-wrapper-green">
                                             <div class="ribbon-green">Subscribed</div>
