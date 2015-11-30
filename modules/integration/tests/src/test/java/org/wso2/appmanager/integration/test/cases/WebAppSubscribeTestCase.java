@@ -39,8 +39,8 @@ public class WebAppSubscribeTestCase {
     private APPMStoreRestClient appmStoreRestClient;
     private String appName = "WebAppSubscribeTestCase";
     private String appVersion = "1.0.0";
-    private String context = "/WebAppSubscribeTestCase";
-    private String trackingCode = "WebAppSubscribeTestCase";
+    private String context = "/" + appName;
+    private String trackingCode = "AM_" + appName;
     private User adminUser;
     private String userName;
     private String password;
@@ -60,7 +60,7 @@ public class WebAppSubscribeTestCase {
 
         appmPublisherRestClient.login(userName, password);
         appmStoreRestClient = new APPMStoreRestClient(backEndUrl);
-        appmStoreRestClient.login(userName, password);
+
     }
 
     @Test(description = TEST_DESCRIPTION)
@@ -74,6 +74,8 @@ public class WebAppSubscribeTestCase {
 
         SubscriptionRequest subscriptionRequest = new SubscriptionRequest(appName, userName,
                                                                           appVersion);
+
+        appmStoreRestClient.login(userName, password);
         //Send Subscription request.
         HttpResponse subscriptionResponse = appmStoreRestClient.subscribeForApplication(
                 subscriptionRequest);
@@ -84,7 +86,7 @@ public class WebAppSubscribeTestCase {
                           "Application is already subscribed.");
 
         //Send Unsubscription Request
-        HttpResponse unSubscriptionResponse = appmStoreRestClient.unsubscribeForApplication(
+       HttpResponse unSubscriptionResponse = appmStoreRestClient.unsubscribeForApplication(
                 subscriptionRequest);
         JSONObject unSubscriptionJsonObject = new JSONObject(unSubscriptionResponse.getData());
         Assert.assertTrue(!(Boolean) unSubscriptionJsonObject.get("error"),

@@ -35,8 +35,8 @@ public class RetrieveAppPropertyTestCase {
     private APPMPublisherRestClient appmPublisherRestClient;
     private String appName = "RetrieveAppPropertyTestCase";
     private String appVersion = "1.0.0";
-    private String context = "/RetrieveAppPropertyTestCase";
-    private String trackingCode = "RetrieveAppPropertyTestCase";
+    private String context = "/" + appName;
+    private String trackingCode = "AM_" + appName;
     private User adminUser;
     private String userName;
     private String password;

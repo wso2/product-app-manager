@@ -21,6 +21,7 @@ package org.wso2.appmanager.integration.test.cases;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.wso2.appmanager.integration.utils.APPMStoreRestClient;
 import org.wso2.appmanager.integration.utils.AppmTestConstants;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
@@ -39,6 +40,7 @@ import static org.testng.Assert.assertTrue;
 public class StoreLoginTestCase{
 
     private static final String TEST_DESCRIPTION = "Verify login to App Manager Store";
+    private APPMStoreRestClient appmStoreRestClient;
     private String backEndUrl;
     private User adminUser;
 
@@ -47,12 +49,14 @@ public class StoreLoginTestCase{
         AutomationContext appMServer = new AutomationContext(AppmTestConstants.APP_MANAGER,
                                                              TestUserMode.SUPER_TENANT_ADMIN);
         backEndUrl = appMServer.getContextUrls().getWebAppURLHttps();
+        appmStoreRestClient = new APPMStoreRestClient(backEndUrl);
         adminUser = appMServer.getSuperTenant().getTenantAdmin();
     }
 
     @Test(description = TEST_DESCRIPTION)
     public void testStoreLogin() throws Exception {
-        String userName = adminUser.getUserName();
+        HttpResponse response = appmStoreRestClient.login(adminUser.getUserName(), adminUser.getPassword());
+        /* String userName = adminUser.getUserName();
         String password = adminUser.getPassword();
 
         Map<String, String> requestHeaders = new HashMap<String, String>();
@@ -63,7 +67,7 @@ public class StoreLoginTestCase{
                                                 + userName
                                                 + "\"" + ",\"password\":" + "\""
                                                 + password + "\"" + "}",
-                                                requestHeaders);
+                                                requestHeaders); */
 
         assertTrue(response.getResponseCode() == 200, "Non 200 status code received.");
         String session = response.getHeaders().get(AppmTestConstants.SET_COOKIE);

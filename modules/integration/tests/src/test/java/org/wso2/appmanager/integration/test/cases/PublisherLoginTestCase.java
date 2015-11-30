@@ -21,6 +21,7 @@ package org.wso2.appmanager.integration.test.cases;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.wso2.appmanager.integration.utils.APPMPublisherRestClient;
 import org.wso2.appmanager.integration.utils.AppmTestConstants;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
@@ -38,6 +39,7 @@ import static org.testng.Assert.assertTrue;
 public class PublisherLoginTestCase {
 
     private static final String TEST_DESCRIPTION = "Verify login to App Manager Publisher";
+    private APPMPublisherRestClient appmPublisherRestClient;
     private String backEndUrl;
     private User adminUser;
 
@@ -46,12 +48,14 @@ public class PublisherLoginTestCase {
         AutomationContext appMServer = new AutomationContext(AppmTestConstants.APP_MANAGER,
                                                              TestUserMode.SUPER_TENANT_ADMIN);
         backEndUrl = appMServer.getContextUrls().getWebAppURLHttps();
+        appmPublisherRestClient = new APPMPublisherRestClient(backEndUrl);
         adminUser = appMServer.getSuperTenant().getTenantAdmin();
     }
 
     @Test(description = TEST_DESCRIPTION)
     public void testPublisherLogin() throws Exception {
-        String userName = adminUser.getUserName();
+        HttpResponse response = appmPublisherRestClient.login(adminUser.getUserName(), adminUser.getPassword());
+        /*String userName = adminUser.getUserName();
         String password = adminUser.getPassword();
 
         Map<String, String> requestHeaders = new HashMap<String, String>();
@@ -63,11 +67,16 @@ public class PublisherLoginTestCase {
                                                        + userName
                                                        + "&password="
                                                        + password), "{}",
-                                                       requestHeaders);
+                                                       requestHeaders);*/
 
         assertTrue(response.getResponseCode() == 200, "Non 200 status code received.");
         String session = response.getHeaders().get(AppmTestConstants.SET_COOKIE);
         assertNotNull(session, "Session is null");
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void closeDown() throws Exception {
+        appmPublisherRestClient.logout();
     }
 
 }

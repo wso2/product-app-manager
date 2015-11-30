@@ -15,26 +15,29 @@
 *specific language governing permissions and limitations
 *under the License.
 */
+
 package org.wso2.appmanager.integration.test.cases;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.appmanager.integration.utils.APPMPublisherRestClient;
+import org.wso2.appmanager.integration.utils.APPMStoreRestClient;
 import org.wso2.appmanager.integration.utils.AppmTestConstants;
+import org.wso2.appmanager.integration.utils.bean.SubscriptionRequest;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.automation.engine.context.beans.User;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-
-public class PublisherLogoutTestCase {
-    private static final String TEST_DESCRIPTION = "Verify Publisher Logout";
+public class RetrieveSubscribedUsersTestCase {
+    private static final String TEST_DESCRIPTION = "Verify Subscribing to a Web App";
     private APPMPublisherRestClient appmPublisherRestClient;
-    private String appName = "PublisherLogoutTestCase";
+    private APPMStoreRestClient appmStoreRestClient;
+    private String appName = "RetrieveSubscribedUsersTestCase";
     private String appVersion = "1.0.0";
     private String context = "/" + appName;
     private String trackingCode = "AM_" + appName;
@@ -42,6 +45,7 @@ public class PublisherLogoutTestCase {
     private String userName;
     private String password;
     private String backEndUrl;
+
 
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
@@ -55,19 +59,32 @@ public class PublisherLogoutTestCase {
         password = adminUser.getPassword();
 
         appmPublisherRestClient.login(userName, password);
+        appmStoreRestClient = new APPMStoreRestClient(backEndUrl);
+        appmStoreRestClient.login(userName, password);
     }
 
     @Test(description = TEST_DESCRIPTION)
-    public void PublisherLogoutTestCase() throws Exception {
-        appmPublisherRestClient.webAppCreate(appName, context, appVersion, trackingCode);
+    public void RetrieveSubscribedUsersTestCase() throws Exception {
+        HttpResponse response = appmPublisherRestClient.webAppCreate(appName, context, appVersion,
+                                                                     trackingCode);
 
-        HttpResponse publisherLogoutResponseData = appmPublisherRestClient.logout();
-        assertTrue(publisherLogoutResponseData.getResponseCode() == 200, "Non 200 status code received.");
-        JSONObject publisherLogoutJsonObject = new JSONObject(publisherLogoutResponseData.getData());
-        String dataResponse = publisherLogoutJsonObject.getString(AppmTestConstants.DATA);
-        JSONObject dataJsonObject = new JSONObject(dataResponse);
-        assertEquals(dataJsonObject.getString(AppmTestConstants.MESSAGE), "User Logged out successfully",
-                     "User didn't logout successfully");
+        JSONObject responseData = new JSONObject(response.getData());
+        String uuid = responseData.getString(AppmTestConstants.ID);
+        appmPublisherRestClient.publishWebApp(uuid);
+
+        SubscriptionRequest subscriptionRequest = new SubscriptionRequest(appName, userName,
+                                                                          appVersion);
+        //Send Subscription request.
+        HttpResponse subscriptionResponse = appmStoreRestClient.subscribeForApplication(
+                subscriptionRequest);
+        Thread.sleep(10000);
+
+        JSONArray sssssssss = appmStoreRestClient.retrieveSubscribedUsers(userName, appName, appVersion);
     }
 
+    @AfterClass(alwaysRun = true)
+    public void closeDown() throws Exception {
+        appmPublisherRestClient.logout();
+        appmStoreRestClient.logout();
+    }
 }

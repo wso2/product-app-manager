@@ -23,7 +23,7 @@
             <class name="org.wso2.appmanager.integration.test.cases.WebAppSubscribeTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.RetrieveAppPropertyTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.RatingTestCase"/>
-
+            <class name="org.wso2.appmanager.integration.test.cases.RetrieveSubscribedUsersTestCase"/>
         </classes>
     </test>
 

@@ -53,7 +53,8 @@ public class APPMStoreRestClient {
             this.requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/json");
         }
         HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
-                                                     + "/store/apis/user/login"), "{\"username\":\""
+                                                    // + "/store/apis/user/login"), "{\"username\":\""
+                                                     + AppmTestConstants.StoreRestApis.LOGIN_URL), "{\"username\":\""
                                                      + userName
                                                      + "\""
                                                      + ",\"password\":"
@@ -89,7 +90,8 @@ public class APPMStoreRestClient {
         this.requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "text/html");
 
         HttpResponse response = HttpRequestUtil.doGet(backEndUrl
-                                                              + "/store/logout", requestHeaders);
+                                                      + AppmTestConstants.StoreRestApis.LOGOUT_URL, requestHeaders);
+                                                            //  + "/store/logout", requestHeaders);
         if (response.getResponseCode() == 200) {
             this.requestHeaders.clear();
             return response;
@@ -110,12 +112,16 @@ public class APPMStoreRestClient {
     public HttpResponse subscribeForApplication(SubscriptionRequest subscriptionRequest)
             throws Exception {
         checkAuthentication();
-       requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/x-www-form-urlencoded");
-        String payload =  subscriptionRequest.generateRequestParameters();
+        requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/x-www-form-urlencoded");
+        String payload1 =  subscriptionRequest.generateRequestParameters();
+        //action=null&appName=DefaultApplication&apiVersion=1.0.0&apiName=WebAppSubscribeTestCase&apiTier=Unlimited&apiProvider=admin
+        String payload =  "apiName="+subscriptionRequest.getName()+"&apiVersion=1.0.0&apiTier=Unlimited&subscriptionType=INDIVIDUAL&apiProvider=admin&appName=DefaultApplication";
         HttpResponse response = HttpRequestUtil.doPost(new URL(
-                backEndUrl + "/store/resources/webapp/v1/subscription/app")
+                backEndUrl + AppmTestConstants.StoreRestApis.SUBSCRIBE_FOR_APPS)
+                        //"/store/resources/webapp/v1/subscription/app")
                 , payload
                 , requestHeaders);
+        Thread.sleep(50000);
         if (response.getResponseCode() == 200) {
             VerificationUtil.checkErrors(response);
             return response;
@@ -136,7 +142,8 @@ public class APPMStoreRestClient {
             throws Exception {
         checkAuthentication();
         HttpResponse response = HttpRequestUtil.doPost(new URL(
-                backEndUrl + "/store/resources/webapp/v1/unsubscription/app")
+                backEndUrl + AppmTestConstants.StoreRestApis.UNSUBSCRIBE_FOR_APPS)
+                        //"/store/resources/webapp/v1/unsubscription/app")
                 , unsubscriptionRequest.generateRequestParameters()
                 , requestHeaders);
         if (response.getResponseCode() == 200) {
@@ -163,6 +170,19 @@ public class APPMStoreRestClient {
                                                               id + "&type=" + appType + "&value=" +
                                                               ratingValue, requestHeaders);
         return response;
+    }
+
+    public JSONArray retrieveSubscribedUsers(String appProvider, String appName, String appVersion)
+            throws Exception {
+        checkAuthentication();
+        HttpResponse response = HttpRequestUtil.doGet(backEndUrl + "/store/resources/webapp/v1/subscriptions/"
+                                                              + appProvider + "/" + appName + "/" + appVersion, requestHeaders);
+        if (response.getResponseCode() == 200) {
+            JSONArray jsonArray = new JSONArray(response.getData());
+            return jsonArray;
+        } else {
+            throw new Exception("Retrieve Subscribed Users of " + appName + " failed. " + response.getData());
+        }
     }
 
     /**

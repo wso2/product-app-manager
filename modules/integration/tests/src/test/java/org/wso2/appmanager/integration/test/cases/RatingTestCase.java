@@ -38,8 +38,8 @@ public class RatingTestCase {
     private AutomationContext appMServer;
     private String appName = "RatingTestCase";
     private String appVersion = "1.0.0";
-    private String context = "/RatingTestCase";
-    private String trackingCode = "RatingTestCase";
+    private String context = "/" + appName;
+    private String trackingCode = "AM_" + appName;
     private User adminUser;
     private String userName;
     private String password;

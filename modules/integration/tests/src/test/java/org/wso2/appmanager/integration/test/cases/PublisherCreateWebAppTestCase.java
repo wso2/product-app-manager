@@ -39,9 +39,9 @@ public class PublisherCreateWebAppTestCase {
     private static final String TEST_DESCRIPTION = "Verify Creating a Web App";
     private APPMPublisherRestClient appmPublisherRestClient;
     private String appName = "PublisherCreateWebAppTestCase";
-    private String context = "/PublisherCreateWebAppTestCase";
-    private String trackingCode = "AM_PublisherCreateWebAppTestCase";
     private String appVersion = "1.0.0";
+    private String context = "/" + appName;
+    private String trackingCode = "AM_" + appName;
     private String backEndUrl;
 
 
@@ -57,38 +57,14 @@ public class PublisherCreateWebAppTestCase {
 
     @Test(description = TEST_DESCRIPTION)
     public void testPublisherCreateWebApp() throws Exception {
-        //Policy Adding before app creating.
-        String appDescription = "default app description for " + appName;
-        HttpResponse policyAddingResponse = appmPublisherRestClient.addPoicyGroup(appDescription);
-        assertTrue(policyAddingResponse.getResponseCode() == 200, "Non 200 status code received.");
-        String httpResponseData = policyAddingResponse.getData();
-        JSONObject responseData = new JSONObject(httpResponseData);
-        String response = responseData.getString(AppmTestConstants.RESPONSE);
-        JSONObject responseObject = new JSONObject(response);
-        String policyId = responseObject.getString(AppmTestConstants.ID);
-        String policyGroupId = "[" + policyId + "]";
-
-        //Web app create.
-        AppCreateRequest appRequest = new AppCreateRequest(appName, context, appVersion,
-                                                           trackingCode);
-        appRequest.setUriTemplatePolicyGroupId0(policyId);
-        appRequest.setUriTemplatePolicyGroupId1(policyId);
-        appRequest.setUriTemplatePolicyGroupId2(policyId);
-        appRequest.setUriTemplatePolicyGroupId3(policyId);
-        appRequest.setUriTemplatePolicyGroupId4(policyId);
-        appRequest.setUriTemplatePolicyGroupIds(policyGroupId);
-        HttpResponse appCreateResponse = appmPublisherRestClient.createApp(appRequest);
+        HttpResponse appCreateResponse = appmPublisherRestClient.webAppCreate(appName, context, appVersion,
+                                                                                 trackingCode);
 
         assertTrue(appCreateResponse.getResponseCode() == 200, "Non 200 status code received.");
         JSONObject appCreateResponseData = new JSONObject(appCreateResponse.getData());
         assertEquals(appCreateResponseData.getString(AppmTestConstants.MESSAGE), "asset added",
-                                   "Asset has not added successfully");
+                     "Asset has not added successfully");
         assertNotNull(appCreateResponseData.getString(AppmTestConstants.ID), "app id is null");
-
-        // Create Service provider for the created web app.
-        HttpResponse ssoProviderAddedResponse = appmPublisherRestClient.addSsoProvider(appRequest);
-        assertTrue(ssoProviderAddedResponse.getResponseCode() == 200, "Non 200 status code received.");
-
     }
 
     @AfterClass(alwaysRun = true)

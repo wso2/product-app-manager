@@ -37,9 +37,9 @@ public class WebAppPublishTestCase {
     private static final String TEST_DESCRIPTION = "Verify Publishing a Web App";
     private APPMPublisherRestClient appmPublisherRestClient;
     private String appName = "WebAppPublishTestCase";
-    private String context = "/WebAppPublishTestCase";
-    private String trackingCode = "AM_WebAppPublishTestCase";
-    private String version = "1.0.0";
+    private String appVersion = "1.0.0";
+    private String context = "/" + appName;
+    private String trackingCode = "AM_" + appName;
     private String backEndUrl;
     private User adminUser;
 
@@ -57,7 +57,7 @@ public class WebAppPublishTestCase {
 
     @Test(description = TEST_DESCRIPTION)
     public void testPublisherCreateWebApp() throws Exception {
-        HttpResponse response = appmPublisherRestClient.webAppCreate(appName, context, version,
+        HttpResponse response = appmPublisherRestClient.webAppCreate(appName, context, appVersion,
                                                                      trackingCode);
 
         JSONObject responseData = new JSONObject(response.getData());

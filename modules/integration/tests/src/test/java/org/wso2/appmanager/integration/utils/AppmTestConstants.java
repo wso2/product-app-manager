@@ -45,4 +45,23 @@ public class AppmTestConstants {
     public static final String TYPE = "type";
 
     public static final String WEB_APP = "webapp";
+
+    public class PubliserRestApis {
+        public static final String ADD_NEW_TAGS = "/publisher/api/tag/webapp/";
+        public static final String ADD_POLICY_GROUP = "/publisher/api/entitlement/policy/partial/policyGroup/save";
+        public static final String ADD_SSO_PROVIDER = "/publisher/api/sso/addConfig";
+        public static final String GET_WEB_APP_PROPERTY = "/publisher/api/asset/webapp/";
+        public static final String CREATE_APP = "/publisher/asset/webapp";
+        public static final String LOGIN_URL = "/publisher/api/authenticate?action=login";
+        public static final String LOGOUT_URL = "/publisher/api/authenticate?action=logout";
+
+
+    }
+
+    public class StoreRestApis {
+        public static final String LOGIN_URL = "/store/apis/user/login";
+        public static final String LOGOUT_URL = "/store/logout";
+        public static final String SUBSCRIBE_FOR_APPS = "/store/resources/webapp/v1/subscription/app";
+        public static final String UNSUBSCRIBE_FOR_APPS = "/store/resources/webapp/v1/unsubscription/app";
+    }
 }

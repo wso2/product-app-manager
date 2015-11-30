@@ -49,7 +49,8 @@ public class APPMPublisherRestClient {
      */
     public HttpResponse login(String userName, String password) throws Exception {
         HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
-                                                        + "/publisher/api/authenticate?action=login"
+                                                  + AppmTestConstants.PubliserRestApis.LOGIN_URL
+                                                       // + "/publisher/api/authenticate?action=login"
                                                         + "&username="
                                                         + userName
                                                         + "&password="
@@ -74,8 +75,9 @@ public class APPMPublisherRestClient {
      */
     public HttpResponse logout() throws Exception {
         HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
-                                                                + "/publisher/api/authenticate"
-                                                                + "?action=logout"
+                                    + AppmTestConstants.PubliserRestApis.LOGOUT_URL
+                                                     //           + "/publisher/api/authenticate"
+                                                       //         + "?action=logout"
                                                                ), "{}", requestHeaders);
         if (response.getResponseCode() == 200) {
             this.requestHeaders.clear();
@@ -98,7 +100,7 @@ public class APPMPublisherRestClient {
     public HttpResponse webAppCreate(String appName, String context, String appVersion,
                                      String trackingCode) throws Exception {
         checkAuthentication();
-        String appDescription = "default app description for " + appName;
+        String appDescription = "Default app description for " + appName;
         HttpResponse httpResponse = addPoicyGroup(appDescription);
         String httpResponseData = httpResponse.getData();
         if (httpResponse.getResponseCode() == 200) {
@@ -145,7 +147,7 @@ public class APPMPublisherRestClient {
      * @return httpResponse.
      * @throws Exception on errors.
      */
-    public HttpResponse addPoicyGroup(String policyDesc) throws Exception {
+    private HttpResponse addPoicyGroup(String policyDesc) throws Exception {
         requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/x-www-form-urlencoded");
 
         String payload = "policyGroupName=Default&throttlingTier=Unlimited&userRoles"
@@ -153,9 +155,10 @@ public class APPMPublisherRestClient {
                 + "=[]&policyGroupDesc="
                 + policyDesc;
 
-        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
-                                             + "/publisher/api/entitlement/policy/partial/"
-                                             + "policyGroup/save"),
+        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl +
+                                                                       AppmTestConstants.PubliserRestApis.ADD_POLICY_GROUP),
+                                            // + "/publisher/api/entitlement/policy/partial/"
+                                            // + "policyGroup/save"),
                                              payload, requestHeaders);
         return response;
     }
@@ -167,13 +170,14 @@ public class APPMPublisherRestClient {
      * @return response HttpResponse.
      * @throws Exception on errors.
      */
-    public HttpResponse createApp(AppCreateRequest appRequest) throws Exception {
+    private HttpResponse createApp(AppCreateRequest appRequest) throws Exception {
         String payload = appRequest.generateRequestParameters();
         String roles = appRequest.getRoles();
         this.requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/x-www-form-urlencoded");
         HttpResponse response =
                 HttpRequestUtil.doPost(new URL(backEndUrl
-                                                       + "/publisher/asset/webapp"), payload,
+                                               + AppmTestConstants.PubliserRestApis.CREATE_APP), payload,
+                                                      // + "/publisher/asset/webapp"), payload,
                                                          requestHeaders);
         if (response.getResponseCode() == 200) {
             VerificationUtil.checkAppCreateRes(response);
@@ -200,7 +204,7 @@ public class APPMPublisherRestClient {
      * @return ssoProviderAddingResponse HttpResponse.
      * @throws Exception
      */
-    public HttpResponse addSsoProvider(AppCreateRequest appCreateRequest) throws Exception {
+    private HttpResponse addSsoProvider(AppCreateRequest appCreateRequest) throws Exception {
         String provider = appCreateRequest.getSsoProvider();
         String logOutUrl = appCreateRequest.getOverviewLogoutUrl();
         if (logOutUrl == null) {
@@ -223,7 +227,8 @@ public class APPMPublisherRestClient {
                 "\"}";
         this.requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/json");
         HttpResponse response =
-                HttpUtil.doPost(new URL(backEndUrl + "/publisher/api/sso/addConfig"),
+                HttpUtil.doPost(new URL(backEndUrl +  AppmTestConstants.PubliserRestApis.ADD_SSO_PROVIDER),
+                                        //"/publisher/api/sso/addConfig"),
                                 requestBody, requestHeaders);
         return response;
     }
@@ -307,7 +312,8 @@ public class APPMPublisherRestClient {
         checkAuthentication();
         requestHeaders.put("Content-Type", "application/json");
         HttpResponse response = HttpUtil.doPut(new URL(backEndUrl
-                                                               + "/publisher/api/tag/webapp/" + id),
+                                                       + AppmTestConstants.PubliserRestApis.ADD_NEW_TAGS + id),
+                                                             //  + "/publisher/api/tag/webapp/" + id),
                                                "{\"tags\":[\" " + tagName + " \"]}",
                                                requestHeaders);
 
@@ -328,7 +334,8 @@ public class APPMPublisherRestClient {
     public HttpResponse getWebAppProperty(String appId) throws Exception {
         checkAuthentication();
         HttpResponse httpResponse = HttpRequestUtil.doGet(
-                backEndUrl + "/publisher/api/asset/webapp/"
+                backEndUrl + AppmTestConstants.PubliserRestApis.GET_WEB_APP_PROPERTY
+                //"/publisher/api/asset/webapp/"
                         + appId, requestHeaders);
         if (httpResponse.getResponseCode() == 200) {
             return httpResponse;
