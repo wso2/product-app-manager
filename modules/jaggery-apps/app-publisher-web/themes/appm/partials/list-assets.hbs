@@ -59,14 +59,22 @@
                 <tbody>
                  {{#each artifacts}}
 
-                    <tr>
+                 {{#ifCond this.attributes.overview_advertiseOnly "==" "true"}}
+                     <tr style=" pointer-events: none; cursor: default;">
+                 {{else}}
+                     <tr>
+                 {{/ifCond}}
                         <td>
                         <img src="{{this.attributes.images_thumbnail}}" class="" />
                         </td>
                         <td class="asset-listing-name col-md-3">
-                            <a href='/publisher/asset/{{../shortName}}/{{this.id}}'>
-                                {{this.attributes.overview_displayName}}
-                            </a>
+                            {{#ifCond this.attributes.overview_advertiseOnly "==" "true"}}
+                                {{this.attributes.overview_displayName}}{{t " --Advertised App"}}
+                            {{else}}
+                                <a href='/publisher/asset/{{../../shortName}}/{{this.id}}'>
+                                    {{this.attributes.overview_displayName}}
+                                </a>
+                            {{/ifCond}}
                         </td>
                         <td>
                         {{this.attributes.overview_version}}
@@ -83,7 +91,8 @@
                          <td>
 
                              {{#this.lifecycleAvailableActions}}
-                                 <a  data-action="{{name}}" data-app="{{../this.id}}"
+                                 <a  style=" pointer-events: auto; cursor: pointer"
+                                     data-action="{{name}}" data-app="{{../this.id}}"
                                      data-name="{{../this.attributes.overview_name}}"
                                      data-provider="{{../this.attributes.overview_provider}}"
                                      data-version="{{../this.attributes.overview_version}}"
@@ -91,7 +100,8 @@
                              {{/this.lifecycleAvailableActions}}
 
                              {{#this.deleteButtonAvailability}}
-                                 <input type="button" value="Delete" class="btn btn-danger btn-delete"
+                                 <input  style=" pointer-events: auto; cursor: pointer"
+                                         type="button" value="Delete" class="btn btn-danger btn-delete"
                                         name="deleteAsset"  data-app-id={{this.id}} />
                              {{/this.deleteButtonAvailability}}
 
