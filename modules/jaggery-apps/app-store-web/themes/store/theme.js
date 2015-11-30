@@ -74,6 +74,18 @@ var engine = caramel.engine('handlebars', (function () {
 
             });
 
+            Handlebars.registerHelper('isTenanted', function (path) {
+                var uri = request.getRequestURI();//current page path
+                var matcher = new URIMatcher(uri);
+
+                if (matcher.match('/{context}/t/{domain}/') || matcher.match('/{context}/t/{domain}/{+any}')) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            });
+
             Handlebars.registerHelper('compare', function (lvalue, rvalue, options) {
 
                 if (arguments.length < 3)

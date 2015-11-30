@@ -6,11 +6,13 @@
                     			<div class="container">
                         			<a class="brand" href="{{url "/"}}"></a>
                         			<ul class="nav menu pull-right">
+                                       {{#if isTenanted}}
                                         <li class="nav-separator">
                                             <a href="{{url "/"}}">
                                                 <i class="icon-suitcase store-topnav-bookmark"></i> {{t "Public Store"}}
                                             </a>
                                         </li>
+                                       {{/if}}
                                             <li class="nav-separator">
                                                 <a href="{{tenantedUrl "/assets/webapp"}}"><i class="icon-cog store-topnav-bookmark"></i> {{t "Web Applications"}}</a>
                                             </li>
