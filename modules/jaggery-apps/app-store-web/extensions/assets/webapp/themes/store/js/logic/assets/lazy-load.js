@@ -83,7 +83,7 @@ document.lazy_load.getItems = function(from,to){
     dynamicData["count"] = to-from;
     dynamicData["from"] = from;
     return $.ajax({
-        url: "/store/apis/assets/webapp/lazy",
+        url: getTenantedURL("/apis/assets/webapp/lazy"),
         type: "get", //Set the async false since it wouldn't do the validation otherwise.
         dataType:"json",
         data: dynamicData

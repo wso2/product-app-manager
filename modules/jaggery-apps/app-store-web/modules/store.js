@@ -365,6 +365,9 @@ Store.prototype.subscriptions = function (type) {
         path = this.subscriptionSpace(type),
         assetz = {};
     fn = function (path) {
+        if(!registry){
+            return;
+        }
         var type,
             items = [],
             obj = registry.content(path);
@@ -1092,6 +1095,7 @@ var exec = function (fn, request, response, session) {
             files: request.getAllFiles(),
             matcher: new URIMatcher(request.getRequestURI()),
             site: require('/modules/site.js'),
+            isAnonymousTenantStore : isUserTenantIdDifferFromUrlTenantId(tenant.tenantId, tenantId),
             log: new Log(request.getMappedPath())
         });
     });
