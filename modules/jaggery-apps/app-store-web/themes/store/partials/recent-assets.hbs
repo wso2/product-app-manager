@@ -8,7 +8,7 @@
                         <div class="span3 recent-asset-icon">
 			    <input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
                             {{#compare  overview_advertiseOnly "true" operator="=="}}
-                                <a href="../{{overview_appTenant}}/assets/{{../../type}}/{{overview_uuid}}">
+                                <a href="{{url "/t"}}/{{overview_appTenant}}/assets/{{../../type}}/{{overview_uuid}}">
                                     <img src="{{#if images_thumbnail}}{{tenantedUrl images_thumbnail}}{{/if}}"></a>
                             {{else}}
                                 <a href="{{tenantedUrl "/assets"}}/{{../../type}}/{{../../id}}">
@@ -20,7 +20,7 @@
                             <strong>
 
                                 {{#compare  overview_advertiseOnly "true" operator="=="}}
-                                    <a href="../{{overview_appTenant}}/assets/{{../../type}}/{{overview_uuid}}">
+                                    <a href="{{url "/t"}}/{{overview_appTenant}}/assets/{{../../type}}/{{overview_uuid}}">
 
                                 {{else}}
                                     <a href="{{tenantedUrl "/assets"}}/{{../../type}}/{{../../id}}">

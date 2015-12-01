@@ -8,7 +8,7 @@
             <div class="span4 recent-asset-icon">
 		<input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
                 {{#compare  overview_advertiseOnly "true" operator="=="}}
-                    <a href="../../{{overview_appTenant}}/assets/{{../../type}}/{{overview_uuid}} ">
+                    <a href="{{url "/t"}}/{{overview_appTenant}}/assets/{{../../type}}/{{overview_uuid}} ">
                         <img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}"></a>
                 {{else}}
                     <a href="{{tenantedUrl "/assets"}}/{{../../type}}/{{../../id}}"><img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}"></a>
@@ -17,7 +17,7 @@
             <div class="span8 recent-asset-details">
 		<input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
                 {{#compare  overview_advertiseOnly "true" operator="=="}}
-                    <strong><a href="../../{{overview_appTenant}}/assets/{{../../type}}/{{overview_uuid}} ">
+                    <strong><a href="{{url "/t"}}/{{overview_appTenant}}/assets/{{../../type}}/{{overview_uuid}} ">
                         {{overview_displayName}} </a></strong>
                 {{else}}
                     <strong><a href="{{tenantedUrl "/assets"}}/{{../../type}}/{{../../id}}">{{overview_displayName}}</a></strong>
