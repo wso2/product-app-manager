@@ -52,21 +52,21 @@
             <ul id="ul-sort-assets" data-type="gadget" class="pull-right">
                 {{#if hasApps}}
                 <li>
-                    <a href="{{url this.url}}popular" data-toggle="tooltip" data-sort="popular"
+                    <a href="{{tenantedUrl this.url}}popular" data-toggle="tooltip" data-sort="popular"
                        title="{{t "Sort by Popularity"}}"><i class="icon-star"></i></a>
                 </li>
                 {{/if}}
                 <li>
-                    <a href="{{url this.url}}az" data-toggle="tooltip" data-sort="az"
+                    <a href="{{tenantedUrl this.url}}az" data-toggle="tooltip" data-sort="az"
                        title="{{t "Sort by Alphabetical Order"}}"><i class="icon-sort-alphabetical"></i></a>
                 </li>
                 <li>
-                    <a href="{{url this.url}}recent" data-toggle="tooltip" data-sort="recent"
+                    <a href="{{tenantedUrl this.url}}recent" data-toggle="tooltip" data-sort="recent"
                        title="{{t "Sort by Created Date"}}"><i class="icon-calendar"></i></a>
                 </li>
 				{{#if header.user}}
                     <li>
-                        <a href="{{url this.url}}usage" data-toggle="tooltip" data-sort="usage"
+                        <a href="{{tenantedUrl this.url}}usage" data-toggle="tooltip" data-sort="usage"
                            title="{{t "Sort by Usage"}}"><i class="icon-user"></i></a>
                     </li>
 				{{/if}}
