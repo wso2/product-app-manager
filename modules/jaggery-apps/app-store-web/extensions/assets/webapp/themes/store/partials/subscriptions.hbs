@@ -27,11 +27,16 @@
                             <img class="icon" src="/store/storage/webapp/{{uuid}}/{{thumbnail}}">
                         </div>
                     </a>
-                    {{url "/t/"}}{{tenantDomain}}/assets/webapp/{{uuid}}
                     <div class="asset-details">
-                        <a class="asset-title" href="{{url "/t/"}}{{tenantDomain}}/assets/webapp/{{uuid}}">
-                            <strong>{{name}}</strong>
-                        </a>
+                        {{#if isTenanted}}
+                            <a class="asset-title" href="{{url "/t/"}}{{tenantDomain}}/assets/webapp/{{uuid}}">
+                                <strong>{{name}}</strong>
+                            </a>
+                        {{else}}
+                            <a class="asset-title" href="{{url "/t/"}}{{tenantDomain}}/assets/webapp/{{uuid}}">
+                                <strong>{{name}}</strong>
+                            </a>
+                        {{/if}}
                     </div>
 
                 </div>

@@ -101,7 +101,7 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
                         	var user = require('store').user;
                             log.debug('user is set :::' + sessionObj.loggedInUser);
                             if(tenantedUrlPrefix != null) {
-                                response.sendRedirect('/store'+tenantedUrlPrefix);
+                                response.sendRedirect('/store' + tenantedUrlPrefix);
                             }else {
                                 response.sendRedirect('/store');
                             }
