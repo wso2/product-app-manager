@@ -12,6 +12,7 @@ include('../modules/jagg/jagg.jag');
 require('/modules/store.js').exec(function (ctx) {
 	var store = ctx.store;
 	var sso = ctx.sso;
+	var carbon = require('carbon')
 	tenantId = ctx.tenantId;
 	site = ctx.site;
 	var recentAssets = store.recentAssets('webapp');
@@ -63,7 +64,8 @@ require('/modules/store.js').exec(function (ctx) {
 
         for(i=0;i< apps[0].subscriptions.length;i++){
             var api=apiInfoManager.getAPIDescription( apps[0].subscriptions[i].provider, apps[0].subscriptions[i].name, apps[0].subscriptions[i].version);
-            apps[0].subscriptions[i].productionURL = api.serverURL.productionURL;
+			apps[0].subscriptions[i].tenantDomain = carbon.server.tenantDomain({username: apps[0].subscriptions[i].provider});
+			apps[0].subscriptions[i].productionURL = api.serverURL.productionURL;
 
             if((i > offset && i < limit)){
                 displayApps.push(apps[0].subscriptions[i]);

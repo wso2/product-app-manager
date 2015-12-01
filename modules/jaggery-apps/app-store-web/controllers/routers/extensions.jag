@@ -16,7 +16,10 @@ var type;
             return path;
         };
     };
-    if (matcher.match('/{context}' + prefix + '{type}/themes/{+file}')) {
+
+    var tenantedEndpoint = '/{context}/t/{domain}' + prefix;
+    if (matcher.match('/{context}' + prefix + '{type}/themes/{+file}') ||
+            matcher.match(tenantedEndpoint + '{type}/themes/{+file}')) {
         elements = matcher.elements();
         type = elements.type;
         if (configs.assets.indexOf(type) === -1) {
@@ -27,7 +30,8 @@ var type;
         file.send(prefix + '/themes/' + elements.file);
         return;
     }
-    if (matcher.match('/{context}' + prefix + '{type}/resources/{+file}')) {
+    if (matcher.match('/{context}' + prefix + '{type}/resources/{+file}') ||
+            matcher.match(tenantedEndpoint + '{type}/resources/{+file}')) {
         elements = matcher.elements();
         type = elements.type;
         if (configs.assets.indexOf(type) === -1) {
@@ -38,7 +42,8 @@ var type;
         file.send(prefix + '/resources/' + elements.file);
         return;
     }
-    if (matcher.match('/{context}' + prefix + '{type}/{+suffix}')) {
+    if (matcher.match('/{context}' + prefix + '{type}/{+suffix}') ||
+            matcher.match(tenantedEndpoint + '{type}/{+suffix}')) {
         mod = require('/modules/store.js');
         elements = matcher.elements();
         type = elements.type;

@@ -31,7 +31,7 @@
 			                                				{{#if sso}}
 			                                					<a href="{{url "/logout"}}"><i class="icon-signout"></i> {{t "Signout"}} </a>
 			                                				{{else}}
-			                                					<a id="btn-signout" href="{{url "/extensions/assets/webapp/logout"}}"><i class="icon-signout"></i> {{t "Sign out"}} </a>
+			                                					<a id="btn-signout" href="{{tenantedUrl "/extensions/assets/webapp/logout"}}"><i class="icon-signout"></i> {{t "Sign out"}} </a>
 			                                				{{/if}}
 		                            					</li>
                                 					</ul>

@@ -33,7 +33,7 @@ $(function() {
 			  if (allowAnonymous.toUpperCase()!="TRUE") {
 				  var ssoEnabled = $('#sso').val();
 				  if (ssoEnabled == 'true') {
-				  	location.href = getTenantedLoginURL();
+				  	location.href = getTenantedURL('/login');
 				  } else {
 					  var assetId = $('#slideAsset').data('id');
 					  $('#modal-login').data('value', assetId);
@@ -53,7 +53,7 @@ $(function() {
 			  if (allowAnonymous.toUpperCase()!="TRUE") {
 				  var ssoEnabled = $('#sso').val();
 				  if (ssoEnabled == 'true') {
-					  location.href = getTenantedLoginURL();
+					  location.href = getTenantedURL('/login');
 				  } else {
 					  var assetId = $('#slideAsset').data('id');
 					  $('#modal-login').data('value', assetId);
@@ -73,7 +73,7 @@ $(function() {
 			  if (allowAnonymous.toUpperCase()!="TRUE") {
 				  var ssoEnabled = $('#sso').val();
 				  if (ssoEnabled == 'true') {
-					  location.href = getTenantedLoginURL();
+					  location.href = getTenantedURL('/login');
 				  } else {
 					  var assetId = $('#slideAsset').data('id');
 					  $('#modal-login').data('value', assetId);
@@ -100,7 +100,7 @@ $(function() {
 			  if (allowAnonymous.toUpperCase()!="TRUE") {
 				  var ssoEnabled = $('#sso').val();
 				  if (ssoEnabled == 'true') {
-					  location.href = getTenantedLoginURL();
+					  location.href = getTenantedURL('/login');
 				  } else {
 					  var assetId = $('#slideAsset').data('id');
 					  $('#modal-login').data('value', assetId);
@@ -120,7 +120,7 @@ $(function() {
 			  if (allowAnonymous.toUpperCase()!="TRUE") {
 				  var ssoEnabled = $('#sso').val();
 				  if (ssoEnabled == 'true') {
-					  location.href = getTenantedLoginURL();
+					  location.href = getTenantedURL('/login');
 				  } else {
 					  var assetId = $('#slideAsset').data('id');
 					  $('#modal-login').data('value', assetId);

@@ -15,8 +15,11 @@ var type;
             return path;
         };
     };
+    var tenantedPageEndpoint = '/{context}/t/{domain}' + config.subscriptionsUrlPrefix + '/{type}';
 
-    if (matcher.match('/{context}' + config.subscriptionsUrlPrefix + '/{type}')) {
+
+    if (matcher.match('/{context}' + config.subscriptionsUrlPrefix + '/{type}') ||
+            matcher.match(tenantedPageEndpoint)) {
     		
         elements = matcher.elements();
         type = elements.type;

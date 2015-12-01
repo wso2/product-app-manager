@@ -35,6 +35,7 @@ require('/modules/store.js').exec(function (ctx) {
     var options, assets, paging, current, total, url, mainPage, subPage, title, selectedCategory, key,
             log = ctx.log,
             sso = ctx.sso,
+            isAnonymousTenantStore = ctx.isAnonymousTenantStore,
             query = ctx.params.query,
             tag = encodeURIComponent(ctx.params.tag),
             store = ctx.store,
