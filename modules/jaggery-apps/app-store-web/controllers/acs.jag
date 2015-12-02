@@ -21,18 +21,18 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
             },
             sso_sessions = application.get('sso_sessions');
 
-    
-    var AuthService=require('../extensions/assets/webapp/services/authentication.js').serviceModule;
-    var authenticator=new AuthService.Authenticator();
+
+    var AuthService = require('../extensions/assets/webapp/services/authentication.js').serviceModule;
+    var authenticator = new AuthService.Authenticator();
 
     localIP = "https://" + process.getProperty('server.host'),
             httpsPort = process.getProperty('https.port');
     var relayStateUrlMatcher = new URIMatcher(relayState);
     var tenantUrlPattern = localIP + ':' + httpsPort + '/{context}/t/{domain}/';
 
-   var AuthService=require('../extensions/assets/webapp/services/authentication.js').serviceModule;
-   var authenticator=new AuthService.Authenticator();
-   authenticator.init(jagg,session);
+    var AuthService = require('../extensions/assets/webapp/services/authentication.js').serviceModule;
+    var authenticator = new AuthService.Authenticator();
+    authenticator.init(jagg, session);
 
 
     if (!sso_sessions) {
@@ -49,11 +49,11 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
 
                 if (sso.client.validateSignature(samlRespObj, keyStoreProps)) {
                     var sessionObj = sso.client.decodeSAMLLoginResponse(samlRespObj, samlResponse, sessionId);
-                    var username = sessionObj.loggedInUser;                                   
+                    var username = sessionObj.loggedInUser;
 
                     if (sessionObj.sessionIndex != null || sessionObj.sessionIndex != 'undefined') {
                         var urlTenantDomain = 'carbon.super';
-                        if(relayStateUrlMatcher.match(tenantUrlPattern) || relayStateUrlMatcher.match(tenantUrlPattern+'{+any}')){
+                        if (relayStateUrlMatcher.match(tenantUrlPattern) || relayStateUrlMatcher.match(tenantUrlPattern + '{+any}')) {
                             var elements = relayStateUrlMatcher.elements();
                             urlTenantDomain = elements.domain;
                         }
@@ -62,11 +62,11 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
                         var domainName = MultitenantUtils.getTenantDomain(sessionObj.loggedInUser);
                         var tenantedUrlPrefix = null;
 
-                        if(urlTenantDomain != domainName){
+                        if (urlTenantDomain != domainName) {
                             log.warn('User ' + sessionObj.loggedInUser + ' does not have permission to access the tenant domain : '
                             + urlTenantDomain + '. Make sure the user has been registered in the tenant domain');
                             session.invalidate();
-                            response.sendError(403,'You do not have permission to login to this tenant domain.Please register first.');
+                            response.sendError(403, 'You do not have permission to login to this tenant domain.Please register first.');
                             return;
                         }
 
@@ -77,41 +77,39 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
                             TenantAxisUtils.setTenantAccessed(domainName, ctx);
                         }
 
-                        if(urlTenantDomain){
+                        if (urlTenantDomain) {
                             tenantedUrlPrefix = tenantPrefix + urlTenantDomain;
                         }
 
                         session.put("LOGGED_IN_USER", sessionObj.loggedInUser);
                         session.put("Loged", "true");
-                        
+
                         username = username + "";
-                        var userDetails={};
-                        userDetails['username']=username;
-                        userDetails['action']="SSOLogin";
-                        authResult=authenticator.login(userDetails);
+                        var userDetails = {};
+                        userDetails['username'] = username;
+                        userDetails['action'] = "SSOLogin";
+                        authResult = authenticator.login(userDetails);
                         sso_sessions[sessionObj.sessionId] = sessionObj.sessionIndex;
 
                         var isSubscriberRoleAttached = storeHostObj.checkIfSubscriberRoleAttached(username);
-                        var role=null;
+                        var role = null;
 
-                        if(!isSubscriberRoleAttached.error) {
+                        if (!isSubscriberRoleAttached.error) {
                             role = require('/modules/role.js').checkeRole(username, session);
                         }
-                        if(role){
-                        	var user = require('store').user;
+                        if (role) {
+                            var user = require('store').user;
                             log.debug('user is set :::' + sessionObj.loggedInUser);
-                            if(tenantedUrlPrefix != null) {
+                            if (tenantedUrlPrefix != null) {
                                 response.sendRedirect('/store' + tenantedUrlPrefix);
-                            }else {
+                            } else {
                                 response.sendRedirect('/store');
                             }
-
-						
                         } else {
-                        	log.warn('User '+sessionObj.loggedInUser+' does not have permission to access the store application. Make sure the user has the store role.');
-                        	response.sendError(401,'You do not have permission to login to this application.Please contact your administrator and request permission.');
-                        	                        	
-                        }                        
+                            log.warn('User ' + sessionObj.loggedInUser + ' does not have permission to access the store application. Make sure the user has the store role.');
+                            response.sendError(401, 'You do not have permission to login to this application.Please contact your administrator and request permission.');
+
+                        }
                     }
                 }
             }
@@ -126,10 +124,10 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
     if (samlRequest != null) {
         var index = sso.client.decodeSAMLLogoutRequest(sso.client.getSamlObject(samlRequest));
         log.debug('BACKEND LOGOUT RECIEVED FROM STORE THE INDEX IS ######' + index);
-	var jSessionId = application.get('sso_sessions')[index];
-	delete application.get('sso_sessions')[index];
-	log.debug('store Session Id :::' + jSessionId);
-	session.invalidate();
+        var jSessionId = application.get('sso_sessions')[index];
+        delete application.get('sso_sessions')[index];
+        log.debug('store Session Id :::' + jSessionId);
+        session.invalidate();
     }
 }());
 %>

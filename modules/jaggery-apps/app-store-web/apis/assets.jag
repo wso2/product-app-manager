@@ -12,7 +12,8 @@ require('/modules/store.js').exec(function (ctx) {
         tag = encodeURIComponent(request.getParameter('tag')),
         sort = encodeURIComponent(request.getParameter('sort')),
         paging = store.assetsPaging(request);
-    if (matcher.match('/{context}/apis/assets/{type}/paging') || matcher.match('/{context}/apis/assets/{type}')) {
+    if (matcher.match('/{context}/apis/assets/{type}/paging') || matcher.match('/{context}/apis/assets/{type}')
+    || matcher.match('/context/t/{domain}/apis/assets/{type}/paging')) {
         type = matcher.elements().type;
         if (tag) {
             assets = store.tagged(type, tag, paging);
@@ -22,7 +23,7 @@ require('/modules/store.js').exec(function (ctx) {
         caramel.render(assets);
         return;
     }
-    if (matcher.match('/{context}/apis/assets/{type}/lazy') ) {
+    if (matcher.match('/{context}/apis/assets/{type}/lazy') || matcher.match('/{context}/t/{domain}/apis/assets/{type}/lazy') ) {
         var count = request.getParameter("count");
         var from = request.getParameter("from");
         type = matcher.elements().type;
