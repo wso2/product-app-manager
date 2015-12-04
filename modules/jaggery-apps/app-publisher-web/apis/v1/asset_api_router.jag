@@ -278,7 +278,7 @@ require('/modules/publisher.js').exec(function(ctx) {
                 if (isAdvertiseOnly.toLowerCase() == "true") {
                     isDeleted = removeArtifactOnly(shortName, id);
                 } else {
-                    isDeleted = apiProvider.deleteApp(apiIdentifierObj, stringify(username), ssoProviderObj);
+                    isDeleted = apiProvider.deleteApp(apiIdentifierObj, String(username), ssoProviderObj);
                 }
 
                 if (isDeleted == true) {
@@ -839,7 +839,7 @@ require('/modules/publisher.js').exec(function(ctx) {
                 var appVersion = context.params.version;
 
                 try {
-                    var externalAppStores = apiProvider.getExternalAPPStoresList(appProvider, appName, appVersion);
+                    var externalAppStores = apiProvider.getExternalAppStoresList(appProvider, appName, appVersion);
                     if (externalAppStores && externalAppStores != null) {
                         var res = {};
                         res.error = false;
@@ -868,9 +868,9 @@ require('/modules/publisher.js').exec(function(ctx) {
                 var status = false;
 
                 try {
-                    status = apiProvider.updateExternalAPPStores(provider, name, version, data);
+                    apiProvider.updateExternalAppStores(provider, name, version, data);
                     var res = {};
-                    res.success = status;
+                    res.success = true;
                     response.contentType = "application/json";
                     print(res);
                 } catch (e) {
@@ -878,9 +878,8 @@ require('/modules/publisher.js').exec(function(ctx) {
                         log.debug('Could not update the external stores for app :' + provider + '-' + name + '' +
                                 '-' + version + ".An exception was thrown:" + e);
                     }
-                    status = false;
                     var res = {};
-                    res.success = status;
+                    res.success = false;
                     res.message = e.message;
                     response.contentType = "application/json";
                     print(res);
