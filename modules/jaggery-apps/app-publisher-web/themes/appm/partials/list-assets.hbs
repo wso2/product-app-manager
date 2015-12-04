@@ -102,7 +102,10 @@
                              {{#this.deleteButtonAvailability}}
                                  <input  style=" pointer-events: auto; cursor: pointer"
                                          type="button" value="Delete" class="btn btn-danger btn-delete"
-                                        name="deleteAsset"  data-app-id={{this.id}} />
+                                        name="deleteAsset"  data-app-id="{{this.id}}"
+                                         data-name="{{../this.attributes.overview_name}}"
+                                        data-provider="{{../this.attributes.overview_provider}}"
+                                        data-version="{{../this.attributes.overview_version}}" />
                              {{/this.deleteButtonAvailability}}
 
 						<input

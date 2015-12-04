@@ -7,11 +7,23 @@
 $(function(){
 
 $('.btn-delete').on('click', function(e) {
+        //The type of asset
+        var type = $('#meta-asset-type').val();
+        var provider = $(this).data("provider");
+        var name = $(this).data("name");
+        var version = $(this).data("version");
+
+
+        var status = isExistInExternalStore(provider, name, version);
+        if(status) {
+            var msg = "This app is published to one or more external stores .\n" +
+                "Please remove this app from external stores before delete";
+            var head = "Delete Failed";
+            showMessageModel(msg, head, type);
+            return false;
+        }
 
 		var data = {};
-
-		//The type of asset
-		var type = $('#meta-asset-type').val();
 
 		var id = $(this).attr('data-app-id');
 
@@ -55,3 +67,34 @@ $('.btn-delete').on('click', function(e) {
 		
 	};
 });
+
+function isExistInExternalStore(provider, name, version) {
+    var publishedInExternalStores = false;
+    $.ajax({
+        async: false,
+        url: '/publisher/api/asset/get/external/stores/webapp/' + provider + '/' + name + '/' + version,
+        type: 'GET',
+        processData: true,
+        success: function (response) {
+            if (!response.error) {
+                var appStores = response.appStores;
+
+                if (appStores != null && appStores != undefined) {
+                    for (var i = 0; i < appStores.length; i++) {
+                        if (appStores[i].published) {
+                            publishedInExternalStores = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            return publishedInExternalStores;
+
+        },
+        error: function (response) {
+
+        }
+    });
+
+    return publishedInExternalStores;
+}

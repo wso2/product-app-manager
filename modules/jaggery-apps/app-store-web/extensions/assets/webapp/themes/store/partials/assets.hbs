@@ -24,7 +24,7 @@
 					{{/if}}
 
                     {{#compare  overview_advertiseOnly "true" operator="=="}}
-                        <a href="{{url "/t"}}/{{overview_appTenant}}/assets/{{../../type}}/{{overview_uuid}} " id="assetsLink">
+                        <a href="{{url "/t"}}/{{overview_appTenant}}/assets/{{../../type}}/{{overview_advertisedAppUuid}} " id="assetsLink">
                     {{else}}
                         <a href="{{tenantedUrl "/assets"}}/{{../../type}}/{{../../id}}" id="assetsLink">
                     {{/compare}}
@@ -41,7 +41,7 @@
 					<div class="asset-name">
 						<input type="hidden"  value="{{overview_allowAnonymous}}" id="allowAnonymous" name="allowAnonymous">
                         {{#compare  overview_advertiseOnly "true" operator="=="}}
-                            <a href="{{url "/t"}}/{{overview_appTenant}}/assets/{{../../type}}/{{overview_uuid}} " id="assetDeatils"> <h4>{{overview_displayName}}</h4></a>
+                            <a href="{{url "/t"}}/{{overview_appTenant}}/assets/{{../../type}}/{{overview_advertisedAppUuid}} " id="assetDeatils"> <h4>{{overview_displayName}}</h4></a>
                         {{else}}
                             <a href="{{tenantedUrl "/assets"}}/{{../../type}}/{{../../id}}" id="assetDeatils"> <h4>{{overview_displayName}}</h4></a>
                         {{/compare}}

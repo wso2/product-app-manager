@@ -96,7 +96,7 @@
             <name>APP Tenant</name>
       </field>
       <field type="text">
-            <name>uuid</name>
+            <name>Advertised App UUID</name>
       </field>
       <field type="text">
             <name>Subscription Availability</name>

@@ -138,7 +138,7 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
         var result = mod.getAllDocumentation(apiData);
 
         //get external store details
-        var externalAppStores = apiProvider.getExternalAPPStoresList(apiData.provider, apiData.name, apiData.version);
+        var externalAppStores = apiProvider.getExternalAppStoresList(apiData.provider, apiData.name, apiData.version);
         var appStoresDetail = {};
         appStoresDetail.app = apiData;
         appStoresDetail.externalStores = externalAppStores;
