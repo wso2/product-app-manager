@@ -635,7 +635,7 @@
 
 
                                 <!-- ##### Identity Features  ####-->
-                                <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.registry.profiles.feature:${wso2carbon.version}</featureArtifactDef>
+                                <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.registry.profiles.feature:4.2.0</featureArtifactDef>
                                 <!-- Directory server related features -->
                                 <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.directory.service.mgr.feature:4.2.0</featureArtifactDef>
                                 <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.ldap.server.feature:4.2.1</featureArtifactDef>
