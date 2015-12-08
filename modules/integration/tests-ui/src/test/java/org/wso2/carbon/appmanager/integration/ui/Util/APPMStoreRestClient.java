@@ -116,8 +116,6 @@ public class APPMStoreRestClient {
                 ,subscriptionRequest.generateRequestParameters()
                 , requestHeaders);
         if (response.getResponseCode() == 200) {
-            VerificationUtil.checkErrors(response);
-            System.out.println("SUBCRIPTION RESPONCE IS = "+response.getResponseCode());
             return response;
         } else {
             throw new Exception("Application Subscription failed> " + response.getData());
@@ -139,7 +137,6 @@ public class APPMStoreRestClient {
                 ,unsubscriptionRequest.generateRequestParameters()
                 , requestHeaders);
         if (response.getResponseCode() == 200) {
-            VerificationUtil.checkErrors(response);
             return response;
         } else {
             throw new Exception("Application Unsubscription failed> " + response.getData());
