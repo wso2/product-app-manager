@@ -264,4 +264,76 @@ public class ApplicationInitializingUtil extends APPManagerIntegrationTest {
         driver.switchTo().window(parentWindow);
         driver.close();
     }
+
+    /**
+     * This method create app request with mandatory fields e.g name,version,provider,backend url,
+     * basic resource, default policy.
+     * @param prefix Prefix which will be append to the app name read from config file
+     * @param publisherRestClient PublisherRestClient object
+     * @return AppCreateRequest
+     * @throws Exception
+     */
+    public AppCreateRequest createBasicAppRequest(String prefix, APPMPublisherRestClient publisherRestClient)
+            throws Exception {
+        String root = ProductConstant.getSystemResourceLocation();
+        String policyPath = root + "samples" + File.separator + "policy.xml";
+        String xml = convertXMLFileToString(policyPath);
+
+        HttpResponse response = publisherRestClient.validatePolicy(xml);
+        JSONObject validateObject = new JSONObject(response.getData());
+        boolean validateSucceed = validateObject.getBoolean("success");
+        String policyPartialId = "";
+
+        if (validateSucceed) {
+            HttpResponse partialIdResponse = publisherRestClient.savePolicy("testPolicy", xml);
+            JSONObject saveObject = new JSONObject(partialIdResponse.getData());
+            JSONObject responseId = saveObject.optJSONObject("response");
+            policyPartialId = responseId.getString("id");
+        }
+
+        String policyGroupId = publisherRestClient.savePolicyGroup(xml, anonymousAccessToUrlPattern, policyGroupName,
+                throttlingTier, objPartialMappings, policyGroupDesc);
+
+        int hostPort = 8181;
+        AppCreateRequest appCreateRequest = createSingleApp(appName + prefix, appDisplayName, version, transport,
+                appURL, hostPort,
+                appProp.getTier(), policyPartialId, policyGroupId);
+        return appCreateRequest;
+    }
+
+    /**
+     * This method create the webapp using given AppCreateRequest.
+     * @param appCreateRequest AppCreateRequest
+     * @param publisherRestClient PublisherRestClient object
+     * @return
+     * @throws Exception
+     */
+    public String createWebApp(AppCreateRequest appCreateRequest, APPMPublisherRestClient publisherRestClient)
+            throws Exception {
+        JSONObject jsonObject = null;
+        HttpResponse appCreateResponse = publisherRestClient.createApp(appCreateRequest);
+        if (appCreateResponse.getResponseCode() == 200) {
+            String responsePayload = appCreateResponse.getData();
+            if (responsePayload != null) {
+                jsonObject = new JSONObject(appCreateResponse.getData());
+                appId = (String) jsonObject.get("id");
+                return appId;
+            } else {
+                throw new Exception("Error while creating the web app");
+            }
+        } else {
+            throw new Exception("Error while creating the web app");
+        }
+    }
+
+    /**
+     * Publish the created web app.
+     * @param appUUID UUID of created webapp
+     * @param publisherRestClient PublisherRestClient object
+     * @throws Exception
+     */
+    public void publishWebApp(String appUUID, APPMPublisherRestClient publisherRestClient) throws Exception {
+        publisherRestClient.publishApp(appUUID);
+    }
+
 }

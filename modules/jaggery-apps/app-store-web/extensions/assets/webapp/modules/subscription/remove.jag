@@ -11,21 +11,22 @@ var removeAPISubscription = function (api,tier,applicationName,username) {
         }
         if (status) {
             return {
-                error:false
-
+                error:false,
+                status:true
             };
         } else {
             return {
-                error:true
-
+                error:true,
+                status:false
             };
         }
 
     } catch (e) {
         log.error(e.message);
         return {
-            error:e
-
+            error:true,
+            status:false,
+            message: e.message
         };
     }
 };

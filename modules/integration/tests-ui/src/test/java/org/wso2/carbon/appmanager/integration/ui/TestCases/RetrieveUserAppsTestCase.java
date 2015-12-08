@@ -23,7 +23,6 @@ import org.json.JSONObject;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import org.wso2.carbon.appmanager.integration.ui.APPManagerIntegrationTest;
 import org.wso2.carbon.appmanager.integration.ui.Util.APPMPublisherRestClient;
 import org.wso2.carbon.appmanager.integration.ui.Util.APPMStoreRestClient;

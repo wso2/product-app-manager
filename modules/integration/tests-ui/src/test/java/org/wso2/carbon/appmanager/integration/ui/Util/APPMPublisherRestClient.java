@@ -18,10 +18,14 @@
 
 package org.wso2.carbon.appmanager.integration.ui.Util;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
+import org.json.JSONArray;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -32,13 +36,16 @@ import org.wso2.carbon.appmanager.integration.ui.Util.Bean.AppCreateRequest;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.AppDiscoveryListRequest;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.DocumentRequest;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.GetStatisticRequest;
+import org.wso2.carbon.automation.core.BrowserManager;
 import org.wso2.carbon.automation.core.utils.HttpRequestUtil;
 import org.wso2.carbon.automation.core.utils.HttpResponse;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -48,16 +55,13 @@ public class APPMPublisherRestClient {
 	private WebDriver driver;
 
 
-	public APPMPublisherRestClient(String backEndUrl) throws MalformedURLException {
-		this.backEndUrl = backEndUrl;
-		if (requestHeaders.get("Content-Type") == null) {
-			this.requestHeaders.put("Content-Type", "application/json");
-		}
+    public APPMPublisherRestClient(String backEndUrl) throws MalformedURLException {
+        this.backEndUrl = backEndUrl;
+        if (requestHeaders.get("Content-Type") == null) {
+            this.requestHeaders.put("Content-Type", "application/json");
+        }
 
-	    //driver = BrowserManager.getWebDriver();
-		driver = new FirefoxDriver();
-		driver.get(backEndUrl + "/publisher/login");
-	}
+    }
 
 	/**
 	 * logs in to the user store
@@ -68,6 +72,9 @@ public class APPMPublisherRestClient {
 	 * @throws Exception
 	 */
 	public String login(String userName, String password) throws Exception {
+        driver = BrowserManager.getWebDriver();
+        //driver = new FirefoxDriver();
+        driver.get(backEndUrl + "/publisher/login");
 
         WebDriverWait wait = new WebDriverWait(driver, 30);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("username")));
@@ -722,5 +729,104 @@ public class APPMPublisherRestClient {
 			throw new Exception("App discovery failed> " + response.getData());
 		}
 	}
+
+    /**
+     * Update(add/remove) the the given web app to external stores
+     * @param appName Web App Name
+     * @param provider Web App Provider
+     * @param version version
+     * @param stores external stores where app should be added
+     * @return true if success else false
+     * @throws Exception
+     */
+    public boolean updateExternalStores(String appName, String provider, String version, List<String> stores)
+            throws Exception {
+        checkAuthentication();
+        JSONArray jsonArray = new JSONArray(stores);
+        StringEntity input = new StringEntity(jsonArray.toString());
+        input.setContentType("application/json");
+        String apiUrl = backEndUrl
+                + "/publisher/api/asset/webapp/update/external/stores/" + provider + "/" + appName + "/" + version;
+        HttpPost httpPost = new HttpPost(apiUrl);
+        httpPost.setHeader("Cookie", requestHeaders.get("Cookie"));
+        httpPost.setEntity(input);
+        HttpClient httpClient = new DefaultHttpClient();
+        org.apache.http.HttpResponse response = httpClient.execute(httpPost);
+        HttpResponse res = HttpUtil.convertResponse(response);
+        if (res.getResponseCode() == 200) {
+            VerificationUtil.checkSuccessState(res);
+            return true;
+        } else {
+            throw new Exception("Update  external stores failed : " + res.getData());
+        }
+    }
+
+    /**
+     * Get the configured external store detail for given app.
+     * @param appName Web App Name
+     * @param provider Web App Provider
+     * @param version  Version
+     * @return HttpResponse
+     * @throws Exception
+     */
+    public HttpResponse getExternalStores(String appName, String provider, String version) throws Exception {
+        checkAuthentication();
+        String apiUrl = backEndUrl
+                + "/publisher/api/asset/get/external/stores/webapp/" + provider + "/" + appName + "/" + version;
+        URL url = new URI(apiUrl).toURL();
+        HttpResponse response =
+                HttpRequestUtil.doGet(url.toString(), requestHeaders);
+        if (response.getResponseCode() == 200) {
+            VerificationUtil.checkErrors(response);
+            return response;
+        } else {
+            throw new Exception("Update  external stores failed : " + response.getData());
+        }
+    }
+
+    /**
+     * Login to publisher app using rest api call.
+     * @param userName User Name
+     * @param password Password
+     * @throws Exception
+     */
+    public void restLogin(String userName, String password) throws Exception {
+        requestHeaders.put("Content-Type", "application/x-www-form-urlencoded");
+        String payload = "action=login&username=" + userName + "&password=" + password;
+        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
+                        + "/publisher/api/authenticate"), payload,
+                requestHeaders);
+        if (response.getResponseCode() == 200) {
+            VerificationUtil.checkPublisherLogin(response);
+            String session = getSession(response.getHeaders());
+            if (session == null) {
+                throw new Exception("No session cookie found with response");
+            }
+            setSession(session);
+        } else {
+            throw new Exception("User Login failed : " + response.getData());
+        }
+
+    }
+
+    /**
+     * Logout from publisher app using rest api call
+     * @throws Exception
+     */
+    public void restLogout() throws Exception {
+        requestHeaders.put("Content-Type", "application/x-www-form-urlencoded");
+        String payload = "action=logout";
+        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
+                        + "/publisher/api/authenticate"), payload,
+                requestHeaders);
+        if (response.getResponseCode() != 200) {
+            throw new Exception("User Logout failed : " + response.getData());
+        }
+
+    }
+
+    private String getSession(Map<String, String> responseHeaders) {
+        return responseHeaders.get("Set-Cookie");
+    }
 
 }
