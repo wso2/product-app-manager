@@ -220,6 +220,7 @@
                 <include>**/webapp.rxt</include>
                 <include>**/documentation.rxt</include>
                 <include>**/provider.rxt</include>
+                <include>**/site.rxt</include>
             </includes>
         </fileSet>
         <fileSet>
