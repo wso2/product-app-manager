@@ -1,10 +1,10 @@
-$(function() {
+$(function () {
 
-	var showError = function (message) {
-		var msg = message.replace(/[0-9a-z.+]+:\s/i, '');
-		$('#register-alert').html(msg).fadeIn('fast');
-		$('#btn-signin').text('Sign In').removeClass('disabled');
-	};
+    var showError = function (message) {
+        var msg = message.replace(/[0-9a-z.+]+:\s/i, '');
+        $('#register-alert').html(msg).fadeIn('fast');
+        $('#btn-signin').text('Sign In').removeClass('disabled');
+    };
 
     var showLoginError = function (message) {
         var msg = message.replace(/[0-9a-z.+]+:\s/i, '');
@@ -12,42 +12,42 @@ $(function() {
         $('#btn-signin').text('Sign In').removeClass('disabled');
     };
 
-    	var login = function() {
-		if (!$("#form-login").valid())
-			return;
-		$('#btn-signin').addClass('disabled').text('Signing In');
+    var login = function () {
+        if (!$("#form-login").valid())
+            return;
+        $('#btn-signin').addClass('disabled').text('Signing In');
 
-		var username = $('#inp-username').val();
-		var password = $('#inp-password').val();
+        var username = $('#inp-username').val();
+        var password = $('#inp-password').val();
 
-        	caramel.ajax({
-            		type: 'POST',
-            		url: '/apis/user/login',
-            		data: JSON.stringify({
-                		username: username,
-                		password: password
-            		}),
-            		success: function (data) {
-                		if (!data.error) {
-					var assetId = $('#modal-login').data('value');
-                    			if(assetId == "" || assetId == null){
-              		   			location.reload();  
-                    			}else  {
-                 	  			window.location = '/store/assets/webapp/'+ assetId;
-                    			}
-                		} else {
-                            showLoginError(data.message);
-                		}
-            		},
-            		contentType: 'application/json',
-            		dataType: 'json'
-        	});
- 	};
-    var validateUsername = function(username) {
+        caramel.ajax({
+            type: 'POST',
+            url: '/apis/user/login',
+            data: JSON.stringify({
+                username: username,
+                password: password
+            }),
+            success: function (data) {
+                if (!data.error) {
+                    var assetId = $('#modal-login').data('value');
+                    if (assetId == "" || assetId == null) {
+                        location.reload();
+                    } else {
+                        window.location = '/store/assets/webapp/' + assetId;
+                    }
+                } else {
+                    showLoginError(data.message);
+                }
+            },
+            contentType: 'application/json',
+            dataType: 'json'
+        });
+    };
+    var validateUsername = function (username) {
 
         var errorMessage = "";
         //check for username policy requirements
-        if(!username.match(/^[\S]{3,30}$/)){
+        if (!username.match(/^[\S]{3,30}$/)) {
             errorMessage = "No conformance";
             return errorMessage;
         }
@@ -55,14 +55,14 @@ $(function() {
             errorMessage = "Empty string";
             return errorMessage;
         }
-        if(username.indexOf("/") > -1){
+        if (username.indexOf("/") > -1) {
             errorMessage = "Domain";
             return errorMessage;
         }
         return errorMessage;
     }
 
-    var validatePassword = function(pw1, pw2) {
+    var validatePassword = function (pw1, pw2) {
         var error = "";
 
         // check for a value in both fields.
@@ -83,12 +83,7 @@ $(function() {
         return error;
     }
 
-    var doValidation = function(usename, pw1, pw2) {
-
-        if (usename.indexOf("@") != -1) {
-            showError("Username cannot contain @ sign.");
-            return;
-        }
+    var doValidation = function (usename, pw1, pw2) {
 
         var reason = "";
         reason = validateUsername(usename);
@@ -116,36 +111,45 @@ $(function() {
         return true;
     }
 
-	var register = function() {
+    var register = function () {
 
-		if (!$("#form-register").valid())
-			return;
+        if (!$("#form-register").valid())
+            return;
 
-		var username = $('#inp-username-register').val();
-		var password = $('#inp-password-register').val();
-		var confirmPassword = $('#inp-password-confirm').val();
+        var username = $('#inp-username-register').val();
+        var password = $('#inp-password-register').val();
+        var confirmPassword = $('#inp-password-confirm').val();
 
-        if(!doValidation(username,password,confirmPassword))
+        var tenantDomain = getURLTenantDomain();
+
+        var fullUserName;
+        if (tenantDomain == "null" || tenantDomain == "carbon.super") {
+            fullUserName = username;
+        } else {
+            fullUserName = username + "@" + tenantDomain;
+        }
+
+        if (!doValidation(fullUserName, password, confirmPassword))
             return;
 
         caramel.ajax({
             type: 'POST',
             url: '/apis/user/register',
             data: JSON.stringify({
-                username : username,
-                password : password
+                username: fullUserName,
+                password: password
             }),
             success: function (data) {
                 if (!data.error) {
                     var messageText = null;
 
                     //If userSignUp workflow is enabled
-                    if(data.showWorkflowMsg){
+                    if (data.showWorkflowMsg) {
                         messageText = "User account awaiting Administrator approval.";
 
-                    }else{
-                        messageText = "Account for user '"+username+"' created successfully. You can now signin to " +
-                            "APP store using login name '"+username+"'.";
+                    } else {
+                        messageText = "Account for user '" + fullUserName + "' created successfully. You can now signin to " +
+                        "APP store using login name '" + fullUserName + "'.";
                     }
 
                     $('#messageModal').html($('#confirmation-data').html());
@@ -158,7 +162,7 @@ $(function() {
                     $('#modal-register').modal('hide');
                     $('#messageModal a.btn-primary').click(function () {
                         $('#messageModal').modal('hide');
-                        location.href = "/store/login";
+                        location.href = getTenantedURL('/login');
                     });
 
 
@@ -170,49 +174,49 @@ $(function() {
             dataType: 'json'
         });
 
-	};
+    };
 
-	$('#btn-signout').live('click', function() {
-		caramel.post("/apis/user/logout", function(data) {
-			location.reload();
-		}, "json");
-	});
+    $('#btn-signout').live('click', function () {
+        caramel.post("/apis/user/logout", function (data) {
+            location.reload();
+        }, "json");
+    });
 
-	$('#btn-signin').bind('click', login);
+    $('#btn-signin').bind('click', login);
 
-	$('#modal-login input').bind('keypress', function(e) {
-		if (e.keyCode === 13) {
-			login();
-		}
-	});
+    $('#modal-login input').bind('keypress', function (e) {
+        if (e.keyCode === 13) {
+            login();
+        }
+    });
 
-	$('#btn-register-submit').click(register);
+    $('#btn-register-submit').click(register);
 
-	$('#modal-register input').keypress(function(e) {
-		if (e.keyCode === 13) {
-			register();
-		}
-	});
-
-
-	$('#sso-login').click(function() {
-		$('#sso-login-form').submit();
-	});
-
-	$('.store-menu > li > a').click(function(){
-		var url = $(this).attr('href');
-		window.location = url;
-	});
-
-    	$('.store-menu > li > ul > li > a').click(function(){
-        	var url = $(this).attr('href');
-        	window.location = url;
-    	});
+    $('#modal-register input').keypress(function (e) {
+        if (e.keyCode === 13) {
+            register();
+        }
+    });
 
 
-	$('.dropdown-toggle').click(function(){
-		window.location = $(this).attr('href');
-	});
+    $('#sso-login').click(function () {
+        $('#sso-login-form').submit();
+    });
+
+    $('.store-menu > li > a').click(function () {
+        var url = $(this).attr('href');
+        window.location = url;
+    });
+
+    $('.store-menu > li > ul > li > a').click(function () {
+        var url = $(this).attr('href');
+        window.location = url;
+    });
+
+
+    $('.dropdown-toggle').click(function () {
+        window.location = $(this).attr('href');
+    });
 
     $('#btn-register-close').click(function () {
         clearFields();

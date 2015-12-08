@@ -24,7 +24,7 @@ require('/modules/store.js').exec(function (ctx) {
         switch (action) {
             case 'login':
                 try {
-                    var isPermitted =true;
+                    var isPermitted = true;
                     data = request.getContent();
 
                     error = !user.login(data.username, data.password, session);

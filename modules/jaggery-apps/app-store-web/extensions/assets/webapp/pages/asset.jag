@@ -26,6 +26,10 @@ authenticator.init(jagg,session);
 
 var carbon = require('carbon');
 var tenantIdVal = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantId();
+var tenantedUrl = '/{context}/t/{domain}' + configs.assetsUrlPrefix + '/{type}/{aid}';
+
+var storeHostObj = jagg.module("manager").getAPIStoreObj();
+var isSelfSignupEnabledForTenant = storeHostObj.isSelfSignupEnabledForTenant(tenantDomain);
 
 
 require('/modules/store.js').exec(function (ctx) {
@@ -36,6 +40,7 @@ require('/modules/store.js').exec(function (ctx) {
             user = ctx.user,
             tenantId = ctx.tenantId,
             configs = ctx.configs,
+            tenantDomain = ctx.tenant.domain,
             site = ctx.site,
             matcher = ctx.matcher,
             inDashboard = false,
@@ -358,15 +363,22 @@ require('/modules/store.js').exec(function (ctx) {
                     subVisibility = false;
             }
         }
+
+        var headerData = site.header(tenantId, {
+            sso: sso,
+            user: user,
+            isSelfSignUpEnabledForTenant : isSelfSignupEnabledForTenant
+        });
+
+        headerData.isSelfSignUpEnabledForTenant = isSelfSignupEnabledForTenant;
+        headerData.domain = tenantDomain;
+
         caramel.render({
             title: 'Store | ' + type,
             user: user,
             sso: sso,
 
-            header: site.header(tenantId, {
-                sso: sso,
-                user: user
-            }),
+            header: headerData,
 
             navigation: site.navigation(tenantId),
             search: {

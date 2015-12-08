@@ -67,18 +67,23 @@
 							<li>
 								<a href="{{url "/login"}}">{{t "Sign In"}}</a>
 							</li>
+								{{#if isSelfSignUpEnabledForTenant}}
 							<li>
                                 <a id="btn-register" class="btn btn-primary" data-toggle="modal"
                                    data-target="#modal-register">{{t "Register"}}</a>
 							</li>
+								{{/if}}
 							{{else}}
 							<li>
 								<a href="#" data-toggle="modal" data-target="#modal-login">{{t "Sign In"}}</a>
 							</li>
-							<li>
-								<a id="btn-register" class="btn btn-primary" data-toggle="modal"
-								data-target="#modal-register">{{t "Register"}}</a>
-							</li>
+
+
+								{{#if isSelfSignUpEnabledForTenant}}
+                                    <li>
+                                        <a id="btn-register" class="btn btn-primary" data-toggle="modal" data-target="#modal-register">{{t "Register"}}</a>
+                                    </li>
+								{{/if}}
 							{{/if}}
 
 							{{/if}}

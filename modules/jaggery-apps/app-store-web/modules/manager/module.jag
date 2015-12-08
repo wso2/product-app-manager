@@ -31,7 +31,10 @@ jagg.module("manager", {
      },
      getActiveTenantDomains:function () {
        return jagg.require(jagg.getModulesDir() + "manager/manager.jag").getActiveTenantDomains.apply(this, arguments);
-     }
+     },
+    isSelfSignupEnabledForTenant:function (tenantDomain) {
+        return jagg.require(jagg.getModulesDir() + "manager/manager.jag").isSelfSignupEnabledForTenant.apply(this, arguments);
+    }
 
  });
  %>

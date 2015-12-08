@@ -1,5 +1,6 @@
 <%
 var caramel;
+include('/extensions/assets/webapp/modules/jagg/jagg.jag');
 
 require('/modules/store.js').exec(function (ctx) {
     var asset, aid, title,
@@ -8,6 +9,7 @@ require('/modules/store.js').exec(function (ctx) {
             store = ctx.store,
             user = ctx.user,
             tenantId = ctx.tenantId,
+            tenantDomain = ctx.tenant.domain,
             configs = ctx.configs,
             site = ctx.site,
             matcher = ctx.matcher,
@@ -17,7 +19,14 @@ require('/modules/store.js').exec(function (ctx) {
             mdmConfig = parse(String((new Packages.org.wso2.carbon.appmgt.mobile.store.MDMConfig()).getConfigs()));
     devicesClass = new Packages.org.wso2.carbon.appmgt.mobile.store.Devices();
 
+
     caramel = require('caramel');
+
+    var storeHostObj = jagg.module("manager").getAPIStoreObj();
+    var isSelfSignupEnabledForTenant = storeHostObj.isSelfSignupEnabledForTenant(tenantDomain);
+
+    var isNotCatalog = mdmConfig.IsCatalog == "true" ? false : true;
+
     if(!user) {
         var contextPath = caramel.configs().context
         response.sendRedirect(contextPath+"/login");
@@ -74,7 +83,13 @@ require('/modules/store.js').exec(function (ctx) {
             devices =  parse(String(devicesClass.getDevicesList(stringify(user), user.tenantId, "user", [user.username])));
         }
 
-
+        var headerData = site.header(tenantId, {
+            sso: sso,
+            user: user,
+            isSelfSignUpEnabledForTenant : isSelfSignupEnabledForTenant
+        });
+        headerData.isSelfSignUpEnabledForTenant = isSelfSignupEnabledForTenant;
+        headerData.domain = tenantDomain;
 
         caramel.render({
             title: 'Store | ' + type,
@@ -84,10 +99,7 @@ require('/modules/store.js').exec(function (ctx) {
             isEnterpriseInstallEnabled: isEnterpriseInstallEnabled,
             isDeviceSubscriptionEnabled : isDeviceSubscriptionEnabled,
             isDirectDownloadEnabled :isDirectDownloadEnabled,
-            header: site.header(tenantId, {
-                sso: sso,
-                user: user
-            }),
+            header: headerData,
 
             navigation: site.navigation(tenantId),
             search: {
