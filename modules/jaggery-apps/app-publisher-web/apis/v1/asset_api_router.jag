@@ -823,7 +823,7 @@ require('/modules/publisher.js').exec(function(ctx) {
                     response.contentType = "application/json";
                     print(res);
                 } else {
-                    var res = {error: true, uuid: null};
+                    var res = {error: false, uuid: null , message :'Could not find UUID for given webapp'};
                     response.contentType = "application/json";
                     print(res);
                 }

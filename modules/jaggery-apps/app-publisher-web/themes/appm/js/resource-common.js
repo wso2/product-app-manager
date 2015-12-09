@@ -20,10 +20,9 @@ function updateVisuals() {
 
 function updateSubscriptionVisuals() {
     var restricted = $('.controll_visibility').is(":checked");
-    var skipGateway =  $('.skip_gateway_checkbox').is(":checked");
     var anonymous = $('.anonymous_checkbox').is(":checked");
 
-    if (restricted || skipGateway || anonymous) {
+    if (restricted || anonymous) {
         $('#sub-group').hide();
     } else {
         $("#tenant-list").hide();
@@ -55,6 +54,3 @@ $(".controll_visibility").click(function () {
     updateSubscriptionVisuals();
 });
 
-$(".skip_gateway_checkbox").click(function () {
-    updateSubscriptionVisuals();
-});
