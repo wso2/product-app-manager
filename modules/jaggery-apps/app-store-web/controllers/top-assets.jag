@@ -38,7 +38,7 @@ require('/modules/store.js').exec(function (ctx) {
     httpsPort = process.getProperty('https.port');
 
     var storeHostObj = jagg.module("manager").getAPIStoreObj();
-    var isSelfSignupEnabledForTenant = storeHostObj.isSelfSignupEnabledForTenant(tenantDomain);
+    var isSelfSignupEnabledForTenant = storeHostObj.isSelfSignupEnabledForTenant(String(tenantDomain));
 
     length = types.length;
     recent = Math.floor(recentCount / length);
