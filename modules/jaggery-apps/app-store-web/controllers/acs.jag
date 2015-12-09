@@ -34,10 +34,12 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
         samlRespObj = sso.client.getSamlObject(samlResponse);
         if (!sso.client.isLogoutResponse(samlRespObj)) {
 
-            localIP = "https://" + process.getProperty('server.host'),
-            httpsPort = process.getProperty('https.port');
+            var hostName = process.getProperty('server.host'),
+                    httpsPort = process.getProperty('https.port'),
+                    httpPort = process.getProperty('http.port');
             var relayStateUrlMatcher = new URIMatcher(relayState);
-            var tenantUrlPattern = localIP + ':' + httpsPort + '/{context}/t/{domain}/';
+            var httpsTenantUrlPattern = 'https://' + hostName + ':' + httpsPort + '/{context}/t/{domain}/';
+            var httpTenantUrlPattern = 'http://' + hostName + ':' + httpPort + '/{context}/t/{domain}/';
 
             // validating the signature
             if (configs.ssoConfiguration.responseSigningEnabled) {
@@ -48,7 +50,11 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
 
                     if (sessionObj.sessionIndex != null || sessionObj.sessionIndex != 'undefined') {
                         var urlTenantDomain = 'carbon.super';
-                        if (relayStateUrlMatcher.match(tenantUrlPattern) || relayStateUrlMatcher.match(tenantUrlPattern + '{+any}')) {
+                        if (relayStateUrlMatcher.match(httpsTenantUrlPattern) ||
+                                relayStateUrlMatcher.match(httpsTenantUrlPattern + '{+any}') ||
+                                relayStateUrlMatcher.match(httpTenantUrlPattern) ||
+                                relayStateUrlMatcher.match(httpTenantUrlPattern + '{+any}')
+                        ) {
                             var elements = relayStateUrlMatcher.elements();
                             urlTenantDomain = elements.domain;
                         }
