@@ -89,14 +89,36 @@
                             <span class="lifecycle-state"><small><i class="icon-circle lc-state-{{this.lifecycleState}}"></i> {{this.lifecycleState}}</small></span>
                         </td>
                          <td>
-
+                             <!-only publish,unpublish and delete actions are alllowed for advertised app -->
                              {{#this.lifecycleAvailableActions}}
-                                 <a  style=" pointer-events: auto; cursor: pointer"
-                                     data-action="{{name}}" data-app="{{../this.id}}"
-                                     data-name="{{../this.attributes.overview_name}}"
-                                     data-provider="{{../this.attributes.overview_provider}}"
-                                     data-version="{{../this.attributes.overview_version}}"
-                                     class="btn {{style}} btn-action" name="addNewAssetButton">{{name}}</a>
+                                {{#ifCond ../attributes.overview_advertiseOnly "==" "true"}}
+
+                                    {{#ifCond name "==" "Re-Publish"}}
+                                        <a  style=" pointer-events: auto; cursor: pointer"
+                                            data-action="{{name}}" data-app="{{../../../id}}"
+                                            data-name="{{../../../attributes.overview_name}}"
+                                            data-provider="{{../../../attributes.overview_provider}}"
+                                            data-version="{{../../../attributes.overview_version}}"
+                                            class="btn {{style}} btn-action" name="addNewAssetButton">{{name}}</a>
+                                    {{/ifCond}}
+
+                                    {{#ifCond name "==" "Unpublish"}}
+                                        <a  style=" pointer-events: auto; cursor: pointer"
+                                            data-action="{{name}}" data-app="{{../../../id}}"
+                                            data-name="{{../../../attributes.overview_name}}"
+                                            data-provider="{{../../../attributes.overview_provider}}"
+                                            data-version="{{../../../attributes.overview_version}}"
+                                            class="btn {{style}} btn-action" name="addNewAssetButton">{{name}}</a>
+                                    {{/ifCond}}
+
+                                {{else}}
+                                    <a  style=" pointer-events: auto; cursor: pointer"
+                                        data-action="{{name}}" data-app="{{../../id}}"
+                                        data-name="{{../../attributes.overview_name}}"
+                                        data-provider="{{../../attributes.overview_provider}}"
+                                        data-version="{{../../attributes.overview_version}}"
+                                        class="btn {{style}} btn-action" name="addNewAssetButton">{{name}}</a>
+                                {{/ifCond}}
                              {{/this.lifecycleAvailableActions}}
 
                              {{#this.deleteButtonAvailability}}

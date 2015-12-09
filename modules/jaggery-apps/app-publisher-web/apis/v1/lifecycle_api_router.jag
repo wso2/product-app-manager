@@ -149,16 +149,25 @@ routeManager.register('PUT', 'publisher', '/publisher/api/lifecycle/{action}/{ty
 
         var roles = context.content.roles || [];
         //var artifactManager = rxtManager.getArtifactManager(shortName);
-
+        var msg={};
         var artifactManager = rxtManager.getSystemArtifactManager(shortName,session);
         var artifact = artifactManager.get(id);
         var currentState = artifactManager.getLifecycleState(artifact).toString();
+        var isAdvertisedApp = artifact.attributes.overview_advertiseOnly;
+        if (isAdvertisedApp && isAdvertisedApp == "true") {
+            if (action == "Deprecate" || action == "Recycle" || action == "Retire") {
+                msg['status'] = 'error';
+                msg['message'] = 'Action:' +action+ ' not permitted for advertised app.';
+                print(msg);
+                return;
+            }
+        }
         var carbon = require('carbon');
         var um = server.userManager(server.current(session).tenantId);
         var validRoles = um.allRoles();
         var commentNeeded = false;
         var publishAuthorized = true;
-        var msg={};
+
         var publisherActions = config.publisherActions;
         var user = server.current(session);
 
