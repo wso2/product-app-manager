@@ -89,17 +89,21 @@
     <div id="paging-indices">
         <ul class="pagination">
             {{#if leftNav}}
-                <li><a href="{{tenantedUrl "/assets/webapp?page="}}{{this.leftNav}}"><span aria-hidden="true">&laquo;</span><span class="sr-only"></span></a></li>
+                <li><a href="{{tenantedUrl "/assets/webapp?"}}{{this.urlQuery}}{{t "page="}}{{this.leftNav}}">
+                    <span aria-hidden="true">&laquo;</span><span class="sr-only"></span></a>
+                </li>
             {{/if}}
             {{#each pageIndeces}}
                 {{#if this.isDisabled}}
                     <li class="disabled"><a>{{this.index}}</a></li>
                 {{else}}
-                    <li><a href="{{tenantedUrl "/assets/webapp?page="}}{{this.index}}">{{this.index}}</a></li>
+                    <li><a href="{{tenantedUrl "/assets/webapp?"}}{{this.urlQuery}}{{t "page="}}{{this.index}}">
                 {{/if}}
             {{/each}}
             {{#if rightNav}}
-                <li><a href="{{tenantedUrl "/assets/webapp?page="}}{{this.rightNav}}"><span aria-hidden="true">&raquo;</span><span class="sr-only"></span></a></li>
+                <li><a href="{{tenantedUrl "/assets/webapp?"}}{{this.urlQuery}}{{t "page="}}{{this.rightNav}}">
+                    <span aria-hidden="true">&raquo;</span><span class="sr-only"></span></a>
+                </li>
             {{/if}}
         </ul>
     </div>
