@@ -18,3 +18,13 @@ var getTenantedURL = function (requestedURL){
     }
     return context + requestedURL;
 }
+
+var getURLTenantDomain = function(){
+    var urlDomain = 'carbon.super',
+        currentUrl = location.pathname;
+
+    if (currentUrl.match(tenantedURLRegex)) { //if matches to tenanted url pattern
+        urlDomain = currentUrl.match(tenantedURLRegex)[2];
+    }
+    return urlDomain;
+}
