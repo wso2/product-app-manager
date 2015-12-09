@@ -206,7 +206,7 @@ routeManager.register('PUT', 'publisher', '/publisher/api/lifecycle/{action}/{ty
                     }
 
                     //Enforcing restrict visibility logic
-                    if(action=="Publish") {
+                    if((action=="Publish") || ((action=="Re-Publish"))) {
                         var registry = new carbon.registry.Registry(server, {
                             username: server.current(session).username,
                             tenantId: server.current(session).tenantId
