@@ -1,7 +1,7 @@
 var render = function (theme, data, meta, require) {
     var assets = require('/helpers/assets.js');
     var bodyPartial = "assets";
-    var bodyContext =  assets.currentPage(data.assets,data.sso,data.user, data.paging,data.config, data.myAssets.pageIndices, data.myAssets.leftNav, data.myAssets.rightNav);
+    var bodyContext =  assets.currentPage(data.assets,data.sso,data.user, data.paging,data.config, data.myAssets.pageIndices, data.myAssets.leftNav, data.myAssets.rightNav, data.myAssets.urlQuery);
 
     if(request.getHeader("User-Agent").indexOf("Mobile") != -1){  //mobile devices
         bodyPartial = "assets-for-mobiles";

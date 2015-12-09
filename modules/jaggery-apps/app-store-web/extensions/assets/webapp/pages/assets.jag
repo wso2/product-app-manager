@@ -150,11 +150,12 @@ require('/modules/store.js').exec(function (ctx) {
 
     }
 
-
     if (tag) {
+        var urlQuery = 'tag=' + tag + '&';
         subPage = '/ Tag: "' + tag + '"';
         assets = store.tagged(type, tag, paging);
     } else if (query) {
+        var urlQuery = 'query=' + query + '&';
         query = require('/modules/search.js').build(query);
         options = {
             type: type,
@@ -168,6 +169,7 @@ require('/modules/store.js').exec(function (ctx) {
         subPage = '/ Search: "' + query + '"';
         assets = store.search(options, paging);
     } else {
+        var urlQuery = 'sort=' + paging.sort + '&';
         if (paging.sort == 'popular') {
             server.privileged(function () {
                 var userName = user ? user.username : "";
@@ -185,7 +187,7 @@ require('/modules/store.js').exec(function (ctx) {
                     if (log.isDebugEnabled()) {
                         log.debug("Query executed successfully to get the assets hit count");
                     }
-                    index += 12;
+                    index += PAGE_SIZE;
                     return result;
                 };
 
@@ -193,11 +195,11 @@ require('/modules/store.js').exec(function (ctx) {
 
                 assets = [];
                 var aid, asset;
-                while (assets.length < 12 && maxTry < 10) {
+                while (assets.length < PAGE_SIZE && maxTry < 10) {
                     maxTry++;
                     var result = getNextassetSet();
 
-                    for (var n = 0; n < result.length && assets.length < 12; n++) {
+                    for (var n = 0; n < result.length && assets.length < PAGE_SIZE; n++) {
                         aid = String(result[n].id);
                         try {
                             asset = store.asset(type, aid);
@@ -222,23 +224,23 @@ require('/modules/store.js').exec(function (ctx) {
                     var appMgtDaoService = Packages.org.wso2.carbon.appmgt.impl.dao.AppMDAO;
                     var appMgtDaoObj = new appMgtDaoService();
 
-                    var result = appMgtDaoObj.getAppsByHitCount(userName, (paging.start + index), 12);
+                    var result = appMgtDaoObj.getAppsByHitCount(userName, (paging.start + index), PAGE_SIZE);
                     if (log.isDebugEnabled()) {
                         log.debug("Query executed successfully to get the assets hit count");
                     }
-                    index += 12;
+                    index += PAGE_SIZE;
                     return JSON.parse(result);
                 };
 
                 assets = [];
                 var aid, asset, done = false;
-                while (assets.length < 12 && maxTry < 10 && !done) {
+                while (assets.length < PAGE_SIZE && maxTry < 10 && !done) {
                     maxTry++;
                     var result = getNextassetSet();
-                    if (result.length < 12){
+                    if (result.length < PAGE_SIZE){
                         done = true;
                     }
-                    for (var n = 0; n < result.length && assets.length < 12; n++) {
+                    for (var n = 0; n < result.length && assets.length < PAGE_SIZE; n++) {
                         aid = String(result[n].UUID);
                         try {
                             asset = store.asset(type, aid);
@@ -259,29 +261,37 @@ require('/modules/store.js').exec(function (ctx) {
         }
     }
 
-    //Checking if there are any assets for the next page
-    var nextPage = store.buildNextPage(request,avaliablePages);
-    var nextAssetSet = store.assets(type, nextPage);
+    // Check whether a 'next page' navigation is needed.
+    // If the assets count in the current page is less than PAGE_SIZE, next page is not available.
+    // Else assets should be queried to decide whether there are assets available for the next page.
+
     var nextPageAvailable = false;
-    if(nextAssetSet.length > 0){
-        nextPageAvailable = true;
+    if(assets.length == PAGE_SIZE) {
+        // Get the starting index, offset etc .. of the assumed next page.
+        var nextPage = store.buildNextPage(request, avaliablePages);
+
+        // Query the assets with the assumed 'next page'
+        var nextAssetSet = store.assets(type, nextPage);
+
+        if(nextAssetSet.length > 0){
+            nextPageAvailable = true;
+        }
     }
 
-
-    var rxtAttributes = require('/modules/util.js').getRXTAttributes(tenantId, type);
-    AuthService=require(getServiceDir('authentication.js')).serviceModule;
-    authenticator=new AuthService.Authenticator();
-    authenticator.init(jagg,session);
-    user=authenticator.getLoggedInUser();
-
-    if(currentPage-1 > 0){
-        var leftnav = currentPage-1;
-    }
-
-    if(nextPageAvailable && (assets.length == PAGE_SIZE)){
+    if(nextPageAvailable){
         var rightnav = currentPage+1;
     }
 
+    if (currentPage - 1 > 0) {
+        var leftnav = currentPage - 1;
+    }
+
+    var rxtAttributes = require('/modules/util.js').getRXTAttributes(tenantId, type);
+    AuthService = require(getServiceDir('authentication.js')).serviceModule;
+    authenticator = new AuthService.Authenticator();
+    authenticator.init(jagg, session);
+
+    user = authenticator.getLoggedInUser();
 
     var subscriptionInfo;
     assets.forEach(function (asset) {
@@ -371,7 +381,17 @@ require('/modules/store.js').exec(function (ctx) {
             url: url + 'sort='
         },
 
-        myAssets : { user:user, type: type, title: title, subscriptions: subscriptions[type], subscription : subscription, pageIndices : pageIndices, leftNav:leftnav, rightNav:rightnav},
+        myAssets: {
+            user: user,
+            type: type,
+            title: title,
+            subscriptions: subscriptions[type],
+            subscription: subscription,
+            pageIndices: pageIndices,
+            leftNav: leftnav,
+            rightNav: rightnav,
+            urlQuery: urlQuery
+        },
         recentAssets: recentAssets
 
     });
