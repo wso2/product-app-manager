@@ -1,0 +1,16 @@
+<ExternalAPPStores>
+
+    <!--Configuration to set the store URL of the current running APPM deployment.
+    APPs published to external stores will be redirected to this URL-->
+
+    <StoreURL>http://localhost:9763/store</StoreURL>
+
+    <ExternalAPPStore id="Store1" type="wso2" className="org.wso2.carbon.appmgt.impl.publishers.WSO2ExternalAppStorePublisher">
+        <DisplayName>Engineering</DisplayName>
+        <Endpoint>http://localhost:9763/publisher</Endpoint>
+        <Username>admin@eng.com</Username>
+    <Password>admin123</Password>
+    </ExternalAPPStore>
+</ExternalAPPStores>
+
+

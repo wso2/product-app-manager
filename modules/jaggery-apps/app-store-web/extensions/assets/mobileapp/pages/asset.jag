@@ -1,5 +1,6 @@
 <%
 var caramel;
+include('/extensions/assets/webapp/modules/jagg/jagg.jag');
 
 require('/modules/store.js').exec(function (ctx) {
     var asset, aid, title,
@@ -8,6 +9,7 @@ require('/modules/store.js').exec(function (ctx) {
             store = ctx.store,
             user = ctx.user,
             tenantId = ctx.tenantId,
+            tenantDomain = ctx.tenant.domain,
             configs = ctx.configs,
             site = ctx.site,
             matcher = ctx.matcher,
@@ -15,98 +17,114 @@ require('/modules/store.js').exec(function (ctx) {
             utility = require('/modules/util.js'),
             mdm = require('/extensions/assets/mobileapp/modules/mdm.js').module,
             mdmConfig = parse(String((new Packages.org.wso2.carbon.appmgt.mobile.store.MDMConfig()).getConfigs()));
-            devicesClass = new Packages.org.wso2.carbon.appmgt.mobile.store.Devices();
+    devicesClass = new Packages.org.wso2.carbon.appmgt.mobile.store.Devices();
 
-        caramel = require('caramel');
+
+    caramel = require('caramel');
+
+    var storeHostObj = jagg.module("manager").getAPIStoreObj();
+    var isSelfSignupEnabledForTenant = storeHostObj.isSelfSignupEnabledForTenant(tenantDomain);
 
     var isNotCatalog = mdmConfig.IsCatalog == "true" ? false : true;
 
-        var mdmUIConfig  = {enabled : isNotCatalog};
-    var tenantedUrl = '/{context}/t/{domain}' + configs.assetsUrlPrefix + '/{type}/{aid}'
+    if(!user) {
+        var contextPath = caramel.configs().context
+        response.sendRedirect(contextPath+"/login");
+    }  else {
+        var isNotCatalog = mdmConfig.IsCatalog == "true" ? false : true;
 
-    if(matcher.match('/{context}' + configs.assetsUrlPrefix + '/{type}/{aid}') || matcher.match(tenantedUrl)){
+        var mdmUIConfig  = {enabled : isNotCatalog};
+        var tenantedUrl = '/{context}/t/{domain}' + configs.assetsUrlPrefix + '/{type}/{aid}'
+
+        if(matcher.match('/{context}' + configs.assetsUrlPrefix + '/{type}/{aid}') || matcher.match(tenantedUrl)){
+            aid = matcher.elements().aid;
+            title = store.assetLinks(type).title;
+        }
+
+        var isEnterpriseInstallEnabled = false;
+
+        var isDeviceSubscriptionEnabled = mdmConfig.EnableSubscriptionFromDevices == "true" ? true : false;
+
+        var isDirectDownloadEnabled = mdmConfig.EnableDirectDownload == "true" ? true : false;
+
+
+        if(user && mdmConfig.EnterpriseOperations_Enabled){
+            var server = require('store').server;
+            var um = new carbon.user.UserManager(server, tenantId);
+            var userRoles = um.getRoleListOfUser(user.username);
+            for(var i = 0; i < userRoles.length; i++){
+                if(userRoles[i] == mdmConfig.EnterpriseOperations_AuthorizedRole){
+                    isEnterpriseInstallEnabled = true;
+                    break;
+                }
+            }
+        }
+
+
+
+        matcher.match('/{context}' + configs.assetsUrlPrefix + '/{type}/{aid}');
         aid = matcher.elements().aid;
         title = store.assetLinks(type).title;
-    }
-
-    var isEnterpriseInstallEnabled = false;
-
-    var isDeviceSubscriptionEnabled = mdmConfig.EnableSubscriptionFromDevices == "true" ? true : false;
-
-    var isDirectDownloadEnabled = mdmConfig.EnableDirectDownload == "true" ? true : false;
-
-
-    if(user && mdmConfig.EnterpriseOperations_Enabled){
-        var server = require('store').server;
-        var um = new carbon.user.UserManager(server, tenantId);
-        var userRoles = um.getRoleListOfUser(user.username);
-        for(var i = 0; i < userRoles.length; i++){
-            if(userRoles[i] == mdmConfig.EnterpriseOperations_AuthorizedRole){
-                isEnterpriseInstallEnabled = true;
-                break;
-            }
+        try {
+            asset = store.asset(type, aid);
+        } catch (e) {
+            response.sendError(404, 'Requested page cannot be found');
+            return;
         }
-    }
 
+        if (store.isuserasset(aid, type)) {
+            inDashboard = true;
+        }
 
+        var rxtAttributes = utility.getRXTAttributes(tenantId, type);
 
-    matcher.match('/{context}' + configs.assetsUrlPrefix + '/{type}/{aid}');
-    aid = matcher.elements().aid;
-    title = store.assetLinks(type).title;
-    try {
-        asset = store.asset(type, aid);
-    } catch (e) {
-        response.sendError(404, 'Requested page cannot be found');
-        return;
-    }
-
-    if (store.isuserasset(aid, type)) {
-        inDashboard = true;
-    }
-
-    var rxtAttributes = utility.getRXTAttributes(tenantId, type);
-
-    var devices = [];
+        var devices = [];
         if(user != null && isNotCatalog && isDeviceSubscriptionEnabled){
-                devices =  parse(String(devicesClass.getDevicesList(stringify(user), user.tenantId, "user", [user.username])));
+            devices =  parse(String(devicesClass.getDevicesList(stringify(user), user.tenantId, "user", [user.username])));
         }
 
-
-
-    caramel.render({
-        title: 'Store | ' + type,
-        user: user,
-        sso: sso,
-        devices: devices,
-        isEnterpriseInstallEnabled: isEnterpriseInstallEnabled,
-        isDeviceSubscriptionEnabled : isDeviceSubscriptionEnabled,
-        isDirectDownloadEnabled :isDirectDownloadEnabled,
-        header: site.header(tenantId, {
+        var headerData = site.header(tenantId, {
             sso: sso,
-            user: user
-        }),
+            user: user,
+            isSelfSignUpEnabledForTenant : isSelfSignupEnabledForTenant
+        });
+        headerData.isSelfSignUpEnabledForTenant = isSelfSignupEnabledForTenant;
+        headerData.domain = tenantDomain;
 
-        navigation: site.navigation(tenantId),
-        search: {
-            search: {title: type},
-            isTopAssets: false,
-            searchFields: rxtAttributes
-        },
-        isSocial: configs.socialCommentsEnable,
+        caramel.render({
+            title: 'Store | ' + type,
+            user: user,
+            sso: sso,
+            devices: devices,
+            isEnterpriseInstallEnabled: isEnterpriseInstallEnabled,
+            isDeviceSubscriptionEnabled : isDeviceSubscriptionEnabled,
+            isDirectDownloadEnabled :isDirectDownloadEnabled,
+            header: headerData,
 
-        type: type,
-        embedURL: configs.server.http + '/gadgets/ifr?url=' + asset.attributes.overview_url,
-        inDashboard: inDashboard,
-        asset: asset,
-        config : mdmUIConfig,
-        tags: [
-            {
-                url: '/assets/' + type + '/?page=1&tag=',
-                data: store.tags(type)
-            }
-        ],
-        myAssets: { user: user, type: type, title: title },
-        recentAssets: store.recentAssets(type)
-    });
+            navigation: site.navigation(tenantId),
+            search: {
+                search: {title: type},
+                isTopAssets: false,
+                searchFields: rxtAttributes
+            },
+            isSocial: configs.socialCommentsEnable,
+
+            type: type,
+            embedURL: configs.server.http + '/gadgets/ifr?url=' + asset.attributes.overview_url,
+            inDashboard: inDashboard,
+            asset: asset,
+            config : mdmUIConfig,
+            tags: [
+                {
+                    url: '/assets/' + type + '/?page=1&tag=',
+                    data: store.tags(type)
+                }
+            ],
+            myAssets: { user: user, type: type, title: title },
+            recentAssets: store.recentAssets(type)
+        });
+    }
+
+
 }, request, response, session);
 %>

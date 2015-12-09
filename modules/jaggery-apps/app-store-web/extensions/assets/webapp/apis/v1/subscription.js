@@ -46,7 +46,7 @@ var resource = (function () {
 
         var result = subsApi.addSubscription(subscription);
 
-        if(result){
+        if(result.status == true){
             subscription['op_type'] = 'ALLOW';
             result = subsApi.updateVisibility(subscription);
         }

@@ -31,7 +31,7 @@ var resource = (function () {
         log.info('Trying to add a subscription');
 
         var result = subsApi.removeSubscription(subscription);
-        if(result){
+        if(result.status == true){
             subscription['op_type'] = 'DENY';
             result = subsApi.updateVisibility(subscription);
         }

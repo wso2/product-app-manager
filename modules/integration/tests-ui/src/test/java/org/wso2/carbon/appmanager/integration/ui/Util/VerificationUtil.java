@@ -51,4 +51,18 @@ public class VerificationUtil {
             throw new Exception("Operation not successful: " + jsonObject.get("message").toString());
         }           
     }
+
+    public static  void checkSuccessState(HttpResponse response) throws Exception {
+        JSONObject jsonObject = new JSONObject(response.getData());
+        if (!(Boolean) jsonObject.get("success")) {
+            throw new Exception("Operation not successful: " + jsonObject.get("message").toString());
+        }
+    }
+
+    public static void checkPublisherLogin(HttpResponse response) throws Exception {
+        String payload = response.getData();
+        if(payload.contains("error")) {
+            throw new Exception("Operation not successful: " +payload);
+        }
+    }
 }

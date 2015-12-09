@@ -80,7 +80,7 @@ public class LifeCycleTestCase extends APPManagerIntegrationTest {
                 username, ApplicationInitializingUtil.version);
         HttpResponse unSubscriptionResponse = appMStore.unsubscribeForApplication(appUnSubscriptionRequest);
         JSONObject unSubscriptionJsonObject = new JSONObject(unSubscriptionResponse.getData());
-        assertFalse((Boolean) unSubscriptionJsonObject.get("error"), "Error while updating tier permission");
+        assertFalse((Boolean) unSubscriptionJsonObject.get("error"), "Couldn't subscribe to app:"+appProp.getAppName());
         assertTrue((Boolean) unSubscriptionJsonObject.get("status"),
                 "Application " + appProp.getAppName() + " is already un subscribed");
 
@@ -93,10 +93,8 @@ public class LifeCycleTestCase extends APPManagerIntegrationTest {
                 username, ApplicationInitializingUtil.version);
         HttpResponse subscriptionResponseUnpublished = appMStore.subscribeForApplication(appSubscriptionRequest);
         JSONObject subscriptionJsonObjectUnPublished = new JSONObject(subscriptionResponseUnpublished.getData());
-        assertFalse((Boolean) subscriptionJsonObjectUnPublished.get("error"),
-                "Error while updating tier permission");
-        assertTrue((Boolean) subscriptionJsonObjectUnPublished.get("status"),
-                "Application " + appProp.getAppName() + " is already subscribed");
+        assertTrue((Boolean) subscriptionJsonObjectUnPublished.get("error"),
+                "User is able to subscribe to an app which is in unpublished state");
     }
 
     @AfterClass(alwaysRun = true)

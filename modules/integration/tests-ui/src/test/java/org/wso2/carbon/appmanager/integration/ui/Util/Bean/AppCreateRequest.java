@@ -95,6 +95,9 @@ public class AppCreateRequest extends AbstractRequest {
     private String uritemplate_allowAnonymous2="False";
     private String uritemplate_allowAnonymous1="False";
     private String uritemplate_allowAnonymous0="False";
+    private String overview_subscriptionAvailability="all_tenants";
+
+    private String overview_tenants="";
 
     @Override
     public void init() {
@@ -187,12 +190,30 @@ public class AppCreateRequest extends AbstractRequest {
         addParameter("uritemplate_allowAnonymous4",uritemplate_allowAnonymous2);
         addParameter("uritemplate_allowAnonymous4",uritemplate_allowAnonymous1);
         addParameter("uritemplate_allowAnonymous4",uritemplate_allowAnonymous0);
+        addParameter("overview_subscriptionAvailability", overview_subscriptionAvailability);
+        addParameter("overview_tenants", overview_tenants);
     }
 
     @Override
     public void setAction() {
         // TODO Auto-generated method stub
 
+    }
+
+    public String getOverview_tenants() {
+        return overview_tenants;
+    }
+
+    public void setOverview_tenants(String overview_tenants) {
+        this.overview_tenants = overview_tenants;
+    }
+
+    public String getOverview_subscriptionAvailability() {
+        return overview_subscriptionAvailability;
+    }
+
+    public void setOverview_subscriptionAvailability(String overview_subscriptionAvailability) {
+        this.overview_subscriptionAvailability = overview_subscriptionAvailability;
     }
 
     public String getOverview_provider() {

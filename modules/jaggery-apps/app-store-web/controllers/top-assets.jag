@@ -16,6 +16,7 @@ require('/modules/store.js').exec(function (ctx) {
             store = ctx.store,
             user = ctx.user,
             tenantId = ctx.tenant.tenantId || -1234,
+            tenantDomain = ctx.tenant.domain,
             configs = ctx.configs,
             site = ctx.site,
             matcher = ctx.matcher,
@@ -35,7 +36,10 @@ require('/modules/store.js').exec(function (ctx) {
     process = require('process'),
     localIP = "https://" + process.getProperty('server.host'),
     httpsPort = process.getProperty('https.port');
-    
+
+    var storeHostObj = jagg.module("manager").getAPIStoreObj();
+    var isSelfSignupEnabledForTenant = storeHostObj.isSelfSignupEnabledForTenant(tenantDomain);
+
     length = types.length;
     recent = Math.floor(recentCount / length);
     recentDiff = recentCount - recent * length;
@@ -172,14 +176,19 @@ require('/modules/store.js').exec(function (ctx) {
         first = false;
     });
 
+    var headerData = site.header(tenantId, {
+        sso: sso,
+        user: user,
+        isSelfSignUpEnabledForTenant : isSelfSignupEnabledForTenant
+    });
+    headerData.isSelfSignUpEnabledForTenant = isSelfSignupEnabledForTenant;
+    headerData.domain = tenantDomain;
+
     caramel.render({
         title: 'Store | WSO2 Enterprise Store',
         user: user,
         sso: sso,
-        header: site.header(tenantId, {
-            sso: sso,
-            user: user
-        }),
+        header: headerData,
         navigation: site.navigation(tenantId),
         search: {
             title: "Top Assets",
