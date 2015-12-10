@@ -67,8 +67,8 @@ var init = function (options) {
             }
         });
 		system.put(QUERY_PATH_TAGS_BY_TYPE_AND_LIFECYCLE, {
-			content: 'SELECT RRT.REG_TAG_ID' 
-		 				+ ' FROM' 
+			content: 'SELECT RRT.REG_TAG_ID'
+		 				+ ' FROM'
 						+ ' REG_RESOURCE_TAG RRT, REG_TAG RT, REG_RESOURCE R, REG_RESOURCE_PROPERTY RRP, REG_PROPERTY RP'
 						+ ' WHERE'
 						+ ' RT.REG_ID = RRT.REG_TAG_ID'
@@ -419,17 +419,17 @@ Store.prototype.configs = function () {
  * @param type Asset type
  */
 Store.prototype.tags = function (type) {
-    var tag, tags, assetType, i, length, count, queryParameters, 
+    var tag, tags, assetType, i, length, count, queryParameters,
 		registry = this.registry || this.servmod.anonRegistry(this.tenantId),
         tagz = [],
         tz = {},
-		mediaType = "%", 
-		lifeCycleStateKey = "%", 
+		mediaType = "%",
+		lifeCycleStateKey = "%",
 		lifeCycleStateValue = "%";
 
     // NOTE : Supports only 'webapp' type as of now.
     // If type = undefined retrieve tags without any filtering.
-	
+
 	if(type == RESOURCE_TYPE_WEBAPP){
         var carbonContext = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext();
         var tenantdomain = carbonContext.getTenantDomain();
@@ -1064,7 +1064,7 @@ var exec = function (fn, request, response, session) {
     var tenantId;
     var tenantDetails = obtainTenantDetails(request, session, user);
     tenantId = tenantDetails.tenantId;
-
+    tenant = tenantDetails;
     //Determine if the tenant domain was not resolved
     if(tenantId===-1){
         response.sendError(404, 'Tenant:' + tenantDetails.domain + ' not registered');
@@ -1089,7 +1089,6 @@ var exec = function (fn, request, response, session) {
             response: response,
             session: session,
             application: application,
-            urlParams:tenantDetails.urlParams,
             event: require('event'),
             params: request.getAllParameters(),
             files: request.getAllFiles(),
@@ -1104,6 +1103,8 @@ var exec = function (fn, request, response, session) {
 
 function obtainTenantDetails(req, session, user) {
 
+    var username = carbon.user.anonUser
+        , secured = false;
     var tenantPatternStore = '/{context}/t/{domain}/';
     var tenantPatternStoreWithSuffix = '/{context}/t/{domain}/{+suffix}';
     var uriMatcher = new URIMatcher(req.getRequestURI());
@@ -1129,6 +1130,8 @@ function obtainTenantDetails(req, session, user) {
         //Case: A logged in user visiting the store by either giving their tenant domain or not
         else {
             resolvedTenantId = tenantId;
+            username = user.username;
+            secured = true;
         }
     } else {
         //Case: All other cases
@@ -1136,7 +1139,7 @@ function obtainTenantDetails(req, session, user) {
     }
     details.tenantId = resolvedTenantId;
     details.domain = domain;
-    details.urlParams = options;
+    details.username = username;
+    details.secured = secured;
     return details;
 }
-

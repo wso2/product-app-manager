@@ -8,23 +8,27 @@
         </button>
 
         <div>
-            <form id="form-register" class="" action="" method="post">
+            <form id="form-register"  method="post">
                 <fieldset>
+
 
                     <h2>{{t "Register"}}</h2>
 
                     <div id="register-alert" class="alert alert-error"></div>
 
-                    <div class="input-append">
-                        <input id="inp-username-register" type="text" name="username" class="span1 required" style="width: 190px !important;" placeholder="{{t "Enter a Username"}}"/>
+
+
                         {{#if isTenanted}}
+                        <div class="input-append">
+                            <input id="inp-username-register" type="text" name="username" class="span1 required" style="width: 190px !important;" placeholder="{{t "Enter a Username"}}"/>
                             <span class="add-on" style="background-color: transparent; border: none; margin-top: 15px">@{{domain}}</span>
+                        </div>
                         {{else}}
                             <input id="inp-username-register" type="text" name="username" class="span3 required"
                                    placeholder="{{t "Enter a Username"}}">
                         {{/if}}
 
-                    </div>
+
 
                     <div class="controls">
                         <input id="inp-password-register" type="password" name="password" class="span3 required" placeholder="{{t "Password"}}"/>
