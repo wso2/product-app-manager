@@ -29,11 +29,7 @@ function updateSubscriptionVisuals() {
         $('#sub-group').show();
     }
 
-    if (restricted) {
-        $('#sub-availability').val('current_tenant');
-    } else {
-        $('#sub-availability').val('all_tenants');
-    }
+    $('#sub-availability').val('current_tenant');
 }
 
 $("#sub-availability").change(function () {
