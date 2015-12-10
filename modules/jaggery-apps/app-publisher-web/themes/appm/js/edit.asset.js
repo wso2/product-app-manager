@@ -619,9 +619,8 @@ function removeClaimTable() {
 
 window.onload = function updateSubsVisibility() {
     var restricted = $('.controll_visibility').is(":checked");
-    var skipGateway = $('.skip_gateway_checkbox').is(":checked");
     var anonymous = $('.anonymous_checkbox').is(":checked");
-    if (restricted || skipGateway || anonymous) {
+    if (restricted || anonymous) {
         $('#sub-group').hide();
     } else {
         var subscription_availability = $('#subscription_availability').val();
