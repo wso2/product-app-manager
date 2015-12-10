@@ -52,6 +52,8 @@ require('/modules/store.js').exec(function (ctx) {
 
     if(tag == 'undefined' ){tag = null;}
 
+    var nextPageAvailable = false;
+    var currentTenantID = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantId();
     caramel = require('caramel');
     process = require('process'),
     localIP = "https://" + process.getProperty('server.host'),
@@ -172,14 +174,14 @@ require('/modules/store.js').exec(function (ctx) {
                 var index = 0, maxTry = 0;
 
                 var ratingApi = require('/modules/rating-api.js').api;
-                registry = storeServer.systemRegistry(tenantId),
+                registry = storeServer.systemRegistry(currentTenantID),
                  am = store.assetManager(type, registry);
 
                 var getNextassetSet = function () {
                     var appMgtDaoService = Packages.org.wso2.carbon.appmgt.impl.dao.AppMDAO;
                     var appMgtDaoObj = new appMgtDaoService();
 
-                    var result = ratingApi.getPopularAssets(type, tenantId, am, paging.start + index);
+                    var result = ratingApi.getPopularAssets(type, currentTenantID, am, paging.start + index, PAGE_SIZE);
                     if (log.isDebugEnabled()) {
                         log.debug("Query executed successfully to get the assets hit count");
                     }
@@ -261,15 +263,15 @@ require('/modules/store.js').exec(function (ctx) {
     // If the assets count in the current page is less than PAGE_SIZE, next page is not available.
     // Else assets should be queried to decide whether there are assets available for the next page.
 
-    var nextPageAvailable = false;
     if(assets.length == PAGE_SIZE) {
         // Get the starting index, offset etc .. of the assumed next page.
+
         var nextPage = store.buildNextPage(request, avaliablePages);
 
         // Query the assets with the assumed 'next page'
         var nextAssetSet = store.assets(type, nextPage);
 
-        if(nextAssetSet.length > 0){
+        if((nextAssetSet.length > 0) || ((paging.sort == 'popular') && (avaliablePages * PAGE_SIZE > nextPage.start))){
             nextPageAvailable = true;
         }
     }

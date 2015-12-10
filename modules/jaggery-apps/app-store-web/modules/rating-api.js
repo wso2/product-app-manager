@@ -86,24 +86,24 @@ var api = {};
     };
 
 
-    api.getPopularAssets = function(type, tenantId, am, start){
+    api.getPopularAssets = function(type, tenantId, am, start, pageSize){
         var carbon = require('carbon');
         var social = carbon.server.osgiService('org.wso2.carbon.social.core.service.SocialActivityService');
-        var index = 0, maxTry = 0; limit = 12;
+        var index = 0, maxTry = 0; limit = pageSize;
 
         var getNextAssetSet = function () {
             var offset = Number(start)+ Number(index);
             var result = JSON.parse(String(social.getPopularAssets(type, tenantId, limit, offset)));
-            index += 12;
+            index += pageSize;
             return result.assets || [];
         };
 
         assets = [];
         var pos, aid, asset;
-        while (assets.length < 12 && maxTry < 10) {
+        while (assets.length < pageSize && maxTry < 10) {
             maxTry++;
             var result = getNextAssetSet();
-            for (var n = 0; n < result.length && assets.length < 12; n++) {
+            for (var n = 0; n < result.length && assets.length < pageSize; n++) {
                 var combinedAid = String(result[n]);
                 pos = combinedAid.indexOf(':');
                 aid = combinedAid.substring(pos + 1);
