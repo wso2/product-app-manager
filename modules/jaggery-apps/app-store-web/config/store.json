@@ -3,6 +3,7 @@
     "extensionsUrlPrefix": "/extensions",
     "subscriptionsUrlPrefix": "/subscriptions",
     "tenantConfigs": "/_system/config/store/configs/store.json",
+    "tenantedUrlPrefix" : "/t",
     "socialCommentsEnable": true,
     "cached": false,
     "server": {

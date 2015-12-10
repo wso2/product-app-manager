@@ -29,7 +29,13 @@ var isUserDomainAndUrlDomainDifferent = function(domain, urlTenantId, tenantId) 
 };
 
 var isUserTenantIdDifferFromUrlTenantId = function(userTenantId, urlTenantId) {
-    return ((urlTenantId) && (userTenantId !== urlTenantId));
+
+    if(urlTenantId && (userTenantId !== urlTenantId)){
+        return true;
+    }else{
+        return false;
+    }
+
 };
 
 var merge = function (def, options) {
@@ -1062,9 +1068,8 @@ var exec = function (fn, request, response, session) {
         user = es.server.current(session);
 
     var tenantId;
-    var tenantDetails = obtainTenantDetails(request, session, user);
-    tenantId = tenantDetails.tenantId;
-    tenant = tenantDetails;
+    tenantId = tenant.tenantId;
+
     //Determine if the tenant domain was not resolved
     if(tenantId===-1){
         response.sendError(404, 'Tenant:' + tenantDetails.domain + ' not registered');
@@ -1099,47 +1104,3 @@ var exec = function (fn, request, response, session) {
         });
     });
 };
-
-
-function obtainTenantDetails(req, session, user) {
-
-    var username = carbon.user.anonUser
-        , secured = false;
-    var tenantPatternStore = '/{context}/t/{domain}/';
-    var tenantPatternStoreWithSuffix = '/{context}/t/{domain}/{+suffix}';
-    var uriMatcher = new URIMatcher(req.getRequestURI());
-    var domain = carbon.server.superTenant.domain ;
-    if (uriMatcher.match(tenantPatternStore) || uriMatcher.match(tenantPatternStoreWithSuffix)) {
-        domain = uriMatcher.elements().domain;
-    }
-    var tenantId = carbon.server.superTenant.tenantId;
-    var urlTenantId = carbon.server.superTenant.tenantId;
-    var details = {};
-    var resolvedTenantId = tenantId;
-    if (domain) {
-        urlTenantId = carbon.server.tenantId({
-            domain: domain
-        });
-    }
-    if (user) {
-        tenantId = user.tenantId;
-        //Case: A logged in user visiting the store in another tenant domain
-        if (isUserDomainAndUrlDomainDifferent(domain, urlTenantId, tenantId)) {
-            resolvedTenantId = urlTenantId;
-        }
-        //Case: A logged in user visiting the store by either giving their tenant domain or not
-        else {
-            resolvedTenantId = tenantId;
-            username = user.username;
-            secured = true;
-        }
-    } else {
-        //Case: All other cases
-        resolvedTenantId = urlTenantId;
-    }
-    details.tenantId = resolvedTenantId;
-    details.domain = domain;
-    details.username = username;
-    details.secured = secured;
-    return details;
-}
