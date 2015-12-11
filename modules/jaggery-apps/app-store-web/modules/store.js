@@ -1078,7 +1078,7 @@ var exec = function (fn, request, response, session) {
 
     es.server.sandbox({
         tenantId: tenantId,
-        username: user ? user.username : carbon.user.anonUser,
+        username: tenant ? tenant.username : carbon.user.anonUser,
         request: request
     }, function () {
         var configs = require('/config/store.js').config();
