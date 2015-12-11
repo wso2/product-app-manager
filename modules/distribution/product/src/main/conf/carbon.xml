@@ -34,7 +34,7 @@
     -->
     <Version>1.1.0</Version>
 
-    <ServerKey>AM</ServerKey>
+    <ServerKey>AppM</ServerKey>
 
     <!--
        Host name or IP address of the machine hosting this server
@@ -72,7 +72,7 @@
     Ex : <Role>.*</Role> means this server can act any role
     -->
     <ServerRoles>
-        <Role>APIManager</Role>
+        <Role>AppManager</Role>
     </ServerRoles>
 
 
