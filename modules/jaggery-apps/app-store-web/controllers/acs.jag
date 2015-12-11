@@ -109,12 +109,7 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
                             if (log.isDebugEnabled()) {
                                 log.debug('User has been set to : ' + sessionObj.loggedInUser);
                             }
-                            if (tenantURL) {
-                                response.sendRedirect(contextPath + tenantURL);
-                            } else {
-                                response.sendRedirect(contextPath);
-                            }
-
+                            response.sendRedirect(relayState);
                         } else {
                             log.warn('User ' + sessionObj.loggedInUser + ' does not have permission to access the store application. Make sure the user has the store role.');
                             response.sendError(401, 'You do not have permission to login to this application.Please contact your administrator and request permission.');
