@@ -18,6 +18,7 @@ require('/modules/store.js').exec(function (ctx) {
 	var recentAssets = store.recentAssets('webapp');
 	caramel = require('caramel');
 	search = require('/modules/search.js');
+	var social = carbon.server.osgiService('org.wso2.carbon.social.core.service.SocialActivityService');
 		
 
 	SubscriptionService = require(getServiceDir('subscription.js')).serviceModule;
@@ -78,7 +79,14 @@ require('/modules/store.js').exec(function (ctx) {
 
     }
 
-
+	//Recent app rating.
+	for (var i = 0; i < recentAssets.length; i++) {
+		if (JSON.parse(social.getRating("webapp:" + recentAssets[i].id))) {
+			recentAssets[i].rating = {average: Math.floor(JSON.parse(social.getRating("webapp:" + recentAssets[i].id)).rating)};
+		} else {
+			recentAssets[i].rating = 0;
+		}
+	}
 
 	caramel.render({
 		header: {
