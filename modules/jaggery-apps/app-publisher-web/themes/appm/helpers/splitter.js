@@ -1,3 +1,5 @@
+var dataConfigs = require('/config/publisher.js').config();
+
 var resources=function(page,meta){
 
     return{
@@ -59,6 +61,7 @@ var splitData = function(copyOfData){
         }else if (dataPart[i].name.search("images_")!=-1) {
             images.push(dataPart[i]);
         }else if (dataPart[i].name.search("sso_")!=-1) {
+            addSSODetail(dataPart[i]);
             sso.push(dataPart[i]);
         }else if (dataPart[i].name.search("oauthapis_")!=-1) {
             oauthapis.push(dataPart[i]);
@@ -125,5 +128,19 @@ var splitData = function(copyOfData){
     return newViewData;
 };
 
+function addSSODetail(field) {
+    if (field.name == "sso_idpProviderUrl") {
+        var idpProviderUrl = dataConfigs.ssoConfiguration.identityProviderURL;
+        field.value = idpProviderUrl;
+    } else if (field.name == "sso_singleSignOn") {
+        var ssoEnabled = dataConfigs.ssoConfiguration.enabled;
+        if (ssoEnabled) {
+            field.value = "Enabled";
+        } else {
+            field.value = "Disabled";
+        }
 
+    }
+
+}
 
