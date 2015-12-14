@@ -875,13 +875,13 @@ require('/modules/publisher.js').exec(function(ctx) {
                     print(res);
                 } catch (e) {
                     var errorMsg = 'Could not update the external stores for app : ' + provider + '-' + name + '' +
-                            '-' + version + ". An exception was thrown";
+                            '-' + version + '. An exception was thrown.';
                     if (log.isDebugEnabled()) {
                         log.debug(errorMsg + ': ' + e);
                     }
                     var res = {};
                     res.success = false;
-                    res.message = errorMsg + ". Please inspect the server console for more details.";
+                    res.message = errorMsg;
                     response.contentType = "application/json";
                     print(res);
                 }
