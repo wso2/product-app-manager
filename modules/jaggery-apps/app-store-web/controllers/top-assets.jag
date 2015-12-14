@@ -48,10 +48,6 @@ require('/modules/store.js').exec(function (ctx) {
     paging = store.assetsPaging(request);
     query = query ? search.build(String(query)) : null;
 
-
-
-
-
     // Init subscription service.
     var subscriptionServiceModule = require('/extensions/assets/webapp/services/subscription.js').serviceModule;
     var subscriptionService = new subscriptionServiceModule.SubscriptionService();

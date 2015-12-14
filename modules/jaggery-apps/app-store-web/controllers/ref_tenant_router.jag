@@ -18,17 +18,18 @@
  *
  */
 
-var log = new Log('assets');
 var matcher = new URIMatcher(request.getRequestURI());
 var carbon = require('carbon');
+var configs = require('/config/store.json');
 
 var store = '/{context}/t/{domain}/';
-var apiEndpoint = '/{context}/t/{domain}/apis/assets/{type}/{+suffix}';
-var assetEndpoint = '/{context}/t/{domain}/assets/{type}';
-var assetsEndpoint = '/{context}/t/{domain}/assets/{type}/{+suffix}';
-var extensionsEndpoint = '/{context}/t/{domain}/extensions/{+suffix}';
-var storageEndpoint = '/{context}/t/{domain}/storage/{+suffix}';
-var storeLogin = '/{context}/t/{domain}/login';
+var apiEndpoint = store + 'apis/assets/{type}/{+suffix}';
+var assetEndpoint = store + 'assets/{type}';
+var assetsEndpoint = store + 'assets/{type}/{+suffix}';
+var extensionsEndpoint = store + 'extensions/{+suffix}';
+var storageEndpoint = store + '/storage/{+suffix}';
+var storeLogin = store + '/login';
+var path;
 
 
 var mapper = function (path) {
@@ -36,23 +37,36 @@ var mapper = function (path) {
         return path;
     };
 };
+//Check for incoming URL pattern and dispatch the request into relevant endpoint
 if (matcher.match(apiEndpoint)) {
-    request.getMappedPath = mapper("/apis/assets.jag");
-    include('../apis/assets.jag');
+
+    path = '/apis/assets.jag';
+    request.getMappedPath = mapper(path);
+    include(path);
 } else if (matcher.match(assetEndpoint) || matcher.match(assetsEndpoint)) {
-    request.getMappedPath = mapper("/controllers/routers/assets.jag");
-    include('routers/assets.jag');
+
+    path = '/controllers/routers/assets.jag';
+    request.getMappedPath = mapper(path);
+    include(path);
 } else if (matcher.match(storageEndpoint)) {
-    include('routers/storage_router.jag');
-}else if (matcher.match(store)) {
-    request.getMappedPath = mapper("/controllers/top-assets.jag");
-    include('top-assets.jag');
-}else if(matcher.match(storeLogin)){
-    request.getMappedPath = mapper("/controllers/login.jag");
-    include('login.jag');
-}else if(matcher.match(extensionsEndpoint)){
-    request.getMappedPath = mapper("/controllers/routers/extensions.jag");
-    include('/controllers/routers/extensions.jag');
+
+    path = '/controllers/routers/storage_router.jag';
+    include(path);
+} else if (matcher.match(extensionsEndpoint)) {
+
+    path = '/controllers/routers/extensions.jag';
+    request.getMappedPath = mapper(path);
+    include(path);
+} else if (matcher.match(storeLogin)) {
+
+    path = '/controllers/login.jag';
+    request.getMappedPath = mapper(path);
+    include(path);
+} else if (matcher.match(store)) {
+
+    path = '/controllers/top-assets.jag';
+    request.getMappedPath = mapper(path);
+    include(path);
 }
 else {
     response.sendError(404, 'Tenant Domain not found');

@@ -16,10 +16,12 @@ var type;
         };
     };
 
-    var tenantedPageEndpoint = '/{context}/t/{domain}' + config.assetsUrlPrefix + '/{type}';
-    var tenantedAssetEndpoint = tenantedPageEndpoint + '/{id}';
+    var tenantedPrefix = '/{context}/t/{domain}' + config.assetsUrlPrefix;
+    var tenantedAssetsEndpoint = tenantedPrefix + '/{type}';
+    var tenantedAssetEndpoint = tenantedPrefix + '/{type}/{id}';
 
-    if (matcher.match('/{context}' + config.assetsUrlPrefix + '/{type}/') || matcher.match(tenantedPageEndpoint)) {
+    //Check whether the assets endpoint URI is tenanted or not
+    if (matcher.match('/{context}' + config.assetsUrlPrefix + '/{type}/') || matcher.match(tenantedAssetsEndpoint)) {
 
         elements = matcher.elements();
         type = elements.type;
@@ -42,6 +44,8 @@ var type;
         include(path);
         return;
     }
+
+    //Check whether the asset endpoint URI is tenanted or not
     if (matcher.match('/{context}' + config.assetsUrlPrefix + '/{type}/{id}') || matcher.match(tenantedAssetEndpoint)) {
 
         elements = matcher.elements();
