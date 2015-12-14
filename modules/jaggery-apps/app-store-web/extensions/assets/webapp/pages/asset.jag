@@ -26,8 +26,6 @@ authenticator.init(jagg,session);
 
 var carbon = require('carbon');
 var tenantIdVal = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantId();
-var tenantedUrl = '/{context}/t/{domain}' + configs.assetsUrlPrefix + '/{type}/{aid}';
-
 
 
 require('/modules/store.js').exec(function (ctx) {
@@ -55,6 +53,8 @@ require('/modules/store.js').exec(function (ctx) {
 
     var tenantedUrl = '/{context}/t/{domain}' + configs.assetsUrlPrefix + '/{type}/{aid}';
     var defaultUrl = '/{context}' + configs.assetsUrlPrefix + '/{type}/{aid}';
+
+    //Match the incoming request with tenanted and default URI patterns and extracts the relecant asset id
     if(matcher.match(defaultUrl) || matcher.match(tenantedUrl)){
         aid = matcher.elements().aid;
         title = store.assetLinks(type).title;
