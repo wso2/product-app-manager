@@ -24,10 +24,6 @@ var RESOURCE_TYPE_MOBILEAPP = 'mobileapp';
 
 var log = new Log();
 
-var isUserDomainAndUrlDomainDifferent = function(domain, urlTenantId, tenantId) {
-    return ((domain) && (tenantId !== urlTenantId));
-};
-
 var isUserTenantIdDifferFromUrlTenantId = function(userTenantId, urlTenantId) {
 
     if(urlTenantId && (userTenantId !== urlTenantId)){

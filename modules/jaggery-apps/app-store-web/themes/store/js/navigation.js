@@ -162,7 +162,7 @@ $(function () {
                     $('#modal-register').modal('hide');
                     $('#messageModal a.btn-primary').click(function () {
                         $('#messageModal').modal('hide');
-                        location.href = getTenantedURL('/login');
+                        location.href =  caramel.tenantedUrl('/login');
                     });
 
 
