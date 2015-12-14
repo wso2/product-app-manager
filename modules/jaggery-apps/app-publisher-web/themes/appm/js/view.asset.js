@@ -48,15 +48,13 @@ $('#update-store').click(function () {
                 e.stopPropagation();
             } else {
                 $('#spinner').hide();
-                var msg = "Error adding external stores.";
-                showMessageModel(msg, head, pathname);
+                showMessageModel(response.message, head, pathname);
                 e.stopPropagation();
             }
 
         },
         error: function (response) {
-            var msg = "Error adding external stores.";
-            showMessageModel(msg, head, pathname);
+            showMessageModel(response.message, head, pathname);
             e.stopPropagation();
         }
     });
