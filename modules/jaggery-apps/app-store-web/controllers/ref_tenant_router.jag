@@ -27,8 +27,8 @@ var apiEndpoint = store + 'apis/assets/{type}/{+suffix}';
 var assetEndpoint = store + 'assets/{type}';
 var assetsEndpoint = store + 'assets/{type}/{+suffix}';
 var extensionsEndpoint = store + 'extensions/{+suffix}';
-var storageEndpoint = store + '/storage/{+suffix}';
-var storeLogin = store + '/login';
+var storageEndpoint = store + 'storage/{+suffix}';
+var storeLogin = store + 'login';
 var path;
 
 
