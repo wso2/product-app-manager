@@ -595,7 +595,9 @@ Store.prototype.asset = function (type, aid) {
      }*/
 
     var asset = this.assetManager(type).get(aid);
-    asset.rating = this.rating(asset.path);
+    if(asset) {
+        asset.rating = this.rating(asset.path);
+    }
     return asset;
 };
 

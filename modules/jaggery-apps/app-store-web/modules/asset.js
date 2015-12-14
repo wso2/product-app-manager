@@ -268,10 +268,10 @@ var DEFAULT_ASSET_VIEW_STATE = 'published';
      * Assets matching the filter
      */
     Manager.prototype.get = function (id) {
-        var asset=this.manager.get(id);
-
-        dataInjector.cached().inject(asset,DataInjectorModes.DISPLAY);
-
+        var asset = this.manager.get(id);
+        if (asset) {
+            dataInjector.cached().inject(asset, DataInjectorModes.DISPLAY);
+        }
         return asset;
     };
 
