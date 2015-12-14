@@ -125,7 +125,10 @@ var renderAssets, mouseStop, renderAssetsScroll;
         var assetsTemp = Handlebars.compile(temp);
         var render = assetsTemp(data.body.assets.context);
         $('#paging-indices').html(render);
-
+        var state = History.getState();
+        if (state.data.id === 'tags') {
+            location.reload();
+        }
     };
 
     renderAssetsScroll = function(data){
