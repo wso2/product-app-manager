@@ -67,15 +67,15 @@
     <div>
         <ul class="pagination">
             {{#compare page 1 operator="!="}}
-                <li><a href="{{url "/extensions/assets/webapp/subscriptions?page="}}{{math page "-" 1}}"><span aria-hidden="true">&laquo;</span><span class="sr-only"></span></a></li>
+                <li><a href="{{tenantedUrl "/extensions/assets/webapp/subscriptions?page="}}{{math page "-" 1}}"><span aria-hidden="true">&laquo;</span><span class="sr-only"></span></a></li>
             {{/compare}}
 
             {{#pagesloop pages}}
-                <li {{#compare this ../page}}class="disabled" {{/compare}} ><a  href="{{url "/extensions/assets/webapp/subscriptions?page="}}{{this}}">{{this}}</a></li>
+                <li {{#compare this ../page}}class="disabled" {{/compare}} ><a  href="{{tenantedUrl "/extensions/assets/webapp/subscriptions?page="}}{{this}}">{{this}}</a></li>
             {{/pagesloop}}
 
             {{#compare page pages operator="!="}}
-                <li><a href="{{url "/extensions/assets/webapp/subscriptions?page="}}{{math page "+" 1}}"><span aria-hidden="true">&raquo;</span><span class="sr-only"></span></a></li>
+                <li><a href="{{tenantedUrl "/extensions/assets/webapp/subscriptions?page="}}{{math page "+" 1}}"><span aria-hidden="true">&raquo;</span><span class="sr-only"></span></a></li>
             {{/compare}}
 
 
