@@ -149,8 +149,10 @@ var server = {};
             };
         }
 
-        //loads the tenant if it hasn't been loaded
-        server.loadTenant(obj);
+        if(obj.tenantId != -1){
+            //loads the tenant if it hasn't been loaded
+            server.loadTenant(obj);
+        }
         return obj;
     };
 
