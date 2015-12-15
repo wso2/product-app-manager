@@ -85,20 +85,16 @@ require('/modules/publisher.js').exec(function(ctx) {
         var app_provider = params.app_provider;
         var result = null;
         var store = jagg.module("manager").getAPIStoreObj();
-        var isEmailLoginEnabled = store.isEnableEmailUsername();
 
-        if (!isEmailLoginEnabled && app_provider != null && app_provider.indexOf("-AT-") != -1) {
-            result = app_provider.split("-AT-");
-        }
+        var tenantDomain = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantDomain();
+        var tenantIdVal = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantId();
 
-        ssoProvider.setProviderName(params.provider.split("-")[0]);
-        ssoProvider.setProviderVersion(params.provider.split("-")[1]);
-        if (result != null ) {
-            ssoProvider.setIssuerName(params.app_name + "-" + result[1] + "-" + params.app_verison);
+        if (tenantIdVal != '-1234') {
+            ssoProvider.setIssuerName(params.app_name + "-" + tenantDomain + "-" + params.app_verison);
         } else {
             ssoProvider.setIssuerName(params.app_name + "-" + params.app_verison);
         }
-        //ssoProvider.setAssertionConsumerURL();
+
         ssoProvider.setClaims(params.claims);
 
         if(params.logout_url != null && params.logout_url != ' '){

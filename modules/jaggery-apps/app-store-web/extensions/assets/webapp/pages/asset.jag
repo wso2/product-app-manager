@@ -195,14 +195,11 @@ require('/modules/store.js').exec(function (ctx) {
             var result = null;
             var issuerName = null;
             var store = jagg.module("manager").getAPIStoreObj();
-            var isEmailLoginEnabled = store.isEnableEmailUsername();
+            var tenantDomain = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantDomain();
+            var tenantIdVal = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantId();
 
-            //Check whether application author is a tenant
-            if (!isEmailLoginEnabled && appProvider != null && appProvider.indexOf("-AT-") != -1) {
-                result = appProvider.split("-AT-");
-            }
-            if (result != null) {
-                issuerName = appName + "-" + result[1] + "-" + appVersion;
+            if (tenantIdVal != '-1234') {
+                issuerName = appName + "-" + tenantDomain + "-" + appVersion;
             } else {
                 issuerName = appName + "-" + appVersion;
             }
