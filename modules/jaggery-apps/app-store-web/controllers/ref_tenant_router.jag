@@ -17,7 +17,7 @@
  *  under the License.
  *
  */
-
+include('/extensions/assets/webapp/modules/jagg/jagg.jag');
 var matcher = new URIMatcher(request.getRequestURI());
 var carbon = require('carbon');
 var configs = require('/config/store.json');
@@ -30,6 +30,7 @@ var extensionsEndpoint = store + 'extensions/{+suffix}';
 var storageEndpoint = store + 'storage/{+suffix}';
 var storeLogin = store + 'login';
 var path;
+var log = new Log();
 
 
 var mapper = function (path) {
@@ -37,39 +38,66 @@ var mapper = function (path) {
         return path;
     };
 };
+
 //Check for incoming URL pattern and dispatch the request into relevant endpoint
 if (matcher.match(apiEndpoint)) {
 
+    var elements = matcher.elements();
     path = '/apis/assets.jag';
-    request.getMappedPath = mapper(path);
-    include(path);
+    resolveRouter(elements.domain, path);
+
 } else if (matcher.match(assetEndpoint) || matcher.match(assetsEndpoint)) {
 
+    var elements = matcher.elements();
     path = '/controllers/routers/assets.jag';
-    request.getMappedPath = mapper(path);
-    include(path);
+    resolveRouter(elements.domain, path);
+
 } else if (matcher.match(storageEndpoint)) {
 
+    var elements = matcher.elements();
     path = '/controllers/routers/storage_router.jag';
-    include(path);
+    resolveRouter(elements.domain, path);
+
 } else if (matcher.match(extensionsEndpoint)) {
 
+    var elements = matcher.elements();
     path = '/controllers/routers/extensions.jag';
-    request.getMappedPath = mapper(path);
-    include(path);
+    resolveRouter(elements.domain, path);
+
 } else if (matcher.match(storeLogin)) {
 
+    var elements = matcher.elements();
     path = '/controllers/login.jag';
-    request.getMappedPath = mapper(path);
-    include(path);
+    resolveRouter(elements.domain, path);
+
 } else if (matcher.match(store)) {
 
+    var elements = matcher.elements();
     path = '/controllers/top-assets.jag';
-    request.getMappedPath = mapper(path);
-    include(path);
+    resolveRouter(elements.domain, path);
+
 }
 else {
     response.sendError(404, 'Tenant Domain not found');
 }
 
+/*
+ The function is used to validate the activeness or existence of requested tenant and resolve the router.
+ If the tenant domain is active and available, then the request will be routed to the relevant router or else
+ an error will be thrown
+ @tenantDomain: Incoming URI tenant domain
+ @path : Router path
+ */
+function resolveRouter(tenantDomain, path) {
+
+    var storeHostObj = jagg.module("manager").getAPIStoreObj();
+    var isActivated = storeHostObj.isTenantActive(tenantDomain);
+    if (isActivated) {
+        request.getMappedPath = mapper(path);
+        include(path);
+    } else {
+        log.error("Tenant domain : " + tenantDomain + " not found");
+        response.sendError(404, 'Invalid tenant domain found');
+    }
+}
 %>

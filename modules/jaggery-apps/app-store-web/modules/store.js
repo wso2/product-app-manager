@@ -1073,7 +1073,7 @@ var exec = function (fn, request, response, session) {
 
     //Determine if the tenant domain was not resolved
     if(tenantId===-1){
-        response.sendError(404, 'Tenant:' + tenantDetails.domain + ' not registered');
+        response.sendError(404, 'Tenant:' + tenant.domain + ' not registered');
         return;
     }
 
