@@ -25,10 +25,7 @@ authenticator.init(jagg,session);
 
 
 var carbon = require('carbon');
-var tenantIdVal = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantId();
 var tenantedUrl = '/{context}/t/{domain}' + configs.assetsUrlPrefix + '/{type}/{aid}';
-
-
 
 require('/modules/store.js').exec(function (ctx) {
     var asset, aid, title,currentTenant,userTenant,
@@ -52,9 +49,12 @@ require('/modules/store.js').exec(function (ctx) {
     caramel = require('caramel');
     var storeHostObj = jagg.module("manager").getAPIStoreObj();
     var isSelfSignupEnabledForTenant = storeHostObj.isSelfSignupEnabledForTenant(String(tenantDomain));
+    var tenantIdVal = user.tenantId;
 
     var tenantedUrl = '/{context}/t/{domain}' + configs.assetsUrlPrefix + '/{type}/{aid}';
     var defaultUrl = '/{context}' + configs.assetsUrlPrefix + '/{type}/{aid}';
+
+    //Match the incoming request with tenanted and default URI patterns and extracts the relecant asset id
     if(matcher.match(defaultUrl) || matcher.match(tenantedUrl)){
         aid = matcher.elements().aid;
         title = store.assetLinks(type).title;
@@ -64,18 +64,32 @@ require('/modules/store.js').exec(function (ctx) {
     try {
         asset = store.asset(type, aid);
     } catch (e) {
+        log.error(e);
         response.sendError(404, 'Requested page cannot be found');
         return;
     }
 
-    var allowAnonymous = asset.attributes.overview_allowAnonymous;
-    
-    if(!user && !(asset.attributes.overview_allowAnonymous== "TRUE")) {
-        var contextPath = caramel.configs().context
-        response.sendRedirect(contextPath+"/login");
-    }  else {
 
-
+    if (!asset && !user) { // asset not found, may be restricted by role
+        //so need to login
+        var referer = request.getHeader("referer");
+        if (!referer) {
+            referer = request.getRequestURL();
+        }
+        var contextPath = caramel.configs().context;
+        response.sendRedirect(encodeURI(contextPath + "/login?referer=" + referer));
+    } else if (asset && !(asset.attributes.overview_allowAnonymous == "TRUE") && !user) {
+        // asset found which doesn't have anonymous access so need login
+        var referer = request.getHeader("referer");
+        if (!referer) {
+            referer = request.getRequestURL();
+        }
+        var contextPath = caramel.configs().context;
+        response.sendRedirect(encodeURI(contextPath + "/login?referer=" + referer));
+    } else if (!asset && user) {
+        // asset not found for logged in user, probably because of invalid uuid
+        response.sendError(404, 'Requested page cannot be found');
+    } else {
         if (user) {
             userTenant = user.tenantDomain;
         }
@@ -261,8 +275,8 @@ require('/modules/store.js').exec(function (ctx) {
 
             var hasRole = false;
 
-            for(var i=0; i < roles.length; i++){
-                if(roles[i] == userRoleName){
+            for (var i = 0; i < roles.length; i++) {
+                if (roles[i] == userRoleName) {
                     hasRole = true;
                     break;
                 }

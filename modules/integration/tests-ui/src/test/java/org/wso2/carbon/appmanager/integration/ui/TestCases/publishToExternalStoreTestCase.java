@@ -25,7 +25,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.appmanager.integration.ui.APPManagerIntegrationTest;
 import org.wso2.carbon.appmanager.integration.ui.Util.APPMPublisherRestClient;
-import org.wso2.carbon.appmanager.integration.ui.Util.APPMStoreRestClient;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.AppCreateRequest;
 import org.wso2.carbon.appmanager.integration.ui.Util.Bean.Tenant;
 import org.wso2.carbon.appmanager.integration.ui.Util.TenantPopulator;
@@ -76,7 +75,7 @@ public class publishToExternalStoreTestCase extends APPManagerIntegrationTest {
         baseUtil = new ApplicationInitializingUtil();
         baseUtil.init();
         appMPublisher = new APPMPublisherRestClient(ApplicationInitializingUtil.publisherURLHttp);
-        webAppId = createWebAPP(appPrefix);
+        webAppId = createWebApp(appPrefix);
 
         appName = appProp.getAppName() + appPrefix;
         version = appProp.getVersion();
@@ -131,7 +130,7 @@ public class publishToExternalStoreTestCase extends APPManagerIntegrationTest {
     private void addExternalStoreConfiguration() throws Exception {
         String externalStoreConfig = "external-app-stores.xml";
         String renamedExternalStoreCofing = "external-app-stores_default.xml";
-        String externalStoreConfigPath = ROOT_REG_PATH + "externalstores/";
+        String externalStoreConfigPath = ROOT_REG_PATH + "applicationdata/";
 
         // rename the default external-app-stores.xml to external-app-stores_default.xml
         // then add the new external-app-stores.xml from configFiles/external-app-stores.xml to registry
@@ -170,7 +169,7 @@ public class publishToExternalStoreTestCase extends APPManagerIntegrationTest {
      * @return
      * @throws Exception
      */
-    private String createWebAPP(String appPrefix) throws Exception {
+    private String createWebApp(String appPrefix) throws Exception {
         appMPublisher.restLogin(username, password);
         AppCreateRequest appCreateRequest = baseUtil.createBasicAppRequest(appPrefix, appMPublisher);
         String uuid = baseUtil.createWebApp(appCreateRequest, appMPublisher);

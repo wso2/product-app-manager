@@ -23,15 +23,15 @@ var tenantedStorageEndpoint = '/{context}/t/{domain}/storage/{type}/{id}/{uuid}/
 var storageEndpoint = '/{context}/storage/{type}/{id}/{uuid}/{fileName}';
 var matchedElements;
 
-var store=require('/modules/store.js').storeManagers(request,session);
+var store = require('/modules/store.js').storeManagers(request, session);
 
 if (uriMatcher.match(tenantedStorageEndpoint)) {
     matchedElements = uriMatcher.elements();
     tenantId = obtainTenantIdByRequest(matchedElements);
-} else if(uriMatcher.match(storageEndpoint)){
+} else if (uriMatcher.match(storageEndpoint)) {
     matchedElements = uriMatcher.elements();
 }
-var store=require('/modules/store.js').storeManagers(request,session, tenantId);
+var store = require('/modules/store.js').storeManagers(request, session, tenantId);
 
 var storageSecurityProvider = store.storageSecurityProvider;
 
@@ -45,7 +45,6 @@ var storageManager = new storageModule.StorageManager({
 
 var value = {};
 if (matchedElements) {
-
     handleResourceRequest(matchedElements);
 }
 else {

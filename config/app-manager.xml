@@ -354,36 +354,7 @@
         -->
         <EnableUnlimitedTier>true</EnableUnlimitedTier>
     </TierManagement>
-
-    <!--
-        Use this configuration to control the self-sign-up capability in API store.
-    -->
-    <SelfSignUp>
-        <!--
-            Enable or disable the self-sign-up feature.
-        -->
-        <Enabled>true</Enabled>
-
-        <!--
-            Self signed up users should be associated with a suitable subscriber
-            role for them to be able to access the API store portal. This required
-            parameter specifies which role should be used for that purpose. The role
-            specified here must have the '/permission/admin/manage/api/subscribe'
-            permission.
-        -->
-        <SubscriberRoleName>internal/subscriber</SubscriberRoleName>
-
-        <!--
-            This parameter specifies whether the subscriber role specified above
-            should be created in the local user store or not. This only makes sense
-            when the API subscribers are authenticated against the local user store.
-            That is the local Carbon server is acting as the AuthManager. If a remote
-            Carbon server is acting as the AuthManager, this parameter should be turned
-            off for the local server.
-        -->
-        <CreateSubscriberRole>true</CreateSubscriberRole>
-    </SelfSignUp>
-
+    
     <!--
         Use this configuration to control the number of APIs shown in API store.
     -->

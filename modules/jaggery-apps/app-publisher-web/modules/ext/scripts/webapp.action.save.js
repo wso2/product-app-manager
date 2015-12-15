@@ -19,6 +19,7 @@ var meta = {
 var module = function () {
 
     var configs = require('/config/publisher.json');
+    var dataConfigs = require('/config/publisher.js').config();
     var log = new Log();
 
 	function trim (str) {
@@ -174,7 +175,16 @@ var module = function () {
 
             //Export the model to an asset
             var asset = context.parent.export('asset.exporter');
-
+            //set sso details
+            var idpProviderUrl = dataConfigs.ssoConfiguration.identityProviderURL;
+            var ssoEnabled = dataConfigs.ssoConfiguration.enabled;
+            asset.attributes.sso_idpProviderUrl = idpProviderUrl;
+            asset.attributes.sso_saml2SsoIssuer = saml2SsoIssuer;
+            if(ssoEnabled) {
+                asset.attributes.sso_singleSignOn = "Enabled";
+            } else {
+                asset.attributes.sso_singleSignOn = "Disabled";
+            }
 
             var appOwner = (asset.attributes.overview_appOwner).trim();
             if (appOwner.length == 0) {

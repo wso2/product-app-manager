@@ -94,4 +94,34 @@ var getActiveTenantDomains=function(){
     }
 
 };
+
+var isTenantActive = function (tenantDomain) {
+    var isActive = false,
+            log = new Log(),
+            store = jagg.module("manager").getAPIStoreObj();
+
+    try {
+        if (log.isDebugEnabled()) {
+            log.debug("Check isTenantActive for tenant : " + tenantDomain);
+        }
+        isActive = store.isTenantActive(tenantDomain);
+
+        if (log.isDebugEnabled()) {
+            log.debug("isTenantActive : " + isActive);
+        }
+
+        return {
+            error: false,
+            active: isActive
+        };
+    } catch (e) {
+        log.error("Error when check the activeness of tenant  :" + tenantDomain + "," + e.message);
+        return {
+            error: true,
+            active: null,
+            message: e.message
+        };
+    }
+
+};
 %>

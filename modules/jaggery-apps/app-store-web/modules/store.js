@@ -24,10 +24,6 @@ var RESOURCE_TYPE_MOBILEAPP = 'mobileapp';
 
 var log = new Log();
 
-var isUserDomainAndUrlDomainDifferent = function(domain, urlTenantId, tenantId) {
-    return ((domain) && (tenantId !== urlTenantId));
-};
-
 var isUserTenantIdDifferFromUrlTenantId = function(userTenantId, urlTenantId) {
 
     if(urlTenantId && (userTenantId !== urlTenantId)){
@@ -181,6 +177,9 @@ var store = function (o, session) {
 
     tenantId = (o instanceof Request) ? server.tenant(o, session).tenantId : o;
     user = server.current(session);
+
+    //Check for logged-in user. If there is a logged-in user, then check whether the user is requesting to load
+    //the anonymous tenant registry of an another tenant
     if (user && !isUserTenantIdDifferFromUrlTenantId(user.tenantId, tenantId)) {
         store = session.get(TENANT_STORE);
         if (cached && store) {
@@ -592,7 +591,9 @@ Store.prototype.asset = function (type, aid) {
      }*/
 
     var asset = this.assetManager(type).get(aid);
-    asset.rating = this.rating(asset.path);
+    if(asset) {
+        asset.rating = this.rating(asset.path);
+    }
     return asset;
 };
 
@@ -1072,7 +1073,7 @@ var exec = function (fn, request, response, session) {
 
     //Determine if the tenant domain was not resolved
     if(tenantId===-1){
-        response.sendError(404, 'Tenant:' + tenantDetails.domain + ' not registered');
+        response.sendError(404, 'Tenant:' + tenant.domain + ' not registered');
         return;
     }
 

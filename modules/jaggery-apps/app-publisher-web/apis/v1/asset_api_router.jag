@@ -17,6 +17,7 @@ include("/extensions/webapp/modules/jagg/jagg.jag");
 require('/modules/publisher.js').exec(function(ctx) {
 
     var config = require('/config/publisher.json');
+    var dataConfigs = require('/config/publisher.js').config();
     var caramel = require('caramel');
     var apiProvider = jagg.module('manager').getAPIProviderObj();
     var router = require('/modules/router-g.js').router();
@@ -534,6 +535,27 @@ require('/modules/publisher.js').exec(function(ctx) {
             artifact.attributes["overview_appTenant"] = appTenant;
             artifact.attributes["overview_advertiseOnly"] = isAdvertiseOnly;
 
+
+            var tenantId = server.current(session).tenantId;
+            var tenantDomain = carbon.server.tenantDomain({tenantId:tenantId});
+            var saml2SsoIssuer = null;
+            if (tenantId == -1234) {
+                  saml2SsoIssuer = artifact.attributes["overview_name"] + "-" + artifact.attributes["overview_version"];
+            } else {
+                  saml2SsoIssuer = artifact.attributes["overview_name"] + "-" + tenantDomain + "-" + artifact.attributes["overview_version"];
+            }
+            // update sso detail
+            var idpProviderUrl = dataConfigs.ssoConfiguration.identityProviderURL;
+            var ssoEnabled = dataConfigs.ssoConfiguration.enabled;
+            artifact.attributes["sso_idpProviderUrl"] = idpProviderUrl;
+            artifact.attributes["sso_saml2SsoIssuer"] = saml2SsoIssuer;
+            if (ssoEnabled) {
+                artifact.attributes["sso_singleSignOn"] = "Enabled";
+            } else {
+                artifact.attributes["sso_singleSignOn"] = "Disabled";
+            }
+
+
             var index = 0;
             var uritemplate = "uritemplate_urlPattern" + index;
 
@@ -575,21 +597,11 @@ require('/modules/publisher.js').exec(function(ctx) {
             var appMDAO = Packages.org.wso2.carbon.appmgt.impl.dao.AppMDAO;
             var appMDAOObj = new appMDAO();
 
-	    var tenantId = server.current(session).tenantId;
-
             appMDAOObj.updateOAuthAPIAccessInfo(webAppObj, tenantId);
 
             var count = 1;
             var tokenEndpoint = attributes["oauthapis_apiTokenEndpoint" + count];
 
-	    var tenantId = server.current(session).tenantId;
-	    var tenantDomain = carbon.server.tenantDomain({tenantId:tenantId});
-	    var saml2SsoIssuer = null;
-	    if (tenantId == -1234) {
-		saml2SsoIssuer = attributes["overview_name"] + "-" + attributes["overview_version"];
-	    } else {
-		saml2SsoIssuer = attributes["overview_name"] + "-" + tenantDomain + "-" + attributes["overview_version"];
-	    }
 
             while (tokenEndpoint != null && tokenEndpoint.trim().length > 0) {
 
