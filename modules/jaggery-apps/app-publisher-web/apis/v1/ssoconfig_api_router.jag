@@ -82,12 +82,13 @@ require('/modules/publisher.js').exec(function(ctx) {
         var webApp = new WebAppModel(appId);
         webApp.setAcsURL(params.app_acsURL);
         var ssoProvider = new SSOProvider();
-        var app_provider = params.app_provider;
-        var result = null;
         var store = jagg.module("manager").getAPIStoreObj();
 
         var tenantDomain = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantDomain();
         var tenantIdVal = Packages.org.wso2.carbon.context.CarbonContext.getThreadLocalCarbonContext().getTenantId();
+
+        ssoProvider.setProviderName(params.provider.split("-")[0]);
+        ssoProvider.setProviderVersion(params.provider.split("-")[1]);
 
         if (tenantIdVal != '-1234') {
             ssoProvider.setIssuerName(params.app_name + "-" + tenantDomain + "-" + params.app_verison);
