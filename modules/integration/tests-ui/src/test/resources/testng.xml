@@ -32,6 +32,8 @@
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.RetrieveAppPropertyTestCase"/>
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.RetrieveSubscribedUsersTestCase"/>
             <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.RetrieveUserAppsTestCase"/>
+            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.publishToExternalStoreTestCase"/>
+            <class name="org.wso2.carbon.appmanager.integration.ui.TestCases.TenantsAppSubscriptionTestCase"/>
 
 
             <!--This test case is not run with default APP manager integration tests. To run this test we assume that
