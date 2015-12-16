@@ -41,7 +41,7 @@ require('/modules/store.js').exec(function (ctx) {
             store = ctx.store,
             user = ctx.user,
             server = ctx.server,
-            tenantId = ctx.tenantId,
+            tenantId = ctx.tenant.tenantId,
             tenantDomain = ctx.tenant.domain,
             configs = ctx.configs,
             site = ctx.site,

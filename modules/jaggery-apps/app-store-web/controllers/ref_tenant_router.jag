@@ -32,7 +32,6 @@ var storeLogin = store + 'login';
 var path;
 var log = new Log();
 
-
 var mapper = function (path) {
     return function () {
         return path;

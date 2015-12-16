@@ -48,7 +48,7 @@ import static org.testng.Assert.assertTrue;
  * 3. pushToExternalStores -> publish the web app to external store
  * 4. removeFromExternalStores -> remove the published webapp from external store
  */
-public class publishToExternalStoreTestCase extends APPManagerIntegrationTest {
+public class PublishToExternalStoreTestCase extends APPManagerIntegrationTest {
     private String username;
     private String password;
     private String appName;

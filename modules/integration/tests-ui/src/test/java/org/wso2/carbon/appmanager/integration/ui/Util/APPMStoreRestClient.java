@@ -25,6 +25,7 @@ import org.wso2.carbon.appmanager.integration.ui.Util.Bean.SubscriptionRequest;
 import org.wso2.carbon.automation.core.utils.HttpRequestUtil;
 import org.wso2.carbon.automation.core.utils.HttpResponse;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,7 +53,8 @@ public class APPMStoreRestClient {
 	public HttpResponse login(String userName, String password)
 			throws Exception {
 
-		this.requestHeaders.put("Content-Type", "application/json");
+		requestHeaders.clear();
+		requestHeaders.put("Content-Type", "application/json");
 		HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
 				+ "/store/apis/user/login"), "{\"username\":" + "\"" + userName
 				+ "\"" + ",\"password\":" + "\"" + password + "\"" + "}",
@@ -76,6 +78,41 @@ public class APPMStoreRestClient {
 		} else {
 			System.out.println(response);
 			throw new Exception("User Login failed> " + response.getData());
+		}
+
+	}
+
+	/**
+	 * Self sign-up from App Store
+	 * @param username
+	 * @param password
+	 * @return
+	 * @throws Exception
+	 */
+	public HttpResponse selfSignUp(String username, String password) throws Exception {
+		this.requestHeaders.put("Content-Type", "application/json");
+		HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
+						+ "/store/apis/user/register"), "{\"username\":" + "\"" + username
+						+ "\"" + ",\"password\":" + "\"" + password + "\"" + "}",
+				requestHeaders);
+
+		/*
+		 * On Success {"error" : false, "message" : User storeUser <username> has been successfully added} status code 200 On
+		 * Failure {"error" : true, "message" : <error-message>} status code 200
+		 */
+		if (response.getResponseCode() == 200) {
+
+			// if error == true this will return an exception then test fail!
+			VerificationUtil.checkErrors(response);
+
+			session = getSession(response.getHeaders());
+			if (session == null) {
+				throw new Exception("No session cookie found with response");
+			}
+			setSession(session);
+			return response;
+		} else {
+			throw new Exception("User Registration failed > " + response.getData());
 		}
 
 	}
@@ -187,41 +224,6 @@ public class APPMStoreRestClient {
             throw new Exception("Retrieve User Subscribed Apps failed. " + response.getData());
         }
     }
-
-    /**
-	 * register new user
-	 * 
-	 * @param userName
-	 * @param password
-	 * @return
-	 * @throws Exception
-	 */
-	public HttpResponse register(String userName, String password)
-			throws Exception {
-
-		HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
-				+ "/store/apis/user/register"), "{\"username\":" + "\""
-				+ userName + "\"" + ",\"password\":" + "\"" + password + "\""
-				+ "}", requestHeaders);
-
-		if (response.getResponseCode() == 200) {
-
-			// if error == true this will return an exception then test fail!
-			VerificationUtil.checkErrors(response);
-
-			String session = getSession(response.getHeaders());
-			if (session == null) {
-				throw new Exception("No session cookie found with response");
-			}
-			setSession(session);
-			return response;
-		} else {
-			System.out.println(response);
-			throw new Exception("User registration failed> "
-					+ response.getData());
-		}
-
-	}
 
 	/**
 	 * return all the tags related to the user

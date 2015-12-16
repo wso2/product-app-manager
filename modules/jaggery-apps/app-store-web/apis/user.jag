@@ -14,10 +14,10 @@ require('/modules/store.js').exec(function (ctx) {
             matcher = new URIMatcher(request.getRequestURI()),
             userDetails={},
             parameters;
-  
 
-   var authenticator=new AuthService.Authenticator();
-   authenticator.init(jagg,session);
+
+    var authenticator = new AuthService.Authenticator();
+    authenticator.init(jagg, session);
 
     if (matcher.match('/{context}/apis/user/{action}')) {
         action = matcher.elements().action;
@@ -35,27 +35,20 @@ require('/modules/store.js').exec(function (ctx) {
                         if(!isSubscriberRoleAttached.error){
                             log.debug('Authenticating User : '+data.username);
 
-
-
                             var tenant = ctx.tenant;
                             //parameters=request.getAllParameters();
-                            userDetails['username']=data.username;
-                            userDetails['password']=data.password;
-                            userDetails['tenantId']=tenant;
-                            userDetails['action']="login";
-                            authResult=authenticator.login(userDetails);
+                            userDetails['username'] = data.username;
+                            userDetails['password'] = data.password;
+                            userDetails['tenantId'] = tenant;
+                            userDetails['action'] = "login";
+                            authenticator.login(userDetails);
+                            message = 'User ' + data.username + ' successfully logged in';
 
                         }else{
-
-                            error=true;
+                            error = true;
                             isPermitted = false;
                         }
                     }
-
-
-                    <!--}else{-->
-                        <!--error=true;-->
-                    <!--}-->
 
                     if (error) {
                         //If user does not have subscriber permission, return error message
@@ -105,10 +98,12 @@ require('/modules/store.js').exec(function (ctx) {
                         storeHostObj.addUser(data.username, data.password);
                         var isSubscriberRolePresent = storeHostObj.checkIfSubscriberRoleAttached(data.username);
 
+                        showWorkflowTip = false;
                         //Check Whether the user has subscriber privileges to login
                         if (isSubscriberRolePresent.error) {
                             showWorkflowTip = true;
                         }
+                        message = 'User ' + data.username + ' has been successfully added';
                     }
 
                 } catch (e) {

@@ -13,7 +13,7 @@ require('/modules/store.js').exec(function (ctx) {
         sort = encodeURIComponent(request.getParameter('sort')),
         paging = store.assetsPaging(request);
     if (matcher.match('/{context}/apis/assets/{type}/paging') || matcher.match('/{context}/apis/assets/{type}')
-    || matcher.match('/context/t/{domain}/apis/assets/{type}/paging')) {
+        || matcher.match('/context/t/{domain}/apis/assets/{type}/paging')) {
         type = matcher.elements().type;
         if (tag) {
             assets = store.tagged(type, tag, paging);
