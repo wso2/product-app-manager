@@ -27,7 +27,8 @@
     },
 
     "pagination": {
-        "PAGE_SIZE" : 12
+        "PAGE_SIZE" : 12,
+        "TOP_ASSET_PAGE_SIZE" : 8
     },
   "permissions": {
     "webapp_subscribe": "/permission/admin/manage/webapp/subscribe",

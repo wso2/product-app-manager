@@ -115,7 +115,7 @@ require('/modules/store.js').exec(function (ctx) {
         } else if (tag) {
             assets = store.tagged(type, tag, paging);
         } else {
-            assets = store.assets(type, paging);
+            assets = store.recentAssets(type, store.getTopAssetPageSize());
         }
 
 
