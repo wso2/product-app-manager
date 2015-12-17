@@ -260,10 +260,17 @@ Store.prototype.assetsPageSize = function () {
     return configs()[ASSETS_PAGE_SIZE];
 };
 
-Store.prototype.getPageSize = function () {
+Store.prototype.getStoreJsConfig = function () {
     var config  = require('/config/store.js').config();
-    var log = new Log();
-    return config.pagination.PAGE_SIZE;
+    return config;
+};
+
+Store.prototype.getPageSize = function () {
+    return this.getStoreJsConfig().pagination.PAGE_SIZE;
+};
+
+Store.prototype.getTopAssetPageSize = function () {
+    return this.getStoreJsConfig().pagination.TOP_ASSET_PAGE_SIZE;
 };
 
 Store.prototype.commentsPageSize = function () {
