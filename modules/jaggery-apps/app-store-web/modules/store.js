@@ -260,17 +260,17 @@ Store.prototype.assetsPageSize = function () {
     return configs()[ASSETS_PAGE_SIZE];
 };
 
-Store.prototype.getStoreJsConfig = function () {
+Store.prototype.getStoreConfig = function () {
     var config  = require('/config/store.js').config();
     return config;
 };
 
 Store.prototype.getPageSize = function () {
-    return this.getStoreJsConfig().pagination.PAGE_SIZE;
+    return this.getStoreConfig().pagination.PAGE_SIZE;
 };
 
 Store.prototype.getTopAssetPageSize = function () {
-    return this.getStoreJsConfig().pagination.TOP_ASSET_PAGE_SIZE;
+    return this.getStoreConfig().pagination.TOP_ASSET_PAGE_SIZE;
 };
 
 Store.prototype.commentsPageSize = function () {
