@@ -1,5 +1,6 @@
 $(".btn-action" ).click(function(e) {
-$(this).hide(); //to avoid user from click again before the operation proceeds
+var parent = $(this).parent();
+$(parent).children().attr('disabled', true);
 var app = $(this).data("app");
 var provider = $(this).data("provider");
 var name = $(this).data("name");
@@ -14,15 +15,19 @@ var action = $(this).data("action");
             "Please remove this app from external stores before " +action;
         var head = action +"Asset";
         showMessageModel(msg, head, "webapp");
+        $(parent).children().attr('disabled', false);
         return false;
     }
     if (action == "Reject") {
         showCommentModel("Reason for Rejection", action, app);
+        $(parent).children().attr('disabled', false);
     } else {
+        $(this).hide(); //to avoid user from click again before the operation proceeds
         jQuery.ajax({
             url: '/publisher/api/lifecycle/' + action + '/webapp/' + app,
             type: "PUT",
-            success: function(msg){ 
+            success: function(msg){
+                        $(parent).children().attr('disabled', false);
                         location.reload();
                      }
         });
@@ -31,7 +36,6 @@ var action = $(this).data("action");
     // Stop even propagation since it would trigger the click event listeners for the table rows.
     e.stopPropagation();
 });
-
 
 $( ".btn-reject-proceed" ).click(function() {
     var comment = $("#commentText").val();
