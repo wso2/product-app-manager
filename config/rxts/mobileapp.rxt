@@ -3,6 +3,7 @@
               hasNamespace="false" iconSet="10">
     <storagePath>/mobileapps/@{overview_provider}/@{overview_platform}/@{overview_name}/@{overview_version}</storagePath>
     <nameAttribute>overview_name</nameAttribute>
+    <lifecycle>MobileAppLifeCycle</lifecycle>
     <ui>
         <list>
             <column name="Provider">

@@ -3,6 +3,7 @@
 	<storagePath>/appmgt/applicationdata/provider/@{overview_provider}/@{overview_name}/@{overview_version}/webapp</storagePath>
 	<!--storagePath>/gadgets/@{overview_provider}/@{overview_name}/@{overview_version}</storagePath-->
 	<nameAttribute>overview_name</nameAttribute>
+	<lifecycle>WebAppLifeCycle</lifecycle>
 	<ui>
         <list>
             <column name="Provider">
