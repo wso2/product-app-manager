@@ -213,6 +213,12 @@ var assetManager = function (type, reg) {
 var configs = function (tenantId) {
     var server = require('store').server,
         registry = server.systemRegistry(tenantId);
+    if (!registry.exists(STORE_CONFIG_PATH)) {
+        registry.put(STORE_CONFIG_PATH, {
+            content: JSON.stringify(config),
+            mediaType: 'application/json'
+        });
+    }
     return JSON.parse(registry.content(STORE_CONFIG_PATH));
 };
 
