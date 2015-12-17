@@ -211,6 +211,7 @@ var assetManager = function (type, reg) {
 };
 
 var configs = function (tenantId) {
+    var config = require('/config/store-tenant.json');
     var server = require('store').server,
         registry = server.systemRegistry(tenantId);
     if (!registry.exists(STORE_CONFIG_PATH)) {
