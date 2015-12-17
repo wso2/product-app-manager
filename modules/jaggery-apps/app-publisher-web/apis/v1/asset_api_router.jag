@@ -538,6 +538,14 @@ require('/modules/publisher.js').exec(function(ctx) {
 
             var tenantId = server.current(session).tenantId;
             var tenantDomain = carbon.server.tenantDomain({tenantId:tenantId});
+            var subscriptionAvailability = (artifact.attributes["overview_subscriptionAvailability"]).trim();
+            if(subscriptionAvailability == "current_tenant") {
+                artifact.attributes["overview_tenants"] = tenantDomain;
+            }
+
+            if(subscriptionAvailability == "all_tenants") {
+                artifact.attributes["overview_tenants"] = "";
+            }
             var saml2SsoIssuer = null;
             if (tenantId == -1234) {
                   saml2SsoIssuer = artifact.attributes["overview_name"] + "-" + artifact.attributes["overview_version"];

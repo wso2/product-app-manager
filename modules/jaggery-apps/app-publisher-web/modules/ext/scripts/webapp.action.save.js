@@ -200,6 +200,14 @@ var module = function () {
                 asset.attributes.overview_advertiseOnly = "false";
             }
 
+            var subscriptionAvailability = (asset.attributes.overview_subscriptionAvailability).trim();
+            if(subscriptionAvailability == "current_tenant") {
+                asset.attributes.overview_tenants = tenantDomain;
+            }
+
+            if(subscriptionAvailability == "all_tenants") {
+                asset.attributes.overview_tenants = "";
+            }
 
             log.debug('Finished exporting model to an artifact');
 
