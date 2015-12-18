@@ -3,7 +3,10 @@ var a;
 include('/extensions/assets/webapp/modules/jagg/jagg.jag');
 var manager = jagg.module("manager");
 var tenantDomains = manager.getActiveTenantDomains().tenantDomains;
-
+var caramel = require('caramel'),
+        contextPath = caramel.configs().context,
+        reversProxyEnabled = caramel.configs().reverseProxyEnabled,
+        reverseProxyHost = caramel.configs().reverseProxyHost;
 if (Array.isArray(tenantDomains) && (tenantDomains.length > 1)) {
     require('/modules/store.js').exec(function (ctx) {
         var PAGE_SIZE = 10;
@@ -16,7 +19,6 @@ if (Array.isArray(tenantDomains) && (tenantDomains.length > 1)) {
             stores.push(tenantDomains[i]);
         }
 
-        var caramel = require('caramel');
         caramel.render({
             title: 'Stores | WSO2 Enterprise Store',
             user: ctx.user,
@@ -31,7 +33,11 @@ if (Array.isArray(tenantDomains) && (tenantDomains.length > 1)) {
         });
     }, request, response, session);
 } else {
-    response.sendRedirect(caramel.configs().context + "/assets/");
+    var redirectURl = contextPath + '/login';
+    if (reversProxyEnabled) {
+        redirectURl = reverseProxyHost + redirectURl;
+    }
+    response.sendRedirect(redirectURl + "/assets/");
 }
 
 %>

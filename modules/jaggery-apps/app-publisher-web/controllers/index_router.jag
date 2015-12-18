@@ -10,11 +10,22 @@ var config = require('/config/publisher.json');
 var server = require('store').server;
 var gadgetCount = 0,
         siteCount = 0;
-var contextPath = caramel.configs().context;
+var caramel = require('caramel'),
+    contextPath = caramel.configs().context,
+    reversProxyEnabled = caramel.configs().reverseProxyEnabled,
+    reverseProxyHost = caramel.configs().reverseProxyHost;
 
 if (server.current(session) == null) {
-    response.sendRedirect(contextPath +'/login');
+    var redirectURl = contextPath + '/login';
+    if (reversProxyEnabled) {
+        redirectURl = reverseProxyHost + redirectURl;
+    }
+    response.sendRedirect(redirectURl);
 } else {
-    response.sendRedirect(contextPath + '/assets/webapp/');
+    var redirectURl = contextPath + '/assets/webapp/';
+    if (reversProxyEnabled) {
+        redirectURl = reverseProxyHost + redirectURl;
+    }
+    response.sendRedirect(redirectURl);
 }
 %>
