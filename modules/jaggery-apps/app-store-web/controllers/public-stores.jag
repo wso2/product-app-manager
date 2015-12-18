@@ -33,11 +33,11 @@ if (Array.isArray(tenantDomains) && (tenantDomains.length > 1)) {
         });
     }, request, response, session);
 } else {
-    var redirectURl = contextPath + '/login';
+    var redirectURl = contextPath + '/assets/';
     if (reversProxyEnabled) {
         redirectURl = reverseProxyHost + redirectURl;
     }
-    response.sendRedirect(redirectURl + "/assets/");
+    response.sendRedirect(redirectURl);
 }
 
 %>
