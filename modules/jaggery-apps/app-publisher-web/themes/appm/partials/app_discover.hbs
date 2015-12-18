@@ -136,17 +136,17 @@
             <nav>
                 <ul class="pagination col-sm-12 pull-right push-15">
                     {{#if sessionData.nav.leftNavEnabled}}
-                        <li><a href="/publisher/assets/discover/webapp/?page={{sessionData.nav.leftNav}}"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>
+                        <li><a href="{{url "/assets/discover/webapp/?page="}}{{sessionData.nav.leftNav}}"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>
                     {{/if}}
                     {{#each sessionData.nav.pageIndices}}
                         {{#if this.isDisabled}}
                             <li class="disabled"><a>{{this.index}}</a></li>
                         {{else}}
-                            <li><a href="/publisher/assets/discover/webapp/?page={{this.index}}">{{this.index}}</a></li>
+                            <li><a href="{{url "/assets/discover/webapp/?page="}}{{this.index}}">{{this.index}}</a></li>
                         {{/if}}
                     {{/each}}
                     {{#if sessionData.nav.rightNavEnabled}}
-                        <li><a href="/publisher/assets/discover/webapp/?page={{sessionData.nav.rightNav}}"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>
+                        <li><a href="{{url "/assets/discover/webapp/?page="}}{{sessionData.nav.rightNav}}"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>
                     {{/if}}
                 </ul>
             </nav>

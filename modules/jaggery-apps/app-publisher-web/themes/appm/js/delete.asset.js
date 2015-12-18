@@ -33,7 +33,7 @@ $('.btn-delete').on('click', function(e) {
              var confirmDel = confirm("Are you sure you want to delete this app?");
             if (confirmDel == true) {
                 $.ajax({
-                    url: '/publisher/api/asset/delete/' + type + '/' + id,
+                    url: caramel.context + '/api/asset/delete/' + type + '/' + id,
                     type: 'POST',
                     contentType: 'application/json',
                     success: function(response) {
@@ -62,7 +62,7 @@ $('.btn-delete').on('click', function(e) {
 		$('#messageModal2 a.btn-other').html('OK');
 		$('#messageModal2').modal();
 		$("#messageModal2").on('hidden.bs.modal', function(){
-			window.location = '/publisher/assets/' + type + '/';
+			window.location = caramel.context + '/assets/' + type + '/';
 		});
 		
 	};
@@ -72,7 +72,7 @@ function isExistInExternalStore(provider, name, version) {
     var publishedInExternalStores = false;
     $.ajax({
         async: false,
-        url: '/publisher/api/asset/get/external/stores/webapp/' + provider + '/' + name + '/' + version,
+        url: caramel.context + '/api/asset/get/external/stores/webapp/' + provider + '/' + name + '/' + version,
         type: 'GET',
         processData: true,
         success: function (response) {

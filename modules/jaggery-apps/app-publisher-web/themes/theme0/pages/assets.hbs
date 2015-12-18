@@ -5,7 +5,7 @@
 	</head>
 	<body>
 		<legend>{{shortName}} 
-			<a href='/publisher/asset/{{shortName}}' class="btn btn-primary">Add</a>
+			<a href='{{url "/asset/"}}{{shortName}}' class="btn btn-primary">Add</a>
 		</legend>
 
 		<table class="table table-bordered">
@@ -23,7 +23,7 @@
 					<td>{{this.id}}</td>
 					<td>{{this.attributes.overview_name}}</td>
 					<td>
-						<a href='/publisher/asset/{{../shortName}}/{{this.id}}'>View</a>
+						<a href='{{url "/asset/"}}{{../shortName}}/{{this.id}}'>View</a>
 					</td>
 				</tr>
 				{{else}}

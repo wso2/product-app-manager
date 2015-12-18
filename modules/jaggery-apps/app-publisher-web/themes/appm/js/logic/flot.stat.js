@@ -19,7 +19,7 @@ function drawGraphs() {
     $.ajax({
         /* Web Application Last Access Time Graph */
         async: false,
-        url: '/publisher/api/assets/' + operation + '/' + type + '/' + action
+        url:  caramel.context + '/api/assets/' + operation + '/' + type + '/' + action
             + '/',
         type: 'POST',
         data: {
@@ -268,7 +268,7 @@ var drawSubscriberCountByAPIs = function (response) {
 
                         if ("V " + parsedResponse[val][1][j][0] == d.data.itemLabel) {
 
-                            document.location.href = "/publisher/asset/webapp/" + parsedResponse[val][1][j][2];
+                            document.location.href =  caramel.context + "/asset/webapp/" + parsedResponse[val][1][j][2];
                         }
                     }
                 });

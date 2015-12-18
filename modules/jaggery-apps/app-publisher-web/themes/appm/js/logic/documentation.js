@@ -263,7 +263,7 @@ var removeDocumentation = function (provider, apiName, version, docName, docType
     $('#messageModal a.btn-other').html('No');
     $('#messageModal a.btn-primary').click(function() {
 	    $.ajax({
-	    	url : '/publisher/api/doc?action=removeDocumentation',
+	    	url :  caramel.context + '/api/doc?action=removeDocumentation',
 	 		type:'POST',
 	 		data :{'provider':provider,'apiName':apiName,'version':version,'docName':docName,'docType':docType},
 	 		success : function(response) {
@@ -297,7 +297,7 @@ var removeDocumentation = function (provider, apiName, version, docName, docType
 
 var editInlineContent = function (artifactID, type, docName, mode,tenantDomain) {
    
-	window.open("/publisher/webapp/doc/inline?" + type + "&" + artifactID + "&" + docName + "&" +  mode+ "&" +tenantDomain);
+	window.open( caramel.context + "/webapp/doc/inline?" + type + "&" + artifactID + "&" + docName + "&" +  mode+ "&" +tenantDomain);
 
 };
 

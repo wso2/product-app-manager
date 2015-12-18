@@ -184,7 +184,7 @@
                                 {{/if}}
                                 <div class="row">
                                     <div class="col-md-2 col-md-offset-5">
-                                     <img id="spinner" src="/publisher/themes/appm/img/preloader-40x40.gif"  width="50" height="50" style="display: none">
+                                     <img id="spinner" src="{{url "/themes/appm/img/preloader-40x40.gif"}}"  width="50" height="50" style="display: none">
                                     </div>
                                 </div>
                             </div>
@@ -230,7 +230,7 @@
                         </div>
 
 
-                        <form id="addNewDoc" enctype="multipart/form-data"  action="/publisher/api/doc" method="POST">
+                        <form id="addNewDoc" enctype="multipart/form-data"  action="{{url "/api/doc"}}" method="POST">
                             <div class="container-fluid">
                                 <div class="row-fluid" id="newDoc" style="display: none;">
                                     <div class="col-md-12 name-column">

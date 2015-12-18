@@ -80,7 +80,7 @@ $(document).ready(function() {
 
 		//alert('id: '+assetId+' version: '+userProvidedVersion);
 
-		var path = '/publisher/api/version/' + assetType + '/' + assetId;
+		var path = caramel.context + '/api/version/' + assetType + '/' + assetId;
 
 		//Make a call an obtain the existing asset versions
 		$.ajax({
@@ -151,7 +151,7 @@ $(document).ready(function() {
 	 @newVersion: The new version of the asset to be created
 	 */
 	function createNewVersion(newVersion, assetId, assetType) {
-		var path = '/publisher/api/version/' + assetType + '/' + assetId + '/' + newVersion;
+		var path = caramel.context + '/api/version/' + assetType + '/' + assetId + '/' + newVersion;
 
 		$.ajax({
 			url : path,
@@ -238,7 +238,7 @@ $(document).ready(function() {
 			}
 
 			if (searchAssetString != "") {
-				var link = '/publisher/assets/' + searchPrefix + '/?query=' + searchAssetString;
+				var link = caramel.context + 'assets/' + searchPrefix + '/?query=' + searchAssetString;
 				window.location = link;
 			}
 		} else {

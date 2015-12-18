@@ -10,12 +10,12 @@ $(function(){
 	
 		//TODO: Replace with caramel client
 		$.ajax({
-			url:'/publisher/asset/'+type+'/'+id,
+			url: caramel.context + '/asset/' + type + '/' + id,
 			type:'DELETE',
 			success:function(response){
 //				alert('asset deleted');
 
-				window.location='/publisher/assets/'+type+'/';
+				window.location = caramel.context + '/assets/' + type + '/';
 			},
 			error:function(response){
 				alert('Failed to delete asset.');

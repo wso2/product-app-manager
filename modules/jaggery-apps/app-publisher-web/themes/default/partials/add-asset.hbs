@@ -38,7 +38,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="widget-content">
-                    <form  class="form-horizontal" id="form-asset-create" action="/publisher/asset/gadget" method="POST" enctype="multipart/form-data">
+                    <form  class="form-horizontal" id="form-asset-create" action="{{url "/asset/gadget"}}" method="POST" enctype="multipart/form-data">
                         {{#each data.fields}}
                         <div class="control-group">
                             <b><label class="control-label">{{this.label}} 

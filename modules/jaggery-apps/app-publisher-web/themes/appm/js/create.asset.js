@@ -20,12 +20,12 @@ $(function(){
 			});
 
 			$.ajax({
-				url:'/publisher/asset/'+type,
+				url:caramel.context + '/asset/'+type,
 				type:'POST',
 				data: data,
 				success:function(response){
 					alert('asset added.');
-					window.location='/publisher/assets/'+type+'/';
+					window.location = caramel.context + '/assets/' + type + '/';
 				},
 				error:function(response){
 					alert('Failed to add asset.');

@@ -12,7 +12,7 @@ $(function() {
 
 	$.ajax({
 		/*  Web Application Last Access Time Graph  */
-		url : '/publisher/api/assets/' + operation + '/' + type + '/' + action + '/' ,
+		url : caramel.context + '/api/assets/' + operation + '/' + type + '/' + action + '/' ,
 		type : 'POST',
 		data : {
 			'startDate' : from,
@@ -28,7 +28,7 @@ $(function() {
 
 	$.ajax({
 		/* Overall Web Application Usage Graph */
-		url : '/publisher/api/assets/' + operation + '/' + type + '/getProviderAPIUsage/',
+		url : caramel.context + '/api/assets/' + operation + '/' + type + '/getProviderAPIUsage/',
 		type : 'POST',
 		data : {
 			'startDate' : from,
@@ -86,7 +86,7 @@ var onDateSelected = function(from, to) {
 	var type = comps[comps.length - 2];
 	var operation = comps[comps.length - 3];
 	$.ajax({
-		url : '/publisher/api/assets/' + operation + '/' + type + '/',
+		url : caramel.context + '/api/assets/' + operation + '/' + type + '/',
 		type : 'POST',
 		data : {
 			'startDate' : from,

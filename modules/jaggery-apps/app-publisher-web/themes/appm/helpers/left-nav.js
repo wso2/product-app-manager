@@ -62,13 +62,13 @@ var generateLeftNavJson = function(data, listPartial) {
                             name: "Edit",
                             iconClass: "icon-edit",
                             additionalClasses: (listPartial == "edit-asset" ) ? "active" : null,
-                            url: "/publisher/asset/operations/edit/" + data.shortName + "/" + data.artifact.id + ""
+                            url: caramel.context + "/asset/operations/edit/" + data.shortName + "/" + data.artifact.id + ""
                         },
                         {
                             name: "Create New Version",
                             iconClass: "icon-file",
                             additionalClasses: (listPartial == "copy-app" ) ? "active" : null,
-                            url: "/publisher/asset/operations/copyapp/" + data.shortName + "/" + data.artifact.id + ""
+                            url: caramel.context + "/asset/operations/copyapp/" + data.shortName + "/" + data.artifact.id + ""
                         }
                     ]
                 };
@@ -79,7 +79,7 @@ var generateLeftNavJson = function(data, listPartial) {
                             name: "Create New Version",
                             iconClass: "icon-file",
                             additionalClasses: (listPartial == "copy-app" ) ? "active" : null,
-                            url: "/publisher/asset/operations/copyapp/" + data.shortName + "/" + data.artifact.id + ""
+                            url: caramel.context + "/asset/operations/copyapp/" + data.shortName + "/" + data.artifact.id + ""
                         }
                     ]
                 };
