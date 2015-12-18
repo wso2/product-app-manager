@@ -1,8 +1,8 @@
 var Edtable;
 
 $(function () {
-    var UPDATE_API = '/store/resources/webapp/v1/application/a';
-    var DELETE_API = '/store/resources/webapp/v1/application/';
+    var UPDATE_API = caramel.context +'/resources/webapp/v1/application/a';
+    var DELETE_API = caramel.context +'/resources/webapp/v1/application/';
 
     function EditableTable(configs) {
         init('#' + configs.tableContainer);

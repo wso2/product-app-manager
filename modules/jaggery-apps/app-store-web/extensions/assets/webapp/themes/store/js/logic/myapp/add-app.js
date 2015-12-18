@@ -5,7 +5,7 @@ Filename:add-app.js
  */
 $(function(){
    console.info('Loaded add-app logic');
-    var ADD_API_URL='/store/resources/webapp/v1/application/new';
+    var ADD_API_URL= caramel.context +'resources/webapp/v1/application/new';
     var ADD_API_METHOD='POST';
 
    var initFormSubmissionLogic=function(){
@@ -46,7 +46,7 @@ $(function(){
    The function is invoked when the application is successfully added
     */
    var handleSuccessfulAppAddition=function(){
-       window.location='/store/extensions/assets/webapp/myapps';
+       window.location=caramel.tenantedUrl('/extensions/assets/webapp/myapps');
    };
 
    initFormSubmissionLogic();

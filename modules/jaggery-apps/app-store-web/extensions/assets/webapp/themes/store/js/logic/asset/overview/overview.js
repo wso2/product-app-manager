@@ -44,7 +44,7 @@ $(function () {
 
     var jsonObj = {
         "isActive": "1",
-        "path": "/store/apis/eventpublish/",
+        "path": caramel.context + "/apis/eventpublish/",
         "appData": {
             "appId": $('#hdnAssetId').val(),
             "userId": $('#hdnUsertId').val(),

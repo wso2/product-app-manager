@@ -11,7 +11,7 @@ $(function(){
 
         $.ajax({
             type: 'POST',
-            url: '/store/apis/user/login',
+            url: caramel.context +'/apis/user/login',
             data: JSON.stringify({
             	 username: username,
                  password: password
@@ -22,7 +22,7 @@ $(function(){
                     if(assetId == "" || assetId == null){
               		   location.reload();  
                     }else  {
-                 	  window.location = '/store/assets/webapp/'+ assetId;
+                 	  window.location = caramel.tenantedUrl('/assets/webapp/')+ assetId;
                     }               
                 } else {
                     showError(data.message);

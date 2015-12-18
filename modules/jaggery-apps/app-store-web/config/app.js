@@ -31,6 +31,8 @@ Finished the parsing stuff
  */
 caramel.configs({
     context: '/store',
+    reverseProxyEnabled:false,
+    reverseProxyHost : 'https://localhost',
     cache: true,
     negotiation: true,
     themer: function () {

@@ -7,7 +7,7 @@ var tenantedURLRegex = '([0-9A-Za-z-\\.@:%_\+~#=]+)/t/{1}([0-9A-Za-z-\\.@:%_\+~#
  * @returns {string}
  */
 var getTenantedURL = function (requestedURL){
-    var context = "/store",
+    var context = caramel.context,
         urlDomain = 'carbon.super',
         tenantedPrefix = '/t/',
         currentUrl = location.pathname;

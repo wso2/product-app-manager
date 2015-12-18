@@ -14,6 +14,14 @@
                 serverHost = process.getProperty('server.host'),
                 postUrl = config.ssoConfiguration.identityProviderURL;
 
+        caramel = require('caramel');
+        var contextPath = caramel.configs().context;
+        var reversProxyEnabled = caramel.configs().reverseProxyEnabled;
+        var reverseProxyHost = caramel.configs().reverseProxyHost;
+        if(reversProxyEnabled) {
+            relayState = reverseProxyHost+contextPath;
+        }
+
         var log = new Log();
         log.debug("store session index : " + sso_sessions[session.getId()]);
 
