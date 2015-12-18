@@ -20,8 +20,14 @@ include("/extensions/webapp/modules/jagg/jagg.jag");
             sso_sessions = application.get('sso_sessions');
         var caramel = require('caramel');
         var contextPath = caramel.configs().context;
+        var reversProxyEnabled = caramel.configs().reverseProxyEnabled;
+        var reverseProxyHost = caramel.configs().reverseProxyHost;
 
-    if (!sso_sessions) {
+        if (reversProxyEnabled) {
+            contextPath = reverseProxyHost + contextPath;
+        }
+
+        if (!sso_sessions) {
         application.put('sso_sessions', {});
         sso_sessions = application.get('sso_sessions');
     }

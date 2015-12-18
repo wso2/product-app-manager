@@ -31,8 +31,16 @@ var securityModule = function () {
      and redirects the user to the login page
      */
     function onSecurityCheckFail() {
+        var caramel = require('caramel'),
+            contextPath = caramel.configs().context,
+            reversProxyEnabled = caramel.configs().reverseProxyEnabled,
+            reverseProxyHost = caramel.configs().reverseProxyHost;
+        var redirectURl = contextPath + '/login';
+        if (reversProxyEnabled) {
+            redirectURl = reverseProxyHost + redirectURl;
+        }
         log.debug('security check failed redirecting...');
-        response.sendRedirect(caramel.context + '/login');
+        response.sendRedirect(redirectURl);
     }
 
     /*

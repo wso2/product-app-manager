@@ -30,7 +30,7 @@ var pubConfig=require('/config/publisher.js').config();
 Finished the parsing stuff
  */
 caramel.configs({
-    context: '/appmgt/store',
+    context: '/store',
     reverseProxyEnabled:false,
     reverseProxyHost : 'https://localhost',
     cache: true,
