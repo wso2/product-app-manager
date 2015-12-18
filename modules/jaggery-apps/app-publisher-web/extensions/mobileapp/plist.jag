@@ -7,13 +7,15 @@ var tenantId = matcher.elements().tenantId;
 var fileName = matcher.elements().filename;
 var server = require('store').server;
 var registry = server.anonRegistry(tenantId);
+var caramel = require('caramel');
+var contextPath = caramel.configs().context;
 
 var rxt_management = require('/modules/rxt.manager.js').rxt_management();
 var rxtManager = new rxt_management.RxtManager(registry);
 var artifactManager = rxtManager.getArtifactManager('mobileapp');
 
 var assets = artifactManager.find(function (adapter) {
-    return (adapter.attributes.overview_url == "/publisher/api/mobileapp/getfile/" + fileName) ? true : false;
+    return (adapter.attributes.overview_url == contextPath + "/api/mobileapp/getfile/" + fileName) ? true : false;
 }, null);
 
 

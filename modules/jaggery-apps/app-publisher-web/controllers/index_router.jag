@@ -10,10 +10,11 @@ var config = require('/config/publisher.json');
 var server = require('store').server;
 var gadgetCount = 0,
         siteCount = 0;
+var contextPath = caramel.configs().context;
 
 if (server.current(session) == null) {
-    response.sendRedirect('/publisher/login');
+    response.sendRedirect(contextPath +'/login');
 } else {
-    response.sendRedirect('/publisher/assets/webapp/');
+    response.sendRedirect(contextPath + '/assets/webapp/');
 }
 %>

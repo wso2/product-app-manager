@@ -19,6 +19,7 @@ var router = require('/modules/router-g.js').router();
 var routeManager = new router.Router();
 
 var log=new Log('version_api_router');
+    var contextPath = caramel.configs().context;
 
 routeManager.register('GET','publisher','/publisher/api/version/{type}/{id}',function(context){
     var shortName=context.params.type;
@@ -97,7 +98,7 @@ routeManager.register('POST','publisher','/publisher/api/version/{type}/{id}/{ve
         var msg={};
         msg['ok']=true;
         msg['id']=newId.value;
-        msg['url']='/publisher/asset/'+shortName+'/'+msg.id;
+        msg['url']= contextPath + '/asset/'+shortName+'/'+msg.id;
 
         print(msg);
 

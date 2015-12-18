@@ -7,11 +7,12 @@ var deploymentManagementModule = function () {
     var rxtManager = publisher.rxtManager;
     var bundler = require('/modules/bundler.js').bundle_logic();
     var config = require('/config/publisher-tenant.json');
+    var caramel = require('caramel');
 
 
     var RXT_EXTENSION_PATH = config.paths.RXT_EXTENSION_PATH;
     var UI_CONFIG_FILE = '/config/ui.json';
-    var ASSETS_URL = '/publisher/assets/';
+    var ASSETS_URL = caramel.context + '/assets/';
     var APPLICATION_DM='deployment.manager';
     var log=new Log();
 

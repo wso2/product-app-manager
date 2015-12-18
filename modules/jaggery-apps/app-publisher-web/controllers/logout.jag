@@ -1,6 +1,8 @@
 <%
 (function(){
     var currentSession = require('store').server.current(session);
+    var caramel = require('caramel');
+    var contextPath = caramel.configs().context;
     if(currentSession) {
         var user = currentSession.username;//session.get("LOGGED_IN_USER");
         if (user === null) {
@@ -12,7 +14,7 @@
                     sso_sessions = application.get('sso_sessions'),
                     sessionId = session.getId(),
                     encodedSAMLLogoutRequest = sso.client.getEncodedSAMLLogoutRequest(user, sso_sessions[session.getId()], config.ssoConfiguration.issuer),
-                    relayState = '/publisher',
+                    relayState = contextPath,
                     serverHost = process.getProperty('server.host'),
                     postUrl = config.ssoConfiguration.identityProviderURL;
 
@@ -49,7 +51,7 @@
         }
     }else {
         //this block executes when the session is expired so redirect user to login page
-        response.sendRedirect('/publisher');
+        response.sendRedirect(contextPath);
     }
 }());
 %>
