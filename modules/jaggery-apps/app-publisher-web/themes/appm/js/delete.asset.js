@@ -12,6 +12,7 @@ $('.btn-delete').on('click', function(e) {
         var provider = $(this).data("provider");
         var name = $(this).data("name");
         var version = $(this).data("version");
+        var parent = $(this).parent();
 
 
         var status = isExistInExternalStore(provider, name, version);
@@ -23,6 +24,7 @@ $('.btn-delete').on('click', function(e) {
             return false;
         }
 
+		$(parent).children().attr('disabled', true);
 		var data = {};
 
 		var id = $(this).attr('data-app-id');
@@ -42,14 +44,19 @@ $('.btn-delete').on('click', function(e) {
                             showDeleteModel("Successfully deleted the Asset","Deleted Successfully",type);
                         } else if(result.isDeleted == false){
                             showDeleteModel("Cannot Delete. Asset is already subscribed.","Asset Subscribed",type);
+                            $(parent).children().attr('disabled', false);
                         }else{
                             showDeleteModel("Asset is not successfully deleted","Delete Failed",type);
+                            $(parent).children().attr('disabled', false);
                         }
                     },
                     error: function(response) {
                         showDeleteModel("Asset is not successfully deleted","Delete Failed",type);
+                        $(parent).children().attr('disabled', false);
                     }
                 });
+            } else {
+                $(parent).children().attr('disabled', false);
             }
 
 	});
