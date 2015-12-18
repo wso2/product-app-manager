@@ -49,9 +49,11 @@ var engine = caramel.engine('handlebars', (function () {
                 var matcher = new URIMatcher(uri);
                 var storageMatcher = new URIMatcher(path);
                 var mobileApiMatcher = new URIMatcher(path);
-
+                var caramel = require('caramel');
+                var context= caramel.configs().context;
+                var pattern = context + '/storage/{+any}';
                 //Resolving tenanted storage URI for webapps
-                if (storageMatcher.match('/store/storage/{+any}')) {
+                if (storageMatcher.match(pattern)) {
                     path = "/storage/" + storageMatcher.elements().any;
                 }
                 //TODO: This url pattern has been hard coded due to pattern mismatch in between mobile and webapp image urls
