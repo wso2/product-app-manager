@@ -116,7 +116,7 @@ var render = function (theme, data, meta, require) {
                 var lcComments = lcModule.getlatestLCComment(artifactManager, data.artifacts[i].path);
                 for(key in lcComments) {
                     if(lcComments.hasOwnProperty(key)) {
-                        notifyObject = {'url': '/publisher/asset/operations/edit/mobileapp/'+ data.artifacts[i].id,
+                        notifyObject = {'url': caramel.context +'/asset/operations/edit/mobileapp/'+ data.artifacts[i].id,
                             'notification': lcComments[key], 'appname':data.artifacts[i].attributes.overview_displayName }
                     }
                 }

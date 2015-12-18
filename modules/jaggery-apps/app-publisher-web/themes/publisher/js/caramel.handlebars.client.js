@@ -36,6 +36,8 @@
         if (path.indexOf('http://') === 0 || path.indexOf('https://') === 0) {
             return path;
         }
+        var log = new Log();
+        log.info("-----------------------")
         return caramel.url(path);
     });
 

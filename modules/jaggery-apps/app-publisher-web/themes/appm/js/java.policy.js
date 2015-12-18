@@ -26,7 +26,7 @@ var javaPolicyIndexArray = []; //used to maintain the selected Java Policy ID's 
  */
 function loadAvailableJavaPolicies(applicationUUID, isGlobalPolicy) {
     $.ajax({
-        url: '/publisher/api/entitlement/get/all/available/java/policy/handlers/details/list/' + applicationUUID + '/' + isGlobalPolicy,
+        url: caramel.context + '/api/entitlement/get/all/available/java/policy/handlers/details/list/' + applicationUUID + '/' + isGlobalPolicy,
         type: 'GET',
         contentType: 'application/json',
         dataType: 'json',

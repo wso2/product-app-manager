@@ -10,7 +10,7 @@ $('#application-tab a').click(function(e) {
 $("#txtName").change(function() {
     $.ajax({
         type: "GET",
-        url: "/publisher/api/mobile/isexist",
+        url: caramel.context + "/api/mobile/isexist",
         data: {name: $(this).val()},
         success: function (data) {
             var data = JSON.parse(data);
@@ -117,7 +117,7 @@ $('#btn-create-asset-mobile').click(function(e) {
 
 	$.ajax({
       type: "POST",
-      url: "/publisher/api/asset/mobileapp",
+      url: caramel.context + "/api/asset/mobileapp",
       contentType: "application/json",
       data: JSON.stringify(params),
       success: function () {
@@ -152,7 +152,7 @@ $(document).ready(function(){
             	try{
             		data = JSON.parse(data);
             	}catch(e){
-            		window.location.replace("/publisher/assets/mobileapp/");
+            		window.location.replace(caramel.context + "/assets/mobileapp/");
                		return;
             	}
 
@@ -183,7 +183,7 @@ $(document).ready(function(){
 
 
                	}else{
-               		window.location.replace("/publisher/assets/mobileapp/");
+               		window.location.replace(caramel.context + "/assets/mobileapp/");
                	}
 
             });

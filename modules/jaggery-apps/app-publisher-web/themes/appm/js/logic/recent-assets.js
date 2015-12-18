@@ -8,7 +8,7 @@ $(function () {
 
     var RECENT_ASSET_CONTAINER = '#recent-assets-container';
     var REFRESH_TIMER = 4000;
-    var CACHE_URL = '/publisher/api/cache/';
+    var CACHE_URL =  caramel.context + '/api/cache/';
 
     //Get the details of the page
     var context = obtainMetaInformation();

@@ -20,7 +20,7 @@ $(function () {
     var assetType = comps[comps.length - 2];
 
     var TAG_CONTAINER = '#tag-test';
-    var TAG_API = '/publisher/api/tag/'
+    var TAG_API = caramel.context + '/api/tag/'
     var TAG_THEME = 'facebook';
     var ERROR_CSS='alert alert-error';
     var MSG_CONTAINER='#msg-container-recent-activity';

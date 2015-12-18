@@ -36,7 +36,7 @@
 	<div class="btn-group context_menu left">
 		
 		
-		<a class="btn" href="/publisher/asset/{{../currentType}}/{{currentVersionUrl}}">
+		<a class="btn" href="{{url "/asset/"}}{{../currentType}}/{{currentVersionUrl}}">
 			<small>Version</small> <span class="publisherTitle">{{currentVersion}}</span>
 		</a>
 	
@@ -46,7 +46,7 @@
 		<ul class="dropdown-menu">
 			{{#each versions}}
 			<li>
-				<a target="_self" href="/publisher/asset/{{../currentType}}/{{this.id}}">{{this.version}}</a>
+				<a target="_self" href="{{url "/asset/"}}{{../currentType}}/{{this.id}}">{{this.version}}</a>
 			</li>
 			{{/each}}
 			<li>

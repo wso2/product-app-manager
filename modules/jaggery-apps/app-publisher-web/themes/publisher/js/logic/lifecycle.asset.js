@@ -40,14 +40,14 @@ $(function(){
     $('#btn-asset-promote').on('click',function(){
        console.log('/publisher/api/lifecycle/Promote/'+asset+'/'+id);
         $.ajax({
-          url:'/publisher/api/lifecycle/Promote/'+asset+'/'+id,
+          url:caramel.context +'/api/lifecycle/Promote/'+asset+'/'+id,
           type:'PUT',
           success:function(response){
               alert('Promoted');
 
 
               $.ajax({
-                  url:'/publisher/api/lifecycle/'+asset+'/'+id,
+                  url:caramel.context +'api/lifecycle/'+asset+'/'+id,
                   type:'GET',
                   success:function(response){
                       $('#state').html(response);
@@ -71,13 +71,13 @@ $(function(){
      */
     $('#btn-asset-demote').on('click',function(){
         $.ajax({
-            url:'/publisher/api/lifecycle/Demote/'+asset+'/'+id,
+            url: caramel.context + '/api/lifecycle/Demote/' + asset + '/' + id,
             type:'PUT',
             success:function(response){
                 alert('Demoted');
 
                 $.ajax({
-                    url:'/publisher/api/lifecycle/'+asset+'/'+id,
+                    url: caramel.context + '/api/lifecycle/' + asset + '/' + id,
                     type:'GET',
                     success:function(response){
                         $('#state').html(response);
@@ -109,7 +109,7 @@ $(function(){
 
         //Make a call to the lifecycle check list
         $.ajax({
-            url:'/publisher/api/lifecycle/checklist/'+asset+'/'+id,
+            url: caramel.context + '/api/lifecycle/checklist/' + asset + '/' + id,
             type:'GET',
             success:function(response){
 
@@ -156,7 +156,7 @@ $(function(){
      */
     function callCheckListItem(checkbox,checkListItemIndex){
         $.ajax({
-            url:'/publisher/api/lifecycle/checklistitem/'+checkListItemIndex+'/'+asset+'/'+id,
+            url: caramel.context + '/api/lifecycle/checklistitem/' + checkListItemIndex + '/' + asset + '/' + id,
             type:'POST',
             success:function(response){
                 alert('Item checked successfully');
@@ -173,7 +173,7 @@ $(function(){
      */
     function callUncheckListItem(checkbox,checkListItemIndex){
         $.ajax({
-            url:'/publisher/api/lifecycle/checklistitem/'+checkListItemIndex+'/'+asset+'/'+id,
+            url: caramel.context + '/api/lifecycle/checklistitem/' + checkListItemIndex + '/' + asset + '/' + id,
             type:'DELETE',
             success:function(response){
                 alert('Item unchecked successfully');

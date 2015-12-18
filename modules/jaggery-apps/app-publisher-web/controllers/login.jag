@@ -13,6 +13,8 @@
             log = new Log(),
             postUrl = dataConfi.ssoConfiguration.identityProviderURL;
 
+
+
     if (!session.get("Loged")) {
         %>
 
