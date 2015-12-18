@@ -3,9 +3,9 @@ $(function () {
     /*
      The location of the templates used in the rendering
      */
-    var API_SUBS_URL = '/store/resources/webapp/v1/subscription/';
-    var API_TOKEN_URL = '/store/resources/webapp/v1/apptoken/a';
-    var API_DOMAIN_URL = '/store/resources/webapp/v1/domain/a';
+    var API_SUBS_URL = caramel.context +'/resources/webapp/v1/subscription/';
+    var API_TOKEN_URL = caramel.context +'/webapp/v1/apptoken/a';
+    var API_DOMAIN_URL = caramel.context +'/webapp/v1/domain/a';
 
     /*
      The containers in which the UI components will be rendered

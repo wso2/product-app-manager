@@ -30,7 +30,9 @@ var pubConfig=require('/config/publisher.js').config();
 Finished the parsing stuff
  */
 caramel.configs({
-    context: '/store',
+    context: '/appmgt/store',
+    reverseProxyEnabled:true,
+    reverseProxyHost : 'https://lb.storepub.wso2.com',
     cache: true,
     negotiation: true,
     themer: function () {

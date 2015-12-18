@@ -15,6 +15,8 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
             samlRespObj,
             caramel = require('caramel'),
             contextPath = caramel.configs().context,
+            reversProxyEnabled = caramel.configs().reverseProxyEnabled,
+            reverseProxyHost = caramel.configs().reverseProxyHost,
             keyStoreProps = {
                 KEY_STORE_NAME: process.getProperty('carbon.home') + configs.ssoConfiguration.keyStoreName,
                 KEY_STORE_PASSWORD: configs.ssoConfiguration.keyStorePassword,
@@ -25,7 +27,7 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
     var AuthService = require('../extensions/assets/webapp/services/authentication.js').serviceModule;
     var authenticator = new AuthService.Authenticator();
     authenticator.init(jagg, session);
-
+    log.info("start relay state " + relayState);
     if (!sso_sessions) {
         application.put('sso_sessions', {});
         sso_sessions = application.get('sso_sessions');
@@ -36,7 +38,7 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
         if (!sso.client.isLogoutResponse(samlRespObj)) {
 
             if (relayState) {
-                var host = relayState.split('/')[2];
+                host = relayState.split('/')[2];
                 relayState = relayState.split(host)[1];
             } else {
                 relayState = contextPath;
@@ -109,6 +111,10 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
                             if (log.isDebugEnabled()) {
                                 log.debug('User has been set to : ' + sessionObj.loggedInUser);
                             }
+                            if(reversProxyEnabled) {
+                                relayState = reverseProxyHost+relayState;
+                            }
+                            log.info("relayState" + relayState);
                             response.sendRedirect(relayState);
                         } else {
                             log.warn('User ' + sessionObj.loggedInUser + ' does not have permission to access the store application. Make sure the user has the store role.');
@@ -121,7 +127,12 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
 
         } else {
             session.invalidate();
-            response.sendRedirect('/store');
+            var reDirectUrl = contextPath;
+            if(reversProxyEnabled) {
+                reDirectUrl = reverseProxyHost+contextPath;
+            }
+            log.info('###### reDirectUrl' +reDirectUrl);
+            response.sendRedirect(reDirectUrl);
         }
     }
 

@@ -4,7 +4,7 @@
             		<i class="icon-remove"></i>
         	</button>
         	<div>
-            		<form id="form-login" action="/store/apis/user/login" method="post">
+            		<form id="form-login" action="{{tenantedUrl "/apis/user/login"}}" method="post">
                 		<fieldset>
 					<h2>{{t "Sign In"}}</h2>
                     			<div id="login-alert" class="alert alert-error"></div>

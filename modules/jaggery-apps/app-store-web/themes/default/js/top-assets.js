@@ -25,7 +25,7 @@ $(function() {
 		  if(loggedUser == "" || loggedUser == null){
 			  var ssoEnabled = $('#sso').val();
 			  if(ssoEnabled == 'true'){
-				  location.href = "/store/login";	
+				  location.href = caramel.tenantedUrl('/login');
 			  }else{
 				  var assetId = $('#slideAsset').data('id');
 				  $('#modal-login').data('value', assetId);
@@ -42,7 +42,7 @@ $(function() {
 		  if(loggedUser == "" || loggedUser == null){
 			  var ssoEnabled = $('#sso').val();
 			  if(ssoEnabled == 'true'){
-				  location.href = "/store/login";	
+				  location.href = caramel.tenantedUrl('/login');
 			  }else{
 				  var assetId = $('#slideAsset').data('id');
 				  $('#modal-login').data('value', assetId);
@@ -59,7 +59,7 @@ $(function() {
 		  if(loggedUser == "" || loggedUser == null){
 			  var ssoEnabled = $('#sso').val();
 			  if(ssoEnabled == 'true'){
-				  location.href = "/store/login";	
+				  location.href = caramel.tenantedUrl('/login');
 			  }else{
 				  var assetId = $('#slideAsset').data('id');
 				  $('#modal-login').data('value', assetId);
@@ -77,7 +77,7 @@ $(function() {
 		  if(loggedUser == "" || loggedUser == null){
 			  var ssoEnabled = $('#sso').val();
 			  if (ssoEnabled == 'true'){
-			  	location.href = "/store/login";
+			  	location.href = caramel.tenantedUrl('/login');
 			  }else{
 				  var assetId = $('#slideAsset').data('id');
 				  $('#modal-login').data('value', assetId);
@@ -94,7 +94,7 @@ $(function() {
 		  if(loggedUser == "" || loggedUser == null){
 			  var ssoEnabled = $('#sso').val();
 			  if (ssoEnabled == 'true'){
-				  location.href = "/store/login";
+				  location.href = caramel.tenantedUrl('/login');
 			  }else{
 				  var assetId = $('#slideAsset').data('id');
 				  $('#modal-login').data('value', assetId);

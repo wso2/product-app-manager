@@ -31,7 +31,7 @@ if (Array.isArray(tenantDomains) && (tenantDomains.length > 1)) {
         });
     }, request, response, session);
 } else {
-    response.sendRedirect(request.getContextPath() + "/assets/");
+    response.sendRedirect(caramel.configs().context + "/assets/");
 }
 
 %>
