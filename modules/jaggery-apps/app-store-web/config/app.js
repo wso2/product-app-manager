@@ -31,8 +31,8 @@ Finished the parsing stuff
  */
 caramel.configs({
     context: '/appmgt/store',
-    reverseProxyEnabled:true,
-    reverseProxyHost : 'https://lb.storepub.wso2.com',
+    reverseProxyEnabled:false,
+    reverseProxyHost : 'https://localhost',
     cache: true,
     negotiation: true,
     themer: function () {
