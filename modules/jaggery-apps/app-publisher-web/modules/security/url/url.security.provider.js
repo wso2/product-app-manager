@@ -9,6 +9,7 @@ var securityModule = function () {
 
     var LOGGED_IN_USER = 'LOGGED_IN_USER';
     var log=new Log('url.security.provider');
+    var caramel = require('caramel');
 
     /*
      The function checks if a user is present in the session
@@ -31,7 +32,7 @@ var securityModule = function () {
      */
     function onSecurityCheckFail() {
         log.debug('security check failed redirecting...');
-        response.sendRedirect('/publisher/login');
+        response.sendRedirect(caramel.context + '/login');
     }
 
     /*
