@@ -27,9 +27,39 @@ require('/modules/store.js').exec(function (ctx) {
 
     var isNotCatalog = mdmConfig.IsCatalog == "true" ? false : true;
 
+    var getRedirectURL = function(url) {
+        var contextPath = caramel.configs().context,
+                reversProxyEnabled = caramel.configs().reverseProxyEnabled,
+                reverseProxyHost = caramel.configs().reverseProxyHost;
+        var redirectURL = contextPath + url;
+        if(reversProxyEnabled) {
+            redirectURL = reverseProxyHost + contextPath + url;
+        }
+        return redirectURL;
+    }
+
+    var getReferer = function() {
+        var contextPath = caramel.configs().context,
+                reversProxyEnabled = caramel.configs().reverseProxyEnabled,
+                reverseProxyHost = caramel.configs().reverseProxyHost;
+        var referer = request.getHeader("referer");
+        if (!referer) {
+            if(reversProxyEnabled) {
+                referer = request.getRequestURI();
+                var context = request.getContextPath();
+                referer = contextPath + referer.substring(context.length);
+                referer = reverseProxyHost + referer;
+            } else {
+                referer = request.getRequestURL();
+            }
+        }
+        return referer;
+    }
+
     if(!user) {
-        var contextPath = caramel.configs().context
-        response.sendRedirect(contextPath+"/login");
+        var referer = getReferer();
+        var loginRelativeUrl = encodeURI("/login?referer=" + referer);
+        response.sendRedirect(getRedirectURL(loginRelativeUrl));
     }  else {
         var isNotCatalog = mdmConfig.IsCatalog == "true" ? false : true;
 
