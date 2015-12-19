@@ -63,9 +63,8 @@ var engine = caramel.engine('handlebars', (function () {
                     return path;
                 }
                 if (matcher.match('/{context}/t/{domain}/') || matcher.match('/{context}/t/{domain}/{+any}')) {
-                    context = matcher.elements().context;
                     domain = matcher.elements().domain;
-                    output = '/' + context + '/t/' + domain;
+                    output = context + '/t/' + domain;
                     return output + path;
                 } else {
                     if (path.indexOf('http://') === 0 || path.indexOf('https://') === 0) {

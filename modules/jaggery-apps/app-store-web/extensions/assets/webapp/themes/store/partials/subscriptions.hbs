@@ -24,7 +24,7 @@
 
                     <a href="{{productionURL}}" target="_blank">
                         <div class="asset-icon">
-                            <img class="icon" src="{{tenantedUrl "/storage/webapp/"}}{{uuid}}/{{thumbnail}}">
+                            <img class="icon" src="{{url "/storage/webapp/"}}{{uuid}}/{{thumbnail}}">
                         </div>
                     </a>
                     <div class="asset-details">
@@ -33,7 +33,7 @@
                                 <strong>{{name}}</strong>
                             </a>
                         {{else}}
-                            <a class="asset-title" href="{{url "/t/"}}{{tenantDomain}}/assets/webapp/{{uuid}}">
+                            <a class="asset-title" href="{{url "/assets/webapp/"}}{{uuid}}">
                                 <strong>{{name}}</strong>
                             </a>
                         {{/if}}
