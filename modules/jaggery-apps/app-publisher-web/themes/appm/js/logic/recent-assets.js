@@ -47,7 +47,7 @@ $(function () {
 				
                 if(respObj.cachedAssetsBefore!=respObj.cachedAssetsAfter){
 
-                    window.location='/publisher/assets/'+context.type+'/';
+                    window.location = caramel.context + '/assets/' + context.type + '/';
                 }
             },
             error: function (e) {

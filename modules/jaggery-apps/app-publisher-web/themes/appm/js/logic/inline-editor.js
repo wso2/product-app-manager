@@ -26,7 +26,7 @@ function loadDefaultTinyMCEContent() {
     var docName = $("#doc").val();
 
 	 $.ajax({
-			url :  caramel.context + '''/api/doc?action=getInlineContent',
+			url :  caramel.context + '/api/doc?action=getInlineContent',
 			type:'POST',
 			data :{'provider':provider,'apiName':apiName,'version':version,'docName':docName},
 			success : function(response) {
