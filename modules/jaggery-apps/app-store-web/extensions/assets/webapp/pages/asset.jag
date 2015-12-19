@@ -415,7 +415,7 @@ require('/modules/store.js').exec(function (ctx) {
         headerData.domain = tenantDomain;
 
         caramel.render({
-            title: 'Store | ' + type,
+            title: asset.attributes.overview_name + ' | Store | WSO2 App Manager',
             user: user,
             sso: sso,
 

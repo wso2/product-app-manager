@@ -344,7 +344,7 @@ function loadPolicyGroupData(uuid) {
 
             // get the entitlement policy groups
             $.ajax({
-                url: '/api/entitlement/get/policy/Group/by/appId/' + id,
+                url: caramel.context + '/api/entitlement/get/policy/Group/by/appId/' + id,
                 type: 'GET',
                 contentType: 'application/json',
                 dataType: 'json',
