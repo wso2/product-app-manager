@@ -238,7 +238,7 @@ $(document).ready(function() {
 			}
 
 			if (searchAssetString != "") {
-				var link = caramel.context + 'assets/' + searchPrefix + '/?query=' + searchAssetString;
+				var link = caramel.context + '/assets/' + searchPrefix + '/?query=' + searchAssetString;
 				window.location = link;
 			}
 		} else {
