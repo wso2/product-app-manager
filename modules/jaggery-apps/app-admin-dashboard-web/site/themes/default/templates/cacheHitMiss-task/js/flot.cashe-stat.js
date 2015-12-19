@@ -1,5 +1,5 @@
 var  btn = 'month-btn';
-var context = "/admin-dashboard";
+var context = this.jagg.site.context;
 $(function () {
 
     drawGraphs();
