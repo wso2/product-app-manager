@@ -312,7 +312,7 @@ $(function() {
 
                         	if (rolePermissions.length > 0) {
                             		$.ajax({
-                                		url: '/isher/asset/' + type + '/id/' + id + '/permissions',
+                                		url: caramel.context + '/asset/' + type + '/id/' + id + '/permissions',
                                 		type: 'POST',
                                 		processData: false,
                                 		contentType: 'application/json',

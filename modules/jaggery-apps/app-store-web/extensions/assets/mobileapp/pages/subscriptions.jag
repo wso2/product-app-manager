@@ -61,7 +61,7 @@ require('/modules/store.js').exec(function (ctx) {
     title = store.assetLinks(type).title;
 
     caramel.render({
-        'title': 'Store | My Items',
+        'title': 'My apps | Store | WSO2 App Manager',
         user: user,
         sso: sso,
         header: site.header(tenantId, {
