@@ -20,7 +20,7 @@ if (Array.isArray(tenantDomains) && (tenantDomains.length > 1)) {
         }
 
         caramel.render({
-            title: 'Stores | WSO2 Enterprise Store',
+            title: 'Stores | WSO2 App Manager',
             user: ctx.user,
             sso: ctx.sso,
             header: ctx.site.header(ctx.tenantId, {
