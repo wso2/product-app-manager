@@ -34,7 +34,12 @@
             },
             sso_sessions = application.get('sso_sessions'),
             caramel = require('caramel'),
-            contextPath = caramel.configs().context;
+            contextPath = caramel.configs().context,
+            reversProxyEnabled = caramel.configs().reverseProxyEnabled,
+            reverseProxyHost = caramel.configs().reverseProxyHost;
+            if(reversProxyEnabled) {
+                relayState = reverseProxyHost+relayState;
+            }
 
 
     if (!sso_sessions) {

@@ -88,6 +88,28 @@ var engine = caramel.engine('handlebars', (function () {
 
             });
 
+            Handlebars.registerHelper('socialURL', function (path) {
+                var socialAppContext = caramel.configs().socialAppContext;
+                var reverseProxyEnabled = caramel.configs().reverseProxyEnabled;
+                var reverseProxyHost = caramel.configs().reverseProxyHost;
+                var ip = process.getProperty('server.host');
+                var https = process.getProperty('https.port');
+                var http = process.getProperty('http.port');
+                var url = ip + ":" + https + socialAppContext;
+                if (reverseProxyEnabled) {
+                    url = reverseProxyHost + socialAppContext;
+                } else {
+                    var isSecure = request.isSecure();
+                    if (isSecure) {
+                        url = "https://" + ip + ":" + https + socialAppContext
+                    } else {
+                        url = "http://" + ip + ":" + https + socialAppContext
+                    }
+                }
+                return url;
+
+            });
+
             Handlebars.registerHelper('compare', function (lvalue, rvalue, options) {
 
                 if (arguments.length < 3)

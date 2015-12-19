@@ -83,7 +83,7 @@
 		 {{#with asset}}
 		 {{#attributes}}
 		 <iframe name="socialIfr" id="socialIfr"
-		 src="/../social/?target={{../../type}}:{{../id}}&user={{../../user.username}}"
+		 src="{{socialURL}}/?target={{../../type}}:{{../id}}&user={{../../user.username}}"
 		 width="100%" height="100%" style="height: 300px;"></iframe>
              <input value="{{../id}}" id="hdnAssetId" name="hdnAssetId" type="hidden">
              <input value="{{../../user.username}}" id="hdnUsertId" name="hdnAssetId" type="hidden">
