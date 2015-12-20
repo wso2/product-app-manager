@@ -12,11 +12,7 @@
                                     <img src="{{#if images_thumbnail}}{{tenantedUrl images_thumbnail}}{{/if}}"></a>
                             {{else}}
                                 <a href="{{tenantedUrl "/assets"}}/{{../../type}}/{{../../id}}">
-                                    {{#compare "mobileapp" ../../type}}
                                         <img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}"></a>
-                                    {{else}}
-                                        <img src="{{#if images_thumbnail}}{{tenantedUrl images_thumbnail}}{{/if}}"></a>
-                                    {{/compare}}
                             {{/compare}}
                         </div>
                         <div class="span9 recent-asset-details">

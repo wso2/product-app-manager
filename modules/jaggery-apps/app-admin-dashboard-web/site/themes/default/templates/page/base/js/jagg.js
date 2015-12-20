@@ -6,12 +6,12 @@ var jagg = jagg || {};
 
     jagg.post = function () {
         var args = Array.prototype.slice.call(arguments);
-        args[0] = this.site.context + args[0];
+        args[0] = this.jagg.site.context + args[0];
         $.post.apply(this, args);
     };
 
     jagg.syncPost = function(url, data, callback, type) {
-        url = this.site.context + url;
+        url = this.jagg.site.context + url;
         return jQuery.ajax({
                                type: "POST",
                                url: url,

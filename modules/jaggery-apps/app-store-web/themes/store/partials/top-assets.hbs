@@ -74,9 +74,9 @@
                                                     <i class=""></i>
                                                 {{/if}}
                                                     {{#compare  overview_advertiseOnly "true" operator="=="}}
-                                                        <a href="{{url "/t"}}/{{overview_appTenant}}/assets/{{../../../type}}/{{overview_advertisedAppUuid}}"><img src="{{#if images_thumbnail}}{{tenantedUrl images_thumbnail}}{{/if}}"></a>
+                                                        <a href="{{url "/t"}}/{{overview_appTenant}}/assets/{{../../../type}}/{{overview_advertisedAppUuid}}"><img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}"></a>
                                                     {{else}}
-                                                        <a href="{{tenantedUrl "/assets"}}/{{../../../type}}/{{../../../id}}"><img src="{{#if images_thumbnail}}{{tenantedUrl images_thumbnail}}{{/if}}"></a>
+                                                        <a href="{{tenantedUrl "/assets"}}/{{../../../type}}/{{../../../id}}"><img src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}"></a>
                                                     {{/compare}}
 
                                             </div>

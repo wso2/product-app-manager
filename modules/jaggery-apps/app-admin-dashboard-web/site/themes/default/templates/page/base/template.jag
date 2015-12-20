@@ -18,9 +18,16 @@ i18n.init(request,localeResourcesBasePath);
 %>
 <head>
     <%
-    var partWithContext = request.getRequestURL().split(
-                                request.getRequestURI()
-                              )[0]+request.getContextPath();
+    var site = require("/site/conf/site.json");
+    var partWithContext;
+
+    if(site.reverseProxyEnabled) {
+        partWithContext = site.reverseProxyHost + site.context;
+    } else {
+        partWithContext = request.getRequestURL().split(
+                request.getRequestURI()
+        )[0]+request.getContextPath();
+    }
 
     %>
     <script>

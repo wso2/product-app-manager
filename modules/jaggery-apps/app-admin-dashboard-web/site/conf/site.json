@@ -4,6 +4,8 @@
         "subtheme" : "modern"
     },
     "context" : "/admin-dashboard",
+    "reverseProxyEnabled":false,
+    "reverseProxyHost" : "https://localhost",
     "tasksPerPage": 10,
     "allowedRole":"admin",
     "workflows":{

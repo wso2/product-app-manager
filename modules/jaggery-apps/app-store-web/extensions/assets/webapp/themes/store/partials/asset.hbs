@@ -10,10 +10,10 @@
         <div class="row">
             <div class="">
                 <div class="asset-banner">
-                    <img src="{{#if images_banner}}{{tenantedUrl images_banner}}{{/if}}">
+                    <img src="{{#if images_banner}}{{images_banner}}{{/if}}">
                 </div>
                 <div class="asset-introduction-box">
-                    <img class="web-asset-img" src="{{#if images_thumbnail}}{{tenantedUrl images_thumbnail}}{{/if}}">
+                    <img class="web-asset-img" src="{{#if images_thumbnail}}{{images_thumbnail}}{{/if}}">
 
                     <h3>{{overview_displayName}}</h3>
                     <small class="web-asset-clear"> {{t "Version"}} {{overview_version}}</small>
