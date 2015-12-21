@@ -34,6 +34,16 @@
                      <input type='text' value="{{{snoop "fields(name=images_thumbnail).value" data}}}" name="images_thumbnail" id="images_thumbnail"/>
                      <input type='text' value="{{{snoop "fields(name=images_banner).value" data}}}" name="images_banner" id="images_banner"/>
                       <input type='text' value="{{{snoop "fields(name=overview_allowAnonymous).value" data}}}" name="overview_allowAnonymous" id="overview_allowAnonymous"/>
+                      <input type='hidden' value="{{{snoop "fields(name=overview_appOwner).value" data}}}"
+                             name="overview_appOwner" id="app_owner"/>
+                      <input type='hidden' value="{{{snoop "fields(name=overview_appTenant).value" data}}}"
+                             name="overview_appTenant" id="app_tenant"/>
+                      <input type='hidden' value="{{{snoop "fields(name=overview_subscriptionAvailability).value" data}}}"
+                             name="overview_subscriptionAvailability" id="subscription_availability"/>
+                      <input type='hidden' value="{{{snoop "fields(name=overview_visibleRoles).value" data}}}"
+                             name="overview_visibleRoles" id="visible_roles"/>
+                      <input type='hidden' value="{{{snoop "fields(name=overview_tenants).value" data}}}"
+                             name="overview_tenants" id="tenant-list"/>
                      <input type='hidden' id="uuid" value="{{data.info.id}}"/>               
                      <input type='hidden' value="" name="overview_trackingCode" id="tracking_code" />
                      <input type='hidden' value="{{{snoop "fields(name=sso_ssoProvider).value" data}}}" name="sso_ssoProvider" id="sso_ssoProvider"/>
