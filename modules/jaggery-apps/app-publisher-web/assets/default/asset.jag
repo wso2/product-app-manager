@@ -138,7 +138,7 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
         var result = mod.getAllDocumentation(apiData);
 
         //get external store details
-        var externalAppStores = apiProvider.getExternalAppStoresList(apiData.provider, apiData.name, apiData.version);
+        var externalAppStores = getExternalAppStores(apiData);
         var appStoresDetail = {};
         appStoresDetail.app = apiData;
         appStoresDetail.externalStores = externalAppStores;
@@ -167,7 +167,7 @@ routeManager.register('GET', 'publisher', '/publisher/asset/{type}/{id}', functi
             permissions: {canCreate: docCreateAuth, canEdit: docEditAuth, canDelete:docDeleteAuth}
         });
     } catch (e) {
-        log.debug('The asset with id ' + id + ' could not be found due to : ' + e);
+        log.error('The asset with id ' + id + ' could not be found due to : ' + e);
         response.sendError(404, 'Asset with id ' + id + ' could not be found.Please check server log.');
     }
 
@@ -431,6 +431,15 @@ routeManager.register('POST', 'publisher', '/publisher/asset/{type}', function (
         overridePermissions(assetId, artifactManager, permissions);
     });
 
+function getExternalAppStores(apiData){
+    try{
+        var externalAppStores = apiProvider.getExternalAppStoresList(apiData.provider, apiData.name, apiData.version);
+        return externalAppStores;
+    } catch(e) {
+        log.error("Error while getting external app store details : " +e);
+    }
+
+}
 /**
 * Generates entitlement policies.
 */
