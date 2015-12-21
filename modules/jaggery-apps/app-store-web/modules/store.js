@@ -880,11 +880,10 @@ var LOGGED_IN_USER = 'LOGGED_IN_USER';
  */
 var storeManagers = function (o, session, tenantId) {
     var storeMasterManager;
-    var tenantId;
     var server = require('store').server;
 
-    //We check if there is a valid session
-    if (server.current(session) != null) {
+    //We check if there is a valid session. If so check for anonymous tenant domain browsing
+    if (server.current(session) != null && !isUserTenantIdDifferFromUrlTenantId(tenantId,session.get("tenantId") )) {
         return handleLoggedInUser(o, session, tenantId);
     }
     else {

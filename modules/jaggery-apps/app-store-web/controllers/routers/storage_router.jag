@@ -23,7 +23,6 @@ var tenantedStorageEndpoint = '/{context}/t/{domain}/storage/{type}/{id}/{uuid}/
 var storageEndpoint = '/{context}/storage/{type}/{id}/{uuid}/{fileName}';
 var matchedElements;
 
-var store = require('/modules/store.js').storeManagers(request, session);
 
 if (uriMatcher.match(tenantedStorageEndpoint)) {
     matchedElements = uriMatcher.elements();

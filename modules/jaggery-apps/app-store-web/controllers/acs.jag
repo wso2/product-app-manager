@@ -14,6 +14,7 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
             server = require('carbon').server,
             samlRespObj,
             caramel = require('caramel'),
+            carbon = require('carbon'),
             contextPath = caramel.configs().context,
             reversProxyEnabled = caramel.configs().reverseProxyEnabled,
             reverseProxyHost = caramel.configs().reverseProxyHost,
@@ -73,10 +74,15 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
                             var ctx = service.getServerConfigContext();
                             var TenantAxisUtils = org.wso2.carbon.core.multitenancy.utils.TenantAxisUtils;
                             TenantAxisUtils.setTenantAccessed(domainName, ctx);
+
                         }
+                        var tenantId = carbon.server.tenantId({
+                            domain: domainName
+                        });
 
                         session.put("LOGGED_IN_USER", sessionObj.loggedInUser);
                         session.put("Loged", "true");
+                        session.put("tenantId",tenantId)
 
                         username = username + "";
                         var userDetails = {};
