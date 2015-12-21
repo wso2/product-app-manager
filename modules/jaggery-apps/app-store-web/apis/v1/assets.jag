@@ -2,14 +2,41 @@
 var log = new Log(),
         matcher = new URIMatcher(request.getRequestURI()),
         method = request.getMethod();
+        require('/modules/store.js');
 require('/modules/store.js').exec(function (ctx) {
-    var type, elems, assets, asset, azzet, options, man,
+    var type, elems, assets, asset, azzet, options, man, user,
             carbon = require('carbon'),
             server = require('store').server,
             start = request.getParameter('start') || 0,
-            count = request.getParameter('count') || 10,
-            user = carbon.server.tenantUser(request.getUser()),
-            store = require('/modules/store.js'),
+            count = request.getParameter('count') || 10;
+
+            //Check whether request comes with basic auth header. For the backward compatibility reason we have to supoort
+            //Basic auth security as well for this API (/apis/v1/assets/*). All other APIs and consistence support should be
+            //Cookie based.
+            var basicAuthheader = request.getHeader('Authorization');
+            if (basicAuthheader != null) {
+               var AppManagerUtil = Packages.org.wso2.carbon.appmgt.impl.utils.AppManagerUtil;
+               var credentials = AppManagerUtil.getCredentialsFromBasicAuthHeader(basicAuthheader);
+               if (credentials != null) {
+                  username = credentials[0],
+                  password = credentials[1];
+               }
+               var serverObj = new carbon.server.Server({url: carbon.server.address("https")});
+               if (serverObj.authenticate(username, password) != null) {
+                  user = carbon.server.tenantUser(username);
+               } else {
+                  response.sendError(401, 'Unauthorized');
+                  return;
+               }
+            } else if (require('store').server.current(session)) { //Request comes with valid cookie
+               user = server.current(session);
+            } else {
+               response.sendError(401, 'Unauthorized');
+               return;
+            }
+
+
+            var store = require('/modules/store.js'),
             reg = (function () {
                 var reg;
                 if (!user) {
