@@ -13,7 +13,7 @@ WSO2 App Manager consists of several loosely coupled modules.
         * App publisher
         * App store
         * App gateway
-	    * Connected Device Manager
+	   * Connected Device Manager
 
 Application Publisher allows Web or Mobile application creators/publishers to easily
 create and publish Applications. The Applications can be managed with strong
