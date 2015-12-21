@@ -52,7 +52,7 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
 
                     if (sessionObj.sessionIndex != null || sessionObj.sessionIndex != 'undefined') {
                         var relayStateUrlMatcher = new URIMatcher(relayState);
-                        var tenantedURIPattern = '/{context}/t/{domain}/';
+                        var tenantedURIPattern = contextPath + '/t/{domain}/';
                         var urlTenantDomain;
 
                         //Check whether the relayState is matched with a tenanted uri pattern
@@ -67,12 +67,6 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
                         var MultitenantUtils = Packages.org.wso2.carbon.utils.multitenancy.MultitenantUtils;
                         var MultitenantConstants = Packages.org.wso2.carbon.base.MultitenantConstants;
                         var domainName = MultitenantUtils.getTenantDomain(sessionObj.loggedInUser);
-                        var tenantURL;
-
-                        //If the relayState is tenanted, compose the tenanted URL prefix
-                        if (urlTenantDomain) {
-                            tenantURL = configs.tenantedUrlPrefix + '/' + urlTenantDomain;
-                        }
 
                         if (domainName != null && !MultitenantConstants.SUPER_TENANT_DOMAIN_NAME.equals(domainName)) {
                             var service = server.osgiService('org.wso2.carbon.utils.ConfigurationContextService');
