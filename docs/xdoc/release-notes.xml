@@ -27,7 +27,7 @@
 </head>
 <body>
 <div id="main-content">
-    <h1>The WSO2 App Manager 1.1.0 Released!</h1>
+<h1>The WSO2 App Manager 1.1.0 Released!</h1>
 
 <p>
     WSO2 App Manager is a fully open source, complete solution for creating, publishing and managing all aspects of an application and its life cycle, and is ready for massively scalable deployments.
@@ -82,22 +82,22 @@ WSO2 App Manager is released under Apache Software License Version 2.0, one of t
     <li>Use "admin", "admin" as the username and password to login as an admin</li>
 </ol>
 
-    <h2>New Features in WSO2 App Manager 1.1.0</h2>
-    <ul>
-    <li>Multi-tenanted tenant stores</li>
-    <li>Publish apps to external stores</li>
-    <li>Share apps between tenants</li>
-    <li>Self signup for tenant stores</li>
-    </ul>
+<h2>New Features in WSO2 App Manager 1.1.0</h2>
+<ul>
+<li>Multi-tenanted tenant stores</li>
+<li>Publish apps to external stores</li>
+<li>Share apps between tenants</li>
+<li>Self signup for tenant stores</li>
+</ul>
 
-    <h2>Resolved Issues</h2>
-    <ul>
-    <li>
-    <a href="https://wso2.org/jira/browse/APPM-1081?filter=12598">WSO2 App Manager V1.1.0 resolved issues</a>
-    </li>
-    </ul>
+<h2>Resolved Issues</h2>
+<ul>
+<li>
+<a href="https://wso2.org/jira/browse/APPM-1081?filter=12598">WSO2 App Manager V1.1.0 resolved issues</a>
+</li>
+</ul>
 
-    <h2>Key Features in WSO2 App Manager 1.1.0</h2>
+<h2>Key Features in WSO2 App Manager 1.1.0</h2>
 <h3>Web Apps</h3>
 <ul>
 <li>Application Discovery Support</li>

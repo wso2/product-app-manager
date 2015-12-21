@@ -14,8 +14,8 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
             server = require('carbon').server,
             samlRespObj,
             caramel = require('caramel'),
-            contextPath = caramel.configs().context,
             carbon = require('carbon'),
+            contextPath = caramel.configs().context,
             reversProxyEnabled = caramel.configs().reverseProxyEnabled,
             reverseProxyHost = caramel.configs().reverseProxyHost,
             keyStoreProps = {
@@ -69,12 +69,12 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
                         var MultitenantConstants = Packages.org.wso2.carbon.base.MultitenantConstants;
                         var domainName = MultitenantUtils.getTenantDomain(sessionObj.loggedInUser);
 
-
                         if (domainName != null && !MultitenantConstants.SUPER_TENANT_DOMAIN_NAME.equals(domainName)) {
                             var service = server.osgiService('org.wso2.carbon.utils.ConfigurationContextService');
                             var ctx = service.getServerConfigContext();
                             var TenantAxisUtils = org.wso2.carbon.core.multitenancy.utils.TenantAxisUtils;
                             TenantAxisUtils.setTenantAccessed(domainName, ctx);
+
                         }
                         var tenantId = carbon.server.tenantId({
                             domain: domainName

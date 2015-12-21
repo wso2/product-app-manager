@@ -15,7 +15,7 @@ WSO2 App Manager consists of several loosely coupled modules.
         * App gateway
 	    * Connected Device Manager
 
-Application Publisher allows Wab or Mobile application creators/publishers to easily
+Application Publisher allows Web or Mobile application creators/publishers to easily
 create and publish Applications. The Applications can be managed with strong
 governance model which consists od well-established concepts such as versioning and
 life-cycles. Application consumers can user the Application Store module to discover
@@ -96,7 +96,7 @@ For more information on WSO2 App Manager please visit http://wso2.com/products/a
 Known issues of WSO2 App Manager
 ==================================
 
-All known issues of WSO2 Application Manager are filed at:
+All known issues of WSO2 App Manager are filed at:
 
     https://wso2.org/jira/secure/IssueNavigator.jspa?requestId=x
 
