@@ -1,8 +1,8 @@
 ================================================================================
-                               WSO2 Application Manager
+                               WSO2 App Manager
 ================================================================================
 
-WSO2 Application Manager (AppM) is a powerful platform for creating, managing,
+WSO2 App Manager (AppM) is a powerful platform for creating, managing,
 consuming and monitoring web Applications. It combines tried and tested SOA best practices
 with modern day Application provisioning, management principles, governing and security
 to solve a wide range of enterprise challenges associated with managing many number of
@@ -10,12 +10,12 @@ applications (Mobile and Web).
 
 WSO2 App Manager consists of several loosely coupled modules.
 
-        * Application publisher
-        * Application store
-        * Application gateway
-	    * Connected Device Manager
+        * App publisher
+        * App store
+        * App gateway
+	* Connected Device Manager
 
-Application Publisher allows Wab or Mobile application creators/publishers to easily
+Application Publisher allows Web or Mobile application creators/publishers to easily
 create and publish Applications. The Applications can be managed with strong
 governance model which consists od well-established concepts such as versioning and
 life-cycles. Application consumers can user the Application Store module to discover
@@ -25,16 +25,16 @@ through the Store. Web gateway is built in to the AppM so that the web calls are
 routed to the respective backend web application.
 
 
-WSO2 Application Manager is based on the revolutionary WSO2 Carbon [Middleware a' la carte]
+WSO2 App Manager is based on the revolutionary WSO2 Carbon [Middleware a' la carte]
 framework. All the major features have been developed as reusable Carbon
 components.
 
-To learn more about WSO2 Application Manager please visit http://wso2.com/products/appm.
+To learn more about WSO2 App Manager please visit http://wso2.com/products/app-manager/.
 
 Key Features
 =============
 
-* Application publishers:
+* App publishers:
     - Simple web-based UI for defining Applications(Web and Mobile)
     - Easily modify existing Applications and move them across life cycle states
     - Specify and attach documentation to defined Applications
@@ -42,7 +42,7 @@ Key Features
     - Specify SLAs under which each Application is exposed to the consumers
     - Track and monitor Application usage
 
-* Application consumers:
+* App consumers:
     - Rich web portal to discover published Applications
     - Create applications, subscribe and obtain Application keys
     - Browse documentation and samples associated with each Application
@@ -61,13 +61,13 @@ System Requirements
    medium or lower.
 5. To compile and run the sample clients, an Ant version is required. Ant 1.7.0
    version is recommended
-6. To build WSO2 Application Manager from the Source distribution, it is necessary
+6. To build WSO2 App Manager from the Source distribution, it is necessary
    that you have JDK 1.6.x version and Maven 3.0.0 or later
 
 Installation & Running
 ==================================
 
-1. Extract the wso2appmanager-1.6.0.zip and go to the 'bin' directory
+1. Extract the wso2appmanager-1.1.0.zip and go to the 'bin' directory
 2. Run the wso2server.sh or wso2server.bat as appropriate
 3. Application Publisher web application is running at http://localhost:9763/publisher.
    You may login to the Publisher using the default administrator credentials
@@ -80,7 +80,7 @@ Documentation
 ==============
 
 On-line product documentation is available at:
-        https://docs.wso2.com/display/APPM100/WSO2+App+Manager+Documentation
+        https://docs.wso2.com/display/APPM110/WSO2+App+Manager+Documentation
 
 Support
 ==================================
@@ -91,12 +91,12 @@ hours, to premium 24x7 phone support.
 
 For additional support information please refer to http://wso2.com/support
 
-For more information on WSO2 Application Manager please visit http://wso2.com/products/app-manager
+For more information on WSO2 App Manager please visit http://wso2.com/products/app-manager
 
-Known issues of WSO2 Application Manager
+Known issues of WSO2 App Manager
 ==================================
 
-All known issues of WSO2 Application Manager are filed at:
+All known issues of WSO2 App Manager are filed at:
 
     https://wso2.org/jira/secure/IssueNavigator.jspa?requestId=x
 
