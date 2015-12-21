@@ -605,8 +605,8 @@
                                 </featureArtifactDef>
                                 <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.identity.application.authentication.framework.server.feature:4.2.3</featureArtifactDef>
 				<featureArtifactDef>org.wso2.carbon:org.wso2.carbon.identity.user.profile.server.feature:4.2.2</featureArtifactDef>
-                                <featureArtifactDef>org.wso2.store:org.wso2.store.feature:1.1.1-SNAPSHOT</featureArtifactDef>
-				<featureArtifactDef>org.wso2.carbon:org.wso2.carbon.social.feature:1.2.0</featureArtifactDef>
+                                <featureArtifactDef>org.wso2.carbon.store:org.wso2.store.feature:1.1.1-SNAPSHOT</featureArtifactDef>
+				<featureArtifactDef>org.wso2.carbon.store:org.wso2.carbon.social.feature:1.2.1-SNAPSHOT</featureArtifactDef>
                             
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.cassandra-jdbc-1.1.1.server.feature:4.0.1
@@ -1279,7 +1279,7 @@
                                 </feature>
 				<feature>
                                     <id>org.wso2.carbon.social.feature.group</id>
-                                    <version>1.2.0</version>
+                                    <version>1.2.1-SNAPSHOT</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.cassandra-jdbc-1.1.1.server.feature.group</id>
