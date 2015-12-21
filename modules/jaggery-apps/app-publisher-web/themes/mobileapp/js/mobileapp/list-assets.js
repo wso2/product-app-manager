@@ -7,7 +7,7 @@ var action = $(this).data("action");
         showCommentModel("Reason for Rejection",action,app);
     }else{
         jQuery.ajax({
-            url : '/publisher/api/lifecycle/'+ action +'/mobileapp/' + app,
+            url : caramel.context + '/api/lifecycle/'+ action +'/mobileapp/' + app,
             type : "PUT",
             async : "false",
             contentType : "application/json",
@@ -62,7 +62,7 @@ $( ".delete-mobile-app" ).click(function(e) {
                 text: 'Yes',
                 onClick: function ($noty) {
                     $.ajax({
-                        url: '/publisher/api/mobile/delete/' + app,
+                        url: caramel.context + '/api/mobile/delete/' + app,
                         type: "DELETE",
                         success: function (response) {
                             location.reload();
@@ -157,7 +157,7 @@ $( ".btn-reject-proceed" ).click(function() {
     var app = $("#webappName").val();
     var action = $("#action").val();
     $.ajax({
-        url: '/publisher/api/lifecycle/' + action + '/mobileapp/' + app,
+        url: caramel.context + '/api/lifecycle/' + action + '/mobileapp/' + app,
         type: "PUT",
         data: JSON.stringify({comment:comment}),
         success: function (response) {

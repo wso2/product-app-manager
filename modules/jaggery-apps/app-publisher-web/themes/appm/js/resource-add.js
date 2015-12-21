@@ -18,7 +18,7 @@ $( document ).ready(function() {
 
     //get Tier details from tier.xml
     $.ajax({
-        url: '/publisher/api/entitlement/get/Tiers',
+        url: caramel.context+'/api/entitlement/get/Tiers',
         type: 'GET',
         contentType: 'application/json',
         dataType: 'json',
@@ -42,7 +42,7 @@ $( document ).ready(function() {
 
     // get the Shared entitlement partials
     $.ajax({
-        url: '/publisher/api/entitlement/get/shared/policy/partial/list',
+        url: caramel.context + '/api/entitlement/get/shared/policy/partial/list',
         type: 'GET',
         contentType: 'application/json',
         dataType: 'json',

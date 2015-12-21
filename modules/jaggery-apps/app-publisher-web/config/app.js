@@ -54,6 +54,8 @@ lifecycle.core.init();
 //Configure Caramel
 caramel.configs({
     context: '/publisher',
+    reverseProxyEnabled:false,
+    reverseProxyHost : 'https://localhost',
     cache: true,
     negotiation: true,
     themer: function () {

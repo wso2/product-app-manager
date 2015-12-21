@@ -28,12 +28,13 @@ var carbon = require('carbon');
 var tenantedUrl = '/{context}/t/{domain}' + configs.assetsUrlPrefix + '/{type}/{aid}';
 
 require('/modules/store.js').exec(function (ctx) {
-    var asset, aid, title,currentTenant,userTenant,
+    var asset, aid, title, currentTenant, userTenant, tenantIdVal,
             log = ctx.log,
             sso = ctx.sso,
             store = ctx.store,
             user = ctx.user,
             tenantId = ctx.tenantId,
+            tenant = ctx.tenant,
             configs = ctx.configs,
             tenantDomain = ctx.tenant.domain,
             site = ctx.site,
@@ -49,7 +50,7 @@ require('/modules/store.js').exec(function (ctx) {
     caramel = require('caramel');
     var storeHostObj = jagg.module("manager").getAPIStoreObj();
     var isSelfSignupEnabledForTenant = storeHostObj.isSelfSignupEnabledForTenant(String(tenantDomain));
-    var tenantIdVal = user.tenantId;
+
 
     var tenantedUrl = '/{context}/t/{domain}' + configs.assetsUrlPrefix + '/{type}/{aid}';
     var defaultUrl = '/{context}' + configs.assetsUrlPrefix + '/{type}/{aid}';
@@ -69,29 +70,54 @@ require('/modules/store.js').exec(function (ctx) {
         return;
     }
 
+    var getRedirectURL = function(url) {
+        var contextPath = caramel.configs().context,
+        reversProxyEnabled = caramel.configs().reverseProxyEnabled,
+        reverseProxyHost = caramel.configs().reverseProxyHost;
+        var redirectURL = contextPath + url;
+        if(reversProxyEnabled) {
+            redirectURL = reverseProxyHost + contextPath + url;
+        }
+        return redirectURL;
+    }
+
+    var getReferer = function() {
+        var contextPath = caramel.configs().context,
+        reversProxyEnabled = caramel.configs().reverseProxyEnabled,
+        reverseProxyHost = caramel.configs().reverseProxyHost;
+        var referer = request.getHeader("referer");
+        if (!referer) {
+            if(reversProxyEnabled) {
+                referer = request.getRequestURI();
+                var context = request.getContextPath();
+                referer = contextPath + referer.substring(context.length);
+                referer = reverseProxyHost + referer;
+            } else {
+                referer = request.getRequestURL();
+            }
+        }
+        return referer;
+    }
 
     if (!asset && !user) { // asset not found, may be restricted by role
         //so need to login
-        var referer = request.getHeader("referer");
-        if (!referer) {
-            referer = request.getRequestURL();
-        }
-        var contextPath = caramel.configs().context;
-        response.sendRedirect(encodeURI(contextPath + "/login?referer=" + referer));
+        var referer = getReferer();
+        var loginRelativeUrl = encodeURI("/login?referer=" + referer);
+        response.sendRedirect(getRedirectURL(loginRelativeUrl));
     } else if (asset && !(asset.attributes.overview_allowAnonymous == "TRUE") && !user) {
         // asset found which doesn't have anonymous access so need login
-        var referer = request.getHeader("referer");
-        if (!referer) {
-            referer = request.getRequestURL();
-        }
-        var contextPath = caramel.configs().context;
-        response.sendRedirect(encodeURI(contextPath + "/login?referer=" + referer));
+        var referer = getReferer();
+        var loginRelativeUrl = encodeURI("/login?referer=" + referer);
+        response.sendRedirect(getRedirectURL(loginRelativeUrl));
     } else if (!asset && user) {
         // asset not found for logged in user, probably because of invalid uuid
         response.sendError(404, 'Requested page cannot be found');
     } else {
         if (user) {
             userTenant = user.tenantDomain;
+            tenantIdVal = user.tenantId;
+        }else{
+            tenantIdVal = tenant.tenantId;
         }
 
         if (JSON.parse(social.getRating("webapp:" + aid))) {
@@ -392,7 +418,7 @@ require('/modules/store.js').exec(function (ctx) {
         headerData.domain = tenantDomain;
 
         caramel.render({
-            title: 'Store | ' + type,
+            title: asset.attributes.overview_name + ' | Store | WSO2 App Manager',
             user: user,
             sso: sso,
 

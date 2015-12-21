@@ -6,11 +6,14 @@
             sessionId = session.getId(),
             requestURI,
             requestedPage = request.getParameter("requestedPage"),
-            relayState = '/publisher',
+            caramel = require('caramel'),
+            relayState = caramel.configs().context,
             encodedSAMLAuthRequest = sso.client.getEncodedSAMLAuthRequest(dataConfi.ssoConfiguration.issuer),
             serverHost = process.getProperty('server.host'),
             log = new Log(),
             postUrl = dataConfi.ssoConfiguration.identityProviderURL;
+
+
 
     if (!session.get("Loged")) {
         %>

@@ -21,6 +21,8 @@ var event = require('/modules/event.js');
 
 caramel.configs({
     context: '/social',
+    reverseProxyEnabled:false,
+    reverseProxyHost : 'https://localhost',
     cache: true,
     negotiation: true,
     themer: function () {

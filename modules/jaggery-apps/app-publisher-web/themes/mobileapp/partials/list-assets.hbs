@@ -74,7 +74,7 @@
         <td class="asset-listing-name">
             {{#if ../updateMobileAppAuthorized}}
                 {{#if this.enableEdit}}
-                    <a href='/publisher/asset/operations/edit/mobileapp/{{this.id}}'>
+                    <a href='{{url "/asset/operations/edit/mobileapp/"}}{{this.id}}'>
                   {{else}}
                     <a href='#'>
                 {{/if}}
@@ -99,7 +99,7 @@
         {{/if}}
 
         <td>
-            <img src="/publisher/themes/mobileapp/img/mobileapps/{{this.attributes.overview_platform}}.png">
+            <img src="{{url "/themes/mobileapp/img/mobileapps/"}}{{this.attributes.overview_platform}}.png">
         </td>
 
         <td>
@@ -168,17 +168,17 @@
     <nav>
         <ul class="pagination">
             {{#if leftNav}}
-                <li><a href="/publisher/assets/mobileapp/?page={{this.leftNav}}"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>
+                <li><a href="{{url "/assets/mobileapp/?page="}}{{this.leftNav}}"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>
             {{/if}}
             {{#each pageIndices}}
                 {{#if this.isDisabled}}
                     <li class="disabled"><a>{{this.index}}</a></li>
                 {{else}}
-                    <li><a href="/publisher/assets/mobileapp/?page={{this.index}}">{{this.index}}</a></li>
+                    <li><a href="{{url "/assets/mobileapp/?page="}}{{this.index}}">{{this.index}}</a></li>
                 {{/if}}
             {{/each}}
             {{#if rightNav}}
-                <li><a href="/publisher/assets/mobileapp/?page={{this.rightNav}}"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>
+                <li><a href="{{url "/assets/mobileapp/?page="}}{{this.rightNav}}"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>
             {{/if}}
         </ul>
     </nav>
@@ -193,7 +193,7 @@
         No mobile applications added yet.
         <br />
         {{#if mobileAppCreatePermission}}
-        <a type="button" class="btn btn-addNewAssetLarge" href="/publisher/asset/{{shortName}}"><i class="icon-plus-sign-alt"></i>Add New Mobile App</a>
+        <a type="button" class="btn btn-addNewAssetLarge" href="{{url "/asset/"}}{{shortName}}"><i class="icon-plus-sign-alt"></i>Add New Mobile App</a>
     {{/if}}
     </div>
 

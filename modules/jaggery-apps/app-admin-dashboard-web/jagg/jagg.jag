@@ -344,7 +344,11 @@ return getThemePath() + path;
     };
 
     var getAbsoluteUrl = function (path) {
-        return site.context + path;
+        var path = site.context + path;
+        if (site.reverseProxyEnabled) {
+            path = site.reverseProxyHost + path;
+        }
+        return path;
     };
 
     var module = function (name, module) {

@@ -40,6 +40,7 @@ require('/modules/publisher.js').exec(function(ctx) {
     var routeManager = new router.Router();
     var utility=require('/modules/utility.js').rxt_utility();
     var permissions=require('/modules/permissions.js').permissions;
+    var contextPath = caramel.configs().context;
 
 
     var checkNonSpecial = function(value){
@@ -104,7 +105,7 @@ require('/modules/publisher.js').exec(function(ctx) {
                 fileTemp.close();
             }
 
-            return "/publisher"+ mam_config.fileAPILocation + uid + file_n;
+            return contextPath + mam_config.fileAPILocation + uid + file_n;
 
         }
         return "";
@@ -364,10 +365,10 @@ require('/modules/publisher.js').exec(function(ctx) {
 
             //assigning default thumbnail and banner if not provided.
             if(context.post['images_thumbnail'] == '') {
-                context.post['images_thumbnail'] = '/publisher/config/defaults/img/thumbnail.jpg';
+                context.post['images_thumbnail'] = contextPath + '/config/defaults/img/thumbnail.jpg';
             }
             if(context.post['images_banner'] == '') {
-                context.post['images_banner'] = '/publisher/config/defaults/img/banner.jpg';
+                context.post['images_banner'] = contextPath + '/config/defaults/img/banner.jpg';
             }
 
 
@@ -953,10 +954,10 @@ require('/modules/publisher.js').exec(function(ctx) {
 
             //assigning default thumbnail and banner if not provided.
             if(context.post['images_thumbnail'] == '') {
-                context.post['images_thumbnail'] = '/publisher/config/defaults/img/thumbnail.jpg';
+                context.post['images_thumbnail'] = contextPath + '/config/defaults/img/thumbnail.jpg';
             }
             if(context.post['images_banner'] == '') {
-                context.post['images_banner'] = '/publisher/config/defaults/img/banner.jpg';
+                context.post['images_banner'] = contextPath + '/config/defaults/img/banner.jpg';
             }
 
             if(shortName !="mobileapp"){

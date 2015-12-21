@@ -32,7 +32,15 @@
                 KEY_STORE_PASSWORD: configs.ssoConfiguration.keyStorePassword,
                 IDP_ALIAS: configs.ssoConfiguration.identityAlias
             },
-            sso_sessions = application.get('sso_sessions');
+            sso_sessions = application.get('sso_sessions'),
+            caramel = require('caramel'),
+            contextPath = caramel.configs().context,
+            reversProxyEnabled = caramel.configs().reverseProxyEnabled,
+            reverseProxyHost = caramel.configs().reverseProxyHost;
+            if(reversProxyEnabled) {
+                relayState = reverseProxyHost+relayState;
+            }
+
 
     if (!sso_sessions) {
         application.put('sso_sessions', {});
@@ -70,7 +78,7 @@
 
         } else {
             session.invalidate();
-            response.sendRedirect('/social');
+            response.sendRedirect(contextPath);
         }
     }
 

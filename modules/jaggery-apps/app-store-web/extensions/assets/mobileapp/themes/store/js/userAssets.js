@@ -61,7 +61,7 @@ noty({
 $(".device-image-modal").each(function(index) {	
 	var srcImage = $(this).attr("src");	
 	if (!urlExists(srcImage)) {
-		$(this).attr("src", "/store/extensions/assets/mobileapp/resources/models/none.png");
+		$(this).attr("src", caramel.context + "/extensions/assets/mobileapp/resources/models/none.png");
 	}
 });
 
@@ -102,7 +102,7 @@ $(document).on('click', '#myasset-container .asset-unsubscribe-btn', function() 
 
                 $.ajax({
                     type: "POST",
-                    url: "/store/apps/devices/uninstall",
+                    url: caramel.context + "/apps/devices/uninstall",
                     data: { asset: appToUninstall }
                 })
                     .done(function( msg ) {
@@ -176,7 +176,7 @@ $(".device-image").each(function(index) {
 	
 	var srcImage = $(this).attr("src");	
 	if (!urlExists(srcImage)) {
-		$(this).attr("src", "/store/extensions/assets/mobileapp/resources/models/none.png");
+		$(this).attr("src", caramel.context + "/extensions/assets/mobileapp/resources/models/none.png");
 	}
 });
 
@@ -184,7 +184,7 @@ $(".device-image-block-modal").click(function(index) {
 	
 	var deviceId = $(this).data("deviceId");
 	jQuery.ajax({
-      url: "/store/apps/devices/" + deviceId + "/install", 
+      url: caramel.context + "/apps/devices/" + deviceId + "/install",
       type: "POST",
       dataType: "json",	
       data : {"asset": appToReinstall}			      

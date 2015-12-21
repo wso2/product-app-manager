@@ -49,9 +49,11 @@ var engine = caramel.engine('handlebars', (function () {
                 var matcher = new URIMatcher(uri);
                 var storageMatcher = new URIMatcher(path);
                 var mobileApiMatcher = new URIMatcher(path);
-
+                var caramel = require('caramel');
+                var context= caramel.configs().context;
+                var pattern = context + '/storage/{+any}';
                 //Resolving tenanted storage URI for webapps
-                if (storageMatcher.match('/store/storage/{+any}')) {
+                if (storageMatcher.match(pattern)) {
                     path = "/storage/" + storageMatcher.elements().any;
                 }
                 //TODO: This url pattern has been hard coded due to pattern mismatch in between mobile and webapp image urls
@@ -61,9 +63,8 @@ var engine = caramel.engine('handlebars', (function () {
                     return path;
                 }
                 if (matcher.match('/{context}/t/{domain}/') || matcher.match('/{context}/t/{domain}/{+any}')) {
-                    context = matcher.elements().context;
                     domain = matcher.elements().domain;
-                    output = '/' + context + '/t/' + domain;
+                    output = context + '/t/' + domain;
                     return output + path;
                 } else {
                     if (path.indexOf('http://') === 0 || path.indexOf('https://') === 0) {
@@ -83,6 +84,28 @@ var engine = caramel.engine('handlebars', (function () {
                 } else {
                     return false;
                 }
+
+            });
+
+            Handlebars.registerHelper('socialURL', function (path) {
+                var socialAppContext = caramel.configs().socialAppContext;
+                var reverseProxyEnabled = caramel.configs().reverseProxyEnabled;
+                var reverseProxyHost = caramel.configs().reverseProxyHost;
+                var ip = process.getProperty('server.host');
+                var https = process.getProperty('https.port');
+                var http = process.getProperty('http.port');
+                var url = ip + ":" + https + socialAppContext;
+                if (reverseProxyEnabled) {
+                    url = reverseProxyHost + socialAppContext;
+                } else {
+                    var isSecure = request.isSecure();
+                    if (isSecure) {
+                        url = "https://" + ip + ":" + https + socialAppContext
+                    } else {
+                        url = "http://" + ip + ":" + https + socialAppContext
+                    }
+                }
+                return url;
 
             });
 

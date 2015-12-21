@@ -22,7 +22,7 @@ var policyGroupsArray = new Array(); //policy group related details array
 var policyGroupBlock; //contains html formatted options list of Policy Groups
 var policyPartialsArray = new Array();
 
-$('#userRoles').tokenInput('/publisher/api/lifecycle/information/meta/' + $('#meta-asset-type').val() + '/roles', {
+$('#userRoles').tokenInput(caramel.context + 'api/lifecycle/information/meta/' + $('#meta-asset-type').val() + '/roles', {
     theme: 'facebook',
     preventDuplicates: true,
     onAdd: function (role) {
@@ -59,7 +59,7 @@ function insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUr
 
     $.ajax({
         async: false,
-        url: '/publisher/api/entitlement/policy/partial/policyGroup/save',
+        url: caramel.context + '/api/entitlement/policy/partial/policyGroup/save',
         type: 'POST',
         data: {
             "policyGroupName": policyGroupName,
@@ -119,7 +119,7 @@ function insertPolicyGroup( policyGroupName, throttlingTier, anonymousAccessToUr
 function updatePolicyGroup(policyGroupName, throttlingTier, anonymousAccessToUrlPattern, userRoles, objPartialMappings, isSaveAndClose, policyGroupDesc) {
     $.ajax({
         async: false,
-        url: '/publisher/api/entitlement/policy/partial/policyGroup/details/update',
+        url: caramel.context + '/api/entitlement/policy/partial/policyGroup/details/update',
         type: 'POST',
         data: {
             "policyGroupName": policyGroupName,
@@ -386,7 +386,7 @@ function deletePolicyGroup(applicationId, policyGroupId, policyGroupName) {
 
     $.ajax({
         async: false,
-        url: '/publisher/api/entitlement/policyGroup/associate/url/pattern/list/to/avoid/delete/' + policyGroupId,
+        url: caramel.context + '/api/entitlement/policyGroup/associate/url/pattern/list/to/avoid/delete/' + policyGroupId,
         type: 'GET',
         contentType: 'application/json',
         dataType: 'json',
@@ -428,7 +428,7 @@ function deletePolicyGroup(applicationId, policyGroupId, policyGroupName) {
         });
 
         $.ajax({
-            url: '/publisher/api/entitlement/policy/partial/policyGroup/details/delete/' + applicationId + '/' + policyGroupId,
+            url: caramel.context + '/api/entitlement/policy/partial/policyGroup/details/delete/' + applicationId + '/' + policyGroupId,
             type: 'DELETE',
             success: function (data) {
                 //to remove index and value from policy array
@@ -455,7 +455,7 @@ function deletePolicyGroup(applicationId, policyGroupId, policyGroupName) {
 function getApplicationId(uuid) {
     var appid = "-1";
     $.ajax({
-        url: '/publisher/api/entitlement/get/webapp/id/from/entitlements/uuid/' + uuid,
+        url: caramel.context + '/api/entitlement/get/webapp/id/from/entitlements/uuid/' + uuid,
         type: 'GET',
         contentType: 'application/json',
         async: false,
@@ -497,14 +497,14 @@ function drawPolicyGroupsDynamically() {
 function updatePolicyGroupPartialXACMLPolicies(uuid){
     var policyGroupsArrayTemp = [];
     $.ajax({
-        url: '/publisher/api/entitlement/get/webapp/id/from/entitlements/uuid/' + uuid,
+        url: caramel.context + '/api/entitlement/get/webapp/id/from/entitlements/uuid/' + uuid,
         type: 'GET',
         async: false,
         contentType: 'application/json',
         success: function (id) {
             // get the entitlement policy groups
             $.ajax({
-                url: '/publisher/api/entitlement/get/policy/Group/by/appId/' + id,
+                url: caramel.context + '/api/entitlement/get/policy/Group/by/appId/' + id,
                 type: 'GET',
                 contentType: 'application/json',
                 dataType: 'json',

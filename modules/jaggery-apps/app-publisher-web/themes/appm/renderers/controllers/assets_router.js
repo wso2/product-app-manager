@@ -110,7 +110,7 @@ var render = function (theme, data, meta, require) {
                     for (key in lcComments) {
                         if (lcComments.hasOwnProperty(key)) {
                             notifyObject = {
-                                'url': '/publisher/asset/webapp/' + data.artifacts[i].id,
+                                'url': caramel.context + '/asset/webapp/' + data.artifacts[i].id,
                                 'notification': lcComments[key],
                                 'appname': data.artifacts[i].attributes.overview_displayName
                             }
@@ -118,7 +118,7 @@ var render = function (theme, data, meta, require) {
                     }
                 }else{
                     notifyObject = {
-                        'url': '/publisher/asset/webapp/' + data.artifacts[i].id,
+                        'url': caramel.context + '/asset/webapp/' + data.artifacts[i].id,
                         'notification': 'Rejected reason is not defined',
                         'appname': data.artifacts[i].attributes.overview_displayName
                     }

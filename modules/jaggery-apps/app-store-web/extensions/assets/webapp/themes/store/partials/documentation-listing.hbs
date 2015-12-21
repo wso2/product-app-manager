@@ -24,7 +24,7 @@
             {{/if}}
             
             {{#if isInline}}
-                     <a class='icon-globe' href="/store/extensions/assets/webapp/doc?{{name}}&{{../../asset.attributes.overview_provider}}&{{../../asset.attributes.overview_version}}&{{../../asset.attributes.overview_name}}&{{../../user.username}}"  target="_blank">ViewDoc</a>
+                     <a class='icon-globe' href="{{tenantedUrl "/extensions/assets/webapp/doc"}}?{{name}}&{{../../asset.attributes.overview_provider}}&{{../../asset.attributes.overview_version}}&{{../../asset.attributes.overview_name}}&{{../../user.username}}"  target="_blank">ViewDoc</a>
             {{/if}}
 
         </td>

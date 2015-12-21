@@ -37,7 +37,7 @@ $(function(){
             userRoles, appliedXacmlRules ,policyGroupDesc, onSuccess, postData) {
        jQuery.ajax({
            async: true,
-           url: '/publisher/api/entitlement/policy/partial/policyGroup/save',
+           url: caramel.context + '/api/entitlement/policy/partial/policyGroup/save',
            type: 'POST',
            data: {
                "policyGroupName": policyGroupName,
@@ -64,7 +64,7 @@ $(function(){
 
     var doPostWebappCreation = function (postData) {
           jQuery.ajax({
-              url: '/publisher/api/asset/webapp',
+              url: caramel.context + '/api/asset/webapp',
               type: "POST", data: postData, async:true, dataType : 'json',
               success: function (response) {
                 jQuery('#discover-create-asset-status').modal('show');
@@ -202,7 +202,7 @@ $(function(){
         sso_config.app_provider = data.overview_provider;
         sso_config.app_allowAnonymous=data.overview_allowAnonymous;
         jQuery.ajax({
-                url: '/publisher/api/sso/addConfig',
+                url: caramel.context + '/api/sso/addConfig',
                 type: 'POST',
                 contentType: 'application/json',
                 data:JSON.stringify(sso_config),
@@ -237,7 +237,7 @@ $(function(){
             jQuery('#application-status-'+id).text('PROCESSING');
 
             jQuery.ajax({
-                url: '/publisher/api/discover/asset/loadCreatableAsset/webapp/'+id,
+                url: caramel.context + '/api/discover/asset/loadCreatableAsset/webapp/'+id,
                 type: "POST", data: postData, async:false, dataType : 'json',
                 success: function (response) {
                     jQuery('#discover-create-asset-status #statusText').text('Application is being imported...');

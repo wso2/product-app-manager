@@ -1,6 +1,8 @@
 <%
 (function(){
 	var mam_config = require('/extensions/mobileapp/config/mam-config.json');
+	var caramel = require('caramel');
+	var contextPath = caramel.configs().context;
 	var log=new Log();
 	var makeid= function()
 	{
@@ -79,7 +81,7 @@
 		response.sendError(500);
 	}else{
         var fileName =  saveFile(file);
-		meta.path = "/publisher"+ mam_config.fileAPILocation + fileName;
+		meta.path = contextPath + mam_config.fileAPILocation + fileName;
 
 		//add leading '/' if missing
  		meta.path = meta.path.charAt(0) === '/' ? meta.path : '/'+meta.path;

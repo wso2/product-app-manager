@@ -120,8 +120,9 @@ var injector = function () {
     @return: A url for the provided uuid for the current context
      */
     function getUrl(uuid,config,object){
-
-        var context=config.context;
+        var caramel = require('caramel');
+        var context= caramel.configs().context;
+        if (context.charAt(0) == "/") context = context.substr(1);
         var storageUrlPattern=config.storageUrlPattern;
         var ip=process.getProperty('server.host');
         var https=process.getProperty('https.port');

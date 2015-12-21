@@ -24,10 +24,13 @@
             sessionId = session.getId(),
             requestURI,
             requestedPage = request.getParameter("requestedPage"),
-            relayState = '/social?'+request.getQueryString(),
+            caramel = require('caramel'),
+            contextPath = caramel.configs().context,
+            relayState = contextPath + '?'+request.getQueryString(),
             encodedSAMLAuthRequest = sso.client.getEncodedSAMLAuthRequest(dataConfi.ssoConfiguration.issuer),
             log = new Log(),
-            postUrl = dataConfi.ssoConfiguration.identityProviderURL; 
+            postUrl = dataConfi.ssoConfiguration.identityProviderURL;
+
 	    if(log.isDebugEnabled()){
             	log.debug('Social Login URL: '+postUrl);
 	    }

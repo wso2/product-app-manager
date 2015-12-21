@@ -22,6 +22,14 @@ if(user){
 
 loggeduser.logout();
 
-response.sendRedirect('/store');
+caramel = require('caramel');
+var contextPath = caramel.configs().context;
+var reversProxyEnabled = caramel.configs().reverseProxyEnabled;
+var reverseProxyHost = caramel.configs().reverseProxyHost;
+var reDirectUrl = contextPath;
+if(reversProxyEnabled) {
+    reDirectUrl = reverseProxyHost+contextPath;
+}
+response.sendRedirect(reDirectUrl);
 
 %>

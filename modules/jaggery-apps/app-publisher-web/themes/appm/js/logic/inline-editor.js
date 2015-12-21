@@ -26,7 +26,7 @@ function loadDefaultTinyMCEContent() {
     var docName = $("#doc").val();
 
 	 $.ajax({
-			url : '/publisher/api/doc?action=getInlineContent',
+			url :  caramel.context + '/api/doc?action=getInlineContent',
 			type:'POST',
 			data :{'provider':provider,'apiName':apiName,'version':version,'docName':docName},
 			success : function(response) {
@@ -57,7 +57,7 @@ function saveContent(provider, apiName, apiVersion, docName, mode) {
 	var contentDoc = tinyMCE.get('inlineEditor').getContent();
 
 	$.ajax({
-		url : '/publisher/api/doc?action=addInlineContent',
+		url : caramel.context + '/api/doc?action=addInlineContent',
 		type:'POST',
 		//dataType:json,
 		data :{'provider':provider,'apiName':apiName,'version':apiVersion,'docName':docName,'content':contentDoc},

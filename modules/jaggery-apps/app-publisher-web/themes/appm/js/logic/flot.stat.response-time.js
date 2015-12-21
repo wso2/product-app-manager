@@ -19,7 +19,7 @@ function drawGraphs() {
 
     $.ajax({
         async: false,
-        url: '/publisher/api/assets/' + operation + '/' + type
+        url:  caramel.context + '/api/assets/' + operation + '/' + type
             + '/getAPIResponseTime/',
         type: 'POST',
         data: {

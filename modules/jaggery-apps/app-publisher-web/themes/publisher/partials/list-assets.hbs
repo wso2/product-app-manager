@@ -27,7 +27,7 @@
                         <img src="{{this.attributes.images_thumbnail}}" class="" />
                         </td>
                         <td class="asset-listing-name">
-                            <a href='/publisher/asset/{{../shortName}}/{{this.id}}'>
+                            <a href='{{url "/asset/"}}{{../shortName}}/{{this.id}}'>
                                 {{this.attributes.overview_name}}
                             </a>
                         </td>
@@ -57,7 +57,7 @@
 			    <br />
 			        Nothing added yet.
 			    <br />
-			    <a type="button" class="btn btn-addNewAssetLarge" href="/publisher/asset/{{shortName}}"><i class="icon-plus-sign-alt"></i>Add New Asset</a>
+			    <a type="button" class="btn btn-addNewAssetLarge" href="{{url "/asset/"}}{{shortName}}"><i class="icon-plus-sign-alt"></i>Add New Asset</a>
 			</div>
 	{{/if}}
 	<div class="modal fade" id="messageModal2" style="display:none"></div>

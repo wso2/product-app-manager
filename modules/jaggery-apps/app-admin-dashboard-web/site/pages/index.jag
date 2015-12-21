@@ -34,7 +34,7 @@ middlePage="xacmlpolicy-task";
     jagg.render({
         "name":"page/base",
         "inputs":{
-            "title":"Tasks Listing",
+            "title":"Admin Dashboard | WSO2 App Manager",
             "header":{
                 "name":"menu/primary"
             },
