@@ -19,16 +19,18 @@ var apiIdentifierObj = new apiIdentifier(webappProvider, webappName, webappVersi
 
 var APIProviderImpl = Packages.org.wso2.carbon.appmgt.impl.APIProviderImpl;
 
-//In annonymous mode username = "". 
-//APIProviderImpl initializes annonymous registry if the username is null. 
-//Hence assigning username = null. 
+//In annonymous mode username = "".
+//APIProviderImpl initializes annonymous registry if the username is null.
+//Hence assigning username = null.
 if ("".equals(username)) {
-	username = null;
+    username = null;
 }
 
 var APIProviderImplObj = new APIProviderImpl(username);
-
-var content = APIProviderImplObj.getDocumentationContent(apiIdentifierObj,docName);
+var find = '%20';
+var regExp = new RegExp(find, 'g');
+var docNameWithoutSpace = docName.replace(regExp, ' ');
+var content = APIProviderImplObj.getDocumentationContent(apiIdentifierObj, docNameWithoutSpace);
 
 var docData = {};
 docData.webappName = webappName;
@@ -37,20 +39,16 @@ docData.docContent = content;
 
 var userData = authenticator.getLoggedInUser();
 
-
 caramel.render({
 		header: {
 	            user: userData
 	    },
         data:docData
-       
-    });
 
+    });
 
 function getServiceDir(serviceName) {
 	return '../services/' + serviceName;
 }
 	
-
-
 %>
