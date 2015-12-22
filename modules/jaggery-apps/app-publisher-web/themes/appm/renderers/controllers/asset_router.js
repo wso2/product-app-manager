@@ -14,6 +14,7 @@ var render=function(theme,data,meta,require){
     var user=server.current(session);
     var um=server.userManager(user.tenantId);
     var createActionAuthorized = permissions.isAuthorized(user.username, config.permissions.webapp_create, um);
+    var publishActionAuthorized = permissions.isAuthorized(user.username, config.permissions.webapp_publish, um);
 
     var viewStatsAuthorized = permissions.isAuthorized(user.username, config.permissions.view_statistics, um);
 
@@ -35,6 +36,8 @@ var render=function(theme,data,meta,require){
             listPartial='view-asset';
             var copyOfData = parse(stringify(data));
             data.newViewData =  require('/helpers/splitter.js').splitData(copyOfData);
+            data.newViewData.publishActionAuthorized = publishActionAuthorized;
+            log.info(stringify(data.newViewData.publishActionAuthorized));
             heading = data.newViewData.displayName.value;
             break;
         case 'edit':

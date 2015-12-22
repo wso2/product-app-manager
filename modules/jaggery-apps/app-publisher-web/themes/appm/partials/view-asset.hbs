@@ -40,11 +40,13 @@
                             <li><a href="#nav-pills-tab-2" data-toggle="tab">Web Application Resources</a></li>
                             <li><a href="#nav-pills-tab-3" data-toggle="tab">Single Sign On Configuration</a></li>
                             <li><a href="#nav-pills-tab-4" data-toggle="tab">OAUTH Parameters</a></li>
-                        {{#compare artifact.lifecycleState "Published" operator="=="}}
-                            {{#compare artifact.attributes.overview_visibleRoles " " operator="=="}}
-                            <li><a href="#nav-pills-tab-5" data-toggle="tab">External Stores</a></li>
+                        {{#if newViewData.publishActionAuthorized}}
+                            {{#compare artifact.lifecycleState "Published" operator="=="}}
+                                {{#compare artifact.attributes.overview_visibleRoles " " operator="=="}}
+                                <li><a href="#nav-pills-tab-5" data-toggle="tab">External Stores</a></li>
+                                {{/compare}}
                             {{/compare}}
-                        {{/compare}}
+                        {{/if}}
                         </ul>
                         <div class="tab-content app-overview-inner">
                             <div class="tab-pane fade active in" id="nav-pills-tab-1">
