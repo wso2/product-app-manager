@@ -30,11 +30,11 @@
                     <div class="asset-details">
                         {{#if isTenanted}}
                             <a class="asset-title" href="{{url "/t/"}}{{tenantDomain}}/assets/webapp/{{uuid}}">
-                                <strong>{{name}}</strong>
+                                <strong>{{displayName}}</strong>
                             </a>
                         {{else}}
                             <a class="asset-title" href="{{url "/assets/webapp/"}}{{uuid}}">
-                                <strong>{{name}}</strong>
+                                <strong>{{displayName}}</strong>
                             </a>
                         {{/if}}
                     </div>

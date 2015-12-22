@@ -74,7 +74,14 @@ require('/modules/store.js').exec(function (ctx) {
         for(i=0;i< apps[0].subscriptions.length;i++){
             var api=apiInfoManager.getAPIDescription( apps[0].subscriptions[i].provider, apps[0].subscriptions[i].name, apps[0].subscriptions[i].version);
 			apps[0].subscriptions[i].tenantDomain = carbon.server.tenantDomain({username: apps[0].subscriptions[i].provider});
-			apps[0].subscriptions[i].productionURL = api.serverURL.productionURL;
+
+			var asset = store.asset(type, apps[0].subscriptions[i].uuid);
+			apps[0].subscriptions[i].displayName = asset.attributes.overview_displayName;
+			if (asset.attributes.overview_skipGateway == "true") {
+				apps[0].subscriptions[i].productionURL = asset.attributes.overview_webAppUrl;
+			} else {
+				apps[0].subscriptions[i].productionURL = api.serverURL.productionURL;
+			}
 
             if((i > offset && i < limit)){
                 displayApps.push(apps[0].subscriptions[i]);
