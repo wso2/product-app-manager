@@ -37,7 +37,6 @@ var render=function(theme,data,meta,require){
             var copyOfData = parse(stringify(data));
             data.newViewData =  require('/helpers/splitter.js').splitData(copyOfData);
             data.newViewData.publishActionAuthorized = publishActionAuthorized;
-            log.info(stringify(data.newViewData.publishActionAuthorized));
             heading = data.newViewData.displayName.value;
             break;
         case 'edit':

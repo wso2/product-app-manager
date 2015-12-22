@@ -8,7 +8,7 @@ Configuration Migration 1.0.0 to 1.1.0
 3. Go to backed up configuration folder, open carbon.xml file and do the following changes.
 
    - Change the product 'Vesion' configuration from '1.0.0' to '1.1.0'
-       <Version>1.1.0<Version>
+       <Version>1.1.0</Version>
 
    - Change the Server Key Configuration from 'AM' to to 'AppM'
        <ServerKey>AppM</ServerKey>
@@ -54,8 +54,13 @@ Configuration Migration 1.0.0 to 1.1.0
 		<CreateSubscriberRole>true</CreateSubscriberRole>
 	    </SelfSignUp>
 
+ 5. To re-index the artifacts in the registry, rename the lastAccessTimeLocation in the <APPM_1.0.0>/repository/conf/registry.xml file.
 
-5. Replace the <APPM_1.1.0>/repository/conf folder with the above backed up and modified conf folder of APPM 1.0.0.
+    Eg: Change /_system/local/repository/components/org.wso2.carbon.registry/indexing/lastaccesstime
+    to /_system/local/repository/components/org.wso2.carbon.registry/indexing/lastaccesstime_1
+
+
+ 6. Replace the <APPM_1.1.0>/repository/conf folder with the above backed up and modified conf folder of APPM 1.0.0.
 
 
 Data Migration 1.0.0 to 1.1.0
@@ -73,20 +78,24 @@ Data Migration 1.0.0 to 1.1.0
    
 6. Copy relevant database drivers to <APPM_1.1.0>/repository/components/lib directory.
  
-5. Move your synapse configurations in APPM 1.0.0 to APPM_1.1.0. For that, copy and replace  <APPM_1.0.0>/repository/deployment/server/synapse-config/default directory to <APPM_1.1.0>/repository/deployment/server/synapse-config/default. Do not replace _TokenAPI_.xml, _RevokeAPI_.xml and _AuthorizeAPI_.xml files in the default/api/ subdirectory.
+5. Move your synapse configurations in APPM 1.0.0 to APPM_1.1.0. For that, copy and replace  <APPM_1.0.0>/repository/deployment/server/synapse-config/default directory to <APPM_1.1.0>/repository/deployment/server/synapse-config/default.
 
 6. Start APPM 1.1.0 and Login.
 
 7. Login to admin console as the admin user and navigate to /_system/config/repository/components/org.wso2.carbon.registry/queries
    using registry browser. Then delete all the queries listed under "queries" collection (allTags,latest-apis,resource-by-tag,tag-summary and tagsByMediaTypeAndLifecycle).
 
-8. Restart the server.
+8. Navigate to Extentions (tab) Configure --> Artifact Types and select the Artifact type 'webapp' and add the following line under <nameAttribute> and save.
+
+   <lifecycle>WebAppLifeCycle</lifecycle>
+
+9. Restart the server.
 
 
 Tenant Migration (Only needs to be done if you are migrating a multi-tenanted setup)
 ====================================================================================
 
-1. Move your tenant synapse configurations to APPM 1.1.0. For that, copy and replace specific folders for tenants(shown as 1,2,...) from <APPM_1.0.0>/repository/tenants/ to <APPM_1.1.0>/repository/tenants. Do not replace _TokenAPI_.xml, _RevokeAPI_.xml and _AuthorizeAPI_.xml files in the default/api subdirectory.
+1. Move your tenant synapse configurations to APPM 1.1.0. For that, copy and replace specific folders for tenants(shown as 1,2,...) from <APPM_1.0.0>/repository/tenants/ to <APPM_1.1.0>/repository/tenants.
 
 2. Start App Manager 1.1.0.
 
@@ -94,6 +103,10 @@ Tenant Migration (Only needs to be done if you are migrating a multi-tenanted se
 
 4. Navigate to /_system/config/repository/components/org.wso2.carbon.registry/queries
    using registry browser. Then delete all the queries listed under "queries" collection (allTags,latest-apis,resource-by-tag,tag-summary and tagsByMediaTypeAndLifecycle).
+
+5. Navigate to Extentions (tab) Configure --> Artifact Types and select the Artifact type 'webapp' and add the following line under <nameAttribute> and save.
+
+   <lifecycle>WebAppLifeCycle</lifecycle>
 
 5. If you need to enable Self Sigh-Up in the tenant store, login to admin console as the tenant admin user, then navigate to /_system/governance/appmgt/applicationdata/sign-up-config.xml and edit the file (Enter Tenant admin information, signup roles etc).
 
