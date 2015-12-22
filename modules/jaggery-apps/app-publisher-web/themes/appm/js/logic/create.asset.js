@@ -190,6 +190,19 @@ $(function() {
 			return;
 		}
 
+		var subscribeAvailability = $('#sub-availability').val();
+		if (subscribeAvailability == 'specific_tenants') {
+			var tenantList = $('#tenant-list');
+			var tenantListValue = tenantList.val();
+			if(tenantListValue == null || tenantListValue == '') {
+				showAlert('Please enter the specific tenant list.', 'error');
+				tenantList.focus();
+				this.disabled = false;
+				$("html, body").animate({ scrollTop: 0 }, "slow");
+				return;
+			}
+		}
+
 		//Check illegal characters in tags
 		var tags = $('#tag-test').tokenInput('get');
 		for (var index in tags) {

@@ -340,7 +340,7 @@ $(function() {
         var app_context = $('#overview_context').val();
         var app_provider = $('#overview_provider').val();
         var app_allowAnonymous=$('#overview_allowAnonymous').val();
-        var app_acsURL = $('#overview_acsUrl').val();
+        var app_acsURL = $('#overview_acsUrl').val().trim();
 
         var claims = [];
         var index = 0;

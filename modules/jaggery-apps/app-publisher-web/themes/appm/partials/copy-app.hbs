@@ -44,6 +44,7 @@
                              name="overview_visibleRoles" id="visible_roles"/>
                       <input type='hidden' value="{{{snoop "fields(name=overview_tenants).value" data}}}"
                              name="overview_tenants" id="tenant-list"/>
+                      <input type='text' value="{{{snoop "fields(name=overview_acsUrl).value" data}}}" name="overview_acsUrl" id="overview_acsUrl"/>
                      <input type='hidden' id="uuid" value="{{data.info.id}}"/>               
                      <input type='hidden' value="" name="overview_trackingCode" id="tracking_code" />
                      <input type='hidden' value="{{{snoop "fields(name=sso_ssoProvider).value" data}}}" name="sso_ssoProvider" id="sso_ssoProvider"/>
