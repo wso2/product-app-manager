@@ -36,7 +36,7 @@
 
 	<%@ page import="org.wso2.carbon.appmgt.sample.jwt.JWTProcessor"%>
 	<%
-		String userName = "Subject";
+		String userName = "sub";
 		Map<String, String> map = null;
 		String header = request.getHeader("X-JWT-Assertion");
 		if (header != null) {
