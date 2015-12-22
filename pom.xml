@@ -337,7 +337,7 @@
         <orbit.version.h2.engine>1.2.140.wso2v3</orbit.version.h2.engine>
         <orbit.version.jettison>1.3.4.wso2v1</orbit.version.jettison>
         <emma.version>2.1.5320</emma.version>
-        <appmanagerserver.version>1.0.1-SNAPSHOT</appmanagerserver.version>
+        <appmanagerserver.version>1.0.1</appmanagerserver.version>
         <apim.version>1.2.1</apim.version>
         <es.feature.version>1.0.0</es.feature.version>
 
