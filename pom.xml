@@ -110,20 +110,18 @@
 
      <distributionManagement>
         <repository>
-            <id>nexus-releases</id>
-            <name>WSO2 Nexus Release Repository</name>
-            <url>http://maven.wso2.org/nexus/service/local/staging/deploy/maven2/</url>
+            <id>wso2-maven2-repository</id>
+            <name>WSO2 Maven2 Repository</name>
+            <url>scp://dist.wso2.org/home/httpd/dist.wso2.org/maven2/</url>
         </repository>
         <snapshotRepository>
-            <id>wso2.snapshots</id>
-            <name>Internal Releases</name>
-            <url>http://maven.wso2.org/nexus/content/repositories/snapshots/</url>
+            <id>wso2-maven2-snapshot-repository</id>
+            <name>WSO2 Maven2 Snapshot Repository</name>
+            <url>scp://dist.wso2.org/home/httpd/dist.wso2.org/snapshots/maven2/</url>
         </snapshotRepository>
     </distributionManagement>
 
     <profiles>
-
-
         <profile>
             <id>signed-build</id>
             <activation>
