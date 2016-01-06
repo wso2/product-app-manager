@@ -38,7 +38,7 @@ public class PublisherLogoutTestCase {
     private String appVersion = "1.0.0";
     private String context = "/" + appName;
     private String trackingCode = "AM_" + appName;
-    private User adminUser;
+    private User user;
     private String userName;
     private String password;
     private String backEndUrl;
@@ -50,9 +50,9 @@ public class PublisherLogoutTestCase {
         backEndUrl = appMServer.getContextUrls().getWebAppURLHttps();
         appmPublisherRestClient = new APPMPublisherRestClient(backEndUrl);
 
-        adminUser = appMServer.getSuperTenant().getTenantAdmin();
-        userName = adminUser.getUserName();
-        password = adminUser.getPassword();
+        user = appMServer.getSuperTenant().getTenantUser("AppCreator");
+        userName = user.getUserName();
+        password = user.getPassword();
 
         appmPublisherRestClient.login(userName, password);
     }
@@ -62,11 +62,15 @@ public class PublisherLogoutTestCase {
         appmPublisherRestClient.webAppCreate(appName, context, appVersion, trackingCode);
 
         HttpResponse publisherLogoutResponseData = appmPublisherRestClient.logout();
-        assertTrue(publisherLogoutResponseData.getResponseCode() == 200, "Non 200 status code received.");
-        JSONObject publisherLogoutJsonObject = new JSONObject(publisherLogoutResponseData.getData());
+        int publisherLogoutResponseCode = publisherLogoutResponseData.getResponseCode();
+        assertTrue(publisherLogoutResponseCode == 200,
+                   publisherLogoutResponseCode + " status code received.");
+        JSONObject publisherLogoutJsonObject = new JSONObject(
+                publisherLogoutResponseData.getData());
         String dataResponse = publisherLogoutJsonObject.getString(AppmTestConstants.DATA);
         JSONObject dataJsonObject = new JSONObject(dataResponse);
-        assertEquals(dataJsonObject.getString(AppmTestConstants.MESSAGE), "User Logged out successfully",
+        assertEquals(dataJsonObject.getString(AppmTestConstants.MESSAGE),
+                     "User Logged out successfully",
                      "User didn't logout successfully");
     }
 

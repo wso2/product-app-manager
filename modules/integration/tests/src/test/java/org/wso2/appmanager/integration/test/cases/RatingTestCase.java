@@ -66,7 +66,7 @@ public class RatingTestCase {
         HttpResponse response = appmPublisherRestClient.webAppCreate(appName, context, appVersion,
                                                                      trackingCode);
         JSONObject responseData = new JSONObject(response.getData());
-        String uuid = responseData.getString("id");
+        String uuid = responseData.getString(AppmTestConstants.ID);
         appmPublisherRestClient.publishWebApp(uuid);
 
         final int ratingValue1 = 3;
@@ -77,9 +77,9 @@ public class RatingTestCase {
                                                                      uuid, ratingValue1);
         JSONObject responseData1 = new JSONObject(adminUserResponse.getData());
         Assert.assertEquals(adminUserResponse.getResponseCode(), 200, "Response code mismatch");
-        Assert.assertEquals(responseData1.getDouble("user"), 3.0,
+        Assert.assertEquals(responseData1.getDouble(AppmTestConstants.USER), 3.0,
                             "Error while rating the web application as user : " + userName);
-        Assert.assertEquals(responseData1.getDouble("average"), 3.0,
+        Assert.assertEquals(responseData1.getDouble(AppmTestConstants.AVERAGE), 3.0,
                             "Error while retrieving the average rating for user : " + userName);
 
 

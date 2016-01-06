@@ -113,6 +113,36 @@
                     </user>
                 </admin>
                 <users>
+                    <user key="AdminUser">
+                        <userName>admin</userName>
+                        <password>admin</password>
+                        <roles>
+                            <role>AdminRole</role>
+                        </roles>
+                    </user>
+                    <user key="AppCreator">
+                        <userName>appcreator</userName>
+                        <password>appcreatorpass</password>
+                        <roles>
+                            <role>WebAppcreateRole</role>
+                        </roles>
+                    </user>
+                    <user key="AppPublisher">
+                        <userName>appPublisher</userName>
+                        <password>appPublisherPass</password>
+                        <roles>
+                            <role>WebappPublishRole</role>
+                        </roles>
+                    </user>
+
+                    <user key="Subscriber">
+                        <userName>subscriber</userName>
+                        <password>subscriberpass</password>
+                        <roles>
+                            <role>SubscribeRole</role>
+                        </roles>
+                    </user>
+
                     <user key="testuser1">
                         <userName>testuser1</userName>
                         <password>testuser1pass</password>
@@ -134,6 +164,39 @@
         </superTenant>
         <tenants>
         </tenants>
+        <roles>
+            <role name="AdminRole" key="AdminRole">
+                <permissions>
+                    <permission>/permission/admin</permission>
+                </permissions>
+            </role>
+            <role name="WebAppcreateRole" key="WebAppcreateRole">
+                <permissions>
+                    <permission>/permission/admin/login</permission>
+                    <permission>/permission/admin/manage/webapp/create</permission>
+                    <permission>/permission/admin/manage/webapp/delete</permission>
+                    <permission>/permission/admin/manage/webapp/publish</permission>
+                </permissions>
+            </role>
+            <role name="WebappUpdateRole" key="WebappUpdateRole">
+                <permissions>
+                    <permission>/permission/admin/login</permission>
+                    <permission>/permission/admin/manage/webapp/update</permission>
+                </permissions>
+            </role>
+            <role name="WebappPublishRole" key="WebappPublishRole">
+                <permissions>
+                    <permission>/permission/admin/login</permission>
+                    <permission>/permission/admin/manage/webapp/publish</permission>
+                </permissions>
+            </role>
+            <role name="SubscribeRole" key="SubscribeRole">
+                <permissions>
+                    <permission>/permission/admin/login</permission>
+                    <permission>/permission/admin/manage/webapp/subscribe</permission>
+                </permissions>
+            </role>
+        </roles>
     </userManagement>
     <!--
    This section will initiate the initial deployment of the platform required by

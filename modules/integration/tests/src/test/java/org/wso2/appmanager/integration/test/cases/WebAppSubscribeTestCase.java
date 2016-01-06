@@ -41,41 +41,34 @@ public class WebAppSubscribeTestCase {
     private String appVersion = "1.0.0";
     private String context = "/" + appName;
     private String trackingCode = "AM_" + appName;
-    private User adminUser;
-    private String userName;
-    private String password;
-    private String backEndUrl;
+    private String appCreatedUser;
 
 
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
         AutomationContext appMServer = new AutomationContext(AppmTestConstants.APP_MANAGER,
                                                              TestUserMode.SUPER_TENANT_ADMIN);
-        backEndUrl = appMServer.getContextUrls().getWebAppURLHttps();
+        String backEndUrl = appMServer.getContextUrls().getWebAppURLHttps();
         appmPublisherRestClient = new APPMPublisherRestClient(backEndUrl);
-
-        adminUser = appMServer.getSuperTenant().getTenantAdmin();
-        userName = adminUser.getUserName();
-        password = adminUser.getPassword();
-
-        appmPublisherRestClient.login(userName, password);
+        User appCreator = appMServer.getSuperTenant().getTenantUser("AdminUser");
+        appCreatedUser = appCreator.getUserName();
+        appmPublisherRestClient.login(appCreatedUser, appCreator.getPassword());
+        HttpResponse appCreateResponse = appmPublisherRestClient.webAppCreate(appName, context, appVersion, trackingCode);
+        JSONObject appCreateResponseData = new JSONObject(appCreateResponse.getData());
+        String uuid = appCreateResponseData.getString(AppmTestConstants.ID);
+        appmPublisherRestClient.publishWebApp(uuid);
+        User subscriber = appMServer.getSuperTenant().getTenantUser("Subscriber");
         appmStoreRestClient = new APPMStoreRestClient(backEndUrl);
+        appmStoreRestClient.login(subscriber.getUserName(), subscriber.getPassword());
 
     }
 
     @Test(description = TEST_DESCRIPTION)
     public void testPublisherCreateWebApp() throws Exception {
-        HttpResponse response = appmPublisherRestClient.webAppCreate(appName, context, appVersion,
-                                                                     trackingCode);
-
-        JSONObject responseData = new JSONObject(response.getData());
-        String uuid = responseData.getString(AppmTestConstants.ID);
-        appmPublisherRestClient.publishWebApp(uuid);
-
-        SubscriptionRequest subscriptionRequest = new SubscriptionRequest(appName, userName,
+        SubscriptionRequest subscriptionRequest = new SubscriptionRequest(appName, appCreatedUser,
                                                                           appVersion);
 
-        appmStoreRestClient.login(userName, password);
+
         //Send Subscription request.
         HttpResponse subscriptionResponse = appmStoreRestClient.subscribeForApplication(
                 subscriptionRequest);

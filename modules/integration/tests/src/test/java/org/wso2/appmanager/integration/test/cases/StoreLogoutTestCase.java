@@ -34,13 +34,12 @@ import static org.testng.Assert.assertTrue;
 
 public class StoreLogoutTestCase {
     private static final String TEST_DESCRIPTION = "Verify Store Logout";
-    private APPMPublisherRestClient appmPublisherRestClient;
     private APPMStoreRestClient appmStoreRestClient;
     private String appName = "StoreLogoutTestCase";
     private String appVersion = "1.0.0";
     private String context = "/StoreLogoutTestCase";
     private String trackingCode = "StoreLogoutTestCase";
-    private User adminUser;
+    private User user;
     private String userName;
     private String password;
     private String backEndUrl;
@@ -51,37 +50,24 @@ public class StoreLogoutTestCase {
         AutomationContext appMServer = new AutomationContext(AppmTestConstants.APP_MANAGER,
                                                              TestUserMode.SUPER_TENANT_ADMIN);
         backEndUrl = appMServer.getContextUrls().getWebAppURLHttps();
-        appmPublisherRestClient = new APPMPublisherRestClient(backEndUrl);
 
-        adminUser = appMServer.getSuperTenant().getTenantAdmin();
-        userName = adminUser.getUserName();
-        password = adminUser.getPassword();
+        user = appMServer.getSuperTenant().getTenantUser("Subscriber");
+        userName = user.getUserName();
+        password = user.getPassword();
 
-        appmPublisherRestClient.login(userName, password);
         appmStoreRestClient = new APPMStoreRestClient(backEndUrl);
         appmStoreRestClient.login(userName, password);
     }
 
     @Test(description = TEST_DESCRIPTION)
     public void StoreLogoutTestCase() throws Exception {
-        HttpResponse appCreateResponse = appmPublisherRestClient.webAppCreate(appName, context, appVersion,
-                                                                     trackingCode);
-
-        JSONObject responseData = new JSONObject(appCreateResponse.getData());
-        String uuid = responseData.getString(AppmTestConstants.ID);
-        appmPublisherRestClient.publishWebApp(uuid);
-
-        SubscriptionRequest subscriptionRequest = new SubscriptionRequest(appName, userName,
-                                                                          appVersion);
-        //Send Subscription request.
-        appmStoreRestClient.subscribeForApplication(subscriptionRequest);
-
         HttpResponse storeLogoutResponse = appmStoreRestClient.logout();
-        assertTrue(storeLogoutResponse.getResponseCode() == 200, "Non 200 status code received.");
+        int responseCode = storeLogoutResponse.getResponseCode();
+        assertTrue(responseCode == 200, responseCode + " status code received.");
     }
 
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
-        appmPublisherRestClient.logout();
+
     }
 }

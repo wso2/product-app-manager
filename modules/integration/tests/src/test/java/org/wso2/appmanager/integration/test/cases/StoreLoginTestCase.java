@@ -42,7 +42,7 @@ public class StoreLoginTestCase{
     private static final String TEST_DESCRIPTION = "Verify login to App Manager Store";
     private APPMStoreRestClient appmStoreRestClient;
     private String backEndUrl;
-    private User adminUser;
+    private User user;
 
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
@@ -50,26 +50,14 @@ public class StoreLoginTestCase{
                                                              TestUserMode.SUPER_TENANT_ADMIN);
         backEndUrl = appMServer.getContextUrls().getWebAppURLHttps();
         appmStoreRestClient = new APPMStoreRestClient(backEndUrl);
-        adminUser = appMServer.getSuperTenant().getTenantAdmin();
+        user = appMServer.getSuperTenant().getTenantUser("Subscriber");
     }
 
     @Test(description = TEST_DESCRIPTION)
     public void testStoreLogin() throws Exception {
-        HttpResponse response = appmStoreRestClient.login(adminUser.getUserName(), adminUser.getPassword());
-        /* String userName = adminUser.getUserName();
-        String password = adminUser.getPassword();
-
-        Map<String, String> requestHeaders = new HashMap<String, String>();
-        requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/json");
-
-        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
-                                                + "/store/apis/user/login"), "{\"username\":" + "\""
-                                                + userName
-                                                + "\"" + ",\"password\":" + "\""
-                                                + password + "\"" + "}",
-                                                requestHeaders); */
-
-        assertTrue(response.getResponseCode() == 200, "Non 200 status code received.");
+        HttpResponse response = appmStoreRestClient.login(user.getUserName(), user.getPassword());
+        int responseCode = response.getResponseCode();
+        assertTrue(responseCode == 200, responseCode + " status code received.");
         String session = response.getHeaders().get(AppmTestConstants.SET_COOKIE);
         assertNotNull(session, "Session is null");
     }

@@ -53,15 +53,13 @@ public class APPMStoreRestClient {
             this.requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/json");
         }
         HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
-                                                    // + "/store/apis/user/login"), "{\"username\":\""
-                                                     + AppmTestConstants.StoreRestApis.LOGIN_URL), "{\"username\":\""
-                                                     + userName
-                                                     + "\""
-                                                     + ",\"password\":"
-                                                     + "\""
-                                                     + password
-                                                     + "\""
-                                                     + "}", requestHeaders);
+                                                         + AppmTestConstants
+                                                         .StoreRestApis.LOGIN_URL),
+                                                       "{\"username\":\""
+                                                        + userName + "\""
+                                                        + ",\"password\":" + "\""
+                                                        + password + "\""
+                                                        + "}", requestHeaders);
         /*
          * On Success {"error" : false, "message" : null} status code 200 On
 		 * Failure {"error" : true, "message" : null} status code 200
@@ -83,6 +81,7 @@ public class APPMStoreRestClient {
 
     /**
      * Log out from the user store
+     *
      * @return HttpResponse
      * @throws Exception
      */
@@ -90,8 +89,9 @@ public class APPMStoreRestClient {
         this.requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "text/html");
 
         HttpResponse response = HttpRequestUtil.doGet(backEndUrl
-                                                      + AppmTestConstants.StoreRestApis.LOGOUT_URL, requestHeaders);
-                                                            //  + "/store/logout", requestHeaders);
+                                                      + AppmTestConstants.StoreRestApis
+                                                                      .LOGOUT_URL,
+                                                      requestHeaders);
         if (response.getResponseCode() == 200) {
             this.requestHeaders.clear();
             return response;
@@ -113,15 +113,11 @@ public class APPMStoreRestClient {
             throws Exception {
         checkAuthentication();
         requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/x-www-form-urlencoded");
-        String payload1 =  subscriptionRequest.generateRequestParameters();
-        //action=null&appName=DefaultApplication&apiVersion=1.0.0&apiName=WebAppSubscribeTestCase&apiTier=Unlimited&apiProvider=admin
-        String payload =  "apiName="+subscriptionRequest.getName()+"&apiVersion=1.0.0&apiTier=Unlimited&subscriptionType=INDIVIDUAL&apiProvider=admin&appName=DefaultApplication";
+        String payload = subscriptionRequest.generateRequestParameters();
         HttpResponse response = HttpRequestUtil.doPost(new URL(
                 backEndUrl + AppmTestConstants.StoreRestApis.SUBSCRIBE_FOR_APPS)
-                        //"/store/resources/webapp/v1/subscription/app")
                 , payload
                 , requestHeaders);
-        Thread.sleep(50000);
         if (response.getResponseCode() == 200) {
             VerificationUtil.checkErrors(response);
             return response;
@@ -143,7 +139,6 @@ public class APPMStoreRestClient {
         checkAuthentication();
         HttpResponse response = HttpRequestUtil.doPost(new URL(
                 backEndUrl + AppmTestConstants.StoreRestApis.UNSUBSCRIBE_FOR_APPS)
-                        //"/store/resources/webapp/v1/unsubscription/app")
                 , unsubscriptionRequest.generateRequestParameters()
                 , requestHeaders);
         if (response.getResponseCode() == 200) {
@@ -166,23 +161,14 @@ public class APPMStoreRestClient {
     public HttpResponse rateApplication(String id, String appType, int ratingValue)
             throws Exception {
         checkAuthentication();
-        HttpResponse response = HttpRequestUtil.doGet(backEndUrl + "/store/apis/rate?id=" +
-                                                              id + "&type=" + appType + "&value=" +
-                                                              ratingValue, requestHeaders);
+        String ratingUrl = AppmTestConstants.StoreRestApis.RATING_FOR_APPS;
+        ratingUrl = ratingUrl.replace(AppmTestConstants.VariableTemplates.APP_TYPE, appType);
+        ratingUrl = ratingUrl.replace(AppmTestConstants.VariableTemplates.ID, id);
+        ratingUrl = ratingUrl.replace(AppmTestConstants.VariableTemplates.RATING_VALUE,
+                                      String.valueOf(ratingValue));
+        HttpResponse response = HttpRequestUtil.doGet(backEndUrl +
+                                                              ratingUrl, requestHeaders);
         return response;
-    }
-
-    public JSONArray retrieveSubscribedUsers(String appProvider, String appName, String appVersion)
-            throws Exception {
-        checkAuthentication();
-        HttpResponse response = HttpRequestUtil.doGet(backEndUrl + "/store/resources/webapp/v1/subscriptions/"
-                                                              + appProvider + "/" + appName + "/" + appVersion, requestHeaders);
-        if (response.getResponseCode() == 200) {
-            JSONArray jsonArray = new JSONArray(response.getData());
-            return jsonArray;
-        } else {
-            throw new Exception("Retrieve Subscribed Users of " + appName + " failed. " + response.getData());
-        }
     }
 
     /**

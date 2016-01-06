@@ -51,16 +51,19 @@ public class PublisherCreateWebAppTestCase {
                                                              TestUserMode.SUPER_TENANT_ADMIN);
         backEndUrl = appMServer.getContextUrls().getWebAppURLHttps();
         appmPublisherRestClient = new APPMPublisherRestClient(backEndUrl);
-        User adminUser = appMServer.getSuperTenant().getTenantAdmin();
-        appmPublisherRestClient.login(adminUser.getUserName(), adminUser.getPassword());
+
+        //User who has only app creating permission.
+        User appCreator = appMServer.getSuperTenant().getTenantUser("AppCreator");
+        appmPublisherRestClient.login(appCreator.getUserName(), appCreator.getPassword());
     }
 
     @Test(description = TEST_DESCRIPTION)
     public void testPublisherCreateWebApp() throws Exception {
-        HttpResponse appCreateResponse = appmPublisherRestClient.webAppCreate(appName, context, appVersion,
-                                                                                 trackingCode);
-
-        assertTrue(appCreateResponse.getResponseCode() == 200, "Non 200 status code received.");
+        HttpResponse appCreateResponse = appmPublisherRestClient.webAppCreate(appName, context,
+                                                                              appVersion,
+                                                                              trackingCode);
+        int appCreateResponseCode = appCreateResponse.getResponseCode();
+        assertTrue(appCreateResponseCode == 200, appCreateResponseCode + " status code received.");
         JSONObject appCreateResponseData = new JSONObject(appCreateResponse.getData());
         assertEquals(appCreateResponseData.getString(AppmTestConstants.MESSAGE), "asset added",
                      "Asset has not added successfully");

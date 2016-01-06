@@ -20,6 +20,8 @@ package org.wso2.appmanager.integration.utils;
 public class AppmTestConstants {
     public static final String APP_MANAGER = "App Manager";
 
+    public static final String AVERAGE = "average";
+
     public static final String CONTENT_TYPE = "Content-Type";
 
     public static final String COOKIE = "Cookie";
@@ -44,6 +46,8 @@ public class AppmTestConstants {
 
     public static final String TYPE = "type";
 
+    public static final String USER = "user";
+
     public static final String WEB_APP = "webapp";
 
     public class PubliserRestApis {
@@ -63,5 +67,14 @@ public class AppmTestConstants {
         public static final String LOGOUT_URL = "/store/logout";
         public static final String SUBSCRIBE_FOR_APPS = "/store/resources/webapp/v1/subscription/app";
         public static final String UNSUBSCRIBE_FOR_APPS = "/store/resources/webapp/v1/unsubscription/app";
+
+        public static final String RATING_FOR_APPS = "/store/apis/rate?id={id}&type={appType}&value={ratingValue}";
+    }
+
+    public class VariableTemplates {
+        public static final String ID = "{id}";
+        public static final String APP_TYPE = "{appType}";
+        public static final String RATING_VALUE = "{ratingValue}";
+
     }
 }

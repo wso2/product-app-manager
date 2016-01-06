@@ -71,21 +71,21 @@ public class RetrieveAppPropertyTestCase {
 
         //Check App Id
         String appId = (String) jsonObject.get(AppmTestConstants.ID);
-        assertTrue((appId.equals(uuid) == true), "Unable to Retrieve application property.");
+        assertTrue((appId.equals(uuid) == true), "Unable to Retrieve application id.");
 
         //Check App Type
         String type = (String) jsonObject.get(AppmTestConstants.TYPE);
-        assertTrue((type.equals(appType) == true), "Unable to Retrieve application property.");
+        assertTrue((type.equals(appType) == true), "Unable to Retrieve application type.");
 
         //Check lifecycleState
         String lifecycleState = (String) jsonObject.get(AppmTestConstants.LIFE_CYCLE_STATE);
         assertTrue((lifecycleState.equalsIgnoreCase(AppmTestConstants.PUBLISHED) == true),
-                   "Unable to Retrieve application property.");
+                   "Unable to Retrieve application life cycle.");
 
         //Check Path attribute
         String appPropertyString = userName + "/" + appName + "/" + appVersion + "/" + appType;
         String path = (String) jsonObject.get("path");
-        assertTrue(path.endsWith(appPropertyString), "Unable to Retrieve application property.");
+        assertTrue(path.endsWith(appPropertyString), "Unable to Retrieve application path.");
     }
 
     @AfterClass(alwaysRun = true)

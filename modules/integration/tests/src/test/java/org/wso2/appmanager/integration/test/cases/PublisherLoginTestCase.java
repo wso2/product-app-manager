@@ -41,7 +41,7 @@ public class PublisherLoginTestCase {
     private static final String TEST_DESCRIPTION = "Verify login to App Manager Publisher";
     private APPMPublisherRestClient appmPublisherRestClient;
     private String backEndUrl;
-    private User adminUser;
+    private User user;
 
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
@@ -49,27 +49,14 @@ public class PublisherLoginTestCase {
                                                              TestUserMode.SUPER_TENANT_ADMIN);
         backEndUrl = appMServer.getContextUrls().getWebAppURLHttps();
         appmPublisherRestClient = new APPMPublisherRestClient(backEndUrl);
-        adminUser = appMServer.getSuperTenant().getTenantAdmin();
+        user = appMServer.getSuperTenant().getTenantUser("AppCreator");
     }
 
     @Test(description = TEST_DESCRIPTION)
     public void testPublisherLogin() throws Exception {
-        HttpResponse response = appmPublisherRestClient.login(adminUser.getUserName(), adminUser.getPassword());
-        /*String userName = adminUser.getUserName();
-        String password = adminUser.getPassword();
-
-        Map<String, String> requestHeaders = new HashMap<String, String>();
-        requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/json");
-
-        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
-                                                       + "/publisher/api/authenticate?action=login"
-                                                       + "&username="
-                                                       + userName
-                                                       + "&password="
-                                                       + password), "{}",
-                                                       requestHeaders);*/
-
-        assertTrue(response.getResponseCode() == 200, "Non 200 status code received.");
+        HttpResponse response = appmPublisherRestClient.login(user.getUserName(), user.getPassword());
+        int responseCode = response.getResponseCode();
+        assertTrue(responseCode == 200, responseCode + " status code received.");
         String session = response.getHeaders().get(AppmTestConstants.SET_COOKIE);
         assertNotNull(session, "Session is null");
     }

@@ -41,7 +41,8 @@ public class WebAppPublishTestCase {
     private String context = "/" + appName;
     private String trackingCode = "AM_" + appName;
     private String backEndUrl;
-    private User adminUser;
+    private User appPublishingUser;
+    private String uuid;
 
 
     @BeforeClass(alwaysRun = true)
@@ -50,38 +51,43 @@ public class WebAppPublishTestCase {
                                                              TestUserMode.SUPER_TENANT_ADMIN);
         backEndUrl = appMServer.getContextUrls().getWebAppURLHttps();
         appmPublisherRestClient = new APPMPublisherRestClient(backEndUrl);
-        adminUser = appMServer.getSuperTenant().getTenantAdmin();
-        appmPublisherRestClient.login(adminUser.getUserName(), adminUser.getPassword());
+        User appCreator = appMServer.getSuperTenant().getTenantUser("AdminUser");
+        appmPublisherRestClient.login(appCreator.getUserName(), appCreator.getPassword());
+        HttpResponse appCreateResponse = appmPublisherRestClient.webAppCreate(appName, context,
+                                                                              appVersion,
+                                                                              trackingCode);
+        JSONObject appCreateResponseData = new JSONObject(appCreateResponse.getData());
+        uuid = appCreateResponseData.getString(AppmTestConstants.ID);
+
 
     }
 
     @Test(description = TEST_DESCRIPTION)
     public void testPublisherCreateWebApp() throws Exception {
-        HttpResponse response = appmPublisherRestClient.webAppCreate(appName, context, appVersion,
-                                                                     trackingCode);
-
-        JSONObject responseData = new JSONObject(response.getData());
-        String uuid = responseData.getString(AppmTestConstants.ID);
-
         HttpResponse submitHttpResponse = appmPublisherRestClient.changeState(uuid,
                                                                               "Submit for Review");
-
-        assertTrue(submitHttpResponse.getResponseCode() == 200, "Non 200 status code received.");
+        int submitHttpResponseCode = submitHttpResponse.getResponseCode();
+        assertTrue(submitHttpResponseCode == 200,
+                   submitHttpResponseCode + " status code received.");
         JSONObject submittedResponseData = new JSONObject(submitHttpResponse.getData());
-        assertEquals(submittedResponseData.getString(AppmTestConstants.STATUS) , "Success",
-                     "Asset has not submitted for review successfully" );
+        assertEquals(submittedResponseData.getString(AppmTestConstants.STATUS), "Success",
+                     "Asset has not submitted for review successfully");
 
         HttpResponse approvedHttpResponse = appmPublisherRestClient.changeState(uuid, "Approve");
-        assertTrue(approvedHttpResponse.getResponseCode() == 200, "Non 200 status code received.");
+        int approvedHttpResponseCode = approvedHttpResponse.getResponseCode();
+        assertTrue(approvedHttpResponseCode == 200,
+                   approvedHttpResponseCode + " status code received.");
         JSONObject approvedResponseData = new JSONObject(approvedHttpResponse.getData());
-        assertEquals(approvedResponseData.getString(AppmTestConstants.STATUS) , "Success",
-                     "Asset has not approved" );
+        assertEquals(approvedResponseData.getString(AppmTestConstants.STATUS), "Success",
+                     "Asset has not approved");
 
         HttpResponse publishedHttpResponse = appmPublisherRestClient.changeState(uuid, "Publish");
-        assertTrue(publishedHttpResponse.getResponseCode() == 200, "Non 200 status code received.");
+        int publishedHttpResponseCode = publishedHttpResponse.getResponseCode();
+        assertTrue(publishedHttpResponseCode == 200,
+                   publishedHttpResponseCode + " status code received.");
         JSONObject publishedResponseData = new JSONObject(publishedHttpResponse.getData());
-        assertEquals(publishedResponseData.getString(AppmTestConstants.STATUS) , "Success",
-                     "Asset has not published" );
+        assertEquals(publishedResponseData.getString(AppmTestConstants.STATUS), "Success",
+                     "Asset has not published");
     }
 
     @AfterClass(alwaysRun = true)
