@@ -31,7 +31,7 @@
     <groupId>org.wso2.appmanager</groupId>
     <artifactId>wso2-enterprise-appmanager-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.2.0-SNAPSHOT</version>
     <name>WSO2 APP Manager - Aggregator Module</name>
     <url>http://wso2.com/products/app-manager</url>
     <description>WSO2 App Manager</description>
@@ -446,7 +446,7 @@
 	<jacoco.agent.version>0.7.4.201502262128</jacoco.agent.version>
         <operadriver.version>0.8.1</operadriver.version>
 
-        <carbon.appmgt.version>1.1.1-SNAPSHOT</carbon.appmgt.version>
+        <carbon.appmgt.version>1.1.2-SNAPSHOT</carbon.appmgt.version>
         <carbon.appmgt.bundle.version>1.1.1</carbon.appmgt.bundle.version>
         <carbon.proxyadmin.server.version>4.2.2</carbon.proxyadmin.server.version>
         <carbon.mediation.version>4.4.3</carbon.mediation.version>
@@ -477,7 +477,7 @@
         <emma.version>2.1.5320</emma.version>
         <imp.pkg.version.javax.servlet>[2.6.0, 3.0.0)</imp.pkg.version.javax.servlet>
 
-        <appmanagerserver.version>1.1.0-SNAPSHOT</appmanagerserver.version>
+        <appmanagerserver.version>1.2.0-SNAPSHOT</appmanagerserver.version>
         <apim.version>1.2.1</apim.version>
         <es.feature.version>1.0.0</es.feature.version>
 
