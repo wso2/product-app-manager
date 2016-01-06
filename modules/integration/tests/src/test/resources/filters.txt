@@ -1,0 +1,15 @@
+-*.stub*
+-*.stub_
+-*.stub_4.0.0
+-*.stub-
+-org.eclipse.*
+-*.equinox.*
+-*.log4j*
+-*.axis2*
+-*.ui*
+-*startup*
+**\sun\**\*.class
+**\javax\**\*.class
+**\log4j\**\*.class
+**\axis2\**\*.class
+**\commons\logging\**\*.class

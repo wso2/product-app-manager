@@ -34,7 +34,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>tests-ui-integration</module>
+        <module>common-utils</module>
+        <module>tests</module>
+        <module>tests-ui</module>
     </modules>
 
 </project>
