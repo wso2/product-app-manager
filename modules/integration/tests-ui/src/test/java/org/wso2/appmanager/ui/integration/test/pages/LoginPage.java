@@ -69,7 +69,7 @@ public class LoginPage extends Page {
     public Page login(String userName, String password, LoginTo loginTo) throws IOException, InterruptedException {
         log.info("login as " + userName);
         // Wait until login page loading is completed.
-        WebDriverWait wait = new WebDriverWait(driver, 30);
+        WebDriverWait wait = new WebDriverWait(driver, 90);
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("username")));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("password")));

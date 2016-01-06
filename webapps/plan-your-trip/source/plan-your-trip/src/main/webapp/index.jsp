@@ -42,7 +42,7 @@
 <%@ page import="org.wso2.carbon.appmgt.sample.jwt.*" %>
 <%@ page import="java.util.*" %>
 <%
-	String userName = "Subject";
+	String userName = "sub";
 	String telePhone = "http://wso2.org/claims/telephone";
 	String streetAddress = "http://wso2.org/claims/streetaddress";
 	String ffId ="http://wso2.org/ffid";

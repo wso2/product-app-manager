@@ -55,7 +55,7 @@ public class PublisherCreateWebAppPage extends Page {
     }
 
     public PublisherWebAppsListPage createWebApp(WebApp webapp) throws Exception{
-        WebDriverWait wait = new WebDriverWait(driver, 30);
+        WebDriverWait wait = new WebDriverWait(driver, 90);
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("overview_name")));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("overview_displayName")));
