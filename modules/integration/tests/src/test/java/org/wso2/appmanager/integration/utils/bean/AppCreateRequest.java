@@ -40,6 +40,7 @@ public class AppCreateRequest extends AbstractRequest {
     private String overviewTrackingCode;
     private String roles = "";
     private String tags = "";
+    private String overviewTreatAsASite = "false";
     private String overviewAllowAnonymous = "false";
     private String overviewAcsUrl = "";
     private String overviewSkipGateway = "false";
@@ -119,6 +120,7 @@ public class AppCreateRequest extends AbstractRequest {
         addParameter("overview_trackingCode", overviewTrackingCode);
         addParameter("roles", roles);
         addParameter("tags", tags);
+        addParameter("overview_treatAsASite", overviewTreatAsASite);
         addParameter("overview_allowAnonymous", overviewAllowAnonymous);
         addParameter("overview_acsUrl", overviewAcsUrl);
         addParameter("overview_skipGateway", overviewSkipGateway);
