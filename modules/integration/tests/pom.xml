@@ -226,9 +226,4 @@
         </dependency>
     </dependencies>
 
-    <properties>
-        <skipUiTests>true</skipUiTests>
-    </properties>
-
-
 </project>
