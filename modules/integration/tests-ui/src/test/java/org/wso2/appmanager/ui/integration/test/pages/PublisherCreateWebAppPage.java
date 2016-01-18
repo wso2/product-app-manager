@@ -85,6 +85,34 @@ public class PublisherCreateWebAppPage extends Page {
 
     }
 
+    public PublisherCreateWebAppPage resetAppData(WebApp webapp) throws Exception{
+        WebDriverWait wait = new WebDriverWait(driver, 90);
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("overview_name")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("overview_displayName")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("overview_context")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("overview_version")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("overview_webAppUrl")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("optradio")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("btn-create-asset")));
+
+        driver.findElement(By.id("overview_name")).sendKeys(webapp.getName());
+        driver.findElement(By.id("overview_displayName")).sendKeys(webapp.getDisplayName());
+        driver.findElement(By.id("overview_context")).sendKeys(webapp.getContext());
+        driver.findElement(By.id("overview_version")).sendKeys(webapp.getVersion());
+        driver.findElement(By.id("overview_webAppUrl")).sendKeys(webapp.getWebAppUrl());
+        if(webapp.getTransport() != null){
+            driver.findElement(By.name("optradio")).click();
+        }
+
+
+        driver.findElement(By.className("btn-reset")).click();
+        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+
+        return  PublisherCreateWebAppPage.getPage(driver, appMServer);
+
+    }
+
 
     public void submitApp(){
         driver.findElement(By.id("btn-create-asset")).click();
