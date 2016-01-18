@@ -42,7 +42,6 @@ public class StoreLoginTestCase extends AppManagerIntegrationTest {
 
     @Test(groups = TEST_GROUP, description = TEST_DESCRIPTION)
     public void testStoreLogin() throws Exception {
-
         //login to store
         homePage = (StoreHomePage) login(driver, LoginPage.LoginTo.STORE);
         Thread.sleep(6000);

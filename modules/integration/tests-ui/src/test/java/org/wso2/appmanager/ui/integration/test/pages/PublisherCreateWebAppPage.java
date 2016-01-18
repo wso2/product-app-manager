@@ -73,8 +73,23 @@ public class PublisherCreateWebAppPage extends Page {
         if(webapp.getTransport() != null){
             driver.findElement(By.name("optradio")).click();
         }
-        driver.findElement(By.id("btn-create-asset")).click();
-        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+
+        submitApp();
+
         return  PublisherWebAppsListPage.getPage(driver, appMServer);
     }
+
+    public PublisherCreateWebAppPage sumbitAppWithoutData() throws Exception{
+        submitApp();
+        return  PublisherCreateWebAppPage.getPage(driver, appMServer);
+
+    }
+
+
+    public void submitApp(){
+        driver.findElement(By.id("btn-create-asset")).click();
+        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+    }
+
+
 }
