@@ -20,32 +20,45 @@ package org.wso2.appmanager.ui.integration.test.cases;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openqa.selenium.By;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.appmanager.ui.integration.test.pages.LoginPage;
-import org.wso2.appmanager.ui.integration.test.pages.StoreHomePage;
+import org.wso2.appmanager.ui.integration.test.pages.PublisherCreateWebAppPage;
+import org.wso2.appmanager.ui.integration.test.pages.PublisherWebAppsListPage;
 import org.wso2.appmanager.ui.integration.test.utils.AppManagerIntegrationTest;
 
 
-public class StoreLoginTestCase extends AppManagerIntegrationTest {
+public class PublisherMandatoryFieldValidationWebAppTestCase extends AppManagerIntegrationTest {
 
-    private static final String TEST_DESCRIPTION = "Verify login to App Manager Store";
-    private static final Log log = LogFactory.getLog(PublisherLoginTestCase.class);
+    private static final String TEST_DESCRIPTION = "Mandatory Field Validation of a Web App";
+    private static final Log log = LogFactory.getLog(PublisherCreateWebAppTestCase.class);
 
-    private StoreHomePage homePage;
+    private PublisherWebAppsListPage webAppsListPage;
+    private PublisherCreateWebAppPage createWebAppPage;
 
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
         super.init();
+
+        //login to publisher
+        webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER);
     }
 
     @Test(groups = TEST_GROUP, description = TEST_DESCRIPTION)
-    public void testStoreLogin() throws Exception {
-        //login to store
-        homePage = (StoreHomePage) login(driver, LoginPage.LoginTo.STORE);
-        Thread.sleep(6000);
+    public void testPublisherMandatoryFieldValidationWebApp() throws Exception {
 
+        createWebAppPage = webAppsListPage.gotoCreateWebAppPage();
+
+        //create first web app
+        createWebAppPage.sumbitAppWithoutData();
+
+
+        String assertionError = "No Mandatory fields validation";
+        Assert.assertEquals(driver.findElement(By.className("info-div")).findElement(By.tagName("span"))
+                .getText().equals("Context Cannot be null."), true, assertionError);
     }
 
     @AfterClass(alwaysRun = true)
