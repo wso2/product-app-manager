@@ -103,25 +103,42 @@ var server = {};
      * @param session
      */
     server.tenant = function (request, session) {
-        var obj, domain, user,
+        var obj, domain, user, urlDomain,
             carbon = require('carbon');
-        /*matcher = new URIMatcher(request.getRequestURI());
-         if (matcher.match('/{context}/' + opts.tenantPrefix + '/{domain}') ||
-         matcher.match('/{context}/' + opts.tenantPrefix + '/{domain}/{+any}')) {
-         domain = matcher.elements().domain; */
+        matcher = new URIMatcher(request.getRequestURI());
+
+        domain = request.getParameter('domain') || carbon.server.superTenant.domain;
+        if (matcher.match('/{context}/t/{domain}/{+any}') || matcher.match('/{context}/t/{domain}')) {
+            urlDomain = matcher.elements().domain;
+            domain = urlDomain;
+        } else {
+            domain = request.getParameter('domain') || carbon.server.superTenant.domain;
+        }
+
         user = server.current(session);
         if (user) {
-            obj = {
-                tenantId: user.tenantId,
-                domain: carbon.server.tenantDomain({
-                    tenantId: user.tenantId
-                }),
-                username: user.username,
-                secured: true
-            };
+            var userDomain = carbon.server.tenantDomain({
+                tenantId: user.tenantId
+            });
+            //Check for anonymous tenant store access
+            if (urlDomain && (urlDomain != userDomain)) {
+                obj = {
+                    tenantId: carbon.server.tenantId({
+                        domain: urlDomain
+                    }),
+                    domain: urlDomain,
+                    username: carbon.user.anonUser,
+                    secured: false
+                };
+            } else {
+                obj = {
+                    tenantId: user.tenantId,
+                    domain: userDomain,
+                    username: user.username,
+                    secured: true
+                };
+            }
         } else {
-            carbon = require('carbon');
-            domain = request.getParameter('domain') || carbon.server.superTenant.domain;
             obj = {
                 tenantId: carbon.server.tenantId({
                     domain: domain
@@ -131,8 +148,11 @@ var server = {};
                 secured: false
             };
         }
-        //loads the tenant if it hasn't been loaded
-        server.loadTenant(obj);
+
+        if(obj.tenantId != -1){
+            //loads the tenant if it hasn't been loaded
+            server.loadTenant(obj);
+        }
         return obj;
     };
 
