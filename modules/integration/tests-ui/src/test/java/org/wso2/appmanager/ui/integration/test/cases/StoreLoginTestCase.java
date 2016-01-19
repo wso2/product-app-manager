@@ -20,6 +20,8 @@ package org.wso2.appmanager.ui.integration.test.cases;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -44,7 +46,7 @@ public class StoreLoginTestCase extends AppManagerIntegrationTest {
     public void testStoreLogin() throws Exception {
         //login to store
         homePage = (StoreHomePage) login(driver, LoginPage.LoginTo.STORE);
-        Thread.sleep(6000);
+        new WebDriverWait(driver, 90).until(ExpectedConditions.titleIs("WSO2 App Manager"));
 
     }
 

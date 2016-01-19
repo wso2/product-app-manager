@@ -21,6 +21,8 @@ package org.wso2.appmanager.ui.integration.test.cases;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -45,6 +47,7 @@ public class PublisherMandatoryFieldValidationWebAppTestCase extends AppManagerI
 
         //login to publisher
         webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER);
+        new WebDriverWait(driver, 90).until(ExpectedConditions.titleIs("webapp | WSO2 App Manager"));
     }
 
     @Test(groups = TEST_GROUP, description = TEST_DESCRIPTION)

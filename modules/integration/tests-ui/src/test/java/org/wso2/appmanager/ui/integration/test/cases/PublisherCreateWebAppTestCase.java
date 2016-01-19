@@ -20,6 +20,9 @@ package org.wso2.appmanager.ui.integration.test.cases;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -53,13 +56,13 @@ public class PublisherCreateWebAppTestCase extends AppManagerIntegrationTest {
         //create first web app
         createWebAppPage.createWebApp(new WebApp("Test1", "Test1", "/test1",
                             "1.0", "http://wso2.com", "http"));
-        Thread.sleep(12000);
+        new WebDriverWait(driver, 90).until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Test1")));
 
         //create second web app
         createWebAppPage = webAppsListPage.gotoCreateWebAppPage();
         webAppsListPage = createWebAppPage.createWebApp(new WebApp("Test2", "Test2", "/test2",
                 "2.0", "http://wso2.org", "http"));
-        Thread.sleep(12000);
+        new WebDriverWait(driver, 90).until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Test2")));
     }
 
     @AfterClass(alwaysRun = true)
