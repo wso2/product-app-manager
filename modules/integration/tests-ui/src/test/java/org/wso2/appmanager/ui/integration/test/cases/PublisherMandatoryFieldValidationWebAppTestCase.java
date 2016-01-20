@@ -27,6 +27,7 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.wso2.appmanager.ui.integration.test.dto.WebApp;
 import org.wso2.appmanager.ui.integration.test.pages.LoginPage;
 import org.wso2.appmanager.ui.integration.test.pages.PublisherCreateWebAppPage;
 import org.wso2.appmanager.ui.integration.test.pages.PublisherWebAppsListPage;
@@ -55,8 +56,9 @@ public class PublisherMandatoryFieldValidationWebAppTestCase extends AppManagerI
 
         createWebAppPage = webAppsListPage.gotoCreateWebAppPage();
 
-        //create first web app
-        createWebAppPage.sumbitAppWithoutData();
+        //create  web app with no data
+        createWebAppPage.createWebApp(new WebApp("", "", "",
+                "", "", ""));
 
 
         String assertionError = "No Mandatory fields validation";

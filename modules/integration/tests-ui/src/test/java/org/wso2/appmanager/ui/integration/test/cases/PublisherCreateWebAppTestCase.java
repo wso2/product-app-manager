@@ -62,6 +62,7 @@ public class PublisherCreateWebAppTestCase extends AppManagerIntegrationTest {
         createWebAppPage = webAppsListPage.gotoCreateWebAppPage();
         webAppsListPage = createWebAppPage.createWebApp(new WebApp("Test2", "Test2", "/test2",
                 "2.0", "http://wso2.org", "http"));
+
         new WebDriverWait(driver, 90).until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Test2")));
     }
 

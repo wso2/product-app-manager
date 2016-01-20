@@ -79,12 +79,6 @@ public class PublisherCreateWebAppPage extends Page {
         return  PublisherWebAppsListPage.getPage(driver, appMServer);
     }
 
-    public PublisherCreateWebAppPage sumbitAppWithoutData() throws Exception{
-        submitApp();
-        return  PublisherCreateWebAppPage.getPage(driver, appMServer);
-
-    }
-
     public PublisherCreateWebAppPage resetAppData(WebApp webapp) throws Exception{
         WebDriverWait wait = new WebDriverWait(driver, 90);
 
