@@ -20,7 +20,7 @@
             <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherCreateWebAppTestCase"/>
             <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherMandatoryFieldValidationWebAppTestCase"/>
             <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherResetCreationWebAppTestCase"/>
-            <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherProhibitSpecialCharactersTestCase"/>
+            <!--<class name="org.wso2.appmanager.ui.integration.test.cases.PublisherProhibitSpecialCharactersTestCase"/>-->
         </classes>
     </test>
 
