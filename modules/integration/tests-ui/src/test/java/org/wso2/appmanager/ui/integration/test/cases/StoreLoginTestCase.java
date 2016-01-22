@@ -44,7 +44,7 @@ public class StoreLoginTestCase extends AppManagerIntegrationTest {
     public void testStoreLogin() throws Exception {
         //login to store
         homePage = (StoreHomePage) login(driver, LoginPage.LoginTo.STORE);
-        Thread.sleep(6000);
+        //new WebDriverWait(driver, 90).until(ExpectedConditions.titleIs("WSO2 App Manager"));
 
     }
 

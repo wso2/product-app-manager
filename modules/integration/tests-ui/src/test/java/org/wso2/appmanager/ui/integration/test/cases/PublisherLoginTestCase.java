@@ -44,8 +44,7 @@ public class PublisherLoginTestCase extends AppManagerIntegrationTest {
 
         //login to publisher
         webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER);
-        Thread.sleep(6000);
-
+        //new WebDriverWait(driver, 90).until(ExpectedConditions.titleIs("webapp | WSO2 App Manager"));
     }
 
     @AfterClass(alwaysRun = true)

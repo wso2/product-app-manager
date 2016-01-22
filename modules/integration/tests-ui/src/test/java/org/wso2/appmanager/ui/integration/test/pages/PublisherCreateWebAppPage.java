@@ -78,8 +78,8 @@ public class PublisherCreateWebAppPage extends Page {
             driver.findElement(By.name("optradio")).click();
         }
 
-        submitApp();
 
+        submitApp();
         return PublisherWebAppsListPage.getPage(driver, appMServer);
     }
 
@@ -225,11 +225,6 @@ public class PublisherCreateWebAppPage extends Page {
         return PublisherWebAppsListPage.getPage(driver, appMServer);
     }
 
-    public PublisherCreateWebAppPage sumbitAppWithoutData() throws Exception {
-        submitApp();
-        return PublisherCreateWebAppPage.getPage(driver, appMServer);
-    }
-
     public PublisherCreateWebAppPage resetAppData(WebApp webapp) throws Exception {
         WebDriverWait wait = new WebDriverWait(driver, 90);
 
@@ -246,6 +241,7 @@ public class PublisherCreateWebAppPage extends Page {
         driver.findElement(By.id("overview_context")).sendKeys(webapp.getContext());
         driver.findElement(By.id("overview_version")).sendKeys(webapp.getVersion());
         driver.findElement(By.id("overview_webAppUrl")).sendKeys(webapp.getWebAppUrl());
+
         if (webapp.getTransport() != null) {
             driver.findElement(By.name("optradio")).click();
         }

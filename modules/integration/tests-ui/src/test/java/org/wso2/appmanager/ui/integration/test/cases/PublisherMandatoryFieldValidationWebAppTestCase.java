@@ -21,10 +21,13 @@ package org.wso2.appmanager.ui.integration.test.cases;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.wso2.appmanager.ui.integration.test.dto.WebApp;
 import org.wso2.appmanager.ui.integration.test.pages.LoginPage;
 import org.wso2.appmanager.ui.integration.test.pages.PublisherCreateWebAppPage;
 import org.wso2.appmanager.ui.integration.test.pages.PublisherWebAppsListPage;
@@ -45,6 +48,7 @@ public class PublisherMandatoryFieldValidationWebAppTestCase extends AppManagerI
 
         //login to publisher
         webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER);
+        new WebDriverWait(driver, 90).until(ExpectedConditions.titleIs("webapp | WSO2 App Manager"));
     }
 
     @Test(groups = TEST_GROUP, description = TEST_DESCRIPTION)
@@ -52,8 +56,9 @@ public class PublisherMandatoryFieldValidationWebAppTestCase extends AppManagerI
 
         createWebAppPage = webAppsListPage.gotoCreateWebAppPage();
 
-        //create first web app
-        createWebAppPage.sumbitAppWithoutData();
+        //create  web app with no data
+        createWebAppPage.createWebApp(new WebApp("", "", "",
+                "", "", ""));
 
 
         String assertionError = "No Mandatory fields validation";
