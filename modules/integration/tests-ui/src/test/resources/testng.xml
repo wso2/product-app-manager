@@ -20,6 +20,10 @@
             <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherCreateWebAppTestCase"/>
             <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherMandatoryFieldValidationWebAppTestCase"/>
             <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherResetCreationWebAppTestCase"/>
+
+            <class name="org.wso2.appmanager.ui.integration.test.cases.store.webapp.StoreAnonymousAppAccessTestCase" />
+            <class name="org.wso2.appmanager.ui.integration.test.cases.store.webapp.StoreAnonymousResourceAccessTestCase"/>
+
         </classes>
     </test>
 
