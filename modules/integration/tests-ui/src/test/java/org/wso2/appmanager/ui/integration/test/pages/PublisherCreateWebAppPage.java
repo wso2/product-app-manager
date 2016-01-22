@@ -28,6 +28,7 @@ import org.wso2.appmanager.ui.integration.test.dto.WebApp;
 import org.wso2.appmanager.ui.integration.test.utils.Page;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -74,6 +75,13 @@ public class PublisherCreateWebAppPage extends Page {
             driver.findElement(By.name("optradio")).click();
         }
 
+
+        if(webapp.getThumbnailImage() != null){
+            File thumbFile = new File(getClass().getResource("/uploads/default_thumb.jpg").toURI());
+            driver.findElement(By.id("images_thumbnail")).sendKeys(thumbFile.getAbsolutePath());
+            driver.findElement(By.name("optradio")).click();
+        }
+
         submitApp();
 
         return  PublisherWebAppsListPage.getPage(driver, appMServer);
@@ -95,6 +103,7 @@ public class PublisherCreateWebAppPage extends Page {
         driver.findElement(By.id("overview_context")).sendKeys(webapp.getContext());
         driver.findElement(By.id("overview_version")).sendKeys(webapp.getVersion());
         driver.findElement(By.id("overview_webAppUrl")).sendKeys(webapp.getWebAppUrl());
+
         if(webapp.getTransport() != null){
             driver.findElement(By.name("optradio")).click();
         }

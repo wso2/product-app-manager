@@ -20,8 +20,6 @@ package org.wso2.appmanager.ui.integration.test.cases;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -46,7 +44,7 @@ public class PublisherLoginTestCase extends AppManagerIntegrationTest {
 
         //login to publisher
         webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER);
-        new WebDriverWait(driver, 90).until(ExpectedConditions.titleIs("webapp | WSO2 App Manager"));
+        //new WebDriverWait(driver, 90).until(ExpectedConditions.titleIs("webapp | WSO2 App Manager"));
     }
 
     @AfterClass(alwaysRun = true)

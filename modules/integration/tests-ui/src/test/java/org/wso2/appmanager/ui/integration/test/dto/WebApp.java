@@ -26,6 +26,7 @@ public class WebApp {
     private String version;
     private String webAppUrl;
     private String transport;
+    private String thumbnailImage;
 
     public WebApp(String name, String displayName, String context, String version, String webAppUrl, String transport) {
         this.name = name;
@@ -82,5 +83,13 @@ public class WebApp {
 
     public void setTransport(String transport) {
         this.transport = transport;
+    }
+
+    public String getThumbnailImage() {
+        return thumbnailImage;
+    }
+
+    public void setThumbnailImage(String thumbnailImage) {
+        this.thumbnailImage = thumbnailImage;
     }
 }
