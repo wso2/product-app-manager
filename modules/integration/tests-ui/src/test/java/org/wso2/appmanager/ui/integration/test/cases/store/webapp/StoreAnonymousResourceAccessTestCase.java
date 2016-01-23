@@ -40,7 +40,7 @@ public class StoreAnonymousResourceAccessTestCase extends AppManagerIntegrationT
         resources.add(0, "intl/en/policies/terms/regional.html"); //anonymous allowed
         resources.add(1, "intl/en/policies/"); //anonymous not allowed
 
-        wait = new WebDriverWait(driver, 90);
+        wait = new WebDriverWait(driver, 120);
 
         //login to publisher
         webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER);
@@ -75,7 +75,10 @@ public class StoreAnonymousResourceAccessTestCase extends AppManagerIntegrationT
                 TEST_NON_ANONYMOUS_APP_NAME,
                 "1.0", "http://www.google.lk",
                 "http"), resources);
-        Thread.sleep(12000);
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
+                "[data-name='" + TEST_NON_ANONYMOUS_APP_NAME +
+                        "'][data-action='Submit for Review']")));
 
     }
 
@@ -101,7 +104,8 @@ public class StoreAnonymousResourceAccessTestCase extends AppManagerIntegrationT
 
         driver.findElement(By.cssSelector("[data-dismiss='modal']")).click();
 
-        Thread.sleep(4000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
+                "[data-name='" + TEST_NON_ANONYMOUS_APP_NAME + "'][data-action='Approve']")));
 
         //click approve button
         driver.findElement(By.cssSelector(
@@ -113,7 +117,8 @@ public class StoreAnonymousResourceAccessTestCase extends AppManagerIntegrationT
 
         driver.findElement(By.cssSelector("[data-dismiss='modal']")).click();
 
-        Thread.sleep(4000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
+                "[data-name='" + TEST_NON_ANONYMOUS_APP_NAME + "'][data-action='Publish']")));
 
         //click publish button
         driver.findElement(By.cssSelector(
@@ -124,14 +129,16 @@ public class StoreAnonymousResourceAccessTestCase extends AppManagerIntegrationT
                 "[data-dismiss='modal']")));
 
         driver.findElement(By.cssSelector("[data-dismiss='modal']")).click();
-
-        Thread.sleep(12000);
     }
 
     private void accessApps(Boolean isAnonymousAllowedResource, String resourceName)
             throws Exception {
         String redirectedURL;
         String exceptionMsg;
+
+        Thread.sleep(12000);
+
+        driver.get(appMServer.getContextUrls().getWebAppURLHttps() + "/store");
 
         if (isAnonymousAllowedResource) {
             redirectedURL = TEST_NON_ANONYMOUS_APP_NAME;
@@ -141,24 +148,20 @@ public class StoreAnonymousResourceAccessTestCase extends AppManagerIntegrationT
             exceptionMsg = "Non Anonymous Apps do not get redirected to login page";
         }
 
-
-        driver.get(appMServer.getContextUrls().getWebAppURLHttps() + "/store");
         StoreHomePage.getPage(driver, appMServer);
-        Thread.sleep(400);
 
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
+                "a[href*='/store/assets/webapp/" + non_anonymous_app_id + "']")));
         driver.findElement(By.cssSelector(
                 "a[href*='/store/assets/webapp/" + non_anonymous_app_id + "']")).click();
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("gatewayURL")));
         driver.get(driver.findElement(By.id("gatewayURL")).getText() + resourceName);
 
-        Thread.sleep(400);
-
         if (driver.getCurrentUrl().contains(redirectedURL) == false) {
             throw new Exception(exceptionMsg);
         }
-
-        Thread.sleep(400);
+        Thread.sleep(800);
     }
 
 
