@@ -18,6 +18,8 @@
 
 package org.wso2.appmanager.ui.integration.test.utils;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.wso2.appmanager.ui.integration.test.pages.LoginPage;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
@@ -56,6 +58,22 @@ public class AppManagerIntegrationTest {
         loginPage = LoginPage.getPage(driver, appMServer, loginTo);
         return loginPage.login(appMServer.getSuperTenant().getTenantAdmin().getUserName(),
                 appMServer.getSuperTenant().getTenantAdmin().getPassword(), loginTo);
+    }
+
+
+    protected Page login(WebDriver driver, LoginPage.LoginTo loginTo,String userName,String password) throws IOException, XPathExpressionException,
+            InterruptedException {
+        loginPage = LoginPage.getPage(driver, appMServer, loginTo);
+        return loginPage.login(userName, password, loginTo);
+    }
+
+    protected boolean isElementExist(WebDriver driver,By by){
+        try {
+            driver.findElement(by);
+            return true;
+        } catch (NoSuchElementException e) {
+            return false;
+        }
     }
 
 }

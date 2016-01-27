@@ -24,6 +24,13 @@
 
             <class name="org.wso2.appmanager.ui.integration.test.cases.store.webapp.StoreAnonymousAppAccessTestCase" />
             <class name="org.wso2.appmanager.ui.integration.test.cases.store.webapp.StoreAnonymousResourceAccessTestCase"/>
+           <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.edit.EditWebAppInCreatedStatusTestCase"/>
+           <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.edit.EditWebAppInReviewStatusTestCase"/>
+           <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.edit.EditWebAppInApprovedStatusTestCase"/>
+           <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.edit.EditWebAppInDeprecatedStatusTestCase"/>
+           <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.edit.EditWebAppInPublishedStatusTestCase"/>
+           <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.edit.EditWebAppInUnPublishedStatusTestCase"/>
+           <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.edit.EditWebAppInRetiredStatusTestCase"/>
 
         </classes>
     </test>

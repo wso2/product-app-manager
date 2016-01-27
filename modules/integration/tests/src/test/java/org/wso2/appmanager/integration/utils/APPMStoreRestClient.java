@@ -18,8 +18,6 @@
 
 package org.wso2.appmanager.integration.utils;
 
-import org.apache.commons.codec.binary.Base64;
-import org.json.JSONArray;
 import org.wso2.appmanager.integration.utils.bean.SubscriptionRequest;
 import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;

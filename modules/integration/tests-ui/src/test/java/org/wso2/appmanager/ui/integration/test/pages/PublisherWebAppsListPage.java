@@ -20,7 +20,10 @@ package org.wso2.appmanager.ui.integration.test.pages;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.wso2.appmanager.ui.integration.test.utils.Page;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 
@@ -54,4 +57,44 @@ public class PublisherWebAppsListPage  extends Page {
         driver.get(appMServer.getContextUrls().getWebAppURLHttps() + PublisherCreateWebAppPage.PAGE);
         return PublisherCreateWebAppPage.getPage(driver, appMServer);
     }
+
+    /**
+     * Select and open the web app from web app list.
+     * @param appName App Name
+     * @param provider Provider
+     * @param version Version
+     * @return overview page
+     * @throws IOException
+     */
+    public PublisherOverviewWebAppPage goToOverviewPage(String appName,String provider,String version)
+            throws IOException{
+        String id = appName+"-"+provider+"-"+version;
+        driver.findElement(By.id(id)).click();
+        return PublisherOverviewWebAppPage.getPage(driver,appMServer);
+    }
+
+    /**
+     * Change the lifecylce state of given web app from current state to
+     * given state.
+     * @param webAppName App Name
+     * @param provider Provider
+     * @param version Version
+     * @param state Lifecycle state
+     * @param driver Web driver
+     */
+    public void changeLifeCycleState(String webAppName,String provider,String version, String state,WebDriver driver) {
+        WebDriverWait  wait = new WebDriverWait(driver, 120);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
+                "[data-name='" + webAppName +"'][data-action='" + state + "']" +
+                        "[data-provider='" + provider +"'][data-version='" + version + "']")));
+        driver.findElement(By.cssSelector(
+                "[data-name='" + webAppName +"'][data-action='" + state + "']" +
+                        "[data-provider='" + provider +"'][data-version='" + version + "']"))
+                .click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
+                "[data-dismiss='modal']")));
+        driver.findElement(By.cssSelector("[data-dismiss='modal']")).click();
+        driver.navigate().refresh();
+    }
+
 }
