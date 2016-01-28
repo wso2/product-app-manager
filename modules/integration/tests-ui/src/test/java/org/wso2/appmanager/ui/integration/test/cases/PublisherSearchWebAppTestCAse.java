@@ -18,7 +18,7 @@ import org.wso2.appmanager.ui.integration.test.utils.AppManagerIntegrationTest;
 public class PublisherSearchWebAppTestCase extends AppManagerIntegrationTest {
     private static final String TEST_DESCRIPTION =
             "Verify Web App search functionality - Publisher";
-    private static final String TEST_WEB_APP_ALIAS = "TestPublisherWebApp";
+    private static final String TEST_WEB_APP_ALIAS = "PublisherSearchWebApp";
     private static final int TEST_NO_OF_APPS = 4;
 
     private static final String STATE_SUBMIT = "Submit for Review";

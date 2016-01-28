@@ -20,7 +20,7 @@ import org.wso2.appmanager.ui.integration.test.utils.AppManagerIntegrationTest;
 
 public class StoreSearchWebAppTestCase extends AppManagerIntegrationTest {
     private static final String TEST_DESCRIPTION = "Verify Web App search functionality - Store";
-    private static final String TEST_WEB_APP_ALIAS = "TestStoreWebApp";
+    private static final String TEST_WEB_APP_ALIAS = "StoreSearchWebApp";
     private static final int TEST_NO_OF_APPS = 4;
     public static final String INVALID_NO_OF_MSG_FOUND_ERROR_MSG =
             "Unexpected search result(s) found when searching by ";

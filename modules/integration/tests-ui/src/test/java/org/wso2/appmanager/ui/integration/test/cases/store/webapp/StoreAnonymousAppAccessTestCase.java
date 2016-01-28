@@ -19,9 +19,12 @@ import java.util.Set;
 
 public class StoreAnonymousAppAccessTestCase extends AppManagerIntegrationTest {
     private static final String TEST_DESCRIPTION = "Verify Anonymous application access";
-    private static final String TEST_ANONYMOUS_APP_NAME_1 = "Test_anonymous_app_1";
-    private static final String TEST_ANONYMOUS_APP_NAME_2 = "Test_anonymous_app_2";
-    private static final String TEST_NON_ANONYMOUS_APP_NAME = "Test_non_anonymous_app_1";
+    private static final String TEST_ANONYMOUS_APP_NAME_1 =
+            "StoreAnonymousAppAccess_anonymous_app_1";
+    private static final String TEST_ANONYMOUS_APP_NAME_2 =
+            "StoreAnonymousAppAccess_anonymous_app_2";
+    private static final String TEST_NON_ANONYMOUS_APP_NAME =
+            "StoreAnonymousAppAccess_non_anonymous_app_1";
 
     private static final String STATE_SUBMIT = "Submit for Review";
     private static final String STATE_APPROVE = "Approve";

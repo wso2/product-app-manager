@@ -17,7 +17,7 @@ import org.wso2.appmanager.ui.integration.test.utils.AppManagerIntegrationTest;
 
 public class PublisherPaginationTestCase extends AppManagerIntegrationTest {
     private static final String TEST_DESCRIPTION = "Verify Publisher pagination functionality";
-    private static final String TEST_WEB_APP_ALIAS = "TestWebApp";
+    private static final String TEST_WEB_APP_ALIAS = "PublisherPagination";
     private static final int TEST_NO_OF_APPS = 8;
 
     private static final String SUBMIT_STATE = "Submit for Review";

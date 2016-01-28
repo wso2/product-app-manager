@@ -21,7 +21,7 @@ import java.util.List;
 
 public class StoreAnonymousResourceAccessTestCase extends AppManagerIntegrationTest {
     private static final String TEST_DESCRIPTION = "Verify Anonymous resource access";
-    private static final String TEST_NON_ANONYMOUS_APP_NAME = "Test_non_anonymous_app";
+    private static final String TEST_NON_ANONYMOUS_APP_NAME = "StoreAnonymousResourceAccess_non_anonymous_app";
 
     private static final String STATE_SUBMIT = "Submit for Review";
     private static final String STATE_APPROVE = "Approve";
