@@ -21,6 +21,7 @@ package org.wso2.appmanager.ui.integration.test.pages;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -95,6 +96,51 @@ public class PublisherWebAppsListPage  extends Page {
                 "[data-dismiss='modal']")));
         driver.findElement(By.cssSelector("[data-dismiss='modal']")).click();
         driver.navigate().refresh();
+    }
+
+    /**
+     * Delete the webapp
+     * @param webAppName App Name
+     * @param provider Provider
+     * @param version Version
+     * @param driver Web driver
+     */
+    public boolean deleteApp(String webAppName, String provider, String version, WebDriver driver) {
+
+        boolean present;
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, 120);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
+                    "[data-name='" + webAppName + "']" + "[data-provider='" +
+                            provider + "'][data-version='" + version + "']" + "[value='Delete']")));
+            driver.findElement(By.cssSelector(
+                    "[data-name='" + webAppName + "']" + "[data-provider='" +
+                            provider + "'][data-version='" + version + "']" + "[value='Delete']")).click();
+            driver.switchTo().alert().accept();
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
+                    "[data-dismiss='modal']")));
+            driver.findElement(By.cssSelector("[data-dismiss='modal']")).click();
+            driver.navigate().refresh();
+            present = true;
+        } catch (NoSuchElementException e) {
+            present = false;
+        }
+        return present;
+    }
+
+    public boolean isDeleteButtonAvailable(String webAppName, String provider, String version) {
+
+        boolean present;
+        try {
+            new WebDriverWait(driver, 120).until(ExpectedConditions.visibilityOfElementLocated(By.linkText(webAppName)));
+            driver.findElement(By.cssSelector(
+                    "[data-name='" + webAppName+"']"  +"[data-provider='" +
+                            provider + "'][data-version='" + version + "']"+ "[value='Delete']"));
+            present = true;
+        } catch (NoSuchElementException e) {
+            present = false;
+        }
+        return present;
     }
 
 }
