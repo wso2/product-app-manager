@@ -1,5 +1,6 @@
 package org.wso2.appmanager.ui.integration.test.cases;
 
+import junit.framework.Assert;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.By;
@@ -13,18 +14,19 @@ import org.wso2.appmanager.ui.integration.test.pages.LoginPage;
 import org.wso2.appmanager.ui.integration.test.pages.PublisherCreateWebAppPage;
 import org.wso2.appmanager.ui.integration.test.pages.PublisherWebAppsListPage;
 import org.wso2.appmanager.ui.integration.test.utils.AppManagerIntegrationTest;
+import org.wso2.appmanager.ui.integration.test.utils.AppmUiTestConstants;
 
 
 public class PublisherPaginationTestCase extends AppManagerIntegrationTest {
     private static final String TEST_DESCRIPTION = "Verify Publisher pagination functionality";
     private static final String TEST_WEB_APP_ALIAS = "PublisherPagination";
-    private static final int TEST_NO_OF_APPS = 8;
+    private static final int TEST_NO_OF_APPS = 25;
 
     private static final String SUBMIT_STATE = "Submit for Review";
     private static final String APPROVE_STATE = "Approve";
     private static final String PUBLISH_STATE = "Publish";
 
-    private static final int CUSTOM_PAGE_SIZE = 5;
+    private static final int CUSTOM_PAGE_SIZE = 20;
 
     private static final Log log = LogFactory.getLog(PublisherPaginationTestCase.class);
 
@@ -44,18 +46,34 @@ public class PublisherPaginationTestCase extends AppManagerIntegrationTest {
 
         //Create sample web apps
         createApps();
-
-        //Publish all web apps
-        publishAllApps();
     }
 
     @Test(groups = TEST_GROUP, description = TEST_DESCRIPTION)
     public void testPaginationFunctionality() throws Exception {
-       /*
-        FileWriter fw = new FileWriter("/config/publisher.json");
-        BufferedWriter bw = new BufferedWriter(fw);
-        String line = null;
-        */
+        //Check page size
+        Assert.assertEquals("Something wrong with Pagination",
+                            availableElementsCount() == CUSTOM_PAGE_SIZE,
+                            true);
+
+        //Go to next page
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
+                "a[href*='/publisher/assets/webapp/?page=2']")));
+        driver.findElement(By.cssSelector("a[href*='/publisher/assets/webapp/?page=2']"))
+                .click();
+        //Check page size
+        Assert.assertEquals("Something wrong with Pagination",
+                            availableElementsCount() == (TEST_NO_OF_APPS - CUSTOM_PAGE_SIZE), true);
+
+        //Go to previous page
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
+                "a[href*='/publisher/assets/webapp/?page=1']")));
+        //Check page size
+        driver.findElement(By.cssSelector("a[href*='/publisher/assets/webapp/?page=1']"))
+                .click();
+        Assert.assertEquals("Something wrong with Pagination",
+                            availableElementsCount() == CUSTOM_PAGE_SIZE,
+                            true);
+
     }
 
 
@@ -70,53 +88,23 @@ public class PublisherPaginationTestCase extends AppManagerIntegrationTest {
                             "1.0", "http://www.wso2.com",
                             "http"));
 
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
-                    "[data-name='" + TEST_WEB_APP_ALIAS + i +
-                            "'][data-action='" + SUBMIT_STATE + "']")));
-            driver.navigate().refresh();
-
         }
-    }
-
-    private void publishAllApps() {
-        for (int i = 1; i <= TEST_NO_OF_APPS; i++) {
-            //Submit
-            changeLifeCycleState(TEST_WEB_APP_ALIAS + i, SUBMIT_STATE);
-
-            //Approve
-            changeLifeCycleState(TEST_WEB_APP_ALIAS + i, APPROVE_STATE);
-
-            //Publish
-            changeLifeCycleState(TEST_WEB_APP_ALIAS + i, PUBLISH_STATE);
-        }
-    }
-
-    private void changeLifeCycleState(String webAppName, String Status) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
-                "[data-name='" + webAppName +
-                        "'][data-action='" + Status + "']")));
-        driver.findElement(By.cssSelector(
-                "[data-name='" + webAppName + "'][data-action='" + Status + "']"))
-                .click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
-                "[data-dismiss='modal']")));
-        driver.findElement(By.cssSelector("[data-dismiss='modal']")).click();
+                "[data-name='" + TEST_WEB_APP_ALIAS + TEST_NO_OF_APPS +
+                        "'][data-action='" + SUBMIT_STATE + "']")));
         driver.navigate().refresh();
     }
+
 
     private int availableElementsCount() throws Exception {
         //Loop through every app in the list available and check the visible app count
         int count = 0;
-        for (int i = 1; i <= TEST_NO_OF_APPS; i++) {
-            try {
-                driver.findElement(By.cssSelector(
-                        "[data-name='" + TEST_WEB_APP_ALIAS + i +
-                                "'][data-action='Submit for Review']"));
-                //If element is found, increase the count
-                count++;
-            } catch (org.openqa.selenium.NoSuchElementException e) {
-                //Expected error when no elements found
-            }
+        try {
+            count = driver.findElements(By.cssSelector(
+                    "[data-action='" + AppmUiTestConstants.LifeCycleStatus.SUBMIT_FOR_REVIEW +
+                            "']")).size();
+        } catch (org.openqa.selenium.NoSuchElementException e) {
+            //Expected error when no elements found
         }
         return count;
     }
