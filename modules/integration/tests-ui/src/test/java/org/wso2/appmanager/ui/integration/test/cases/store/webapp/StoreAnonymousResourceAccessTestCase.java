@@ -23,6 +23,10 @@ public class StoreAnonymousResourceAccessTestCase extends AppManagerIntegrationT
     private static final String TEST_DESCRIPTION = "Verify Anonymous resource access";
     private static final String TEST_NON_ANONYMOUS_APP_NAME = "Test_non_anonymous_app";
 
+    private static final String STATE_SUBMIT = "Submit for Review";
+    private static final String STATE_APPROVE = "Approve";
+    private static final String STATE_PUBLISH = "Publish";
+
     private static final Log log = LogFactory.getLog(StoreAnonymousResourceAccessTestCase.class);
 
     private PublisherWebAppsListPage webAppsListPage;
@@ -46,12 +50,8 @@ public class StoreAnonymousResourceAccessTestCase extends AppManagerIntegrationT
         webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER);
         createWebAppPage = webAppsListPage.gotoCreateWebAppPage();
 
-        //create anonymous and non anonymous apps
-        createApps();
-
-        //submit,approve and publish created apps
-        manageLifeCycle();
-
+        //create and publish anonymous and non anonymous apps
+        createAndPublishApps();
     }
 
     @Test(groups = TEST_GROUP, description = TEST_DESCRIPTION)
@@ -64,10 +64,9 @@ public class StoreAnonymousResourceAccessTestCase extends AppManagerIntegrationT
     }
 
 
-    private void createApps() throws Exception {
+    private void createAndPublishApps() throws Exception {
         //create non anonymous app
         createWebAppPage = webAppsListPage.gotoCreateWebAppPage();
-
 
         webAppsListPage = createWebAppPage.createNonAnonymousAppWithAnonymousResources(new WebApp(
                 TEST_NON_ANONYMOUS_APP_NAME,
@@ -78,56 +77,29 @@ public class StoreAnonymousResourceAccessTestCase extends AppManagerIntegrationT
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
                 "[data-name='" + TEST_NON_ANONYMOUS_APP_NAME +
-                        "'][data-action='Submit for Review']")));
+                        "'][data-action='" + STATE_SUBMIT + "']")));
 
-    }
-
-    private void manageLifeCycle() throws Exception {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
-                "[data-name='" + TEST_NON_ANONYMOUS_APP_NAME +
-                        "'][data-action='Submit for Review']")));
-
-        //Set app id's
+        //Set app id
         non_anonymous_app_id = driver.findElement(By.cssSelector(
                 "[data-name='" + TEST_NON_ANONYMOUS_APP_NAME +
-                        "'][data-action='Submit for Review']"))
+                        "'][data-action='" + STATE_SUBMIT + "']"))
                 .getAttribute("data-app");
 
+        changeLifeCycleState(TEST_NON_ANONYMOUS_APP_NAME, STATE_SUBMIT);
+        changeLifeCycleState(TEST_NON_ANONYMOUS_APP_NAME, STATE_APPROVE);
+        changeLifeCycleState(TEST_NON_ANONYMOUS_APP_NAME, STATE_PUBLISH);
+    }
 
+
+    private void changeLifeCycleState(String webAppName, String Status) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
+                "[data-name='" + webAppName +
+                        "'][data-action='" + Status + "']")));
         driver.findElement(By.cssSelector(
-                "[data-name='" + TEST_NON_ANONYMOUS_APP_NAME +
-                        "'][data-action='Submit for Review']"))
+                "[data-name='" + webAppName + "'][data-action='" + Status + "']"))
                 .click();
-
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
                 "[data-dismiss='modal']")));
-
-        driver.findElement(By.cssSelector("[data-dismiss='modal']")).click();
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
-                "[data-name='" + TEST_NON_ANONYMOUS_APP_NAME + "'][data-action='Approve']")));
-
-        //click approve button
-        driver.findElement(By.cssSelector(
-                "[data-name='" + TEST_NON_ANONYMOUS_APP_NAME + "'][data-action='Approve']"))
-                .click();
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
-                "[data-dismiss='modal']")));
-
-        driver.findElement(By.cssSelector("[data-dismiss='modal']")).click();
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
-                "[data-name='" + TEST_NON_ANONYMOUS_APP_NAME + "'][data-action='Publish']")));
-
-        //click publish button
-        driver.findElement(By.cssSelector(
-                "[data-name='" + TEST_NON_ANONYMOUS_APP_NAME + "'][data-action='Publish']"))
-                .click();
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
-                "[data-dismiss='modal']")));
-
         driver.findElement(By.cssSelector("[data-dismiss='modal']")).click();
     }
 
@@ -136,7 +108,19 @@ public class StoreAnonymousResourceAccessTestCase extends AppManagerIntegrationT
         String redirectedURL;
         String exceptionMsg;
 
-        Thread.sleep(12000);
+        //temp wait till the assets load, if any (repeat this 2 times to give a reasonable
+        // waiting time)
+        WebDriverWait tempWait = new WebDriverWait(driver, 5);
+        for (int i = 0; i < 2; i++) {
+            try {
+                tempWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
+                        "a[href*='/store/assets/webapp/" + non_anonymous_app_id + "']")));
+                driver.navigate().refresh();
+                break;
+            } catch (org.openqa.selenium.TimeoutException e) {
+                //Expected error when no element found
+            }
+        }
 
         driver.get(appMServer.getContextUrls().getWebAppURLHttps() + "/store");
 
@@ -161,7 +145,6 @@ public class StoreAnonymousResourceAccessTestCase extends AppManagerIntegrationT
         if (driver.getCurrentUrl().contains(redirectedURL) == false) {
             throw new Exception(exceptionMsg);
         }
-        Thread.sleep(800);
     }
 
 

@@ -1,32 +1,41 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="ASTestSuite" parallel="false">
-    <parameter name="useDefaultListeners" value="false"/>
+    <parameter name="useDefaultListeners" value="false" />
 
     <listeners>
 
-        <listener class-name="org.wso2.carbon.automation.engine.testlisteners.TestExecutionListener"/>
-        <listener class-name="org.wso2.carbon.automation.engine.testlisteners.TestSuiteListener"/>
-        <listener class-name="org.wso2.carbon.automation.engine.testlisteners.TestManagerListener"/>
-        <listener class-name="org.wso2.carbon.automation.engine.testlisteners.TestReportListener"/>
-        <listener class-name="org.wso2.carbon.automation.engine.testlisteners.TestTransformerListener"/>
+        <listener
+                class-name="org.wso2.carbon.automation.engine.testlisteners.TestExecutionListener" />
+        <listener class-name="org.wso2.carbon.automation.engine.testlisteners.TestSuiteListener" />
+        <listener
+                class-name="org.wso2.carbon.automation.engine.testlisteners.TestManagerListener" />
+        <listener class-name="org.wso2.carbon.automation.engine.testlisteners.TestReportListener" />
+        <listener
+                class-name="org.wso2.carbon.automation.engine.testlisteners.TestTransformerListener" />
     </listeners>
 
 
     <test name="AppM-UI-tests" parallel="false" verbose="2">
         <classes>
-            <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherLoginTestCase"/>
-            <class name="org.wso2.appmanager.ui.integration.test.cases.StoreLoginTestCase"/>
-            <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherCreateWebAppTestCase"/>
-            <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherMandatoryFieldValidationWebAppTestCase"/>
-            <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherResetCreationWebAppTestCase"/>
+            <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherLoginTestCase" />
+            <class name="org.wso2.appmanager.ui.integration.test.cases.StoreLoginTestCase" />
+            <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherCreateWebAppTestCase" />
+            <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherMandatoryFieldValidationWebAppTestCase" />
+            <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherResetCreationWebAppTestCase" />
 
             <class name="org.wso2.appmanager.ui.integration.test.cases.store.webapp.StoreAnonymousAppAccessTestCase" />
-            <class name="org.wso2.appmanager.ui.integration.test.cases.store.webapp.StoreAnonymousResourceAccessTestCase"/>
+            <class name="org.wso2.appmanager.ui.integration.test.cases.store.webapp.StoreAnonymousResourceAccessTestCase" />
+            <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherSearchWebAppTestCase" />
+
+            <!--
+            <class name="org.wso2.appmanager.ui.integration.test.cases.store.webapp.StoreSearchWebAppTestCase" />
+            <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherPaginationTestCase" />
+            -->
+
 
         </classes>
     </test>
-
 
 
 </suite>
