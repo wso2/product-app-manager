@@ -19,13 +19,14 @@
 package org.wso2.appmanager.integration.utils;
 
 import org.json.JSONObject;
-import org.wso2.appmanager.integration.utils.bean.AppCreateRequest;
+import org.wso2.appmanager.integration.utils.bean.*;
 import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class APPMPublisherRestClient {
@@ -379,4 +380,198 @@ public class APPMPublisherRestClient {
         return true;
     }
 
+    /**
+     * This method create webapp
+     * Creating an web app has for steps
+     * 1. Add web app details to registry and APM db
+     * 2. Add role permission of the webapp to registry
+     * 3. Add tags of the web app to registry
+     * 4. Create service provider for webapp
+     *
+     * @param webApp Web App
+     * @throws Exception
+     */
+    public boolean createWebApp(WebApp webApp) throws Exception {
+        HttpResponse response = addWebApp(webApp);
+        VerificationUtil.checkAppCreateRes(response);
+        JSONObject jsonObject = new JSONObject(response.getData());
+        String appId = (String) jsonObject.get(AppmTestConstants.ID);
+        webApp.setAppId(appId);
+        List<String> roles = webApp.getRoles();
+        if (roles != null && roles.size() > 0) {
+            this.addRoles(roles, appId);
+        }
+
+        List<String> tags = webApp.getTags();
+        if (tags != null && tags.size() > 0) {
+            this.addNewTags(tags, appId);
+        }
+        addSsoProvider(webApp);
+        return true;
+    }
+
+    /**
+     * Add web app detail to registry and APM db
+     * @param webApp Web App
+     * @return HttpResponse
+     * @throws Exception
+     */
+    public HttpResponse addWebApp(WebApp webApp) throws Exception {
+        WebAppCreateRequest webAppCreateRequest = new WebAppCreateRequest(webApp);
+        String payload = webAppCreateRequest.generateRequestParameters();
+        this.requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/x-www-form-urlencoded");
+        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
+                + AppmTestConstants.PubliserRestApis.CREATE_APP), payload, requestHeaders);
+        VerificationUtil.verifyJsonResponse(response);
+        return response;
+    }
+
+    /**
+     * Create service provider for given web app
+     * @param webApp Web App
+     * @return HttpResponse
+     * @throws Exception
+     */
+    public HttpResponse addSsoProvider(WebApp webApp) throws Exception {
+        SsoProviderRequest ssoProviderRequest = new SsoProviderRequest(webApp);
+        String requestBody = ssoProviderRequest.getSsoProviderRequestPayload();
+        this.requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/json");
+        HttpResponse response =
+                HttpUtil.doPost(new URL(
+                                backEndUrl + AppmTestConstants.PubliserRestApis.ADD_SSO_PROVIDER),
+                        requestBody, requestHeaders);
+        return response;
+    }
+
+    /**
+     * Add a policy group
+     * @param policyGroup Policy Group
+     * @return HttpResponse
+     * @throws Exception
+     */
+    public HttpResponse addPolicyGroup(PolicyGroup policyGroup) throws Exception {
+        PolicyGroupRequest policyGroupRequest = new PolicyGroupRequest(policyGroup);
+        String payload = policyGroupRequest.generateRequestParameters();
+        requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/x-www-form-urlencoded");
+
+        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
+                        + AppmTestConstants.PubliserRestApis
+                        .ADD_POLICY_GROUP),
+                payload, requestHeaders);
+        return response;
+    }
+
+    /**
+     * Add given roles to given webapp(web appId)
+     * @param roles Visible Roles
+     * @param appId Web App Id
+     * @return HttpResponse
+     * @throws Exception
+     */
+    public HttpResponse addRoles(List<String> roles, String appId) throws Exception {
+        RolesRequest rolesRequest = new RolesRequest(roles);
+        String requestPayload = rolesRequest.getRolesRequestPayload();
+        this.requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/json");
+        HttpResponse response =
+                HttpUtil.doPost(new URL(backEndUrl + AppmTestConstants.PubliserRestApis.ADD_ROLES +
+                        appId + "/permissions"), requestPayload, requestHeaders);
+        VerificationUtil.verifyJsonResponse(response);
+        return response;
+    }
+
+    /**
+     * Add tags to given webapp(web appId)
+     * @param tags Tags
+     * @param appId Web App Id
+     * @return HttpResponse
+     * @throws Exception
+     */
+    public HttpResponse addNewTags(List<String> tags, String appId) throws Exception {
+        checkAuthentication();
+        TagsRequest tagsRequest = new TagsRequest(tags);
+        String requestPayload = tagsRequest.getTagRequestPayload();
+        requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/json");
+        HttpResponse response = HttpUtil.doPut(new URL(backEndUrl
+                + AppmTestConstants.PubliserRestApis.ADD_NEW_TAGS
+                + appId), requestPayload, requestHeaders);
+
+        VerificationUtil.verifyJsonResponse(response);
+        return response;
+
+    }
+
+    /**
+     * Edit the web app.
+     * 1. Edit the content in registry and APM db
+     * 2. Edit roles assigned to webapp
+     * 3. Edit tags assigned to webapp
+     * 4. Edit SP config of webapp
+     * @param webApp Modified Web App
+     * @return
+     * @throws Exception
+     */
+    public boolean editWebApp(WebApp webApp) throws Exception {
+        HttpResponse response = editApp(webApp);
+        VerificationUtil.checkStatusOk(response);
+        String appId = webApp.getAppId();
+        List<String> roles = webApp.getRoles();
+        if (roles != null && roles.size() > 0) {
+            this.addRoles(roles, appId);
+        }
+
+        List<String> tags = webApp.getTags();
+        if (tags != null && tags.size() > 0) {
+            this.addNewTags(tags, appId);
+        }
+
+        editSsoProvider(webApp);
+        return true;
+    }
+
+    /**
+     * Edit the content of webapp in registry and APM db
+     * @param webApp Modified Web App
+     * @return HttpResponse
+     * @throws Exception
+     */
+    public HttpResponse editApp(WebApp webApp) throws Exception {
+        WebAppCreateRequest webAppCreateRequest = new WebAppCreateRequest(webApp);
+        String payload = webAppCreateRequest.generateRequestParameters();
+        String appId = webApp.getAppId();
+        this.requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/x-www-form-urlencoded");
+        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
+                + AppmTestConstants.PubliserRestApis.EDIT_WEB_APP + appId), payload, requestHeaders);
+        VerificationUtil.verifyJsonResponse(response);
+        return response;
+    }
+
+    /**
+     * Edit the Service Provider configuration of web app
+     * @param webApp Modified Web App
+     * @return HttpResponse
+     * @throws Exception
+     */
+    public HttpResponse editSsoProvider(WebApp webApp) throws Exception {
+        SsoProviderRequest ssoProviderRequest = new SsoProviderRequest(webApp);
+        String requestBody = ssoProviderRequest.getSsoProviderRequestPayload();
+        this.requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/json");
+        HttpResponse response =
+                HttpUtil.doPost(new URL(
+                                backEndUrl + AppmTestConstants.PubliserRestApis.EDIT_SSO_PROVIDER),
+                        requestBody, requestHeaders);
+        return response;
+    }
+
+    /**
+     * Delete the webapp
+     * @param appId Web App Id
+     * @return HttpResponse
+     * @throws Exception
+     */
+    public HttpResponse deleteApp(String appId) throws Exception{
+        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl +
+                AppmTestConstants.PubliserRestApis.DELETE_WEB_APP+appId+""),"",requestHeaders);
+        VerificationUtil.verifyJsonResponse(response);
+        return response;
+    }
 }

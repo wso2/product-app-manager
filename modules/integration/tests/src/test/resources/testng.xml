@@ -23,6 +23,14 @@
             <class name="org.wso2.appmanager.integration.test.cases.WebAppSubscribeTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.RetrieveAppPropertyTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.RatingTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInCreatedStatusTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInReviewStatusTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInApprovedStatusTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInRejectedStatusTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInPublishedStatusTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInUnPublishedStatusTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInDeprecatedStatusTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInRetiredStatusTestCase"/>
         </classes>
     </test>
 

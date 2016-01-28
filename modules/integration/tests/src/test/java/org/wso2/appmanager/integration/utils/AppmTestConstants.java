@@ -54,8 +54,12 @@ public class AppmTestConstants {
         public static final String ADD_NEW_TAGS = "/publisher/api/tag/webapp/";
         public static final String ADD_POLICY_GROUP = "/publisher/api/entitlement/policy/partial/policyGroup/save";
         public static final String ADD_SSO_PROVIDER = "/publisher/api/sso/addConfig";
+        public static final String EDIT_SSO_PROVIDER = "/publisher/api/sso/editConfig";
         public static final String GET_WEB_APP_PROPERTY = "/publisher/api/asset/webapp/";
         public static final String CREATE_APP = "/publisher/asset/webapp";
+        public static final String EDIT_WEB_APP = "/publisher/api/asset/webapp/";
+        public static final String DELETE_WEB_APP = "/publisher/api/asset/delete/webapp/";
+        public static final String ADD_ROLES = "/publisher/asset/webapp/id/";
         public static final String LOGIN_URL = "/publisher/api/authenticate?action=login";
         public static final String LOGOUT_URL = "/publisher/api/authenticate?action=logout";
 
@@ -76,5 +80,17 @@ public class AppmTestConstants {
         public static final String APP_TYPE = "{appType}";
         public static final String RATING_VALUE = "{ratingValue}";
 
+    }
+
+    public class LifeCycleStatus {
+        public static final String SUBMIT_FOR_REVIEW = "Submit for Review";
+        public static final String APPROVE = "Approve";
+        public static final String PUBLISH = "Publish";
+        public static final String UNPUBLISH = "Unpublish";
+        public static final String DEPRECATE = "Deprecate";
+        public static final String RETIRE = "Retire";
+        public static final String RE_PUBLISH = "Re-Publish";
+        public static final String RECYCLE = "Recycle";
+        public static final String REJECT = "Reject";
     }
 }

@@ -113,13 +113,91 @@
                     </user>
                 </admin>
                 <users>
+                    <user key="AdminUser">
+                        <userName>admin</userName>
+                        <password>admin</password>
+                        <roles>
+                            <role>AdminRole</role>
+                        </roles>
+                    </user>
+                    <user key="AppCreator">
+                        <userName>appcreator</userName>
+                        <password>appcreatorpass</password>
+                        <roles>
+                            <role>Internal/creator</role>
+                        </roles>
+                    </user>
+                    <user key="AppPublisher">
+                        <userName>appPublisher</userName>
+                        <password>appPublisherPass</password>
+                        <roles>
+                            <role>Internal/publisher</role>
+                        </roles>
+                    </user>
 
+                    <user key="Subscriber">
+                        <userName>subscriber</userName>
+                        <password>subscriberpass</password>
+                        <roles>
+                            <role>SubscribeRole</role>
+                        </roles>
+                    </user>
+
+                    <user key="testuser1">
+                        <userName>testuser1</userName>
+                        <password>testuser1pass</password>
+                    </user>
+                    <user key="testuser2">
+                        <userName>testuser2</userName>
+                        <password>testuser2pass</password>
+                    </user>
+                    <user key="testuser3">
+                        <userName>testuser3</userName>
+                        <password>testuser3pass</password>
+                    </user>
+                    <user key="testuser4">
+                        <userName>testuser4</userName>
+                        <password>testuser4pass</password>
+                    </user>
                 </users>
             </tenant>
         </superTenant>
         <tenants>
-
         </tenants>
+        <roles>
+            <role name="AdminRole" key="AdminRole">
+                <permissions>
+                    <permission>/permission/admin</permission>
+                </permissions>
+            </role>
+            <role name="WebAppcreateRole" key="WebAppcreateRole">
+                <permissions>
+                    <permission>/permission/admin/login</permission>
+                    <permission>/permission/admin/manage/webapp/create</permission>
+                    <permission>/permission/admin/manage/webapp/delete</permission>
+                    <permission>/permission/admin/manage/webapp/publish</permission>
+                    <permission>/permission/admin/manage/webapp/Update</permission>
+                </permissions>
+            </role>
+            <role name="WebappUpdateRole" key="WebappUpdateRole">
+                <permissions>
+                    <permission>/permission/admin/login</permission>
+                    <permission>/permission/admin/manage/webapp/update</permission>
+                </permissions>
+            </role>
+            <role name="WebappPublishRole" key="WebappPublishRole">
+                <permissions>
+                    <permission>/permission/admin/login</permission>
+                    <permission>/permission/admin/manage/webapp/publish</permission>
+                </permissions>
+            </role>
+            <role name="SubscribeRole" key="SubscribeRole">
+                <permissions>
+                    <permission>/permission/admin/login</permission>
+                    <permission>/permission/admin/manage/webapp/subscribe</permission>
+                </permissions>
+            </role>
+        </roles>
     </userManagement>
     <!--
    This section will initiate the initial deployment of the platform required by
@@ -157,9 +235,9 @@
                     <parameter name="-DportOffset" value="600" />
                     <!--<parameter name="cmdArg" value="debug 5005" />-->
                 </class>
-                <!--<class>-->
-                    <!--<name>org.wso2.carbon.integration.common.extensions.usermgt.UserPopulateExtension</name>-->
-                <!--</class>-->
+                <class>
+                    <name>org.wso2.carbon.integration.common.extensions.usermgt.UserPopulateExtension</name>
+                </class>
             </extentionClasses>
         </platformExecutionManager>
 

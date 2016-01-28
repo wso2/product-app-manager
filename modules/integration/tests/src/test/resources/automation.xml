@@ -124,7 +124,7 @@
                         <userName>appcreator</userName>
                         <password>appcreatorpass</password>
                         <roles>
-                            <role>WebAppcreateRole</role>
+                            <role>Internal/creator</role>
                         </roles>
                     </user>
                     <user key="AppPublisher">
@@ -176,6 +176,7 @@
                     <permission>/permission/admin/manage/webapp/create</permission>
                     <permission>/permission/admin/manage/webapp/delete</permission>
                     <permission>/permission/admin/manage/webapp/publish</permission>
+                    <permission>/permission/admin/manage/webapp/Update</permission>
                 </permissions>
             </role>
             <role name="WebappUpdateRole" key="WebappUpdateRole">
