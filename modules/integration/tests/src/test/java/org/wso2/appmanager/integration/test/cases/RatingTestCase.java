@@ -64,7 +64,7 @@ public class RatingTestCase {
     @Test(description = TEST_DESCRIPTION)
     public void testWebAppRating() throws Exception {
         HttpResponse response = appmPublisherRestClient.webAppCreate(appName, context, appVersion,
-                                                                     trackingCode);
+                                                                     trackingCode, userName);
         JSONObject responseData = new JSONObject(response.getData());
         String uuid = responseData.getString(AppmTestConstants.ID);
         appmPublisherRestClient.publishWebApp(uuid);

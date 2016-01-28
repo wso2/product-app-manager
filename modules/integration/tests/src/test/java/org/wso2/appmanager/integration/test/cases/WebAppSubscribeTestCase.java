@@ -53,7 +53,10 @@ public class WebAppSubscribeTestCase {
         User appCreator = appMServer.getSuperTenant().getTenantUser("AdminUser");
         appCreatedUser = appCreator.getUserName();
         appmPublisherRestClient.login(appCreatedUser, appCreator.getPassword());
-        HttpResponse appCreateResponse = appmPublisherRestClient.webAppCreate(appName, context, appVersion, trackingCode);
+        HttpResponse appCreateResponse = appmPublisherRestClient.webAppCreate(appName, context,
+                                                                              appVersion,
+                                                                              trackingCode,
+                                                                              appCreatedUser);
         JSONObject appCreateResponseData = new JSONObject(appCreateResponse.getData());
         String uuid = appCreateResponseData.getString(AppmTestConstants.ID);
         appmPublisherRestClient.publishWebApp(uuid);

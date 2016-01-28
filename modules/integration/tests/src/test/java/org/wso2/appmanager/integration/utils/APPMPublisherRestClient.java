@@ -93,11 +93,12 @@ public class APPMPublisherRestClient {
      * @param context      String.
      * @param appVersion   String.
      * @param trackingCode String.
+     * @param appCreator String.
      * @return appCreateResponse HttpResponse.
      * @throws Exception on errors.
      */
     public HttpResponse webAppCreate(String appName, String context, String appVersion,
-                                     String trackingCode) throws Exception {
+                                     String trackingCode, String appCreator) throws Exception {
         checkAuthentication();
         String appDescription = "Default app description for " + appName;
         HttpResponse httpResponse = addPoicyGroup(appDescription);
@@ -111,9 +112,9 @@ public class APPMPublisherRestClient {
             String policyId = responseObject.getString(AppmTestConstants.ID);
             String policyGroupId = "[" + policyId + "]";
 
-            //Set new policy Id to AppCreateRequest;
             AppCreateRequest appRequest = new AppCreateRequest(appName, context, appVersion,
-                                                               trackingCode);
+                                                               trackingCode, appCreator);
+            //Set new policy Id to AppCreateRequest;
             appRequest.setUriTemplatePolicyGroupId0(policyId);
             appRequest.setUriTemplatePolicyGroupId1(policyId);
             appRequest.setUriTemplatePolicyGroupId2(policyId);
@@ -273,6 +274,20 @@ public class APPMPublisherRestClient {
         changeState(appId, "Approve");
         //Publish the app
         HttpResponse response = changeState(appId, "Publish");
+        return response;
+    }
+
+    /**
+     * Approve and publish an application.
+     * @param appId String.
+     * @return ppPublishedResponse String.
+     * @throws Exception on errors.
+     */
+    public HttpResponse approveAndPublishWebApp(String appId) throws Exception {
+        //Approve the app
+        changeState(appId,  AppmTestConstants.LifeCycleStatus.APPROVE);
+        //Publish the app
+        HttpResponse response = changeState(appId, AppmTestConstants.LifeCycleStatus.PUBLISH);
         return response;
     }
 

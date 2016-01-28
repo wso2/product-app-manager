@@ -60,7 +60,7 @@ public class RetrieveAppPropertyTestCase {
     @Test(description = TEST_DESCRIPTION)
     public void testAppPropertyRetrieval() throws Exception {
         HttpResponse response = appmPublisherRestClient.webAppCreate(appName, context, appVersion,
-                                                                     trackingCode);
+                                                                     trackingCode, userName);
         JSONObject responseData = new JSONObject(response.getData());
         String uuid = responseData.getString(AppmTestConstants.ID);
         String appType = AppmTestConstants.WEB_APP;

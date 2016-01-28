@@ -16,7 +16,7 @@
 *under the License.
 */
 
-package org.wso2.appmanager.integration.test.cases;
+package org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management;
 
 import org.json.JSONObject;
 import org.testng.annotations.AfterClass;
@@ -24,7 +24,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.appmanager.integration.utils.APPMPublisherRestClient;
 import org.wso2.appmanager.integration.utils.AppmTestConstants;
-import org.wso2.appmanager.integration.utils.bean.AppCreateRequest;
+import org.wso2.appmanager.integration.utils.VerificationUtil;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.automation.engine.context.beans.User;
@@ -34,15 +34,21 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
-public class PublisherCreateWebAppTestCase {
+/**
+ * This test case tests web creation app by logging from a user with a creator role.
+ */
+public class CreateWebAppTestCase {
 
     private static final String TEST_DESCRIPTION = "Verify Creating a Web App";
     private APPMPublisherRestClient appmPublisherRestClient;
-    private String appName = "PublisherCreateWebAppTestCase";
+    private String appName = "CreateWebAppTestCase";
     private String appVersion = "1.0.0";
     private String context = "/" + appName;
     private String trackingCode = "AM_" + appName;
     private String backEndUrl;
+    private String appCreatorUserName;
+    private String appCreatorPassword;
+    private String appId;
 
 
     @BeforeClass(alwaysRun = true)
@@ -54,24 +60,31 @@ public class PublisherCreateWebAppTestCase {
 
         //User who has only app creating permission.
         User appCreator = appMServer.getSuperTenant().getTenantUser("AppCreator");
-        appmPublisherRestClient.login(appCreator.getUserName(), appCreator.getPassword());
+        appCreatorUserName = appCreator.getUserName();
+        appCreatorPassword = appCreator.getPassword();
+        appmPublisherRestClient.login(appCreatorUserName, appCreatorPassword);
     }
 
     @Test(description = TEST_DESCRIPTION)
-    public void testPublisherCreateWebApp() throws Exception {
+    public void testCreateWebApp() throws Exception {
         HttpResponse appCreateResponse = appmPublisherRestClient.webAppCreate(appName, context,
                                                                               appVersion,
-                                                                              trackingCode);
+                                                                              trackingCode,
+                                                                              appCreatorUserName);
         int appCreateResponseCode = appCreateResponse.getResponseCode();
         assertTrue(appCreateResponseCode == 200, appCreateResponseCode + " status code received.");
         JSONObject appCreateResponseData = new JSONObject(appCreateResponse.getData());
+        appId = appCreateResponseData.getString(AppmTestConstants.ID);
         assertEquals(appCreateResponseData.getString(AppmTestConstants.MESSAGE), "asset added",
-                     "Asset has not added successfully");
-        assertNotNull(appCreateResponseData.getString(AppmTestConstants.ID), "app id is null");
+                     "Asset has not created successfully.");
+        assertNotNull(appId, "app id is null");
     }
 
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
+        // Deleted the web app by AppCreator.
+        HttpResponse response = appmPublisherRestClient.deleteApp(appId);
+        VerificationUtil.checkDeleteResponse(response);
         appmPublisherRestClient.logout();
     }
 }
