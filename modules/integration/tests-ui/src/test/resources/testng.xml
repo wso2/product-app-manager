@@ -32,6 +32,8 @@
            <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.edit.EditWebAppInUnPublishedStatusTestCase"/>
            <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.edit.EditWebAppInRetiredStatusTestCase"/>
 
+            <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.delete.DeleteWebAppInApprovedStateTestCase"/>
+
         </classes>
     </test>
 
