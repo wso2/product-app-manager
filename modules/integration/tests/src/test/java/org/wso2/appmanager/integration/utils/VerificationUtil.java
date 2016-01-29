@@ -71,13 +71,14 @@ public class VerificationUtil {
      * 1. check for http status code 200
      * 2. check for content-type to be application/json
      * 3. check for json payload
+     *
      * @param response HttpResponse
      * @throws Exception
      */
-    public  static  void verifyJsonResponse(HttpResponse response) throws Exception{
+    public static void verifyJsonResponse(HttpResponse response) throws Exception {
         int httpStatusCode = response.getResponseCode();
-        if(httpStatusCode != 200) {
-            throw new Exception("Http status code mismatched.Expected code 200. Received code :" +httpStatusCode);
+        if (httpStatusCode != 200) {
+            throw new Exception("Http status code mismatched.Expected code 200. Received code :" + httpStatusCode);
         }
 
 //        String contentType = response.getHeaders().get(AppmTestConstants.CONTENT_TYPE);
@@ -91,18 +92,19 @@ public class VerificationUtil {
 
     /**
      * check for json payload(json object/json array).
+     *
      * @param payload Payload
      * @throws Exception
      */
-    private static void verifyJsonPayload(String payload) throws Exception{
+    private static void verifyJsonPayload(String payload) throws Exception {
 
         try {
             JSONObject jsonObject = new JSONObject(payload);
-        }catch(JSONException e) {
-            try{
+        } catch (JSONException e) {
+            try {
                 JSONArray jsonArray = new JSONArray(payload);
             } catch (JSONException e1) {
-                throw  new Exception("Received payload is not in json format");
+                throw new Exception("Received payload is not in json format");
             }
 
         }
@@ -110,6 +112,7 @@ public class VerificationUtil {
 
     /**
      * Check whether response is json and it has value "TRUE" for key "ok".
+     *
      * @param response HttpResponse
      * @throws Exception
      */
@@ -122,6 +125,7 @@ public class VerificationUtil {
 
     /**
      * Check whether response is josn and it has value "TRUE" for key "isDeleted"
+     *
      * @param response HttpResponse
      * @throws Exception
      */
