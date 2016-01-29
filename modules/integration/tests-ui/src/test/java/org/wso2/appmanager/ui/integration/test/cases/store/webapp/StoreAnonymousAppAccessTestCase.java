@@ -14,6 +14,7 @@ import org.wso2.appmanager.ui.integration.test.pages.PublisherCreateWebAppPage;
 import org.wso2.appmanager.ui.integration.test.pages.PublisherWebAppsListPage;
 import org.wso2.appmanager.ui.integration.test.pages.StoreHomePage;
 import org.wso2.appmanager.ui.integration.test.utils.AppManagerIntegrationTest;
+import org.wso2.appmanager.ui.integration.test.utils.AppmUiTestConstants;
 
 import java.util.Set;
 
@@ -26,30 +27,35 @@ public class StoreAnonymousAppAccessTestCase extends AppManagerIntegrationTest {
     private static final String TEST_NON_ANONYMOUS_APP_NAME =
             "StoreAnonymousAppAccess_non_anonymous_app_1";
     private static final String TEST_APP_VERSION = "1.0";
-    private static final String TEST_APP_URL = "http://wso2.com";
     private static final String TEST_APP_TRANSPORT = "http";
+
+    private String testAppURL;
 
     private static final String STATE_SUBMIT = "Submit for Review";
     private static final String STATE_APPROVE = "Approve";
     private static final String STATE_PUBLISH = "Publish";
+
 
     private static final Log log = LogFactory.getLog(StoreAnonymousAppAccessTestCase.class);
 
     private PublisherWebAppsListPage webAppsListPage;
     private PublisherCreateWebAppPage createWebAppPage;
 
-    private String anonymous_app1_id;
-    private String anonymous_app2_id;
-    private String non_anonymous_app_id;
+    private String anonymousAppId1;
+    private String anonymousAppId2;
+    private String nonAnonymousAppId1;
     WebDriverWait wait;
 
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
         super.init();
         wait = new WebDriverWait(driver, 90);
+        testAppURL = appMServer.getContextUrls().getWebAppURLHttps() + "/" +
+                AppmUiTestConstants.SAMPLE_DEPLOYED_WEB_APP_NAME;
 
         //login to publisher
-        webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER);
+        webAppsListPage = (PublisherWebAppsListPage) login(driver,
+                                                           LoginPage.LoginTo.PUBLISHER);
 
         //create and publish apps
         createAndPublishApps();
@@ -59,21 +65,21 @@ public class StoreAnonymousAppAccessTestCase extends AppManagerIntegrationTest {
     public void testAnonymousApplicationAccess() throws Exception {
 
         //Access anonymous allowed web app (by resources) using an anonymous user
-        accessApps(true, anonymous_app1_id, TEST_ANONYMOUS_APP_NAME_1);
+        accessApps(true, anonymousAppId1, TEST_ANONYMOUS_APP_NAME_1);
 
         //Access anonymous allowed web app (by flag) using an anonymous user
-        accessApps(true, anonymous_app2_id, TEST_ANONYMOUS_APP_NAME_2);
+        accessApps(true, anonymousAppId2, TEST_ANONYMOUS_APP_NAME_2);
 
         //Access anonymous disallowed web app using an anonymous user
-        accessApps(false, non_anonymous_app_id, "authenticationendpoint");
+        accessApps(false, nonAnonymousAppId1, AppmUiTestConstants.UNAUTHORIZED_LOGIN_REDIRECT_PAGE);
     }
 
     private void createAndPublishApps() throws Exception {
         //Anonymous app1 life cycle
         createApps(TEST_ANONYMOUS_APP_NAME_1, TEST_ANONYMOUS_APP_NAME_1, TEST_ANONYMOUS_APP_NAME_1,
-                   TEST_APP_VERSION, TEST_APP_URL, TEST_APP_TRANSPORT);
+                   TEST_APP_VERSION, testAppURL, TEST_APP_TRANSPORT);
         //Set app id
-        anonymous_app1_id = driver.findElement(By.cssSelector(
+        anonymousAppId1 = driver.findElement(By.cssSelector(
                 "[data-name='" + TEST_ANONYMOUS_APP_NAME_1 + "'][data-action='" + STATE_SUBMIT +
                         "']")).getAttribute("data-app");
         //anonymous app1: click submit button
@@ -86,9 +92,9 @@ public class StoreAnonymousAppAccessTestCase extends AppManagerIntegrationTest {
 
         //Anonymous app2 life cycle
         createApps(TEST_ANONYMOUS_APP_NAME_2, TEST_ANONYMOUS_APP_NAME_2, TEST_ANONYMOUS_APP_NAME_2,
-                   TEST_APP_VERSION, TEST_APP_URL, TEST_APP_TRANSPORT);
+                   TEST_APP_VERSION, testAppURL, TEST_APP_TRANSPORT);
         //Set app id
-        anonymous_app2_id = driver.findElement(By.cssSelector(
+        anonymousAppId2 = driver.findElement(By.cssSelector(
                 "[data-name='" + TEST_ANONYMOUS_APP_NAME_2 + "'][data-action='" + STATE_SUBMIT +
                         "']")).getAttribute("data-app");
         //anonymous app2: click submit button
@@ -102,9 +108,9 @@ public class StoreAnonymousAppAccessTestCase extends AppManagerIntegrationTest {
         //Non anonymous app life cycle
         createApps(TEST_NON_ANONYMOUS_APP_NAME, TEST_NON_ANONYMOUS_APP_NAME,
                    TEST_NON_ANONYMOUS_APP_NAME,
-                   TEST_APP_VERSION, TEST_APP_URL, TEST_APP_TRANSPORT);
+                   TEST_APP_VERSION, testAppURL, TEST_APP_TRANSPORT);
         //Set app id
-        non_anonymous_app_id = driver.findElement(By.cssSelector(
+        nonAnonymousAppId1 = driver.findElement(By.cssSelector(
                 "[data-name='" + TEST_NON_ANONYMOUS_APP_NAME +
                         "'][data-action='" + STATE_SUBMIT + "']"))
                 .getAttribute("data-app");

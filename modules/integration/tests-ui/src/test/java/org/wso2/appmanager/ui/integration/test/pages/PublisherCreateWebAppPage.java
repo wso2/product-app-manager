@@ -30,7 +30,6 @@ import org.wso2.appmanager.ui.integration.test.utils.Page;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -102,7 +101,8 @@ public class PublisherCreateWebAppPage extends Page {
         driver.findElement(By.id("btn-policy-group-save-and-close")).click();
     }
 
-    public PublisherWebAppsListPage createAnonymousWebAppUsingResources(WebApp webapp) throws Exception {
+    public PublisherWebAppsListPage createAnonymousWebAppUsingResources(WebApp webapp)
+            throws Exception {
         WebDriverWait wait = new WebDriverWait(driver, 90);
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("overview_name")));
@@ -175,9 +175,10 @@ public class PublisherCreateWebAppPage extends Page {
     }
 
 
-    public PublisherWebAppsListPage createNonAnonymousAppWithAnonymousResources(WebApp webapp,
-                                                                                List<String>
-                                                                                        resources)
+    public PublisherWebAppsListPage createNonAnonymousAppWithAnonymousAndBlockedResources(
+            WebApp webapp,
+            String anonymousResourceName,
+            String nonAnonymousResourceName)
             throws Exception {
         WebDriverWait wait = new WebDriverWait(driver, 90);
 
@@ -207,12 +208,15 @@ public class PublisherCreateWebAppPage extends Page {
         driver.findElement(By.id("webAppResources_section")).click();
 
         //Add resources
-        for (int i = 0; i < resources.size(); i++) {
-            driver.findElement(By.id("url_pattern")).sendKeys(resources.get(i));
-            driver.findElement(By.cssSelector("[value='GET'][class='http_verb'][type='checkbox']"))
-                    .click();
-            driver.findElement(By.id("add_resource")).click();
-        }
+        driver.findElement(By.id("url_pattern")).sendKeys(nonAnonymousResourceName);
+        driver.findElement(By.cssSelector("[value='GET'][class='http_verb'][type='checkbox']"))
+                .click();
+        driver.findElement(By.id("add_resource")).click();
+
+        driver.findElement(By.id("url_pattern")).sendKeys(anonymousResourceName);
+        driver.findElement(By.cssSelector("[value='GET'][class='http_verb'][type='checkbox']"))
+                .click();
+        driver.findElement(By.id("add_resource")).click();
 
 
         //make last item anonymous allowed

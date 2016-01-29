@@ -35,4 +35,8 @@ public class AppmUiTestConstants {
     public static final String APP_CREATOR = "AppCreator";
     public static final String ADMIN = "AdminUser";
     public static final String APP_PUBLISHER = "AppPublisher";
+    public static final String SAMPLE_DEPLOYED_WEB_APP_NAME = "travel-booking-1.0";
+    public static final String SAMPLE_DEPLOYED_WEB_APP_BLOCKED_RESOURCE = "index.jsp";
+    public static final String SAMPLE_DEPLOYED_WEB_APP_ANONYMOUS_RESOURCE = "loging.jsp";
+    public static final String UNAUTHORIZED_LOGIN_REDIRECT_PAGE = "authenticationendpoint";
 }
