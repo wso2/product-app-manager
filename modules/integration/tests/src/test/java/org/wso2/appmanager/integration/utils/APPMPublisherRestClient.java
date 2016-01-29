@@ -412,6 +412,7 @@ public class APPMPublisherRestClient {
 
     /**
      * Add web app detail to registry and APM db
+     *
      * @param webApp Web App
      * @return HttpResponse
      * @throws Exception
@@ -428,6 +429,7 @@ public class APPMPublisherRestClient {
 
     /**
      * Create service provider for given web app
+     *
      * @param webApp Web App
      * @return HttpResponse
      * @throws Exception
@@ -445,6 +447,7 @@ public class APPMPublisherRestClient {
 
     /**
      * Add a policy group
+     *
      * @param policyGroup Policy Group
      * @return HttpResponse
      * @throws Exception
@@ -463,6 +466,7 @@ public class APPMPublisherRestClient {
 
     /**
      * Add given roles to given webapp(web appId)
+     *
      * @param roles Visible Roles
      * @param appId Web App Id
      * @return HttpResponse
@@ -481,7 +485,8 @@ public class APPMPublisherRestClient {
 
     /**
      * Add tags to given webapp(web appId)
-     * @param tags Tags
+     *
+     * @param tags  Tags
      * @param appId Web App Id
      * @return HttpResponse
      * @throws Exception
@@ -506,6 +511,7 @@ public class APPMPublisherRestClient {
      * 2. Edit roles assigned to webapp
      * 3. Edit tags assigned to webapp
      * 4. Edit SP config of webapp
+     *
      * @param webApp Modified Web App
      * @return
      * @throws Exception
@@ -530,6 +536,7 @@ public class APPMPublisherRestClient {
 
     /**
      * Edit the content of webapp in registry and APM db
+     *
      * @param webApp Modified Web App
      * @return HttpResponse
      * @throws Exception
@@ -547,6 +554,7 @@ public class APPMPublisherRestClient {
 
     /**
      * Edit the Service Provider configuration of web app
+     *
      * @param webApp Modified Web App
      * @return HttpResponse
      * @throws Exception
@@ -564,13 +572,14 @@ public class APPMPublisherRestClient {
 
     /**
      * Delete the webapp
+     *
      * @param appId Web App Id
      * @return HttpResponse
      * @throws Exception
      */
-    public HttpResponse deleteApp(String appId) throws Exception{
+    public HttpResponse deleteApp(String appId) throws Exception {
         HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl +
-                AppmTestConstants.PubliserRestApis.DELETE_WEB_APP+appId+""),"",requestHeaders);
+                AppmTestConstants.PubliserRestApis.DELETE_WEB_APP + appId + ""), "", requestHeaders);
         VerificationUtil.verifyJsonResponse(response);
         return response;
     }

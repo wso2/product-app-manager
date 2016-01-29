@@ -24,11 +24,13 @@ import org.apache.commons.lang3.StringUtils;
  * policyGroupName=Default&throttlingTier=Bronze&userRoles=Internal/everyone,Internal/store-admin
  * &anonymousAccessToUrlPattern=&policyGroupId=5&objPartialMappings=[]&policyGroupDesc=tes des
  */
-public class PolicyGroupRequest  extends AbstractRequest{
+public class PolicyGroupRequest extends AbstractRequest {
     private PolicyGroup policyGroup;
-    public PolicyGroupRequest(PolicyGroup policyGroup){
-        this.policyGroup =policyGroup;
+
+    public PolicyGroupRequest(PolicyGroup policyGroup) {
+        this.policyGroup = policyGroup;
     }
+
     @Override
     public void setAction() {
 
@@ -38,9 +40,9 @@ public class PolicyGroupRequest  extends AbstractRequest{
     public void init() {
         addParameter("policyGroupName", policyGroup.getPolicyGroupName());
         addParameter("throttlingTier", policyGroup.getThrottlingTier());
-        addParameter("userRoles", StringUtils.join(policyGroup.getUserRoles(),","));
+        addParameter("userRoles", StringUtils.join(policyGroup.getUserRoles(), ","));
         addParameter("anonymousAccessToUrlPattern", policyGroup.getAnonymousAccessToUrlPattern());
-        addParameter("objPartialMappings", "["+policyGroup.getObjPartialMappings()+"]");
+        addParameter("objPartialMappings", "[" + policyGroup.getObjPartialMappings() + "]");
         addParameter("policyGroupDesc", policyGroup.getPolicyGroupDesc());
 
     }

@@ -143,4 +143,10 @@ public class PublisherWebAppsListPage  extends Page {
         return present;
     }
 
+    public LoginPage logout() throws Exception {
+        driver.findElement(By.className("icon-user")).click();
+        driver.findElement(By.className("icon-signout")).click();
+        return LoginPage.getPage(driver, appMServer, LoginPage.LoginTo.PUBLISHER);
+    }
+
 }

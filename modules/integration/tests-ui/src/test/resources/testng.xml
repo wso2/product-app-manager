@@ -40,9 +40,17 @@
             <class name="org.wso2.appmanager.ui.integration.test.cases.store.webapp.StoreAnonymousResourceAccessTestCase" />
             <class name="org.wso2.appmanager.ui.integration.test.cases.store.webapp.StoreAnonymousAppAccessTestCase" />
 
+            <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.delete.DeleteWebAppInApprovedStateTestCase" />
+            <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.delete.DeleteWebAppInCreatedStateTestCase" />
+            <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.delete.DeleteWebAppInReviewStateTestCase" />
+            <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.delete.DeleteWebappInPublishedStateTestCase" />
+            <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.delete.DeleteWebAppInDeprecatedStatusTestCase" />
+            <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.delete.DeleteWebAppInRetiredStateTestCase" />
+            <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.delete.DeleteWebAppInUnpublishedStateTestCase" />
+
+
         </classes>
 
     </test>
-
 
 </suite>

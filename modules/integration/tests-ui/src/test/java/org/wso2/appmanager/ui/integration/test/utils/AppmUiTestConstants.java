@@ -31,4 +31,8 @@ public class AppmUiTestConstants {
         public static final String RECYCLE = "Recycle";
         public static final String REJECT = "Reject";
     }
+
+    public static final String APP_CREATOR = "AppCreator";
+    public static final String ADMIN = "AdminUser";
+    public static final String APP_PUBLISHER = "AppPublisher";
 }

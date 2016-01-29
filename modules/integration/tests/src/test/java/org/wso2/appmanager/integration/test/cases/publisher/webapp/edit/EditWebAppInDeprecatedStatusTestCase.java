@@ -97,7 +97,7 @@ public class EditWebAppInDeprecatedStatusTestCase {
     private void createWebApp(User appCreator) throws Exception {
         PolicyGroup defaultPolicyGroup = WebAppUtil.createDefaultPolicy();
         HttpResponse response = appmPublisherRestClient.addPolicyGroup(defaultPolicyGroup);
-        String policyId= WebAppUtil.getPolicyId(response);
+        String policyId = WebAppUtil.getPolicyId(response);
         List<WebAppResource> webAppResources = WebAppUtil.createDefaultResources(policyId);
         webApp = WebAppUtil.createBasicWebApp(appCreator.getUserName(), appName, context, appVersion,
                 "http://wso2.com/", webAppResources);

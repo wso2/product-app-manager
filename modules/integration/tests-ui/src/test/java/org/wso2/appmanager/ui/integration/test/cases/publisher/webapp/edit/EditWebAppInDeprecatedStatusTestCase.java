@@ -46,7 +46,6 @@ public class EditWebAppInDeprecatedStatusTestCase extends AppManagerIntegrationT
     private String appProvider;
 
     private PublisherWebAppsListPage webAppsListPage;
-    private PublisherOverviewWebAppPage overviewWebAppPage;
     private PublisherCreateWebAppPage createWebAppPage;
 
     @BeforeClass(alwaysRun = true)
@@ -62,32 +61,34 @@ public class EditWebAppInDeprecatedStatusTestCase extends AppManagerIntegrationT
     public void testEditWebAppWithValidUsers(String userName, String password) throws Exception {
         WebDriver driver = BrowserManager.getWebDriver();
         //login to publisher
-        webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER, userName, password);
-        overviewWebAppPage = webAppsListPage.goToOverviewPage(appName, appProvider, appVersion);
+        PublisherWebAppsListPage webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER, userName, password);
+        PublisherOverviewWebAppPage overviewWebAppPage = webAppsListPage.goToOverviewPage(appName, appProvider, appVersion);
         new WebDriverWait(driver, 90).until(ExpectedConditions.visibilityOfElementLocated(By.id("overview")));
         boolean status = overviewWebAppPage.isEditLinkAvailable();
         // overviewWebAppPage.logout();
         closeDriver(driver);
         Assert.assertTrue(status, "Edit option is not available to user:" + userName +
-                " who has insufficient privileges to edit.");
+                " who has sufficient privileges to edit.");
     }
 
     @Test(dataProvider = "inValidUserModeDataProvider", description = TEST_DESCRIPTION)
     public void testEditWebAppWithInValidUsers(String userName, String password) throws Exception {
         WebDriver driver = BrowserManager.getWebDriver();
         //login to publisher
-        webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER, userName, password);
-        overviewWebAppPage = webAppsListPage.goToOverviewPage(appName, appProvider, appVersion);
+        PublisherWebAppsListPage webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER, userName, password);
+        PublisherOverviewWebAppPage overviewWebAppPage = webAppsListPage.goToOverviewPage(appName, appProvider, appVersion);
         new WebDriverWait(driver, 90).until(ExpectedConditions.visibilityOfElementLocated(By.id("overview")));
         boolean status = overviewWebAppPage.isEditLinkAvailable();
         // overviewWebAppPage.logout();
         closeDriver(driver);
         Assert.assertTrue(!status, "Edit option is  available to user:" + userName +
-                " who has sufficient privileges to edit.");
+                " who has insufficient privileges to edit.");
     }
 
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
+        //Delete webapp using creator user
+        webAppsListPage.deleteApp(appName, appProvider, appVersion, driver);
         closeDriver(driver);
     }
 
@@ -123,19 +124,19 @@ public class EditWebAppInDeprecatedStatusTestCase extends AppManagerIntegrationT
         new WebDriverWait(driver, 90).until(ExpectedConditions.visibilityOfElementLocated(By.id(id)));
     }
 
-    private void changeLifeCycleStatus() throws Exception{
+    private void changeLifeCycleStatus() throws Exception {
         WebDriver driver = BrowserManager.getWebDriver();
-        webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER,
+        PublisherWebAppsListPage webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER,
                 appMServer.getSuperTenant().getTenantAdmin().getUserName(),
                 appMServer.getSuperTenant().getTenantAdmin().getPassword());
-        webAppsListPage.changeLifeCycleState(appName,appProvider,appVersion,
-                AppmUiTestConstants.LifeCycleStatus.SUBMIT_FOR_REVIEW,driver);
-        webAppsListPage.changeLifeCycleState(appName,appProvider,appVersion,
-                AppmUiTestConstants.LifeCycleStatus.APPROVE,driver);
-        webAppsListPage.changeLifeCycleState(appName,appProvider,appVersion,
-                AppmUiTestConstants.LifeCycleStatus.PUBLISH,driver);
-        webAppsListPage.changeLifeCycleState(appName,appProvider,appVersion,
-                AppmUiTestConstants.LifeCycleStatus.DEPRECATE,driver);
+        webAppsListPage.changeLifeCycleState(appName, appProvider, appVersion,
+                AppmUiTestConstants.LifeCycleStatus.SUBMIT_FOR_REVIEW, driver);
+        webAppsListPage.changeLifeCycleState(appName, appProvider, appVersion,
+                AppmUiTestConstants.LifeCycleStatus.APPROVE, driver);
+        webAppsListPage.changeLifeCycleState(appName, appProvider, appVersion,
+                AppmUiTestConstants.LifeCycleStatus.PUBLISH, driver);
+        webAppsListPage.changeLifeCycleState(appName, appProvider, appVersion,
+                AppmUiTestConstants.LifeCycleStatus.DEPRECATE, driver);
         closeDriver(driver);
     }
 }
