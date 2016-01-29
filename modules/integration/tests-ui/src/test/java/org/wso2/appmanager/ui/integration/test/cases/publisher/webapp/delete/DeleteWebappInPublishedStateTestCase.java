@@ -40,12 +40,12 @@ import org.wso2.carbon.automation.engine.context.beans.User;
 import org.wso2.carbon.automation.extensions.selenium.BrowserManager;
 
 /**
- * This Test class verifies the ability of appCreator, appPublisher and admin users to delete web apps in 'In Review' state
+ * This Test class verifies the ability of appCreator, appPublisher and admin users to delete web apps in 'Published' state
  */
-public class DeleteWebAppInReviewStateTestCase extends AppManagerIntegrationTest{
+public class DeleteWebappInPublishedStateTestCase extends AppManagerIntegrationTest {
 
-    private static final String TEST_DESCRIPTION = "Delete web application in In Review state.";
-    private static final String TEST_APP_NAME_SUFFIX = "DeleteWebAppInReviewStateTestCase";
+    private static final String TEST_DESCRIPTION = "Delete web application in Published state.";
+    private static final String TEST_APP_NAME_SUFFIX = "DeleteWebAppInPublishedStateTestCase";
     private static final String creatorDeleteAppTest = AppmUiTestConstants.APP_CREATOR + TEST_APP_NAME_SUFFIX;
     private static final String publisherDeleteAppTest = AppmUiTestConstants.APP_PUBLISHER + TEST_APP_NAME_SUFFIX;
     private static final String adminDeleteAppTest = AppmUiTestConstants.ADMIN + TEST_APP_NAME_SUFFIX;
@@ -81,16 +81,16 @@ public class DeleteWebAppInReviewStateTestCase extends AppManagerIntegrationTest
         webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER,
                 admin.getUserName(), admin.getPassword());
 
-        //Submit for Review
-        changeLifeCycleStateIntoIn_Review(creatorDeleteAppTest, driver);
-        changeLifeCycleStateIntoIn_Review(publisherDeleteAppTest, driver);
-        changeLifeCycleStateIntoIn_Review(adminDeleteAppTest, driver);
+        //Publish web apps in each test scenario
+        changeLifeCycleStateIntoPublished(creatorDeleteAppTest, driver);
+        changeLifeCycleStateIntoPublished(publisherDeleteAppTest, driver);
+        changeLifeCycleStateIntoPublished(adminDeleteAppTest, driver);
         closeDriver(driver);
 
     }
 
     @Test(dataProvider = "validUserModeDataProvider", description = TEST_DESCRIPTION)
-    public void testInReviewWebAppDeleteWithValidUsers(String username, String password, String appName)
+    public void testPublishedWebAppDeleteWithValidUsers(String username, String password, String appName)
             throws Exception {
         WebDriver driver = BrowserManager.getWebDriver();
         //login to publisher
@@ -105,7 +105,7 @@ public class DeleteWebAppInReviewStateTestCase extends AppManagerIntegrationTest
     }
 
     @Test(dataProvider = "inValidUserModeDataProvider", description = TEST_DESCRIPTION)
-    public void testInReviewWebAppDeleteWithInValidUsers(String username, String password, String appName)
+    public void testPublishedWebAppDeleteWithInValidUsers(String username, String password, String appName)
             throws Exception {
         WebDriver driver = BrowserManager.getWebDriver();
         //login to publisher
@@ -115,6 +115,7 @@ public class DeleteWebAppInReviewStateTestCase extends AppManagerIntegrationTest
         Assert.assertTrue(!isDeleteButtonAvailable, "Delete option is available to user:" + username +
                 " who has insufficient privileges to delete.");
     }
+
 
     @DataProvider
     public static Object[][] validUserModeDataProvider() throws Exception {
@@ -146,12 +147,16 @@ public class DeleteWebAppInReviewStateTestCase extends AppManagerIntegrationTest
         new WebDriverWait(driver, 120).until(ExpectedConditions.visibilityOfElementLocated(By.linkText(appName)));
     }
 
-    private void changeLifeCycleStateIntoIn_Review(String appName, WebDriver driver) throws Exception {
+    private void changeLifeCycleStateIntoPublished(String appName, WebDriver driver) throws Exception {
 
         //Promote the web app to In Review state
         webAppsListPage.changeLifeCycleState(appName, appProvider, appVersion,
                 AppmUiTestConstants.LifeCycleStatus.SUBMIT_FOR_REVIEW, driver);
-
+        //Promote the web app to Approved state
+        webAppsListPage.changeLifeCycleState(appName, appProvider, appVersion,
+                AppmUiTestConstants.LifeCycleStatus.APPROVE, driver);
+        //Promote the web app to Approved state
+        webAppsListPage.changeLifeCycleState(appName, appProvider, appVersion,
+                AppmUiTestConstants.LifeCycleStatus.PUBLISH, driver);
     }
-
 }

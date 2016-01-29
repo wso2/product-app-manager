@@ -121,8 +121,8 @@ public class DeleteWebAppInApprovedStateTestCase extends AppManagerIntegrationTe
     public static Object[][] validUserModeDataProvider() throws Exception {
         AutomationContext appMServer = new AutomationContext(AppmUiTestConstants.APP_MANAGER,
                 TestUserMode.SUPER_TENANT_ADMIN);
-        User appCreator = appMServer.getSuperTenant().getTenantUser("AppCreator");
-        User adminUser = appMServer.getSuperTenant().getTenantUser("AdminUser");
+        User appCreator = appMServer.getSuperTenant().getTenantUser(AppmUiTestConstants.APP_CREATOR);
+        User adminUser = appMServer.getSuperTenant().getTenantUser(AppmUiTestConstants.ADMIN);
         return new Object[][]{
                 new Object[]{appCreator.getUserName(), appCreator.getPassword(), creatorDeleteAppTest},
                 new Object[]{adminUser.getUserName(), adminUser.getPassword(), adminDeleteAppTest}
