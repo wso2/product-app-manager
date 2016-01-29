@@ -68,6 +68,17 @@ public class PublisherCreateWebAppTestCase extends AppManagerIntegrationTest {
 
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
-       closeDriver(driver);
+        //Go to publisher listing page
+        driver.get(appMServer.getContextUrls().getWebAppURLHttps() + "/publisher");
+        PublisherWebAppsListPage.getPage(driver, appMServer);
+        //Delete apps
+        webAppsListPage.deleteApp("Test1",
+                                  appMServer.getSuperTenant().getTenantAdmin().getUserName(),
+                                  "1.0", driver);
+        webAppsListPage.deleteApp("Test2",
+                                  appMServer.getSuperTenant().getTenantAdmin().getUserName(),
+                                  "2.0", driver);
+
+        closeDriver(driver);
     }
 }

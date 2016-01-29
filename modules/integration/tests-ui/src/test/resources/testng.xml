@@ -18,6 +18,10 @@
 
     <test name="AppM-UI-tests" parallel="false" verbose="2">
         <classes>
+            <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherSearchWebAppTestCase" />
+            <class name="org.wso2.appmanager.ui.integration.test.cases.store.webapp.StoreSearchWebAppTestCase" />
+            <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherPaginationTestCase" />
+
             <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherLoginTestCase" />
             <class name="org.wso2.appmanager.ui.integration.test.cases.StoreLoginTestCase" />
             <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherCreateWebAppTestCase" />
@@ -25,8 +29,6 @@
             <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherResetCreationWebAppTestCase" />
             <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherProhibitSpecialCharactersTestCase" />
 
-            <class name="org.wso2.appmanager.ui.integration.test.cases.store.webapp.StoreAnonymousAppAccessTestCase" />
-            <class name="org.wso2.appmanager.ui.integration.test.cases.store.webapp.StoreAnonymousResourceAccessTestCase" />
             <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.edit.EditWebAppInCreatedStatusTestCase" />
             <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.edit.EditWebAppInReviewStatusTestCase" />
             <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.edit.EditWebAppInApprovedStatusTestCase" />
@@ -35,14 +37,11 @@
             <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.edit.EditWebAppInUnPublishedStatusTestCase" />
             <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.edit.EditWebAppInRetiredStatusTestCase" />
 
+            <class name="org.wso2.appmanager.ui.integration.test.cases.store.webapp.StoreAnonymousResourceAccessTestCase" />
+            <class name="org.wso2.appmanager.ui.integration.test.cases.store.webapp.StoreAnonymousAppAccessTestCase" />
 
-            <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherSearchWebAppTestCase" />
-
-            <!--
-            <class name="org.wso2.appmanager.ui.integration.test.cases.store.webapp.StoreSearchWebAppTestCase" />
-            <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherPaginationTestCase" />
-            -->
         </classes>
+
     </test>
 
 

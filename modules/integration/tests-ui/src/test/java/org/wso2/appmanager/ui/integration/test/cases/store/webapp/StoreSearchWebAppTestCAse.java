@@ -21,6 +21,9 @@ import org.wso2.appmanager.ui.integration.test.utils.AppManagerIntegrationTest;
 public class StoreSearchWebAppTestCase extends AppManagerIntegrationTest {
     private static final String TEST_DESCRIPTION = "Verify Web App search functionality - Store";
     private static final String TEST_WEB_APP_ALIAS = "StoreSearchWebApp";
+    private static final String TEST_APP_VERSION = "1.0";
+    private static final String TEST_APP_URL = "http://wso2.com";
+    private static final String TEST_APP_TRANSPORT = "http";
     private static final int TEST_NO_OF_APPS = 4;
     public static final String INVALID_NO_OF_MSG_FOUND_ERROR_MSG =
             "Unexpected search result(s) found when searching by ";
@@ -40,10 +43,13 @@ public class StoreSearchWebAppTestCase extends AppManagerIntegrationTest {
     private PublisherWebAppsListPage webAppsListPage;
     private PublisherCreateWebAppPage createWebAppPage;
 
+    String loggedUserName;
+
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
         super.init();
         wait = new WebDriverWait(driver, 90);
+        loggedUserName = appMServer.getSuperTenant().getTenantAdmin().getUserName();
 
         //login to publisher
         webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER);
@@ -53,7 +59,8 @@ public class StoreSearchWebAppTestCase extends AppManagerIntegrationTest {
         for (int i = 1; i <= TEST_NO_OF_APPS; i++) {
             String webAppName = TEST_WEB_APP_ALIAS + i;
             //Create sample web apps
-            createApps(webAppName, webAppName, webAppName, "1.0", "http://www.wso2.com", "http");
+            createApps(webAppName, webAppName, webAppName, TEST_APP_VERSION, TEST_APP_URL,
+                       TEST_APP_TRANSPORT);
 
             //Submit
             changeLifeCycleState(webAppName, STATE_SUBMIT);
@@ -97,7 +104,7 @@ public class StoreSearchWebAppTestCase extends AppManagerIntegrationTest {
         Assert.assertEquals(INVALID_NO_OF_MSG_FOUND_ERROR_MSG + SEARCH_CRITERIA_PROVIDER,
                             (availableElementsCount(
                                     SEARCH_CRITERIA_PROVIDER,
-                                    appMServer.getSuperTenant().getTenantAdmin().getUserName()) ==
+                                    loggedUserName) ==
                                     TEST_NO_OF_APPS), true);
 
         //Search with invalid provider name (no result should be displayed)
@@ -172,6 +179,15 @@ public class StoreSearchWebAppTestCase extends AppManagerIntegrationTest {
 
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
+        //Go to publisher listing page
+        driver.get(appMServer.getContextUrls().getWebAppURLHttps() + "/publisher");
+        PublisherWebAppsListPage.getPage(driver, appMServer);
+        //Delete apps
+        for (int i = TEST_NO_OF_APPS; i >= 1; i--) {
+            webAppsListPage.deleteApp(TEST_WEB_APP_ALIAS + i, loggedUserName, TEST_APP_VERSION,
+                                      driver);
+            driver.navigate().refresh();
+        }
         closeDriver(driver);
     }
 }

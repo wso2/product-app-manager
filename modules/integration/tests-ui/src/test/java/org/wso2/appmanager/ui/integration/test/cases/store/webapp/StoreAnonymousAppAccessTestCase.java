@@ -25,6 +25,9 @@ public class StoreAnonymousAppAccessTestCase extends AppManagerIntegrationTest {
             "StoreAnonymousAppAccess_anonymous_app_2";
     private static final String TEST_NON_ANONYMOUS_APP_NAME =
             "StoreAnonymousAppAccess_non_anonymous_app_1";
+    private static final String TEST_APP_VERSION = "1.0";
+    private static final String TEST_APP_URL = "http://wso2.com";
+    private static final String TEST_APP_TRANSPORT = "http";
 
     private static final String STATE_SUBMIT = "Submit for Review";
     private static final String STATE_APPROVE = "Approve";
@@ -68,7 +71,7 @@ public class StoreAnonymousAppAccessTestCase extends AppManagerIntegrationTest {
     private void createAndPublishApps() throws Exception {
         //Anonymous app1 life cycle
         createApps(TEST_ANONYMOUS_APP_NAME_1, TEST_ANONYMOUS_APP_NAME_1, TEST_ANONYMOUS_APP_NAME_1,
-                   "1.0", "http://wso2.com", "http");
+                   TEST_APP_VERSION, TEST_APP_URL, TEST_APP_TRANSPORT);
         //Set app id
         anonymous_app1_id = driver.findElement(By.cssSelector(
                 "[data-name='" + TEST_ANONYMOUS_APP_NAME_1 + "'][data-action='" + STATE_SUBMIT +
@@ -83,7 +86,7 @@ public class StoreAnonymousAppAccessTestCase extends AppManagerIntegrationTest {
 
         //Anonymous app2 life cycle
         createApps(TEST_ANONYMOUS_APP_NAME_2, TEST_ANONYMOUS_APP_NAME_2, TEST_ANONYMOUS_APP_NAME_2,
-                   "1.0", "http://wso2.com", "http");
+                   TEST_APP_VERSION, TEST_APP_URL, TEST_APP_TRANSPORT);
         //Set app id
         anonymous_app2_id = driver.findElement(By.cssSelector(
                 "[data-name='" + TEST_ANONYMOUS_APP_NAME_2 + "'][data-action='" + STATE_SUBMIT +
@@ -99,7 +102,7 @@ public class StoreAnonymousAppAccessTestCase extends AppManagerIntegrationTest {
         //Non anonymous app life cycle
         createApps(TEST_NON_ANONYMOUS_APP_NAME, TEST_NON_ANONYMOUS_APP_NAME,
                    TEST_NON_ANONYMOUS_APP_NAME,
-                   "1.0", "http://wso2.com", "http");
+                   TEST_APP_VERSION, TEST_APP_URL, TEST_APP_TRANSPORT);
         //Set app id
         non_anonymous_app_id = driver.findElement(By.cssSelector(
                 "[data-name='" + TEST_NON_ANONYMOUS_APP_NAME +
@@ -190,6 +193,20 @@ public class StoreAnonymousAppAccessTestCase extends AppManagerIntegrationTest {
 
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
+        //Go to publisher listing page
+        driver.get(appMServer.getContextUrls().getWebAppURLHttps() + "/publisher");
+        PublisherWebAppsListPage.getPage(driver, appMServer);
+        //Delete apps
+        webAppsListPage.deleteApp(TEST_ANONYMOUS_APP_NAME_1,
+                                  appMServer.getSuperTenant().getTenantAdmin().getUserName(),
+                                  TEST_APP_VERSION, driver);
+        webAppsListPage.deleteApp(TEST_ANONYMOUS_APP_NAME_2,
+                                  appMServer.getSuperTenant().getTenantAdmin().getUserName(),
+                                  TEST_APP_VERSION, driver);
+        webAppsListPage.deleteApp(TEST_NON_ANONYMOUS_APP_NAME,
+                                  appMServer.getSuperTenant().getTenantAdmin().getUserName(),
+                                  TEST_APP_VERSION, driver);
+
         closeDriver(driver);
     }
 }

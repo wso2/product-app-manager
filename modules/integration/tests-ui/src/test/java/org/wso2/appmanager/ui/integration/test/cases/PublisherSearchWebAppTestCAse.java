@@ -19,6 +19,9 @@ public class PublisherSearchWebAppTestCase extends AppManagerIntegrationTest {
     private static final String TEST_DESCRIPTION =
             "Verify Web App search functionality - Publisher";
     private static final String TEST_WEB_APP_ALIAS = "PublisherSearchWebApp";
+    private static final String TEST_APP_VERSION = "1.0";
+    private static final String TEST_APP_URL = "http://wso2.com";
+    private static final String TEST_APP_TRANSPORT = "http";
     private static final int TEST_NO_OF_APPS = 4;
 
     private static final String STATE_SUBMIT = "Submit for Review";
@@ -108,8 +111,7 @@ public class PublisherSearchWebAppTestCase extends AppManagerIntegrationTest {
                             TEST_WEB_APP_ALIAS + i,
                             TEST_WEB_APP_ALIAS + i,
                             TEST_WEB_APP_ALIAS + i,
-                            "1.0", "http://www.wso2.com",
-                            "http"));
+                            TEST_APP_VERSION, TEST_APP_URL, TEST_APP_TRANSPORT));
 
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
                     "[data-name='" + TEST_WEB_APP_ALIAS + i +
@@ -120,6 +122,17 @@ public class PublisherSearchWebAppTestCase extends AppManagerIntegrationTest {
 
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
+        //Go to publisher listing page
+        driver.get(appMServer.getContextUrls().getWebAppURLHttps() + "/publisher");
+        PublisherWebAppsListPage.getPage(driver, appMServer);
+        //Delete apps
+        for (int i = TEST_NO_OF_APPS; i >= 1; i--) {
+            webAppsListPage.deleteApp(TEST_WEB_APP_ALIAS + i,
+                                      appMServer.getSuperTenant().getTenantAdmin().getUserName(),
+                                      TEST_APP_VERSION, driver);
+            driver.navigate().refresh();
+        }
+
         closeDriver(driver);
     }
 }

@@ -21,7 +21,12 @@ import java.util.List;
 
 public class StoreAnonymousResourceAccessTestCase extends AppManagerIntegrationTest {
     private static final String TEST_DESCRIPTION = "Verify Anonymous resource access";
-    private static final String TEST_NON_ANONYMOUS_APP_NAME = "StoreAnonymousResourceAccess_non_anonymous_app";
+    private static final String TEST_NON_ANONYMOUS_APP_NAME =
+            "StoreAnonymousResourceAccess_non_anonymous_app";
+    private static final String TEST_APP_VERSION = "1.0";
+    private static final String TEST_APP_URL = "http://www.google.lk";
+    private static final String TEST_APP_TRANSPORT = "http";
+
 
     private static final String STATE_SUBMIT = "Submit for Review";
     private static final String STATE_APPROVE = "Approve";
@@ -72,8 +77,8 @@ public class StoreAnonymousResourceAccessTestCase extends AppManagerIntegrationT
                 TEST_NON_ANONYMOUS_APP_NAME,
                 TEST_NON_ANONYMOUS_APP_NAME,
                 TEST_NON_ANONYMOUS_APP_NAME,
-                "1.0", "http://www.google.lk",
-                "http"), resources);
+                TEST_APP_VERSION, TEST_APP_URL,
+                TEST_APP_TRANSPORT), resources);
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
                 "[data-name='" + TEST_NON_ANONYMOUS_APP_NAME +
@@ -150,6 +155,14 @@ public class StoreAnonymousResourceAccessTestCase extends AppManagerIntegrationT
 
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
+        //Go to publisher listing page
+        driver.get(appMServer.getContextUrls().getWebAppURLHttps() + "/publisher");
+        PublisherWebAppsListPage.getPage(driver, appMServer);
+        //Delete apps
+        webAppsListPage.deleteApp(TEST_NON_ANONYMOUS_APP_NAME,
+                                  appMServer.getSuperTenant().getTenantAdmin().getUserName(),
+                                  TEST_APP_VERSION, driver);
+
         closeDriver(driver);
     }
 }
