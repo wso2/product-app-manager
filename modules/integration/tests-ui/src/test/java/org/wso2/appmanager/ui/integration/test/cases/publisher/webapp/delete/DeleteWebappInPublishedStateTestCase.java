@@ -25,6 +25,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -58,7 +59,6 @@ public class DeleteWebappInPublishedStateTestCase extends AppManagerIntegrationT
     private User appCreator;
     private User admin;
 
-
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
         super.init();
@@ -69,7 +69,6 @@ public class DeleteWebappInPublishedStateTestCase extends AppManagerIntegrationT
         //Login to Publisher as AppCreator
         webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER,
                 appCreator.getUserName(), appCreator.getPassword());
-
         //Create webapps for each test scenario
         createWebApp(creatorDeleteAppTest);
         createWebApp(publisherDeleteAppTest);
@@ -80,7 +79,6 @@ public class DeleteWebappInPublishedStateTestCase extends AppManagerIntegrationT
         //Login to Publisher as admin user
         webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER,
                 admin.getUserName(), admin.getPassword());
-
         //Publish web apps in each test scenario
         changeLifeCycleStateIntoPublished(creatorDeleteAppTest, driver);
         changeLifeCycleStateIntoPublished(publisherDeleteAppTest, driver);
@@ -95,10 +93,7 @@ public class DeleteWebappInPublishedStateTestCase extends AppManagerIntegrationT
         WebDriver driver = BrowserManager.getWebDriver();
         //login to publisher
         webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER, username, password);
-
-
         boolean isDeleted = webAppsListPage.deleteApp(appName, appProvider, appVersion, driver);
-
         closeDriver(driver);
         Assert.assertTrue(isDeleted, "Delete option is not available to user:" + username +
                 " who has sufficient privileges to delete.");
@@ -115,7 +110,6 @@ public class DeleteWebappInPublishedStateTestCase extends AppManagerIntegrationT
         Assert.assertTrue(!isDeleteButtonAvailable, "Delete option is available to user:" + username +
                 " who has insufficient privileges to delete.");
     }
-
 
     @DataProvider
     public static Object[][] validUserModeDataProvider() throws Exception {
@@ -155,8 +149,18 @@ public class DeleteWebappInPublishedStateTestCase extends AppManagerIntegrationT
         //Promote the web app to Approved state
         webAppsListPage.changeLifeCycleState(appName, appProvider, appVersion,
                 AppmUiTestConstants.LifeCycleStatus.APPROVE, driver);
-        //Promote the web app to Approved state
+        //Promote the web app to Publish state
         webAppsListPage.changeLifeCycleState(appName, appProvider, appVersion,
                 AppmUiTestConstants.LifeCycleStatus.PUBLISH, driver);
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void closeDown() throws Exception {
+        WebDriver driver = BrowserManager.getWebDriver();
+        //login to publisher
+        webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER, admin.getUserName(),
+                admin.getPassword());
+        webAppsListPage.deleteApp(publisherDeleteAppTest, appProvider, appVersion, driver);
+        closeDriver(driver);
     }
 }

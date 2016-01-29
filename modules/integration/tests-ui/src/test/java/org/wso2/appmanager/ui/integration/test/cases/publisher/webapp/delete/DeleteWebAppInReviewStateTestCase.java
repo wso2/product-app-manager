@@ -25,6 +25,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -69,7 +70,6 @@ public class DeleteWebAppInReviewStateTestCase extends AppManagerIntegrationTest
         //Login to Publisher as AppCreator
         webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER,
                 appCreator.getUserName(), appCreator.getPassword());
-
         //Create webapps for each test scenario
         createWebApp(creatorDeleteAppTest);
         createWebApp(publisherDeleteAppTest);
@@ -80,7 +80,6 @@ public class DeleteWebAppInReviewStateTestCase extends AppManagerIntegrationTest
         //Login to Publisher as admin user
         webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER,
                 admin.getUserName(), admin.getPassword());
-
         //Submit for Review
         changeLifeCycleStateIntoIn_Review(creatorDeleteAppTest, driver);
         changeLifeCycleStateIntoIn_Review(publisherDeleteAppTest, driver);
@@ -95,10 +94,7 @@ public class DeleteWebAppInReviewStateTestCase extends AppManagerIntegrationTest
         WebDriver driver = BrowserManager.getWebDriver();
         //login to publisher
         webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER, username, password);
-
-
         boolean isDeleted = webAppsListPage.deleteApp(appName, appProvider, appVersion, driver);
-
         closeDriver(driver);
         Assert.assertTrue(isDeleted, "Delete option is not available to user:" + username +
                 " who has sufficient privileges to delete.");
@@ -151,7 +147,16 @@ public class DeleteWebAppInReviewStateTestCase extends AppManagerIntegrationTest
         //Promote the web app to In Review state
         webAppsListPage.changeLifeCycleState(appName, appProvider, appVersion,
                 AppmUiTestConstants.LifeCycleStatus.SUBMIT_FOR_REVIEW, driver);
+    }
 
+    @AfterClass(alwaysRun = true)
+    public void closeDown() throws Exception {
+        WebDriver driver = BrowserManager.getWebDriver();
+        //login to publisher
+        webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER, admin.getUserName(),
+                admin.getPassword());
+        webAppsListPage.deleteApp(publisherDeleteAppTest, appProvider, appVersion, driver);
+        closeDriver(driver);
     }
 
 }

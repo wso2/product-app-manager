@@ -25,6 +25,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -55,13 +56,14 @@ public class DeleteWebAppInCreatedStateTestCase extends AppManagerIntegrationTes
     private String contextPrefix = "/";
     private String appProvider;
     private User appCreator;
+    private User admin;
 
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
         super.init();
         appCreator = appMServer.getSuperTenant().getTenantUser(AppmUiTestConstants.APP_CREATOR);
         appProvider = appCreator.getUserName();
-
+        admin = appMServer.getSuperTenant().getTenantUser(AppmUiTestConstants.ADMIN);
         //Login to Publisher as AppCreator
         webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER,
                 appCreator.getUserName(), appCreator.getPassword());
@@ -95,7 +97,7 @@ public class DeleteWebAppInCreatedStateTestCase extends AppManagerIntegrationTes
         //login to publisher
         webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER, username, password);
         String id = appName + "-" + appProvider + "-" + appVersion;
-        boolean status = isElementExist(driver,By.id(id));
+        boolean status = isElementExist(driver, By.id(id));
         // overviewWebAppPage.logout();
         closeDriver(driver);
         Assert.assertTrue(!status, "Delete option is  available to user:" + username +
@@ -130,6 +132,16 @@ public class DeleteWebAppInCreatedStateTestCase extends AppManagerIntegrationTes
         createWebAppPage.createWebApp(new WebApp(appName, appName, contextPrefix + appName,
                 appVersion, "http://wso2.com", "http"));
         new WebDriverWait(driver, 120).until(ExpectedConditions.visibilityOfElementLocated(By.linkText(appName)));
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void closeDown() throws Exception {
+        WebDriver driver = BrowserManager.getWebDriver();
+        //login to publisher
+        webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER, admin.getUserName(),
+                admin.getPassword());
+        webAppsListPage.deleteApp(publisherDeleteAppTest, appProvider, appVersion, driver);
+        closeDriver(driver);
     }
 
 }

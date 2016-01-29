@@ -25,6 +25,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -78,7 +79,7 @@ public class DeleteWebAppInDeprecatedStatusTestCase extends AppManagerIntegratio
         //Login to Publisher as admin user
         webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER,
                 admin.getUserName(), admin.getPassword());
-        //Publish web apps in each test scenario
+        //Deprecate web apps in each test scenario
         changeLifeCycleStateIntoDeprecated(creatorDeleteAppTest, driver);
         changeLifeCycleStateIntoDeprecated(publisherDeleteAppTest, driver);
         changeLifeCycleStateIntoDeprecated(adminDeleteAppTest, driver);
@@ -155,5 +156,15 @@ public class DeleteWebAppInDeprecatedStatusTestCase extends AppManagerIntegratio
         //Promote the web app life cycle state into Deprecated state
         webAppsListPage.changeLifeCycleState(appName, appProvider, appVersion,
                 AppmUiTestConstants.LifeCycleStatus.DEPRECATE, driver);
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void closeDown() throws Exception {
+        WebDriver driver = BrowserManager.getWebDriver();
+        //login to publisher
+        webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER, admin.getUserName(),
+                admin.getPassword());
+        webAppsListPage.deleteApp(publisherDeleteAppTest, appProvider, appVersion, driver);
+        closeDriver(driver);
     }
 }

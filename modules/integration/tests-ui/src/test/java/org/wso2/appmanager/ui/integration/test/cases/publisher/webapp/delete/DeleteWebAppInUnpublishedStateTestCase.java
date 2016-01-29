@@ -78,7 +78,7 @@ public class DeleteWebAppInUnpublishedStateTestCase extends AppManagerIntegratio
         //Login to Publisher as admin user
         webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER,
                 admin.getUserName(), admin.getPassword());
-        //Publish web apps in each test scenario
+        //Unpublish web apps in each test scenario
         changeLifeCycleStateIntoUnpublished(creatorDeleteAppTest, driver);
         changeLifeCycleStateIntoUnpublished(publisherDeleteAppTest, driver);
         changeLifeCycleStateIntoUnpublished(adminDeleteAppTest, driver);
@@ -91,10 +91,7 @@ public class DeleteWebAppInUnpublishedStateTestCase extends AppManagerIntegratio
         WebDriver driver = BrowserManager.getWebDriver();
         //login to publisher
         webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER, username, password);
-
-
         boolean isDeleted = webAppsListPage.deleteApp(appName, appProvider, appVersion, driver);
-
         closeDriver(driver);
         Assert.assertTrue(isDeleted, "Delete option is not available to user:" + username +
                 " who has sufficient privileges to delete.");
@@ -159,6 +156,11 @@ public class DeleteWebAppInUnpublishedStateTestCase extends AppManagerIntegratio
 
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
-
+        WebDriver driver = BrowserManager.getWebDriver();
+        //login to publisher
+        webAppsListPage = (PublisherWebAppsListPage) login(driver, LoginPage.LoginTo.PUBLISHER, admin.getUserName(),
+                admin.getPassword());
+        webAppsListPage.deleteApp(publisherDeleteAppTest, appProvider, appVersion, driver);
+        closeDriver(driver);
     }
 }
