@@ -16,7 +16,7 @@
 *under the License.
 */
 
-package org.wso2.appmanager.integration.test.cases;
+package org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management;
 
 import org.json.JSONObject;
 import org.testng.annotations.AfterClass;
@@ -24,6 +24,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.appmanager.integration.utils.APPMPublisherRestClient;
 import org.wso2.appmanager.integration.utils.AppmTestConstants;
+import org.wso2.appmanager.integration.utils.VerificationUtil;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.automation.engine.context.beans.User;
@@ -32,16 +33,17 @@ import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-public class WebAppPublishTestCase {
+public class RecycleWebAppTestCase {
 
-    private static final String TEST_DESCRIPTION = "Verify Publishing a Web App";
+    private static final String TEST_DESCRIPTION = "Verify recycling an unpublished web app";
     private APPMPublisherRestClient appmPublisherRestClient;
-    private String appName = "WebAppPublishTestCase";
+    private String appName = "RecycleWebAppTestCase";
     private String appVersion = "1.0.0";
     private String context = "/" + appName;
     private String trackingCode = "AM_" + appName;
     private String backEndUrl;
-    private User appPublishingUser;
+    private String appCreatorUserName;
+    private String appCreatorPassword;
     private String uuid;
 
 
@@ -51,47 +53,56 @@ public class WebAppPublishTestCase {
                                                              TestUserMode.SUPER_TENANT_ADMIN);
         backEndUrl = appMServer.getContextUrls().getWebAppURLHttps();
         appmPublisherRestClient = new APPMPublisherRestClient(backEndUrl);
-        User appCreator = appMServer.getSuperTenant().getTenantUser("AdminUser");
+        User appCreator = appMServer.getSuperTenant().getTenantUser("AppCreator");
+        appCreatorUserName = appCreator.getUserName();
+        appCreatorPassword = appCreator.getPassword();
         appmPublisherRestClient.login(appCreator.getUserName(), appCreator.getPassword());
+
+        // Web app is created by AppCreator user.
         HttpResponse appCreateResponse = appmPublisherRestClient.webAppCreate(appName, context,
                                                                               appVersion,
-                                                                              trackingCode);
+                                                                              trackingCode,
+                                                                              appCreatorUserName);
         JSONObject appCreateResponseData = new JSONObject(appCreateResponse.getData());
         uuid = appCreateResponseData.getString(AppmTestConstants.ID);
+        appmPublisherRestClient.changeState(uuid,
+                                            AppmTestConstants.LifeCycleStatus.SUBMIT_FOR_REVIEW);
+        appmPublisherRestClient.logout();
 
+        User appPublisher = appMServer.getSuperTenant().getTenantUser("AppPublisher");
+        appmPublisherRestClient.login(appPublisher.getUserName(), appPublisher.getPassword());
 
+        // Approving and publishing the web app.
+        appmPublisherRestClient.approveAndPublishWebApp(uuid);
+
+        // Unpublishing the app.
+        appmPublisherRestClient.changeState(uuid,
+                                            AppmTestConstants.LifeCycleStatus.UNPUBLISH);
     }
 
     @Test(description = TEST_DESCRIPTION)
-    public void testPublisherCreateWebApp() throws Exception {
-        HttpResponse submitHttpResponse = appmPublisherRestClient.changeState(uuid,
-                                                                              "Submit for Review");
-        int submitHttpResponseCode = submitHttpResponse.getResponseCode();
-        assertTrue(submitHttpResponseCode == 200,
-                   submitHttpResponseCode + " status code received.");
-        JSONObject submittedResponseData = new JSONObject(submitHttpResponse.getData());
-        assertEquals(submittedResponseData.getString(AppmTestConstants.STATUS), "Success",
-                     "Asset has not submitted for review successfully");
+    public void testRecycleWebApp() throws Exception {
+        //Recycle the app.
+        HttpResponse httpResponse =
+               appmPublisherRestClient.changeState(uuid, AppmTestConstants.LifeCycleStatus.RECYCLE);
 
-        HttpResponse approvedHttpResponse = appmPublisherRestClient.changeState(uuid, "Approve");
-        int approvedHttpResponseCode = approvedHttpResponse.getResponseCode();
-        assertTrue(approvedHttpResponseCode == 200,
-                   approvedHttpResponseCode + " status code received.");
-        JSONObject approvedResponseData = new JSONObject(approvedHttpResponse.getData());
-        assertEquals(approvedResponseData.getString(AppmTestConstants.STATUS), "Success",
-                     "Asset has not approved");
-
-        HttpResponse publishedHttpResponse = appmPublisherRestClient.changeState(uuid, "Publish");
-        int publishedHttpResponseCode = publishedHttpResponse.getResponseCode();
-        assertTrue(publishedHttpResponseCode == 200,
-                   publishedHttpResponseCode + " status code received.");
-        JSONObject publishedResponseData = new JSONObject(publishedHttpResponse.getData());
-        assertEquals(publishedResponseData.getString(AppmTestConstants.STATUS), "Success",
-                     "Asset has not published");
+        int httpResponseCode = httpResponse.getResponseCode();
+        assertTrue(httpResponseCode == 200, httpResponseCode + " status code received.");
+        JSONObject responseData = new JSONObject(httpResponse.getData());
+        assertEquals(responseData.getString(AppmTestConstants.STATUS), "Success",
+                     "Asset has not recycled successfully.");
     }
-
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
         appmPublisherRestClient.logout();
+
+        // Deleted the web app by AppCreator.
+        appmPublisherRestClient.login(appCreatorUserName, appCreatorPassword);
+        HttpResponse response = appmPublisherRestClient.deleteApp(uuid);
+        VerificationUtil.checkDeleteResponse(response);
+        appmPublisherRestClient.logout();
     }
 }
+
+
+

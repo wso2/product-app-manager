@@ -18,8 +18,6 @@
             <class name="org.wso2.appmanager.integration.test.cases.StoreLoginTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.PublisherLogoutTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.StoreLogoutTestCase"/>
-            <class name="org.wso2.appmanager.integration.test.cases.PublisherCreateWebAppTestCase"/>
-            <class name="org.wso2.appmanager.integration.test.cases.WebAppPublishTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.WebAppSubscribeTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.RetrieveAppPropertyTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.RatingTestCase"/>
@@ -31,6 +29,17 @@
             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInUnPublishedStatusTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInDeprecatedStatusTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInRetiredStatusTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ApproveWebAppTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.CreateWebAppTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.DeprecateWebAppTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.PublishWebAppTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.RecycleWebAppTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.RejectWebAppTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.RepublishWebAppTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.RetireWebAppTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.UnpublishWebAppTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.WebAppSubmitForReviewTestCase"/>
+
         </classes>
     </test>
 
