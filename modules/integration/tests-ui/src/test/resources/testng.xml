@@ -22,7 +22,7 @@
             <class name="org.wso2.appmanager.ui.integration.test.cases.DeploySampleWebAppInitially" />
 
             <!-- Need to maintain the order of below 3 classes to make sure the accuracy as un deleted apps in subsequent classes can break the functionality -->
-            <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherSearchWebAppTestCase" />
+   <!--     <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherSearchWebAppTestCase" />
             <class name="org.wso2.appmanager.ui.integration.test.cases.store.webapp.StoreSearchWebAppTestCase" />
             <class name="org.wso2.appmanager.ui.integration.test.cases.PublisherPaginationTestCase" />
 
@@ -50,7 +50,7 @@
             <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.delete.DeleteWebappInPublishedStateTestCase" />
             <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.delete.DeleteWebAppInDeprecatedStatusTestCase" />
             <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.delete.DeleteWebAppInRetiredStateTestCase" />
-            <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.delete.DeleteWebAppInUnpublishedStateTestCase" />
+            <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.delete.DeleteWebAppInUnpublishedStateTestCase" />-->
 
         </classes>
 
