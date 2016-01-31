@@ -93,4 +93,10 @@ public class AppmTestConstants {
         public static final String RECYCLE = "Recycle";
         public static final String REJECT = "Reject";
     }
+
+    public class TestUsers {
+        public static final String APP_CREATOR = "AppCreator";
+        public static final String ADMIN = "AdminUser";
+        public static final String APP_PUBLISHER = "AppPublisher";
+    }
 }

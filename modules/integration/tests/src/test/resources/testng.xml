@@ -31,6 +31,14 @@
             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInUnPublishedStatusTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInDeprecatedStatusTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInRetiredStatusTestCase"/>
+
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.delete.DeleteWebAppInApprovedStateTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.delete.DeleteWebAppInCreatedStateTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.delete.DeleteWebAppInDeprecatedStateTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.delete.DeleteWebAppInPublishedStateTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.delete.DeleteWebAppInRetiredStateTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.delete.DeleteWebAppInReviewStateTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.delete.DeleteWebAppInUnpublishedStateTestCase"/>
         </classes>
     </test>
 
