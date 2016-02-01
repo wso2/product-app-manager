@@ -1,0 +1,56 @@
+<%
+include('/extensions/assets/webapp/modules/jagg/jagg.jag');
+var storeHostObj = jagg.module("manager").getAPIStoreObj();
+
+(function () {
+    var mapper,
+            config = require('/config/store.js').config(),
+            mod = require('/modules/store.js'),
+            file = require('/modules/file.js'),
+            matcher = new URIMatcher(request.getRequestURI()),
+            server = require('store').server,
+            tenant = server.tenant(request, session),
+            configs = mod.configs(tenant.tenantId);
+            mapper = function (path) {
+        return function () {
+            return path;
+        };
+    };
+    var action = request.getParameter("action");
+    var log = new Log('subscriptions_extension : ');
+
+    if (jagg.getUser() == null) {
+        print({
+            error: true,
+            message: 'Authenticate error. Please login to the system.'
+        });
+    } else {
+
+        var endPoint = 'subscriptions_extension/{action}/{user}';
+        var tenantedPageEndpoint = '/{context}/t/{domain}' + endPoint;
+        var normalPageEndpoint = '/{context}/' + endPoint;
+
+        // get method to get the given user subscription details
+        if (matcher.match(normalPageEndpoint) || matcher.match(tenantedPageEndpoint)) {
+            var elements = matcher.elements();
+            var user = elements.user;
+            try {
+                var subscriptions = storeHostObj.getSubscriptionsByUser(user);
+                print({
+                    error: false, subscriptions: subscriptions
+                });
+            } catch (e) {
+                print({
+                    error: true,
+                    message: e.message
+                });
+            }
+        } else {
+            print({
+                error: true,
+                //message:msg.error.invalidAction(action)
+            });
+        }
+    }
+}());
+%>
