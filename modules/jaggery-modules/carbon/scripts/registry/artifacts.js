@@ -248,7 +248,11 @@
     }
 
     ArtifactManager.prototype.get = function (id) {
-        return buildArtifact(this, this.manager.getGenericArtifact(id))
+        var artifact = this.manager.getGenericArtifact(id);
+        if (artifact) {
+            return buildArtifact(this,artifact);
+        }
+        return null;
     };
 
     ArtifactManager.prototype.count = function () {
