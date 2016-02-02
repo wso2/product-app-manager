@@ -1,0 +1,6 @@
+<module name="appstoreextension" namespace="ns" expose="true" xmlns="http://wso2.org/projects/jaggery/module.xml">
+    <hostObject>
+        <className>org.wso2.carbon.appmgt.hostobjects.AppStoreExtensionHostObject</className>
+        <name>AppStoreExtension</name>
+    </hostObject>
+</module>
