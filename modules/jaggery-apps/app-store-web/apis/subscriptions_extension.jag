@@ -1,6 +1,6 @@
 <%
-include('/extensions/assets/webapp/modules/jagg/jagg.jag');
-var storeHostObj = jagg.module("manager").getAPIStoreObj();
+include('/jagg/jagg.jag');
+var storeHostObj = jagg.module("manager").getAppStoreExtensionObj();
 
 (function () {
     var mapper,
@@ -11,12 +11,12 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
             server = require('store').server,
             tenant = server.tenant(request, session),
             configs = mod.configs(tenant.tenantId);
-            mapper = function (path) {
+    mapper = function (path) {
         return function () {
             return path;
         };
     };
-    var action = request.getParameter("action");
+    var method = request.getMethod();
     var log = new Log('subscriptions_extension : ');
 
     if (jagg.getUser() == null) {
@@ -26,29 +26,37 @@ var storeHostObj = jagg.module("manager").getAPIStoreObj();
         });
     } else {
 
-        var endPoint = 'subscriptions_extension/{action}/{user}';
+        var endPoint = 'subscriptionsExtension/{action}/{user}';
         var tenantedPageEndpoint = '/{context}/t/{domain}' + endPoint;
         var normalPageEndpoint = '/{context}/' + endPoint;
 
-        // get method to get the given user subscription details
         if (matcher.match(normalPageEndpoint) || matcher.match(tenantedPageEndpoint)) {
             var elements = matcher.elements();
             var user = elements.user;
-            try {
-                var subscriptions = storeHostObj.getSubscriptionsByUser(user);
-                print({
-                    error: false, subscriptions: subscriptions
-                });
-            } catch (e) {
-                print({
-                    error: true,
-                    message: e.message
-                });
+            var action = elements.action;
+
+            if (method = 'GET') {
+                // get method to get the given user subscription details
+                // sample usage
+                // curl -b cookies -X GET http://localhost:9763/store/subscriptionsExtension/userSubscriptions/<username>
+                if (action == 'userSubscriptions') {
+                    try {
+                        var subscriptions = storeHostObj.getSubscriptionsByUser(user);
+                        print({
+                            error: false, subscriptions: subscriptions
+                        });
+                    } catch (e) {
+                        print({
+                            error: true,
+                            message: e.message
+                        });
+                    }
+                }
             }
         } else {
             print({
                 error: true,
-                //message:msg.error.invalidAction(action)
+                message: 'Requested API is not found'
             });
         }
     }

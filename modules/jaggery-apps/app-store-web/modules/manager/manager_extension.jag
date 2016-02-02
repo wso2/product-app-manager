@@ -1,0 +1,18 @@
+<%
+
+var getAppStoreExtensionObj = function () {
+
+    var tenantDomain = request.getParameter("tenant");
+    var user = jagg.getUser();
+    var store = require('appstoreextension');
+    if (user == null) {
+        var storeExtensionHostObj = new store.AppStoreExtension();
+        if (tenantDomain != null && tenantDomain != "") {
+            storeExtensionHostObj.loadRegistryOfTenant(tenantDomain);
+        }
+        return storeExtensionHostObj;
+    } else {
+        return new store.AppStoreExtension();
+    }
+};
+%>
