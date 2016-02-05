@@ -18,7 +18,7 @@
 
 #####################  Define the macros ######################
 
-#macro ( print_if_exist $field $default)
+#macro (print_if_exist $field $default)
     #if($field && $field !="")
         $field
     #else
@@ -26,7 +26,7 @@
     #end
 #end
 
-#macro ( print_list $list $default)
+#macro (print_list $list $default)
     #if($list && $list !="" && $list.size() > 0)
         #foreach($item in $list)
             $item #if( $foreach.hasNext ), #end
@@ -36,41 +36,41 @@
     #end
 #end
 
-#macro ( timeout $config)
-    #if( $config.get("actionSelect") == "neverTimeout" )
+#macro (timeout $config)
+    #if($config.get("actionSelect") == "neverTimeout")
         ## print nothing.
     #else
         <timeout>
-            <duration>#print_if_exist( $config.get("actionDuration") 30000)</duration>
-            <responseAction>#print_if_exist( $config.get("actionSelect") "fault")</responseAction>
+            <duration>#print_if_exist($config.get("actionDuration") 30000)</duration>
+            <responseAction>#print_if_exist($config.get("actionSelect") "fault")</responseAction>
         </timeout>
     #end
     <suspendOnFailure>
-        <errorCodes>#print_list( $config.get("suspendErrorCode") -1)</errorCodes>
-        <initialDuration>#print_if_exist( $config.get("suspendDuration") 0)</initialDuration>
-        <progressionFactor>#print_if_exist( $config.get("factor") 1.0)</progressionFactor>
-        <maximumDuration>#print_if_exist( $config.get("suspendMaxDuration") 0)</maximumDuration>
+        <errorCodes>#print_list($config.get("suspendErrorCode") -1)</errorCodes>
+        <initialDuration>#print_if_exist($config.get("suspendDuration") 0)</initialDuration>
+        <progressionFactor>#print_if_exist($config.get("factor") 1.0)</progressionFactor>
+        <maximumDuration>#print_if_exist($config.get("suspendMaxDuration") 0)</maximumDuration>
     </suspendOnFailure>
     <markForSuspension>
-        <errorCodes>#print_list( $config.get("retryErroCode") -1)</errorCodes>
-        <retriesBeforeSuspension>#print_if_exist( $config.get("retryTimeOut") 0)</retriesBeforeSuspension>
-        <retryDelay>#print_if_exist( $config.get("retryDelay") 0)</retryDelay>
+        <errorCodes>#print_list($config.get("retryErroCode") -1)</errorCodes>
+        <retriesBeforeSuspension>#print_if_exist($config.get("retryTimeOut") 0)</retriesBeforeSuspension>
+        <retryDelay>#print_if_exist($config.get("retryDelay") 0)</retryDelay>
     </markForSuspension>   
 #end
 
-#macro ( http_endpoint $name $ep )
+#macro (http_endpoint $name $ep)
     <endpoint name="$name">
         <http uri-template="$util.escapeXml($ep.get("url"))">
-        #timeout( $ep.get('config') )
+        #timeout($ep.get('config'))
         </http>
     </endpoint>
 #end
 
-#macro ( draw_endpoint $type $endpoint_config )
+#macro (draw_endpoint $type $endpoint_config)
 
-    #set( $endpointClass = $endpoint_config.get("endpoint_type") )
-    #set( $endpoints = $endpoint_config.get("${type}_endpoints"))
-    #set( $ep_name = "${apiName}_API${type}Endpoint_${resourceNo}")
+    #set($endpointClass = $endpoint_config.get("endpoint_type"))
+    #set($endpoints = $endpoint_config.get("${type}_endpoints"))
+    #set($ep_name = "${apiName}_API${type}Endpoint_${resourceNo}")
 
     ## IF endpoint secured
     #if($isEndpointSecured)
@@ -96,7 +96,7 @@
             #http_endpoint($ep_name $endpoints)
         #elseif ($endpointClass == "address")
             <endpoint xmlns="http://ws.apache.org/ns/synapse" name="$ep_name">
-                #set( $advance_ep = $endpoints.get("config") )
+                #set($advance_ep = $endpoints.get("config"))
                 <address uri="$util.escapeXml($endpoints.get("url"))"
                     #if($advance_ep.get("format") && ($advance_ep.get("format") != "") && ($advance_ep.get("format") != 'leave-as-is'))
                         format="$advance_ep.get("format")"
@@ -105,7 +105,7 @@
                     	optimize="$advance_ep.get("optimize")"
                     #end
                 >
-                  #timeout( $endpoints.get('config') )
+                  #timeout($endpoints.get('config'))
                 </address>
             </endpoint>
         #elseif ($endpointClass == "wsdl")
@@ -117,14 +117,14 @@
                 </wsdl>
             </endpoint>
         #elseif ($endpointClass == "failover")
-            #set( $failover_endpoints = $endpoint_config.get("${type}_failovers"))
+            #set($failover_endpoints = $endpoint_config.get("${type}_failovers"))
             <endpoint xmlns="http://ws.apache.org/ns/synapse" name="$ep_name">
             <failover>
                 #http_endpoint("${ep_name}_0" $endpoints)
                 #set( $i = 1)
                 #foreach($endpoint in $failover_endpoints)
                     #http_endpoint("${ep_name}_$i" $endpoint)
-                    #set( $i = $i + 1)
+                    #set($i = $i + 1)
                 #end
             </failover>
             </endpoint>
@@ -205,7 +205,7 @@
                         <property name="POST_TO_URI" value="true" scope="axis2"/>
                         ## define the filter based on following environment types
                         ## production only, sandbox only , hybrid
-                        #draw_endpoint( "production" $endpoint_config )
+                        #draw_endpoint("production" $endpoint_config)
                     </then>
                     <else>
                         <log level="custom">
