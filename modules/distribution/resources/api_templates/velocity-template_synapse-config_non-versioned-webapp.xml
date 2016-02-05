@@ -64,17 +64,17 @@
 					<!--synapse variables in 'uri-template' tags MUST begin with 'uri.var.'-->
 					<property name="uri.var.ip" expression="get-property('synapse.host.ip')"/>
 					#if($transport == "https")
-					    <property name="uri.var.portnum" expression="get-property('https.nio.port')"/>
+					    <property name="uri.var.port" expression="get-property('https.nio.port')"/>
 					#else
-					    <property name="uri.var.portnum" expression="get-property('http.nio.port')"/>
+					    <property name="uri.var.port" expression="get-property('http.nio.port')"/>
 					#end
 					<send>
 						<endpoint>
 							## change localhost to ip address
 							#if($transport == "https")
-							    <http uri-template="https://{uri.var.ip}:{uri.var.portnum}/$!{forwardAppContext}/${forwardAppVersion}">
+							    <http uri-template="https://{uri.var.ip}:{uri.var.port}/$!{forwardAppContext}/${forwardAppVersion}">
 							#else
-							    <http uri-template="http://{uri.var.ip}:{uri.var.portnum}/$!{forwardAppContext}/${forwardAppVersion}">
+							    <http uri-template="http://{uri.var.ip}:{uri.var.port}/$!{forwardAppContext}/${forwardAppVersion}">
 							#end
 								<timeout>
 									<duration>60000</duration>
