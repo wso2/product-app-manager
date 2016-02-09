@@ -131,7 +131,7 @@
                         <userName>appPublisher</userName>
                         <password>appPublisherPass</password>
                         <roles>
-                            <role>WebappPublishRole</role>
+                            <role>Internal/publisher</role>
                         </roles>
                     </user>
 
@@ -168,27 +168,6 @@
             <role name="AdminRole" key="AdminRole">
                 <permissions>
                     <permission>/permission/admin</permission>
-                </permissions>
-            </role>
-            <role name="WebAppcreateRole" key="WebAppcreateRole">
-                <permissions>
-                    <permission>/permission/admin/login</permission>
-                    <permission>/permission/admin/manage/webapp/create</permission>
-                    <permission>/permission/admin/manage/webapp/delete</permission>
-                    <permission>/permission/admin/manage/webapp/publish</permission>
-                    <permission>/permission/admin/manage/webapp/Update</permission>
-                </permissions>
-            </role>
-            <role name="WebappUpdateRole" key="WebappUpdateRole">
-                <permissions>
-                    <permission>/permission/admin/login</permission>
-                    <permission>/permission/admin/manage/webapp/update</permission>
-                </permissions>
-            </role>
-            <role name="WebappPublishRole" key="WebappPublishRole">
-                <permissions>
-                    <permission>/permission/admin/login</permission>
-                    <permission>/permission/admin/manage/webapp/publish</permission>
                 </permissions>
             </role>
             <role name="SubscribeRole" key="SubscribeRole">
