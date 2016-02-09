@@ -293,14 +293,7 @@ public class APPMPublisherRestClient {
                 HttpUtil.doPut(new URL(backEndUrl + "/publisher/api/lifecycle/"
                                        + encodedState + "/webapp/" + appId), "",
                                          requestHeaders);
-
-        if (response.getResponseCode() == 200) {
-            // if status != ok this will return an exception then test fail!
-            VerificationUtil.checkAppStateChange(response);
-            return response;
-        } else {
-            throw new Exception("Changing state failed> " + response.getData());
-        }
+        return response;
     }
 
     /**
