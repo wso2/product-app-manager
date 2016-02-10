@@ -154,7 +154,7 @@ public class APPMPublisherRestClient {
                 + "=[]&policyGroupDesc="
                 + policyDesc;
 
-        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
+        HttpResponse response = HttpUtil.doPost(new URL(backEndUrl
                                                        + AppmTestConstants.PubliserRestApis
                                                                                   .ADD_POLICY_GROUP),
                                                        payload, requestHeaders);
@@ -450,7 +450,7 @@ public class APPMPublisherRestClient {
         String payload = policyGroupRequest.generateRequestParameters();
         requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/x-www-form-urlencoded");
 
-        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
+        HttpResponse response = HttpUtil.doPost(new URL(backEndUrl
                         + AppmTestConstants.PubliserRestApis
                         .ADD_POLICY_GROUP),
                 payload, requestHeaders);

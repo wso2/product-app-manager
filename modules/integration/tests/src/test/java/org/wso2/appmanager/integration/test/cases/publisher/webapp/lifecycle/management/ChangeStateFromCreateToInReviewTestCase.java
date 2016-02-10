@@ -39,6 +39,10 @@ import java.util.List;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+/**
+ * This Test class verifies the ability of appCreator, appPublisher and admin users of changing web app life cycle
+ * state from 'In review' to 'Reject'
+ */
 public class ChangeStateFromCreateToInReviewTestCase {
     private static final String TEST_DESCRIPTION = "Verify Submitting a created web app for review";
     private APPMPublisherRestClient appmPublisherRestClient;
