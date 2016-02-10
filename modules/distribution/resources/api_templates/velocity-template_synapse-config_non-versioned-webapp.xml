@@ -1,5 +1,5 @@
 <!--
- ~ Copyright (c) 2005-2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ ~ Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  ~
  ~ WSO2 Inc. licenses this file to you under the Apache License,
  ~ Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,7 @@
  ~ under the License.
  -->
 
-<api xmlns="http://ws.apache.org/ns/synapse"
-	 name="$!apiName" context="$!apiContext" transports="$!transport">
+<api xmlns="http://ws.apache.org/ns/synapse" name="$!apiName" context="$!apiContext" transports="$!transport">
 
 	#foreach($resource in $resources)
 		<resource xmlns="http://ws.apache.org/ns/synapse"
@@ -30,8 +29,7 @@
 		methods="$resource.getMethodsAsString()" faultSequence="fault">
 
 		<inSequence>
-			<property name="noVersion"
-					  expression="get-property('transport', 'WSO2_APPM_INVOKED_WITHOUT_VERSION')"/>
+			<property name="noVersion" expression="get-property('transport', 'WSO2_APPM_INVOKED_WITHOUT_VERSION')"/>
 			<filter source="get-property('noVersion')" regex="true">
 				<then>
 					<log level="custom">
@@ -65,19 +63,19 @@
 					<header name="WSO2_APPM_INVOKED_WITHOUT_VERSION" scope="transport" value="true"/>
 					<!--synapse variables in 'uri-template' tags MUST begin with 'uri.var.'-->
 					<property name="uri.var.ip" expression="get-property('synapse.host.ip')"/>
-					#if( $transport == "https" )
-					<property name="uri.var.portnum" expression="get-property('https.nio.port')"/>
+					#if($transport == "https")
+					    <property name="uri.var.port" expression="get-property('https.nio.port')"/>
 					#else
-					<property name="uri.var.portnum" expression="get-property('http.nio.port')"/>
+					    <property name="uri.var.port" expression="get-property('http.nio.port')"/>
 					#end
 					<send>
 						<endpoint>
 							## change localhost to ip address
-							#if( $transport == "https" )
-							<http uri-template="https://{uri.var.ip}:{uri.var.portnum}/$!{forwardAppContext}/${forwardAppVersion}">
+							#if($transport == "https")
+							    <http uri-template="https://{uri.var.ip}:{uri.var.port}/$!{forwardAppContext}/${forwardAppVersion}">
 							#else
-							<http uri-template="http://{uri.var.ip}:{uri.var.portnum}/$!{forwardAppContext}/${forwardAppVersion}">
-								#end
+							    <http uri-template="http://{uri.var.ip}:{uri.var.port}/$!{forwardAppContext}/${forwardAppVersion}">
+							#end
 								<timeout>
 									<duration>60000</duration>
 									<responseAction>fault</responseAction>
