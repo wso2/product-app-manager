@@ -43,11 +43,11 @@ import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 /**
- * This Test class verifies the ability of appCreator, appPublisher and admin users of creating a new web app.
+ * Test case which verifies the ability of appCreator, appPublisher and admin users of creating a new WebApp.
  */
 public class CreateWebAppTestCase {
 
-    private static final String TEST_DESCRIPTION = "Verify Creating a Web App";
+    private static final String TEST_DESCRIPTION = "Verify Creating a WebApp";
     private AutomationContext appMServer = null;
     private APPMPublisherRestClient appmPublisherRestClient;
     private String appName = "CreateWebAppTestCase";
@@ -56,7 +56,7 @@ public class CreateWebAppTestCase {
     private String backEndUrl;
     private String adminUserName;
     private String adminPassword;
-    private List<String> appIdList = new ArrayList<String>(); //This list contains Ids of all the created web apps.
+    private List<String> appIdList = new ArrayList<String>(); //This list contains Ids of all the created WebApps.
 
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
@@ -82,15 +82,15 @@ public class CreateWebAppTestCase {
         JSONObject webAppAddedResponseData = new JSONObject(webAppAddedResponse.getData());
         //Test whether app is created successfully.
         assertEquals(webAppAddedResponseData.getString(AppmTestConstants.OK), "true", "Creating web application is " +
-                " not allowed for user : " + userName + " who has sufficient privileges to create web app.");
-        assertEquals(webAppAddedResponseData.getString(AppmTestConstants.MESSAGE), "asset added", "Creating web " +
-                "app is not allowed for user : " + userName + " who has sufficient privileges to create web app.");
+                " not allowed for user : " + userName + " who has sufficient privileges to create WebApp.");
+        assertEquals(webAppAddedResponseData.getString(AppmTestConstants.MESSAGE), "asset added", "Creating WebApp " +
+                "is not allowed for user : " + userName + " who has sufficient privileges to create WebApp.");
         String appId = webAppAddedResponseData.getString(AppmTestConstants.ID);
-        assertNotNull(appId, "user " + userName + " who has sufficient privileges to create web app, failed to create" +
-                " web app");
+        assertNotNull(appId, "user " + userName + " who has sufficient privileges to create WebApp, failed to create" +
+                " WebApp");
 
         addTagsAndRoles(publisherRestClient, webApp);
-        //Add a service provider to the created web app.
+        //Add a service provider to the created WebApp.
         HttpResponse ssoProviderAddedResponse = publisherRestClient.addSsoProvider(webApp);
         int responseCode = ssoProviderAddedResponse.getResponseCode();
         assertTrue(responseCode == 200, "Excepted status code is 200 for user :" + userName + ". But received status " +
@@ -112,9 +112,9 @@ public class CreateWebAppTestCase {
         //Logout from publisher by invalid user.
         publisherRestClient.logout();
         assertEquals(webAppAddedResponseData.getString(AppmTestConstants.OK), "false", "Creating web application is " +
-                "allowed for user : " + userName + " who has insufficient privileges to create web app.");
-        assertNotEquals(webAppAddedResponseData.getString(AppmTestConstants.MESSAGE), "asset added", "Creating web " +
-                "app is allowed for user : " + userName + " who has insufficient privileges to create web app.");
+                "allowed for user : " + userName + " who has insufficient privileges to create WebApp.");
+        assertNotEquals(webAppAddedResponseData.getString(AppmTestConstants.MESSAGE), "asset added", "Creating WebApp " +
+                "is allowed for user : " + userName + " who has insufficient privileges to create WebApp.");
     }
 
     @AfterClass(alwaysRun = true)

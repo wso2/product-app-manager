@@ -41,11 +41,11 @@ import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
 
 /**
- * This Test class verifies the ability of appCreator, appPublisher and admin users of changing web app life cycle state
+ * Test case which verifies the ability of appCreator, appPublisher and admin users of changing WebApp life cycle state
  * from 'Publish' to 'Unpublish'.
  */
 public class ChangeStateFromPublishToUnpublishTestCase {
-    private static final String TEST_DESCRIPTION = "Verify unpublishing a published web app";
+    private static final String TEST_DESCRIPTION = "Verify unpublishing a published WebApp";
     private static AutomationContext appMServer = null;
     private APPMPublisherRestClient appmPublisherRestClient;
     private String appName = "ChangeStateFromPublishToUnpublishTestCase";
@@ -70,7 +70,7 @@ public class ChangeStateFromPublishToUnpublishTestCase {
         // Login to publisher by admin.
         appmPublisherRestClient.login(adminUserName, adminPassword);
 
-        // Multiple web apps are created for multiple users.
+        // Multiple WebApps are created for multiple users.
         app1Uuid = createWebAppAndPublish("1");
         app2Uuid = createWebAppAndPublish("2");
         app3Uuid = createWebAppAndPublish("3");
@@ -89,7 +89,7 @@ public class ChangeStateFromPublishToUnpublishTestCase {
         int responseCode = httpResponse.getResponseCode();
         assertTrue(responseCode == 200, "Excepted status code is 200 for user :" + userName + ". But received status " +
                 "code is " + responseCode);
-        assertEquals(responseData.getString(AppmTestConstants.STATUS), "Success", "Changing web app life cycle state " +
+        assertEquals(responseData.getString(AppmTestConstants.STATUS), "Success", "Changing WebApp life cycle state " +
                 "from publish to unpublish failed for user : " + userName + " who has sufficient privileges to change" +
                 " life cycle status.");
     }
@@ -107,14 +107,14 @@ public class ChangeStateFromPublishToUnpublishTestCase {
         int responseCode = httpResponse.getResponseCode();
         assertTrue(responseCode == 401, "Excepted status code is 401 for user :" + userName + ". But received " +
                 "status code is " + responseCode);
-        assertEquals(responseData.getString(AppmTestConstants.STATUS), "Access Denied", "Changing web app life " +
+        assertEquals(responseData.getString(AppmTestConstants.STATUS), "Access Denied", "Changing WebApp life " +
                 "cycle state from publish to unpublish allowed for user : " + userName + " who has insufficient " +
                 "privileges to change life cycle status.");
     }
 
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
-        // Deleted created web app by admin.
+        // Deleted created WebApps by admin.
         appmPublisherRestClient.deleteApp(app1Uuid);
         appmPublisherRestClient.deleteApp(app2Uuid);
         appmPublisherRestClient.deleteApp(app3Uuid);
