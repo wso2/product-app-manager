@@ -71,7 +71,7 @@ public class ChangeStateFromApproveToPublishTestCase {
         // Login to publisher by admin.
         appmPublisherRestClient.login(adminUserName, adminPassword);
 
-        // Multiple WebApp are created and approved for multiple users.
+        // Multiple WebApps are created and approved for multiple users.
         app1Uuid = createWebAppAndApprove("1");
         app2Uuid = createWebAppAndApprove("2");
         app3Uuid = createWebAppAndApprove("3");
