@@ -40,15 +40,15 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 /**
- * This Test class verifies the ability of appCreator, appPublisher and admin users of changing web app life cycle
- * state from 'Approve' to 'Publish'
+ * This Test class verifies the ability of appCreator, appPublisher and admin users of changing web app life cycle state
+ * from 'Publish' to 'Deprecate'.
  */
-public class ChangeStateFromApproveToPublishTestCase {
+public class ChangeStateFromPublishToDeprecateTestCase {
 
-    private static final String TEST_DESCRIPTION = "Verify publishing an approved web app";
-    private static AutomationContext appMServer;
+    private static final String TEST_DESCRIPTION = "Verify deprecating a published web app";
+    private static AutomationContext appMServer = null;
     private APPMPublisherRestClient appmPublisherRestClient;
-    private String appName = "ChangeStateFromApproveToPublishTestCase";
+    private String appName = "ChangeStateFromPublishToDeprecateTestCase";
     private String appVersion = "1.0.0";
     private String context = "/" + appName;
     private String backEndUrl;
@@ -57,7 +57,6 @@ public class ChangeStateFromApproveToPublishTestCase {
     private String app1Uuid;
     private String app2Uuid;
     private String app3Uuid;
-
 
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
@@ -71,19 +70,19 @@ public class ChangeStateFromApproveToPublishTestCase {
         // Login to publisher by admin.
         appmPublisherRestClient.login(adminUserName, adminPassword);
 
-        // Multiple web apps are created and approved for multiple users.
-        app1Uuid = createWebAppAndApprove("1");
-        app2Uuid = createWebAppAndApprove("2");
-        app3Uuid = createWebAppAndApprove("3");
+        // Multiple web apps are created for multiple users.
+        app1Uuid = createWebAppAndPublish("1");
+        app2Uuid = createWebAppAndPublish("2");
+        app3Uuid = createWebAppAndPublish("3");
     }
 
     @Test(dataProvider = "validUserModeDataProvider", description = TEST_DESCRIPTION)
-    public void testChangeStateFromApproveToPublishWithValidUsers(String userName, String password, String uuid)
+    public void testChangeStateFromPublishToDeprecateWithValidUsers(String userName, String password, String uuid)
             throws Exception {
         APPMPublisherRestClient publisherRestClient = new APPMPublisherRestClient(backEndUrl);
-        // Login to publisher by a valid user.
+        // Login to publisher by valid user.
         publisherRestClient.login(userName, password);
-        HttpResponse httpResponse = publisherRestClient.changeState(uuid, AppmTestConstants.LifeCycleStatus.PUBLISH);
+        HttpResponse httpResponse = publisherRestClient.changeState(uuid, AppmTestConstants.LifeCycleStatus.DEPRECATE);
         JSONObject responseData = new JSONObject(httpResponse.getData());
         // Logout from publisher by valid user.
         publisherRestClient.logout();
@@ -91,17 +90,17 @@ public class ChangeStateFromApproveToPublishTestCase {
         assertTrue(responseCode == 200, "Excepted status code is 200 for user :" + userName + ". But received status " +
                 "code is " + responseCode);
         assertEquals(responseData.getString(AppmTestConstants.STATUS), "Success", "Changing web app life cycle state " +
-                "from approve to publish failed for user : " + userName + " who has sufficient privileges to change " +
-                "life cycle status.");
+                "from publish to deprecate failed for user : " + userName + " who has sufficient privileges to change" +
+                " life cycle status.");
     }
 
     @Test(dataProvider = "inValidUserModeDataProvider", description = TEST_DESCRIPTION)
-    public void testChangeStateFromApproveToPublishWithInValidUsers(String userName, String password, String
-            uuid) throws Exception {
+    public void testChangeStateFromPublishToDeprecateWithInValidUsers(String userName, String password, String uuid)
+            throws Exception {
         APPMPublisherRestClient publisherRestClient = new APPMPublisherRestClient(backEndUrl);
         // Login to publisher by invalid user.
         publisherRestClient.login(userName, password);
-        HttpResponse httpResponse = publisherRestClient.changeState(uuid, AppmTestConstants.LifeCycleStatus.PUBLISH);
+        HttpResponse httpResponse = publisherRestClient.changeState(uuid, AppmTestConstants.LifeCycleStatus.DEPRECATE);
         JSONObject responseData = new JSONObject(httpResponse.getData());
         // Logout from publisher by invalid user.
         publisherRestClient.logout();
@@ -109,8 +108,8 @@ public class ChangeStateFromApproveToPublishTestCase {
         assertTrue(responseCode == 401, "Excepted status code is 401 for user :" + userName + ". But received " +
                 "status code is " + responseCode);
         assertEquals(responseData.getString(AppmTestConstants.STATUS), "Access Denied", "Changing web app life cycle " +
-                "state from create to review allowed for user : " + userName + " who has insufficient privileges to " +
-                "change life cycle status.");
+                "state from publish to deprecate allowed for user : " + userName + " who has insufficient privileges " +
+                "to change life cycle status.");
     }
 
     @AfterClass(alwaysRun = true)
@@ -123,7 +122,7 @@ public class ChangeStateFromApproveToPublishTestCase {
         appmPublisherRestClient.logout();
     }
 
-    private String createWebAppAndApprove(String appPrefix) throws Exception {
+    private String createWebAppAndPublish(String appPrefix) throws Exception {
         PolicyGroup defaultPolicyGroup = WebAppUtil.createDefaultPolicy();
         HttpResponse response = appmPublisherRestClient.addPolicyGroup(defaultPolicyGroup);
         String policyId = WebAppUtil.getPolicyId(response);
@@ -132,8 +131,7 @@ public class ChangeStateFromApproveToPublishTestCase {
                                                      appVersion, "http://wso2.com/", webAppResources);
         appmPublisherRestClient.createWebApp(webApp);
         String appId = webApp.getAppId();
-        appmPublisherRestClient.changeState(appId, AppmTestConstants.LifeCycleStatus.SUBMIT_FOR_REVIEW);
-        appmPublisherRestClient.changeState(appId, AppmTestConstants.LifeCycleStatus.APPROVE);
+        appmPublisherRestClient.publishWebApp(appId);
         return appId;
     }
 
