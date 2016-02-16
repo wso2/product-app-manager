@@ -36,6 +36,8 @@ public class AppmTestConstants {
 
     public static final String MESSAGE = "message";
 
+    public static final String OK = "ok";
+
     public static final String PUBLISHED = "Published";
 
     public static final String RESPONSE = "response";
