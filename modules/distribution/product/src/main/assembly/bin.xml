@@ -146,17 +146,6 @@
                 <include>**/**</include>
             </includes>
         </fileSet-->
-        <fileSet>
-            <directory>../../jaggery-apps/shindig</directory>
-            <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/webapps/shindig</outputDirectory>
-            <!-- Changes related to Carbon kernel 4.2.0 patches -->
-            <includes>
-                <include>**/**</include>
-            </includes>
-            <!-- End - Changes related to Carbon kernel 4.2.0 patches -->
-        </fileSet>
-
-        <!-- IS JAGGERY APPS -->
 
         <fileSet>
             <directory>
@@ -528,12 +517,6 @@
             <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/scim-schema-extension.config
             </source>
             <outputDirectory>wso2appm-${pom.version}/repository/conf</outputDirectory>
-        </file>
-        <file>
-            <source>../../jaggery-apps/user-dashboard/sp_dashboard.xml</source>
-            <outputDirectory>wso2appm-${pom.version}/repository/conf/identity/service-providers/</outputDirectory>
-            <filtered>true</filtered>
-            <fileMode>644</fileMode>
         </file>
 
         <!-- END OF IS FILES -->

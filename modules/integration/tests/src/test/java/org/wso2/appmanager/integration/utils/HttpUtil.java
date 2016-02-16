@@ -22,7 +22,6 @@ import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -33,79 +32,31 @@ public class HttpUtil {
     /**
      * Send a PUT request.
      * @param endpoint Url.
-     * @param postBody String.
+     * @param putBody String.
      * @param headers Map<String, String>.
      * @return httpResponse HttpResponse.
-     * @throws Exception on errors.
+     * @throws IOException on errors.
      */
-    public static HttpResponse doPut(URL endpoint, String postBody,
-                                     Map<String, String> headers) throws Exception {
+    public static HttpResponse doPut(URL endpoint, String putBody, Map<String, String> headers) throws IOException {
         HttpURLConnection urlConnection = null;
+        OutputStream out = null;
+        Writer writer = null;
         try {
             urlConnection = (HttpURLConnection) endpoint.openConnection();
-            try {
-                urlConnection.setRequestMethod("PUT");
-            } catch (ProtocolException e) {
-                throw new Exception("Shouldn't happen: HttpURLConnection doesn't support PUT??",
-                                    e);
-            }
+            urlConnection.setRequestMethod("PUT");
             urlConnection.setDoOutput(true);
 
-            if (headers != null && headers.size() > 0) {
-                Iterator<String> itr = headers.keySet().iterator();
-                while (itr.hasNext()) {
-                    String key = itr.next();
-                    urlConnection.setRequestProperty(key, headers.get(key));
-                }
-            }
-            OutputStream out = urlConnection.getOutputStream();
-            try {
-                Writer writer = new OutputStreamWriter(out, "UTF-8");
-                writer.write(postBody);
-                writer.close();
-            } catch (IOException e) {
-                throw new Exception("IOException while puting data", e);
-            } finally {
-                if (out != null) {
-                    out.close();
-                }
-            }
+            setHeadersToRequest(urlConnection, headers);
 
-            // Get the response
-            StringBuilder sb = new StringBuilder();
-            BufferedReader rd = null;
-            try {
-                rd = new BufferedReader(new InputStreamReader(
-                        urlConnection.getInputStream()));
-                String line;
-                while ((line = rd.readLine()) != null) {
-                    sb.append(line);
-                }
-            } catch (FileNotFoundException ignored) {
-            } finally {
-                if (rd != null) {
-                    rd.close();
-                }
-            }
-            Iterator<String> itr = urlConnection.getHeaderFields().keySet()
-                    .iterator();
-            Map<String, String> responseHeaders = new HashMap();
-            while (itr.hasNext()) {
-                String key = itr.next();
-                if (key != null) {
-                    responseHeaders.put(key, urlConnection.getHeaderField(key));
-                }
-            }
-            return new HttpResponse(sb.toString(),
-                                    urlConnection.getResponseCode(), responseHeaders);
-
-        } catch (IOException e) {
-            throw new Exception("Connection error (is server running at "
-                                        + endpoint + " ?): " + e);
+            out = urlConnection.getOutputStream();
+            writer = new OutputStreamWriter(out, "UTF-8");
+            writer.write(putBody);
+            writer.close();
+            String response = readResponse(urlConnection);
+            Map<String, String> responseHeaders = readHeadersFromResponse(urlConnection);
+            return new HttpResponse(response, urlConnection.getResponseCode(), responseHeaders);
         } finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
+            closeAll(urlConnection, writer, out);
         }
     }
 
@@ -116,67 +67,23 @@ public class HttpUtil {
      * @return httpResponse HttpResponse.
      * @throws Exception on errors.
      */
-    public static HttpResponse doDelete(URL endpoint,
-                                        Map<String, String> headers) throws Exception {
+    public static HttpResponse doDelete(URL endpoint, Map<String, String> headers) throws IOException {
         HttpURLConnection urlConnection = null;
         try {
             urlConnection = (HttpURLConnection) endpoint.openConnection();
-            try {
-                urlConnection.setRequestMethod("DELETE");
-            } catch (ProtocolException e) {
-                throw new Exception(
-                        "Shouldn't happen: HttpURLConnection doesn't support Delete??",
-                        e);
-            }
+            urlConnection.setRequestMethod("DELETE");
             urlConnection.setDoOutput(true);
             urlConnection.setDoInput(true);
             urlConnection.setUseCaches(false);
             urlConnection.setAllowUserInteraction(false);
 
             // setting headers
-            if (headers != null && headers.size() > 0) {
-                Iterator<String> itr = headers.keySet().iterator();
-                while (itr.hasNext()) {
-                    String key = itr.next();
-                    urlConnection.setRequestProperty(key, headers.get(key));
-                }
-            }
-
-            // Get the response
-            StringBuilder sb = new StringBuilder();
-            BufferedReader rd = null;
-            try {
-                rd = new BufferedReader(new InputStreamReader(
-                        urlConnection.getInputStream()));
-                String line;
-                while ((line = rd.readLine()) != null) {
-                    sb.append(line);
-                }
-            } catch (FileNotFoundException ignored) {
-            } finally {
-                if (rd != null) {
-                    rd.close();
-                }
-            }
-            Iterator<String> itr = urlConnection.getHeaderFields().keySet()
-                    .iterator();
-            Map<String, String> responseHeaders = new HashMap();
-            while (itr.hasNext()) {
-                String key = itr.next();
-                if (key != null) {
-                    responseHeaders.put(key, urlConnection.getHeaderField(key));
-                }
-            }
-            return new HttpResponse(sb.toString(),
-                                    urlConnection.getResponseCode(), responseHeaders);
-
-        } catch (IOException e) {
-            throw new Exception("Connection error (is server running at "
-                                        + endpoint + " ?): " + e);
+            setHeadersToRequest(urlConnection, headers);
+            String response = readResponse(urlConnection);
+            Map<String, String> responseHeaders = readHeadersFromResponse(urlConnection);
+            return new HttpResponse(response, urlConnection.getResponseCode(), responseHeaders);
         } finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
+            closeAll(urlConnection, null, null);
         }
     }
 
@@ -188,80 +95,31 @@ public class HttpUtil {
      * @return httpResponse HttpResponse.
      * @throws Exception on errors.
      */
-    public static HttpResponse doPost(URL endpoint, String postBody,
-                                      Map<String, String> headers) throws Exception {
+    public static HttpResponse doPost(URL endpoint, String postBody, Map<String, String> headers) throws IOException {
         HttpURLConnection urlConnection = null;
+        Writer writer = null;
+        OutputStream out = null;
         try {
             urlConnection = (HttpURLConnection) endpoint.openConnection();
-            try {
-                urlConnection.setRequestMethod("POST");
-            } catch (ProtocolException e) {
-                throw new Exception(
-                        "Shouldn't happen: HttpURLConnection doesn't support POST??",
-                        e);
-            }
+            urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
             urlConnection.setDoInput(true);
             urlConnection.setUseCaches(false);
             urlConnection.setAllowUserInteraction(false);
 
             // setting headers
-            if (headers != null && headers.size() > 0) {
-                Iterator<String> itr = headers.keySet().iterator();
-                while (itr.hasNext()) {
-                    String key = itr.next();
-                    urlConnection.setRequestProperty(key, headers.get(key));
-                }
-            }
+            setHeadersToRequest(urlConnection, headers);
 
-            OutputStream out = urlConnection.getOutputStream();
-            try {
-                Writer writer = new OutputStreamWriter(out, "UTF-8");
-                writer.write(postBody);
-                writer.close();
-            } catch (IOException e) {
-                throw new Exception("IOException while posting data", e);
-            } finally {
-                if (out != null) {
-                    out.close();
-                }
-            }
+            out = urlConnection.getOutputStream();
+            writer = new OutputStreamWriter(out, "UTF-8");
+            writer.write(postBody);
+            writer.close();
 
-            // Get the response
-            StringBuilder sb = new StringBuilder();
-            BufferedReader rd = null;
-            try {
-                rd = new BufferedReader(new InputStreamReader(
-                        urlConnection.getInputStream()));
-                String line;
-                while ((line = rd.readLine()) != null) {
-                    sb.append(line);
-                }
-            } catch (FileNotFoundException ignored) {
-            } finally {
-                if (rd != null) {
-                    rd.close();
-                }
-            }
-            Iterator<String> itr = urlConnection.getHeaderFields().keySet()
-                    .iterator();
-            Map<String, String> responseHeaders = new HashMap();
-            while (itr.hasNext()) {
-                String key = itr.next();
-                if (key != null) {
-                    responseHeaders.put(key, urlConnection.getHeaderField(key));
-                }
-            }
-            return new HttpResponse(sb.toString(),
-                                    urlConnection.getResponseCode(), responseHeaders);
-
-        } catch (IOException e) {
-            throw new Exception("Connection error (is server running at "
-                                        + endpoint + " ?): " + e);
+            String response = readResponse(urlConnection);
+            Map<String, String> responseHeaders = readHeadersFromResponse(urlConnection);
+            return new HttpResponse(response, urlConnection.getResponseCode(), responseHeaders);
         } finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
+            closeAll(urlConnection, writer, out);
         }
     }
 
@@ -272,57 +130,86 @@ public class HttpUtil {
      * @return httpResponse HttpResponse.
      * @throws IOException on errors.
      */
-    public static HttpResponse doGet(String endpoint,
-                                     Map<String, String> headers) throws IOException {
+    public static HttpResponse doGet(String endpoint, Map<String, String> headers) throws IOException {
+        HttpURLConnection conn = null;
         HttpResponse httpResponse;
-        if (endpoint.startsWith("http://")) {
+        try {
             URL url = new URL(endpoint);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setDoOutput(true);
             conn.setReadTimeout(30000);
 
             // setting headers
-            if (headers != null && headers.size() > 0) {
-                Iterator<String> itr = headers.keySet().iterator();
-                while (itr.hasNext()) {
-                    String key = itr.next();
-                    conn.setRequestProperty(key, headers.get(key));
-                }
-            }
+            setHeadersToRequest(conn, headers);
 
-            conn.connect();
-
-            // Get the response
-            StringBuilder sb = new StringBuilder();
-            BufferedReader rd = null;
-            try {
-                rd = new BufferedReader(new InputStreamReader(
-                        conn.getInputStream()));
-                String line;
-                while ((line = rd.readLine()) != null) {
-                    sb.append(line);
-                }
-                httpResponse = new HttpResponse(sb.toString(), conn.getResponseCode());
-                httpResponse.setResponseMessage(conn.getResponseMessage());
-
-            } catch (IOException ignored) {
-                rd = new BufferedReader(new InputStreamReader(
-                        conn.getErrorStream()));
-                String line;
-                while ((line = rd.readLine()) != null) {
-                    sb.append(line);
-                }
-                httpResponse = new HttpResponse(sb.toString(), conn.getResponseCode());
-                httpResponse.setResponseMessage(conn.getResponseMessage());
-            } finally {
-                if (rd != null) {
-                    rd.close();
-                }
-            }
+            String response = readResponse(conn);
+            httpResponse = new HttpResponse(response, conn.getResponseCode());
+            httpResponse.setResponseMessage(conn.getResponseMessage());
             return httpResponse;
+        } finally {
+            closeAll(conn, null, null);
         }
-        return null;
     }
 
+    private static void closeAll(HttpURLConnection urlConnection, Writer writer, OutputStream out) throws IOException {
+        if (urlConnection != null) {
+            urlConnection.disconnect();
+        }
+        if (out != null) {
+            out.close();
+        }
+        if (writer != null) {
+            writer.close();
+        }
+    }
+
+    private static void setHeadersToRequest(HttpURLConnection urlConnection, Map<String, String> headers) {
+        if (headers != null && headers.size() > 0) {
+            Iterator<String> itr = headers.keySet().iterator();
+            while (itr.hasNext()) {
+                String key = itr.next();
+                urlConnection.setRequestProperty(key, headers.get(key));
+            }
+        }
+    }
+
+    private static String readResponse(HttpURLConnection urlConnection) throws IOException {
+        InputStream in = null;
+        BufferedReader rd = null;
+        try {
+            StringBuilder sb = new StringBuilder();
+            int responseCode = urlConnection.getResponseCode();
+            if (responseCode / 100 == 2) { //For 20X response codes.
+                in = urlConnection.getInputStream();
+            } else {
+                in = urlConnection.getErrorStream();
+            }
+            rd = new BufferedReader(new InputStreamReader(in));
+            String line;
+            while ((line = rd.readLine()) != null) {
+                sb.append(line);
+            }
+            return sb.toString();
+        } finally {
+            if (rd != null) {
+                rd.close();
+            }
+            if (in != null) {
+                in.close();
+            }
+        }
+    }
+
+    private static Map<String, String> readHeadersFromResponse(HttpURLConnection urlConnection) {
+        Iterator<String> itr = urlConnection.getHeaderFields().keySet().iterator();
+        Map<String, String> responseHeaders = new HashMap();
+        while (itr.hasNext()) {
+            String key = itr.next();
+            if (key != null) {
+                responseHeaders.put(key, urlConnection.getHeaderField(key));
+            }
+        }
+        return responseHeaders;
+    }
 }

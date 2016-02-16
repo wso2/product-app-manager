@@ -154,7 +154,7 @@ public class APPMPublisherRestClient {
                 + "=[]&policyGroupDesc="
                 + policyDesc;
 
-        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
+        HttpResponse response = HttpUtil.doPost(new URL(backEndUrl
                                                        + AppmTestConstants.PubliserRestApis
                                                                                   .ADD_POLICY_GROUP),
                                                        payload, requestHeaders);
@@ -293,14 +293,7 @@ public class APPMPublisherRestClient {
                 HttpUtil.doPut(new URL(backEndUrl + "/publisher/api/lifecycle/"
                                        + encodedState + "/webapp/" + appId), "",
                                          requestHeaders);
-
-        if (response.getResponseCode() == 200) {
-            // if status != ok this will return an exception then test fail!
-            VerificationUtil.checkAppStateChange(response);
-            return response;
-        } else {
-            throw new Exception("Changing state failed> " + response.getData());
-        }
+        return response;
     }
 
     /**
@@ -457,7 +450,7 @@ public class APPMPublisherRestClient {
         String payload = policyGroupRequest.generateRequestParameters();
         requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/x-www-form-urlencoded");
 
-        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl
+        HttpResponse response = HttpUtil.doPost(new URL(backEndUrl
                         + AppmTestConstants.PubliserRestApis
                         .ADD_POLICY_GROUP),
                 payload, requestHeaders);
