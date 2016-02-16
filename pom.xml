@@ -457,14 +457,14 @@
 
 
     <properties>
-        <carbon.kernel.version>4.4.1</carbon.kernel.version>
-        <carbon.platform.version>4.4.1</carbon.platform.version>
+        <carbon.kernel.version>4.4.3</carbon.kernel.version>
+        <carbon.platform.version>4.4.3</carbon.platform.version>
 
         <!-- Integration Test Dependency versions -->
-	<carbon.automation.version>4.4.2</carbon.automation.version>
+	<carbon.automation.version>4.4.3</carbon.automation.version>
 	<carbon.automation.utils.version>4.4.2</carbon.automation.utils.version>
 	<selenium.version>2.41.0</selenium.version>
-	<jacoco.agent.version>0.7.4.201502262128</jacoco.agent.version>
+	<jacoco.agent.version>0.7.5.201505241946</jacoco.agent.version>
         <operadriver.version>0.8.1</operadriver.version>
 
         <carbon.appmgt.version>1.1.2-SNAPSHOT</carbon.appmgt.version>
