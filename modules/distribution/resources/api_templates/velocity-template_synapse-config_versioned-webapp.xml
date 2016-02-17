@@ -188,8 +188,6 @@
             <inSequence>
                 <property name="noVersion"
                           expression="get-property('transport', 'WSO2_APPM_INVOKED_WITHOUT_VERSION')"/>
-                <filter source="get-property('noVersion')" regex="true">
-                    <then>
                         ## check and set jwt
                         #if($jwtIsEnabled)
                             <class name="org.wso2.carbon.appmgt.gateway.mediators.TokenPasser"/>
@@ -202,40 +200,10 @@
                                 <implementation type="memory" maxSize="500"/>
                             </cache>
                         #end
-                        <property name="POST_TO_URI" value="true" scope="axis2"/>
+                        <property name="POST_TO_URI" value="false" scope="axis2"/>
                         ## define the filter based on following environment types
                         ## production only, sandbox only , hybrid
                         #draw_endpoint( "production" $endpoint_config )
-                    </then>
-                    <else>
-                        <log level="custom">
-                            <property name="STATUS"
-                                      value="Directly invoking an app version is forbidden."/>
-                        </log>
-                        <payloadFactory media-type="xml">
-                            <format>
-                                <am:fault xmlns:am="http://wso2.org/appmanager">
-                                    <am:code>403</am:code>
-                                    <am:type>Status report</am:type>
-                                    <am:message>Access Denied</am:message>
-                                    <am:description>
-                                        Directly invoking an app version is forbidden.
-                                    </am:description>
-                                </am:fault>
-                            </format>
-                            <args/>
-                        </payloadFactory>
-                        <property name="HTTP_SC" value="403" scope="axis2"/>
-                        <property name="RESPONSE" value="true"/>
-                        <header name="To" action="remove"/>
-                        <property name="NO_ENTITY_BODY" scope="axis2" action="remove"/>
-                        <property name="ContentType" scope="axis2" action="remove"/>
-                        <property name="Authorization" scope="transport" action="remove"/>
-                        <property name="Host" scope="transport" action="remove"/>
-                        <property name="Accept" scope="transport" action="remove"/>
-                        <send/>
-                    </else>
-                </filter>
             </inSequence>
             <outSequence>
                 ## check and set response caching
