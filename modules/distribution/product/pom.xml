@@ -94,6 +94,8 @@
                         </goals>
                         <configuration>
                             <tasks>
+                                <!-- Change identity DB defined in identity.xml to use WSO2AM_DB -->
+				<replace file="../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/identity/identity.xml" token="&lt;Name&gt;jdbc/WSO2CarbonDB&lt;/Name&gt;" value="&lt;Name&gt;jdbc/WSO2AM_DB&lt;/Name&gt;" />
                                 <property name="tempdir" value="target/docs-temp"/>
                                 <mkdir dir="${tempdir}"/>
                                 <unzip dest="${tempdir}">

@@ -508,18 +508,6 @@
             <outputDirectory>wso2appm-${pom.version}/repository/resources/identity/pages</outputDirectory>
             <fileMode>644</fileMode>
         </file>
-    <!--copy scim-consumer-config.xml-->
-    <file>
-            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/provisioning-config.xml</source>
-            <outputDirectory>wso2appm-${pom.version}/repository/conf</outputDirectory>
-        </file>
-        <file>
-            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/scim-schema-extension.config
-            </source>
-            <outputDirectory>wso2appm-${pom.version}/repository/conf</outputDirectory>
-        </file>
-
-        <!-- END OF IS FILES -->
 
 	    <file>
             <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/event-broker.xml</source>
@@ -561,11 +549,6 @@
             <destName>registry.xml</destName>
             <filtered>true</filtered>
             <fileMode>644</fileMode>
-        </file>
-        <file>
-            <source>src/main/conf/identity.xml</source>
-            <outputDirectory>wso2appm-${pom.version}/repository/conf</outputDirectory>
-            <destName>identity.xml</destName>
         </file>
 	<file>
             <source>src/main/conf/user-mgt.xml</source>
@@ -714,11 +697,6 @@
 	        <outputDirectory>wso2appm-${pom.version}/repository/conf/identity</outputDirectory>
             <fileMode>644</fileMode>
         </file>
-	    <file>
-            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/thrift-authentication.xml</source>
-            <outputDirectory>wso2appm-${pom.version}/repository/conf</outputDirectory>
-            <fileMode>644</fileMode>
-        </file>
         <!-- Carbon 4.4.0 <file>-->
             <!--<source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/components/features/org.wso2.carbon.stratos.common.server_2.3.0/conf/tenant-mgt.xml</source>-->
             <!--<outputDirectory>wso2appm-${pom.version}/repository/conf/</outputDirectory>-->
@@ -767,20 +745,6 @@
             <source>../../../webapps/travel-booking/travel-booking-1.0.war</source>
             <outputDirectory>wso2appm-${pom.version}/samples</outputDirectory>
             <destName>travel-booking-1.0.war</destName>
-        </file>
-        <file>
-            <source>
-                ../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/msg-mgt.properties
-            </source>
-            <outputDirectory>wso2appm-${pom.version}/repository/conf/</outputDirectory>
-            <fileMode>644</fileMode>
-        </file>
-        <file>
-            <source>
-                ../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/association-config.xml
-            </source>
-            <outputDirectory>wso2appm-${pom.version}/repository/conf/etc/</outputDirectory>
-            <fileMode>644</fileMode>
         </file>
         <file>
             <source>
