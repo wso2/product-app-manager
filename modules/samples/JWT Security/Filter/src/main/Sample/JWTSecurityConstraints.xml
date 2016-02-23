@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<JWTSecurityConstraints>
+
+    <SecurityConstraint>
+        <urlPattern>/admin.jsp</urlPattern>
+        <authConstraint>
+            <roleName>admin</roleName>
+            <roleName>admin2</roleName>
+        </authConstraint>
+    </SecurityConstraint>
+
+</JWTSecurityConstraints>
+

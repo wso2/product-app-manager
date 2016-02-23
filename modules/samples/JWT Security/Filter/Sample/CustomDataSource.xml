@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<JWTSecurityConstraints>
+
+    <SecurityConstraint>
+        <urlPattern>/humanResource.jsp</urlPattern>
+        <authConstraint>
+            <roleName>admin</roleName>
+            <roleName>HRManager</roleName>
+        </authConstraint>
+    </SecurityConstraint>
+
+    <SecurityConstraint>
+        <urlPattern>/admin.jsp</urlPattern>
+        <authConstraint>
+            <roleName>admin</roleName>
+        </authConstraint>
+    </SecurityConstraint>
+
+    <SecurityConstraint>
+        <urlPattern>/marketing.jsp</urlPattern>
+        <authConstraint>
+            <roleName>admin</roleName>
+            <roleName>Marketing</roleName>
+        </authConstraint>
+    </SecurityConstraint>
+
+</JWTSecurityConstraints>
