@@ -91,6 +91,6 @@ public class WebAppSubscribeTestCase {
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
         appmPublisherRestClient.logout();
-        appmStoreRestClient.logout();
+       // appmStoreRestClient.logout();
     }
 }
