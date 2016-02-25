@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
   ~
   ~ WSO2 Inc. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -48,43 +48,38 @@
     </div>
     <%}%>
 
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
-        <input id="username" name="username" type="text" class="form-control" tabindex="0"
-               placeholder="Username">
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
-        <input id="password" name="password" type="password" class="form-control"
-               placeholder="Password">
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
-        <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute
-            (request.getParameter("sessionDataKey"))%>'/>
-    </div>
+    <!-- Username -->
+        <div class="control-group">
+            <label class="control-label" for="username"><fmt:message key='username'/>:</label>
 
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" id="chkRemember" name="chkRemember"> Remember me on this computer
-            </label>
+        <div class="controls">
+                <input class="input-xlarge" type="text" id='username' name="username" size='30'/>
+            </div>
         </div>
-        <br>
 
-        <div class="form-actions">
+
+    <!--Password-->
+    <div class="control-group">
+        <label class="control-label" for="password"><fmt:message key='password'/>:</label>
+
+        <div class="controls">
+            <input type="password" id='password' name="password"  class="input-xlarge" size='30'/>
+            <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute
+            (request.getParameter("sessionDataKey"))%>'/>
+            <label class="checkbox" style="margin-top:10px"><input type="checkbox" id="chkRemember" name="chkRemember"><fmt:message key='remember.me'/></label>
+        </div>
+    </div>
+
+
+    <div class="form-actions">
 		<input type="submit" value='<fmt:message key='login'/>' class="btn btn-primary">
 		<%  if(request.getParameter("RelayState") != null && !request.getParameter("RelayState").equals("/publisher") ){ %>
 		<input type="button" value="Back to Store" class="btn btn-default" onclick="location.href='<%=request.getParameter("RelayState")%>';">
 		<% } %>
-    	</div>
     </div>
+    
 
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
 
-        <%if(request.getParameter("relyingParty").equals("wso2.my.dashboard")) { %>
-        <a id="registerLink" href="create-account.jsp?sessionDataKey=<%=Encode.forHtmlAttribute
-            (request.getParameter("sessionDataKey"))%>" class="font-large">Create an
-            account</a>
-        <%} %>
-    </div>
     <div class="clearfix"></div>
 </form>
 
