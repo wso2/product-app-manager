@@ -64,7 +64,7 @@ public class WebAppSubscribeTestCase {
     }
 
     @Test(description = TEST_DESCRIPTION)
-    public void testPublisherCreateWebApp() throws Exception {
+    public void testWebAppSubscriptionAndUnSubscription() throws Exception {
         SubscriptionRequest subscriptionRequest = new SubscriptionRequest(appName, appCreatedUser,
                                                                           appVersion);
 
@@ -91,6 +91,6 @@ public class WebAppSubscribeTestCase {
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
         appmPublisherRestClient.logout();
-       // appmStoreRestClient.logout();
+        appmStoreRestClient.logout();
     }
 }
