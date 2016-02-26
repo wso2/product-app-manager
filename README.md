@@ -1,9 +1,9 @@
-WSO2 Application Manager
+WSO2 App Manager
 ========================
 [![Build Status](https://wso2.org/jenkins/job/product-app-manager/badge/icon)](https://wso2.org/jenkins/job/product-app-manager)
 
-WSO2 Application Manager (AppM) is a powerful platform for creating, managing,
-consuming and monitoring web Applications. It combines tried and tested SOA best practices
+WSO2 App Manager (AppM) is a powerful platform for creating, managing,
+consuming and monitoring web/mobile Applications. It combines tried and tested SOA best practices
 with modern day Application provisioning, management principles, governing and security
 to solve a wide range of enterprise challenges associated with managing many number of
 applications (Mobile and Web).
@@ -12,7 +12,7 @@ applications (Mobile and Web).
     - Application publisher
     - Application store
     - Application gateway
-    - Connected Device Manager
+    - Mobile Device Manager
 
 Application Publisher allows Wab or Mobile application creators/publishers to easily
 create and publish Applications. The Applications can be managed with strong
@@ -24,7 +24,7 @@ through the Store. Web gateway is built in to the AppM so that the web calls are
 routed to the respective backend web application.
 
 
-WSO2 Application Manager is based on the revolutionary WSO2 Carbon [Middleware a' la carte]
+WSO2 App Manager is based on the revolutionary WSO2 Carbon [Middleware a' la carte]
 framework. All the major features have been developed as reusable Carbon
 components.
 
@@ -56,8 +56,8 @@ System Requirements
 3. Java SE Development Kit 1.7.0 or higher
 4. The Management Console requires you to enable Javascript on the Web browser,
    with MS IE 9 or above. This can be easily achieved by using the default settings of your browser.
-5. An Ant, which is a build tool, is required to compile and run the sample clients.
-   Ant version 1.7.0 is recommended.
+5. Maven, which is a build tool, is required to compile and run the sample clients.
+   Maven version 3.0 is recommended.
 6. To build WSO2 Application Manager from the Source distribution, it is necessary that
    you have JDK 1.7.x version and Maven 3.0.0 or later
 
@@ -77,7 +77,7 @@ Documentation
 ==============
 
 On-line product documentation is available at:
-    <https://docs.wso2.com/display/APPM100/WSO2+App+Manager+Documentation>
+    <https://docs.wso2.com/display/APPM110/WSO2+App+Manager+Documentation>
 
 Support
 ==================================
@@ -88,21 +88,21 @@ hours, to premium 24x7 phone support.
 
 For additional support information please refer to <http://wso2.com/support>
 
-For more information on WSO2 Application Manager please visit <http://wso2.com/products/app-manager>
+For more information on WSO2 App Manager please visit <http://wso2.com/products/app-manager>
 
-Known issues of WSO2 Application Manager
+Known issues of WSO2 App Manager
 ========================================
 
 All known issues of WSO2 Application Manager are filed at:
 
-    https://wso2.org/jira/secure/IssueNavigator.jspa?requestId=x
+<https://wso2.org/jira/issues/?jql=project%20%3D%20APPM>
 
 Issue Tracker
 ==================================
 
 Help us make our software better. Please submit any bug reports or feature
 requests through the WSO2 JIRA system:
-    <https://wso2.org/jira/browse/APPM>
+<https://wso2.org/jira/browse/APPM>
 
 
 Crypto Notice
@@ -130,11 +130,11 @@ Crypto Notice
    The following provides more details on the included cryptographic
    software:
 
-   Apache Rampart   : <http://ws.apache.org/rampart/>
-   Apache WSS4J     : <http://ws.apache.org/wss4j/>
-   Apache Santuario : <http://santuario.apache.org/>
-   Bouncycastle     : <http://www.bouncycastle.org/>
+   * Apache Rampart   : <http://ws.apache.org/rampart/>
+   * Apache WSS4J     : <http://ws.apache.org/wss4j/>
+   * Apache Santuario : <http://santuario.apache.org/>
+   * Bouncycastle     : <http://www.bouncycastle.org/>
 
 --------------------------------------------------------------------------------
-(c) Copyright 2015 WSO2 Inc.
+(c) Copyright 2016 WSO2 Inc.
 
