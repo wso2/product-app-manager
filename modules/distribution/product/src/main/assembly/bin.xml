@@ -108,10 +108,6 @@
             <includes>
                 <include>**/**.sql</include>
             </includes>
-	    <excludes>
-                <exclude>**/application-mgt/oracle.sql</exclude>
-		<exclude>**/application-mgt/oracle_rac.sql</exclude>
-	    </excludes>
         </fileSet>
 	<fileSet>
             <directory>
@@ -149,7 +145,7 @@
 
         <fileSet>
             <directory>
-                ../resources/sql/appmgt/
+                ../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/dbscripts/appmgt/
             </directory>
             <outputDirectory>wso2appm-${pom.version}/dbscripts/appmgt</outputDirectory>
             <includes>
@@ -157,22 +153,6 @@
             </includes>
         </fileSet>
 
-	<!-- Include identity/application-mgt oracle script. This should move to take from identity feature from next release.-->
-	<fileSet>
-            <directory>
-                ../resources/sql/identity/application-mgt/
-            </directory>
-            <outputDirectory>wso2appm-${pom.version}/dbscripts/identity/application-mgt/</outputDirectory>
-            <includes>
-                <include>**/**.sql</include>
-            </includes>
-        </fileSet> 
-	<fileSet>
-            <directory>../../p2-profile-gen/target/WSO2-CARBON-PATCH-${carbon.version}-0001/dbscripts</directory>
-            <outputDirectory>wso2appm-${pom.version}/dbscripts</outputDirectory>
-        </fileSet>
-
-	
         <fileSet>
             <directory>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/deployment/server/jaggeryapps/workflow-admin/</directory>
             <outputDirectory>wso2appm-${pom.version}/repository/deployment/server/jaggeryapps/workflow-admin</outputDirectory>

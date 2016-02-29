@@ -191,7 +191,7 @@
                                     <classpath>
                                         <path refid="h2.classpath"/>
                                     </classpath>
-                                    <fileset file="${basedir}/../resources/sql/h2.sql"/>
+                                    <fileset file="${basedir}/../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/dbscripts/appmgt/h2.sql"/>
                                 </sql>
                                 <sql
                                         driver="org.h2.Driver"
