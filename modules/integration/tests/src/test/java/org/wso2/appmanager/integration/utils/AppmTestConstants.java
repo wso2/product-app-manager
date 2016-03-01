@@ -70,7 +70,7 @@ public class AppmTestConstants {
 
     public class StoreRestApis {
         public static final String LOGIN_URL = "/store/apis/user/login";
-        public static final String LOGOUT_URL = "/store/logout";
+        public static final String LOGOUT_URL = "/store/apis/user/logout";
         public static final String SUBSCRIBE_FOR_APPS = "/store/resources/webapp/v1/subscription/app";
         public static final String UNSUBSCRIBE_FOR_APPS = "/store/resources/webapp/v1/unsubscription/app";
 

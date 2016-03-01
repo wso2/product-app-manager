@@ -18,6 +18,7 @@
 package org.wso2.appmanager.integration.test.cases;
 
 import org.json.JSONObject;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -63,7 +64,9 @@ public class StoreLogoutTestCase {
     public void StoreLogoutTestCase() throws Exception {
         HttpResponse storeLogoutResponse = appmStoreRestClient.logout();
         int responseCode = storeLogoutResponse.getResponseCode();
+        JSONObject payload = new JSONObject(storeLogoutResponse.getData());
         assertTrue(responseCode == 200, responseCode + " status code received.");
+        assertTrue(!(Boolean) payload.get("error"), "Error when try to logout form store.");
     }
 
     @AfterClass(alwaysRun = true)
