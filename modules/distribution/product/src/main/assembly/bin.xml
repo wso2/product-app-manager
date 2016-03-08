@@ -250,8 +250,7 @@
              </includes>
             <excludes>
                 <exclude>**/PizzaShack/**</exclude>
-                <exclude>**/TwitterSearch/**</exclude>
-                <exclude>**/YahooPlaceFinder/**</exclude>
+                <exclude>**/webapps/**</exclude>
             </excludes>
         </fileSet>
 	<fileSet>
@@ -717,12 +716,12 @@
 
 	<!-- Copy Sample web-apps -->
 	<file>
-            <source>../../../webapps/plan-your-trip/plan-your-trip-1.0.war</source>
+            <source>../../samples/webapps/plan-your-trip/target/plan-your-trip-1.0.war</source>
             <outputDirectory>wso2appm-${pom.version}/samples</outputDirectory>
             <destName>plan-your-trip-1.0.war</destName>
         </file>
 	<file>
-            <source>../../../webapps/travel-booking/travel-booking-1.0.war</source>
+            <source>../../samples/webapps/travel-booking/target/travel-booking-1.0.war</source>
             <outputDirectory>wso2appm-${pom.version}/samples</outputDirectory>
             <destName>travel-booking-1.0.war</destName>
         </file>

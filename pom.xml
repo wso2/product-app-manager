@@ -59,6 +59,8 @@
         <!--<module>/modules/distribution/product/src/main/statistics</module>
         <module>modules/jaggery-apps/api-provider-web</module>
         <module>modules/jaggery-apps/api-store-web</module-->
+        <module>modules/samples/webapps/travel-booking</module>
+        <module>modules/samples/webapps/plan-your-trip</module>
         <module>modules/distribution</module>
         <module>modules/integration</module>
     </modules>
