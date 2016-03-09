@@ -171,12 +171,6 @@
         <div id="local_auth_div" class="container main-login-container" style="margin-top:10px;">
             <%} %>
 
-            <% if ("true".equals(loginFailed)) { %>
-            <div class="alert alert-error">
-                <%=errorMessage%>
-            </div>
-            <% } %>
-
             <form action="../../commonauth" method="post" id="loginForm" class="form-horizontal" >
                         <%
                     if(localAuthenticatorNames.size()>0) {
