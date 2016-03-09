@@ -37,7 +37,6 @@ import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
 
 /**
@@ -75,8 +74,8 @@ public class ChangeStateFromPublishToUnpublishTestCase {
         app2Uuid = createWebAppAndPublish("2");
         app3Uuid = createWebAppAndPublish("3");
     }
-
-    @Test(dataProvider = "validUserModeDataProvider", description = TEST_DESCRIPTION)
+    
+    //@Test(dataProvider = "validUserModeDataProvider", description = TEST_DESCRIPTION)
     public void testChangeStateFromPublishToUnpublishWithValidUsers(String userName, String password, String uuid)
             throws Exception {
         APPMPublisherRestClient publisherRestClient = new APPMPublisherRestClient(backEndUrl);
