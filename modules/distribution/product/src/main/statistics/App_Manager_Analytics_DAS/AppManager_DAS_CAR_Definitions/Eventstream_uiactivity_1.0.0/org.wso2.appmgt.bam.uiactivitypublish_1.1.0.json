@@ -1,0 +1,44 @@
+{
+  "name": "org.wso2.appmgt.bam.uiactivitypublish",
+  "version": "1.1.0",
+  "nickName": "AppManager User Activity",
+  "description": "This stream will store user activity",
+  "payloadData": [
+    {
+      "name": "appId",
+      "type": "STRING"
+    },
+    {
+      "name": "userId",
+      "type": "STRING"
+    },
+    {
+      "name": "item",
+      "type": "STRING"
+    },
+    {
+      "name": "action",
+      "type": "STRING"
+    },
+    {
+      "name": "timestamp",
+      "type": "LONG"
+    },
+    {
+      "name": "tenantId",
+      "type": "INT"
+    },
+    {
+      "name": "appName",
+      "type": "STRING"
+    },
+    {
+      "name": "appVersion",
+      "type": "STRING"
+    },
+    {
+      "name": "context",
+      "type": "STRING"
+    }
+  ]
+}

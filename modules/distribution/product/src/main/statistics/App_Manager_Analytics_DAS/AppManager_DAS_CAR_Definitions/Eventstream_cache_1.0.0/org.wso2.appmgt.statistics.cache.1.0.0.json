@@ -1,0 +1,82 @@
+{
+  "name": "org.wso2.appmgt.statistics.cache",
+  "version": "1.0.0",
+  "nickName": "App Manager SAML Cache Data",
+  "description": "SAML Token Cache Hit and Miss Data",
+  "metaData": [
+    {
+      "name": "clientType",
+      "type": "STRING"
+    }
+  ],
+  "payloadData": [
+    {
+      "name": "context",
+      "type": "STRING"
+    },
+    {
+      "name": "api_version",
+      "type": "STRING"
+    },
+    {
+      "name": "api",
+      "type": "STRING"
+    },
+    {
+      "name": "fullRequestPath",
+      "type": "STRING"
+    },
+    {
+      "name": "version",
+      "type": "STRING"
+    },
+    {
+      "name": "request",
+      "type": "INT"
+    },
+    {
+      "name": "cacheHit",
+      "type": "INT"
+    },
+    {
+      "name": "requestTime",
+      "type": "LONG"
+    },
+    {
+      "name": "userId",
+      "type": "STRING"
+    },
+    {
+      "name": "tenantDomain",
+      "type": "STRING"
+    },
+    {
+      "name": "hostName",
+      "type": "STRING"
+    },
+    {
+      "name": "apiPublisher",
+      "type": "STRING"
+    },
+    {
+      "name": "applicationName",
+      "type": "STRING"
+    },
+    {
+      "name": "applicationId",
+      "type": "STRING"
+    },
+    {
+      "name": "trackingCode",
+      "type": "STRING"
+    },
+    {
+      "name": "referer",
+      "type": "STRING"
+    },
+    {
+      "name": "responseTime",
+      "type": "LONG"
+    }
+  ]
+}
