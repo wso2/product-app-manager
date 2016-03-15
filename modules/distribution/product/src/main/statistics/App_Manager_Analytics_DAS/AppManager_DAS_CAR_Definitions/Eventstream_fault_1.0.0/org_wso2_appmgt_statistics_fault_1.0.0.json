@@ -1,0 +1,88 @@
+{
+  "streamId": "org.wso2.appmgt.statistics.fault:1.0.0",
+  "name": "org.wso2.appmgt.statistics.fault",
+  "version": "1.0.0",
+  "nickName": "WebApp Manager Fault Data",
+  "description": "Fault Data",
+  "metaData": [
+    {
+      "name": "clientType",
+      "type": "STRING"
+    }
+  ],
+  "correlationData": [],
+  "payloadData": [
+    {
+      "name": "context",
+      "type": "STRING"
+    },
+    {
+      "name": "api_version",
+      "type": "STRING"
+    },
+    {
+      "name": "api",
+      "type": "STRING"
+    },
+    {
+      "name": "resource",
+      "type": "STRING"
+    },
+    {
+      "name": "method",
+      "type": "STRING"
+    },
+    {
+      "name": "version",
+      "type": "STRING"
+    },
+    {
+      "name": "errorCode",
+      "type": "STRING"
+    },
+    {
+      "name": "errorMessage",
+      "type": "STRING"
+    },
+    {
+      "name": "requestTime",
+      "type": "STRING"
+    },
+    {
+      "name": "userId",
+      "type": "STRING"
+    },
+    {
+      "name": "tenantDomain",
+      "type": "STRING"
+    },
+    {
+      "name": "hostName",
+      "type": "STRING"
+    },
+    {
+      "name": "apiPublisher",
+      "type": "STRING"
+    },
+    {
+      "name": "applicationName",
+      "type": "STRING"
+    },
+    {
+      "name": "applicationId",
+      "type": "STRING"
+    },
+    {
+      "name": "trackingCode",
+      "type": "STRING"
+    },
+    {
+      "name": "referer",
+      "type": "STRING"
+    },
+    {
+      "name": "responseTime",
+      "type": "LONG"
+    }
+  ]
+}
