@@ -78,18 +78,3 @@ CREATE TABLE IF NOT EXISTS APM_APP_HITS (
 	appVersion VARCHAR(500),
 	context VARCHAR(500)
 );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
