@@ -361,7 +361,7 @@
                                 </featureArtifactDef>
 				<featureArtifactDef>org.jaggeryjs.modules:carbon.feature:${jaggeryjs.carbon.feature.version}
                                 </featureArtifactDef>
-				<featureArtifactDef>org.jaggeryjs.modules:email.feature:${email.feature.version}
+				<featureArtifactDef>org.jaggeryjs.modules:email.feature:${jaggeryjs.email.feature.version}
                                 </featureArtifactDef>
 				<featureArtifactDef>org.jaggeryjs.modules:i18n.feature:${jaggeryjs.i18n.feature.version}
                                 </featureArtifactDef>
