@@ -40,13 +40,17 @@
             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.delete.DeleteWebAppInReviewStateTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.delete.DeleteWebAppInUnpublishedStateTestCase"/>
 
+            <!--
             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromApproveToPublishTestCase"/>
+            -->
             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromCreateToInReviewTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromInReviewToApproveTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromInReviewToRejectTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromPublishToDeprecateTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromPublishToUnpublishTestCase"/>
+            <!--
             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromUnpublishToRepublishTestCase"/>
+            -->
             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromPublishToUnpublishTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromUnpublishToRetireTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.CreateWebAppTestCase"/>
