@@ -79,9 +79,6 @@
                             <publishArtifacts>true</publishArtifacts>
                             <publishArtifactRepository>true</publishArtifactRepository>
                             <featureArtifacts>
-                                <!--<featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.bam.datasource.server.feature:4.2.0
-                                </featureArtifactDef>-->
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.core.feature:${carbon.platform.version}
                                 </featureArtifactDef>
@@ -121,34 +118,6 @@
 
                                 <featureArtifactDef>org.wso2.carbon.deployment:org.wso2.carbon.service.mgt.server.feature:${carbon.deployment.version}
                                 </featureArtifactDef>
-
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>-->
-                                    <!--org.wso2.carbon:org.wso2.carbon.transport.mgt.feature:${carbon.platform.version}-->
-                                <!--</featureArtifactDef>-->
-
-
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>-->
-                                    <!--org.wso2.carbon:org.wso2.carbon.transport.mail.feature:${carbon.platform.version}-->
-                                <!--</featureArtifactDef>-->
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.transport.nhttp.feature:4.2.3-->
-                                <!--</featureArtifactDef>-->
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.transport.jms.feature:4.2.1-->
-                                <!--</featureArtifactDef>-->
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>-->
-                                    <!--org.wso2.carbon:org.wso2.carbon.message.flows.feature:${carbon.platform.version}-->
-                                <!--</featureArtifactDef>-->
-
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>-->
-                                    <!--org.wso2.carbon:org.wso2.carbon.xfer.feature:${carbon.platform.version}-->
-                                <!--</featureArtifactDef>-->
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>-->
-                                    <!--org.wso2.carbon:org.wso2.carbon.mex.feature:${carbon.platform.version}-->
-                                <!--</featureArtifactDef>-->
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.datasource.server.feature:4.2.1-->
-                                <!--</featureArtifactDef>-->
-
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.tryit.feature:4.2.1-->
-                                <!--</featureArtifactDef>-->
 
                                 <!-- Registry Features -->
                                 <featureArtifactDef>
@@ -219,17 +188,9 @@
                                     org.wso2.carbon.mediation:org.wso2.carbon.inbound.endpoints.server.feature:${carbon.mediation.version}
                                 </featureArtifactDef>
 
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>-->
-                                    <!--org.wso2.carbon:org.wso2.carbon.mediation.security.server.feature:${carbon.platform.version}-->
-                                <!--</featureArtifactDef>-->
-
                                 <featureArtifactDef>
                                     org.wso2.carbon.mediation:org.wso2.carbon.mediation.statistics.feature:${carbon.mediation.version}
                                 </featureArtifactDef>
-
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>-->
-                                    <!--org.wso2.carbon:org.wso2.carbon.statistics.transport.feature:${carbon.platform.version}-->
-                                <!--</featureArtifactDef>-->
 
                                 <featureArtifactDef>
                                     org.wso2.carbon.mediation:org.wso2.carbon.mediation.configadmin.feature:${carbon.mediation.version}
@@ -240,39 +201,16 @@
                                     org.wso2.carbon.mediation:org.wso2.carbon.mediation.tracer.feature:${carbon.mediation.version}
                                 </featureArtifactDef>
 
-
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>-->
-                                    <!--org.wso2.carbon:org.wso2.carbon.localentry.server.feature:${carbon.platform.version}-->
-                                <!--</featureArtifactDef>-->
-
-                                <!--featureArtifactDef>org.wso2.carbon:org.wso2.carbon.endpoint.server.feature:${carbon.platform.version}</featureArtifactDef-->
-
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.rest.api.feature:4.2.1-->
-                                <!--</featureArtifactDef>-->
-
-
-                                <!--<featureArtifactDef> Commented out as it is done on APIM 2.0.0 M1 -->
-                                    <!--org.wso2.carbon:org.wso2.carbon.sequences.server.feature:4.2.1-->
-                                <!--</featureArtifactDef>-->
-
                                 <featureArtifactDef>
                                     org.wso2.carbon.mediation:org.wso2.carbon.mediators.server.feature:${carbon.mediation.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon.mediation:org.wso2.carbon.mediation.ui.feature:${carbon.mediation.version}
                                 </featureArtifactDef>
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.proxyadmin.server.feature:${carbon.proxyadmin.server.version}-->
-                                <!--</featureArtifactDef>-->
-
-                                <!--featureArtifactDef>org.wso2.carbon:org.wso2.carbon.rule.mediation.server.feature:${carbon.platform.version}</featureArtifactDef-->
-                                <!--featureArtifactDef>org.wso2.carbon:org.wso2.carbon.rule.mediator.feature:${carbon.platform.version}</featureArtifactDef-->
 
                                 <featureArtifactDef>
                                     org.wso2.appmanager:org.wso2.appmanager.styles.feature:${appmanagerserver.version}
                                 </featureArtifactDef>
-                                <!--<featureArtifactDef>-->
-                                    <!--org.wso2.carbon.mediation:org.wso2.carbon.relay.feature:${carbon.mediation.version}-->
-                                <!--</featureArtifactDef>-->
                                 <featureArtifactDef>
                                     org.wso2.carbon.mediation:org.wso2.carbon.relay.server.feature:${carbon.mediation.version}
                                 </featureArtifactDef>
@@ -296,22 +234,6 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.mediation:org.wso2.carbon.application.deployer.synapse.feature:${carbon.mediation.version}
                                 </featureArtifactDef>
-                                <!--<featureArtifactDef>-->
-                                    <!--org.wso2.carbon.mediation:org.wso2.carbon.inbound.endpoints.server.feature:${carbon.mediation.version}-->
-                                <!--</featureArtifactDef>-->
-                                <!--featureArtifactDef>org.wso2.carbon:org.wso2.carbon.transports.passthru.feature:${passthru.transport.patch.version}</featureArtifactDef-->
-                                <!--featureArtifactDef>org.wso2.carbon:org.wso2.carbon.mediation.templates.server.feature:${carbon.platform.version}</featureArtifactDef-->
-                                <!-- C 4.4.0 <featureArtifactDef>-->
-                                    <!--org.wso2.carbon.commons:org.wso2.carbon.deployment.synchronizer.feature:${carbon.commons.version}-->
-                                <!--</featureArtifactDef>-->
-
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>-->
-                                    <!--org.wso2.carbon:org.wso2.carbon.ec2.client.feature:${carbon.platform.version}-->
-                                <!--</featureArtifactDef>-->
-
-                                <!-- reporting features -->
-                                <!-- <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.reporting.feature:${carbon.patch.version.401}</featureArtifactDef>-->
-                                <!-- end reporting features -->
 
                                 <!--APP Management related feature-->
                                 <featureArtifactDef>org.jaggeryjs:org.jaggeryjs.feature:${jaggery.js.version}
@@ -340,13 +262,8 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.store.feature:${carbon.appmgt.version}
                                 </featureArtifactDef>
-                                <!--featureArtifactDef>org.wso2.am:org.wso2.stratos.apimgt.dashboard.ui.feature:${stratos.version}</featureArtifactDef-->
-
 
                                 <!--Governance Feature-->
-                                <!--featureArtifactDef>org.wso2.carbon:org.wso2.carbon.gadget.initializer.feature:${carbon.platform.version}</featureArtifactDef-->
-                                <!--featureArtifactDef>org.wso2.carbon:org.wso2.carbon.gadget.editor.feature:${carbon.platform.version}</featureArtifactDef>
-                                <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.gadget.editor.ui.feature:${carbon.platform.version}</featureArtifactDef-->
                                 <featureArtifactDef>
                                     org.wso2.carbon.governance:org.wso2.carbon.registry.extensions.feature:${carbon.governance.version}
                                 </featureArtifactDef>
@@ -362,19 +279,6 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.governance:org.wso2.carbon.governance.lifecycle.management.feature:${carbon.governance.version}
                                 </featureArtifactDef>
-
-                                <!-- Cloud APP Manager related features -->
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.stratos.common.feature:2.3.0-->
-                                <!--</featureArtifactDef>-->
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>-->
-                                    <!--org.wso2.carbon:org.wso2.carbon.stratos.usage.agent.feature:${stratos.version}-->
-                                <!--</featureArtifactDef>-->
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>-->
-                                    <!--org.wso2.carbon:org.wso2.carbon.stratos.throttling.agent.feature:${stratos.version}-->
-                                <!--</featureArtifactDef>-->
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.stratos.deployment.feature:2.2.1-->
-                                <!--</featureArtifactDef>-->
-                                <!--<featureArtifactDef> org.wso2.carbon:org.wso2.carbon.identity.authenticator.saml2.sso.ui.feature:4.2.1</featureArtifactDef> -->
 
                                 <!--8 Carbon-MultiTenancy-->
                                 <featureArtifactDef>
@@ -403,9 +307,6 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.identity:org.wso2.carbon.identity.provider.server.feature:${carbon.identity.version}
                                 </featureArtifactDef>
-				               <!-- <featureArtifactDef>
-                                    org.wso2.carbon.identity:org.wso2.carbon.identity.relying.party.server.feature:${carbon.identity.version}
-                                </featureArtifactDef> -->
                                 <featureArtifactDef>
                                     org.wso2.carbon.identity:org.wso2.carbon.identity.user.registration.server.feature:${carbon.identity.version}
                                 </featureArtifactDef>
@@ -419,7 +320,7 @@
                                 <featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.oauth.server.feature:${carbon.identity.oauth.version}</featureArtifactDef>
                                 <featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.idp.mgt.server.feature:${carbon.identity.oauth.version}</featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.identity.oauth.common.feature:4.2.3
+                                    org.wso2.carbon:org.wso2.carbon.identity.oauth.common.feature:${identity.oauth.common.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon.identity:org.wso2.carbon.identity.application.authenticator.basicauth.server.feature:${carbon.identity.version}
@@ -427,12 +328,6 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.identity:org.wso2.carbon.identity.application.authenticator.samlsso.server.feature:${carbon.identity.version}
                                 </featureArtifactDef>
-                                <featureArtifactDef>
-                                    org.wso2.carbon.identity:org.wso2.carbon.identity.user.registration.server.feature:${carbon.identity.version}
-                                </featureArtifactDef>
-                                <!--<featureArtifactDef>
-                                    org.wso2.carbon.identity:org.wso2.carbon.identity.scim.common.feature:${carbon.identity.version}
-                                </featureArtifactDef>-->
                                 <featureArtifactDef>
                                     org.wso2.carbon.identity:org.wso2.carbon.claim.mgt.feature:${carbon.identity.version}
                                 </featureArtifactDef>
@@ -451,40 +346,10 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.deployment:org.wso2.carbon.module.mgt.server.feature:${carbon.deployment.version}
                                 </featureArtifactDef>
-                                <!--<featureArtifactDef>-->
-                                    <!--org.wso2.carbon.deployment:org.wso2.carbon.application.deployer.webapp.feature:${carbon.deployment.version}-->
-                                <!--</featureArtifactDef>-->
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>-->
-                                    <!--org.wso2.carbon:org.wso2.carbon.caching.server.feature:${carbon.platform.version}-->
-                                <!--</featureArtifactDef>-->
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>-->
-                                    <!--org.wso2.carbon:org.wso2.carbon.rm.server.feature:${carbon.platform.version}-->
-                                <!--</featureArtifactDef>-->
-                                <!-- as runtime features-->
                                 <featureArtifactDef>org.wso2.carbon.deployment:org.wso2.carbon.as.runtimes.cxf.feature:${carbon.deployment.version}
                                 </featureArtifactDef>
-                                <!--featureArtifactDef>org.wso2.carbon:org.wso2.carbon.webapp.mgt.server.feature:4.2.2
-                                </featureArtifactDef-->
-                                <!--< APIM 2.0.0-M1 featureArtifactDef>-->
-                                    <!--org.wso2.carbon:org.wso2.carbon.jaxws.webapp.mgt.server.feature:${carbon.platform.version}-->
-                                <!--</featureArtifactDef>-->
-                                <!-- end of as runtime features-->
-                                <featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.claim.mgt.feature:${carbon.identity.version}
-                                </featureArtifactDef>
-                                <!---->
                                 <featureArtifactDef>org.wso2.carbon.deployment:org.wso2.carbon.webapp.mgt.feature:${carbon.deployment.version}
                                 </featureArtifactDef>
-                                <!--<featureArtifactDef> APIM 2.0.0.M1 -->
-                                    <!--org.wso2.carbon:org.wso2.carbon.jaxws.webapp.mgt.feature:${carbon.platform.version}-->
-                                <!--</featureArtifactDef>-->
-
-                               <!-- APIM 2.0.0.M1 <featureArtifactDef>-->
-                                    <!--org.wso2.carbon:org.wso2.carbon.bam.message.tracer.handler.feature:4.2.3-->
-                                <!--</featureArtifactDef>-->
-				<!--<featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.bam.toolbox.deployer.feature:4.2.2
-                                </featureArtifactDef>-->
-				<!--featureArtifactDef>org.wso2.store.modules:ues.feature:${es.feature.version}</featureArtifactDef-->
 				<featureArtifactDef>org.wso2.store.modules:store.feature:${es.feature.version}</featureArtifactDef>
 				<featureArtifactDef>org.jaggeryjs.modules:handlebars.feature:${handlebars.feature.version}</featureArtifactDef>
 				<featureArtifactDef>org.wso2.store.modules:login.feature:${es.feature.version}</featureArtifactDef>
@@ -496,7 +361,7 @@
                                 </featureArtifactDef>
 				<featureArtifactDef>org.jaggeryjs.modules:carbon.feature:${jaggeryjs.carbon.feature.version}
                                 </featureArtifactDef>
-				<featureArtifactDef>org.jaggeryjs.modules:email.feature:1.0.0
+				<featureArtifactDef>org.jaggeryjs.modules:email.feature:${jaggeryjs.email.feature.version}
                                 </featureArtifactDef>
 				<featureArtifactDef>org.jaggeryjs.modules:i18n.feature:${jaggeryjs.i18n.feature.version}
                                 </featureArtifactDef>
@@ -513,50 +378,25 @@
 				<featureArtifactDef>org.wso2.store.modules:claims.feature:${es.feature.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.application.authentication.framework.server.feature:${carbon.identity.version}</featureArtifactDef>
-                                <!--<featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.application.authentication.framework.server.feature:${carbon.identity.4_2.version}</featureArtifactDef>-->
-				<featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.user.profile.server.feature:${carbon.identity.version}</featureArtifactDef>
                                 <featureArtifactDef>org.wso2.carbon.store:org.wso2.store.feature:${carbon.store.version}</featureArtifactDef>
 				<featureArtifactDef>org.wso2.carbon.store:org.wso2.carbon.social.feature:${carbon.store.version}</featureArtifactDef>
 
-                                <!--<featureArtifactDef>-->
-                                    <!--org.wso2.carbon:org.wso2.carbon.cassandra-jdbc-1.1.1.server.feature:4.0.1-->
-                                <!--</featureArtifactDef>-->
-                                <!--<featureArtifactDef>org.wso2.carbon:org.wso2.carbon.cassandra.dataaccess.feature:4.2.1</featureArtifactDef> -->
-                               <!-- <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.databridge.streamdefn.cassandra.feature:4.2.2
-                                </featureArtifactDef>-->
-                                <!--<featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.cassandra.feature:4.2.5
-                                </featureArtifactDef>-->
                                 <featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.sso.saml.feature:${carbon.identity.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon.identity:org.wso2.carbon.identity.authenticator.saml2.sso.feature:${carbon.identity.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>caramel:caramel.feature:${jaggeryjs.caramel.feature.version}</featureArtifactDef>
-                                <!--<featureArtifactDef>org.wso2.carbon:org.wso2.carbon.cassandra.explorer.feature:4.2.3
-                                </featureArtifactDef>-->
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>-->
-                                    <!--org.wso2.carbon:org.wso2.stratos.identity.saml2.sso.mgt.feature:2.2.0-->
-                                <!--</featureArtifactDef>-->
                                 <featureArtifactDef>org.wso2.carbon.commons:org.wso2.carbon.hostobjects.sso.server.feature:${carbon.commons.version}</featureArtifactDef>
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.ganalytics.server.feature:4.2.1</featureArtifactDef>-->
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.ganalytics.feature:4.2.1</featureArtifactDef>-->
-
 
                                 <!-- ##### Identity Features  ####-->
                                 <!-- Directory server related features -->
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>org.wso2.carbon:org.wso2.carbon.directory.service.mgr.feature:4.2.0</featureArtifactDef>-->
                                 <featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.ldap.server.feature:${carbon.identity.version}</featureArtifactDef>
                                 <featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.user.profile.feature:${carbon.identity.version}</featureArtifactDef>
                                 <featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.um.ws.service.feature:${carbon.identity.version}</featureArtifactDef>
                                 <featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.um.ws.service.server.feature:${carbon.identity.version}</featureArtifactDef>
                                 <featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.mgt.feature:${carbon.identity.version}</featureArtifactDef>
-                                <!--<featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.sts.passive.feature:${carbon.identity.version}</featureArtifactDef>-->
                                 <featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.xacml.feature:${carbon.identity.version}</featureArtifactDef>
-                                <!--<featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.scim.feature:${carbon.identity.scim.version}</featureArtifactDef> -->
-                                <!--<featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.sts.feature:${carbon.identity.version}</featureArtifactDef>-->
-                                <!--<featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.sts.mgt.feature:${carbon.identity.version}</featureArtifactDef>-->
 
                                 <featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.provisioning.server.feature:${carbon.identity.version}</featureArtifactDef>
                                 <featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.application.authenticator.openid.server.feature:${carbon.identity.version}</featureArtifactDef>
@@ -570,19 +410,13 @@
                                 <!-- Identity Application Provisioning Connectors -->
                                 <featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.provisioning.connector.google.server.feature:${carbon.identity.version}</featureArtifactDef>
                                 <featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.provisioning.connector.salesforce.server.feature:${carbon.identity.version}</featureArtifactDef>
-                                <!--<featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.provisioning.connector.scim.server.feature:${carbon.identity.version}</featureArtifactDef> -->
                                 <featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.provisioning.connector.spml.server.feature:${carbon.identity.version}</featureArtifactDef>
 
                                 <featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.authenticator.iwa.feature:${carbon.identity.version}</featureArtifactDef>
-                                <!--<featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.tools.saml.validator.feature:${carbon.identity.version}</featureArtifactDef>-->
                                 <featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.notification.mgt.feature:${carbon.identity.version}</featureArtifactDef>
 
                                 <featureArtifactDef>org.wso2.carbon.commons:org.wso2.carbon.databridge.commons.server.feature:${carbon.commons.version}</featureArtifactDef>
 
-                                <!-- Identity Server product related feature -->
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>org.wso2.identity:org.wso2.identity.utils.feature:5.0.0</featureArtifactDef>-->
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>org.wso2.identity:org.wso2.identity.styles.feature:5.0.0</featureArtifactDef>-->
-                                <!-- APIM 2.0.0-M1 <featureArtifactDef>org.wso2.identity:org.wso2.identity.ui.feature:5.0.0</featureArtifactDef>-->
                                 <!-- SAML Request/Response Validator Toolkit Feature -->
                                 <!-- User Account Association Feature -->
                                 <featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.user.account.association.feature:${carbon.identity.version}</featureArtifactDef>

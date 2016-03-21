@@ -545,6 +545,8 @@
         <bcprov.jdk15.version>132</bcprov.jdk15.version>
         <org.apache.tomcat.version>7.0.34</org.apache.tomcat.version>
         <org.apache.tomcat.embed.version>7.0.34</org.apache.tomcat.embed.version>
+        <jaggeryjs.email.feature.version>1.0.0</jaggeryjs.email.feature.version>
+        <identity.oauth.common.version>4.2.3</identity.oauth.common.version>
     </properties>
 
 </project>
