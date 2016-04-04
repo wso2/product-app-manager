@@ -95,7 +95,7 @@
                                 </featureArtifactDef>
 
                                 <featureArtifactDef>
-                                    org.wso2.carbon.commons:org.wso2.carbon.databridge.datapublisher.feature:${carbon.commons.version}
+                                    org.wso2.carbon.commons:org.wso2.carbon.databridge.datapublisher.feature:${carbon.analytics-common.version}
                                 </featureArtifactDef>
 
                                 <featureArtifactDef>org.wso2.carbon.commons:org.wso2.carbon.system.statistics.feature:${carbon.commons.version}
@@ -415,7 +415,7 @@
                                 <featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.authenticator.iwa.feature:${carbon.identity.version}</featureArtifactDef>
                                 <featureArtifactDef>org.wso2.carbon.identity:org.wso2.carbon.identity.notification.mgt.feature:${carbon.identity.version}</featureArtifactDef>
 
-                                <featureArtifactDef>org.wso2.carbon.commons:org.wso2.carbon.databridge.commons.server.feature:${carbon.commons.version}</featureArtifactDef>
+                                <featureArtifactDef>org.wso2.carbon.commons:org.wso2.carbon.databridge.commons.server.feature:${carbon.analytics-common.version}</featureArtifactDef>
 
                                 <!-- SAML Request/Response Validator Toolkit Feature -->
                                 <!-- User Account Association Feature -->
@@ -586,7 +586,7 @@
                                 </feature>
                                <feature>
                                     <id>org.wso2.carbon.databridge.datapublisher.feature.group</id>
-                                    <version>${carbon.commons.version}</version>
+                                    <version>${carbon.analytics-common.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.apache.synapse.wso2.feature.group</id>
@@ -1252,7 +1252,7 @@
                                 <!--</feature>-->
                                 <feature>
                                     <id>org.wso2.carbon.databridge.commons.server.feature.group</id>
-                                    <version>${carbon.commons.version}</version>
+                                    <version>${carbon.analytics-common.version}</version>
                                 </feature>
                                 <!-- APIM 2.0.0-M1 <feature>-->
                                     <!--<id>org.wso2.identity.utils.feature.group</id>-->
