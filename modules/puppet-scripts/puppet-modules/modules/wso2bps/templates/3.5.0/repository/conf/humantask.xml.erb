@@ -1,0 +1,80 @@
+<!--
+  ~  Copyright (c) 2015, WSO2 Inc. (http://wso2.com) All Rights Reserved.
+  ~
+  ~  WSO2 Inc. licenses this file to you under the Apache License,
+  ~  Version 2.0 (the "License"); you may not use this file except
+  ~  in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing,
+  ~  software distributed under the License is distributed on an
+  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~  KIND, either express or implied.  See the License for the
+  ~  specific language governing permissions and limitations
+  ~  under the License.
+  -->
+
+<HumanTaskServerConfig xmlns="http://wso2.org/humantask/schema/server/config" xmlns:svns="http://org.wso2.securevault/configuration">
+    <PersistenceConfig>
+        <DataSource>bpsds</DataSource>
+        <GenerateDdl>true</GenerateDdl>
+        <ShowSql>false</ShowSql>
+        <!--JNDIInitialContextFactory>com.sun.jndi.rmi.registry.RegistryContextFactory</JNDIInitialContextFactory>
+        <JNDIProviderUrl>rmi://localhost:2199</JNDIProviderUrl-->
+        <DAOConnectionFactoryClass>org.wso2.carbon.humantask.core.dao.jpa.openjpa.HumanTaskDAOConnectionFactoryImpl</DAOConnectionFactoryClass>
+    </PersistenceConfig>
+    <PeopleQueryEvaluatorConfig>
+        <PeopleQueryEvaluatorClass>org.wso2.carbon.humantask.core.integration.CarbonUserManagerBasedPeopleQueryEvaluator</PeopleQueryEvaluatorClass>
+    </PeopleQueryEvaluatorConfig>
+    <TransactionManagerConfig>
+        <TransactionManagerClass>org.apache.ode.il.EmbeddedGeronimoFactory</TransactionManagerClass>
+    </TransactionManagerConfig>
+    <SchedulerConfig>
+        <MaxThreadPoolSize><%= @scheduler_config_max_thread_pool_size %></MaxThreadPoolSize>
+    </SchedulerConfig>
+    <!--TaskCleanupConfig>
+        <cronExpression>0 0 0/4 * * ?</cronExpression>
+        <statuses>COMPLETED,OBSOLETE</statuses>
+    </TaskCleanupConfig-->
+    <!--TaskEventListeners>
+        <ClassName>ClassName</ClassName>
+        <ClassName>ClassName</ClassName>
+    </TaskEventListeners-->
+    <UIRenderingEnabled>true</UIRenderingEnabled>
+    <HumanTaskCoordination>
+        <!-- HumanTask Coordination configuration -->
+        <TaskCoordinationEnabled>false</TaskCoordinationEnabled>
+
+        <!--Task Engine's protocol handler authentication -->
+        <RegistrationServiceAuthentication>
+            <Username>admin</Username>
+            <Password>admin</Password>
+        </RegistrationServiceAuthentication>
+
+        <!-- Set TaskRegistrationEnabled to true, for Register tasks at task parent's Registration Service. -->
+        <TaskRegistrationEnabled>false</TaskRegistrationEnabled>
+
+        <!--Uncomment if task engines are Clustered and set LoadBalancerURL -->
+        <!--<ClusteredTaskEngines>
+            <LoadBalancerURL>https://bps.loadbalancer-url.com</LoadBalancerURL>
+        </ClusteredTaskEngines> -->
+    </HumanTaskCoordination>
+    <!-- Enable to perform HT operations by BusinessAdministrator -->
+    <EnableTaskOperationsForBusinessAdministrator>false</EnableTaskOperationsForBusinessAdministrator>
+
+    <!-- Enable Disable Caching -->
+    <%- if @enable_humantask_caching != nil -%>
+    <CacheConfiguration>
+		<EnableCaching><%= @enable_humantask_caching %></EnableCaching>
+    </CacheConfiguration>
+    <%- else -%>
+    <!--CacheConfiguration>
+	<EnableCaching>true</EnableCaching>
+    </CacheConfiguration-->
+    <%- end -%>
+    <EnableTaskValidationBeforeDeployment>true</EnableTaskValidationBeforeDeployment>
+    <EnableEMailNotification>false</EnableEMailNotification>
+    <EnableSMSNotification>false</EnableSMSNotification>
+</HumanTaskServerConfig>

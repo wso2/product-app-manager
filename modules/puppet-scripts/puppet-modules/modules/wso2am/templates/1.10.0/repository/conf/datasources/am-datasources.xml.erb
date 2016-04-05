@@ -1,0 +1,36 @@
+<datasources-configuration xmlns:svns="http://org.wso2.securevault/configuration">
+    <providers>
+        <provider>org.wso2.carbon.ndatasource.rdbms.RDBMSDataSourceReader</provider>
+    </providers>
+
+    <datasources>
+<%- @am_datasources.each do |datasource_name, datasource| -%>
+        <datasource>
+            <name><%= datasource['name'] %></name>
+            <description><%= datasource['description'] %></description>
+            <jndiConfig>
+                <name><%= datasource['jndi_config'] %></name>
+            </jndiConfig>
+            <definition type="RDBMS">
+                <configuration>
+                    <url><%= datasource['url'] %></url>
+                    <username><%= datasource['username'] %></username>
+   <%- if datasource['secret_alias'] -%>
+                    <password svns:secretAlias="<%= datasource['secret_alias'] %>">password</password>
+   <%- else -%>
+                    <password><%= datasource['password'] %></password>
+   <%- end -%>
+                    <driverClassName><%= datasource['driver_class_name'] %></driverClassName>
+                    <defaultAutoCommit><%= datasource['default_auto_commit'] %></defaultAutoCommit>
+                    <maxActive><%= datasource['max_active'] %></maxActive>
+                    <maxWait><%= datasource['max_wait'] %></maxWait>
+                    <testOnBorrow><%= datasource['test_on_borrow'] %></testOnBorrow>
+                    <validationQuery><%= datasource['validation_query'] %></validationQuery>
+                    <validationInterval><%= datasource['validation_interval'] %></validationInterval>
+                </configuration>
+            </definition>
+        </datasource>
+
+<%- end -%>
+    </datasources>
+</datasources-configuration>

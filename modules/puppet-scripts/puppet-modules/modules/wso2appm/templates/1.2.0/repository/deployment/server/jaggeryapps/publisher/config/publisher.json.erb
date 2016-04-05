@@ -1,0 +1,85 @@
+{
+    "server": {
+        "https": "%https.host%/admin",
+        "http": "%http.host%"
+    },
+    "user": {
+        "username": "admin",
+        "password": "admin"
+    },
+    "tenantConfigs": "/_system/config/publisher/configs/publisher.json",
+    "app": {
+        "RXT_MANAGER": "rxt_manager",
+        "ROUTE_MANAGER": "route_manager",
+        "MODEL_MANAGER": "model_manager"
+    },
+    "lifeCycleBehaviour": {
+
+        "SampleLifeCycle2": {
+
+            "onAttach": {
+                "action": "Promote"
+            }
+        },
+        "MobileAppLifeCycle":{
+            "onAttach":{
+                "action":"Create"
+            }
+        },
+	"WebAppLifeCycle": {
+            "onAttach": {
+                "action": "Create"
+            }
+        }
+    },
+
+    "paths": {
+        "ASSET_EXT_PATH": "/assets",
+        "ASSET_DEFAULT_PATH": "/assets/default",
+        "ASSETS_EXT_PATH": "/assets",
+        "ASSETS_DEFAULT_PATH": "/assets/default",
+        "RXT_EXTENSION_PATH": "/config/ext/"
+    },
+
+    "urls": {
+        "ASSET": "/asset",
+        "ASSETS": "/assets"
+    },
+
+    "router": {
+        "RENDERER": "/modules/router.caramel-renderer.js"
+    },
+    "ssoConfiguration": {
+        "enabled": true,
+        "issuer": "publisher",
+        "identityProviderURL": "https://<%= @sso_configuration['idp_hostname'] %>:<%= @sso_configuration['idp_port'] %>/samlsso",
+        "keyStorePassword": "wso2carbon",
+        "identityAlias": "wso2carbon",
+        "responseSigningEnabled": "true",
+        "publisherAcs": "https://<%= @sso_configuration['idp_hostname'] %>:<%= @sso_configuration['idp_port'] %>/publisher/sso",
+        "keyStoreName": "/repository/resources/security/wso2carbon.jks"
+    },
+    "constants" :{
+    "assetCreatedDateLength" : 20
+    },
+    "paginationConfig" :{
+    	"PAGE_SIZE" : 20
+    },
+    "excludedRolesList":["admin","Internal/subscriber","publisher"],
+    "permissions": {
+      "webapp_create": "/permission/admin/manage/webapp/create",
+      "webapp_update": "/permission/admin/manage/webapp/update",
+      "webapp_publish": "/permission/admin/manage/webapp/publish",
+      "webapp_delete": "/permission/admin/manage/webapp/delete",
+      "document_add": "/permission/admin/manage/document/add",
+      "document_edit": "/permission/admin/manage/document/edit",
+      "document_delete": "/permission/admin/manage/document/delete",
+      "view_statistics": "/permission/admin/manage/appm/view_stats",
+      "mobileapp_create": "/permission/admin/manage/mobileapp/create",
+      "mobileapp_update": "/permission/admin/manage/mobileapp/update",
+      "mobileapp_publish": "/permission/admin/manage/mobileapp/publish",
+      "mobileapp_delete": "/permission/admin/manage/mobileapp/delete"
+    },
+    "publisherActions":["Publish","Approve","Reject","Unpublish","Deprecate","Retire","Recycle","Re-Publish","Submit for Review"],
+    "hiddenRoles":["admin","Internal/subscriber","Internal/publisher","Internal/creator"]
+}

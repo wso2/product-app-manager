@@ -1,0 +1,93 @@
+# Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+---
+wso2::hostname : appm.wso2.publisher
+wso2::mgt_hostname : appm.wso2.publisher
+
+wso2::hosts_mapping :
+  localhost :
+    ip_address : 127.0.0.1
+    hostname : localhost
+  publisher :
+    ip_address : 127.0.0.1
+    hostname : appm-publisher
+  store :
+    ip_address :  192.168.57.87
+    hostname : appm.wso2.store
+  gateway :
+    ip_address : 192.168.57.10
+    hostname : appm.wso2.gw
+  idp :
+    ip_address : 192.168.57.88
+    hostname : appm.wso2.idp
+
+wso2::template_list :
+  - repository/deployment/server/jaggeryapps/publisher/config/publisher.json
+
+wso2::clustering :
+    enabled : true
+    local_member_host : 192.168.57.9
+    local_member_port : 4000
+    membership_scheme : wka
+    sub_domain : worker
+    wka :
+       members :
+         -
+           hostname : 192.168.57.9
+           port : 4000
+         -
+           hostname : 192.168.57.87
+           port : 4001
+#
+#wso2::dep_sync :
+#    enabled : false
+#    auto_checkout : true
+#    auto_commit : true
+#    repository_type : svn
+#    svn :
+#       url : http://svnrepo.example.com/repos/
+#       user : username
+#       password : password
+#       append_tenant_id: true
+
+wso2::master_datasources :
+
+  jagh2:
+    name : JAGH2
+    description : The datasource used for by the Jaggery Storage Manager
+    driver_class_name : com.mysql.jdbc.Driver
+    url : jdbc:mysql://192.168.57.89:3306/storage?autoReconnect=true
+    username : root
+    password : root
+    #secret_alias :
+    jndi_config : jdbc/ES_Storage
+    max_active: "%{hiera('wso2::datasources::common::max_active')}"
+    max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
+
+  wso2social_db:
+    name : WSO2_SOCIAL_DB
+    description : The datasource used for social framework
+    driver_class_name : com.mysql.jdbc.Driver
+    url : jdbc:mysql://192.168.57.89:3306/social?autoReconnect=true
+    username : root
+    password : root
+    #secret_alias :
+    jndi_config : jdbc/WSO2SocialDB
+    max_active: "%{hiera('wso2::datasources::common::max_active')}"
+    max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
+    test_on_borrow: "%{hiera('wso2::datasources::common::test_on_borrow')}"
+    default_auto_commit: "%{hiera('wso2::datasources::common::default_auto_commit')}"
+    validation_query: "%{hiera('wso2::datasources::mysql::validation_query')}"
+    validation_interval: "%{hiera('wso2::datasources::common::validation_interval')}"
+
