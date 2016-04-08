@@ -99,6 +99,7 @@ public class AppCreateRequest extends AbstractRequest {
     private String oauthApiConsumerSecret3;
     private String oauthApiName3;
     private String webapp = "webapp";
+    private String businessOwner = null;
 
 
     @Override
@@ -124,6 +125,7 @@ public class AppCreateRequest extends AbstractRequest {
         addParameter("overview_allowAnonymous", overviewAllowAnonymous);
         addParameter("overview_acsUrl", overviewAcsUrl);
         addParameter("overview_skipGateway", overviewSkipGateway);
+        addParameter("overview_owner", businessOwner);
 
         addParameter("uritemplate_policyGroupIds" , uriTemplatePolicyGroupIds);
 
@@ -217,6 +219,22 @@ public class AppCreateRequest extends AbstractRequest {
      */
     public String getOverviewProvider() {
         return overviewProvider;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getBusinessOwner() {
+        return businessOwner;
+    }
+
+    /**
+     *
+     * @param businessOwner
+     */
+    public void setBusinessOwner(String businessOwner) {
+        this.businessOwner = businessOwner;
     }
 
     /**
