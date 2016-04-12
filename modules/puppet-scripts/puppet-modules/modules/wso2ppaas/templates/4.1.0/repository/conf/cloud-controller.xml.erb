@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- 
+  ~  Copyright (c) 2015, WSO2 Inc. (http://wso2.com) All Rights Reserved.
+  ~
+  ~  WSO2 Inc. licenses this file to you under the Apache License,
+  ~  Version 2.0 (the "License"); you may not use this file except
+  ~  in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing,
+  ~  software distributed under the License is distributed on an
+  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~  KIND, either express or implied.  See the License for the
+  ~  specific language governing permissions and limitations
+  ~  under the License.
+  -->
+<cloudController xmlns:svns="http://org.wso2.securevault/configuration">
+    <svns:secureVault provider="org.wso2.securevault.secret.handler.SecretManagerSecretCallbackHandler"/>
+
+    <!-- BAM data publisher configuration -->
+    <dataPublisher enable="false">
+        <bamServer>
+            <!-- BAM server URL should be specified in carbon.xml -->
+            <adminUserName>admin</adminUserName>
+            <adminPassword svns:secretAlias="cloud.controller.bam.server.admin.password">admin</adminPassword>
+        </bamServer>
+        <!-- Default cron expression is '1 * * * * ? *' meaning 'first second of every minute'.
+             Optional element. -->
+        <cron>1 * * * * ? *</cron>
+    </dataPublisher>
+
+    <!-- Complete topology event publisher cron configuration -->
+    <topologySync enable="true">
+        <property name="cron" value="1 * * * * ? *"/>
+    </topologySync>
+
+    <!-- Specify the properties that are common to an IaaS here. This element
+        is not necessary [0..1]. But you can use this section to avoid specifying
+        same property over and over again. -->
+    <iaasProviders>
+
+<%- if @iaas_providers['openstack']['enabled'] == true -%>
+        <iaasProvider type="openstack" name="Openstack">
+            <className><%= @iaas_providers['openstack']['class_name'] %></className>
+            <provider><%= @iaas_providers['openstack']['provider'] %></provider>
+            <identity svns:secretAlias="cloud.controller.openstack.identity"><%= @iaas_providers['openstack']['identity'] %></identity>
+            <credential svns:secretAlias="cloud.controller.openstack.credential"><%= @iaas_providers['openstack']['credential'] %></credential>
+<%- @iaas_providers['openstack']['properties'].each do |property| -%>
+            <property name="<%= property['name'] %>" value="<%= property['value'] %>" />
+<%- end -%>
+        </iaasProvider>
+<%- end -%>
+
+<%- if @iaas_providers['ec2']['enabled'] == true -%>
+        <iaasProvider type="ec2" name="Amazon EC2">
+            <className><%= @iaas_providers['ec2']['class_name'] %></className>
+            <provider><%= @iaas_providers['ec2']['provider'] %></provider>
+            <identity svns:secretAlias="cloud.controller.ec2.identity"><%= @iaas_providers['ec2']['identity'] %></identity>
+            <credential svns:secretAlias="cloud.controller.ec2.credential"><%= @iaas_providers['ec2']['credential'] %></credential>
+<%- @iaas_providers['ec2']['properties'].each do |property| -%>
+            <property name="<%= property['name'] %>" value="<%= property['value'] %>" />
+<%- end -%>
+        </iaasProvider>
+<%- end -%>
+
+<%- if @iaas_providers['kubernetes']['enabled'] == true -%>
+        <iaasProvider type="kubernetes" name="Kubernetes">
+            <className><%= @iaas_providers['kubernetes']['class_name'] %></className>
+            <provider><%= @iaas_providers['kubernetes']['provider'] %></provider>
+            <identity svns:secretAlias="cloud.controller.kubernetes.identity"><%= @iaas_providers['kubernetes']['identity'] %></identity>
+            <credential svns:secretAlias="cloud.controller.kubernetes.credential"><%= @iaas_providers['kubernetes']['credential'] %></credential>
+        </iaasProvider>
+<%- end -%>
+
+<%- if @iaas_providers['mock']['enabled'] == true -%>
+        <iaasProvider type="mock" name="Mock">
+            <className><%= @iaas_providers['mock']['class_name'] %></className>
+            <provider><%= @iaas_providers['mock']['provider'] %></provider>
+            <identity svns:secretAlias="cloud.controller.mock.identity"><%= @iaas_providers['mock']['identity'] %></identity>
+            <credential svns:secretAlias="cloud.controller.mock.credential"><%= @iaas_providers['mock']['credential'] %></credential>
+<%- @iaas_providers['mock']['properties'].each do |property| -%>
+            <property name="<%= property['name'] %>" value="<%= property['value'] %>" />
+<%- end -%>
+        </iaasProvider>
+<%- end -%>
+
+    </iaasProviders>
+</cloudController>

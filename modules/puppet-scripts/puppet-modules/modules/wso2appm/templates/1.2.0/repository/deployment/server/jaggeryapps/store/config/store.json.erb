@@ -1,0 +1,51 @@
+{
+    "assetsUrlPrefix": "/assets",
+    "extensionsUrlPrefix": "/extensions",
+    "subscriptionsUrlPrefix": "/subscriptions",
+    "tenantConfigs": "/_system/config/store/configs/store.json",
+    "socialCommentsEnable": true,
+    "cached": false,
+    "server": {
+        "https": "%https.host%/admin",
+        "http": "%http.host%"
+    },
+
+    "lifeCycleBehaviour":{
+        "visibleIn":["Published"]
+    },
+
+    "ssoConfiguration": {
+        "enabled": true,
+        "issuer": "store",
+        "identityProviderURL": "https://<%= @sso_configuration['idp_hostname'] %>:<%= @sso_configuration['idp_port'] %>/samlsso",
+        "keyStorePassword": "wso2carbon",
+        "identityAlias": "wso2carbon",
+        "responseSigningEnabled": "true",
+        "storeAcs": "https://<%=@hostname%>/store/acs",
+        "keyStoreName": "/repository/resources/security/wso2carbon.jks"
+    },
+
+    "pagination": {
+        "PAGE_SIZE" : 18
+    },
+
+    "recentAppCount": {
+        "topAssetPage" : 15,
+        "assetPage": 5,
+        "assetsPage": 5,
+        "myAppsPage": 2,
+        "fromProvider": 5
+    },
+    "permissions": {
+        "webapp_subscribe": "/permission/admin/manage/webapp/subscribe",
+        "mobileapp_install": "/permission/admin/manage/mobileapp/subscribe"
+    },
+    "subscriptionConfiguration": {
+        "enableSelfSubscription": false,
+        "enableEnterpriseSubscription": false
+    },
+    "pages": {
+        "landingPage": "/extensions/assets/webapp/myapps",
+        "favouritePage": "/assets/favouriteapps"
+    }
+}

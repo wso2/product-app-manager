@@ -1,0 +1,108 @@
+---
+classes:
+  - wso2am
+wso2::pack_filename: "%{::product_name}-%{::product_version}.zip"
+wso2::pack_extracted_dir: "%{::product_name}-%{::product_version}"
+wso2::template_list :
+  - repository/conf/datasources/am-datasources.xml
+
+wso2::service_name: wso2am
+
+#wso2::ports:
+#  proxyPort :
+#    http: 80
+#    https: 443
+
+#wso2::registry_mounts:
+#  wso2_config_db:
+#    path: /_system/config
+#    target_path: /_system/config
+#    read_only: true
+#    registry_root: /
+#    enable_cache: true
+#
+#  wso2_gov_db:
+#    path: /_system/gov
+#    target_path: /_system/gov
+#    read_only: true
+#    registry_root: /
+#    enable_cache: true
+
+#wso2::usermgt_datasource: WSO2USER_DB
+
+wso2::am_datasources :
+  wso2am_db:
+    name : WSO2AM_DB
+    description : The datasource used for API Manager database
+    driver_class_name : org.h2.Driver
+    url : jdbc:h2:repository/database/WSO2AM_DB;DB_CLOSE_ON_EXIT=FALSE
+    username : "%{hiera('wso2::datasources::common::username')}"
+    password : "%{hiera('wso2::datasources::common::password')}"
+    #secret_alias :
+    jndi_config : jdbc/WSO2AM_DB
+    max_active: "%{hiera('wso2::datasources::common::max_active')}"
+    max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
+    test_on_borrow: "%{hiera('wso2::datasources::common::test_on_borrow')}"
+    default_auto_commit: "%{hiera('wso2::datasources::common::default_auto_commit')}"
+    validation_query: "%{hiera('wso2::datasources::mysql::validation_query')}"
+    validation_interval: "%{hiera('wso2::datasources::common::validation_interval')}"
+
+wso2::master_datasources :
+  wso2_config_db:
+    name : WSO2_CONFIG_DB
+    description : The datasource used for config registry
+    driver_class_name : org.h2.Driver
+    url : jdbc:h2:repository/database/WSO2_CONFIG_DB;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000
+    username : "%{hiera('wso2::datasources::common::username')}"
+    password : "%{hiera('wso2::datasources::common::password')}"
+    #secret_alias :
+    jndi_config : jdbc/WSO2_CONFIG_DB
+    max_active: "%{hiera('wso2::datasources::common::max_active')}"
+    max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
+    test_on_borrow: "%{hiera('wso2::datasources::common::test_on_borrow')}"
+    validation_query: "%{hiera('wso2::datasources::mysql::validation_query')}"
+    validation_interval: "%{hiera('wso2::datasources::common::validation_interval')}"
+
+  wso2_gov_db:
+    name : WSO2_GOV_DB
+    description : The datasource used for gov registry
+    driver_class_name : org.h2.Driver
+    url : jdbc:h2:repository/database/WSO2_GOV_DB;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000
+    username : "%{hiera('wso2::datasources::common::username')}"
+    password : "%{hiera('wso2::datasources::common::password')}"
+    #secretAlias :
+    jndi_config : jdbc/WSO2_GOV_DB
+    max_active: "%{hiera('wso2::datasources::common::max_active')}"
+    max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
+    test_on_borrow: "%{hiera('wso2::datasources::common::test_on_borrow')}"
+    validation_query: "%{hiera('wso2::datasources::mysql::validation_query')}"
+    validation_interval: "%{hiera('wso2::datasources::common::validation_interval')}"
+
+  wso2user_db :
+    name : WSO2USER_DB
+    description : The datasource is used for user mangement and userstore
+    driver_class_name : org.h2.Driver
+    url : jdbc:h2:repository/database/WSO2USER_DB?autoReconnect=true
+    username : "%{hiera('wso2::datasources::common::username')}"
+    password : "%{hiera('wso2::datasources::common::password')}"
+    #secretAlias :
+    jndi_config : jdbc/WSO2USER_DB
+    max_active : "%{hiera('wso2::datasources::common::max_active')}"
+    max_wait : "%{hiera('wso2::datasources::common::max_wait')}"
+    test_on_borrow : "%{hiera('wso2::datasources::common::test_on_borrow')}"
+    default_auto_commit : "%{hiera('wso2::datasources::common::default_auto_commit')}"
+    validation_query : "%{hiera('wso2::datasources::mysql::validation_query')}"
+    validation_interval : "%{hiera('wso2::datasources::common::validation_interval')}"
+
+  wso2user_db :
+    name : JAGH2
+    description : The datasource used for by the Jaggery Storage Manager
+    driver_class_name : org.h2.Driver
+    url : jdbc:h2:repository/database/ES_STORAGE;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000
+    username : "%{hiera('wso2::datasources::common::username')}"
+    password : "%{hiera('wso2::datasources::common::password')}"
+    #secretAlias :
+    jndi_config : jdbc/ES_STORAGE
+    max_active : "%{hiera('wso2::datasources::common::max_active')}"
+    max_wait : "%{hiera('wso2::datasources::common::max_wait')}"
+

@@ -1,0 +1,50 @@
+# Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+wso2::mgt_hostname : mgt.cep.wso2.com
+
+wso2::clustering :
+    enabled : true
+    local_member_host : "%{::ip}"
+    local_member_port : 4000
+    membership_scheme : wka
+    subDomain : mgt
+    wka :
+       members :
+         -
+           hostname : "%{::member1}"
+           port : 4000
+         -
+           hostname : "%{::member2}"
+           port : 4000
+         -
+           hostname : "%{::member3}"
+           port : 4000
+
+wso2::ha_deployment :
+    enabled : true
+    offset: 0
+    presenter: true
+    presenter_port: 11000
+    worker: false
+    eventSync :
+     hostName : "%{::ip}"
+     port : 11224
+    management :
+     hostName : 0.0.0.0
+     port : 10005
+    presentation :
+     hostName : "%{::ip}"
+     port : 11002

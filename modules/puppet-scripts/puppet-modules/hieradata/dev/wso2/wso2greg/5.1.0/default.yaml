@@ -1,0 +1,129 @@
+# Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+---
+classes:
+  - wso2greg
+wso2::pack_filename: "%{::product_name}-%{::product_version}.zip"
+wso2::pack_extracted_dir: "%{::product_name}-%{::product_version}"
+
+wso2::service_name: wso2greg
+wso2::hostname : greg.wso2.com
+
+#wso2::file_list :
+#  - repository/components/lib/mysql-connector-java-5.1.38.jar
+
+#wso2::usermgt_datasource: WSO2USER_DB
+
+wso2::master_datasources :
+  wso2am_db :
+    name : WSO2AM_DB
+    description : The datasource used for API Manager database
+    driver_class_name : org.h2.Driver
+    url : jdbc:h2:repository/database/WSO2AM_DB;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000
+    username : wso2carbon
+    password : wso2carbon
+    #securevault :
+    jndi_config : jdbc/WSO2AM_DB
+    max_active : "%{hiera('wso2::datasources::common::max_active')}"
+    max_wait : "%{hiera('wso2::datasources::common::max_wait')}"
+    test_on_borrow : "%{hiera('wso2::datasources::common::test_on_borrow')}"
+    default_auto_commit : "%{hiera('wso2::datasources::common::default_auto_commit')}"
+    validation_query : "%{hiera('wso2::datasources::mysql::validation_query')}"
+    validation_interval : "%{hiera('wso2::datasources::common::validation_interval')}"
+  wso2bam_datasource :
+    name : WSO2BAM_DATASOURCE
+    description : The datasource used for analyzer data
+    driver_class_name : org.h2.Driver
+    url : jdbc:h2:repository/database/samples/BAM_STATS_DB;AUTO_SERVER=TRUE
+    username : wso2carbon
+    password : wso2carbon
+    #securevault :
+    jndi_config : jdbc/WSO2BAM_DATASOURCE
+    max_active : "%{hiera('wso2::datasources::common::max_active')}"
+    max_wait : "%{hiera('wso2::datasources::common::max_wait')}"
+    test_on_borrow : "%{hiera('wso2::datasources::common::test_on_borrow')}"
+    default_auto_commit : "%{hiera('wso2::datasources::common::default_auto_commit')}"
+    validation_query : "%{hiera('wso2::datasources::mysql::validation_query')}"
+    validation_interval : "%{hiera('wso2::datasources::common::validation_interval')}"
+  jagh2 :
+    name : JAGH2
+    description : The datasource used for by the Jaggery Storage Manager
+    driver_class_name : org.h2.Driver
+    url : jdbc:h2:repository/database/ES_STORAGE;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000
+    username : sa
+    password :
+    #securevault :
+    jndi_config : jdbc/test
+    max_active : "%{hiera('wso2::datasources::common::max_active')}"
+    max_wait : "%{hiera('wso2::datasources::common::max_wait')}"
+    test_on_borrow : "%{hiera('wso2::datasources::common::test_on_borrow')}"
+    validation_query : "%{hiera('wso2::datasources::mysql::validation_query')}"
+    default_auto_commit : "%{hiera('wso2::datasources::common::default_auto_commit')}"
+    validation_interval : "%{hiera('wso2::datasources::common::validation_interval')}"
+#  wso2user_db :
+#    name : WSO2USER_DB
+#    description : The datasource is used for user mangement and userstore
+#    driver_class_name : com.mysql.jdbc.Driver
+#    url : jdbc:mysql://192.168.100.1:3306/WSO2USER_DB?autoReconnect=true
+#    username : root
+#    password : root
+#    #securevault :
+#    jndi_config : jdbc/WSO2USER_DB
+#    max_active : "%{hiera('wso2::datasources::common::max_active')}"
+#    max_wait : "%{hiera('wso2::datasources::common::max_wait')}"
+#    test_on_borrow : "%{hiera('wso2::datasources::common::test_on_borrow')}"
+#    default_auto_commit : "%{hiera('wso2::datasources::common::default_auto_commit')}"
+#    validation_query : "%{hiera('wso2::datasources::mysql::validation_query')}"
+#    validation_interval : "%{hiera('wso2::datasources::common::validation_interval')}"
+#  wso2_carbon_db :
+#    name : WSO2_CARBON_DB
+#    driver_class_name : com.mysql.jdbc.Driver
+#    url : jdbc:mysql://192.168.100.1:3306/WSO2REG_DB?autoReconnect=true
+#    username : root
+#    password : root
+#    jndi_config : jdbc/WSO2CarbonDB
+
+wso2::bps_datasources :
+  bps_ds :
+    name : BPS_DS
+    description : The datasource used for BPS database
+    driver_class_name : org.h2.Driver
+    url : jdbc:h2:file:repository/database/jpadb;DB_CLOSE_ON_EXIT=FALSE;MVCC=TRUE
+    username : wso2carbon
+    password : wso2carbon
+    #securevault :
+    jndi_config : bpsds
+    max_active : "%{hiera('wso2::datasources::common::max_active')}"
+    max_wait : "%{hiera('wso2::datasources::common::max_wait')}"
+    test_on_borrow : "%{hiera('wso2::datasources::common::test_on_borrow')}"
+    default_auto_commit : "%{hiera('wso2::datasources::common::default_auto_commit')}"
+    validation_query : "%{hiera('wso2::datasources::mysql::validation_query')}"
+    validation_interval : "%{hiera('wso2::datasources::common::validation_interval')}"
+
+wso2::social_datasources :
+  wso2_social_db :
+    name : WSO2_SOCIAL_DB
+    description : The datasource used for social framework
+    driver_class_name : org.h2.Driver
+    url : jdbc:h2:repository/database/WSO2SOCIAL_DB;DB_CLOSE_ON_EXIT=FALSE;MVCC=true
+    username : wso2carbon
+    password : wso2carbon
+    #securevault :
+    jndi_config : jdbc/WSO2SocialDB
+    max_active : "%{hiera('wso2::datasources::common::max_active')}"
+    max_wait : "%{hiera('wso2::datasources::common::max_wait')}"
+    test_on_borrow : "%{hiera('wso2::datasources::common::test_on_borrow')}"
+    default_auto_commit : "%{hiera('wso2::datasources::common::default_auto_commit')}"
+    validation_query : "%{hiera('wso2::datasources::mysql::validation_query')}"
+    validation_interval : "%{hiera('wso2::datasources::common::validation_interval')}"

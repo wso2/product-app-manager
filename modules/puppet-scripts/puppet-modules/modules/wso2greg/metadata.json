@@ -1,0 +1,19 @@
+{
+  "name": "wso2-greg",
+  "version": "1.0.0",
+  "author": "wso2",
+  "license": "Apache-2.0",
+  "summary": "puppet module",
+  "source": "https://github.com/wso2/puppet-modules/tree/master/wso2greg",
+  "project_page": "http://wso2.com/products/governance-registry/",
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [ "12.04", "14.04" ]
+    }
+  ],
+  "tags" : [ "greg", "4.6.0" , "5.1.0" ],
+  "dependencies": [
+    { "name": "wso2/base", "version_requirement": "1.0.0" }
+  ]
+}

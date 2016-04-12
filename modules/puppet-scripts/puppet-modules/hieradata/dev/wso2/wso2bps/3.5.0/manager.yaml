@@ -1,0 +1,46 @@
+# Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+wso2::mgt_hostname : mgt.bps.wso2.com
+
+wso2::clustering :
+    enabled : true
+    local_member_host : 192.168.100.10
+    local_member_port : 4000
+    membership_scheme : wka
+    sub_domain : mgt
+    wka :
+       members :
+         -
+           hostname : 192.168.100.10
+           port : 4000
+         -
+           hostname : 192.168.100.20
+           port : 4000
+
+#wso2::registry_mounts:
+#  wso2_config_db:
+#    path: /_system/config/esb
+#    target_path: /_system/config/esb
+#    read_only: false
+#    registry_root: /
+#    enable_cache: true
+#
+#  wso2_gov_db:
+#    path: /_system/governance
+#    target_path: /_system/governance
+#    read_only: false
+#    registry_root: /
+#    enable_cache: true
