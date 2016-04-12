@@ -492,6 +492,10 @@
             <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/event-broker.xml</source>
             <outputDirectory>wso2appm-${pom.version}/repository/conf</outputDirectory>
         </file>
+        <file>
+            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/registry-event-broker.xml</source>
+            <outputDirectory>wso2appm-${pom.version}/repository/conf</outputDirectory>
+        </file>
 	    <file>
             <source>src/main/conf/identity/sso-idp-config.xml</source>
             <outputDirectory>wso2appm-${pom.version}/repository/conf/identity/</outputDirectory>

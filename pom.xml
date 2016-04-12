@@ -483,9 +483,9 @@
         <carbon.identity.social.version>5.0.9-SNAPSHOT</carbon.identity.social.version>
         <carbon.deployment.version>4.6.1</carbon.deployment.version>
         <carbon.commons.version>4.5.2</carbon.commons.version>
-        <carbon.analytics-common.version>4.4.9</carbon.analytics-common.version>
-        <carbon.registry.version>4.5.3-alpha</carbon.registry.version>
-        <carbon.governance.version>4.6.2-alpha2</carbon.governance.version>
+        <carbon.analytics-common.version>5.0.11</carbon.analytics-common.version>
+        <carbon.registry.version>4.5.3-beta</carbon.registry.version>
+        <carbon.governance.version>4.6.2-beta</carbon.governance.version>
         <carbon.store.version>1.4.2-SNAPSHOT</carbon.store.version>
         <carbon.webapp.mgt.stub>4.2.0</carbon.webapp.mgt.stub>
 
