@@ -5,35 +5,27 @@
   "RESTAPIScopes": {
     "Scope": [
       {
-        "Name": "apim:api_publish",
-        "Roles": "admin"
+        "Name": "appm:publish",
+        "Roles": "admin,Internal/publisher"
       },
       {
-        "Name": "apim:api_create",
-        "Roles": "admin"
+        "Name": "appm:read",
+        "Roles": "Internal/everyone"
       },
       {
-        "Name": "apim:api_view",
-        "Roles": "admin"
+        "Name": "appm:create",
+        "Roles": "admin,Internal/creator"
       },
       {
-        "Name": "apim:subscribe",
+        "Name": "appm:subscribe",
         "Roles": "Internal/subscriber"
       },
       {
-        "Name": "apim:tier_view",
-        "Roles": "admin"
+        "Name": "appm:update",
+        "Roles": "admin,Internal/creator"
       },
       {
-        "Name": "apim:tier_manage",
-        "Roles": "admin"
-      },
-      {
-        "Name": "apim:subscription_view",
-        "Roles": "admin"
-      },
-      {
-        "Name": "apim:subscription_block",
+        "Name": "appm:administration",
         "Roles": "admin"
       }
     ]
