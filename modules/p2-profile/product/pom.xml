@@ -262,6 +262,15 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.store.feature:${carbon.appmgt.version}
                                 </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.oauth.feature:${carbon.appmgt.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.rest.api.store.feature:${carbon.appmgt.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon.appmgt:org.wso2.carbon.appmgt.rest.api.publisher.feature:${carbon.appmgt.version}
+                                </featureArtifactDef>
 
                                 <!--Governance Feature-->
                                 <featureArtifactDef>
@@ -824,10 +833,22 @@
                                     <id>org.wso2.carbon.appmgt.store.feature.group</id>
                                     <version>${carbon.appmgt.version}</version>
                                 </feature>
-                                <!--<feature>
-                                    <id>org.wso2.carbon.event.feature.group</id>
-                                    <version>${carbon.commons.version}</version>
-                                </feature>-->
+                                <feature>
+                                    <id>org.wso2.carbon.appmgt.oauth.feature.group</id>
+                                    <version>${carbon.appmgt.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.appmgt.rest.api.store.feature.group</id>
+                                    <version>${carbon.appmgt.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.appmgt.rest.api.publisher.feature.group</id>
+                                    <version>${carbon.appmgt.version}</version>
+                                </feature>
+                              <!--feature>
+                                  <id>org.wso2.carbon.event.feature.group</id>
+                                  <version>${carbon.commons.version}</version>
+                              </feature>-->
                                 <feature>
                                     <id>org.wso2.carbon.event.server.feature.group</id>
                                     <version>${carbon.commons.version}</version>
