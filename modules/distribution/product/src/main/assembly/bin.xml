@@ -765,5 +765,12 @@
             <outputDirectory>wso2appm-${pom.version}/repository/coresourcesnf/</outputDirectory>
             <fileMode>644</fileMode>
         </file>
+        <file>
+            <source>
+                ../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/resources/tenant-conf.json
+            </source>
+            <outputDirectory>wso2appm-${pom.version}/repository/resources/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
     </files>
 </assembly>
