@@ -662,12 +662,12 @@
             <filtered>true</filtered>
             <fileMode>755</fileMode>
         </file>
-	<file>
-            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/bin/wso2server.bat</source>
+        <file>
+            <source>../../../config/wso2server.bat</source>
             <outputDirectory>wso2appm-${pom.version}/bin</outputDirectory>
             <filtered>true</filtered>
+            <fileMode>755</fileMode>
         </file>
-
         <file>
             <source>src/main/conf/carbon.xml</source>
             <outputDirectory>wso2appm-${pom.version}/repository/conf/</outputDirectory>
