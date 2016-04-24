@@ -34,7 +34,7 @@ import static org.testng.Assert.assertTrue;
 public class PublisherLogoutTestCase {
     private static final String TEST_DESCRIPTION = "Verify Publisher Logout";
     private APPMPublisherRestClient appmPublisherRestClient;
-    private String appName = "PublisherLogoutTestCase";
+    private String appName = "PublisherLogoutTestTestCase";
     private String appVersion = "1.0.0";
     private String context = "/" + appName;
     private String trackingCode = "AM_" + appName;
