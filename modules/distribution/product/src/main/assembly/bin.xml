@@ -309,7 +309,22 @@
                 <include>api.war</include>
             </includes>
         </fileSet>
-	
+
+	    <!-- Copy ReST APIs and OAuth artifacts-->
+        <fileSet>
+            <directory>
+                ../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/deployment/server/webapps
+            </directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/webapps</outputDirectory>
+            <includes>
+                <include>oauth2.war</include>
+                <include>api#appm#oauth#v1.0.war</include>
+                <include>api#appm#store#v1.0.war</include>
+                <include>api#appm#storeadmin#v1.0.war</include>
+                <include>api#appm#publisher#v1.0.war</include>
+            </includes>
+        </fileSet>
+
         <!-- App Manager keeps authenticationendpoint.war itself, since login page has customized. -->
         <fileSet>
             <directory>
@@ -492,6 +507,10 @@
             <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/event-broker.xml</source>
             <outputDirectory>wso2appm-${pom.version}/repository/conf</outputDirectory>
         </file>
+        <file>
+            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/registry-event-broker.xml</source>
+            <outputDirectory>wso2appm-${pom.version}/repository/conf</outputDirectory>
+        </file>
 	    <file>
             <source>src/main/conf/identity/sso-idp-config.xml</source>
             <outputDirectory>wso2appm-${pom.version}/repository/conf/identity/</outputDirectory>
@@ -638,17 +657,17 @@
             <fileMode>755</fileMode>
         </file>
 	<file>
-            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/bin/wso2server.sh</source>
+            <source>../../../config/wso2server.sh</source>
             <outputDirectory>wso2appm-${pom.version}/bin</outputDirectory>
             <filtered>true</filtered>
             <fileMode>755</fileMode>
         </file>
-	<file>
-            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/bin/wso2server.bat</source>
+        <file>
+            <source>../../../config/wso2server.bat</source>
             <outputDirectory>wso2appm-${pom.version}/bin</outputDirectory>
             <filtered>true</filtered>
+            <fileMode>755</fileMode>
         </file>
-
         <file>
             <source>src/main/conf/carbon.xml</source>
             <outputDirectory>wso2appm-${pom.version}/repository/conf/</outputDirectory>
@@ -744,6 +763,13 @@
                 ../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/resources/lifecycle-config.xsd
             </source>
             <outputDirectory>wso2appm-${pom.version}/repository/coresourcesnf/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>
+                ../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/resources/tenant-conf.json
+            </source>
+            <outputDirectory>wso2appm-${pom.version}/repository/resources/</outputDirectory>
             <fileMode>644</fileMode>
         </file>
     </files>

@@ -125,7 +125,7 @@ public class AppCreateRequest extends AbstractRequest {
         addParameter("overview_allowAnonymous", overviewAllowAnonymous);
         addParameter("overview_acsUrl", overviewAcsUrl);
         addParameter("overview_skipGateway", overviewSkipGateway);
-        addParameter("overview_owner", businessOwner);
+        addParameter("overview_businessOwner", businessOwner);
 
         addParameter("uritemplate_policyGroupIds" , uriTemplatePolicyGroupIds);
 
