@@ -43,6 +43,7 @@ public class WebAppUtil {
 
         WebApp webApp = new WebApp();
         webApp.setOverviewProvider(provider);
+	webApp.setBusinessOwner(null);
         webApp.setOverviewName(name);
         webApp.setOverviewDisplayName(name);
         webApp.setOverviewContext(context);
