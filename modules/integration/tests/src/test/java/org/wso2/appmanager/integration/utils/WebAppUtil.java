@@ -42,6 +42,7 @@ public class WebAppUtil {
         claims.add("http%3A%2F%2Fwso2.org%2Fclaims%2Frole");
 
         WebApp webApp = new WebApp();
+        webApp.setBusinessOwner(null);
         webApp.setOverviewProvider(provider);
         webApp.setOverviewName(name);
         webApp.setOverviewDisplayName(name);

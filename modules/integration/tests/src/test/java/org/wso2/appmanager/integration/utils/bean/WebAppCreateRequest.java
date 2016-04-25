@@ -58,6 +58,7 @@ public class WebAppCreateRequest extends AbstractRequest {
         addParameter("overview_subscriptionAvailability", checkValue(webapp.getOverviewSubscriptionAvailability()));
         addParameter("overview_tenants", checkValue(StringUtils.join(webapp.getTenants(), ",")));
         addParameter("overview_visibleRoles", checkValue(StringUtils.join(webapp.getRoles(), ",")));
+        addParameter("overview_businessOwner", null);
 
         addParameter("images_thumbnail", checkValue(webapp.getImagesThumbnail()));
         addParameter("images_banner", checkValue(webapp.getImagesBanner()));
