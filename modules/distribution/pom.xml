@@ -45,6 +45,7 @@
     <modules>
         <module>product/src/main/statistics</module>
         <module>product</module>
+        <module>resources/migrations/Migration-client</module>
     </modules>
 
     <dependencies>
