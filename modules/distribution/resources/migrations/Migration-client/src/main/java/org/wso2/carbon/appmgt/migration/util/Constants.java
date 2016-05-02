@@ -33,7 +33,13 @@ public class Constants {
     public static final String DATA_SOURCE_NAME = "DataSourceName";
     public static final String ARG_MIGRATE_DB = "migrateDB";
     public static final String ARG_MIGRATE_REG = "migrateReg";
-    public static final String MIGRATION_SCRIPTS_LOCATION = "/migration-1.1.0_to_1.2.0/dbscripts/";
+    public static final String ARG_MIGRATE_FILE_SYSTEM = "migrateFS";
+    public static final String ARG_MIGRATE_PROFILE= "migrateProfile";
+    public static final String PUBLISHER_MIGRATE_PROFILE= "publisher";
+    public static final String GATEWAY_MIGRATE_PROFILE= "gateway";
+
+
+    public static final String MIGRATION_SCRIPTS_LOCATION = "/dbscripts/migration-1.1.0_to_1.2.0/";
     public static final String REGISTRY_ARTIFACT_LIFECYCLE_HISTORY =
             "/repository/components/org.wso2.carbon.governance/lifecycles/history/__system_governance_appmgt_applicationdata_";
     public static final String REGISTRY_ARTIFACT_LIFECYCLE_HISTORY_OLD =
@@ -45,6 +51,26 @@ public class Constants {
     public static final String GOVERNANCE_COMPONENT_REGISTRY_LOCATION = "/repository/components/org.wso2.carbon" +
             ".governance";
     public static final String RXT_PATH = "/repository/resources/rxts/webapp.rxt";
+    public static final String ATTRIBUTE_CLASSNAME = "className";
+    public static final String LIFE_CYCLES_FOLDER = "lifecycles";
+    public static final String WEBAPP_LIFECYCLE = "WebAppLifeCycle";
+    public static final String WEBAPP_RXT = "webapp";
+    public static final String MOBILEAPP_RXT = "mobileapp";
+
+    //Synapse Configuration related
+    public static final String SYNAPSE_API_ROOT_ELEMENT = "api";
+    public static final String SYNAPSE_API_XMLNS = "http://ws.apache.org/ns/synapse";
+    public static final String SYNAPSE_IN_SEQUENCE_ELEMENT = "inSequence";
+    public static final String SYNAPSE_PROPERTY_ELEMENT = "property";
+    public static final String SYNAPSE_API_ATTRIBUTE_NAME = "name";
+    public static final String SYNAPSE_API_ATTRIBUTE_VERSION = "version";
+    public static final String SYNAPSE_API_ATTRIBUTE_VALUE = "value";
+    public static final String SYNAPSE_API_ATTRIBUTE_EXPRESSION = "expression";
+    public static final String SYNAPSE_API_NO_VERSION_PROPERTY = "noVersion";
+
+
+
+
 
 
     //database types

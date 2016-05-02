@@ -33,20 +33,22 @@ public interface MigrationClient {
      * This method is used to migrate databases. This method adds the newly added columns, tables and alters the tables
      * according to the new database
      *
-     * @throws org.wso2.carbon.appmgt.migration.APPMMigrationException
-     * @throws java.sql.SQLException
+     * @throws APPMMigrationException
      */
-    public void databaseMigration() throws APPMMigrationException, SQLException;
+    public void databaseMigration() throws APPMMigrationException;
 
     /**
-     * This method is used to migrate all the registry resources
-     * Swagger, RXTs and all other registry resources will be migrated
-     *
-     * @throws org.wso2.carbon.appmgt.migration.APPMMigrationException
+     * This method is used to migrate all the registry resources including
+     * RXTs, life-cycles and registry artifacts
+     * @throws APPMMigrationException
      */
     public void registryResourceMigration() throws APPMMigrationException;
 
-    public void copyNewRxtFileToRegistry() throws APPMMigrationException;
-
-
+    /**
+     * This method is used to migrate synapse api configuration
+     * Synapse API configurations will be updated and new configurations will be deployed accordingly
+     *
+     * @throws org.wso2.carbon.appmgt.migration.APPMMigrationException
+     */
+    public void synapseFileSystemMigration() throws APPMMigrationException;
 }

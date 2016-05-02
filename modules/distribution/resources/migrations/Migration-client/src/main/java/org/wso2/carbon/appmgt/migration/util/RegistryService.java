@@ -21,6 +21,7 @@ package org.wso2.carbon.appmgt.migration.util;
 import org.wso2.carbon.appmgt.api.AppManagementException;
 import org.wso2.carbon.appmgt.api.model.WebApp;
 import org.wso2.carbon.governance.api.generic.dataobjects.GenericArtifact;
+import org.wso2.carbon.registry.core.Registry;
 import org.wso2.carbon.registry.core.exceptions.RegistryException;
 import org.wso2.carbon.user.api.Tenant;
 import org.wso2.carbon.user.api.UserStoreException;
@@ -39,7 +40,7 @@ public interface RegistryService {
 
     void addDefaultLifecycles() throws RegistryException, UserStoreException, FileNotFoundException, XMLStreamException;
 
-    GenericArtifact[] getGenericAPIArtifacts();
+    GenericArtifact[] getGenericWebappArtifacts();
 
     void updateGenericAPIArtifacts(GenericArtifact[] artifacts);
 
@@ -64,6 +65,7 @@ public interface RegistryService {
 
     void addGovernanceRegistryResource(final String registryLocation, final String content, final String mediaType)
             throws UserStoreException, RegistryException;
+    Registry getGovernanceRegistry() throws UserStoreException, RegistryException;
 
     void updateConfigRegistryResource(final String registryLocation, final String content)
             throws UserStoreException, RegistryException;

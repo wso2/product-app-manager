@@ -18,6 +18,9 @@
 
 package org.wso2.carbon.appmgt.migration.util;
 
+import org.apache.axis2.AxisFault;
+import org.apache.axis2.context.ConfigurationContext;
+import org.apache.axis2.context.ConfigurationContextFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.appmgt.api.APIProvider;
@@ -27,6 +30,7 @@ import org.wso2.carbon.appmgt.impl.APIManagerFactory;
 import org.wso2.carbon.appmgt.impl.AppMConstants;
 import org.wso2.carbon.appmgt.impl.service.ServiceReferenceHolder;
 import org.wso2.carbon.appmgt.impl.utils.AppManagerUtil;
+import org.wso2.carbon.appmgt.migration.APPMMigrationException;
 import org.wso2.carbon.appmgt.migration.client.internal.ServiceHolder;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.governance.api.generic.GenericArtifactManager;
@@ -40,10 +44,12 @@ import org.wso2.carbon.registry.core.config.RegistryContext;
 import org.wso2.carbon.registry.core.exceptions.RegistryException;
 import org.wso2.carbon.registry.core.jdbc.realm.RegistryAuthorizationManager;
 import org.wso2.carbon.registry.core.utils.RegistryUtils;
+import org.wso2.carbon.registry.ws.client.registry.WSRegistryServiceClient;
 import org.wso2.carbon.user.api.Tenant;
 import org.wso2.carbon.user.api.UserStoreException;
 
 import javax.xml.stream.XMLStreamException;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.charset.Charset;
 
@@ -88,8 +94,8 @@ public class RegistryServiceImpl implements RegistryService {
     }
 
     @Override
-    public GenericArtifact[] getGenericAPIArtifacts() {
-        log.debug("Calling getGenericAPIArtifacts");
+    public GenericArtifact[] getGenericWebappArtifacts() {
+        log.debug("Calling getGenericWebappArtifacts");
         GenericArtifact[] artifacts = {};
 
         try {
@@ -101,7 +107,7 @@ public class RegistryServiceImpl implements RegistryService {
 
                 log.debug("Total number of api artifacts : " + artifacts.length);
             } else {
-                log.debug("No api artifacts found in registry for tenant " + tenant.getId() + '(' + tenant.getDomain() + ')');
+                log.debug("No webapp artifacts found in registry for tenant " + tenant.getId() + '(' + tenant.getDomain() + ')');
             }
 
         } catch (RegistryException e) {
@@ -219,7 +225,6 @@ public class RegistryServiceImpl implements RegistryService {
     public void updateConfigRegistryResource(final String registryLocation, final String content)
             throws UserStoreException, RegistryException {
         Registry registry = getConfigRegistry();
-
         Resource resource = registry.get(registryLocation);
         resource.setContent(content);
         registry.put(registryLocation, resource);
@@ -264,7 +269,7 @@ public class RegistryServiceImpl implements RegistryService {
     }
 
 
-    private Registry getGovernanceRegistry() throws UserStoreException, RegistryException {
+    public Registry getGovernanceRegistry() throws UserStoreException, RegistryException {
         if (tenant == null) {
             throw new IllegalStateException("The tenant flow has not been started, " +
                     "'RegistryService.startTenantFlow(Tenant tenant)' needs to be called");
@@ -294,8 +299,6 @@ public class RegistryServiceImpl implements RegistryService {
         //Update RXT resource
         String resourcePath = Constants.RXT_REG_PATH + RegistryConstants.PATH_SEPARATOR + rxtName;
 
-        // This is "registry" is a governance registry instance, therefore
-        // calculate the relative path to governance.
         String govRelativePath = RegistryUtils.getRelativePathToOriginal(resourcePath,
                 AppManagerUtil.getMountedPath(RegistryContext.getBaseInstance(),
                         RegistryConstants.GOVERNANCE_REGISTRY_BASE_PATH));
@@ -326,6 +329,4 @@ public class RegistryServiceImpl implements RegistryService {
         }
 
     }
-
-
 }

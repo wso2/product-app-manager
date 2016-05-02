@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+* Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -22,7 +22,9 @@ import org.wso2.carbon.appmgt.api.model.APIIdentifier;
 import org.wso2.carbon.appmgt.impl.utils.APIMgtDBUtil;
 import org.wso2.carbon.appmgt.migration.APPMMigrationException;
 import org.wso2.carbon.appmgt.migration.util.Constants;
-import org.wso2.carbon.appmgt.migration.util.MigratingWebapp;
+import org.wso2.carbon.appmgt.migration.util.MigratingWebApp;
+import org.wso2.carbon.appmgt.migration.util.MigratingWebApp;
+import org.wso2.carbon.appmgt.migration.util.ResourceUtil;
 import org.wso2.carbon.utils.CarbonUtils;
 import org.wso2.carbon.utils.dbcreator.DatabaseCreator;
 
@@ -45,6 +47,11 @@ public class MigrationDBCreator extends DatabaseCreator {
         this.dataSource = dataSource;
     }
 
+    /**
+     * Get the location of database migration scripts
+     * @param databaseType
+     * @return
+     */
     @Override
     protected String getDbScriptLocation(String databaseType) {
         String scriptName = databaseType + ".sql";
@@ -55,7 +62,11 @@ public class MigrationDBCreator extends DatabaseCreator {
         return resourcePath + scriptName;
     }
 
-    public void createDatabase() throws SQLException, APPMMigrationException {
+    /**
+     * Migrate App Manager database
+     * @throws APPMMigrationException
+     */
+    public void migrateDatabaseTables() throws APPMMigrationException {
         try {
             connection = dataSource.getConnection();
             connection.setAutoCommit(false);
@@ -63,22 +74,24 @@ public class MigrationDBCreator extends DatabaseCreator {
             executeSQLScript();
             connection.commit();
             if (log.isTraceEnabled()) {
-                log.trace("Registry tables are created successfully.");
+                log.trace("App Management database tables are created successfully.");
             }
         } catch (SQLException e) {
-            log.error("Failed to create database tables in App Manager datasource. ", e);
-            throw new APPMMigrationException("Failed to create database tables in App Manager datasource.", e);
+            ResourceUtil.handleException("Failed to create database tables in App Manager database.", e);
         } catch (Exception e) {
-
+            ResourceUtil.handleException("Error occurred while executing SQL scripts in App Manager database. ", e);
         } finally {
             if (connection != null) {
-                connection.close();
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    ResourceUtil.handleException("Error occurred while closing database connection.", e);
+                }
             }
-
         }
     }
 
-    public void updateAppDefaultVersions(HashMap<String, MigratingWebapp> defaultAppList, String tenantId) {
+    public void updateAppDefaultVersions(HashMap<String, MigratingWebApp> defaultAppList, String tenantId) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
@@ -91,23 +104,25 @@ public class MigrationDBCreator extends DatabaseCreator {
                 "VALUES (?,?,?,?,?)";
 
         try {
-            connection = APIMgtDBUtil.getConnection();
+            connection = dataSource.getConnection();
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(queryToInsertDefaultAppVersions);
             for (String appName : defaultAppList.keySet()) {
-                MigratingWebapp webapp = defaultAppList.get(appName);
-                preparedStatement.setString(1, webapp.getAppVersion());
-                preparedStatement.setString(2, webapp.getAppName());
-                preparedStatement.setString(3, webapp.getAppProvider());
-                if ("Published".equals(webapp.getLcState())) {
-                    preparedStatement.setString(4, webapp.getAppVersion());
+                MigratingWebApp webapp = defaultAppList.get(appName);
+                APIIdentifier apiIdentifier = webapp.getId();
+                preparedStatement.setString(1, apiIdentifier.getVersion());
+                preparedStatement.setString(2, apiIdentifier.getApiName());
+                preparedStatement.setString(3, apiIdentifier.getProviderName());
+                if (webapp.isPublished()) {
+                    preparedStatement.setString(4, webapp.getVersion());
                 } else {
-
                     preparedStatement.setString(4, null);
                 }
                 preparedStatement.setString(5, tenantId);
+                preparedStatement.addBatch();
             }
             preparedStatement.executeBatch();
+            connection.commit();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -116,6 +131,10 @@ public class MigrationDBCreator extends DatabaseCreator {
         }
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     //org.wso2.carbon.utils.dbcreator.DatabaseCreator.getDatabaseType throws generic Exception
     private void executeSQLScript() throws Exception {
         String databaseType = DatabaseCreator.getDatabaseType(this.connection);
@@ -167,10 +186,6 @@ public class MigrationDBCreator extends DatabaseCreator {
             if (sql.length() > 0) {
                 executeSQL(sql.toString());
             }
-        } catch (IOException e) {
-            log.error("Error occurred while executing SQL script for creating registry database", e);
-            throw new APPMMigrationException("Error occurred while executing SQL script for creating registry database", e);
-
         } finally {
             if (reader != null) {
                 reader.close();
@@ -179,6 +194,11 @@ public class MigrationDBCreator extends DatabaseCreator {
     }
 
 
+    /**
+     * Execute given sql query against the database
+     * @param sql
+     * @throws APPMMigrationException
+     */
     private void executeSQL(String sql) throws APPMMigrationException {
         // Check and ignore empty statements
         if ("".equals(sql.trim())) {
@@ -224,15 +244,17 @@ public class MigrationDBCreator extends DatabaseCreator {
                     log.info("Table Already Exists. Hence, skipping table creation");
                 }
             } else {
-                throw new APPMMigrationException("Error occurred while executing : " + sql, e);
+                ResourceUtil.handleException("Error occurred while executing : " + sql, e);
             }
         } finally {
             if (resultSet != null) {
+
                 try {
                     resultSet.close();
                 } catch (SQLException e) {
-                    log.error("Error occurred while closing result set.", e);
+                    ResourceUtil.handleException("Error occurred while closing result set", e);
                 }
+
             }
         }
     }
