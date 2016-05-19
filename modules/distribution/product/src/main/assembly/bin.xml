@@ -364,7 +364,13 @@
                 <include>**/tenant-mgt.xml</include>
             </includes>
         </fileSet>
-
+        
+        <fileSet>
+            <directory>
+                ../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/data-bridge/
+            </directory>
+            <outputDirectory>wso2appm-${pom.version}/repository/conf/data-bridge</outputDirectory>
+        </fileSet>
 
         <!--fileSet>
                  <directory>../../p2-profile/product/target/WSO2-CARBON-PATCH-4.1.0-0001</directory>
