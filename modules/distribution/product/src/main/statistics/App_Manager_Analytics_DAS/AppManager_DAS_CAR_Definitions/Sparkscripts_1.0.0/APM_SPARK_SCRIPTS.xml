@@ -174,12 +174,24 @@ INSERT OVERWRITE TABLE AppResponseSummaryData SELECT * FROM API_RESPONSE_SUMMARY
 
 create temporary table  ApmAppHits using CarbonJDBC options (dataSource "WSO2AM_STATS_DB", tableName "APM_APP_HITS");
 
-create temporary table APM_APP_HITS_TEMP USING CarbonAnalytics OPTIONS(tableName "ORG_WSO2_APPMGT_BAM_UIACTIVITYPUBLISH");                     
+create temporary table ApmAppHitsData USING CarbonAnalytics OPTIONS(tableName "ORG_WSO2_APPMGT_BAM_UIACTIVITYPUBLISH");
 
-INSERT OVERWRITE TABLE ApmAppHits select appId,userId,item,action,tenantId, appName, appVersion, context from APM_APP_HITS_TEMP;
-                         
-                                        
-                                                      
+CREATE TEMPORARY TABLE APM_APP_HITS_FINAL USING CarbonAnalytics OPTIONS (tableName "APM_APP_HITS",                           
+	schema "uuid string,
+		app_name string,
+		version string,
+		context string,
+		user_id string,
+		tenant_id string,
+		hit_time long",
+  primaryKeys "appId,appName,appVersion,context,userId,tenantId"
+);
+
+insert into table APM_APP_HITS_FINAL select appId,appName,appVersion,context,userId,tenantId,first(timestamp) from ApmAppHitsData group by appId,appName,appVersion,context,userId,tenantId;                    
+
+INSERT OVERWRITE TABLE ApmAppHits SELECT * FROM APM_APP_HITS_FINAL;
+
+                                                  
 </Script>
     <CronExpression>0 0/5 * 1/1 * ? *</CronExpression>
 </Analytics> 
