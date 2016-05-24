@@ -522,6 +522,21 @@
             <destName>sso-idp-config.xml</destName>
         </file>
         <file>
+            <source>src/main/conf/identity/service-providers/publisher.xml</source>
+            <outputDirectory>wso2appm-${pom.version}/repository/conf/identity/service-providers</outputDirectory>
+            <destName>publisher.xml</destName>
+        </file>
+        <file>
+            <source>src/main/conf/identity/service-providers/store.xml</source>
+            <outputDirectory>wso2appm-${pom.version}/repository/conf/identity/service-providers</outputDirectory>
+            <destName>store.xml</destName>
+        </file>
+        <file>
+            <source>src/main/conf/identity/service-providers/social.xml</source>
+            <outputDirectory>wso2appm-${pom.version}/repository/conf/identity/service-providers</outputDirectory>
+            <destName>social.xml</destName>
+        </file>
+        <file>
             <source>src/main/conf/axis2.xml</source>
             <outputDirectory>wso2appm-${pom.version}/repository/conf/axis2</outputDirectory>
             <destName>axis2.xml</destName>
