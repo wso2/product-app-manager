@@ -787,7 +787,7 @@
         </file>
         <file>
             <source>
-                ../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/resources/tenant-conf.json
+                ../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/resources/oauth-scope-role-mapping.json
             </source>
             <outputDirectory>wso2appm-${pom.version}/repository/resources/</outputDirectory>
             <fileMode>644</fileMode>
