@@ -23,7 +23,7 @@ package org.wso2.appmanager.integration.utils.bean;
  */
 
 public class AppCreateRequest extends AbstractRequest {
-    private String overviewProvider = "admin";
+    private String overviewProvider;
     private String overviewName;
     private String overviewDisplayName = "Fifa";
     private String overviewContext;
@@ -189,12 +189,15 @@ public class AppCreateRequest extends AbstractRequest {
      * @param context String.
      * @param version String.
      * @param trackingCode String.
+     * @param appCreator String.
      */
-    public AppCreateRequest(String appName, String context, String version, String trackingCode) {
+    public AppCreateRequest(String appName, String context, String version, String trackingCode,
+                            String appCreator) {
         this.overviewName = appName;
         this.overviewContext = context;
         this.overviewVersion = version;
         this.overviewTrackingCode = trackingCode;
+        this.overviewProvider = appCreator;
     }
 
     /**
