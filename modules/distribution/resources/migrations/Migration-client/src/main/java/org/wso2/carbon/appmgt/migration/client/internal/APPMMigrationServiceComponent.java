@@ -26,15 +26,11 @@ import org.wso2.carbon.appmgt.migration.client.MigrationClient;
 import org.wso2.carbon.appmgt.migration.client.MigrationClientImpl;
 import org.wso2.carbon.appmgt.migration.util.Constants;
 import org.wso2.carbon.appmgt.migration.util.RegistryServiceImpl;
-import org.wso2.carbon.core.services.callback.LoginSubscriptionManagerService;
 import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.registry.core.service.TenantRegistryLoader;
-import org.wso2.carbon.rest.api.service.RestApiAdminService;
 import org.wso2.carbon.user.api.UserStoreException;
 import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.user.core.tenant.TenantManager;
-
-import java.sql.SQLException;
 
 /**
  * @scr.component name="org.wso2.carbon.appmgt.migration.client" immediate="true"

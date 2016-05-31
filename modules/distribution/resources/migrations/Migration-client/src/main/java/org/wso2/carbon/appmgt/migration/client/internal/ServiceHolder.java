@@ -19,8 +19,6 @@ import org.wso2.carbon.appmgt.impl.AppManagerConfigurationService;
 import org.wso2.carbon.core.services.callback.LoginSubscriptionManagerService;
 import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.registry.core.service.TenantRegistryLoader;
-import org.wso2.carbon.rest.api.service.RestApiAdminService;
-import org.wso2.carbon.rest.api.stub.RestApiAdmin;
 import org.wso2.carbon.user.core.service.RealmService;
 
 public class ServiceHolder {
@@ -34,7 +32,6 @@ public class ServiceHolder {
 
     //Tenant registry loader which is used to load tenant registry
     private static TenantRegistryLoader tenantRegLoader;
-    private static RestApiAdminService restApiAdmin;
 
     public static AppManagerConfigurationService getAppManagerConfigurationService() {
         return appManagerConfigurationService;

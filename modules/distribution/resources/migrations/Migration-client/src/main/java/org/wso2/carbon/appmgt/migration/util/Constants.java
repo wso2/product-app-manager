@@ -21,7 +21,7 @@ import org.wso2.carbon.registry.core.RegistryConstants;
 
 public class Constants {
 
-    public static final String VERSION_1_2_0 = "1.2.0";
+    public static final String VERSION_1_2_0 = "1.2.1.1.0to1.2.1.1.0-1.2.0-migration";
     public static final String CURRENT_TENANT   = "current_tenant";
     public static final String ROLE_RESTRICTIONS = "role_restrictions";
 
@@ -39,7 +39,7 @@ public class Constants {
     public static final String GATEWAY_MIGRATE_PROFILE= "gateway";
 
 
-    public static final String MIGRATION_SCRIPTS_LOCATION = "/dbscripts/migration-1.1.0_to_1.2.0/";
+    public static final String MIGRATION_SCRIPTS_LOCATION = "/dbscripts/migration-1.1.0_to_1.2.1.1.0to1.2.1.1.0-1.2.0-migration/";
     public static final String REGISTRY_ARTIFACT_LIFECYCLE_HISTORY =
             "/repository/components/org.wso2.carbon.governance/lifecycles/history/__system_governance_appmgt_applicationdata_";
     public static final String REGISTRY_ARTIFACT_LIFECYCLE_HISTORY_OLD =

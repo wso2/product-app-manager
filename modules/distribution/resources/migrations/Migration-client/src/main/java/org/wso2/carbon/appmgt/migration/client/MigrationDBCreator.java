@@ -23,13 +23,15 @@ import org.wso2.carbon.appmgt.impl.utils.APIMgtDBUtil;
 import org.wso2.carbon.appmgt.migration.APPMMigrationException;
 import org.wso2.carbon.appmgt.migration.util.Constants;
 import org.wso2.carbon.appmgt.migration.util.MigratingWebApp;
-import org.wso2.carbon.appmgt.migration.util.MigratingWebApp;
 import org.wso2.carbon.appmgt.migration.util.ResourceUtil;
 import org.wso2.carbon.utils.CarbonUtils;
 import org.wso2.carbon.utils.dbcreator.DatabaseCreator;
 
 import javax.sql.DataSource;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.StringTokenizer;
