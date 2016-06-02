@@ -108,9 +108,9 @@ public class APPMMigrationServiceComponent {
                 log.error("Migration version is not specified");
             }
         } catch (APPMMigrationException e) {
-            log.error("API Management  exception occurred while migrating", e);
+            log.error("Error occurred while initializing migration client for App Manager 1.2.0 migration", e);
         } catch (UserStoreException e) {
-            log.error("User store  exception occurred while migrating", e);
+            log.error("Error occurred while initializing migration client for App Manager 1.2.0 migration", e);
         }
     }
 

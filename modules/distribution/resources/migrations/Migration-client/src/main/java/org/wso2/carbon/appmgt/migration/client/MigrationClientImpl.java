@@ -152,7 +152,7 @@ public class MigrationClientImpl implements MigrationClient {
      */
     @Override
     public void registryResourceMigration() {
-        log.info("Registry resource migration for App Manager 1.2.0 started");
+        log.info("Registry resource migration for App Manager is 1.2.0 started");
         try {
             migrateRxts();
             migrateLifeCycles();
@@ -162,12 +162,18 @@ public class MigrationClientImpl implements MigrationClient {
         } catch (APPMMigrationException e) {
             log.error("Error occurred while migrating registry resources for App Manager 1.2.0", e);
         }
-        log.info("Registry resource migration for App Manager 1.2.0 is successfully completed for all tenantess");
+        log.info("Registry resource migration for App Manager 1.2.0 is successfully completed for all tenants");
     }
 
     @Override
-    public void synapseFileSystemMigration() throws APPMMigrationException {
+    public void synapseFileSystemMigration() {
+        log.info("Synapse configuration file migration for App Manager 1.2.0 started");
+        try {
         synapseAPIMigration();
+        } catch (APPMMigrationException e) {
+            log.error("Error occurred while migrating synapse configuration files for App Manager 1.2.0", e);
+        }
+        log.info("Synapse configuration file migration for App Manager 1.2.0 is completed successfully");
     }
 
     private static DataSource initializeDataSource(String dataSourceName) throws APPMMigrationException {
@@ -285,6 +291,9 @@ public class MigrationClientImpl implements MigrationClient {
 
     private void synapseAPIMigration() throws APPMMigrationException {
         for (Tenant tenant : tenantsArray) {
+            if(log.isDebugEnabled()){
+                log.debug("Synapse configuration file system migration is started for tenant "+tenant.getDomain());
+            }
             String apiPath = ResourceUtil.getApiPath(tenant.getId(), tenant.getDomain());
             List<SynapseDTO> synapseDTOs = ResourceUtil.getVersionedAPIs(apiPath);
 
@@ -319,6 +328,9 @@ public class MigrationClientImpl implements MigrationClient {
 
                 }
                 ResourceUtil.transformXMLDocument(document, synapseDTO.getFile());
+            }
+            if(log.isDebugEnabled()){
+                log.debug("Synapse configuration file system migration for tenant "+tenant.getDomain()+"is completed successfully");
             }
         }
     }

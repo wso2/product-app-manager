@@ -35,14 +35,14 @@ public interface MigrationClient {
      *
      * @throws APPMMigrationException
      */
-    public void databaseMigration() throws APPMMigrationException;
+    public void databaseMigration();
 
     /**
      * This method is used to migrate all the registry resources including
      * RXTs, life-cycles and registry artifacts
      * @throws APPMMigrationException
      */
-    public void registryResourceMigration() throws APPMMigrationException;
+    public void registryResourceMigration();
 
     /**
      * This method is used to migrate synapse api configuration
@@ -50,5 +50,5 @@ public interface MigrationClient {
      *
      * @throws org.wso2.carbon.appmgt.migration.APPMMigrationException
      */
-    public void synapseFileSystemMigration() throws APPMMigrationException;
+    public void synapseFileSystemMigration();
 }
