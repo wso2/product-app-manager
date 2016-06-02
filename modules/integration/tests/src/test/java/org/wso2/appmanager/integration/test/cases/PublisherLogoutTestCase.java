@@ -59,7 +59,7 @@ public class PublisherLogoutTestCase {
 
     @Test(description = TEST_DESCRIPTION)
     public void PublisherLogoutTestCase() throws Exception {
-        appmPublisherRestClient.webAppCreate(appName, context, appVersion, trackingCode);
+        appmPublisherRestClient.webAppCreate(appName, context, appVersion, trackingCode, userName);
 
         HttpResponse publisherLogoutResponseData = appmPublisherRestClient.logout();
         int publisherLogoutResponseCode = publisherLogoutResponseData.getResponseCode();

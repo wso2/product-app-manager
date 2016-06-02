@@ -93,11 +93,12 @@ public class APPMPublisherRestClient {
      * @param context      String.
      * @param appVersion   String.
      * @param trackingCode String.
+     * @param appCreator String.
      * @return appCreateResponse HttpResponse.
      * @throws Exception on errors.
      */
     public HttpResponse webAppCreate(String appName, String context, String appVersion,
-                                     String trackingCode) throws Exception {
+                                     String trackingCode , String appCreator) throws Exception {
         checkAuthentication();
         String appDescription = "Default app description for " + appName;
         HttpResponse httpResponse = addPoicyGroup(appDescription);
@@ -113,7 +114,7 @@ public class APPMPublisherRestClient {
 
             //Set new policy Id to AppCreateRequest;
             AppCreateRequest appRequest = new AppCreateRequest(appName, context, appVersion,
-                                                               trackingCode);
+                                                               trackingCode, appCreator);
             appRequest.setUriTemplatePolicyGroupId0(policyId);
             appRequest.setUriTemplatePolicyGroupId1(policyId);
             appRequest.setUriTemplatePolicyGroupId2(policyId);
