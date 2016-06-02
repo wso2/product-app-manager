@@ -64,7 +64,9 @@ public class APPMMigrationServiceComponent {
         TenantManager tenantManager = ServiceHolder.getRealmService().getTenantManager();
         String tenants = System.getProperty(Constants.ARG_MIGRATE_TENANTS);
         boolean migrateAll = Boolean.parseBoolean(System.getProperty(Constants.ARG_MIGRATE));
-        String migrateProfile = System.getProperty(Constants.ARG_MIGRATE_PROFILE);
+        boolean isDBMigration = Boolean.parseBoolean(System.getProperty(Constants.ARG_MIGRATE_DB));
+        boolean isRegistryMigration = Boolean.parseBoolean(System.getProperty(Constants.ARG_MIGRATE_REG));
+        boolean isFileSystemMigration = Boolean.parseBoolean(System.getProperty(Constants.ARG_MIGRATE_FILE_SYSTEM));
 
         try {
             APIMgtDBUtil.initialize();
@@ -86,21 +88,12 @@ public class APPMMigrationServiceComponent {
                         migrationClient.registryResourceMigration();
                         migrationClient.synapseFileSystemMigration();
                     } else {
-                        if (migrateProfile != null) {
-                            if (Constants.PUBLISHER_MIGRATE_PROFILE.equals(migrateProfile)) {
-                                if (log.isDebugEnabled()) {
-                                    log.debug(Constants.PUBLISHER_MIGRATE_PROFILE + " profile migration has started");
-                                }
-                                migrationClient.databaseMigration();
-                                migrationClient.registryResourceMigration();
-                            } else if (Constants.GATEWAY_MIGRATE_PROFILE.equals(migrateProfile)) {
-                                if (log.isDebugEnabled()) {
-                                    log.debug(Constants.GATEWAY_MIGRATE_PROFILE + " profile migration has started");
-                                }
-                                migrationClient.synapseFileSystemMigration();
-                            } else {
-                                log.error("Invalid migration profile : " + migrateProfile);
-                            }
+                        if (isDBMigration) {
+                            migrationClient.databaseMigration();
+                        } else if (isRegistryMigration) {
+                            migrationClient.registryResourceMigration();
+                        } else if (isFileSystemMigration) {
+                            migrationClient.synapseFileSystemMigration();
                         } else {
                             log.error("Migration profile is not specified. Please specify the migration profile.");
                         }

@@ -40,9 +40,9 @@ public interface RegistryService {
 
     void addDefaultLifecycles() throws RegistryException, UserStoreException, FileNotFoundException, XMLStreamException;
 
-    GenericArtifact[] getGenericWebappArtifacts();
+    GenericArtifact[] getGenericArtifacts(String artifactType);
 
-    void updateGenericAPIArtifacts(GenericArtifact[] artifacts);
+    void updateGenericArtifacts(String artifactType, GenericArtifact[] artifacts);
 
     WebApp getAPI(GenericArtifact artifact);
 

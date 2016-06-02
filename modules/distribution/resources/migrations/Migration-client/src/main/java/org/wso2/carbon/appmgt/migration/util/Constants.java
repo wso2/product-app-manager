@@ -24,6 +24,8 @@ public class Constants {
     public static final String VERSION_1_2_0 = "1.2.1.1.0to1.2.1.1.0-1.2.0-migration";
     public static final String CURRENT_TENANT   = "current_tenant";
     public static final String ROLE_RESTRICTIONS = "role_restrictions";
+    public static final String DELIMITER = ";";
+    public static final String LINE_BREAK = "\\n";
 
     // Migration client argument property names
     public static final String ARG_MIGRATE_TO_VERSION = "migrateToVersion";
@@ -34,26 +36,22 @@ public class Constants {
     public static final String ARG_MIGRATE_DB = "migrateDB";
     public static final String ARG_MIGRATE_REG = "migrateReg";
     public static final String ARG_MIGRATE_FILE_SYSTEM = "migrateFS";
-    public static final String ARG_MIGRATE_PROFILE= "migrateProfile";
-    public static final String PUBLISHER_MIGRATE_PROFILE= "publisher";
-    public static final String GATEWAY_MIGRATE_PROFILE= "gateway";
+
+    public static final String MIGRATION_SCRIPTS_LOCATION = "/dbscripts/migration-scripts/1.1.0-1.2.0-migration/";
+    public static final String MIGRATION_RESOURCES_LOCATION = "/repository/resources";
+    public static final String MIGRATION_RXT_LOCATION = MIGRATION_RESOURCES_LOCATION + "/rxts/";
+    public static final String MIGRATION_LIFECYCLE_LOCATION = MIGRATION_RESOURCES_LOCATION + "/lifecycles/";
+    public static final String MIGRATION_TENANT_STORE_CONFIG = "/store/configs/store.json";
 
 
-    public static final String MIGRATION_SCRIPTS_LOCATION = "/dbscripts/migration-1.1.0_to_1.2.1.1.0to1.2.1.1.0-1.2.0-migration/";
-    public static final String REGISTRY_ARTIFACT_LIFECYCLE_HISTORY =
-            "/repository/components/org.wso2.carbon.governance/lifecycles/history/__system_governance_appmgt_applicationdata_";
     public static final String REGISTRY_ARTIFACT_LIFECYCLE_HISTORY_OLD =
             "/_system/governance/repository/components/org.wso2.carbon.governance/lifecycles/history/__system_governance_appmgt_applicationdata_";
     public static final String GOVERNANCE_ARTIFACT_CONFIGURATION_PATH =
             RegistryConstants.GOVERNANCE_COMPONENT_PATH + "/configuration/";
     public static final String RXT_REG_PATH = GovernanceConstants.RXT_CONFIGS_PATH;
 
-    public static final String GOVERNANCE_COMPONENT_REGISTRY_LOCATION = "/repository/components/org.wso2.carbon" +
-            ".governance";
-    public static final String RXT_PATH = "/repository/resources/rxts/webapp.rxt";
-    public static final String ATTRIBUTE_CLASSNAME = "className";
-    public static final String LIFE_CYCLES_FOLDER = "lifecycles";
     public static final String WEBAPP_LIFECYCLE = "WebAppLifeCycle";
+    public static final String MOBILEAPP_LIFECYCLE = "MobileAppLifeCycle";
     public static final String WEBAPP_RXT = "webapp";
     public static final String MOBILEAPP_RXT = "mobileapp";
 
@@ -68,8 +66,7 @@ public class Constants {
     public static final String SYNAPSE_API_ATTRIBUTE_EXPRESSION = "expression";
     public static final String SYNAPSE_API_NO_VERSION_PROPERTY = "noVersion";
 
-
-
+    public static final String MOBILE_APP_DEFAULT_CATEGORY = "Business";
 
 
 

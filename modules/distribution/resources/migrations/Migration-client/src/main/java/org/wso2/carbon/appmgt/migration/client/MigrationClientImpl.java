@@ -18,6 +18,7 @@ package org.wso2.carbon.appmgt.migration.client;
 
 import org.apache.axis2.AxisFault;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
@@ -26,7 +27,6 @@ import org.json.XML;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.wso2.carbon.appmgt.api.APIProvider;
 import org.wso2.carbon.appmgt.api.AppManagementException;
 import org.wso2.carbon.appmgt.api.model.APIIdentifier;
 import org.wso2.carbon.appmgt.api.model.JavaPolicy;
@@ -38,6 +38,7 @@ import org.wso2.carbon.appmgt.impl.dto.Environment;
 import org.wso2.carbon.appmgt.impl.service.ServiceReferenceHolder;
 import org.wso2.carbon.appmgt.impl.template.APITemplateBuilder;
 import org.wso2.carbon.appmgt.impl.template.APITemplateBuilderImpl;
+import org.wso2.carbon.appmgt.impl.utils.APIMgtDBUtil;
 import org.wso2.carbon.appmgt.impl.utils.AppManagerUtil;
 import org.wso2.carbon.appmgt.impl.utils.RESTAPIAdminClient;
 import org.wso2.carbon.appmgt.migration.APPMMigrationException;
@@ -45,16 +46,12 @@ import org.wso2.carbon.appmgt.migration.client.dto.SynapseDTO;
 import org.wso2.carbon.appmgt.migration.client.internal.ServiceHolder;
 import org.wso2.carbon.appmgt.migration.util.*;
 import org.wso2.carbon.base.MultitenantConstants;
-import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.governance.api.exception.GovernanceException;
-import org.wso2.carbon.governance.api.generic.GenericArtifactManager;
 import org.wso2.carbon.governance.api.generic.dataobjects.GenericArtifact;
-import org.wso2.carbon.governance.api.util.GovernanceUtils;
 import org.wso2.carbon.registry.api.RegistryException;
 import org.wso2.carbon.registry.core.Registry;
 import org.wso2.carbon.registry.core.RegistryConstants;
 import org.wso2.carbon.registry.core.Resource;
-import org.wso2.carbon.registry.core.session.UserRegistry;
 import org.wso2.carbon.user.api.Tenant;
 import org.wso2.carbon.user.api.UserStoreException;
 import org.wso2.carbon.user.core.tenant.TenantManager;
@@ -68,7 +65,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -79,8 +75,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
-import java.nio.charset.Charset;
+import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 /**
  * This class contains all the methods which is used to migrate Webapps from App Manager 1.0.0 to App Manager 1.1.0.
@@ -93,7 +90,6 @@ public class MigrationClientImpl implements MigrationClient {
     private List<Tenant> tenantsArray;
     private MigrationDBCreator migrationDBCreator;
     RegistryService registryService;
-    APIProvider apiProvider;
 
     public MigrationClientImpl(String tenantArguments, RegistryService registryService,
                                TenantManager tenantManager) throws UserStoreException, APPMMigrationException {
@@ -128,6 +124,65 @@ public class MigrationClientImpl implements MigrationClient {
         }
     }
 
+    /**
+     * This method is used to migrate database tables
+     * This executes the database queries according to the user's db type and alters the tables
+     *
+     * @throws APPMMigrationException
+     */
+    @Override
+    public void databaseMigration() {
+        log.info("Database migration for App Manager 1.2.0 started");
+        try {
+            final String productHome = CarbonUtils.getCarbonHome();
+            String scriptPath = productHome + Constants.MIGRATION_SCRIPTS_LOCATION;
+            updateAPPManagerDatabase(scriptPath);
+        } catch (APPMMigrationException e) {
+            log.error("Error occurred while migrating databases for App Manager 1.2.0", e);
+        }
+        log.info("Database migration for App Manager 1.2.0 is successfully completed for all tenants");
+    }
+
+
+    /**
+     * This method is used to migrate all registry resources
+     * This migrates webapp rxts
+     *
+     * @throws org.wso2.carbon.appmgt.migration.APPMMigrationException
+     */
+    @Override
+    public void registryResourceMigration() {
+        log.info("Registry resource migration for App Manager 1.2.0 started");
+        try {
+            migrateRxts();
+            migrateLifeCycles();
+            registryArtifactMigration();
+            signUpConfigurationMigration();
+            updateTenantStoreConfiguration();
+        } catch (APPMMigrationException e) {
+            log.error("Error occurred while migrating registry resources for App Manager 1.2.0", e);
+        }
+        log.info("Registry resource migration for App Manager 1.2.0 is successfully completed for all tenantess");
+    }
+
+    @Override
+    public void synapseFileSystemMigration() throws APPMMigrationException {
+        synapseAPIMigration();
+    }
+
+    private static DataSource initializeDataSource(String dataSourceName) throws APPMMigrationException {
+        DataSource ds = null;
+        if (dataSourceName != null) {
+            try {
+                Context ctx = new InitialContext();
+                ds = (DataSource) ctx.lookup(dataSourceName);
+            } catch (NamingException e) {
+                ResourceUtil.handleException("Error while looking up the data " + "source: " + dataSourceName, e);
+            }
+        }
+        return ds;
+    }
+
     private void populateTenants(TenantManager tenantManager, List<Tenant> tenantList, String argument) throws UserStoreException {
         log.debug("Argument provided : " + argument);
 
@@ -150,175 +205,82 @@ public class MigrationClientImpl implements MigrationClient {
         }
     }
 
-    /**
-     * This method is used to migrate database tables
-     * This executes the database queries according to the user's db type and alters the tables
-     *
-     * @throws APPMMigrationException
-     */
-    @Override
-    public void databaseMigration() throws APPMMigrationException {
-        migrationDBCreator.migrateDatabaseTables();
-    }
+    protected void updateAPPManagerDatabase(String sqlScriptPath) throws APPMMigrationException {
 
-    /**
-     * Initialize received data source
-     *
-     * @param dataSourceName : Data source name needs to be initialized
-     * @return DataSource
-     * @throws org.wso2.carbon.appmgt.api.AppManagementException if an error occurs while initializing the data source
-     */
-    public static DataSource initializeDataSource(String dataSourceName) throws APPMMigrationException {
-        DataSource ds = null;
-        if (dataSourceName != null) {
-            try {
-                Context ctx = new InitialContext();
-                ds = (DataSource) ctx.lookup(dataSourceName);
-            } catch (NamingException e) {
-                ResourceUtil.handleException("Error while looking up the data " + "source: " + dataSourceName, e);
-            }
-        }
-        return ds;
-    }
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        BufferedReader bufferedReader = null;
+        try {
+            connection = APIMgtDBUtil.getConnection();
+            connection.setAutoCommit(false);
+            String dbType = MigrationDBCreator.getDatabaseType(connection);
 
-    /**
-     * This method is used to migrate all registry resources
-     * This migrates webapp rxts
-     *
-     * @throws org.wso2.carbon.appmgt.migration.APPMMigrationException
-     */
-    @Override
-    public void registryResourceMigration() throws APPMMigrationException {
-        log.info("Registry resource migration for App Manager 1.2.0 started.");
-        migrateRxts();
-        migrateLifeCycles();
-        registryArtifactMigration();
-        externalStoreMigration();
-        updateTenantStoreConfiguration();
-    }
+            InputStream is = new FileInputStream(sqlScriptPath + dbType + ".sql");
+            bufferedReader = new BufferedReader(new InputStreamReader(is, "UTF8"));
+            String sqlQuery = "";
+            boolean isFoundQueryEnd = false;
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                line = line.trim();
+                if (line.startsWith("//") || line.startsWith("--")) {
+                    continue;
+                }
+                StringTokenizer stringTokenizer = new StringTokenizer(line);
+                if (stringTokenizer.hasMoreTokens()) {
+                    String token = stringTokenizer.nextToken();
+                    if ("REM".equalsIgnoreCase(token)) {
+                        continue;
+                    }
+                }
 
-    @Override
-    public void synapseFileSystemMigration() throws APPMMigrationException {
-        synapseAPIMigration();
-    }
+                if (line.contains("\\n")) {
+                    line = line.replace("\\n", "");
+                }
 
-    public void deployDefaultSynapseConfigurations(final HashMap<String, MigratingWebApp> migratingWebApps) throws APPMMigrationException {
-        Thread deployerThread = new Thread() {
-            @Override
-            public void run() {
-                boolean done = false;
-                while (!done) {
-                    try {
-                        deployDefaultWebAppSynapseConfigs(migratingWebApps);
-                        done = true;
+                sqlQuery += ' ' + line;
+                if (line.contains(";")) {
+                    isFoundQueryEnd = true;
+                }
 
-                    } catch (Throwable e) {
-                        log.warn("Retrying");
-                        try {
-                            Thread.sleep(10000);
-                        } catch (InterruptedException e1) {
+                if (org.wso2.carbon.appmgt.migration.util.Constants.DB_TYPE_ORACLE.equals(dbType)) {
+                    sqlQuery = sqlQuery.replace(";", "");
+                }
+
+                if (isFoundQueryEnd) {
+                    if (sqlQuery.length() > 0) {
+                        if (log.isDebugEnabled()) {
+                            log.debug("SQL to be executed : " + sqlQuery);
                         }
 
+                        preparedStatement = connection.prepareStatement(sqlQuery.trim());
+                        preparedStatement.execute();
+                        connection.commit();
                     }
-                }
-            }
-        };
-        deployerThread.setDaemon(true);
-        deployerThread.setName("DefaultRESTApiDeployer");
-        deployerThread.start();
-    }
 
-    private void deployDefaultWebAppSynapseConfigs(HashMap<String, MigratingWebApp> migratingWebApps)
-            throws APPMMigrationException {
-
-        for (String webappName : migratingWebApps.keySet()) {
-            MigratingWebApp MigratingWebApp = migratingWebApps.get(webappName);
-            if (MigratingWebApp.isPublished() && !MigratingWebApp.getWebApp().getSkipGateway()) {
-                deployDefaultSynapseConfig(MigratingWebApp.getWebApp());
-            }
-        }
-
-    }
-
-    public void deployDefaultSynapseConfig(WebApp webapp) throws APPMMigrationException {
-
-        APITemplateBuilder builder = null;
-        String tenantDomain = null;
-
-        String provider = webapp.getId().getProviderName().replace("-AT-", "@");
-        tenantDomain = MultitenantUtils.getTenantDomain(provider);
-        try {
-            builder = getAPITemplateBuilder(webapp);
-            AppManagerConfiguration config = ServiceReferenceHolder.getInstance()
-                    .getAPIManagerConfigurationService()
-                    .getAPIManagerConfiguration();
-            List<Environment> environments;
-            environments = config.getApiGatewayEnvironments();
-            for (Environment environment : environments) {
-                RESTAPIAdminClient client = new RESTAPIAdminClient(webapp.getId(), environment);
-                if (client.getNonVersionedWebAppData(tenantDomain) != null) {
-                    client.updateNonVersionedWebApp(builder, tenantDomain);
-                } else {
-                    client.addNonVersionedWebApp(builder, tenantDomain);
+                    // Reset variables to read next SQL
+                    sqlQuery = "";
+                    isFoundQueryEnd = false;
                 }
             }
 
-        } catch (AxisFault axisFault) {
-            log.warn("Cannot contact AuthenticationAdmin Service. Retrying");
-            throw new APPMMigrationException("Cannot contact Admin Service", axisFault);
-        }
-
-    }
-
-    /**
-     * This method dynamically returns the mandatory and selected java policy handlers list for given app
-     *
-     * @param api :WebApp class which contains details about web applications
-     * @return :handlers list with properties to be applied
-     * @throws AppManagementException on error
-     */
-    private APITemplateBuilder getAPITemplateBuilder(WebApp api) throws APPMMigrationException {
-        APITemplateBuilderImpl velocityTemplateBuilder = new APITemplateBuilderImpl(api);
-        AppMDAO appMDAO = new AppMDAO();
-
-        //List of JavaPolicy class which contains policy related details
-        List<JavaPolicy> policies = new ArrayList<JavaPolicy>();
-        //contains properties related to relevant policy and will be used to generate the synapse api config file
-        Map<String, String> properties;
-        int counterPolicies; //counter :policies
-
-        try {
-            //fetch all the java policy handlers details which need to be included to synapse api config file
-            policies = appMDAO.getMappedJavaPolicyList(api.getUUID(), true);
-            //loop through each policy
-            for (counterPolicies = 0; counterPolicies < policies.size(); counterPolicies++) {
-                if (policies.get(counterPolicies).getProperties() == null) {
-                    //if policy doesn't contain any properties assign an empty map and add java policy as a handler
-                    velocityTemplateBuilder.addHandler(policies.get(counterPolicies).getFullQualifiName(),
-                            Collections.EMPTY_MAP);
-                } else {
-                    //contains properties related to all the policies
-                    org.json.simple.JSONObject objPolicyProperties;
-                    properties = new HashMap<String, String>();
-
-                    //get property JSON object related to current policy in the loop
-                    objPolicyProperties = policies.get(counterPolicies).getProperties();
-
-                    //if policy contains any properties, run a loop and assign them
-                    Set<String> keys = objPolicyProperties.keySet();
-                    for (String key : keys) {
-                        properties.put(key, objPolicyProperties.get(key).toString());
-                    }
-                    //add policy as a handler and also the relevant properties
-                    velocityTemplateBuilder.addHandler(policies.get(counterPolicies).getFullQualifiName(), properties);
+        } catch (IOException e) {
+            throw new APPMMigrationException("Error occurred while migrating App Management database", e);
+        } catch (Exception e) {
+            /* MigrationDBCreator extends from org.wso2.carbon.utils.dbcreator.DatabaseCreator and in the super class
+            method getDatabaseType throws generic Exception */
+            throw new APPMMigrationException("Error occurred while migrating App Management databases", e);
+        } finally {
+            APIMgtDBUtil.closeAllConnections(preparedStatement, connection, null);
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException e) {
+                    handleException(
+                            "Error occurred while migrating App Management Databases. Failed to read sql scripts in "
+                                    + sqlScriptPath, e);
                 }
             }
-
-        } catch (AppManagementException e) {
-            handleException("Error occurred while adding java policy handlers to Application : " +
-                    api.getId().toString(), e);
         }
-        return velocityTemplateBuilder;
     }
 
     private void synapseAPIMigration() throws APPMMigrationException {
@@ -361,91 +323,101 @@ public class MigrationClientImpl implements MigrationClient {
         }
     }
 
+    private void migrateLifeCycles() throws APPMMigrationException {
+        log.info("Lifecycle migration is started for App Manager 1.2.0");
+        migrateLifeCycle(Constants.WEBAPP_LIFECYCLE);
+        migrateLifeCycle(Constants.MOBILEAPP_LIFECYCLE);
+        log.info("Lifecycle migration is completed successfully for App Manager 1.2.0");
+    }
+
     /**
      * Migrates and update lifecycle resources
      *
      * @throws APPMMigrationException
      */
-    private void migrateLifeCycles() throws APPMMigrationException {
-        log.info("Life Cycle migration is started");
+    private void migrateLifeCycle(String lifecycleType) throws APPMMigrationException {
+        log.info("Lifecycle migration for " + lifecycleType + " is started.");
         for (Tenant tenant : tenantsArray) {
             registryService.startTenantFlow(tenant);
-            String apiLifeCycleXMLPath = CarbonUtils.getCarbonHome() + File.separator + "repository" + File.separator + "resources" +
-                    File.separator + Constants.LIFE_CYCLES_FOLDER + File.separator +
-                    Constants.WEBAPP_LIFECYCLE + ".xml";
+            String lifeCycleXMLPath = CarbonUtils.getCarbonHome() + Constants.MIGRATION_LIFECYCLE_LOCATION +
+                    lifecycleType + ".xml";
 
-            String apiLifeCycle = null;
-            final String webappLifeCycleRegistryPath = RegistryConstants.LIFECYCLE_CONFIGURATION_PATH +
-                    Constants.WEBAPP_LIFECYCLE;
+            String lifecycleConfig = null;
+            final String lifeCycleRegistryPath = RegistryConstants.LIFECYCLE_CONFIGURATION_PATH + lifecycleType;
             try {
-                apiLifeCycle = IOUtils.toString(new FileInputStream(new File(apiLifeCycleXMLPath)));
-                registryService.updateConfigRegistryResource(webappLifeCycleRegistryPath, apiLifeCycle);
+                if (log.isDebugEnabled()) {
+                    log.info("Migrating " + lifecycleType + " for tenant " + tenant.getDomain() + " is started.");
+                }
+                lifecycleConfig = IOUtils.toString(new FileInputStream(new File(lifeCycleXMLPath)));
+                registryService.updateConfigRegistryResource(lifeCycleRegistryPath, lifecycleConfig);
+                if (log.isDebugEnabled()) {
+                    log.info("Migrating " + lifecycleType + " for tenant " + tenant.getDomain() + " is completed successfully.");
+                }
             } catch (FileNotFoundException e) {
-                handleException("Error occurred while updating the lifecycle :" + Constants.WEBAPP_LIFECYCLE +
-                        Constants.WEBAPP_LIFECYCLE + ".xml file cannot be found at : " + apiLifeCycleXMLPath, e);
+                handleException("Error occurred while updating the lifecycle :" + lifecycleType +
+                        lifecycleType + ".xml file cannot be found at : " + lifeCycleXMLPath, e);
             } catch (org.wso2.carbon.registry.core.exceptions.RegistryException e) {
-                handleException("Error occurred while updating " + Constants.WEBAPP_LIFECYCLE +
-                        " resource in config registry for tenant : " + tenant.getId() +
-                        " (" + tenant.getDomain() + ").", e);
+                handleException("Error occurred while updating " + lifecycleType +
+                        " resource in config registry for tenant : " + tenant.getDomain(), e);
             } catch (UserStoreException e) {
                 handleException("Error occurred while retrieving config registry for tenant : " +
-                        tenant.getId() + " (" + tenant.getDomain() + ") .", e);
+                        tenant.getDomain(), e);
             } catch (IOException e) {
-                handleException("Error occurred while reading " + Constants.WEBAPP_LIFECYCLE + ".xml from " +
-                        apiLifeCycleXMLPath, e);
+                handleException("Error occurred while reading " + lifecycleType + ".xml from " +
+                        lifeCycleXMLPath, e);
             } finally {
                 registryService.endTenantFlow();
             }
         }
-        log.info("Life Cycle migration is completed.");
+        log.info("Lifecycle migration for" + lifecycleType + " migration is completed successfully");
     }
 
     private void registryArtifactMigration() throws APPMMigrationException {
-        log.info("Registry artifact migration has started");
+        log.info("Registry artifact migration is started");
+        webAppArtifactMigration();
+        mobileAppArtifactMigration();
+        log.info("Registry artifact migration is completed successfully");
+
+    }
+
+    private void webAppArtifactMigration() throws APPMMigrationException {
+        log.info("Webapp registry artifact migration is started");
         for (Tenant tenant : tenantsArray) {
             registryService.startTenantFlow(tenant);
             if (log.isDebugEnabled()) {
-                log.debug("Starting registry artifact migration for tenant " + tenant.getId() + "(" + tenant.getDomain() + ")");
+                log.debug("Starting webapp registry artifact migration for tenant " + tenant.getDomain());
             }
             try {
 
                 Registry registry = registryService.getGovernanceRegistry();
-                GenericArtifact[] artifacts = registryService.getGenericWebappArtifacts();
-                final HashMap<String, MigratingWebApp> defaultWebappMap = new HashMap<String, MigratingWebApp>();
-                HashMap<String, MigratingWebApp> oldWebappMap = new HashMap<String, MigratingWebApp>();
-                //Search and retrieve default versioned webapp list and old versions of webapp list
-                updateWebappMaps(artifacts, registry, defaultWebappMap, oldWebappMap);
-                for (GenericArtifact artifact : artifacts) {
+                GenericArtifact[] artifacts = registryService.getGenericArtifacts(AppMConstants.WEBAPP_ASSET_TYPE);
+                Map<String, MigratingWebApp> oldWebappMap = getOldWebAppVersionMap(artifacts);
 
-                    WebApp webapp = AppManagerUtil.getAPI(artifact, registry);
+                for (GenericArtifact webAppArtifact : artifacts) {
+
+                    WebApp webapp = AppManagerUtil.getAPI(webAppArtifact, registry);
                     if (webapp == null) {
                         log.error("Cannot find corresponding web application for registry artifact " +
-                                artifact.getAttribute("overview_name") + "-"
-                                + artifact.getAttribute("overview_version") + "-" +
-                                artifact.getAttribute("overview_provider") + " of tenant " + tenant.getId() +
-                                "(" + tenant.getDomain() + ") in AM_DB");
+                                webAppArtifact.getAttribute("overview_name") + "-"
+                                + webAppArtifact.getAttribute("overview_version") + "-" +
+                                webAppArtifact.getAttribute("overview_provider") + " of tenant " + tenant.getDomain());
                         continue;
                     }
-                    APIIdentifier webappIdentifier = webapp.getId();
-                    artifact.removeAttribute("overview_makeAsDefaultVersion");
-                    if (defaultWebappMap.get(webappIdentifier.getApiName()).getVersion().equals(
-                            artifact.getAttribute("overview_version"))) {
-                        artifact.addAttribute("overview_makeAsDefaultVersion", "true");
+                    APIIdentifier webAppIdentifier = webapp.getId();
+
+                    webAppArtifact.removeAttribute(AppMConstants.APP_OVERVIEW_MAKE_AS_DEFAULT_VERSION);
+                    webAppArtifact.addAttribute(AppMConstants.APP_OVERVIEW_MAKE_AS_DEFAULT_VERSION, "false");
+
+                    webAppArtifact.removeAttribute(AppMConstants.APP_OVERVIEW_OLD_VERSION);
+                    if (!webAppIdentifier.getVersion().equals(oldWebappMap.get(webAppIdentifier.getApiName()).getVersion())) {
+                        webAppArtifact.addAttribute(AppMConstants.APP_OVERVIEW_OLD_VERSION, oldWebappMap.get(webAppIdentifier.getApiName()).getVersion());
                     } else {
-                        artifact.addAttribute("overview_makeAsDefaultVersion", "false");
+                        webAppArtifact.addAttribute(AppMConstants.APP_OVERVIEW_OLD_VERSION, "");
                     }
+                    webAppArtifact.removeAttribute(AppMConstants.APP_OVERVIEW_TREAT_AS_A_SITE);
+                    webAppArtifact.addAttribute(AppMConstants.APP_OVERVIEW_TREAT_AS_A_SITE, "FALSE");
 
-                    artifact.removeAttribute("overview_oldVersion");
-                    if (!webappIdentifier.getVersion().equals(oldWebappMap.get(webappIdentifier.getApiName()).getVersion())) {
-                        artifact.addAttribute("overview_oldVersion", oldWebappMap.get(webappIdentifier.getApiName()).getVersion());
-                    }
-                    artifact.removeAttribute("overview_treatAsASite");
-                    artifact.addAttribute("overview_treatAsASite", "FALSE");
-                    artifact.removeAttribute("overview_treatAsSite");
-                    artifact.addAttribute("overview_treatAsSite", "false");
-
-
-                    String resourcePath = artifact.getPath();
+                    String resourcePath = webAppArtifact.getPath();
                     Resource resource = registry.get(resourcePath);
                     Properties properties = resource.getProperties();
 
@@ -457,6 +429,8 @@ public class MigrationClientImpl implements MigrationClient {
                     }
 
                     ArrayList<String> mandatoryPropertyList = getMandatoryArtifactProperties();
+
+                    //Remove unwanted properties in webapp artifact in order to avoid indexing issues
                     for (String propertyKey : propertyLeyList) {
                         if (!mandatoryPropertyList.contains(propertyKey)) {
                             resource.removeProperty(propertyKey);
@@ -465,33 +439,87 @@ public class MigrationClientImpl implements MigrationClient {
                     //Update the registry artifact resource after removing the unwanted properties
                     registry.put(resourcePath, resource);
                 }
-                registryService.updateGenericAPIArtifacts(artifacts);
-
-                migrationDBCreator.updateAppDefaultVersions(defaultWebappMap, String.valueOf(tenant.getId()));
-                deployDefaultSynapseConfigurations(defaultWebappMap);
-
+                registryService.updateGenericArtifacts(AppMConstants.WEBAPP_ASSET_TYPE, artifacts);
 
             } catch (UserStoreException e) {
                 handleException("Error occurred while retrieving admin user details of tenant : " +
-                        tenant.getId() + " (" + tenant.getDomain() + ").", e);
+                        tenant.getDomain(), e);
             } catch (AppManagementException e) {
-                e.printStackTrace();
-            } catch (GovernanceException e) {
-                handleException("Error occurred while retrieving governance registry for tenant : " +
-                        tenant.getId() + " (" + tenant.getDomain() + ").", e);
-            } catch (org.wso2.carbon.registry.core.exceptions.RegistryException e) {
-                handleException("Error occurred while retriving artifact registry for tenant : " + tenant.getId() +
-                        " (" + tenant.getDomain() + ").", e);
+                handleException("Error occurred while retrieving webapp artifacts for tenant : " +
+                        tenant.getDomain(), e);
+            } catch (RegistryException e) {
+                handleException("Error occurred while retrieving webapp artifacts from registry for tenant : " +
+                        tenant.getDomain(), e);
             } finally {
                 registryService.endTenantFlow();
-                apiProvider = null;
             }
             if (log.isDebugEnabled()) {
-                log.debug("End of registry artifact migration for tenant " + tenant.getId() +
-                        "(" + tenant.getDomain() + ")");
-
+                log.debug("End of webapp registry artifact migration for tenant " + tenant.getDomain());
             }
         }
+        log.info("Webapp registry artifact migration is completed successfully");
+    }
+
+    private void mobileAppArtifactMigration() throws APPMMigrationException {
+        log.info("MobileApp registry artifact migration is started");
+        for (Tenant tenant : tenantsArray) {
+            registryService.startTenantFlow(tenant);
+            if (log.isDebugEnabled()) {
+                log.debug("Starting mobileapp registry artifact migration for tenant " + tenant.getDomain());
+            }
+            try {
+
+                GenericArtifact[] mobileAppArtifacts =
+                        registryService.getGenericArtifacts(AppMConstants.MOBILE_ASSET_TYPE);
+
+                for (GenericArtifact mobileAppArtifact : mobileAppArtifacts) {
+
+                    mobileAppArtifact.removeAttribute(AppMConstants.API_OVERVIEW_DISPLAY_NAME);
+                    mobileAppArtifact.addAttribute(AppMConstants.API_OVERVIEW_DISPLAY_NAME,
+                            mobileAppArtifact.getAttribute(AppMConstants.MOBILE_APP_OVERVIEW_NAME));
+
+                    mobileAppArtifact.removeAttribute(AppMConstants.MOBILE_APP_OVERVIEW_CATEGORY);
+                    mobileAppArtifact.addAttribute(AppMConstants.MOBILE_APP_OVERVIEW_CATEGORY, Constants.MOBILE_APP_DEFAULT_CATEGORY);
+                    mobileAppArtifact.removeAttribute(AppMConstants.API_OVERVIEW_VISIBILITY);
+                    mobileAppArtifact.addAttribute(AppMConstants.API_OVERVIEW_VISIBILITY, "");
+                    String thumbnailImageId =
+                            getMobileImageId(mobileAppArtifact.getAttribute(AppMConstants.MOBILE_APP_IMAGES_THUMBNAIL));
+                    mobileAppArtifact.setAttribute(AppMConstants.MOBILE_APP_IMAGES_THUMBNAIL, thumbnailImageId);
+                    String bannerImageId = getMobileImageId(mobileAppArtifact.getAttribute(AppMConstants.APP_IMAGES_BANNER));
+                    mobileAppArtifact.setAttribute(AppMConstants.APP_IMAGES_BANNER, bannerImageId);
+                    String screenShots = mobileAppArtifact.getAttribute(AppMConstants.MOBILE_APP_IMAGES_SCREENSHOTS);
+                    ArrayList<String> screenShotIds = new ArrayList<>();
+                    if (StringUtils.isNotEmpty(screenShots)) {
+                        for (String screenShot : screenShots.split(",")) {
+                            String screenShotId = "";
+                            if (StringUtils.isNotEmpty(screenShot)) {
+                                screenShotId = getMobileImageId(screenShot);
+                            }
+                            screenShotIds.add(screenShotId);
+                        }
+                        mobileAppArtifact.setAttribute(AppMConstants.MOBILE_APP_IMAGES_SCREENSHOTS, StringUtils.join(screenShotIds, ","));
+                    }
+                }
+                registryService.updateGenericArtifacts(AppMConstants.MOBILE_ASSET_TYPE, mobileAppArtifacts);
+
+            } catch (GovernanceException e) {
+                log.error("Error occurred while migrating mobileapp registry artifacts for tenant " + tenant.getDomain());
+            } finally {
+                registryService.endTenantFlow();
+            }
+            if (log.isDebugEnabled()) {
+                log.debug("End of mobileapp registry artifact migration for tenant " + tenant.getDomain());
+            }
+        }
+        log.info("MobileApp registry artifact migration is completed successfully");
+    }
+
+    private String getMobileImageId(String imageURL) {
+        String imageId = null;
+        if (StringUtils.isNotEmpty(imageURL)) {
+            imageId = imageURL.substring(imageURL.lastIndexOf("/") + 1, imageURL.length());
+        }
+        return imageId;
     }
 
     private ArrayList<String> getMandatoryArtifactProperties() {
@@ -524,57 +552,74 @@ public class MigrationClientImpl implements MigrationClient {
         }
     }
 
-    private void updateTenantStoreConfiguration() {
-
-        String tenantStoreConfig = "/store/configs/store.json";
-
+    private void updateTenantStoreConfiguration() throws APPMMigrationException {
+        log.info("Tenant store configuration migration is started");
         for (Tenant tenant : tenantsArray) {
             try {
+                if (log.isDebugEnabled()) {
+                    log.info("Migrating " + Constants.MIGRATION_TENANT_STORE_CONFIG + "configuration for tenant " +
+                            tenant.getDomain() + " is started.");
+                }
                 registryService.startTenantFlow(tenant);
                 String storeConfig =
-                        ResourceUtil.getResourceContent(registryService.getConfigRegistryResource(tenantStoreConfig));
+                        ResourceUtil.getResourceContent(registryService.getConfigRegistryResource(
+                                Constants.MIGRATION_TENANT_STORE_CONFIG));
                 JSONObject storeConfigJSONObject = new JSONObject(storeConfig);
                 storeConfigJSONObject.getJSONArray("assets").put("site");
-                registryService.updateConfigRegistryResource(tenantStoreConfig, storeConfigJSONObject.toString());
-            } catch (org.wso2.carbon.registry.core.exceptions.RegistryException e) {
-                e.printStackTrace();
+                registryService.updateConfigRegistryResource(Constants.MIGRATION_TENANT_STORE_CONFIG,
+                        storeConfigJSONObject.toString());
+                if (log.isDebugEnabled()) {
+                    log.info("Migrating " + Constants.MIGRATION_TENANT_STORE_CONFIG + "configuration for tenant " +
+                            tenant.getDomain() + " is completed.");
+                }
+            } catch (RegistryException e) {
+                handleException("Error occurred while migrating tenant store configuration in registry path " +
+                        Constants.MIGRATION_TENANT_STORE_CONFIG, e);
             } catch (UserStoreException e) {
-                e.printStackTrace();
+                handleException("Error occurred while migrating tenant store configuration in registry path " +
+                        Constants.MIGRATION_TENANT_STORE_CONFIG, e);
             } catch (JSONException e) {
                 e.printStackTrace();
             } finally {
                 registryService.endTenantFlow();
             }
         }
+        log.info("Tenant store configuration migration is completed successfully");
     }
 
-    void externalStoreMigration() throws APPMMigrationException {
+    private void signUpConfigurationMigration() throws APPMMigrationException {
 
         for (Tenant tenant : tenantsArray) {
             try {
                 registryService.startTenantFlow(tenant);
                 //Resource externalStoreResource = registry.get(APIConstants.EXTERNAL_API_STORES_LOCATION);
-                String config = ResourceUtil.getResourceContent(registryService.getGovernanceRegistryResource(AppMConstants.SELF_SIGN_UP_CONFIG_LOCATION));
+                String config = ResourceUtil.getResourceContent(registryService.getGovernanceRegistryResource(
+                        AppMConstants.SELF_SIGN_UP_CONFIG_LOCATION));
                 String modifiedConfig = modifySignUpConfiguration(config);
-                registryService.updateGovernanceRegistryResource(AppMConstants.SELF_SIGN_UP_CONFIG_LOCATION, modifiedConfig);
+                registryService.updateGovernanceRegistryResource(AppMConstants.SELF_SIGN_UP_CONFIG_LOCATION,
+                        modifiedConfig);
             } catch (RegistryException e) {
-                handleException("Error occurred while accessing the registry", e);
+                handleException("Error occurred while updating signup configuration in registry for tenant "
+                        + tenant.getDomain(), e);
                 try {
                     registryService.rollbackGovernanceRegistryTransaction();
                 } catch (org.wso2.carbon.registry.core.exceptions.RegistryException ex) {
-                    handleException("Error occurred while accessing the registry", ex);
+                    handleException("Error occurred while rolling back registry transaction to update signup " +
+                            "configuration for tanant " + tenant.getDomain(), ex);
                 } catch (UserStoreException ex) {
-                    handleException("Error occurred while reading tenant information", ex);
+                    handleException("Error occurred while rolling back registry transaction to update signup " +
+                            "configuration for tanant " + tenant.getDomain(), ex);
                 }
             } catch (UserStoreException e) {
-                e.printStackTrace();
+                handleException("Error occurred while updating signup configuration in registry for tenant "
+                        + tenant.getDomain(), e);
             } finally {
                 registryService.endTenantFlow();
             }
         }
     }
 
-    String modifySignUpConfiguration(String configXml) throws APPMMigrationException {
+    private String modifySignUpConfiguration(String configXml) throws APPMMigrationException {
 
         Writer stringWriter = new StringWriter();
         try {
@@ -597,6 +642,7 @@ public class MigrationClientImpl implements MigrationClient {
                                 (Element) tmpEl.getElementsByTagName(
                                         AppMConstants.SELF_SIGN_UP_REG_ROLE_IS_EXTERNAL).item(0);
                         Element newElement = doc.createElement(AppMConstants.SELF_SIGN_UP_REG_ROLE_PERMISSIONS);
+                        //Set default permissions into config
                         newElement.setTextContent("/permission/admin/login,/permission/admin/manage/webapp/subscribe");
                         tmpEl.insertBefore(newElement, externalRole);
                     }
@@ -608,22 +654,24 @@ public class MigrationClientImpl implements MigrationClient {
             transformer.transform(new DOMSource(doc), new StreamResult(stringWriter));
 
         } catch (SAXException e) {
-            handleException("Error occurred while parsing the xml document", e);
+            handleException("Error occurred while parsing signup configuration.", e);
         } catch (IOException e) {
-            handleException("Error occurred while reading the xml document. " +
-                    "Please check for external API config file in the registry", e);
+            handleException("Error occurred while reading the sign up configuration document. " +
+                    "Please check the existence of signup configuration file in registry.", e);
         } catch (ParserConfigurationException e) {
-            handleException("Error occurred while trying to build the xml document", e);
+            handleException("Error occurred while trying to build the signup configuration xml document", e);
         } catch (TransformerException e) {
-            handleException("Error occurred while saving modified the xml document", e);
+            handleException("Error occurred while saving modified signup configuration xml document", e);
         }
 
         return stringWriter.toString();
     }
 
     private void migrateRxts() throws APPMMigrationException {
+        log.info("Rxt migration is started for App Manager 1.2.0");
         migrateRxt(Constants.WEBAPP_RXT);
         migrateRxt(Constants.MOBILEAPP_RXT);
+        log.info("Rxt migration is completed successfully for App Manager 1.2.0");
     }
 
     /**
@@ -632,37 +680,39 @@ public class MigrationClientImpl implements MigrationClient {
      * @throws APPMMigrationException
      */
     private void migrateRxt(String rxtType) throws APPMMigrationException {
-
-        String rxtName = rxtType + ".rxt";
-        String rxtDir = CarbonUtils.getCarbonHome() + File.separator + "repository" + File.separator + "resources" + File.separator + "rxts" +
-                File.separator + rxtName;
+        log.info("Rxt migration for " + rxtType + "s is started.");
+        String rxtFileName = rxtType + ".rxt";
+        String rxtDir = CarbonUtils.getCarbonHome() + Constants.MIGRATION_RXT_LOCATION + rxtFileName;
 
         for (Tenant tenant : tenantsArray) {
             try {
                 registryService.startTenantFlow(tenant);
 
-                log.info("Updating" + rxtName + "for tenant " + tenant.getId() + '(' + tenant.getDomain() + ')');
-                //Update webapp.rxt file
+                if (log.isDebugEnabled()) {
+                    log.info("Migrating " + rxtFileName + " for tenant " + tenant.getDomain() + " is started.");
+                }
                 String rxt = FileUtil.readFileToString(rxtDir);
-                registryService.updateRXTResource(rxtName, rxt);
-                log.info("End Updating api.rxt for tenant " + tenant.getId() + '(' + tenant.getDomain() + ')');
+                registryService.updateRXTResource(rxtFileName, rxt);
+                if (log.isDebugEnabled()) {
+                    log.info("Migrating " + rxtFileName + " for tenant " + tenant.getDomain() + " is completed successfully.");
+                }
 
             } catch (org.wso2.carbon.registry.core.exceptions.RegistryException e) {
-                handleException("Error when accessing API artifact in registry for tenant " + tenant.getId() + '('
-                        + tenant.getDomain() + ')', e);
+                handleException("Error occurred while accessing " + rxtType + " artifacts in registry for tenant " +
+                        tenant.getDomain(), e);
             } catch (IOException e) {
-                handleException("Error occurred while reading " + rxtName + " from " + rxtDir + "for tenant " +
-                        tenant.getId() + '(' + tenant.getDomain() + ')', e);
+                handleException("Error occurred while reading " + rxtFileName + " from " + rxtDir + "for tenant " +
+                        tenant.getDomain(), e);
             } catch (UserStoreException e) {
-                handleException("Error while updating " + rxtName + " in the registry for tenant " + tenant.getId() + '('
-                        + tenant.getDomain() + ')', e);
+                handleException("Error while updating " + rxtFileName + " in the registry for tenant " + tenant.getDomain(), e);
             } finally {
                 registryService.endTenantFlow();
             }
         }
+        log.info("Rxt migration for " + rxtType + "s is completed successfully.");
     }
 
-    public void updateWebappMaps(GenericArtifact[] artifacts, Registry registry,
+    /*public void updateWebappMaps(GenericArtifact[] artifacts, Registry registry,
                                  HashMap<String, MigratingWebApp> defaultVersionedWebApps, HashMap<String, MigratingWebApp> oldWebappMap) {
 
         try {
@@ -711,6 +761,41 @@ public class MigrationClientImpl implements MigrationClient {
         } catch (AppManagementException e) {
             log.error("Error occurred while retrieving webapp", e);
         }
+    }*/
+
+    private Map<String, MigratingWebApp> getOldWebAppVersionMap(GenericArtifact[] artifacts) {
+        Map<String, MigratingWebApp> oldWebappMap = new HashMap<>();
+        try {
+            for (GenericArtifact artifact : artifacts) {
+
+                WebApp webApp = AppManagerUtil.getAPI(artifact);
+                if (webApp == null) {
+                    continue;
+                }
+
+                String createdTimeStamp = artifact.getAttribute(AppMConstants.API_OVERVIEW_CREATED_TIME);
+                createdTimeStamp.replaceFirst("^0+(?!$)", "");
+                long epochTimeStamp = Long.parseLong(createdTimeStamp);
+
+                MigratingWebApp migratingWebApp = new MigratingWebApp(webApp);
+                migratingWebApp.setCreatedTime(new Date(epochTimeStamp));
+                //Update old version Map
+                if (oldWebappMap.containsKey(migratingWebApp.getAppName())) {
+                    MigratingWebApp currentOldWebapp = oldWebappMap.get(migratingWebApp.getAppName());
+                    if (migratingWebApp.getCreatedTime().before(currentOldWebapp.getCreatedTime())) {
+                        oldWebappMap.put(migratingWebApp.getAppName(), migratingWebApp);
+                    }
+                } else {
+                    oldWebappMap.put(migratingWebApp.getAppName(), migratingWebApp);
+                }
+
+            }
+        } catch (GovernanceException e) {
+            log.error("Error occurred while reading artifact attribute values", e);
+        } catch (AppManagementException e) {
+            log.error("Error occurred while retrieving webapp", e);
+        }
+        return oldWebappMap;
     }
 
 

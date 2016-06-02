@@ -93,7 +93,7 @@ public class MigrationDBCreator extends DatabaseCreator {
         }
     }
 
-    public void updateAppDefaultVersions(HashMap<String, MigratingWebApp> defaultAppList, String tenantId) {
+   /* public void updateAppDefaultVersions(HashMap<String, MigratingWebApp> defaultAppList, String tenantId) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
@@ -131,7 +131,7 @@ public class MigrationDBCreator extends DatabaseCreator {
         } finally {
             APIMgtDBUtil.closeAllConnections(preparedStatement, connection, null);
         }
-    }
+    }*/
 
     /**
      *

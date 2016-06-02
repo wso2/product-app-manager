@@ -84,55 +84,59 @@ public class RegistryServiceImpl implements RegistryService {
 
     @Override
     public void addDefaultLifecycles() throws RegistryException, UserStoreException, FileNotFoundException, XMLStreamException {
-       // CommonU.addDefaultLifecyclesIfNotAvailable(getConfigRegistry(), CommonUtil.getRootSystemRegistry(tenant.getId()));
+        // CommonU.addDefaultLifecyclesIfNotAvailable(getConfigRegistry(), CommonUtil.getRootSystemRegistry(tenant.getId()));
     }
 
     @Override
-    public GenericArtifact[] getGenericWebappArtifacts() {
-        log.debug("Calling getGenericWebappArtifacts");
+    public GenericArtifact[] getGenericArtifacts(String artifactType) {
+
         GenericArtifact[] artifacts = {};
 
         try {
             Registry registry = getGovernanceRegistry();
-            GenericArtifactManager artifactManager = AppManagerUtil.getArtifactManager(registry, AppMConstants.API_KEY);
+            GenericArtifactManager artifactManager = AppManagerUtil.getArtifactManager(registry, artifactType);
 
             if (artifactManager != null) {
                 artifacts = artifactManager.getAllGenericArtifacts();
-
-                log.debug("Total number of api artifacts : " + artifacts.length);
             } else {
-                log.debug("No webapp artifacts found in registry for tenant " + tenant.getId() + '(' + tenant.getDomain() + ')');
+                if (log.isDebugEnabled()) {
+                    log.debug("No " + artifactType + " artifacts found in registry for tenant " + tenant.getDomain()
+                            + '(' + tenant.getId() + ')');
+                }
             }
-
         } catch (RegistryException e) {
-            log.error("Error occurred when getting GenericArtifacts from registry", e);
+            log.error("Error occurred when retrieving " + artifactType + " artifacts from registry for tenant "
+                    + tenant.getDomain(), e);
         } catch (UserStoreException e) {
-            log.error("Error occurred while reading tenant information of tenant " + tenant.getId() + '(' + tenant.getDomain() + ')', e);
+            log.error("Error occurred while obtaining information regarding tenant " + tenant.getDomain()
+                    + "(" + tenant.getId() + ")", e);
         } catch (AppManagementException e) {
-            log.error("Failed to initialize GenericArtifactManager", e);
+            log.error("Failed to initialize" + artifactType + " GenericArtifactManager for tenant " + tenant.getDomain() +
+                    '(' + tenant.getId() + ')', e);
         }
-
         return artifacts;
     }
 
     @Override
-    public void updateGenericAPIArtifacts(GenericArtifact[] artifacts) {
-        log.debug("Calling updateGenericAPIArtifacts");
+    public void updateGenericArtifacts(String artifactType, GenericArtifact[] artifacts) {
 
         try {
             Registry registry = getGovernanceRegistry();
-            GenericArtifactManager artifactManager = AppManagerUtil.getArtifactManager(registry, AppMConstants.API_KEY);
+            GenericArtifactManager artifactManager = AppManagerUtil.getArtifactManager(registry, artifactType);
 
             for (GenericArtifact artifact : artifacts) {
                 artifactManager.updateGenericArtifact(artifact);
             }
 
         } catch (UserStoreException e) {
-            log.error("Error occurred while reading tenant information of tenant " + tenant.getId() + '(' + tenant.getDomain() + ')', e);
+            log.error("Error occurred while obtaining information regarding tenant " + tenant.getDomain()
+                    + "(" + tenant.getId() + ")", e);
         } catch (RegistryException e) {
-            log.error("Error occurred when updating GenericArtifacts in registry", e);
+            log.error("Error occurred when updating " + artifactType + " artifacts in registry for tenant " +
+                    tenant.getDomain(), e);
         } catch (AppManagementException e) {
-            e.printStackTrace();
+            log.error("Failed to initialize" + artifactType + " GenericArtifactManager for tenant " + tenant.getDomain() +
+                    '(' + tenant.getId() + ')', e);
         }
     }
 
