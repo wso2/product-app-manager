@@ -21,7 +21,7 @@ import org.wso2.carbon.registry.core.RegistryConstants;
 
 public class Constants {
 
-    public static final String VERSION_1_2_0 = "1.2.1.1.0to1.2.1.1.0-1.2.0-migration";
+    public static final String VERSION_1_2_0 = "1.2.0";
     public static final String CURRENT_TENANT   = "current_tenant";
     public static final String ROLE_RESTRICTIONS = "role_restrictions";
     public static final String DELIMITER = ";";

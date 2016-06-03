@@ -40,9 +40,6 @@ import org.wso2.carbon.user.core.tenant.TenantManager;
  * @scr.reference name="registry.service"
  * interface="org.wso2.carbon.registry.core.service.RegistryService" cardinality="1..1"
  * policy="dynamic" bind="setRegistryService" unbind="unsetRegistryService"
- * @scr.reference name="registry.core.dscomponent"
- * interface="org.wso2.carbon.registry.core.service.RegistryService" cardinality="1..1"
- * policy="dynamic" bind="setRegistryService" unbind="unsetRegistryService"
  * @scr.reference name="tenant.registryloader" interface="org.wso2.carbon.registry.core.service.TenantRegistryLoader" cardinality="1..1"
  * policy="dynamic" bind="setTenantRegistryLoader" unbind="unsetTenantRegistryLoader"
  * @scr.reference name="appm.configuration" interface="org.wso2.carbon.appmgt.impl.AppManagerConfigurationService" cardinality="1..1"
@@ -95,7 +92,7 @@ public class APPMMigrationServiceComponent {
                         } else if (isFileSystemMigration) {
                             migrationClient.synapseFileSystemMigration();
                         } else {
-                            log.error("Migration profile is not specified. Please specify the migration profile.");
+                            log.error("Migration mode is not specified. Please specify the migration profile.");
                         }
                     }
                     log.info("App Manager 1.1.0 to 1.2.0 migration successfully completed");
@@ -111,6 +108,8 @@ public class APPMMigrationServiceComponent {
             log.error("Error occurred while initializing migration client for App Manager 1.2.0 migration", e);
         } catch (UserStoreException e) {
             log.error("Error occurred while initializing migration client for App Manager 1.2.0 migration", e);
+        } catch (Exception e){
+            log.error("Error occurred while executing App Manager Migration client 1.2.0 ", e);
         }
     }
 

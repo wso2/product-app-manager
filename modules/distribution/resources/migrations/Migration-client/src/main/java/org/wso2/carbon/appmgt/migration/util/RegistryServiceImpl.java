@@ -295,7 +295,7 @@ public class RegistryServiceImpl implements RegistryService {
         Registry registry = ServiceHolder.getRegistryService().getGovernanceSystemRegistry(tenant.getId());
 
         //Update RXT resource
-        String resourcePath = Constants.RXT_REG_PATH + RegistryConstants.PATH_SEPARATOR + rxtName;
+        String resourcePath = Constants.RXT_REG_PATH + RegistryConstants.PATH_SEPARATOR + rxtName + ".rxt";
 
         String govRelativePath = RegistryUtils.getRelativePathToOriginal(resourcePath,
                 AppManagerUtil.getMountedPath(RegistryContext.getBaseInstance(),
@@ -319,7 +319,7 @@ public class RegistryServiceImpl implements RegistryService {
 
         //Update RXT UI Configuration
         Registry configRegistry = ServiceHolder.getRegistryService().getConfigSystemRegistry(tenant.getId());
-        String rxtUIConfigPath = Constants.GOVERNANCE_ARTIFACT_CONFIGURATION_PATH + AppMConstants.API_KEY;
+        String rxtUIConfigPath = Constants.GOVERNANCE_ARTIFACT_CONFIGURATION_PATH + rxtName;
         if (configRegistry.resourceExists(rxtUIConfigPath)) {
             Resource rxtUIResource = configRegistry.get(rxtUIConfigPath);
             rxtUIResource.setContent(ResourceUtil.getArtifactUIContentFromConfig(rxtPayload));

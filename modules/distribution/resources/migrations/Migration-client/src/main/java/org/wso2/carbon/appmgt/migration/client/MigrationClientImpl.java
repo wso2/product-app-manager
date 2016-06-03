@@ -86,7 +86,7 @@ import java.util.Date;
 
 public class MigrationClientImpl implements MigrationClient {
 
-    private static final Log log = LogFactory.getLog(MigrationClientImpl.class);
+    private static final Log log = LogFactory.getLog(MigrationClient.class);
     private List<Tenant> tenantsArray;
     private MigrationDBCreator migrationDBCreator;
     RegistryService registryService;
@@ -134,7 +134,7 @@ public class MigrationClientImpl implements MigrationClient {
     public void databaseMigration() {
         log.info("Database migration for App Manager 1.2.0 started");
         try {
-            final String productHome = CarbonUtils.getCarbonHome();
+            String productHome = CarbonUtils.getCarbonHome();
             String scriptPath = productHome + Constants.MIGRATION_SCRIPTS_LOCATION;
             updateAPPManagerDatabase(scriptPath);
         } catch (APPMMigrationException e) {
@@ -573,9 +573,14 @@ public class MigrationClientImpl implements MigrationClient {
                             tenant.getDomain() + " is started.");
                 }
                 registryService.startTenantFlow(tenant);
+                Object resourceContent = registryService.getConfigRegistryResource(
+                        Constants.MIGRATION_TENANT_STORE_CONFIG);
+                if(resourceContent == null){
+                    handleException("Store configuration cannot be found in config registry location "+
+                            Constants.MIGRATION_TENANT_STORE_CONFIG + " for tenant "+tenant.getDomain());
+                }
                 String storeConfig =
-                        ResourceUtil.getResourceContent(registryService.getConfigRegistryResource(
-                                Constants.MIGRATION_TENANT_STORE_CONFIG));
+                        ResourceUtil.getResourceContent(resourceContent);
                 JSONObject storeConfigJSONObject = new JSONObject(storeConfig);
                 storeConfigJSONObject.getJSONArray("assets").put("site");
                 registryService.updateConfigRegistryResource(Constants.MIGRATION_TENANT_STORE_CONFIG,
@@ -704,7 +709,7 @@ public class MigrationClientImpl implements MigrationClient {
                     log.info("Migrating " + rxtFileName + " for tenant " + tenant.getDomain() + " is started.");
                 }
                 String rxt = FileUtil.readFileToString(rxtDir);
-                registryService.updateRXTResource(rxtFileName, rxt);
+                registryService.updateRXTResource(rxtType, rxt);
                 if (log.isDebugEnabled()) {
                     log.info("Migrating " + rxtFileName + " for tenant " + tenant.getDomain() + " is completed successfully.");
                 }
@@ -815,4 +820,7 @@ public class MigrationClientImpl implements MigrationClient {
         throw new APPMMigrationException(msg, t);
     }
 
+    private static void handleException(String msg) throws APPMMigrationException {
+        throw new APPMMigrationException(msg);
+    }
 }
