@@ -103,7 +103,7 @@
                         <configuration>
                             <appendAssemblyId>false</appendAssemblyId>
                             <descriptor>src/assembly/dist.xml</descriptor>
-                            <finalName>wso2-appmgt-migration-client</finalName>
+                            <finalName>wso2-appmgt-migration-client-1.2.x</finalName>
                         </configuration>
                     </execution>
                 </executions>
