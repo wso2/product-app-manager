@@ -46,8 +46,12 @@ import org.wso2.carbon.appmgt.migration.client.dto.SynapseDTO;
 import org.wso2.carbon.appmgt.migration.client.internal.ServiceHolder;
 import org.wso2.carbon.appmgt.migration.util.*;
 import org.wso2.carbon.base.MultitenantConstants;
+import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.governance.api.exception.GovernanceException;
 import org.wso2.carbon.governance.api.generic.dataobjects.GenericArtifact;
+import org.wso2.carbon.ndatasource.common.DataSourceException;
+import org.wso2.carbon.ndatasource.core.CarbonDataSource;
+import org.wso2.carbon.ndatasource.core.DataSourceManager;
 import org.wso2.carbon.registry.api.RegistryException;
 import org.wso2.carbon.registry.core.Registry;
 import org.wso2.carbon.registry.core.RegistryConstants;
@@ -169,7 +173,7 @@ public class MigrationClientImpl implements MigrationClient {
     public void synapseFileSystemMigration() {
         log.info("Synapse configuration file migration for App Manager 1.2.0 started");
         try {
-        synapseAPIMigration();
+            synapseAPIMigration();
         } catch (APPMMigrationException e) {
             log.error("Error occurred while migrating synapse configuration files for App Manager 1.2.0", e);
         }
@@ -291,8 +295,8 @@ public class MigrationClientImpl implements MigrationClient {
 
     private void synapseAPIMigration() throws APPMMigrationException {
         for (Tenant tenant : tenantsArray) {
-            if(log.isDebugEnabled()){
-                log.debug("Synapse configuration file system migration is started for tenant "+tenant.getDomain());
+            if (log.isDebugEnabled()) {
+                log.debug("Synapse configuration file system migration is started for tenant " + tenant.getDomain());
             }
             String apiPath = ResourceUtil.getApiPath(tenant.getId(), tenant.getDomain());
             List<SynapseDTO> synapseDTOs = ResourceUtil.getVersionedAPIs(apiPath);
@@ -329,8 +333,8 @@ public class MigrationClientImpl implements MigrationClient {
                 }
                 ResourceUtil.transformXMLDocument(document, synapseDTO.getFile());
             }
-            if(log.isDebugEnabled()){
-                log.debug("Synapse configuration file system migration for tenant "+tenant.getDomain()+"is completed successfully");
+            if (log.isDebugEnabled()) {
+                log.debug("Synapse configuration file system migration for tenant " + tenant.getDomain() + "is completed successfully");
             }
         }
     }
@@ -429,6 +433,9 @@ public class MigrationClientImpl implements MigrationClient {
                     webAppArtifact.removeAttribute(AppMConstants.APP_OVERVIEW_TREAT_AS_A_SITE);
                     webAppArtifact.addAttribute(AppMConstants.APP_OVERVIEW_TREAT_AS_A_SITE, "FALSE");
 
+                    webAppArtifact.removeAttribute(AppMConstants.API_OVERVIEW_BUSS_OWNER);
+                    webAppArtifact.addAttribute(AppMConstants.API_OVERVIEW_BUSS_OWNER, "");
+
                     String resourcePath = webAppArtifact.getPath();
                     Resource resource = registry.get(resourcePath);
                     Properties properties = resource.getProperties();
@@ -475,6 +482,7 @@ public class MigrationClientImpl implements MigrationClient {
     private void mobileAppArtifactMigration() throws APPMMigrationException {
         log.info("MobileApp registry artifact migration is started");
         for (Tenant tenant : tenantsArray) {
+            Map<String, Float> ratingMap = new HashMap<>();
             registryService.startTenantFlow(tenant);
             if (log.isDebugEnabled()) {
                 log.debug("Starting mobileapp registry artifact migration for tenant " + tenant.getDomain());
@@ -483,9 +491,9 @@ public class MigrationClientImpl implements MigrationClient {
 
                 GenericArtifact[] mobileAppArtifacts =
                         registryService.getGenericArtifacts(AppMConstants.MOBILE_ASSET_TYPE);
-
+                Registry registry = registryService.getGovernanceRegistry();
                 for (GenericArtifact mobileAppArtifact : mobileAppArtifacts) {
-
+                    float currentRating = 0;
                     mobileAppArtifact.removeAttribute(AppMConstants.API_OVERVIEW_DISPLAY_NAME);
                     mobileAppArtifact.addAttribute(AppMConstants.API_OVERVIEW_DISPLAY_NAME,
                             mobileAppArtifact.getAttribute(AppMConstants.MOBILE_APP_OVERVIEW_NAME));
@@ -511,10 +519,18 @@ public class MigrationClientImpl implements MigrationClient {
                         }
                         mobileAppArtifact.setAttribute(AppMConstants.MOBILE_APP_IMAGES_SCREENSHOTS, StringUtils.join(screenShotIds, ","));
                     }
+                    removeArtifactProperties(registry, mobileAppArtifact);
+                    currentRating = registry.getAverageRating(mobileAppArtifact.getPath());
+                    ratingMap.put(AppMConstants.MOBILE_ASSET_TYPE + ":" + mobileAppArtifact.getId(), currentRating);
                 }
                 registryService.updateGenericArtifacts(AppMConstants.MOBILE_ASSET_TYPE, mobileAppArtifacts);
+                migrateMobileAppRatings(ratingMap, tenant.getDomain());
 
             } catch (GovernanceException e) {
+                log.error("Error occurred while migrating mobileapp registry artifacts for tenant " + tenant.getDomain());
+            } catch (UserStoreException e) {
+                log.error("Error occurred while migrating mobileapp registry artifacts for tenant " + tenant.getDomain());
+            } catch (org.wso2.carbon.registry.core.exceptions.RegistryException e) {
                 log.error("Error occurred while migrating mobileapp registry artifacts for tenant " + tenant.getDomain());
             } finally {
                 registryService.endTenantFlow();
@@ -532,6 +548,65 @@ public class MigrationClientImpl implements MigrationClient {
             imageId = imageURL.substring(imageURL.lastIndexOf("/") + 1, imageURL.length());
         }
         return imageId;
+    }
+
+    private void removeArtifactProperties(Registry registry, GenericArtifact artifact) throws APPMMigrationException {
+
+        Resource resource = null;
+        try {
+            String resourcePath = artifact.getPath();
+            resource = registry.get(resourcePath);
+
+            Properties properties = resource.getProperties();
+
+            Iterator<Object> propertyKeySetItr = properties.keySet().iterator();
+            ArrayList<String> propertyLeyList = new ArrayList<String>();
+            while (propertyKeySetItr.hasNext()) {
+                Object key = propertyKeySetItr.next();
+                propertyLeyList.add(key.toString());
+            }
+
+            ArrayList<String> mandatoryPropertyList = getMandatoryArtifactProperties();
+
+            //Remove unwanted properties in artifact in order to avoid indexing issues
+            for (String propertyKey : propertyLeyList) {
+                if (!mandatoryPropertyList.contains(propertyKey)) {
+                    resource.removeProperty(propertyKey);
+                }
+            }
+            //Update the registry artifact resource after removing the unwanted properties
+            registry.put(resourcePath, resource);
+
+        } catch (org.wso2.carbon.registry.core.exceptions.RegistryException e) {
+            handleException("Error occurred while removing artifact properties for artifact id : "+artifact.getId(), e);
+        }
+    }
+
+    public static Connection getConnection() throws SQLException,
+            DataSourceException {
+        Connection conn;
+        try {
+            PrivilegedCarbonContext.startTenantFlow();
+            PrivilegedCarbonContext privilegedCarbonContext = PrivilegedCarbonContext
+                    .getThreadLocalCarbonContext();
+            privilegedCarbonContext.setTenantId(MultitenantConstants.SUPER_TENANT_ID);
+            privilegedCarbonContext
+                    .setTenantDomain(org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_DOMAIN_NAME);
+            CarbonDataSource carbonDataSource = DataSourceManager.getInstance()
+                    .getDataSourceRepository()
+                    .getDataSource(Constants.SOCIAL_DB_NAME);
+            DataSource dataSource = (DataSource) carbonDataSource.getDSObject();
+            conn = dataSource.getConnection();
+            return conn;
+        } catch (SQLException e) {
+            log.error("Can't create JDBC connection to the SQL Server", e);
+            throw e;
+        } catch (DataSourceException e) {
+            log.error("Can't create data source for SQL Server", e);
+            throw e;
+        } finally {
+            PrivilegedCarbonContext.endTenantFlow();
+        }
     }
 
     private ArrayList<String> getMandatoryArtifactProperties() {
@@ -575,9 +650,9 @@ public class MigrationClientImpl implements MigrationClient {
                 registryService.startTenantFlow(tenant);
                 Object resourceContent = registryService.getConfigRegistryResource(
                         Constants.MIGRATION_TENANT_STORE_CONFIG);
-                if(resourceContent == null){
-                    handleException("Store configuration cannot be found in config registry location "+
-                            Constants.MIGRATION_TENANT_STORE_CONFIG + " for tenant "+tenant.getDomain());
+                if (resourceContent == null) {
+                    handleException("Store configuration cannot be found in config registry location " +
+                            Constants.MIGRATION_TENANT_STORE_CONFIG + " for tenant " + tenant.getDomain());
                 }
                 String storeConfig =
                         ResourceUtil.getResourceContent(resourceContent);
@@ -596,13 +671,91 @@ public class MigrationClientImpl implements MigrationClient {
                 handleException("Error occurred while migrating tenant store configuration in registry path " +
                         Constants.MIGRATION_TENANT_STORE_CONFIG, e);
             } catch (JSONException e) {
-                e.printStackTrace();
+                handleException("Error occurred while migrating tenant store configuration in registry path " +
+                        Constants.MIGRATION_TENANT_STORE_CONFIG +". Failed to parse content into JSON", e);
             } finally {
                 registryService.endTenantFlow();
             }
         }
         log.info("Tenant store configuration migration is completed successfully");
     }
+
+    private void migrateMobileAppRatings(Map<String, Float> appRating, String tenantDomain) throws APPMMigrationException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            if (log.isDebugEnabled()) {
+                log.debug("Executing: " + Constants.INSERT_SOCIAL_CACHE);
+            }
+            connection = getConnection(Constants.SOCIAL_DB_NAME);
+            statement = connection.prepareStatement(Constants.INSERT_SOCIAL_CACHE);
+            for (String contextId : appRating.keySet()) {
+                statement.setString(1, contextId);
+                Float rating = appRating.get(contextId);
+                statement.setInt(2, rating.intValue());
+                statement.setInt(3, 1);
+                statement.setDouble(4, rating.doubleValue());
+                statement.setString(5, tenantDomain);
+                statement.addBatch();
+            }
+            statement.executeBatch();
+        } catch (SQLException e) {
+            handleException("Error occurred while migrating mobile application ratings for tenant " + tenantDomain, e);
+        } catch (DataSourceException e) {
+            handleException("Error occurred while obtaining datasource connection for " + Constants.SOCIAL_DB_NAME +
+                    " during mobile application ratings migration for tenant " + tenantDomain, e);
+        } finally {
+            closeConnection(connection);
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    handleException("Error occurred while closing prepared statement for Mobile app Social Cache update " +
+                            "for tenant " + tenantDomain, e);
+                }
+            }
+        }
+
+    }
+
+    public static Connection getConnection(String datasourceName) throws SQLException,
+            DataSourceException {
+        Connection conn;
+        try {
+            PrivilegedCarbonContext.startTenantFlow();
+            PrivilegedCarbonContext privilegedCarbonContext = PrivilegedCarbonContext
+                    .getThreadLocalCarbonContext();
+            privilegedCarbonContext.setTenantId(MultitenantConstants.SUPER_TENANT_ID);
+            privilegedCarbonContext
+                    .setTenantDomain(org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_DOMAIN_NAME);
+            CarbonDataSource carbonDataSource = DataSourceManager.getInstance()
+                    .getDataSourceRepository()
+                    .getDataSource(datasourceName);
+            DataSource dataSource = (DataSource) carbonDataSource.getDSObject();
+            conn = dataSource.getConnection();
+            return conn;
+        } catch (SQLException e) {
+            log.error("Can't create JDBC connection to the SQL Server", e);
+            throw e;
+        } catch (DataSourceException e) {
+            log.error("Can't create data source for SQL Server", e);
+            throw e;
+        } finally {
+            PrivilegedCarbonContext.endTenantFlow();
+        }
+    }
+
+    public static void closeConnection(Connection connection) {
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            log.warn("Can't close JDBC connection to the SQL server", e);
+        }
+    }
+
 
     private void signUpConfigurationMigration() throws APPMMigrationException {
 

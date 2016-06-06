@@ -42,8 +42,8 @@ public class Constants {
     public static final String MIGRATION_RXT_LOCATION = MIGRATION_RESOURCES_LOCATION + "/rxts/";
     public static final String MIGRATION_LIFECYCLE_LOCATION = MIGRATION_RESOURCES_LOCATION + "/lifecycles/";
     public static final String MIGRATION_TENANT_STORE_CONFIG = "/store/configs/store.json";
-
-
+    public static final String SOCIAL_DB_NAME = "WSO2_SOCIAL_DB";
+    public static final String INSERT_SOCIAL_CACHE = "INSERT INTO SOCIAL_RATING_CACHE (payload_context_id, rating_total, rating_count, rating_average, tenant_domain) VALUES(?, ?, ?, ?, ?)";
     public static final String REGISTRY_ARTIFACT_LIFECYCLE_HISTORY_OLD =
             "/_system/governance/repository/components/org.wso2.carbon.governance/lifecycles/history/__system_governance_appmgt_applicationdata_";
     public static final String GOVERNANCE_ARTIFACT_CONFIGURATION_PATH =
