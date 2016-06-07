@@ -20,7 +20,7 @@ public class MigratingWebApp {
     public boolean isPublished() {
         boolean isPublished = false;
         if ("PUBLISHED".equals(webApp.getStatus().getStatus())) {
-            isPublished = true;
+           isPublished = true;
         }
         return isPublished;
     }
