@@ -55,63 +55,6 @@ insert into table APPM_REQUEST_SUMMARY_FINAL select
 INSERT OVERWRITE TABLE AppRequestSummaryData SELECT * FROM APPM_REQUEST_SUMMARY_FINAL;                            
                             
 
-<!--APM Cache Request Summery Data Manupulation-->
-
-create temporary table CacheRequestSummaryData using CarbonJDBC options (dataSource "WSO2AM_STATS_DB", tableName "CACHE_REQUEST_SUMMARY");
-create temporary table CacheRequestData USING CarbonAnalytics OPTIONS(tableName "ORG_WSO2_APPMGT_STATISTICS_CACHE");
-   
-CREATE TEMPORARY TABLE APPM_CACHE_REQUEST_SUMMARY_FINAL USING CarbonAnalytics OPTIONS (tableName "CACHE_REQUEST_SUMMARY",                           
-	schema "api string, 
-		api_version string, 
-		version string,
-		trackingCode string, 
-		referer string,
-		apiPublisher string,
-		userId string, 
-		context string,		
-		max_request_time long,
-		fullRequestPath string,
-		cacheHit int,
- 		total_request_count int, 
-		hostName string, 
-		year int,
-		month int, 
-		day int, 
-		time string",
-
-  primaryKeys "api,api_version,version,apiPublisher,userId,context,hostName,time,fullRequestPath,cacheHit"
-);
-
-insert into table APPM_CACHE_REQUEST_SUMMARY_FINAL select 
-		api, 
-		api_version, 
-		version,
-		trackingCode, 
-		referer,
-		apiPublisher,
-		userId, 
-		context,
-		max(requestTime) as max_request_time,
-		fullRequestPath,
-		cacheHit,
-		sum(request) as total_request_count,
-		hostName, 
-
-		substring(cast(first(requestTime)/1000 as timestamp),0,4),
-		substring(cast(first(requestTime)/1000 as timestamp),6,2),
-		substring(cast(first(requestTime)/1000 as timestamp),9,2),
-		substring(cast(first(requestTime)/1000 as timestamp),0,16)
-							
-from CacheRequestData where context is not NULL group by  api,api_version,version,trackingCode,referer,apiPublisher,userId,context,hostName,fullRequestPath,cacheHit,
- 
-		substring(cast(requestTime/1000 as timestamp),0,4), 
-		substring(cast(requestTime/1000 as timestamp),6,2),
-		substring(cast(requestTime/1000 as timestamp),9,2);  
-				            
-INSERT OVERWRITE TABLE CacheRequestSummaryData SELECT * FROM  APPM_CACHE_REQUEST_SUMMARY_FINAL;                            
-
-
-
 <!--API Usage Summery Data Manupulation-->
 
 create temporary table AppVersionUsageSummaryData using CarbonJDBC options (dataSource "WSO2AM_STATS_DB", tableName "API_VERSION_USAGE_SUMMARY");

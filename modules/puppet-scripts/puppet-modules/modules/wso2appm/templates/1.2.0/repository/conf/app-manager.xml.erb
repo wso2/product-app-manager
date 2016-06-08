@@ -147,7 +147,7 @@
     </APIGateway>
 
     <!--
-    API usage tracker configuration used by the BAM data publisher and
+    API usage tracker configuration used by the DAS data publisher and
     Google Analytics publisher in API gateway.
     -->
     <Analytics>
@@ -155,14 +155,14 @@
 
         <!--
         This data source is used to write/read UI Activity changes (eg: App Hit count)
-        to seperate database. When using BAM to analyze the changes it needs to configure this data source appropriately.
+        to seperate database. When using DAS to analyze the changes it needs to configure this data source appropriately.
         -->
         <UIActivityPublishDataSourceName>jdbc/WSO2AM_DB</UIActivityPublishDataSourceName>
 
         <!--
-        Enable UI Activity Data publish to BAM
+        Enable UI Activity Data publish to DAS
         -->
-        <UIActivityBAMPublishEnabled>false</UIActivityBAMPublishEnabled>
+        <UIActivityDASPublishEnabled>false</UIActivityDASPublishEnabled>
 
         <!--
         Enable/Disable the API usage tracker.
@@ -170,22 +170,17 @@
         <Enabled>false</Enabled>
 
         <!--
-        Enable/Disable Publishing Cache Hit/Miss Statistics
-        -->
-        <CacheStatsEnabled>false</CacheStatsEnabled>
-
-        <!--
         API Usage Data Publisher.
         -->
         <PublisherClass>org.wso2.carbon.appmgt.usage.publisher.APIMgtUsageDataBridgeDataPublisher</PublisherClass>
 
         <!--
-        Thrift port of the remote BAM server.
+        Thrift port of the remote DAS server.
         -->
         <ThriftPort>7612</ThriftPort>
 
         <!--
-        Server URL of the remote BAM/CEP server used to collect statistics.
+        Server URL of the remote DAS/CEP server used to collect statistics.
         Must be specified in protocol://hostname:port/ format.
 
         An event can also be published to multiple Receiver Groups each having 1 or more receivers.
@@ -197,19 +192,19 @@
         e.g. - Multiple Receiver Groups with two receivers each
                  {tcp://localhost:7612/,tcp://localhost:7613},{tcp://localhost:7712/,tcp://localhost:7713/}
         -->
-        <BAMServerURL>tcp://localhost:7612/</BAMServerURL>
+        <DASServerURL>tcp://localhost:7612/</DASServerURL>
 
         <!--
-        Administrator username to login to the remote BAM server.
+        Administrator username to login to the remote DAS server.
         -->
-        <BAMUsername>admin</BAMUsername>
+        <DASUsername>admin</DASUsername>
 
         <!--
-        Administrator password to login to the remote BAM server.
+        Administrator password to login to the remote DAS server.
         -->
-        <BAMPassword>admin</BAMPassword>
+        <DASPassword>admin</DASPassword>
 
-        <BAMEventStreams>
+        <DASEventStreams>
 
             <RequestStreamName>org.wso2.appmgt.statistics.request</RequestStreamName>
             <RequestStreamVersion>1.0.0</RequestStreamVersion>
@@ -223,15 +218,15 @@
             <CacheStatStreamName>org.wso2.appmgt.statistics.cache</CacheStatStreamName>
             <CacheStatStreamVersion>1.0.0</CacheStatStreamVersion>
 
-            <!-- Used when publishing AppManager UI activities to BAM   -->
+            <!-- Used when publishing AppManager UI activities to DAS   -->
             <UIActivityStreamName>org.wso2.appmgt.bam.uiactivitypublish</UIActivityStreamName>
             <UIActivityStreamVersion>1.1.0</UIActivityStreamVersion>
 
-        </BAMEventStreams>
+        </DASEventStreams>
 
 
         <!--
-        JNDI name of the data source to be used for getting BAM statistics.
+        JNDI name of the data source to be used for getting DAS statistics.
         This data source should be defined in the master-datasources.xml file in conf/datasources directory.
         -->
         <!--DataSourceName>jdbc/WSO2AM_STATS_DB</DataSourceName-->
