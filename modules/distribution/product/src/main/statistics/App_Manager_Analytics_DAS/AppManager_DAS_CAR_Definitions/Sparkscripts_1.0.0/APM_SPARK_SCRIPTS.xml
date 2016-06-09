@@ -110,27 +110,27 @@ CREATE TEMPORARY TABLE API_RESPONSE_SUMMARY_FINAL USING CarbonAnalytics OPTIONS 
 insert into table API_RESPONSE_SUMMARY_FINAL select 
 api,version,api_version,apiPublisher,context,trackingCode,referer,hostName,avg(serviceTimeOfPage) as serviceTime  from AppRequestData  group by api,version,api_version,apiPublisher,context,trackingCode,referer,hostName;
                                       
-INSERT OVERWRITE TABLE AppResponseSummaryData SELECT * FROM API_RESPONSE_SUMMARY_FINAL;                              
+INSERT OVERWRITE TABLE AppResponseSummaryData SELECT * FROM API_RESPONSE_SUMMARY_FINAL;
 
 
-<!--APM HIT TOTAL Data Manupulation-->    
+	<!--APM HIT TOTAL Data Manupulation-->
 
 create temporary table  ApmAppHits using CarbonJDBC options (dataSource "WSO2AM_STATS_DB", tableName "APM_APP_HITS");
 
 create temporary table ApmAppHitsData USING CarbonAnalytics OPTIONS(tableName "ORG_WSO2_APPMGT_BAM_UIACTIVITYPUBLISH");
 
-CREATE TEMPORARY TABLE APM_APP_HITS_FINAL USING CarbonAnalytics OPTIONS (tableName "APM_APP_HITS",                           
+CREATE TEMPORARY TABLE APM_APP_HITS_FINAL USING CarbonAnalytics OPTIONS (tableName "APM_APP_HITS",
 	schema "uuid string,
 		app_name string,
 		version string,
 		context string,
 		user_id string,
 		tenant_id string,
-		hit_time long",
-  primaryKeys "appId,appName,appVersion,context,userId,tenantId"
+		hit_time string",
+		primaryKeys "uuid,app_name,version,context,user_id,tenant_id"
 );
 
-insert into table APM_APP_HITS_FINAL select appId,appName,appVersion,context,userId,tenantId,first(timestamp) from ApmAppHitsData group by appId,appName,appVersion,context,userId,tenantId;                    
+insert into table APM_APP_HITS_FINAL select uuid,app_name,version,context,user_id,tenant_id,hit_time from ApmAppHitsData group by uuid,app_name,version,context,user_id,tenant_id,hit_time;
 
 INSERT OVERWRITE TABLE ApmAppHits SELECT * FROM APM_APP_HITS_FINAL;
 

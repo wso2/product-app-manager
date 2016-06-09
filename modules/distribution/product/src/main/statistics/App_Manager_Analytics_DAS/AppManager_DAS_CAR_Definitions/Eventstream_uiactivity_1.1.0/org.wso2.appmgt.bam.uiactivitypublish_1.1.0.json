@@ -1,15 +1,23 @@
 {
+  "streamId": "org.wso2.appmgt.bam.uiactivitypublish:1.1.0",
   "name": "org.wso2.appmgt.bam.uiactivitypublish",
   "version": "1.1.0",
   "nickName": "AppManager User Activity",
   "description": "This stream will store user activity",
+  "metaData": [
+    {
+      "name": "clientType",
+      "type": "STRING"
+    }
+  ],
+  "correlationData": [],
   "payloadData": [
     {
-      "name": "appId",
+      "name": "uuid",
       "type": "STRING"
     },
     {
-      "name": "userId",
+      "name": "user_id",
       "type": "STRING"
     },
     {
@@ -21,19 +29,19 @@
       "type": "STRING"
     },
     {
-      "name": "timestamp",
-      "type": "LONG"
-    },
-    {
-      "name": "tenantId",
-      "type": "INT"
-    },
-    {
-      "name": "appName",
+      "name": "hit_time",
       "type": "STRING"
     },
     {
-      "name": "appVersion",
+      "name": "tenant_id",
+      "type": "INT"
+    },
+    {
+      "name": "app_name",
+      "type": "STRING"
+    },
+    {
+      "name": "version",
       "type": "STRING"
     },
     {

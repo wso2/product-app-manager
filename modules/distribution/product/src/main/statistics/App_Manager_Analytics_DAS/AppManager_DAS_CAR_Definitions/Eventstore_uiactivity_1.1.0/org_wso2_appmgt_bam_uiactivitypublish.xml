@@ -5,14 +5,21 @@
 </Source>
 <TableSchema>
 <ColumnDefinition>
-	<Name>appId</Name>
+	<Name>meta_clientType</Name>
 	<EnableIndexing>false</EnableIndexing>
 	<IsPrimaryKey>false</IsPrimaryKey>
 	<EnableScoreParam>false</EnableScoreParam>
 	<Type>STRING</Type>
 </ColumnDefinition>
 <ColumnDefinition>
-	<Name>userId</Name>
+	<Name>uuid</Name>
+	<EnableIndexing>false</EnableIndexing>
+	<IsPrimaryKey>false</IsPrimaryKey>
+	<EnableScoreParam>false</EnableScoreParam>
+	<Type>STRING</Type>
+</ColumnDefinition>
+<ColumnDefinition>
+	<Name>user_id</Name>
 	<EnableIndexing>false</EnableIndexing>
 	<IsPrimaryKey>false</IsPrimaryKey>
 	<EnableScoreParam>false</EnableScoreParam>
@@ -33,28 +40,28 @@
 	<Type>STRING</Type>
 </ColumnDefinition>
 <ColumnDefinition>
-	<Name>timestamp</Name>
-	<EnableIndexing>false</EnableIndexing>
-	<IsPrimaryKey>false</IsPrimaryKey>
-	<EnableScoreParam>false</EnableScoreParam>
-	<Type>LONG</Type>
-</ColumnDefinition>
-<ColumnDefinition>
-	<Name>tenantId</Name>
-	<EnableIndexing>false</EnableIndexing>
-	<IsPrimaryKey>false</IsPrimaryKey>
-	<EnableScoreParam>false</EnableScoreParam>
-	<Type>INTEGER</Type>
-</ColumnDefinition>
-<ColumnDefinition>
-	<Name>appName</Name>
+	<Name>hit_time</Name>
 	<EnableIndexing>false</EnableIndexing>
 	<IsPrimaryKey>false</IsPrimaryKey>
 	<EnableScoreParam>false</EnableScoreParam>
 	<Type>STRING</Type>
 </ColumnDefinition>
 <ColumnDefinition>
-	<Name>appVersion</Name>
+	<Name>tenant_id</Name>
+	<EnableIndexing>false</EnableIndexing>
+	<IsPrimaryKey>false</IsPrimaryKey>
+	<EnableScoreParam>false</EnableScoreParam>
+	<Type>INTEGER</Type>
+</ColumnDefinition>
+<ColumnDefinition>
+	<Name>app_name</Name>
+	<EnableIndexing>false</EnableIndexing>
+	<IsPrimaryKey>false</IsPrimaryKey>
+	<EnableScoreParam>false</EnableScoreParam>
+	<Type>STRING</Type>
+</ColumnDefinition>
+<ColumnDefinition>
+	<Name>version</Name>
 	<EnableIndexing>false</EnableIndexing>
 	<IsPrimaryKey>false</IsPrimaryKey>
 	<EnableScoreParam>false</EnableScoreParam>
