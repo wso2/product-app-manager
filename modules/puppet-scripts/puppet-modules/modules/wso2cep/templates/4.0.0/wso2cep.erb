@@ -1,0 +1,181 @@
+#!/bin/bash
+
+# ------------------------------------------------------------------------------
+#
+# Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+#
+# WSO2 Inc. licenses this file to you under the Apache License,
+# Version 2.0 (the "License"); you may not use this file except
+# in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+# ------------------------------------------------------------------------------
+
+
+#
+# /etc/init.d/wso2esb
+# chkconfig:         2345 90 10
+# description:       wso2 service init script.
+# Provides:          wso2 Inc
+# Required-Start:    $syslog 
+# Should-Start:
+# Required-Stop:     $syslog 
+# Should-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description:  wso2as # 
+#
+# Get function from functions library
+if [ -f /etc/init.d/functions ]; then
+      . /etc/init.d/functions
+  else
+      . /lib/lsb/init-functions
+fi 
+
+
+#set the configuration settings for the service
+USER="<%= @owner %>"
+PRODUCT_CODE="<%= @deployment_code %>"
+CARBON_HOME="<%= @carbon_home %>"
+LOCK_FILE="${CARBON_HOME}/wso2carbon.lck"
+PID_FILE="${CARBON_HOME}/wso2carbon.pid"
+CMD="${CARBON_HOME}/bin/wso2server.sh"
+
+#Get the status details of idenetity service
+status() {
+     if [ -f $PID_FILE ]; then
+        PID=`cat $PID_FILE`
+        ps -fp $PID > /dev/null 2>&1
+        PIDVAL=$?
+     else
+        PIDVAL=3
+     fi
+
+     if [ $PIDVAL -eq 0 ]; then
+        echo "WSO2 $PRODUCT_CODE server is running ..."
+     else
+        echo "WSO2 $PRODUCT_CODE server is stopped."
+     fi
+     echo
+     return $PIDVAL
+}
+
+#Start the idenetity service
+start() {
+     if [ -f $PID_FILE ]; then
+        PID=`cat $PID_FILE`
+        ps -fp $PID > /dev/null 2>&1
+        PIDVAL=$?
+     else
+        PIDVAL=3
+     fi
+
+     if [ $PIDVAL -eq 0 ]; then
+        echo "WSO2 $PRODUCT_CODE server is running ..."
+     else
+        echo -n "Starting WSO2 $PRODUCT_CODE server: "
+        touch $LOCK_FILE
+        su - $USER -c "$CMD start > /dev/null 2>&1 &"
+        sleep 5
+        if [ -f $PID_FILE ]; then
+            PID=`cat $PID_FILE`
+            ps -fp $PID > /dev/null 2>&1
+            PIDVAL=$?
+            if [ $PIDVAL -eq 0 ]; then
+                echo "[Ok]"
+            else
+                echo "[Fail]"
+            fi
+        else
+            echo "[Fail]"
+            PIDVAL=2
+        fi
+     fi
+     echo
+     return $PIDVAL
+}
+
+#Restart the idenetity service
+restart() {
+    echo -n "Restarting WSO2 $PRODUCT_CODE server: "
+    touch $LOCK_FILE
+    su - $USER -c "$CMD restart > /dev/null 2>&1 &"
+    sleep 15
+    if [ -f $PID_FILE ]; then
+        PID=`cat $PID_FILE`
+        ps -fp $PID > /dev/null 2>&1
+        PIDVAL=$?
+        if [ $PIDVAL -eq 0 ]; then
+            echo "[Ok]" 
+        else
+            echo "[Fail]"
+        fi
+    else
+        echo "[Fail]"
+        PIDVAL=2
+    fi
+    echo
+    return $PIDVAL
+}
+
+#Stop the idenetity service
+stop() {
+    if [ -f $PID_FILE ]; then
+        PID=`cat $PID_FILE`
+        ps -fp $PID > /dev/null 2>&1
+        PIDVAL=$?
+        if [ $PIDVAL -eq 0 ]; then
+            echo -n "Stopping WSO2 $PRODUCT_CODE server: "
+            su - $USER -c "$CMD stop > /dev/null 2>&1 &"
+            rm -f $LOCK_FILE
+            sleep 10
+            PID=`cat $PID_FILE`
+            ps -fp $PID > /dev/null 2>&1
+            PIDVAL=$?
+            if [ $PIDVAL -eq 0 ]; then
+                echo "[Fail]"
+                PIDVAL=2
+            else
+                echo "[Ok]"
+                PIDVAL=0
+            fi
+         else
+            echo "WSO2 $PRODUCT_CODE server is not running."
+            PIDVAL=0
+         fi
+    else
+         echo "WSO2 $PRODUCT_CODE server is not running."
+         PIDVAL=0
+    fi
+    echo
+    return $PIDVAL
+}
+
+###Main logic of the service###
+case "$1" in
+start)
+  start
+  ;;
+stop)
+  stop
+  ;;
+status)
+  status
+  ;;
+restart|reload|condrestart)
+  restart
+  ;;
+*)
+  echo  $"Usage: $0 {start|stop|restart|reload|status}"
+  exit 1
+esac
+exit $?

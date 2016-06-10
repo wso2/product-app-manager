@@ -95,7 +95,11 @@
                         <configuration>
                             <tasks>
                                 <!-- Change identity DB defined in identity.xml to use WSO2AM_DB -->
-				<replace file="../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/identity/identity.xml" token="&lt;Name&gt;jdbc/WSO2CarbonDB&lt;/Name&gt;" value="&lt;Name&gt;jdbc/WSO2AM_DB&lt;/Name&gt;" />
+				                        <replace file="../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/identity/identity.xml" token="&lt;Name&gt;jdbc/WSO2CarbonDB&lt;/Name&gt;" value="&lt;Name&gt;jdbc/WSO2AM_DB&lt;/Name&gt;" />
+
+                                <!-- Engaging a custom password grant type handler in identity.xml file. -->
+                                <replace file="../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/identity/identity.xml" token="&lt;GrantTypeHandlerImplClass&gt;org.wso2.carbon.identity.oauth2.token.handlers.grant.PasswordGrantHandler&lt;/GrantTypeHandlerImplClass&gt;" value="&lt;GrantTypeHandlerImplClass&gt;org.wso2.carbon.appmgt.oauth.handlers.PasswordGrantHandler&lt;/GrantTypeHandlerImplClass&gt;" />
+
                                 <property name="tempdir" value="target/docs-temp"/>
                                 <mkdir dir="${tempdir}"/>
                                 <unzip dest="${tempdir}">
@@ -321,7 +325,7 @@
                     </execution>
                 </executions>
             </plugin>
-           
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>

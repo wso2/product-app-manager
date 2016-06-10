@@ -48,7 +48,7 @@ public class WebApp {
     private List<String> roles;//overview_visibleRoles
     private String webapp;
     private String optradio;
-
+    private String businessOwner;
     private String singleSignOn;
     private String autoConfig;
     private String providers;
@@ -484,5 +484,13 @@ public class WebApp {
     public void setOverviewSubscriptionAvailability(String overviewSubscriptionAvailability) {
         this.overviewSubscriptionAvailability = overviewSubscriptionAvailability;
     }
+    
+    public String getBusinessOwner() {
+        return businessOwner;
+   }
+
+   public void setBusinessOwner(String businessOwner) {
+       this.businessOwner = businessOwner;
+   }
 
 }

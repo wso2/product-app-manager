@@ -23,7 +23,7 @@ package org.wso2.appmanager.integration.utils.bean;
  */
 
 public class AppCreateRequest extends AbstractRequest {
-    private String overviewProvider = "admin";
+    private String overviewProvider;
     private String overviewName;
     private String overviewDisplayName = "Fifa";
     private String overviewContext;
@@ -99,6 +99,7 @@ public class AppCreateRequest extends AbstractRequest {
     private String oauthApiConsumerSecret3;
     private String oauthApiName3;
     private String webapp = "webapp";
+    private String businessOwner = null;
 
 
     @Override
@@ -124,6 +125,7 @@ public class AppCreateRequest extends AbstractRequest {
         addParameter("overview_allowAnonymous", overviewAllowAnonymous);
         addParameter("overview_acsUrl", overviewAcsUrl);
         addParameter("overview_skipGateway", overviewSkipGateway);
+        addParameter("overview_businessOwner", businessOwner);
 
         addParameter("uritemplate_policyGroupIds" , uriTemplatePolicyGroupIds);
 
@@ -187,12 +189,15 @@ public class AppCreateRequest extends AbstractRequest {
      * @param context String.
      * @param version String.
      * @param trackingCode String.
+     * @param appCreator String.
      */
-    public AppCreateRequest(String appName, String context, String version, String trackingCode) {
+    public AppCreateRequest(String appName, String context, String version, String trackingCode,
+                            String appCreator) {
         this.overviewName = appName;
         this.overviewContext = context;
         this.overviewVersion = version;
         this.overviewTrackingCode = trackingCode;
+        this.overviewProvider = appCreator;
     }
 
     /**
@@ -217,6 +222,22 @@ public class AppCreateRequest extends AbstractRequest {
      */
     public String getOverviewProvider() {
         return overviewProvider;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getBusinessOwner() {
+        return businessOwner;
+    }
+
+    /**
+     *
+     * @param businessOwner
+     */
+    public void setBusinessOwner(String businessOwner) {
+        this.businessOwner = businessOwner;
     }
 
     /**

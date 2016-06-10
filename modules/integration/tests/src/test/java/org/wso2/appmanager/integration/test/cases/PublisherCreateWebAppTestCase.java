@@ -43,6 +43,7 @@ public class PublisherCreateWebAppTestCase {
     private String context = "/" + appName;
     private String trackingCode = "AM_" + appName;
     private String backEndUrl;
+    private String appCreatorUserName;
 
 
     @BeforeClass(alwaysRun = true)
@@ -54,14 +55,16 @@ public class PublisherCreateWebAppTestCase {
 
         //User who has only app creating permission.
         User appCreator = appMServer.getSuperTenant().getTenantUser("AppCreator");
-        appmPublisherRestClient.login(appCreator.getUserName(), appCreator.getPassword());
+        appCreatorUserName = appCreator.getUserName();
+        appmPublisherRestClient.login(appCreatorUserName, appCreator.getPassword());
     }
 
     @Test(description = TEST_DESCRIPTION)
     public void testPublisherCreateWebApp() throws Exception {
         HttpResponse appCreateResponse = appmPublisherRestClient.webAppCreate(appName, context,
                                                                               appVersion,
-                                                                              trackingCode);
+                                                                              trackingCode,
+                                                                              appCreatorUserName);
         int appCreateResponseCode = appCreateResponse.getResponseCode();
         assertTrue(appCreateResponseCode == 200, appCreateResponseCode + " status code received.");
         JSONObject appCreateResponseData = new JSONObject(appCreateResponse.getData());

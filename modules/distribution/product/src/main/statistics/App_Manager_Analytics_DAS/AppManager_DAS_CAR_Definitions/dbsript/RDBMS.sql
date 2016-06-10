@@ -69,12 +69,11 @@ CREATE TABLE API_RESPONSE_SUMMARY (
 
 
 CREATE TABLE IF NOT EXISTS APM_APP_HITS (
-	appId VARCHAR(500), 
-	userId VARCHAR(50) NOT NULL, 
-	item VARCHAR(50),
-	action VARCHAR(256), 
-	tenantId INT, 
-	appName VARCHAR(500),
-	appVersion VARCHAR(500),
-	context VARCHAR(500)
+	uuid VARCHAR(500),
+	app_name VARCHAR(200),
+	version VARCHAR(50),
+	context VARCHAR(256),
+	user_id VARCHAR(50),
+	tenant_id INT,
+	hit_time VARCHAR(500)
 );

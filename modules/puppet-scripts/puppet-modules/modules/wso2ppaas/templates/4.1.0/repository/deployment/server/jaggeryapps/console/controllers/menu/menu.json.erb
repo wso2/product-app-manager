@@ -1,0 +1,291 @@
+{
+    "menu": [
+        {
+            "link": "configure/",
+            "linkexternal": false,
+            "context": "/",
+            "title": "Configurations",
+            "icon": "fa-gears",
+            "block-color":"#34495e",
+            "permissionPaths": [
+                "/permission",
+                "/permission/admin",
+                "/permission/admin/stratos",
+                "/permission/admin/stratos/networkpartitions",
+                "/permission/admin/stratos/networkpartitions/manage",
+                "/permission/admin/stratos/networkpartitions/view",
+                "/permission/admin/stratos/autoscalingpolicies",
+                "/permission/admin/stratos/autoscalingpolicies/manage",
+                "/permission/admin/stratos/autoscalingpolicies/view",
+                "/permission/admin/stratos/deploymentpolicies",
+                "/permission/admin/stratos/deploymentpolicies/manage",
+                "/permission/admin/stratos/deploymentpolicies/view",
+                "/permission/admin/stratos/applicationpolicies",
+                "/permission/admin/stratos/applicationpolicies/manage",
+                "/permission/admin/stratos/applicationpolicies/view",
+                "/permission/admin/stratos/cartridges",
+                "/permission/admin/stratos/cartridges/manage",
+                "/permission/admin/stratos/cartridges/view",
+                "/permission/admin/stratos/cartridgegroups",
+                "/permission/admin/stratos/cartridgegroups/manage",
+                "/permission/admin/stratos/cartridgegroups/view",
+                "/permission/admin/stratos/kubernetesclusters",
+                "/permission/admin/stratos/kubernetesclusters/manage",
+                "/permission/admin/stratos/kubernetesclusters/view"
+            ],
+            "description": "Configure network partitions, policies, cartridges, cartridge groups and kubernetes clusters.",
+            "sub-menu": [
+                {
+                    "link": "configure/network-partitions/",
+                    "linkexternal": false,
+                    "context": "/configure",
+                    "title": "Network Partitions",
+                    "icon": "fa-th-large",
+                    "block-color":"#34495e",
+                    "permissionPaths": [
+                        "/permission",
+                        "/permission/admin",
+                        "/permission/admin/stratos/networkpartitions",
+                        "/permission/admin/stratos/networkpartitions/manage",
+                        "/permission/admin/stratos/networkpartitions/view"
+                    ],
+                    "description": "Manage network partitions."
+                },
+                {
+                    "link": "configure/autoscaling-policies/",
+                    "linkexternal": false,
+                    "context": "/configure",
+                    "title": "Autoscaling Policies",
+                    "icon": "fa-expand",
+                    "block-color":"#34495e",
+                    "permissionPaths": [
+                        "/permission",
+                        "/permission/admin",
+                        "/permission/admin/stratos/autoscalingpolicies",
+                        "/permission/admin/stratos/autoscalingpolicies/manage",
+                        "/permission/admin/stratos/autoscalingpolicies/view"
+                    ],
+                    "description": "Manage policies which specify autoscaling threshold values."
+                },
+                {
+                    "link": "configure/deployment-policies/",
+                    "linkexternal": false,
+                    "context": "/configure",
+                    "title": "Deployment Policies",
+                    "icon": "fa-road",
+                    "block-color":"#34495e",
+                    "permissionPaths": [
+                        "/permission",
+                        "/permission/admin",
+                        "/permission/admin/stratos/deploymentpolicies",
+                        "/permission/admin/stratos/deploymentpolicies/manage",
+                        "/permission/admin/stratos/deploymentpolicies/view"
+                    ],
+                    "description": "Manage policies which specify cartridge deployment in partitions."
+                },
+                {
+                    "link": "configure/application-policies/",
+                    "linkexternal": false,
+                    "context": "/configure",
+                    "title": "Application Policies",
+                    "icon": "fa-cube",
+                    "block-color":"#34495e",
+                    "permissionPaths": [
+                        "/permission",
+                        "/permission/admin",
+                        "/permission/admin/stratos/applicationpolicies",
+                        "/permission/admin/stratos/applicationpolicies/manage",
+                        "/permission/admin/stratos/applicationpolicies/view"
+                    ],
+                    "description": "Manage policies which specify application deployment in network partitions."
+                },
+                {
+                    "link": "configure/cartridges/",
+                    "linkexternal": false,
+                    "context": "/configure",
+                    "title": "Cartridges",
+                    "icon": "fa-inbox",
+                    "block-color":"#34495e",
+                    "permissionPaths": [
+                        "/permission",
+                        "/permission/admin",
+                        "/permission/admin/stratos/cartridges",
+                        "/permission/admin/stratos/cartridges/manage",
+                        "/permission/admin/stratos/cartridges/view"
+                    ],
+                    "description": "Manage single-tenant & multi-tenant cartridges."
+                },
+                {
+                    "link": "configure/cartridge-groups/",
+                    "linkexternal": false,
+                    "context": "/configure",
+                    "title": "Cartridge Groups",
+                    "icon": "fa-briefcase",
+                    "block-color":"#34495e",
+                    "permissionPaths": [
+                        "/permission",
+                        "/permission/admin",
+                        "/permission/admin/stratos/cartridgegroups",
+                        "/permission/admin/stratos/cartridgegroups/manage",
+                        "/permission/admin/stratos/cartridgegroups/view"
+                    ],
+                    "description": "Manage cartridge groups"
+                },
+                {
+                    "link": "configure/kubernetes-clusters/",
+                    "linkexternal": false,
+                    "context": "/configure",
+                    "title": "Kubernetes Clusters",
+                    "icon": "fa-sitemap",
+                    "block-color":"#34495e",
+                    "permissionPaths": [
+                        "/permission",
+                        "/permission/admin",
+                        "/permission/admin/stratos/kubernetesclusters",
+                        "/permission/admin/stratos/kubernetesclusters/manage",
+                        "/permission/admin/stratos/kubernetesclusters/view"
+                    ],
+                    "description": "Manage Kubernetes clusters."
+                }
+            ]
+        },
+        {
+            "link": "users/",
+            "linkexternal": false,
+            "context": "/",
+            "title": "Users",
+            "icon": "fa-users",
+            "block-color":"#27ae60",
+            "permissionPaths": ["/permission", "/permission/admin"],
+            "description": "Manage tenants & users.",
+            "sub-menu": [
+                {
+                    "link": "users/users/",
+                    "linkexternal": false,
+                    "context": "/users",
+                    "title": "Manage Users",
+                    "icon": "fa-user",
+                    "block-color":"#27ae60",
+                    "permissionPaths": [
+                        "/permission",
+                        "/permission/admin"
+                    ],
+                    "description": "Manage current tenant users."
+                },
+                {
+                    "link": "users/tenants/",
+                    "linkexternal": false,
+                    "context": "/users",
+                    "title": "Manage Tenants",
+                    "icon": "fa-building",
+                    "block-color":"#27ae60",
+                    "permissionPaths": [
+                        "/permission"
+                    ],
+                    "description": "Manage tenants."
+                }
+            ]
+        },
+        {
+            "link": "applications/",
+            "linkexternal": false,
+            "context": "/",
+            "title": "Applications",
+            "icon": "fa-cubes",
+            "block-color":"#2980b9",
+            "permissionPaths": [
+                "/permission",
+                "/permission/admin",
+                "/permission/admin/stratos/applications",
+                "/permission/admin/stratos/applications/manage",
+                "/permission/admin/stratos/applications/view"],
+            "description": "Manage applications."
+        },
+<%- if @das['nodes'][0]['stats_publisher_enabled'] == true -%>
+        {
+            "link": "https://<%= @das['nodes'][0]['host'] %>:<%= @das['nodes'][0]['ports']['management'] %>/portal/dashboards/ppaas-monitoring-dashboard",
+            "linkexternal": true,
+            "context": "/",
+            "title": "Monitoring",
+            "icon": "fa-laptop",
+            "block-color":"#f1c40f",
+            "permissionPaths": [
+                "/permission",
+                "/permission/admin"
+            ],
+            "description": "Monitor health statistics of clusters and members."
+        },
+<%- end -%>
+        {
+            "link": "https://wso2.org/jira/browse/PAAS",
+            "linkexternal": true,
+            "context": "/",
+            "title": "JIRA",
+            "icon": "fa-bug",
+            "block-color":"#8e44ad",
+            "permissionPaths": [
+                "/permission",
+                "/permission/admin",
+                "/permission/admin/stratos",
+                "/permission/admin/stratos/networkpartitions",
+                "/permission/admin/stratos/networkpartitions/manage",
+                "/permission/admin/stratos/networkpartitions/view",
+                "/permission/admin/stratos/autoscalingpolicies",
+                "/permission/admin/stratos/autoscalingpolicies/manage",
+                "/permission/admin/stratos/autoscalingpolicies/view",
+                "/permission/admin/stratos/deploymentpolicies",
+                "/permission/admin/stratos/deploymentpolicies/manage",
+                "/permission/admin/stratos/deploymentpolicies/view",
+                "/permission/admin/stratos/applicationpolicies",
+                "/permission/admin/stratos/applicationpolicies/manage",
+                "/permission/admin/stratos/applicationpolicies/view",
+                "/permission/admin/stratos/cartridges",
+                "/permission/admin/stratos/cartridges/manage",
+                "/permission/admin/stratos/cartridges/view",
+                "/permission/admin/stratos/cartridgegroups",
+                "/permission/admin/stratos/cartridgegroups/manage",
+                "/permission/admin/stratos/cartridgegroups/view",
+                "/permission/admin/stratos/kubernetesclusters",
+                "/permission/admin/stratos/kubernetesclusters/manage",
+                "/permission/admin/stratos/kubernetesclusters/view"
+            ],
+            "description": "Report your issues that you find."
+        },
+        {
+            "link": "https://docs.wso2.com/display/PP410/WSO2+Private+PaaS+Documentation",
+            "linkexternal": true,
+            "context": "/",
+            "title": "Documentation",
+            "icon": "fa-life-saver",
+            "block-color":"#16a085",
+            "permissionPaths": [
+                "/permission",
+                "/permission/admin",
+                "/permission/admin/stratos",
+                "/permission/admin/stratos/networkpartitions",
+                "/permission/admin/stratos/networkpartitions/manage",
+                "/permission/admin/stratos/networkpartitions/view",
+                "/permission/admin/stratos/autoscalingpolicies",
+                "/permission/admin/stratos/autoscalingpolicies/manage",
+                "/permission/admin/stratos/autoscalingpolicies/view",
+                "/permission/admin/stratos/deploymentpolicies",
+                "/permission/admin/stratos/deploymentpolicies/manage",
+                "/permission/admin/stratos/deploymentpolicies/view",
+                "/permission/admin/stratos/applicationpolicies",
+                "/permission/admin/stratos/applicationpolicies/manage",
+                "/permission/admin/stratos/applicationpolicies/view",
+                "/permission/admin/stratos/cartridges",
+                "/permission/admin/stratos/cartridges/manage",
+                "/permission/admin/stratos/cartridges/view",
+                "/permission/admin/stratos/cartridgegroups",
+                "/permission/admin/stratos/cartridgegroups/manage",
+                "/permission/admin/stratos/cartridgegroups/view",
+                "/permission/admin/stratos/kubernetesclusters",
+                "/permission/admin/stratos/kubernetesclusters/manage",
+                "/permission/admin/stratos/kubernetesclusters/view"
+            ],
+            "icon": "fa-book",
+            "description": "Read documentation to get more information."
+        }
+    ]
+}

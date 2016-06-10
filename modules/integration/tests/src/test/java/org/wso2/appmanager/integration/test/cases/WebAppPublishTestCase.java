@@ -52,10 +52,11 @@ public class WebAppPublishTestCase {
         backEndUrl = appMServer.getContextUrls().getWebAppURLHttps();
         appmPublisherRestClient = new APPMPublisherRestClient(backEndUrl);
         User appCreator = appMServer.getSuperTenant().getTenantUser("AdminUser");
-        appmPublisherRestClient.login(appCreator.getUserName(), appCreator.getPassword());
+        String userName = appCreator.getUserName();
+        appmPublisherRestClient.login(userName, appCreator.getPassword());
         HttpResponse appCreateResponse = appmPublisherRestClient.webAppCreate(appName, context,
                                                                               appVersion,
-                                                                              trackingCode);
+                                                                              trackingCode, userName);
         JSONObject appCreateResponseData = new JSONObject(appCreateResponse.getData());
         uuid = appCreateResponseData.getString(AppmTestConstants.ID);
 

@@ -1,0 +1,225 @@
+# Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+classes:
+  - wso2appm
+wso2::pack_filename: "%{::product_name}-%{::product_version}.zip"
+wso2::pack_extracted_dir: "%{::product_name}-%{::product_version}"
+
+wso2::service_name: wso2appm
+wso2::hostname : appm.wso2.com
+
+wso2::hosts_mapping :
+  localhost :
+    ip_address : 127.0.0.1
+    hostname : localhost
+
+wso2::auth_manager :
+    hostname: appm.wso2.idp
+    server_port: 9443
+    username: admin
+    password: admin
+
+wso2::gateway :
+    hostname: appm.wso2.gw
+    server_port: 9443
+    username: admin
+    password: admin
+    http_nio_port: 8280
+    https_nio_port: 8243
+
+wso2::sso_configuration :
+    idp_hostname: appm.wso2.idp
+    idp_port: 9443
+    idp_name: wso2is
+    idp_version: 5.0.0
+    provider_class: org.wso2.carbon.appmgt.impl.idp.sso.configurator.IS500SAMLSSOConfigurator
+    username: admin
+    password: admin
+
+wso2::ports:
+   offset: 0
+#  proxyPort :
+#    http: 80
+#    https: 443
+
+wso2::registry_mounts:
+  wso2appm_db:
+    path: /_system/config
+    target_path: /_system/config
+    read_only: true
+    registry_root: /
+    enable_cache: true
+
+  wso2appm_db:
+    path: /_system/gov
+    target_path: /_system/gov
+    read_only: true
+    registry_root: /
+    enable_cache: true
+
+
+wso2::registry_mounts:
+#  wso2_config_db:
+#    path: /_system/config/appm
+#    target_path: /_system/config/appm
+#    read_only: false
+#    registry_root: /
+#    enable_cache: true
+
+  wso2_gov_db:
+    path: /_system/governance
+    target_path: /_system/governance
+    read_only: false
+    registry_root: /
+    enable_cache: true
+
+#Provide the 'WSO2USER_DB' datasource configuration key value in master_datasources
+wso2::usermgt_datasource: wso2user_db
+
+wso2::template_list :
+  - repository/conf/app-manager.xml
+  - repository/conf/identity/sso-idp-config.xml
+
+wso2::service_providers :
+  store :
+    issuer : store
+    acs_url : https://appm.wso2.store:9443/store/acs
+    sign_response : true
+    login_page : /store/login.jag
+
+  publisher :
+    issuer : publisher
+    acs_url : https://appm.wso2.publisher:9443/publisher/acs
+    sign_response : true
+    login_page : /publisher/controllers/login.jag
+
+  social :
+    issuer : social
+    acs_url : https://appm.wso2.store:9443/social/acs
+    sign_response : true
+    login_page : /social/login.jag
+
+wso2::file_list :
+  - repository/components/lib/mysql-connector-java-5.1.35-bin.jar
+
+wso2::master_datasources :
+  wso2_carbon_db :
+    name : WSO2_CARBON_DB
+    description : The datasource used for registry and user manager
+    driver_class_name : org.h2.Driver
+    url : jdbc:h2:repository/database/WSO2CARBON_DB;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000
+    username : "%{hiera('wso2::datasources::common::username')}"
+    password : "%{hiera('wso2::datasources::common::password')}"
+    #secretAlias :
+    jndi_config : jdbc/WSO2CarbonDB
+    max_active : "%{hiera('wso2::datasources::common::max_active')}"
+    max_wait : "%{hiera('wso2::datasources::common::max_wait')}"
+    test_on_borrow : "%{hiera('wso2::datasources::common::test_on_borrow')}"
+    default_auto_commit : "%{hiera('wso2::datasources::common::default_auto_commit')}"
+    validation_query : "%{hiera('wso2::datasources::mysql::validation_query')}"
+    validation_interval : "%{hiera('wso2::datasources::common::validation_interval')}"
+
+  wso2appm_db:
+    name : WSO2AM_DB
+    description : The datasource used for API Manager database
+    driver_class_name : com.mysql.jdbc.Driver
+    url : jdbc:mysql://192.168.57.89:3306/appmgt?autoReconnect=true
+    username : root
+    password : root
+    #secret_alias :
+    jndi_config : jdbc/WSO2AM_DB
+    max_active: "%{hiera('wso2::datasources::common::max_active')}"
+    max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
+    test_on_borrow: "%{hiera('wso2::datasources::common::test_on_borrow')}"
+    default_auto_commit: "%{hiera('wso2::datasources::common::default_auto_commit')}"
+    validation_query: "%{hiera('wso2::datasources::mysql::validation_query')}"
+    validation_interval: "%{hiera('wso2::datasources::common::validation_interval')}"
+
+  wso2am_stat_db:
+    name : WSO2AM_STATS_DB
+    description : The datasource used for getting statistics to APP Manager
+    driver_class_name : org.h2.Driver
+    url : jdbc:h2:<!-- Full path to JDBC database -->;AUTO_SERVER=TRUE
+    username : "%{hiera('wso2::datasources::common::username')}"
+    password : "%{hiera('wso2::datasources::common::password')}"
+    #secret_alias :
+    jndi_config : jdbc/WSO2AM_STATS_DB
+    max_active: "%{hiera('wso2::datasources::common::max_active')}"
+    max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
+    test_on_borrow: "%{hiera('wso2::datasources::common::test_on_borrow')}"
+    default_auto_commit: "%{hiera('wso2::datasources::common::default_auto_commit')}"
+    validation_query: "%{hiera('wso2::datasources::mysql::validation_query')}"
+    validation_interval: "%{hiera('wso2::datasources::common::validation_interval')}"
+
+  wso2_gov_db:
+    name : WSO2_GOV_DB
+    description : The datasource used for gov registry
+    driver_class_name : com.mysql.jdbc.Driver
+    url : jdbc:mysql://192.168.57.89:3306/registry?autoReconnect=true
+    username : root
+    password : root
+    #secretAlias :
+    jndi_config : jdbc/WSO2_GOV_DB
+    max_active: "%{hiera('wso2::datasources::common::max_active')}"
+    max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
+    test_on_borrow: "%{hiera('wso2::datasources::common::test_on_borrow')}"
+    validation_query: "%{hiera('wso2::datasources::mysql::validation_query')}"
+    validation_interval: "%{hiera('wso2::datasources::common::validation_interval')}"
+
+  wso2user_db :
+    name : WSO2USER_DB
+    description : The datasource is used for user mangement and userstore
+    driver_class_name : com.mysql.jdbc.Driver
+    url : jdbc:mysql://192.168.57.89:3306/userdb?autoReconnect=true
+    username : root
+    password : root
+    #secretAlias :
+    jndi_config : jdbc/WSO2USER_DB
+    max_active : "%{hiera('wso2::datasources::common::max_active')}"
+    max_wait : "%{hiera('wso2::datasources::common::max_wait')}"
+    test_on_borrow : "%{hiera('wso2::datasources::common::test_on_borrow')}"
+    default_auto_commit : "%{hiera('wso2::datasources::common::default_auto_commit')}"
+    validation_query : "%{hiera('wso2::datasources::mysql::validation_query')}"
+    validation_interval : "%{hiera('wso2::datasources::common::validation_interval')}"
+
+  jagh2:
+    name : JAGH2
+    description : The datasource used for by the Jaggery Storage Manager
+    driver_class_name : com.mysql.jdbc.Driver
+    url : jdbc:mysql://192.168.57.89:3306/storage?autoReconnect=true
+    username : root
+    password : root
+    #secret_alias :
+    jndi_config : jdbc/ES_Storage
+    max_active: "%{hiera('wso2::datasources::common::max_active')}"
+    max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
+
+  wso2social_db:
+    name : WSO2_SOCIAL_DB
+    description : The datasource used for social framework
+    driver_class_name : com.mysql.jdbc.Driver
+    url : jdbc:mysql://192.168.57.89:3306/social?autoReconnect=true
+    username : root
+    password : root
+    #secret_alias :
+    jndi_config : jdbc/WSO2SocialDB
+    max_active: "%{hiera('wso2::datasources::common::max_active')}"
+    max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
+    test_on_borrow: "%{hiera('wso2::datasources::common::test_on_borrow')}"
+    default_auto_commit: "%{hiera('wso2::datasources::common::default_auto_commit')}"
+    validation_query: "%{hiera('wso2::datasources::mysql::validation_query')}"
+    validation_interval: "%{hiera('wso2::datasources::common::validation_interval')}"
+

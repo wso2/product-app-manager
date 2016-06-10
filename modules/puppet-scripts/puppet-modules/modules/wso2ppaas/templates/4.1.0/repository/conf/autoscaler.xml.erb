@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2015 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<configuration>
+    <autoscaler>
+        <cloudController>
+            <hostname><%= @cloud_controller['host'] %></hostname>
+            <port><%= @cloud_controller['ports']['management'] %></port>
+            <!-- CC client timout in ms -->
+            <clientTimeout><%= @cloud_controller['client_timeout'] %></clientTimeout>
+        </cloudController>
+        <stratosManager>
+            <hostname><%= @stratos_manager['host'] %></hostname>
+            <port><%= @stratos_manager['ports']['management'] %></port>
+            <!-- SM client timeout in ms -->
+            <clientTimeout><%= @stratos_manager['client_timeout'] %></clientTimeout>
+        </stratosManager>
+	      <identity>
+            <hostname><%= @identity['host'] %></hostname>
+            <port><%= @identity['ports']['management'] %></port>
+            <clientTimeout><%= @identity['client_timeout'] %></clientTimeout>
+        </identity>
+        <member>
+            <spinAfterTerminate><%= @autoscaler['member']['spin_after_terminate'] %></spinAfterTerminate>
+            <!-- this is the maximum time(ms) a member can be in pending member state -->
+            <pendingMemberExpiryTimeout><%= @autoscaler['member']['pending_member_expiry_timeout'] %></pendingMemberExpiryTimeout>
+            <!-- this is the maximum time(ms) a member can be in obsoleted member state -->
+            <obsoletedMemberExpiryTimeout><%= @autoscaler['member']['obsoleted_member_expiry_timeout'] %></obsoletedMemberExpiryTimeout>
+            <!-- this is the maximum time(ms) a member can be in pending termination member state -->
+            <pendingTerminationMemberExpiryTimeout><%= @autoscaler['member']['pending_termination_member_expiry_timeout'] %></pendingTerminationMemberExpiryTimeout>
+        </member>
+        <cluster>
+            <!-- cluster monitoring interval (ms) -->
+            <monitorInterval><%= @autoscaler['cluster']['monitor_interval'] %></monitorInterval>
+        </cluster>
+        <threadpool>
+            <identifier>Autoscaler</identifier>
+            <threadPoolSize>10</threadPoolSize>
+        </threadpool>
+    </autoscaler>
+</configuration>

@@ -1,0 +1,29 @@
+# ------------------------------------------------------------------------------
+#
+# Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+#
+# WSO2 Inc. licenses this file to you under the Apache License,
+# Version 2.0 (the "License"); you may not use this file except
+# in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+# ------------------------------------------------------------------------------
+
+autoscaler.service.url=https://<%= @autoscaler['host'] %>:<%= @autoscaler['ports']['management'] %>/services/AutoscalerService/
+cloud.controller.service.url=https://<%= @cloud_controller['host'] %>:<%= @cloud_controller['ports']['management'] %>/services/CloudControllerService/
+stratos.manager.service.url=https://<%= @stratos_manager['host'] %>:<%= @stratos_manager['ports']['management'] %>/services/StratosManagerService/
+das.metering.dashboard.url=https://<%= @das['nodes'][0]['host'] %>:<%= @das['nodes'][0]['ports']['management'] %>/portal/dashboards/ppaas-metering-dashboard
+puppet.ip=127.0.0.1
+puppet.hostname=puppet.apache.stratos.org
+puppet.dns.available=false
+puppet.environment=stratos
+
