@@ -51,6 +51,10 @@
             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromUnpublishToRetireTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.CreateWebAppTestCase"/>
 
+            <class name="org.wso2.appmanager.integration.restapi.testcases.RoleTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.JavaPolicyTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.WebAppTestCase"/>
+
         </classes>
     </test>
 
