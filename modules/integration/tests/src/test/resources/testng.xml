@@ -14,7 +14,7 @@
 
     <test name="AppM-UI-tests" parallel="false" verbose="2">
         <classes>
-           <class name="org.wso2.appmanager.integration.test.cases.PublisherLoginTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.PublisherLoginTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.StoreLoginTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.PublisherLogoutTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.StoreLogoutTestCase"/>
@@ -55,6 +55,13 @@
             <class name="org.wso2.appmanager.integration.restapi.testcases.JavaPolicyTestCase"/>
             <class name="org.wso2.appmanager.integration.restapi.testcases.WebAppTestCase"/>
 
+            <class name="org.wso2.appmanager.integration.test.cases.admin.dashboard.businessowner.DeleteBusinessOwnerTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.admin.dashboard.businessowner.AddNewBusinessOwnerTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.admin.dashboard.businessowner.GetAllBusinessOwnersTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.admin.dashboard.businessowner.GetBusinessOwnerTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.admin.dashboard.businessowner.UpdateBusinessOwnerTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.admin.dashboard.authentication.AdminDashboardLogin"/>
+            <class name="org.wso2.appmanager.integration.test.cases.admin.dashboard.authentication.AdminDashboardLogout"/>
         </classes>
     </test>
 
