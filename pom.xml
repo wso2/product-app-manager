@@ -549,6 +549,10 @@
         <org.apache.tomcat.embed.version>7.0.34</org.apache.tomcat.embed.version>
         <jaggeryjs.email.feature.version>1.0.0</jaggeryjs.email.feature.version>
         <identity.oauth.common.version>4.2.3</identity.oauth.common.version>
+        <synapse.version>2.1.7-wso2v3-BETA</synapse.version>
+        <org.apache.cxf.version>3.1.4</org.apache.cxf.version>
+        <org.codehaus.jackson.version>1.9.12</org.codehaus.jackson.version>
+        <javax.ws.rs-api.version>2.0.1</javax.ws.rs-api.version>
     </properties>
 
 </project>
