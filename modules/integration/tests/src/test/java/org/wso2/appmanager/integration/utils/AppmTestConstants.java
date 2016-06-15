@@ -22,6 +22,16 @@ public class AppmTestConstants {
 
     public static final String AVERAGE = "average";
 
+    public static final String BUSINESS_OWNER_ID = "businessOwnerId";
+
+    public static final String BUSINESS_OWNER_NAME = "businessOwnerName";
+
+    public static final String BUSINESS_OWNER_EMAIL= "businessOwnerEmail";
+
+    public static final String BUSINESS_OWNER_DESCRIPTION = "businessOwnerDescription";
+
+    public static final String BUSINESS_OWNER_SITE = "businessOwnerSite";
+
     public static final String CONTENT_TYPE = "Content-Type";
 
     public static final String COOKIE = "Cookie";
@@ -45,6 +55,8 @@ public class AppmTestConstants {
     public static final String SET_COOKIE = "Set-Cookie";
 
     public static final String STATUS = "status";
+
+    public static final String SUCCESS = "success";
 
     public static final String TYPE = "type";
 
@@ -75,6 +87,12 @@ public class AppmTestConstants {
         public static final String UNSUBSCRIBE_FOR_APPS = "/store/resources/webapp/v1/unsubscription/app";
 
         public static final String RATING_FOR_APPS = "/store/apis/rate?id={id}&type={appType}&value={ratingValue}";
+    }
+
+    public class AdminDashBoardApis {
+        public static final String LOGIN_URL = "/admin-dashboard/site/blocks/user/login/ajax/login.jag";
+        public static final String BUSINESS_OWNER_URL = "/admin-dashboard/apis/businessowners";
+        public static final String UPDATE_BUSINESS_OWNER_URL = "/admin-dashboard/apis/businessowners/update";
     }
 
     public class VariableTemplates {

@@ -64,7 +64,7 @@ System Requirements
 Installation & Running
 ==================================
 
-1. Extract the wso2appm-1.1.0.zip and go to the 'bin' directory
+1. Extract the wso2appm-1.2.0.zip and go to the 'bin' directory
 2. Run the wso2server.sh or wso2server.bat as appropriate
 3. Application Publisher web application is running at http://localhost:9763/publisher.
    You may login to the Publisher using the default administrator credentials
@@ -77,7 +77,7 @@ Documentation
 ==============
 
 On-line product documentation is available at:
-    <https://docs.wso2.com/display/APPM110/WSO2+App+Manager+Documentation>
+    <https://docs.wso2.com/display/APPM120/WSO2+App+Manager+Documentation>
 
 Support
 ==================================
