@@ -227,6 +227,13 @@
                 <include>**/**.xml</include>
             </includes>
         </fileSet>
+        <fileSet>
+            <directory>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/resources/plist-templates</directory>
+            <outputDirectory>wso2appm-${pom.version}/repository/resources/plist-templates</outputDirectory>
+            <includes>
+                <include>**/**.xml</include>
+            </includes>
+        </fileSet>
         <!--  XACML Policy templates -->
 	   <fileSet>
             <directory>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/resources/entitlement-templates</directory>
