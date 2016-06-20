@@ -799,5 +799,19 @@
             <outputDirectory>wso2appm-${pom.version}/repository/resources/</outputDirectory>
             <fileMode>644</fileMode>
         </file>
+        <file>
+            <source>
+                ../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/resources/custom-property-definitions/webapp.json
+            </source>
+            <outputDirectory>wso2appm-${pom.version}/repository/resources/custom-property-definitions/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>
+                ../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/resources/custom-property-definitions/mobileapp.json
+            </source>
+            <outputDirectory>wso2appm-${pom.version}/repository/resources/custom-property-definitions/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
     </files>
 </assembly>
