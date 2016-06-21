@@ -98,7 +98,30 @@ public class APPMPublisherRestClient {
      * @throws Exception on errors.
      */
     public HttpResponse webAppCreate(String appName, String context, String appVersion,
-                                     String trackingCode , String appCreator) throws Exception {
+                                     String trackingCode, String appCreator) throws Exception {
+        return webappCreate(appName, context, appVersion, trackingCode, appCreator, true);
+    }
+
+    /**
+     * Create New Web application.
+     *
+     * @param appName      String.
+     * @param context      String.
+     * @param appVersion   String.
+     * @param trackingCode String.
+     * @param appCreator   String.
+     * @isDefaultVersion
+     * @return appCreateResponse HttpResponse.
+     * @throws Exception on errors.
+     */
+    public HttpResponse webAppCreateAsNonDefault(String appName, String context, String appVersion,
+                                                 String trackingCode, String appCreator)
+            throws Exception {
+        return webappCreate(appName, context, appVersion, trackingCode, appCreator, false);
+    }
+
+    private HttpResponse webappCreate(String appName, String context, String appVersion,
+                                      String trackingCode , String appCreator,boolean isDefaultVersion) throws Exception{
         checkAuthentication();
         String appDescription = "Default app description for " + appName;
         HttpResponse httpResponse = addPoicyGroup(appDescription);
@@ -115,6 +138,12 @@ public class APPMPublisherRestClient {
             //Set new policy Id to AppCreateRequest;
             AppCreateRequest appRequest = new AppCreateRequest(appName, context, appVersion,
                                                                trackingCode, appCreator);
+
+            //set as non default (By default it's set as true).
+            if (isDefaultVersion == false) {
+                appRequest.setOverviewMakeAsDefaultVersion(String.valueOf(isDefaultVersion));
+            }
+
             appRequest.setUriTemplatePolicyGroupId0(policyId);
             appRequest.setUriTemplatePolicyGroupId1(policyId);
             appRequest.setUriTemplatePolicyGroupId2(policyId);
