@@ -62,6 +62,9 @@
             <class name="org.wso2.appmanager.integration.test.cases.admin.dashboard.businessowner.UpdateBusinessOwnerTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.admin.dashboard.authentication.AdminDashboardLogin"/>
             <class name="org.wso2.appmanager.integration.test.cases.admin.dashboard.authentication.AdminDashboardLogout"/>
+            
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.audit.logs.PublisherAuditLogsTestCase"/>
+
         </classes>
     </test>
 
