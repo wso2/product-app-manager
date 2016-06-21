@@ -17,6 +17,8 @@
 */
 package org.wso2.appmanager.integration.utils;
 
+import java.io.File;
+
 public class AppmTestConstants {
     public static final String APP_MANAGER = "App Manager";
 
@@ -63,6 +65,12 @@ public class AppmTestConstants {
     public static final String USER = "user";
 
     public static final String WEB_APP = "webapp";
+
+    public static final String LOG4J_PROPERTY_FILE_PATH = File.separator + "repository" + File.separator + "conf" +
+            File.separator + "log4j.properties";
+
+    public static final String AUDIT_LOGS_FILE_PATH = File.separator + "repository" + File.separator + "logs" +
+            File.separator + "audit.log";
 
     public class PubliserRestApis {
         public static final String ADD_NEW_TAGS = "/publisher/api/tag/webapp/";
@@ -118,5 +126,14 @@ public class AppmTestConstants {
         public static final String APP_CREATOR = "AppCreator";
         public static final String ADMIN = "AdminUser";
         public static final String APP_PUBLISHER = "AppPublisher";
+    }
+
+    public class AuditLogActions{
+        public static final String USER_LOGGED_IN = "UserLoggedIn";
+        public static final String NEW_ASSET_ADDED = "NewAssetAdded";
+        public static final String ASSET_UPDATED = "AssetUpdated";
+        public static final String LIFE_CYCLE_ACTION_PERFORMED = "LifecycleActionPerformed-";
+        public static final String ASSET_DELETED = "AssetDeleted";
+        public static final String USER_LOGGED_OUT = "UserLoggedOut";
     }
 }
