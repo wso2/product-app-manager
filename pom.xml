@@ -506,7 +506,7 @@
         <apim.version>1.2.1</apim.version>
         <es.feature.version>1.0.0</es.feature.version>
 
-        <jaggery.js.version>0.12.5</jaggery.js.version>
+        <jaggery.js.version>0.12.6-SNAPSHOT</jaggery.js.version>
         <jaggeryjs.markdown.feature.version>1.0.0</jaggeryjs.markdown.feature.version>
         <jaggeryjs.caramel.feature.version>1.0.1</jaggeryjs.caramel.feature.version>
         <handlebars.feature.version>1.0.0</handlebars.feature.version>
