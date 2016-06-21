@@ -127,4 +127,13 @@ public class AppmTestConstants {
         public static final String ADMIN = "AdminUser";
         public static final String APP_PUBLISHER = "AppPublisher";
     }
+
+    public class AuditLogActions{
+        public static final String USER_LOGGED_IN = "UserLoggedIn";
+        public static final String NEW_ASSET_ADDED = "NewAssetAdded";
+        public static final String ASSET_UPDATED = "AssetUpdated";
+        public static final String LIFE_CYCLE_ACTION_PERFORMED = "LifecycleActionPerformed-";
+        public static final String ASSET_DELETED = "AssetDeleted";
+        public static final String USER_LOGGED_OUT = "UserLoggedOut";
+    }
 }

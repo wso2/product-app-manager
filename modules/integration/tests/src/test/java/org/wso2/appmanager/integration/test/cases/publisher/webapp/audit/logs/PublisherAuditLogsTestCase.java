@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -19,8 +19,6 @@
 package org.wso2.appmanager.integration.test.cases.publisher.webapp.audit.logs;
 
 import org.testng.annotations.*;
-import org.wso2.appmanager.integration.restapi.RESTAPITestConstants;
-import org.wso2.appmanager.integration.restapi.utils.RESTAPITestUtil;
 import org.wso2.appmanager.integration.utils.APPMPublisherRestClient;
 import org.wso2.appmanager.integration.utils.AppmTestConstants;
 import org.wso2.appmanager.integration.utils.WebAppUtil;
@@ -34,17 +32,11 @@ import org.wso2.carbon.automation.engine.context.beans.User;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 import org.wso2.carbon.integration.common.utils.FileManager;
 import org.wso2.carbon.integration.common.utils.mgt.ServerConfigurationManager;
-import org.wso2.carbon.utils.CarbonUtils;
 import org.wso2.carbon.utils.ServerConstants;
-import org.wso2.carbon.utils.multitenancy.MultitenantUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.channels.MulticastChannel;
 import java.util.List;
-import java.util.Properties;
 
 import static org.testng.Assert.assertTrue;
 
@@ -113,7 +105,8 @@ public class PublisherAuditLogsTestCase extends AppMIntegrationBaseTest {
     public void testPublisherLoginAuditLogs() throws Exception {
 
         String fileContent = FileManager.readFile(auditLogFileLocation);
-        boolean isUserLoginAuditLogExists = fileContent.contains(buildAuditLogs(adminUserName, "UserLoggedIn", "", ""));
+        boolean isUserLoginAuditLogExists = fileContent.contains(
+                buildAuditLogs(adminUserName, AppmTestConstants.AuditLogActions.USER_LOGGED_IN, "", ""));
         assertTrue(isUserLoginAuditLogExists);
 
     }
@@ -121,9 +114,9 @@ public class PublisherAuditLogsTestCase extends AppMIntegrationBaseTest {
     @Test(groups = {"wso2.appm"}, description = "AUDIT Logs : Webapp Create Audit logs Test Case")
     public void testAppCreateAuditLogs() throws Exception {
         String fileContent = FileManager.readFile(auditLogFileLocation);
-        boolean isUserAppCreateAuditLogExists =
-                fileContent.contains(buildAuditLogs(adminUserName, "NewAssetAdded", AppmTestConstants.WEB_APP,
-                        getAuditLogSubjectId()));
+        boolean isUserAppCreateAuditLogExists = fileContent.contains(
+                buildAuditLogs(adminUserName, AppmTestConstants.AuditLogActions.NEW_ASSET_ADDED,
+                        AppmTestConstants.WEB_APP,getAuditLogSubjectId()));
         assertTrue(isUserAppCreateAuditLogExists);
     }
 
@@ -131,8 +124,8 @@ public class PublisherAuditLogsTestCase extends AppMIntegrationBaseTest {
     public void testAppUpdateAuditLogs() throws Exception {
         String fileContent = FileManager.readFile(auditLogFileLocation);
         boolean isUserAppUpdateAuditLogExists =
-                fileContent.contains(buildAuditLogs(adminUserName, "AssetUpdated", AppmTestConstants.WEB_APP,
-                        getAuditLogSubjectId()));
+                fileContent.contains(buildAuditLogs(adminUserName, AppmTestConstants.AuditLogActions.ASSET_UPDATED,
+                        AppmTestConstants.WEB_APP, getAuditLogSubjectId()));
         assertTrue(isUserAppUpdateAuditLogExists);
     }
 
@@ -140,7 +133,7 @@ public class PublisherAuditLogsTestCase extends AppMIntegrationBaseTest {
     public void testAppLifecycleStateChangeAuditLogs() throws Exception {
         String fileContent = FileManager.readFile(auditLogFileLocation);
         boolean isUserAppUpdateAuditLogExists =
-                fileContent.contains(buildAuditLogs(adminUserName, "LifecycleActionPerformed-" +
+                fileContent.contains(buildAuditLogs(adminUserName, AppmTestConstants.AuditLogActions.LIFE_CYCLE_ACTION_PERFORMED +
                                 AppmTestConstants.LifeCycleStatus.SUBMIT_FOR_REVIEW, AppmTestConstants.WEB_APP,
                         getAuditLogSubjectId()));
         assertTrue(isUserAppUpdateAuditLogExists);
@@ -150,8 +143,8 @@ public class PublisherAuditLogsTestCase extends AppMIntegrationBaseTest {
     public void testAppDeleteAuditLogs() throws Exception {
         String fileContent = FileManager.readFile(auditLogFileLocation);
         boolean isUserAppDeleteAuditLogExists =
-                fileContent.contains(buildAuditLogs(adminUserName, "AssetDeleted", AppmTestConstants.WEB_APP,
-                        getAuditLogSubjectId()));
+                fileContent.contains(buildAuditLogs(adminUserName, AppmTestConstants.AuditLogActions.ASSET_DELETED,
+                        AppmTestConstants.WEB_APP,getAuditLogSubjectId()));
         assertTrue(isUserAppDeleteAuditLogExists);
     }
 
@@ -159,7 +152,8 @@ public class PublisherAuditLogsTestCase extends AppMIntegrationBaseTest {
     public void testUserLogoutAuditLogs() throws Exception {
         String fileContent = FileManager.readFile(auditLogFileLocation);
         boolean isUserAppDeleteAuditLogExists =
-                fileContent.contains(buildAuditLogs(adminUserName, "UserLoggedOut", "Logout", ""));
+                fileContent.contains(buildAuditLogs(adminUserName, AppmTestConstants.AuditLogActions.USER_LOGGED_OUT,
+                        "Logout", ""));
         assertTrue(isUserAppDeleteAuditLogExists);
     }
 
