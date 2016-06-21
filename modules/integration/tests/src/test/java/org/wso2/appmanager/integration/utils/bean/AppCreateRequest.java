@@ -100,6 +100,7 @@ public class AppCreateRequest extends AbstractRequest {
     private String oauthApiName3;
     private String webapp = "webapp";
     private String businessOwner = null;
+    private String overviewMakeAsDefaultVersion = "true";
 
 
     @Override
@@ -176,6 +177,8 @@ public class AppCreateRequest extends AbstractRequest {
         addParameter("oauthapis_apiConsumerSecret3", oauthApiConsumerSecret3);
         addParameter("oauthapis_apiName3", oauthApiName3);
         addParameter("webapp", webapp);
+
+        addParameter("overview_makeAsDefaultVersion", overviewMakeAsDefaultVersion);
 
     }
 
@@ -1190,6 +1193,14 @@ public class AppCreateRequest extends AbstractRequest {
      */
     public void setWebapp(String webapp) {
         this.webapp = webapp;
+    }
+
+    public void setOverviewMakeAsDefaultVersion(String overviewMakeAsDefaultVersion) {
+        this.overviewMakeAsDefaultVersion = overviewMakeAsDefaultVersion;
+    }
+
+    public String getOverviewMakeAsDefaultVersion() {
+        return overviewMakeAsDefaultVersion;
     }
 
 
