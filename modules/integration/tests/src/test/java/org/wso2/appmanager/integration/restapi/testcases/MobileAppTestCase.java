@@ -58,12 +58,12 @@ public class MobileAppTestCase extends AppMIntegrationBaseTest {
     }
 
     @Test(groups = {"wso2.appm"}, description = "REST API Implementation test : MobileApp test case")
-    public void testRole() {
+    public void testMobileApps () {
 
         String gatewayURL = getGatewayURLNhttp();
         String keyManagerURL = getKeyManagerURLHttp();
 
-        //file name of the JSON data file related to : API lifecycle change test case
+        //Mobile App create, lifecycle promote and download link generating test config
         String dataFileName = "publisher" + File.separator + "MobileAppTestCase.txt";
         String dataFilePath = (new File(System.getProperty("user.dir"))).getParent() +
                 RESTAPITestConstants.PATH_SUBSTRING + dataFileName;
