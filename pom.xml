@@ -459,8 +459,8 @@
 
 
     <properties>
-        <carbon.kernel.version>4.4.6</carbon.kernel.version>
-        <carbon.platform.version>4.4.6</carbon.platform.version>
+        <carbon.kernel.version>4.4.7</carbon.kernel.version>
+       <carbon.platform.version>4.4.7</carbon.platform.version>
 
         <!-- Integration Test Dependency versions -->
 	<carbon.automation.version>4.4.3</carbon.automation.version>
