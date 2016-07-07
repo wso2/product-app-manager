@@ -62,7 +62,7 @@ public class WebAppTestCase extends AppMIntegrationBaseTest {
     }
 
     @Test(groups = {"wso2.appm"}, description = "REST API Implementation test : WebApp handling test case")
-    public void testTiers() {
+    public void testWebApp() {
 
         String gatewayURL = getGatewayURLNhttp();
         String keyManagerURL = getKeyManagerURLHttp();
