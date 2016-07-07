@@ -58,7 +58,7 @@ public class MobileAppTestCase extends AppMIntegrationBaseTest {
     }
 
     @Test(groups = {"wso2.appm"}, description = "REST API Implementation test : MobileApp test case")
-    public void testMobileApps () {
+    public void testMobileApps() {
 
         String gatewayURL = getGatewayURLNhttp();
         String keyManagerURL = getKeyManagerURLHttp();

@@ -62,7 +62,7 @@ public class JavaPolicyTestCase extends AppMIntegrationBaseTest {
     }
 
     @Test(groups = {"wso2.appm"}, description = "REST API Implementation test : JavaPolicy test case")
-    public void testRole() {
+    public void testJavaPolicy() {
 
         String gatewayURL = getGatewayURLNhttp();
         String keyManagerURL = getKeyManagerURLHttp();
