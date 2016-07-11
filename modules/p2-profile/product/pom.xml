@@ -341,7 +341,7 @@
                                     org.wso2.carbon.identity:org.wso2.carbon.claim.mgt.feature:${identity.framework.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon.identity:org.wso2.carbon.identity.thrift.authentication.feature:${carbon.identity.version_5.1.0}
+                                    org.wso2.carbon.identity:org.wso2.carbon.identity.thrift.authentication.feature:${identity-carbon-auth-thrift.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon.identity:org.wso2.carbon.user.mgt.server.feature:${identity.framework.version}
@@ -918,7 +918,7 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.identity.thrift.authentication.feature.group</id>
-                                    <version>${carbon.identity.version_5.1.0}</version>
+                                    <version>${identity-carbon-auth-thrift.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.claim.mgt.feature.group</id>

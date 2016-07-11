@@ -485,6 +485,7 @@
         <carbon.identity.thrift.auth.version>5.1.1</carbon.identity.thrift.auth.version>
         <carbon.identity.social.version>5.1.1</carbon.identity.social.version>
         <identity.framework.version>5.2.0</identity.framework.version>
+        <identity-carbon-auth-thrift.version>5.2.0</identity-carbon-auth-thrift.version>
 
         <carbon.deployment.version>4.7.0</carbon.deployment.version>
         <carbon.commons.version>4.5.2</carbon.commons.version>
