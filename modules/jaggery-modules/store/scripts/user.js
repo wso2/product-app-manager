@@ -45,8 +45,9 @@ var user = {};
             var space,
                 carbon = require('carbon');
             server.current(session, usr);
+            var tenantAwareUserName = org.wso2.carbon.utils.multitenancy.MultitenantUtils.getTenantAwareUsername(usr.username);
             session.put(USER_REGISTRY, new carbon.registry.Registry(server.instance(), {
-                username: usr.username,
+                username: tenantAwareUserName,
                 tenantId: tenantId
             }));
             space = user.userSpace(usr);
