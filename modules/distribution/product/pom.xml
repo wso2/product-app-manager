@@ -17,14 +17,12 @@
   ~  under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
         <groupId>org.wso2.appmanager</groupId>
     	<artifactId>eam-distribution-parent</artifactId>
-        <version>1.2.0-SNAPSHOT</version>
+        <version>1.2.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -100,47 +98,47 @@
                                 <!-- Engaging a custom password grant type handler in identity.xml file. -->
                                 <replace file="../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/identity/identity.xml" token="&lt;GrantTypeHandlerImplClass&gt;org.wso2.carbon.identity.oauth2.token.handlers.grant.PasswordGrantHandler&lt;/GrantTypeHandlerImplClass&gt;" value="&lt;GrantTypeHandlerImplClass&gt;org.wso2.carbon.appmgt.oauth.handlers.PasswordGrantHandler&lt;/GrantTypeHandlerImplClass&gt;" />
 
-                                <property name="tempdir" value="target/docs-temp"/>
-                                <mkdir dir="${tempdir}"/>
+                                <property name="tempdir" value="target/docs-temp" />
+                                <mkdir dir="${tempdir}" />
                                 <unzip dest="${tempdir}">
                                     <fileset dir="target">
-                                        <include name="wso2appm-${project.version}.zip"/>
+                                        <include name="wso2appm-${project.version}.zip" />
                                     </fileset>
                                 </unzip>
                                 <copy todir="target/wso2carbon-core-${carbon.platform.version}/repository/components/" overwrite="false">
                                     <fileset dir="${tempdir}/wso2appm-${project.version}/repository/components/">
                                     </fileset>
                                 </copy>
-                                <delete file="target/wso2appm-${project.version}.zip"/>
-                                <delete dir="${tempdir}"/>
-                                <mkdir dir="${tempdir}"/>
+                                <delete file="target/wso2appm-${project.version}.zip" />
+                                <delete dir="${tempdir}" />
+                                <mkdir dir="${tempdir}" />
                                 <unzip dest="${tempdir}">
                                     <fileset dir="target/wso2carbon-core-${carbon.platform.version}/repository/components/plugins/">
-                                        <include name="*.ui*.jar"/>
+                                        <include name="*.ui*.jar" />
                                     </fileset>
                                 </unzip>
                                 <move todir="${tempdir}/web/" includeemptydirs="false">
                                     <fileset dir="${tempdir}/web/">
-                                        <exclude name="**/yui/**"/>
-                                        <exclude name="**/ajax/**"/>
-					                    <exclude name="**/editarea/**"/>
-                                        <exclude name="**/codepress/**"/>
-                                        <exclude name="**/WEB-INF/**"/>
-                                        <include name="**/*.html"/>
+                                        <exclude name="**/yui/**" />
+                                        <exclude name="**/ajax/**" />
+					                    <exclude name="**/editarea/**" />
+                                        <exclude name="**/codepress/**" />
+                                        <exclude name="**/WEB-INF/**" />
+                                        <include name="**/*.html" />
                                     </fileset>
-                                    <mapper type="glob" from="*.html" to="*.xml"/>
+                                    <mapper type="glob" from="*.html" to="*.xml" />
                                 </move>
-                                <mkdir dir="src/site/xdoc"/>
+                                <mkdir dir="src/site/xdoc" />
                                 <copy todir="src/site/xdoc" overwrite="false" includeemptydirs="false">
                                     <fileset dir="${tempdir}/web">
-                                        <exclude name="**/yui/**"/>
-                                        <exclude name="**/ajax/**"/>
-                                        <exclude name="**/WEB-INF/**"/>
-                                        <exclude name="**/*.html"/>
-                                        <exclude name="**/*.js"/>
-                                        <exclude name="**/*.jsp"/>
-                                        <exclude name="**/*.xsl"/>
-                                        <exclude name="*.*"/>
+                                        <exclude name="**/yui/**" />
+                                        <exclude name="**/ajax/**" />
+                                        <exclude name="**/WEB-INF/**" />
+                                        <exclude name="**/*.html" />
+                                        <exclude name="**/*.js" />
+                                        <exclude name="**/*.jsp" />
+                                        <exclude name="**/*.xsl" />
+                                        <exclude name="*.*" />
                                     </fileset>
                                 </copy>
                                 <copy todir="src/site" overwrite="false" includeemptydirs="false">
@@ -149,10 +147,10 @@
                                 </copy>
                                 <copy todir="target/site/" overwrite="false" includeemptydirs="false">
                                     <fileset dir="src/site/xdoc/">
-                                        <include name="**/images/*.*"/>
+                                        <include name="**/images/*.*" />
                                     </fileset>
                                 </copy>
-                                <delete dir="${tempdir}"/>
+                                <delete dir="${tempdir}" />
                             </tasks>
                         </configuration>
                     </execution>
@@ -161,13 +159,13 @@
                         <phase>install</phase>
                         <configuration>
                             <tasks>
-                                <delete dir="target/archive-tmp"/>
-                                <delete dir="target/dependency-maven-plugin-markers"/>
-                                <delete dir="target/maven-archiver"/>
-                                <delete dir="target/wso2carbon-core-${carbon.platform.version}"/>
-                                <delete dir="target/sources"/>
-                                <delete dir="target/site"/>
-                                <delete dir="src/site"/>
+                                <delete dir="target/archive-tmp" />
+                                <delete dir="target/dependency-maven-plugin-markers" />
+                                <delete dir="target/maven-archiver" />
+                                <delete dir="target/wso2carbon-core-${carbon.platform.version}" />
+                                <delete dir="target/sources" />
+                                <delete dir="target/site" />
+                                <delete dir="src/site" />
                             </tasks>
                         </configuration>
                         <goals>
@@ -183,39 +181,26 @@
                         <configuration>
                             <tasks>
                                 <path id="h2.classpath">
-                                    <path refid="maven.compile.classpath"/>
+                                    <path refid="maven.compile.classpath" />
                                 </path>
-                                <echo
-                                        message="########### Creating APP Manager Database ##############"/>
-                                <sql
-                                        driver="org.h2.Driver"
-                                        url="jdbc:h2:${basedir}/target/repository/database/WSO2AM_DB"
-                                        userid="wso2carbon" password="wso2carbon" autocommit="true"
-                                        onerror="continue">
+                                <echo message="########### Creating APP Manager Database ##############" />
+                                <sql driver="org.h2.Driver" url="jdbc:h2:${basedir}/target/repository/database/WSO2AM_DB" userid="wso2carbon" password="wso2carbon" autocommit="true" onerror="continue">
                                     <classpath>
-                                        <path refid="h2.classpath"/>
+                                        <path refid="h2.classpath" />
                                     </classpath>
-                                    <fileset file="${basedir}/../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/dbscripts/appmgt/h2.sql"/>
+                                    <fileset file="${basedir}/../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/dbscripts/appmgt/h2.sql" />
                                 </sql>
-                                <sql
-                                        driver="org.h2.Driver"
-                                        url="jdbc:h2:${basedir}/target/repository/database/WSO2AM_DB"
-                                        userid="wso2carbon" password="wso2carbon" autocommit="true"
-                                        onerror="continue">
+                                <sql driver="org.h2.Driver" url="jdbc:h2:${basedir}/target/repository/database/WSO2AM_DB" userid="wso2carbon" password="wso2carbon" autocommit="true" onerror="continue">
                                     <classpath>
-                                        <path refid="h2.classpath"/>
+                                        <path refid="h2.classpath" />
                                     </classpath>
-                                    <fileset file="${basedir}/../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/dbscripts/identity/h2.sql"/>
+                                    <fileset file="${basedir}/../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/dbscripts/identity/h2.sql" />
                                 </sql>
-                                <sql
-                                        driver="org.h2.Driver"
-                                        url="jdbc:h2:${basedir}/target/repository/database/WSO2SOCIAL_DB;create=true"
-                                        userid="wso2carbon" password="wso2carbon" autocommit="true"
-                                        onerror="continue">
+                                <sql driver="org.h2.Driver" url="jdbc:h2:${basedir}/target/repository/database/WSO2SOCIAL_DB;create=true" userid="wso2carbon" password="wso2carbon" autocommit="true" onerror="continue">
                                     <classpath>
-                                        <path refid="h2.classpath"/>
+                                        <path refid="h2.classpath" />
                                     </classpath>
-                                    <fileset file="${basedir}/../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/dbscripts/social/h2/resource.sql"/>
+                                    <fileset file="${basedir}/../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/dbscripts/social/h2/resource.sql" />
                                 </sql>
                                 <!--<sql-->
                                         <!--driver="org.h2.Driver"-->
@@ -223,23 +208,18 @@
                                         <!--userid="wso2carbon" password="wso2carbon" autocommit="true"-->
                                         <!--onerror="continue">-->
                                     <!--<classpath>-->
-                                        <!--<path refid="h2.classpath"/>-->
+                                        <!--<path refid="h2.classpath" />-->
                                     <!--</classpath>-->
                                     <!--<fileset-->
-                                            <!--file="${basedir}/../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/dbscripts/identity/application-mgt/h2.sql"/>-->
+                                            <!--file="${basedir}/../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/dbscripts/identity/application-mgt/h2.sql" />-->
                                 <!--</sql>-->
-                                <sql
-                                        driver="org.h2.Driver"
-                                        url="jdbc:h2:${basedir}/target/repository/database/WSO2AM_DB"
-                                        userid="wso2carbon" password="wso2carbon" autocommit="true"
-                                        onerror="continue">
+                                <sql driver="org.h2.Driver" url="jdbc:h2:${basedir}/target/repository/database/WSO2AM_DB" userid="wso2carbon" password="wso2carbon" autocommit="true" onerror="continue">
                                     <classpath>
-                                        <path refid="h2.classpath"/>
+                                        <path refid="h2.classpath" />
                                     </classpath>
-                                    <fileset file="${basedir}/../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/dbscripts/appmgt/h2.sql"/>
+                                    <fileset file="${basedir}/../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/dbscripts/appmgt/h2.sql" />
                                 </sql>
-                                <echo
-                                        message="##################### END ########################"/>
+                                <echo message="##################### END ########################" />
                             </tasks>
                         </configuration>
                     </execution>
@@ -251,21 +231,19 @@
                         </goals>
                         <configuration>
                             <tasks>
-                                <echo message="########### Creating APP Authentication Endpoint ##############"/>
-                                <mkdir dir="${basedir}/target/authenticationendpoint/"/>
-                                <mkdir dir="${basedir}/target/authenticationendpoint-dist/"/>
-                                <unzip src="${basedir}/../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/deployment/server/webapps/authenticationendpoint.war"
-                                       dest="${basedir}/target/authenticationendpoint/">
+                                <echo message="########### Creating APP Authentication Endpoint ##############" />
+                                <mkdir dir="${basedir}/target/authenticationendpoint/" />
+                                <mkdir dir="${basedir}/target/authenticationendpoint-dist/" />
+                                <unzip src="${basedir}/../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/deployment/server/webapps/authenticationendpoint.war" dest="${basedir}/target/authenticationendpoint/">
                                 </unzip>
                                 <copy toDir="${basedir}/target/authenticationendpoint-dist/">
-                                    <fileset dir="${basedir}/target/authenticationendpoint/"/>
+                                    <fileset dir="${basedir}/target/authenticationendpoint/" />
                                 </copy>
                                 <copy todir="${basedir}/target/authenticationendpoint-dist/" overwrite="true">
                                     <fileset dir="${basedir}/src/main/repository/deployment/server/webapps/authenticationendpoint-overlay/" />
                                 </copy>
-                                <zip destfile="${basedir}/target/authenticationendpoint.war"
-                                     basedir="${basedir}/target/authenticationendpoint-dist"/>
-                                <echo message="######### Done creating APP Authentication Endpoint ###########"/>
+                                <zip destfile="${basedir}/target/authenticationendpoint.war" basedir="${basedir}/target/authenticationendpoint-dist" />
+                                <echo message="######### Done creating APP Authentication Endpoint ###########" />
                             </tasks>
                         </configuration>
                     </execution>
