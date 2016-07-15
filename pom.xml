@@ -56,7 +56,7 @@
         <module>modules/org.wso2.stratos.appmgt.login.ui</module>
         <module>modules/features</module>
         <module>modules/p2-profile</module>
-        <!--<module>/modules/distribution/product/src/main/statistics</module>
+        <!--<module>modules/distribution/product/src/main/statistics</module>
         <module>modules/jaggery-apps/api-provider-web</module>
         <module>modules/jaggery-apps/api-store-web</module-->
         <module>modules/samples/webapps/travel-booking</module>
