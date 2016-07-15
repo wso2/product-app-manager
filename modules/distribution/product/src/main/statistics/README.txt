@@ -1,139 +1,126 @@
 ---------------------------------------------------------------------------------
 	Introduction
 ---------------------------------------------------------------------------------
-
-This document describes how to setup WSO2 Business Activity Monitor (BAM) to collect
-and analyze runtime statistics from the WSO2 APP Manager. Thrift protocol is used
-to publish data from the APP Manager to BAM. Information processed at BAM are stored
-in a database from which the APP Publisher can retrieve them and display in the
-corresponding UI screens.
+This document explains how to setup WSO2 Data Analytics Server to collect and analyze runtime statistics from the APP Manager. 
 
 ---------------------------------------------------------------------------------
 	Requirements
 ---------------------------------------------------------------------------------
-
-1. WSO2 BAM latest snapshot (WSO2 BAM 2.3.0)
-2. Java Runtime Environment
-
-NOTE:
-You can download a latest snapshot of WSO2 BAM from http://wso2.com/products/business-activity-monitor/
+Configuring WSO2 DAS
+Configuring the MySQL database
+Uploading the App Manager analytics file
+Configuring WSO2 App Manager
+Tracking the Web App usage
+Viewing the run time statistics
 
 ---------------------------------------------------------------------------------
-Configuring BAM
+Prerequisites
 ---------------------------------------------------------------------------------
+WSO2 APP Manager (Version - 1.2.0)
+WSO2 Data Analytics Server (Version - 3.0.0+)
+An RDBMS instance (MySQL, MsSQL, Oracle, H2 etc.) 
+org_wso2_carbon_analytics_appm-1.0.0.car file
 
-1. Extract the BAM binary distribution to your local file system.
-2. Change port offset to 1 by editing the repository/conf/carbon.xml
-3. Copy the  API_Manager_Analytics.tbox to repository/deployment/server/bam-toolbox
-   (Create the bam-toolbox directory if it already doesn't exist)
-4. Add the following to <BAM_HOME>/conf/datasources/master-datasources.xml file.
-   Please note that if you set port offset in BAM server increment and update cassandra datasource.
-   Ex: If port offset is one set url config like this <url>jdbc:cassandra://localhost:9161/EVENT_KS</url>
-   (By default port is set to 9161 assuming port offset is one)
-  <datasource>
-          <name>WSO2AM_STATS_DB</name>
-          <description>The datasource used for getting statistics to APP Manager</description>
-	    <jndiConfig>
-                <name>jdbc/WSO2AM_STATS_DB</name>
-            </jndiConfig>
-          <definition type="RDBMS">
-          <configuration>
-                 <!-- JDBC URL to query the database -->
-                 <url>jdbc:h2:<BAM_HOME>/repository/database/APIMGTSTATS_DB;AUTO_SERVER=TRUE</url>
-                 <username>wso2carbon</username>
-                 <password>wso2carbon</password>
-                 <driverClassName>org.h2.Driver</driverClassName>
-                 <maxActive>50</maxActive>
-                 <maxWait>60000</maxWait>
-                 <testOnBorrow>true</testOnBorrow>
-                 <validationQuery>SELECT 1</validationQuery>
-                 <validationInterval>30000</validationInterval>
-            </configuration>
-         </definition>
-  </datasource>
+---------------------------------------------------------------------------------
+Configuring WSO2 DAS
+---------------------------------------------------------------------------------
+Download WSO2 Data Analytics Server from this location: http://wso2.com/products/data-analytics-server/.
+
+
+If AppM and DAS run on the same machine, open the <DAS_HOME>/repository/conf/carbon.xml file and increase the default service port of DAS by setting the offset value as follows:
+<Offset>3</Offset>
+This increments all ports used by the server by 3, which means the WSO2 DAS server will run on port 9446. Port offset is used to increment the default port by a given value. It avoids possible port conflicts when multiple WSO2 products run on same host.
+
+
+Define the datasource declaration according to your RDBMS in the <DAS_HOME>/repository/conf/datasources/master-datasources.xml file.
+Note : This DB is used to push the summarized data after analyzing is done by WSO2 DAS. Later, WSO2 App Manager uses this DB to fetch the summary data and display it on the App Manager publisher statistics UI. MySQL databases are used here as an example. However, it is also possible to configure it with H2,Oracle etc. Note that you should always use the WSO2AM_STATS_DB as the datasoure name.
+
 
         <datasource>
-           <name>WSO2BAM_CASSANDRA_DATASOURCE</name>
-           <description>The datasource used for Cassandra data</description>
-           <definition type="RDBMS">
-               <configuration>
-                   <url>jdbc:cassandra://localhost:9161/EVENT_KS</url>
-                   <username>admin</username>
-                   <password>admin</password>
-               </configuration>
-           </definition>
-       </datasource>
+          <name>WSO2AM_STATS_DB</name>
+          <description>The datasource used for setting statistics to APP Manager</description>
+          <jndiConfig>
+            <name>jdbc/WSO2AM_STATS_DB</name>
+            </jndiConfig>
+          <definition type="RDBMS">
+            <configuration>
+              <url>jdbc:mysql://localhost:3306/WSO2APPMSTATS_DB?autoReconnect=true&amp;useSSL=false</url>
+              <username>root</username>
+              <password>root</password>
+              <driverClassName>com.mysql.jdbc.Driver</driverClassName>
+              <maxActive>50</maxActive>
+              <maxWait>60000</maxWait>
+              <testOnBorrow>true</testOnBorrow>
+              <validationQuery>SELECT 1</validationQuery>
+              <validationInterval>30000</validationInterval>
+              <defaultAutoCommit>false</defaultAutoCommit>
+              </configuration>
+            </definition>
+        </datasource>
 
-5. Start WSO2 BAM server
+The autocommit option should be disabled when working with WSO2 DAS. Set this in the JDBC URL or by adding <defaultAutoCommit>false</defaultAutoCommit> under the datasource <configuration> property as shown above:
+
+If you are using MySQL as the database, download and paste the MySQL driver to the <DAS_HOME>/repository/components/lib directory. 
+
 
 ---------------------------------------------------------------------------------
-Configuring APP Manager
+Configuring the MySQL database
 ---------------------------------------------------------------------------------
+Create new database called WSO2APPMSTATS_DB in the mysql DB server.
+Execute dbsript/RDBMS.sql script provided inside org_wso2_carbon_analytics_appm-1.0.0.car on the created database.
 
-To enable Application statistics collection you need to configure the following properties in the
-app-manager.xml file of APP Manager.
+---------------------------------------------------------------------------------
+Uploading the App Manager analytics file
+---------------------------------------------------------------------------------
+WSO2 DAS uses SparkSQL to analyze the data. All definitions about the data published from WSO2 App Manager and the way it should be analyzed using Spark are shipped to WSO2 DAS as a .car file. 
 
-    <!--
-	    Enable/Disable the Application usage tracker.
-    -->
-	<Enabled>true</Enabled>
+Start the WSO2 DAS server and log in to the Management Console.
+Navigate to the Carbon Applications section under Manage and click Add.
+Point to the org_wso2_carbon_analytics_appm-1.0.0.car file and upload it.
 
-    <!--
-        JNDI name of the data source to be used for getting BAM statistics.This data source should
-        be defined in the master-datasources.xml file in conf/datasources directory.
-    -->
+
+---------------------------------------------------------------------------------
+Configuring WSO2 APP Manager
+---------------------------------------------------------------------------------
+Set the following configurations in <AppM_HOME>/repository/conf/app-manager.xml file as follows. Change the default values of the <DASServerURL>, <DASUsername>, and <DASPassword> properties accordingly.
+   
+<Analytics>
+
+    <UIActivityDASPublishEnabled>true</UIActivityDASPublishEnabled>
+    <Enabled>true</Enabled>
+    <ThriftPort>7614</ThriftPort>
+    <DASServerURL>tcp://localhost:7614</DASServerURL>
+    <DASUsername>admin</DASUsername>
+    <DASPassword>admin</DASPassword>
     <DataSourceName>jdbc/WSO2AM_STATS_DB</DataSourceName>
 
-And you need to configure the data source definition in the master-datasources.xml file
-of APP Manager.
+</Analytics>
 
-    <datasource>
-         <name>WSO2AM_STATS_DB</name>
-         <description>The datasource used for getting statistics to APP Manager</description>
-         <jndiConfig>
-            <!-- This jndi name should be same as the DataSourceName defined in app-manager.xml -->
+Specify the datasource definition in <APPM_HOME>/repository/conf/datasources/master-datasources.xml file as follows. 
+
+
+        <datasource>
+          <name>WSO2AM_STATS_DB</name>
+          <description>The datasource used for setting statistics to APP Manager</description>
+          <jndiConfig>
             <name>jdbc/WSO2AM_STATS_DB</name>
-         </jndiConfig>
-         <definition type="RDBMS">
+            </jndiConfig>
+          <definition type="RDBMS">
             <configuration>
-                <!-- JDBC URL to query the database -->
-                <url>jdbc:h2:<BAM_HOME>/repository/database/APIMGTSTATS_DB;AUTO_SERVER=TRUE</url>
-                <username>wso2carbon</username>
-                <password>wso2carbon</password>
-                <driverClassName>org.h2.Driver</driverClassName>
-                <maxActive>50</maxActive>
-                <maxWait>60000</maxWait>
-                <testOnBorrow>true</testOnBorrow>
-                <validationQuery>SELECT 1</validationQuery>
-                <validationInterval>30000</validationInterval>
-            </configuration>
-         </definition>
-    </datasource>
+              <url>jdbc:mysql://localhost:3306/WSO2APPMSTATS_DB?autoReconnect=true&amp;useSSL=false</url>
+              <username>root</username>
+              <password>root</password>
+              <driverClassName>com.mysql.jdbc.Driver</driverClassName>
+              <maxActive>50</maxActive>
+              <maxWait>60000</maxWait>
+              <testOnBorrow>true</testOnBorrow>
+              <validationQuery>SELECT 1</validationQuery>
+              <validationInterval>30000</validationInterval>
+              </configuration>
+            </definition>
+        </datasource>
 
+Note :The JNDI name should be matched with the one given in the DAS configurations.
 
-NOTE: 1) Replace <BAM_HOME> with the absolute path to the installation directory of BAM.
+Download and paste the MySQL driver to the <APPM_HOME>/repository/components/lib directory.
 
-      2) <DataSourceName> of <APIUsageTracking> entry in app-manager.xml should be same as the
-         JNDI config name in master-datasources.xml
-
----------------------------------------------------------------------------------
-Changing the Statistics Database
----------------------------------------------------------------------------------
-It is possible to use a different database than the default h2 database for statitic publishing.
-When doing this you need to change the properties of the datasource element, and additionally delete
-some meta data tables created by the previous executions of the hive script.
-
-Drop the meta data table by executing the following in BAM script editor.
-You can go to the script editor in BAM by accessing, Main > Analytics > Add in BAM Management Console.
-
-drop table APIRequestData;
-drop table APIRequestSummaryData;
-drop table APIVersionUsageSummaryData;
-drop table APIVersionUsageSummaryData;
-drop table APIResponseData;
-drop table APIResponseSummaryData;
-drop table APIRequestData;
-drop table APIRequestSummaryData;
-drop table APIVersionUsageSummaryData;
-drop table APIResponseData;
-drop table APIResponseSummaryData;
