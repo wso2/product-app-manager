@@ -100,6 +100,7 @@
                 <enabled>false</enabled>
             </releases>
         </repository>
+
     </repositories>
 
     <pluginRepositories>
@@ -437,7 +438,7 @@
         <carbon.appmgt.version>1.2.0-SNAPSHOT</carbon.appmgt.version>
         <carbon.appmgt.bundle.version>1.1.1</carbon.appmgt.bundle.version>
         <carbon.proxyadmin.server.version>4.2.2</carbon.proxyadmin.server.version>
-        <carbon.mediation.version>4.6.1-SNAPSHOT</carbon.mediation.version>
+        <carbon.mediation.version>4.6.1</carbon.mediation.version>
         <carbon.multitenancy.version>4.6.0</carbon.multitenancy.version>
         <carbon.tenant.mgt.common.version>4.5.4</carbon.tenant.mgt.common.version>
 
@@ -470,9 +471,9 @@
 
         <carbon.deployment.version>4.7.0</carbon.deployment.version>
         <carbon.commons.version>4.5.4</carbon.commons.version>
-        <carbon.analytics-common.version>5.0.12-alpha</carbon.analytics-common.version>
-        <carbon.registry.version>4.5.5</carbon.registry.version>
-        <carbon.governance.version>4.6.2</carbon.governance.version>
+        <carbon.analytics-common.version>5.1.0</carbon.analytics-common.version>
+        <carbon.registry.version>4.5.6</carbon.registry.version>
+        <carbon.governance.version>4.6.4</carbon.governance.version>
         <carbon.store.version>1.4.2</carbon.store.version>
         <carbon.webapp.mgt.stub>4.2.0</carbon.webapp.mgt.stub>
 
