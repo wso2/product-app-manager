@@ -273,6 +273,33 @@
             </plugin>
 
             <plugin>
+                <groupId>com.google.code.maven-config-processor-plugin</groupId>
+                <artifactId>config-processor-maven-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>add-custom-security-headers</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <configuration>
+                            <failOnMissingXpath>false</failOnMissingXpath>
+                            <transformations>
+                                <transformation>
+                                    <input>${basedir}/../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/tomcat/carbon/WEB-INF/web.xml</input>
+                                    <output>../../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/tomcat/carbon/WEB-INF/web.xml</output>
+                                    <config>src/main/custom_security_header_conf.xml</config>
+                                </transformation>
+                            </transformations>
+                            <namespaceContexts>
+                            </namespaceContexts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
                 <version>3.3</version>
