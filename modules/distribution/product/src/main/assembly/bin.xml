@@ -764,12 +764,12 @@
 
 	<!-- Copy Sample web-apps -->
 	<file>
-            <source>../../samples/webapps/plan-your-trip/target/plan-your-trip-1.2.0-SNAPSHOT.war</source>
+            <source>../../samples/webapps/plan-your-trip/target/plan-your-trip-${pom.version}.war</source>
             <outputDirectory>wso2appm-${pom.version}/samples</outputDirectory>
             <destName>plan-your-trip-1.2.0.war</destName>
         </file>
 	<file>
-            <source>../../samples/webapps/travel-booking/target/travel-booking-1.2.0-SNAPSHOT.war</source>
+            <source>../../samples/webapps/travel-booking/target/travel-booking-${pom.version}.war</source>
             <outputDirectory>wso2appm-${pom.version}/samples</outputDirectory>
             <destName>travel-booking-1.2.0.war</destName>
         </file>
