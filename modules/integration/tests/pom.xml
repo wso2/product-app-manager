@@ -21,7 +21,7 @@
     <parent>
         <groupId>org.wso2.appmanager</groupId>
         <artifactId>integration</artifactId>
-        <version>1.2.0-SNAPSHOT</version>
+        <version>1.2.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -221,7 +221,7 @@
         <dependency>
             <groupId>org.wso2.appmanager</groupId>
             <artifactId>org.wso2.appmanager.test.common.utils</artifactId>
-            <version>1.2.0-SNAPSHOT</version>
+            <version>1.2.0</version>
             <type>test-jar</type>
         </dependency>
 
