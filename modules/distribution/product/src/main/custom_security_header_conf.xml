@@ -2,7 +2,7 @@
 
     <!-- Add the ntlm grant type validator config element -->
     <add>
-        <after>/web-app/filter[./filter-name/text()='HttpHeaderSecurityFilter']</after>
+        <after>/web-app/filter-mapping[./filter-name/text()='HttpHeaderSecurityFilter']</after>
         <value>
             <![CDATA[
             <filter>
@@ -28,7 +28,7 @@
    </filter>
    <filter-mapping>
       <filter-name>HttpHeaderSecurityFilter_AntiClickJacking_SpecialURL</filter-name>
-      <url-pattern>/samlsso/*</url-pattern>
+      <url-pattern>/samlsso</url-pattern>
    </filter-mapping>
             ]]></value>
 
