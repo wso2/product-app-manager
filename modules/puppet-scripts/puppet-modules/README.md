@@ -11,5 +11,5 @@ This repository contains Puppet modules for installing and configuring WSO2 App 
 
 - Puppet 2.7, 3 or newer
 
-## How to Contribute
-Follow the steps mentioned in the [wiki](https://github.com/wso2/puppet-modules/wiki) to setup a development environment and update/create new puppet modules.
+## How to Configure
+Follow the steps mentioned in the [wiki](https://github.com/wso2/puppet-modules/wiki) to setup a development environment.
