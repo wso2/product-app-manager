@@ -15,14 +15,12 @@
  ~ limitations under the License.
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
         <groupId>org.wso2.appmanager</groupId>
         <artifactId>eam-profile-gen-parent</artifactId>
-        <version>1.2.0-SNAPSHOT</version>
+        <version>1.2.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -977,14 +975,10 @@
                         <phase>package</phase>
                         <configuration>
                             <tasks>
-                                <replace token="false" value="true"
-                                         dir="target/wso2carbon-core-${carbon.kernel.version}/repository/components">
-                                    <include name="**/bundles.info"/>
+                                <replace token="false" value="true" dir="target/wso2carbon-core-${carbon.kernel.version}/repository/components">
+                                    <include name="**/bundles.info" />
                                 </replace>
-                                <replace
-                                        file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/tomcat/context.xml"
-                                        token="&lt;Context&gt;"
-                                        value="&lt;Context crossContext=&quot;true&quot;&gt;"/>
+                                <replace file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/tomcat/context.xml" token="&lt;Context&gt;" value="&lt;Context crossContext=&quot;true&quot;&gt;" />
                             </tasks>
                         </configuration>
                         <goals>
@@ -999,13 +993,10 @@
                         </goals>
                         <configuration>
                             <tasks>
-                                <echo message="########### Applying depending component config patches ##############"/>
+                                <echo message="########### Applying depending component config patches ##############" />
                                 <!-- commenting "GetAllRolesOfUserEnabled" property to fix
                                 https://wso2.org/jira/browse/IDENTITY-3489 -->
-                                <replace
-                                        file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/user-mgt.xml"
-                                        token="&lt;Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property&gt;"
-                                        value="&lt;!--Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property--&gt;"/>
+                                <replace file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/user-mgt.xml" token="&lt;Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property&gt;" value="&lt;!--Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property--&gt;" />
                             </tasks>
                         </configuration>
                     </execution>
