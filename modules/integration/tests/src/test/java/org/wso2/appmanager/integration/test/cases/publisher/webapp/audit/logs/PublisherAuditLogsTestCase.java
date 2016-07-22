@@ -159,11 +159,6 @@ public class PublisherAuditLogsTestCase extends AppMIntegrationBaseTest {
 
     @AfterClass(alwaysRun = true)
     public void destroy() throws Exception {
-        //super.cleanUp();
-        if (TestUserMode.SUPER_TENANT_ADMIN == userMode) {
-            removeAuditLogsFromLog4jProperties();
-            serverConfigurationManager.restoreToLastConfiguration();
-        }
     }
 
     private void appendAuditLogsToLog4jProperties() throws IOException {

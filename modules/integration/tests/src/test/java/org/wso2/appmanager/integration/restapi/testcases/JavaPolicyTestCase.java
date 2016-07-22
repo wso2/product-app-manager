@@ -55,10 +55,6 @@ public class JavaPolicyTestCase extends AppMIntegrationBaseTest {
     @BeforeClass(alwaysRun = true)
     public void setEnvironment() throws Exception {
         super.init(userMode);
-        if (TestUserMode.SUPER_TENANT_ADMIN == userMode) {
-            serverConfigurationManager = new ServerConfigurationManager(gatewayContextWrk);
-            serverConfigurationManager.restartGracefully();
-        }
     }
 
     @Test(groups = {"wso2.appm"}, description = "REST API Implementation test : JavaPolicy test case")
@@ -77,9 +73,6 @@ public class JavaPolicyTestCase extends AppMIntegrationBaseTest {
 
     @AfterClass(alwaysRun = true)
     public void destroy() throws Exception {
-        //super.cleanUp();
-        if (TestUserMode.SUPER_TENANT_ADMIN == userMode) {
-            serverConfigurationManager.restoreToLastConfiguration();
-        }
+        //TODO:Delete artifacts
     }
 }

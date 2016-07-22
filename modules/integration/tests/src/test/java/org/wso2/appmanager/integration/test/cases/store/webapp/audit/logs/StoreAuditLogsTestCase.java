@@ -149,10 +149,7 @@ public class StoreAuditLogsTestCase extends AppMIntegrationBaseTest {
 
     @AfterClass(alwaysRun = true)
     public void destroy() throws Exception {
-        //super.cleanUp();
-        if (TestUserMode.SUPER_TENANT_ADMIN == userMode) {
-            serverConfigurationManager.restoreToLastConfiguration();
-        }
+
     }
 
     /**
