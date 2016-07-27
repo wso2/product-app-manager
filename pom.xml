@@ -489,7 +489,7 @@
         <emma.version>2.1.5320</emma.version>
         <imp.pkg.version.javax.servlet>[2.6.0, 3.0.0)</imp.pkg.version.javax.servlet>
 
-        <appmanagerserver.version>1.2.0-SNAPSHOT</appmanagerserver.version>
+        <appmanagerserver.version>1.2.1-SNAPSHOT</appmanagerserver.version>
         <apim.version>1.2.1</apim.version>
         <es.feature.version>1.0.0</es.feature.version>
 
