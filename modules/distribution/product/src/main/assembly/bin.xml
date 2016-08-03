@@ -408,10 +408,6 @@
         <fileSet>
             <directory>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/modules</directory>
             <outputDirectory>${pom.artifactId}-${pom.version}/modules/</outputDirectory>
-            <excludes>
-                <exclude>**/carbon/**</exclude>
-                <exclude>**/store/**</exclude>
-            </excludes>
         </fileSet>
 
          <fileSet>

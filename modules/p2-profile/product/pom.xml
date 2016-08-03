@@ -294,7 +294,6 @@
                                 </featureArtifactDef>
                                 <featureArtifactDef>org.wso2.carbon.deployment:org.wso2.carbon.webapp.mgt.feature:${carbon.deployment.version}
                                 </featureArtifactDef>
-				<featureArtifactDef>org.wso2.store.modules:store.feature:${es.feature.version}</featureArtifactDef>
 				<featureArtifactDef>org.jaggeryjs.modules:handlebars.feature:${handlebars.feature.version}</featureArtifactDef>
 				<featureArtifactDef>org.wso2.store.modules:login.feature:${es.feature.version}</featureArtifactDef>
 				<featureArtifactDef>org.jaggeryjs.modules:markdown.feature:${jaggeryjs.markdown.feature.version}</featureArtifactDef>
@@ -707,10 +706,6 @@
                                 </feature>
 				                <feature>
                                     <id>org.wso2.store.modules.login.feature.group</id>
-                                    <version>${es.feature.version}</version>
-                                </feature>
-				                <feature>
-                                    <id>org.wso2.store.modules.store.feature.group</id>
                                     <version>${es.feature.version}</version>
                                 </feature>
 				                <feature>
