@@ -56,6 +56,9 @@
                 need to remove duplicate classes with jaxb-* bundle -->
                 <exclude>**/repository/components/plugins/wadl-core_1.1.3.wso2v2.jar</exclude>
                 <exclude>**/conf/tomcat/carbon/WEB-INF/web.xml</exclude>
+
+                <!-- Remove multiple versions of same jar-->
+                <exclude>**/repository/components/plugins/httpclient_4.3.2.wso2v1.jar</exclude>
             </excludes>
         </fileSet>
         <fileSet>
