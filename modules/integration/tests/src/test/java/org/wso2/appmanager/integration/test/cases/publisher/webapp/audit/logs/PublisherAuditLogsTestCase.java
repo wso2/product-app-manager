@@ -197,7 +197,7 @@ public class PublisherAuditLogsTestCase extends AppMIntegrationBaseTest {
     }
 
     private String getAuditLogSubjectId() {
-        return "{providerName='" + adminUserName + "', apiName='" + appName + "', version='" + appVersion + "'}";
+        return "{providerName='" + adminUserName + "', appName='" + appName + "', version='" + appVersion + "'}";
     }
 
 }
