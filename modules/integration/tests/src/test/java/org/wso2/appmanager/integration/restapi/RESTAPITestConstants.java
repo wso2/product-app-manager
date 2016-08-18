@@ -19,6 +19,7 @@
 package org.wso2.appmanager.integration.restapi;
 
 
+import javax.ws.rs.core.MediaType;
 import java.io.File;
 
 /**
@@ -30,8 +31,15 @@ public final class RESTAPITestConstants {
     public static final String PATH_SUBSTRING = File.separator + "src" + File.separator + "test" + File.separator +
             "resources" + File.separator + "rest-api-test-data" + File.separator;
 
+    //publisher resources folder path
+    public static final String RESOURCES_PATH = File.separator + "src" + File.separator + "test" + File.separator +
+            "resources" + File.separator + "rest-api-test-resources" + File.separator + "publisher" + File.separator;
+
     //application json content type
     public static final String APPLICATION_JSON_CONTENT = "application/json";
+
+    //multipart form data content type
+    public static final String MULTIPART_FORM_DATA = "multipart/form-data";
 
     //http PUT method
     public static final String PUT_METHOD = "PUT";
@@ -134,5 +142,12 @@ public final class RESTAPITestConstants {
 
     //text to represent response-location element
     public static final String RESPONSE_LOCATION = "response-location";
+
+    //text to split the response value element
+    public static final String RESPONSE_SPLIT_ON = "response-split-on";
+
+    public static final String FILE = "file";
+    public static final String IMAGE = "image";
+    public static final MediaType IMAGE_JPEG_TYPE = new MediaType("image", "jpeg");
 
 }

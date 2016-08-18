@@ -1,0 +1,53 @@
+{
+	"testCase": [{
+		"init": {
+			"scope": "appm:create"
+		},
+		"data": {
+			"method": "POST",
+			"url": "api/appm/publisher/v1.1/apps/webapp",
+			"query-parameters": "",
+			"request-headers": {
+				"Authorization": "Bearer"
+			},
+			"request-payload": "{\"name\":\"SiteValidateContextApp\",\"version\":\"1.0\",\"banner\":\"\",\"thumbnailUrl\":\"\",\"displayName\":\"SiteValidateContextApp\",\"description\":\"SiteValidateContextApp description\",\"isSite\":\"true\",\"context\":\"\/siteValidateContextApp\",\"appUrL\":\"http:\/\/www.google.lk\",\"acsUrl\":\"\",\"transport\":\"http\",\"policyGroups\":[{\"policyGroupName\":\"policy1\",\"description\":\"Policy 1\",\"throttlingTier\":\"Unlimited\",\"allowAnonymousAccess\":\"false\"}],\"uriTemplates\":[{\"urlPattern\":\"\/*\",\"httpVerb\":\"GET\",\"policyGroupName\":\"policy1\"}],\"customProperties\":[{\"name\":\"overview_custom1\",\"value\":\"custom_property_1\"}]}",
+			"response-headers": "",
+			"response-payload":""
+		},
+		"asserts": {
+			"header-asserts": {
+				"status-code": "200"
+			},
+			"body-asserts": ""
+		},
+		"preserve-list": [{
+			"attribute-name": "appId",
+			"response-location": "AppId"
+		}]
+	}, {
+		"init": {
+			"scope": "appm:create"
+		},
+		"data": {
+			"method": "POST",
+			"url": "api/appm/publisher/v1.1/apps/webapp/validate-context?appContext=/siteValidateContextApp",
+			"query-parameters": "",
+			"request-headers": {
+				"Authorization": "Bearer"
+			},
+			"request-payload": "",
+			"response-headers": "",
+			"response-payload": ""
+		},
+		"asserts": {
+			"header-asserts": {
+				"status-code": "200"
+			},
+			"body-asserts": ""
+		},
+        "preserve-list": [{
+            "attribute-name": "isContextExists",
+            "response-location": "IsContextExists"
+        }]
+	}]
+}

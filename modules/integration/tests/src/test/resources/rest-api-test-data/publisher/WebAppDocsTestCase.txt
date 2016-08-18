@@ -6,12 +6,12 @@
             },
             "data":{
                 "method":"POST",
-                "url":"api/appm/publisher/v1.1/apps/mobileapp",
+                "url":"api/appm/publisher/v1.1/apps/webapp",
                 "query-parameters":"",
                 "request-headers":{
                     "Authorization":"Bearer"
                 },
-                "request-payload":"{\"appmeta\" :{\"path\" : \"CP2DLRtDIUXpS4y.apk\", \"package\" : \"home.jmstudios.calc\", \"version\" : \"1.0\"},\"provider\":\"admin\",\"name\":\"MobileAppTestCaseApp\",\"platform\":\"android\",\"version\":\"1.0d.0\", \"banner\":\"jfNhJ9FJNBgIyN6.jpg\",\"thumbnailUrl\":\"jfNhJ9FJNBgIyN6.jpg\",\"screenshots\":[\"jfNhJ9FJNBgIyN6.jpg\"],\"displayName\":\"MobileAppTestCaseApp name\",\"description\":\"MobileAppTestCase desc\",\"category\":\"Business\",\"marketType\":\"enterprise\",\"icon\":\"jfNhJ9FJNBgIyN6.jpg\"}",
+                "request-payload":"{\"name\":\"WebAppDocsTestCaseApp\",\"version\":\"1.0\",\"banner\":\"\",\"thumbnailUrl\":\"\",\"displayName\":\"WebAppDocsTestCaseApp\",\"description\":\"description\",\"isSite\":\"false\",\"context\":\"\/WebAppDocsTestCaseApp\",\"appUrL\":\"http:\/\/www.google.lk\",\"acsUrl\":\"\",\"transport\":\"http\",\"policyGroups\":[{\"policyGroupName\":\"policy1\",\"description\":\"Policy 1\",\"throttlingTier\":\"Unlimited\",\"allowAnonymousAccess\":\"false\"}],\"uriTemplates\":[{\"urlPattern\":\"\/*\",\"httpVerb\":\"GET\",\"policyGroupName\":\"policy1\"}],\"customProperties\":[{\"name\":\"overview_custom1\",\"value\":\"custom_property_1\"}]}",
                 "response-headers":"",
                 "response-payload":""
             },
@@ -30,119 +30,54 @@
         },
         {
             "init":{
-                "scope":"appm:update"
-            },
-            "data":{
-                "method":"PUT",
-                "url":"api/appm/publisher/v1.1/apps/mobileapp/id/{appId}",
-                "query-parameters":"",
-                "request-headers":{
-                    "Authorization":"Bearer"
-                },
-                "request-payload":"{\"appmeta\" :{\"path\" : \"CP2DLRtDIUXpS4y.apk\", \"package\" : \"home.jmstudios.calc\", \"version\" : \"1.0\"},\"provider\":\"admin\",\"name\":\"samplemobileapp\",\"platform\":\"android\",\"version\":\"1.0d.0\", \"banner\":\"jfNhJ9FJNBgIyN6.jpg\",\"thumbnailUrl\":\"jfNhJ9FJNBgIyN6.jpg\",\"screenshots\":[\"jfNhJ9FJNBgIyN6.jpg\"],\"displayName\":\"Sample mobile app\",\"description\":\"description\",\"category\":\"Business\",\"marketType\":\"enterprise\",\"icon\":\"jfNhJ9FJNBgIyN6.jpg\"}",
-                "response-headers":"",
-                "response-payload":""
-            },
-            "asserts":{
-                "header-asserts":{
-                    "status-code":"200"
-                },
-                "body-asserts":""
-            }
-        },
-        {
-            "init":{
-                "scope":"appm:publish"
+                "scope":"appm:create"
             },
             "data":{
                 "method":"POST",
-                "url":"api/appm/publisher/v1.1/apps/mobileapp/change-lifecycle?appId={appId}&action=Submit%20for%20Review",
+                "url":"api/appm/publisher/v1.1/apps/webapp/id/{appId}/docs",
                 "query-parameters":"",
                 "request-headers":{
                     "Authorization":"Bearer"
                 },
-                "request-payload":"",
+                "request-payload":"{\"sourceType\": \"INLINE\",\"sourceUrl\": null,\"otherTypeName\": null,\"summary\": \"This is a sample documentation\",\"name\": \"Doc01\",\"type\": \"HOWTO\"}",
                 "response-headers":"",
                 "response-payload":""
             },
             "asserts":{
                 "header-asserts":{
-                    "status-code":"202"
-                },
-                "body-asserts":""
-            }
-        },
-        {
-            "init":{
-                "scope":"appm:publish"
-            },
-            "data":{
-                "method":"POST",
-                "url":"api/appm/publisher/v1.1/apps/mobileapp/change-lifecycle?appId={appId}&action=Approve",
-                "query-parameters":"",
-                "request-headers":{
-                    "Authorization":"Bearer"
-                },
-                "request-payload":"",
-                "response-headers":"",
-                "response-payload":""
-            },
-            "asserts":{
-                "header-asserts":{
-                    "status-code":"202"
-                },
-                "body-asserts":""
-            }
-        },
-        {
-            "init":{
-                "scope":"appm:publish"
-            },
-            "data":{
-                "method":"POST",
-                "url":"api/appm/publisher/v1.1/apps/mobileapp/change-lifecycle?appId={appId}&action=Publish",
-                "query-parameters":"",
-                "request-headers":{
-                    "Authorization":"Bearer"
-                },
-                "request-payload":"",
-                "response-headers":"",
-                "response-payload":""
-            },
-            "asserts":{
-                "header-asserts":{
-                    "status-code":"202"
-                },
-                "body-asserts":""
-            }
-        },
-        {
-            "init":{
-                "scope":"appm:subscribe"
-            },
-            "data":{
-                "method":"POST",
-                "url":"api/appm/store/v1.1/apps/mobile/id/{appId}/download",
-                "query-parameters":"",
-                "request-headers":{
-                    "Authorization":"Bearer"
-                },
-                "request-payload":"",
-                "response-headers":"",
-                "response-payload":""
-            },
-            "asserts":{
-                "header-asserts":{
-                    "status-code":"200"
+                    "status-code":"201"
                 },
                 "body-asserts":""
             },
             "preserve-list":[
                 {
-                    "attribute-name":"appUrl",
-                    "response-location":"appUrl"
+                    "attribute-name":"documentId",
+                    "response-location":"documentId"
                 }
             ]
+        },
+        {
+            "init":{
+                "scope":"appm:create"
+            },
+            "data":{
+                "method":"POST",
+                "url":"api/appm/publisher/v1.1/apps/webapp/id/{appId}/docs/{documentId}/content",
+                "query-parameters":"",
+                "request-headers":{
+                    "Authorization":"Bearer",
+                    "Content-Type":"multipart/form-data"
+                },
+                "request-payload":"inlineContent=Sample documentation content",
+                "response-headers":"",
+                "response-payload":""
+            },
+            "asserts":{
+                "header-asserts":{
+                    "status-code":"201"
+                },
+                "body-asserts":""
+            }
         },
         {
             "init":{
@@ -150,7 +85,7 @@
             },
             "data":{
                 "method":"GET",
-                "url":"api/appm/publisher/v1.1/apps/mobileapp",
+                "url":"api/appm/publisher/v1.1/apps/webapp/id/{appId}/docs",
                 "query-parameters":"",
                 "request-headers":{
                     "Authorization":"Bearer"
@@ -172,7 +107,29 @@
             },
             "data":{
                 "method":"GET",
-                "url":"api/appm/publisher/v1.1/apps/mobileapp/id/{appId}",
+                "url":"api/appm/publisher/v1.1/apps/webapp/id/{appId}/docs/{documentId}/content",
+                "query-parameters":"",
+                "request-headers":{
+                    "Authorization":"Bearer"
+                },
+                "request-payload":"",
+                "response-headers":"",
+                "response-payload":""
+            },
+            "asserts":{
+                "header-asserts":{
+                    "status-code":"200"
+                },
+                "body-asserts":""
+            }
+        },
+        {
+            "init":{
+                "scope":"appm:read"
+            },
+            "data":{
+                "method":"GET",
+                "url":"api/appm/publisher/v1.1/apps/webapp/id/{appId}/docs/{documentId}",
                 "query-parameters":"",
                 "request-headers":{
                     "Authorization":"Bearer"
@@ -194,7 +151,7 @@
             },
             "data":{
                 "method":"DELETE",
-                "url":"api/appm/publisher/v1.1/apps/mobileapp/id/{appId}",
+                "url":"api/appm/publisher/v1.1/apps/webapp/id/{appId}/docs/{documentId}",
                 "query-parameters":"",
                 "request-headers":{
                     "Authorization":"Bearer"
@@ -206,6 +163,28 @@
             "asserts":{
                 "header-asserts":{
                     "status-code":"200"
+                },
+                "body-asserts":""
+            }
+        },
+        {
+            "init":{
+                "scope":"appm:read"
+            },
+            "data":{
+                "method":"GET",
+                "url":"api/appm/publisher/v1.1/apps/webapp/id/{appId}/docs/{documentId}",
+                "query-parameters":"",
+                "request-headers":{
+                    "Authorization":"Bearer"
+                },
+                "request-payload":"",
+                "response-headers":"",
+                "response-payload":""
+            },
+            "asserts":{
+                "header-asserts":{
+                    "status-code":"404"
                 },
                 "body-asserts":""
             }
