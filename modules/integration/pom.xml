@@ -39,4 +39,17 @@
         <module>tests-ui</module>
     </modules>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>${sun.jersey.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey.contribs</groupId>
+            <artifactId>jersey-multipart</artifactId>
+            <version>${sun.jersey.version}</version>
+        </dependency>
+    </dependencies>
+
 </project>

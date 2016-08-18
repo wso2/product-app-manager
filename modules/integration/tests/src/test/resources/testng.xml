@@ -18,45 +18,40 @@
             <class name="org.wso2.appmanager.integration.test.cases.StoreLoginTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.PublisherLogoutTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.StoreLogoutTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.PublisherCreateWebAppTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.WebAppPublishTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.WebAppSubscribeTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.RetrieveAppPropertyTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.RatingTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.PublisherCreateWebAppTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.WebAppPublishTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.WebAppSubscribeTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.RetrieveAppPropertyTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.RatingTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.WebAppVersioningTestCase"/>
 
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInCreatedStatusTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInReviewStatusTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInApprovedStatusTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInRejectedStatusTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInPublishedStatusTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInUnPublishedStatusTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInDeprecatedStatusTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInRetiredStatusTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInCreatedStatusTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInReviewStatusTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInApprovedStatusTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInRejectedStatusTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInPublishedStatusTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInUnPublishedStatusTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInDeprecatedStatusTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.edit.EditWebAppInRetiredStatusTestCase"/>
 
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.delete.DeleteWebAppInApprovedStateTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.delete.DeleteWebAppInCreatedStateTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.delete.DeleteWebAppInDeprecatedStateTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.delete.DeleteWebAppInPublishedStateTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.delete.DeleteWebAppInRetiredStateTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.delete.DeleteWebAppInReviewStateTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.delete.DeleteWebAppInUnpublishedStateTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.delete.DeleteWebAppInApprovedStateTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.delete.DeleteWebAppInCreatedStateTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.delete.DeleteWebAppInDeprecatedStateTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.delete.DeleteWebAppInPublishedStateTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.delete.DeleteWebAppInRetiredStateTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.delete.DeleteWebAppInReviewStateTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.delete.DeleteWebAppInUnpublishedStateTestCase"/>
 
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromApproveToPublishTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromCreateToInReviewTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromInReviewToApproveTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromInReviewToRejectTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromPublishToDeprecateTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromPublishToUnpublishTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromUnpublishToRepublishTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromPublishToUnpublishTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromUnpublishToRetireTestCase"/>
-             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.CreateWebAppTestCase"/>
-
-            <class name="org.wso2.appmanager.integration.restapi.testcases.RoleTestCase"/>
-            <class name="org.wso2.appmanager.integration.restapi.testcases.JavaPolicyTestCase"/>
-            <class name="org.wso2.appmanager.integration.restapi.testcases.WebAppTestCase"/>
-            <class name="org.wso2.appmanager.integration.restapi.testcases.MobileAppTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromApproveToPublishTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromCreateToInReviewTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromInReviewToApproveTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromInReviewToRejectTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromPublishToDeprecateTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromPublishToUnpublishTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromUnpublishToRepublishTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromPublishToUnpublishTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.ChangeStateFromUnpublishToRetireTestCase"/>
+            <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.lifecycle.management.CreateWebAppTestCase"/>
 
             <class name="org.wso2.appmanager.integration.test.cases.admin.dashboard.businessowner.DeleteBusinessOwnerTestCase"/>
             <class name="org.wso2.appmanager.integration.test.cases.admin.dashboard.businessowner.AddNewBusinessOwnerTestCase"/>
@@ -68,7 +63,35 @@
 
             <class name="org.wso2.appmanager.integration.test.cases.publisher.webapp.audit.logs.PublisherAuditLogsTestCase"/>
 
+            <class name="org.wso2.appmanager.integration.restapi.testcases.RoleTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.JavaPolicyTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.XacmlpoliciesTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.BusinessOwnerTestCase"/>
+
+            <class name="org.wso2.appmanager.integration.restapi.testcases.WebAppTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.WebAppTagsTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.WebAppLifecycleTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.WebAppThrottlingTiersTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.WebAppDocsTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.WebAppValidateContextTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.WebAppStaticContentsTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.WebAppCreateNewVersionTestCase"/>
+
+            <class name="org.wso2.appmanager.integration.restapi.testcases.SiteTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.SiteTagsTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.SiteLifecycleTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.SiteDocsTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.SiteValidateContextTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.SiteCreateNewVersionTestCase"/>
+
+            <class name="org.wso2.appmanager.integration.restapi.testcases.MobileAppTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.MobileAppLifecycleTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.MobileAppTagsTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.MobileAppStaticContentsTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.MobileAppBinariesTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.MobileAppCreateNewVersionTestCase"/>
         </classes>
+
     </test>
 
 

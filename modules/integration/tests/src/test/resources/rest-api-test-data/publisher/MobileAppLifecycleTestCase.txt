@@ -11,7 +11,7 @@
                 "request-headers":{
                     "Authorization":"Bearer"
                 },
-                "request-payload":"{\"appmeta\" :{\"path\" : \"CP2DLRtDIUXpS4y.apk\", \"package\" : \"home.jmstudios.calc\", \"version\" : \"1.0\"},\"provider\":\"admin\",\"name\":\"MobileAppTestCaseApp\",\"platform\":\"android\",\"version\":\"1.0d.0\", \"banner\":\"jfNhJ9FJNBgIyN6.jpg\",\"thumbnailUrl\":\"jfNhJ9FJNBgIyN6.jpg\",\"screenshots\":[\"jfNhJ9FJNBgIyN6.jpg\"],\"displayName\":\"MobileAppTestCaseApp name\",\"description\":\"MobileAppTestCase desc\",\"category\":\"Business\",\"marketType\":\"enterprise\",\"icon\":\"jfNhJ9FJNBgIyN6.jpg\"}",
+                "request-payload":"{\"appmeta\" :{\"path\" : \"CP2DLRtDIUXpS4y.apk\", \"package\" : \"home.jmstudios.calc\", \"version\" : \"1.0\"},\"provider\":\"admin\",\"name\":\"MobileAppLifecycleTestCaseApp\",\"platform\":\"android\",\"version\":\"1.0d.0\", \"banner\":\"jfNhJ9FJNBgIyN6.jpg\",\"thumbnailUrl\":\"jfNhJ9FJNBgIyN6.jpg\",\"screenshots\":[\"jfNhJ9FJNBgIyN6.jpg\"],\"displayName\":\"MobileAppLifecycleTestCaseApp SampleDisplay\",\"description\":\"description\",\"category\":\"Business\",\"marketType\":\"enterprise\",\"icon\":\"jfNhJ9FJNBgIyN6.jpg\"}",
                 "response-headers":"",
                 "response-payload":""
             },
@@ -27,28 +27,6 @@
                     "response-location":"AppId"
                 }
             ]
-        },
-        {
-            "init":{
-                "scope":"appm:update"
-            },
-            "data":{
-                "method":"PUT",
-                "url":"api/appm/publisher/v1.1/apps/mobileapp/id/{appId}",
-                "query-parameters":"",
-                "request-headers":{
-                    "Authorization":"Bearer"
-                },
-                "request-payload":"{\"appmeta\" :{\"path\" : \"CP2DLRtDIUXpS4y.apk\", \"package\" : \"home.jmstudios.calc\", \"version\" : \"1.0\"},\"provider\":\"admin\",\"name\":\"samplemobileapp\",\"platform\":\"android\",\"version\":\"1.0d.0\", \"banner\":\"jfNhJ9FJNBgIyN6.jpg\",\"thumbnailUrl\":\"jfNhJ9FJNBgIyN6.jpg\",\"screenshots\":[\"jfNhJ9FJNBgIyN6.jpg\"],\"displayName\":\"Sample mobile app\",\"description\":\"description\",\"category\":\"Business\",\"marketType\":\"enterprise\",\"icon\":\"jfNhJ9FJNBgIyN6.jpg\"}",
-                "response-headers":"",
-                "response-payload":""
-            },
-            "asserts":{
-                "header-asserts":{
-                    "status-code":"200"
-                },
-                "body-asserts":""
-            }
         },
         {
             "init":{
@@ -118,39 +96,11 @@
         },
         {
             "init":{
-                "scope":"appm:subscribe"
-            },
-            "data":{
-                "method":"POST",
-                "url":"api/appm/store/v1.1/apps/mobile/id/{appId}/download",
-                "query-parameters":"",
-                "request-headers":{
-                    "Authorization":"Bearer"
-                },
-                "request-payload":"",
-                "response-headers":"",
-                "response-payload":""
-            },
-            "asserts":{
-                "header-asserts":{
-                    "status-code":"200"
-                },
-                "body-asserts":""
-            },
-            "preserve-list":[
-                {
-                    "attribute-name":"appUrl",
-                    "response-location":"appUrl"
-                }
-            ]
-        },
-        {
-            "init":{
                 "scope":"appm:read"
             },
             "data":{
                 "method":"GET",
-                "url":"api/appm/publisher/v1.1/apps/mobileapp",
+                "url":"api/appm/publisher/v1.1/apps/mobileapp/id/{appId}/lifecycle",
                 "query-parameters":"",
                 "request-headers":{
                     "Authorization":"Bearer"
@@ -172,29 +122,7 @@
             },
             "data":{
                 "method":"GET",
-                "url":"api/appm/publisher/v1.1/apps/mobileapp/id/{appId}",
-                "query-parameters":"",
-                "request-headers":{
-                    "Authorization":"Bearer"
-                },
-                "request-payload":"",
-                "response-headers":"",
-                "response-payload":""
-            },
-            "asserts":{
-                "header-asserts":{
-                    "status-code":"200"
-                },
-                "body-asserts":""
-            }
-        },
-        {
-            "init":{
-                "scope":"appm:create"
-            },
-            "data":{
-                "method":"DELETE",
-                "url":"api/appm/publisher/v1.1/apps/mobileapp/id/{appId}",
+                "url":"api/appm/publisher/v1.1/apps/mobileapp/id/{appId}/lifecycle-history",
                 "query-parameters":"",
                 "request-headers":{
                     "Authorization":"Bearer"
