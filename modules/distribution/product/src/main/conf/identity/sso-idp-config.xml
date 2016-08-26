@@ -44,6 +44,10 @@
             <DefaultAssertionConsumerServiceURL>https://localhost:9443/publisher/acs</DefaultAssertionConsumerServiceURL>
             <SignResponse>true</SignResponse>
             <CustomLoginPage>/publisher/controllers/login.jag</CustomLoginPage>
+            <EnableAudienceRestriction>true</EnableAudienceRestriction>
+            <AudiencesList>
+                <Audience>carbonServer</Audience>
+            </AudiencesList>
         </ServiceProvider>
     </ServiceProviders>
 </SSOIdentityProviderConfig>
