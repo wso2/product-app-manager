@@ -20,7 +20,7 @@
                 "header-asserts":{
                     "status-code":"200"
                 },
-                "body-asserts":""
+                "body-asserts":[]
             },
             "preserve-list": [{
                 "attribute-name": "imageId",
@@ -45,7 +45,7 @@
                "header-asserts": {
                    "status-code": "200"
                },
-               "body-asserts": ""
+               "body-asserts": []
            }
        }
     ]

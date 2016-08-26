@@ -270,6 +270,12 @@
             <artifactId>javax.ws.rs-api</artifactId>
             <version>${javax.ws.rs-api.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>0.8.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
  </project>

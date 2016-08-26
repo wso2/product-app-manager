@@ -19,6 +19,7 @@
 package org.wso2.appmanager.integration.restapi.utils;
 
 
+import com.jayway.jsonpath.JsonPath;
 import com.sun.jersey.api.client.ClientResponse;
 import exception.AppManagerIntegrationTestException;
 import org.apache.commons.codec.binary.Base64;
@@ -221,6 +222,43 @@ public class RESTAPITestUtil {
                     isTestSuccess = true;
                 } else {
                     isTestSuccess = false;
+                }
+
+                //checking for body-asserts
+                JSONArray bodyAsserts = configObject.getJSONObject(RESTAPITestConstants.ASSERT_SECTION).
+                        getJSONArray(RESTAPITestConstants.BODY_ASSERTS);
+
+                if (bodyAsserts != null && bodyAsserts.length() > 0) {
+                    if (!StringUtils.isBlank(outputText)) {
+                        for (int j = 0; j < bodyAsserts.length(); j++) {
+                            JSONObject bodyAssert = (JSONObject) bodyAsserts.get(j);
+                            String jsonPath = bodyAssert.getString(RESTAPITestConstants.BODY_ASSERTS_JSONPATH);
+                            Object actualValue = JsonPath.read(outputText, jsonPath);
+                            if (bodyAssert.has(RESTAPITestConstants.BODY_ASSERTS_VALUE)) {
+                                Object expectedValue = bodyAssert.get(RESTAPITestConstants.BODY_ASSERTS_VALUE);
+                                if (!expectedValue.equals(actualValue)) {
+                                    log.error("Json path actual value mismatches with expected value. jsonPath: \""
+                                            + jsonPath + "\", expected: <" + expectedValue.getClass().getSimpleName()
+                                            + ">" + expectedValue + ", actual value: <" + actualValue.getClass()
+                                            .getSimpleName() + ">" + actualValue + ", response payload: " + outputText);
+                                    isTestSuccess = false;
+                                    break;
+                                }
+                            } else if (bodyAssert.has(RESTAPITestConstants.BODY_ASSERTS_REGEX)) {
+                                String regex = bodyAssert.getString(RESTAPITestConstants.BODY_ASSERTS_REGEX);
+                                if (!Pattern.matches(regex, actualValue.toString())) {
+                                    log.error("Json path actual value mismatches with provided regex. jsonPath: \""
+                                            + jsonPath + "\", regex: \"" + regex + "\", actual value: \"" + actualValue
+                                            + "\", response payload: " + outputText);
+                                    isTestSuccess = false;
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        log.error("A body-assert is defined but no response payload found.");
+                        isTestSuccess = false;
+                    }
                 }
 
                 //if the current test fails no need to run the rest of the scenario, so break and return false
