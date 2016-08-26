@@ -1,0 +1,24 @@
+{
+	"testCase": [{
+		"init": {
+			"scope": "appm:administration"
+		},
+		"data": {
+			"method": "GET",
+			"url": "api/appm/store/v1.1/administration/users",
+			"query-parameters": "",
+			"request-headers": {
+				"Authorization": "Bearer"
+			},
+			"request-payload": "",
+			"response-headers": "",
+			"response-payload": ""
+		},
+		"asserts": {
+			"header-asserts": {
+				"status-code": "200"
+			},
+			"body-asserts": []
+		}
+	}]
+}

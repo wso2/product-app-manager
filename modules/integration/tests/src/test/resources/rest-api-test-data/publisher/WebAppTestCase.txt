@@ -18,7 +18,7 @@
 			"header-asserts": {
 				"status-code": "200"
 			},
-			"body-asserts": ""
+			"body-asserts": []
 		},
 		"preserve-list": [{
 			"attribute-name": "appId",
@@ -43,7 +43,7 @@
 			"header-asserts": {
 				"status-code": "200"
 			},
-			"body-asserts": ""
+			"body-asserts": []
 		}
 	}, {
 		"init": {
@@ -64,7 +64,7 @@
 			"header-asserts": {
 				"status-code": "200"
 			},
-			"body-asserts": ""
+			"body-asserts": []
 		}
 	}, {
         "init": {
@@ -85,7 +85,7 @@
             "header-asserts": {
                 "status-code": "200"
             },
-            "body-asserts": ""
+            "body-asserts": []
         }
     }, {
 		"init": {
@@ -106,7 +106,7 @@
 			"header-asserts": {
 				"status-code": "200"
 			},
-			"body-asserts": ""
+			"body-asserts": []
 		}
 	}]
 }
