@@ -474,7 +474,7 @@
         <carbon.analytics-common.version>5.1.0</carbon.analytics-common.version>
         <carbon.registry.version>4.5.5</carbon.registry.version>
         <carbon.governance.version>4.6.2</carbon.governance.version>
-        <carbon.store.version>1.4.2</carbon.store.version>
+        <carbon.store.version>1.4.3-SNAPSHOT</carbon.store.version>
         <carbon.webapp.mgt.stub>4.2.0</carbon.webapp.mgt.stub>
 
         <version.javax.servlet.jsp>${javax.servlet.jsp.version}</version.javax.servlet.jsp>
@@ -539,6 +539,7 @@
         <org.apache.cxf.version>3.1.4</org.apache.cxf.version>
         <org.codehaus.jackson.version>1.9.12</org.codehaus.jackson.version>
         <javax.ws.rs-api.version>2.0.1</javax.ws.rs-api.version>
+        <sun.jersey.version>1.8</sun.jersey.version>
     </properties>
 
 </project>

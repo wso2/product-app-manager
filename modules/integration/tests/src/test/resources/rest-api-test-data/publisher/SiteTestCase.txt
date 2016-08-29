@@ -1,0 +1,112 @@
+{
+	"testCase": [{
+		"init": {
+			"scope": "appm:create"
+		},
+		"data": {
+			"method": "POST",
+			"url": "api/appm/publisher/v1.1/apps/webapp",
+			"query-parameters": "",
+			"request-headers": {
+				"Authorization": "Bearer"
+			},
+			"request-payload": "{\"name\":\"SiteTestCaseSite01\",\"version\":\"1.0\",\"banner\":\"\",\"thumbnailUrl\":\"\",\"displayName\":\"SiteTestCaseSite01\",\"description\":\"SiteTestCaseSite01 description\",\"isSite\":\"true\",\"context\":\"\/siteTestCaseSite01\",\"appUrL\":\"http:\/\/www.google.lk\",\"acsUrl\":\"\",\"transport\":\"http\",\"policyGroups\":[{\"policyGroupName\":\"policy1\",\"description\":\"Policy 1\",\"throttlingTier\":\"Unlimited\",\"allowAnonymousAccess\":\"false\"}],\"uriTemplates\":[{\"urlPattern\":\"\/*\",\"httpVerb\":\"GET\",\"policyGroupName\":\"policy1\"}],\"customProperties\":[{\"name\":\"overview_custom1\",\"value\":\"custom_property_1\"}]}",
+			"response-headers": "",
+			"response-payload":""
+		},
+		"asserts": {
+			"header-asserts": {
+				"status-code": "200"
+			},
+			"body-asserts": []
+		},
+		"preserve-list": [{
+			"attribute-name": "appId",
+			"response-location": "AppId"
+		}]
+	}, {
+		"init": {
+			"scope": "appm:update"
+		},
+		"data": {
+			"method": "PUT",
+			"url": "api/appm/publisher/v1.1/apps/webapp/id/{appId}",
+			"query-parameters": "",
+			"request-headers": {
+				"Authorization": "Bearer"
+			},
+			"request-payload": "{\r\n  \"name\": \"SiteTestCaseSite01\",\r\n  \"version\": \"1.0\",\r\n  \"banner\": \"\",\r\n  \"thumbnailUrl\": \"\",\r\n  \"displayName\": \"SiteTestCaseSite01\",\r\n  \"description\": \"SiteTestCaseSite01 description\",\r\n  \"isSite\": \"true\",\r\n  \"context\": \"\/SiteTestCaseSite01\",\r\n  \"appUrL\": \"http:\/\/www.google.lk\",\r\n  \"acsUrl\": \"\",\r\n  \"transport\": \"http\",\r\n  \"policyGroups\": [\r\n    {\r\n      \"policyGroupName\": \"policy1\",\r\n      \"description\": \"Policy 1\",\r\n      \"throttlingTier\": \"Unlimited\",\r\n      \"allowAnonymousAccess\": \"false\"\r\n    }\r\n  ],\r\n  \"uriTemplates\": [\r\n    {\r\n      \"urlPattern\": \"\/*\",\r\n      \"httpVerb\": \"GET\",\r\n      \"policyGroupName\": \"policy1\"\r\n    }\r\n  ]\r\n}",
+			"response-headers": "",
+			"response-payload": ""
+		},
+		"asserts": {
+			"header-asserts": {
+				"status-code": "200"
+			},
+			"body-asserts": []
+		}
+	}, {
+		"init": {
+			"scope": "appm:read"
+		},
+		"data": {
+			"method": "GET",
+			"url": "api/appm/publisher/v1.1/apps/webapp",
+			"query-parameters": "",
+			"request-headers": {
+				"Authorization": "Bearer"
+			},
+			"request-payload": "",
+			"response-headers": "",
+			"response-payload": ""
+		},
+		"asserts": {
+			"header-asserts": {
+				"status-code": "200"
+			},
+			"body-asserts": []
+		}
+	}, {
+        "init": {
+            "scope": "appm:read"
+        },
+        "data": {
+            "method": "GET",
+            "url": "api/appm/publisher/v1.1/apps/webapp/id/{appId}",
+            "query-parameters": "",
+            "request-headers": {
+                "Authorization": "Bearer"
+            },
+            "request-payload": "",
+            "response-headers": "",
+            "response-payload": ""
+        },
+        "asserts": {
+            "header-asserts": {
+                "status-code": "200"
+            },
+            "body-asserts": []
+        }
+    }, {
+		"init": {
+			"scope": "appm:create"
+		},
+		"data": {
+			"method": "DELETE",
+			"url": "api/appm/publisher/v1.1/apps/webapp/id/{appId}",
+			"query-parameters": "",
+			"request-headers": {
+				"Authorization": "Bearer"
+			},
+			"request-payload": "",
+			"response-headers": "",
+			"response-payload": ""
+		},
+		"asserts": {
+			"header-asserts": {
+				"status-code": "200"
+			},
+			"body-asserts": []
+		}
+	}]
+}

@@ -1,0 +1,52 @@
+{
+    "testCase":[
+        {
+            "init":{
+                "scope":"appm:create"
+            },
+            "data":{
+                "method":"POST",
+                "url":"api/appm/publisher/v1.1/apps/mobileapp",
+                "query-parameters":"",
+                "request-headers":{
+                    "Authorization":"Bearer"
+                },
+                "request-payload":"{\"appmeta\" :{\"path\" : \"CP2DLRtDIUXpS4y.apk\", \"package\" : \"home.jmstudios.calc\", \"version\" : \"1.0\"},\"provider\":\"admin\",\"name\":\"MobileAppNewVersionApp\",\"platform\":\"android\",\"version\":\"1.0d.0\", \"banner\":\"jfNhJ9FJNBgIyN6.jpg\",\"thumbnailUrl\":\"jfNhJ9FJNBgIyN6.jpg\",\"screenshots\":[\"jfNhJ9FJNBgIyN6.jpg\"],\"displayName\":\"MobileAppNewVersionApp name\",\"description\":\"MobileAppTestCase desc\",\"category\":\"Business\",\"marketType\":\"enterprise\",\"icon\":\"jfNhJ9FJNBgIyN6.jpg\"}",
+                "response-headers":"",
+                "response-payload":""
+            },
+            "asserts":{
+                "header-asserts":{
+                    "status-code":"200"
+                },
+                "body-asserts":[]
+            },
+            "preserve-list":[
+                {
+                    "attribute-name":"appId",
+                    "response-location":"AppId"
+                }
+            ]
+        }, {
+            "init": {
+                "scope": "appm:create"
+            },
+            "data": {
+                "method": "POST",
+                "url": "api/appm/publisher/v1.1/apps/mobileapp/id/{appId}/create-new-version",
+                "query-parameters": "",
+                "request-headers": {
+                    "Authorization": "Bearer"
+                },
+                "request-payload": "{\r\n  \"version\": \"1.1\",\r\n  \"isDefaultVersion\": true,\r\n  \"displayName\": \"MobileAppNewVersionApp-V-1.1\"\r\n}",
+                "response-headers": "",
+                "response-payload": ""
+            },
+            "asserts": {
+                "header-asserts": {
+                    "status-code": "200"
+                },
+                "body-asserts": []
+            }
+        }]
+}

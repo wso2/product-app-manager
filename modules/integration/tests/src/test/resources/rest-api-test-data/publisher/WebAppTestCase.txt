@@ -18,7 +18,7 @@
 			"header-asserts": {
 				"status-code": "200"
 			},
-			"body-asserts": ""
+			"body-asserts": []
 		},
 		"preserve-list": [{
 			"attribute-name": "appId",
@@ -43,7 +43,7 @@
 			"header-asserts": {
 				"status-code": "200"
 			},
-			"body-asserts": ""
+			"body-asserts": []
 		}
 	}, {
 		"init": {
@@ -64,9 +64,30 @@
 			"header-asserts": {
 				"status-code": "200"
 			},
-			"body-asserts": ""
+			"body-asserts": []
 		}
 	}, {
+        "init": {
+            "scope": "appm:read"
+        },
+        "data": {
+            "method": "GET",
+            "url": "api/appm/publisher/v1.1/apps/webapp/id/{appId}",
+            "query-parameters": "",
+            "request-headers": {
+                "Authorization": "Bearer"
+            },
+            "request-payload": "",
+            "response-headers": "",
+            "response-payload": ""
+        },
+        "asserts": {
+            "header-asserts": {
+                "status-code": "200"
+            },
+            "body-asserts": []
+        }
+    }, {
 		"init": {
 			"scope": "appm:create"
 		},
@@ -85,7 +106,7 @@
 			"header-asserts": {
 				"status-code": "200"
 			},
-			"body-asserts": ""
+			"body-asserts": []
 		}
 	}]
 }

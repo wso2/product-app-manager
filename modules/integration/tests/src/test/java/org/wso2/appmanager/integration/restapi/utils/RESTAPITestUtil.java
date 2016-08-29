@@ -19,9 +19,12 @@
 package org.wso2.appmanager.integration.restapi.utils;
 
 
+import com.jayway.jsonpath.JsonPath;
+import com.sun.jersey.api.client.ClientResponse;
 import exception.AppManagerIntegrationTestException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.cxf.jaxrs.impl.ResponseImpl;
@@ -70,6 +73,8 @@ public class RESTAPITestUtil {
 
         //this is the boolean which indicates the success or failure of the current test
         boolean isTestSuccess = false;
+        String currentRestApiLoggingString = "";
+        String outputText = "";
 
         try {
 
@@ -111,6 +116,9 @@ public class RESTAPITestUtil {
                 //take the resource URL from the data file (initial URL, might contain space for parameters)
                 String parametrizedResourceURL = keyMangerURL +
                         dataConfigurationObject.get(RESTAPITestConstants.URL_ELEMENT).toString();
+                currentRestApiLoggingString += "REST API URL - \'" + parametrizedResourceURL +
+                        "\' , Method - \'" + method + "\'";
+                log.info("Test starting :- " + currentRestApiLoggingString);
                 //replace the parameters with the actual vales if there are any, and construct the actual URL
                 String actualResourceURL = replaceParameterPatternWithValues
                                                 (parametrizedResourceURL, RESTAPITestConstants.URL_REGEX);
@@ -174,10 +182,19 @@ public class RESTAPITestUtil {
 
                 String responsePayload = dataConfigurationObject.get(RESTAPITestConstants.RESPONSE_PAYLOAD).toString();
                 String cookie = null;
+                int actualStatusCode = 0;
 
-                Response responseOfHttpCall = dataDrivenTestUtils.sendRequestToRESTAPI
+                Object responseObjOfHttpCall = dataDrivenTestUtils.sendRequestToRESTAPI
                         (method, actualResourceURL, queryParameters, requestHeaders, actualRequestPayload, cookie);
-                String outputText = ((ResponseImpl) responseOfHttpCall).readEntity(String.class);
+                if (responseObjOfHttpCall instanceof Response) {
+                    Response responseOfHttpCall = (Response)responseObjOfHttpCall;
+                    outputText = ((ResponseImpl) responseOfHttpCall).readEntity(String.class);
+                    actualStatusCode = responseOfHttpCall.getStatus();
+                } else if (responseObjOfHttpCall instanceof ClientResponse) {
+                    ClientResponse responseOfHttpCall = (ClientResponse)responseObjOfHttpCall;
+                    outputText = responseOfHttpCall.getEntity(String.class);
+                    actualStatusCode = responseOfHttpCall.getStatus();
+                }
 
                 //put the values (to the map) that should be preserved from the response of the current request,
                 if (!configObject.isNull(RESTAPITestConstants.PRESERVE_LIST)) {
@@ -188,12 +205,15 @@ public class RESTAPITestUtil {
                                     getString(RESTAPITestConstants.PRESERVED_ATTRIBUTE_NAME);
                             String parameterValue = new JSONObject(outputText).get(preserveListArray.getJSONObject(j).
                                     getString(RESTAPITestConstants.RESPONSE_LOCATION)).toString();
+                            if (preserveListArray.getJSONObject(j).has(RESTAPITestConstants.RESPONSE_SPLIT_ON)) {
+                                parameterValue = parameterValue.split(preserveListArray.getJSONObject(j).
+                                        getString(RESTAPITestConstants.RESPONSE_SPLIT_ON))[1];
+                            }
                             preservedAttributes.put(parameterName, parameterValue);
                         }
                     }
                 }
 
-                int actualStatusCode = responseOfHttpCall.getStatus();
                 int expectedStatusCode = configObject.getJSONObject(RESTAPITestConstants.ASSERT_SECTION).
                         getJSONObject(RESTAPITestConstants.HEADER_ASSERTS).getInt(RESTAPITestConstants.STATUS_CODE);
 
@@ -204,20 +224,61 @@ public class RESTAPITestUtil {
                     isTestSuccess = false;
                 }
 
+                //checking for body-asserts
+                JSONArray bodyAsserts = configObject.getJSONObject(RESTAPITestConstants.ASSERT_SECTION).
+                        getJSONArray(RESTAPITestConstants.BODY_ASSERTS);
+
+                if (bodyAsserts != null && bodyAsserts.length() > 0) {
+                    if (!StringUtils.isBlank(outputText)) {
+                        for (int j = 0; j < bodyAsserts.length(); j++) {
+                            JSONObject bodyAssert = (JSONObject) bodyAsserts.get(j);
+                            String jsonPath = bodyAssert.getString(RESTAPITestConstants.BODY_ASSERTS_JSONPATH);
+                            Object actualValue = JsonPath.read(outputText, jsonPath);
+                            if (bodyAssert.has(RESTAPITestConstants.BODY_ASSERTS_VALUE)) {
+                                Object expectedValue = bodyAssert.get(RESTAPITestConstants.BODY_ASSERTS_VALUE);
+                                if (!expectedValue.equals(actualValue)) {
+                                    log.error("Json path actual value mismatches with expected value. jsonPath: \""
+                                            + jsonPath + "\", expected: <" + expectedValue.getClass().getSimpleName()
+                                            + ">" + expectedValue + ", actual value: <" + actualValue.getClass()
+                                            .getSimpleName() + ">" + actualValue + ", response payload: " + outputText);
+                                    isTestSuccess = false;
+                                    break;
+                                }
+                            } else if (bodyAssert.has(RESTAPITestConstants.BODY_ASSERTS_REGEX)) {
+                                String regex = bodyAssert.getString(RESTAPITestConstants.BODY_ASSERTS_REGEX);
+                                if (!Pattern.matches(regex, actualValue.toString())) {
+                                    log.error("Json path actual value mismatches with provided regex. jsonPath: \""
+                                            + jsonPath + "\", regex: \"" + regex + "\", actual value: \"" + actualValue
+                                            + "\", response payload: " + outputText);
+                                    isTestSuccess = false;
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        log.error("A body-assert is defined but no response payload found.");
+                        isTestSuccess = false;
+                    }
+                }
+
                 //if the current test fails no need to run the rest of the scenario, so break and return false
                 if (!isTestSuccess) {
+                    log.info("Test failed :- " + currentRestApiLoggingString);
                     break;
                 }
+                log.info("Test passed :- " + currentRestApiLoggingString);
+                currentRestApiLoggingString = "";
             }
 
         } catch (AppManagerIntegrationTestException integrationTestException) {
             //if an error occurs while sending request to the REST API, the test fails
-            log.error("Error occurred in sending request to the REST API.", integrationTestException);
+            log.error("Error occurred in sending request to the REST API. " + currentRestApiLoggingString
+                    , integrationTestException);
             isTestSuccess = false;
 
         } catch (JSONException e) {
             //if an error occurs while parsing the data in JSON file, the test fails
-            log.error("Error occurred in parsing the data in JSON file.", e);
+            log.error("Error occurred in parsing the data in JSON file. JSON :- " + outputText, e);
             isTestSuccess = false;
         }
         return isTestSuccess;
@@ -280,6 +341,9 @@ public class RESTAPITestUtil {
                 String template = Character.toString(regex.charAt(1)) +
                         parameterName + Character.toString(regex.charAt(regex.length() - 1));
                 actualTextWithValues = parametrizedText.replace(template, preservedAttributes.get(parameterName));
+                //If the parametrizedText contains more than one parameter parametrizedText should be update with
+                //the already replaced test.
+                parametrizedText = actualTextWithValues;
             }
         }
         //if patterns are found, then this returns the text with the values fetched from the preserved attribute list
