@@ -100,6 +100,12 @@
                                 <!-- Engaging a custom password grant type handler in identity.xml file. -->
                                 <replace file="../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/identity/identity.xml" token="&lt;GrantTypeHandlerImplClass&gt;org.wso2.carbon.identity.oauth2.token.handlers.grant.PasswordGrantHandler&lt;/GrantTypeHandlerImplClass&gt;" value="&lt;GrantTypeHandlerImplClass&gt;org.wso2.carbon.appmgt.oauth.handlers.PasswordGrantHandler&lt;/GrantTypeHandlerImplClass&gt;" />
 
+                                <!-- Turning off SAML response signature validation in SAML2 authenticator -->
+                                <replace file="../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/security/authenticators.xml" token="&lt;!-- &lt;Parameter name=&quot;ResponseSignatureValidationEnabled&quot;&gt;false&lt;/Parameter&gt; --&gt;" value="&lt;Parameter name=&quot;ResponseSignatureValidationEnabled&quot;&gt;false&lt;/Parameter&gt;" />
+
+                                <!-- Turning off SAML assertion signature validation in SAML2 authenticator -->
+                                <replace file="../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/security/authenticators.xml" token="&lt;!-- &lt;Parameter name=&quot;LoginAttributeName&quot;&gt;&lt;/Parameter&gt; --&gt;" value="&lt;Parameter name=&quot;AssertionSignatureValidationEnabled&quot;&gt;false&lt;/Parameter&gt;" />
+
                                 <property name="tempdir" value="target/docs-temp"/>
                                 <mkdir dir="${tempdir}"/>
                                 <unzip dest="${tempdir}">

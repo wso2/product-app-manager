@@ -47,6 +47,7 @@
 		        <exclude>**/email/email-admin-config.xml</exclude>
 		        <exclude>**/user-mgt.xml</exclude>
                 <exclude>**/identity.xml</exclude>
+                <exclude>**/repository/conf/security/authenticators.xml</exclude>
                 <exclude>**/embedded-ldap.xml</exclude>
 		        <exclude>**/master-datasources.xml</exclude>
                 <exclude>**/repository/deployment/server/jaggeryapps/publisher/**</exclude>
@@ -700,6 +701,11 @@
             <source>src/main/conf/carbon.xml</source>
             <outputDirectory>wso2appm-${pom.version}/repository/conf/</outputDirectory>
             <filtered>true</filtered>
+        </file>
+        <file>
+            <source>../../p2-profile/product/target/wso2carbon-core-${carbon.platform.version}/repository/conf/security/authenticators.xml</source>
+            <outputDirectory>wso2appm-${pom.version}/repository/conf/security/</outputDirectory>
+            <fileMode>755</fileMode>
         </file>
         <file>
             <source>src/main/conf/cloud-services-desc.xml</source>

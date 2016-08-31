@@ -753,10 +753,6 @@
                                     <version>${es.feature.version}</version>
                                 </feature>
 				                <feature>
-                                    <id>org.wso2.store.modules.sso.feature.group</id>
-                                    <version>${es.feature.version}</version>
-                                </feature>
-				                <feature>
                                     <id>org.wso2.store.modules.claims.feature.group</id>
                                     <version>${es.feature.version}</version>
                                 </feature>
