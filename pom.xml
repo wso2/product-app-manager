@@ -473,6 +473,7 @@
         <carbon.commons.version>4.5.4</carbon.commons.version>
         <carbon.analytics-common.version>5.1.0</carbon.analytics-common.version>
         <carbon.registry.version>4.5.5</carbon.registry.version>
+        <carbon.registry.stub.version>4.5.0</carbon.registry.stub.version>
         <carbon.governance.version>4.6.2</carbon.governance.version>
         <carbon.store.version>1.4.3-SNAPSHOT</carbon.store.version>
         <carbon.webapp.mgt.stub>4.2.0</carbon.webapp.mgt.stub>

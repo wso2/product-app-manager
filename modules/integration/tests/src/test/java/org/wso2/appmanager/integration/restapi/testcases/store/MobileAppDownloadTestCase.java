@@ -20,32 +20,24 @@ package org.wso2.appmanager.integration.restapi.testcases.store;
 
 
 import org.testng.annotations.*;
-import org.wso2.appmanager.integration.common.clients.ResourceAdminServiceClient;
 import org.wso2.appmanager.integration.restapi.RESTAPITestConstants;
 import org.wso2.appmanager.integration.restapi.utils.RESTAPITestUtil;
 import org.wso2.appmanager.integration.utils.restapi.base.AppMIntegrationBaseTest;
-import org.wso2.appmanager.integration.utils.restapi.base.AppMIntegrationConstants;
-import org.wso2.carbon.appmgt.impl.AppMConstants;
-import org.wso2.carbon.appmgt.impl.service.ServiceReferenceHolder;
 import org.wso2.carbon.automation.engine.annotations.ExecutionEnvironment;
 import org.wso2.carbon.automation.engine.annotations.SetEnvironment;
-import org.wso2.carbon.automation.engine.context.AutomationContext;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.integration.common.utils.mgt.ServerConfigurationManager;
-import org.wso2.carbon.registry.api.Registry;
-import org.wso2.carbon.registry.api.Resource;
 
 import java.io.File;
 
 import static org.testng.Assert.assertTrue;
 
 @SetEnvironment(executionEnvironments = {ExecutionEnvironment.STANDALONE})
-public class WebAppSubscriptionTestCase extends AppMIntegrationBaseTest {
+public class MobileAppDownloadTestCase extends AppMIntegrationBaseTest {
     ServerConfigurationManager serverConfigurationManager;
-    private ResourceAdminServiceClient resourceAdminServiceClient;
 
     @Factory(dataProvider = "userModeDataProvider")
-    public WebAppSubscriptionTestCase(TestUserMode userMode) {
+    public MobileAppDownloadTestCase(TestUserMode userMode) {
         this.userMode = userMode;
     }
 
@@ -59,27 +51,16 @@ public class WebAppSubscriptionTestCase extends AppMIntegrationBaseTest {
     @BeforeClass(alwaysRun = true)
     public void setEnvironment() throws Exception {
         super.init(userMode);
-
-        String tenantConfRegistryPath = "/_system/governance" + AppMConstants.APPMGT_APPLICATION_DATA_LOCATION + "/" +
-                AppMConstants.TENANT_CONF_FILENAME;
-        AutomationContext automationContext = new AutomationContext(AppMIntegrationConstants.APPM_PRODUCT_GROUP_NAME ,
-                userMode);
-        resourceAdminServiceClient =
-                new ResourceAdminServiceClient(automationContext.getContextUrls().getBackEndUrl(), "admin", "admin");
-        String tenantConfigContent = resourceAdminServiceClient.getTextContent(tenantConfRegistryPath);
-        tenantConfigContent = tenantConfigContent.replace("<EnableSelfSubscription>false</EnableSelfSubscription>" ,
-                "<EnableSelfSubscription>true</EnableSelfSubscription>");
-        resourceAdminServiceClient.updateTextContent(tenantConfRegistryPath, tenantConfigContent);
     }
 
-    @Test(groups = {"wso2.appm"}, description = "REST API Implementation test : WebApp subscription handling test case")
-    public void testWebAppSubscription() {
+    @Test(groups = {"wso2.appm"}, description = "REST API Implementation test : MobileApp handling test case")
+    public void testMobileAppDownload() {
 
         String gatewayURL = getGatewayURLNhttp();
         String keyManagerURL = getKeyManagerURLHttp();
 
         //file name of the JSON data file related to : Tier handling test case
-        String dataFileName = "store" + File.separator + "WebAppSubscriptionTestCase.txt";
+        String dataFileName = "store" + File.separator + "MobileAppDownloadTestCase.txt";
         String dataFilePath = (new File(System.getProperty("user.dir"))).getParent() +
                 RESTAPITestConstants.PATH_SUBSTRING + dataFileName;
         boolean testSuccessStatus = new RESTAPITestUtil().testRestAPI(dataFilePath, gatewayURL, keyManagerURL);
