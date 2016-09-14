@@ -26,26 +26,23 @@ import org.wso2.appmanager.integration.restapi.utils.RESTAPITestUtil;
 import org.wso2.appmanager.integration.utils.restapi.base.AppMIntegrationBaseTest;
 import org.wso2.appmanager.integration.utils.restapi.base.AppMIntegrationConstants;
 import org.wso2.carbon.appmgt.impl.AppMConstants;
-import org.wso2.carbon.appmgt.impl.service.ServiceReferenceHolder;
 import org.wso2.carbon.automation.engine.annotations.ExecutionEnvironment;
 import org.wso2.carbon.automation.engine.annotations.SetEnvironment;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.integration.common.utils.mgt.ServerConfigurationManager;
-import org.wso2.carbon.registry.api.Registry;
-import org.wso2.carbon.registry.api.Resource;
 
 import java.io.File;
 
 import static org.testng.Assert.assertTrue;
 
 @SetEnvironment(executionEnvironments = {ExecutionEnvironment.STANDALONE})
-public class WebAppSubscriptionTestCase extends AppMIntegrationBaseTest {
+public class SiteSubscriptionTestCase extends AppMIntegrationBaseTest {
     ServerConfigurationManager serverConfigurationManager;
     private ResourceAdminServiceClient resourceAdminServiceClient;
 
     @Factory(dataProvider = "userModeDataProvider")
-    public WebAppSubscriptionTestCase(TestUserMode userMode) {
+    public SiteSubscriptionTestCase(TestUserMode userMode) {
         this.userMode = userMode;
     }
 
@@ -72,14 +69,14 @@ public class WebAppSubscriptionTestCase extends AppMIntegrationBaseTest {
         resourceAdminServiceClient.updateTextContent(tenantConfRegistryPath, tenantConfigContent);
     }
 
-    @Test(groups = {"wso2.appm"}, description = "REST API Implementation test : WebApp subscription handling test case")
-    public void testWebAppSubscription() {
+    @Test(groups = {"wso2.appm"}, description = "REST API Implementation test : Site subscription handling test case")
+    public void testSiteSubscription() {
 
         String gatewayURL = getGatewayURLNhttp();
         String keyManagerURL = getKeyManagerURLHttp();
 
         //file name of the JSON data file related to : Tier handling test case
-        String dataFileName = "store" + File.separator + "WebAppSubscriptionTestCase.txt";
+        String dataFileName = "store" + File.separator + "SiteSubscriptionTestCase.txt";
         String dataFilePath = (new File(System.getProperty("user.dir"))).getParent() +
                 RESTAPITestConstants.PATH_SUBSTRING + dataFileName;
         boolean testSuccessStatus = new RESTAPITestUtil().testRestAPI(dataFilePath, gatewayURL, keyManagerURL);

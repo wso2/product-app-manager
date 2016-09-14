@@ -276,6 +276,22 @@
             <version>0.8.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.appmgt</groupId>
+            <artifactId>org.wso2.carbon.appmgt.impl</artifactId>
+            <version>${carbon.appmgt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.registry</groupId>
+            <artifactId>org.wso2.carbon.registry.info.stub</artifactId>
+            <version>${carbon.registry.stub.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.registry</groupId>
+            <artifactId>org.wso2.carbon.registry.resource.stub</artifactId>
+            <version>${carbon.registry.stub.version}</version>
+        </dependency>
+
     </dependencies>
 
  </project>

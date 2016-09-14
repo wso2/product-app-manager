@@ -108,17 +108,22 @@
             <class name="org.wso2.appmanager.integration.restapi.testcases.store.WebAppFavouriteAppTestCase"/>
             <class name="org.wso2.appmanager.integration.restapi.testcases.store.WebAppTagsTestCase"/>
             <class name="org.wso2.appmanager.integration.restapi.testcases.store.WebAppStaticContentsTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.store.WebAppSubscriptionTestCase"/>
 
             <class name="org.wso2.appmanager.integration.restapi.testcases.store.SiteTestCase"/>
             <class name="org.wso2.appmanager.integration.restapi.testcases.store.SiteRatingTestCase"/>
             <class name="org.wso2.appmanager.integration.restapi.testcases.store.SiteDocsTestCase"/>
             <class name="org.wso2.appmanager.integration.restapi.testcases.store.SiteFavouriteAppTestCase"/>
             <class name="org.wso2.appmanager.integration.restapi.testcases.store.SiteTagsTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.store.SiteSubscriptionTestCase"/>
 
             <class name="org.wso2.appmanager.integration.restapi.testcases.store.MobileAppTestCase"/>
             <class name="org.wso2.appmanager.integration.restapi.testcases.store.MobileAppRatingTestCase"/>
             <class name="org.wso2.appmanager.integration.restapi.testcases.store.MobileAppTagsTestCase"/>
             <class name="org.wso2.appmanager.integration.restapi.testcases.store.MobileAppStaticContentsTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.store.MobileAppSubscriptionTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.store.MobileAppOneTimeLinkTestCase"/>
+            <class name="org.wso2.appmanager.integration.restapi.testcases.store.MobileAppDownloadTestCase"/>
 
         </classes>
 
