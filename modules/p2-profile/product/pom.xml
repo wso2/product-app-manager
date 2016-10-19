@@ -462,6 +462,9 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.identity:org.wso2.carbon.identity.application.mgt.feature:${carbon-identity-framework.version}
                                 </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon.identity:org.wso2.carbon.identity.auth.server.feature:${identity.auth.server.version}
+                                </featureArtifactDef>
                                 <!-- ##### Identity Features END  ####-->
 
                             </featureArtifacts>
@@ -946,6 +949,10 @@
                                     <id>org.wso2.carbon.identity.authenticator.iwa.feature.group</id>
                                     <version>${identity-carbon-auth-iwa.version}</version>
                                 </feature>
+                                <feature>
+    				    <id>org.wso2.carbon.identity.auth.server.feature.group</id>
+    				    <version>${identity.auth.server.version}</version>
+				</feature>
                                 <!--End of Identity Features-->
 
                                 <feature>
