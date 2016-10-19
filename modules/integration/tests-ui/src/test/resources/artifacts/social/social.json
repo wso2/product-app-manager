@@ -1,0 +1,33 @@
+{
+    "server": {
+        "https": "%https.host%",
+        "http": "%http.host%"
+    },
+    "ssoConfiguration": {
+        "enabled": true,
+        "issuer": "social",
+        "identityProviderURL": "%https.host%/samlsso",
+        "keyStorePassword": "",
+        "identityAlias": "",
+        "responseSigningEnabled": "true",
+        "storeAcs" : "%https.host%/store/acs.jag",
+        "keyStoreName": "",
+        "validateAssertionValidityPeriod": true,
+        "validateAudienceRestriction": true,
+        "assertionSigningEnabled": true
+    },
+    "userSpace": {
+        "store": "/_system/governance/users/store"
+    },
+    "permissions": {
+        "login": {
+            "/permission/admin/login": ["ui.execute"]
+        }
+    },
+    "dataPublisherConnectionInfo":{
+        "port":"7611",
+        "host":"localhost",
+        "username":"admin",
+        "password":"admin"
+    }
+}

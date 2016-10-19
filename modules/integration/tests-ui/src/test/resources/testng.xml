@@ -51,6 +51,7 @@
             <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.delete.DeleteWebAppInDeprecatedStatusTestCase" />
             <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.delete.DeleteWebAppInRetiredStateTestCase" />
             <class name="org.wso2.appmanager.ui.integration.test.cases.publisher.webapp.delete.DeleteWebAppInUnpublishedStateTestCase" />-->
+            <!--<class name="org.wso2.appmanager.ui.integration.test.config.TestSecureVaultForJsonConfigFiles" />-->
 
         </classes>
 

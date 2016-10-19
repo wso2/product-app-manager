@@ -1,0 +1,49 @@
+{
+    "assetsUrlPrefix": "/assets",
+    "extensionsUrlPrefix": "/extensions",
+    "subscriptionsUrlPrefix": "/subscriptions",
+    "tenantConfigs": "/_system/config/store/configs/store.json",
+    "socialCommentsEnable": true,
+    "cached": false,
+    "server": {
+        "https": "%https.host%/admin",
+        "http": "%http.host%"
+    },
+
+    "lifeCycleBehaviour":{
+        "visibleIn":["Published"]
+    },
+
+    "ssoConfiguration": {
+        "enabled": true,
+        "issuer": "store",
+        "identityProviderURL": "%https.host%/samlsso",
+        "keyStorePassword": "",
+        "identityAlias": "",
+        "responseSigningEnabled": "true",
+        "storeAcs" : "%https.host%/store/acs",
+        "keyStoreName": "",
+        "validateAssertionValidityPeriod": true,
+        "validateAudienceRestriction": true,
+        "assertionSigningEnabled": true
+    },
+
+    "pagination": {
+        "PAGE_SIZE" : 18
+    },
+
+    "recentAppCount": {
+        "topAssetPage" : 15,
+        "assetPage": 5,
+        "assetsPage": 5,
+        "myAppsPage": 2,
+        "fromProvider": 5
+    },
+    "permissions": {
+        "webapp_subscribe": "/permission/admin/manage/webapp/subscribe",
+        "mobileapp_install": "/permission/admin/manage/mobileapp/subscribe"
+    },
+    "pages": {
+        "favouritePage": "/assets/favourite"
+    }
+}
