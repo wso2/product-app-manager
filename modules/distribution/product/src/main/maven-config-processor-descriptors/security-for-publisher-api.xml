@@ -1,0 +1,14 @@
+<processor>
+
+    <add>
+        <inside>/c:Server</inside>
+        <value>
+            <![CDATA[
+                <ResourceAccessControl>
+                    <Resource context="/api/appm/publisher/*" secured="true" http-method="all"/>
+                </ResourceAccessControl>
+            ]]>
+        </value>
+    </add>
+</processor>
+

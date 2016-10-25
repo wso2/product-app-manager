@@ -95,7 +95,7 @@
                         <configuration>
                             <tasks>
                                 <!-- Change identity DB defined in identity.xml to use WSO2AM_DB -->
-				                        <replace file="../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/identity/identity.xml" token="&lt;Name&gt;jdbc/WSO2CarbonDB&lt;/Name&gt;" value="&lt;Name&gt;jdbc/WSO2AM_DB&lt;/Name&gt;" />
+                                <replace file="../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/identity/identity.xml" token="&lt;Name&gt;jdbc/WSO2CarbonDB&lt;/Name&gt;" value="&lt;Name&gt;jdbc/WSO2AM_DB&lt;/Name&gt;" />
 
                                 <!-- Engaging a custom password grant type handler in identity.xml file. -->
                                 <replace file="../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/identity/identity.xml" token="&lt;GrantTypeHandlerImplClass&gt;org.wso2.carbon.identity.oauth2.token.handlers.grant.PasswordGrantHandler&lt;/GrantTypeHandlerImplClass&gt;" value="&lt;GrantTypeHandlerImplClass&gt;org.wso2.carbon.appmgt.oauth.handlers.PasswordGrantHandler&lt;/GrantTypeHandlerImplClass&gt;" />
@@ -295,10 +295,21 @@
                                 <transformation>
                                     <input>${basedir}/../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/tomcat/carbon/WEB-INF/web.xml</input>
                                     <output>../../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/tomcat/carbon/WEB-INF/web.xml</output>
-                                    <config>src/main/custom_security_header_conf.xml</config>
+                                    <config>src/main/maven-config-processor-descriptors/custom-security-header.xml</config>
+                                </transformation>
+                                <transformation>
+                                    <input>${basedir}/../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/tomcat/catalina-server.xml</input>
+                                    <output>../../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/tomcat/catalina-server.xml</output>
+                                    <config>src/main/maven-config-processor-descriptors/catalina-rest-auth-value.xml</config>
+                                </transformation>
+                                <transformation>
+                                    <input>${basedir}/../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/identity/identity.xml</input>
+                                    <output>../../../p2-profile/product/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/identity/identity.xml</output>
+                                    <config>src/main/maven-config-processor-descriptors/security-for-publisher-api.xml</config>
                                 </transformation>
                             </transformations>
                             <namespaceContexts>
+                                <c>http://wso2.org/projects/carbon/carbon.xml</c>
                             </namespaceContexts>
                         </configuration>
                     </execution>

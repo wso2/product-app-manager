@@ -1,0 +1,12 @@
+<processor>
+
+    <add>
+        <after>/Server/Service/Engine/Host/Valve[@className='org.wso2.carbon.tomcat.ext.valves.CompositeValve']</after>
+        <value>
+            <![CDATA[
+                <Valve className="org.wso2.carbon.identity.auth.valve.AuthenticationValve"/>
+            ]]>
+        </value>
+    </add>
+</processor>
+
