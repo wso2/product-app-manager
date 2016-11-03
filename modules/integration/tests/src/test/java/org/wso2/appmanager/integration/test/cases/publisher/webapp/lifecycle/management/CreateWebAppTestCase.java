@@ -153,8 +153,8 @@ public class CreateWebAppTestCase {
 
     @DataProvider
     public Object[][] validUserModeDataProvider() throws Exception {
-        User appCreator = appMServer.getSuperTenant().getTenantUser("AppCreator");
-        User adminUser = appMServer.getSuperTenant().getTenantUser("AdminUser");
+        User appCreator = appMServer.getSuperTenant().getTenantUser(AppmTestConstants.TestUsers.APP_CREATOR);
+        User adminUser = appMServer.getSuperTenant().getTenantUser(AppmTestConstants.TestUsers.ADMIN);
         return new Object[][]{
                 new Object[]{appCreator, "1"},
                 new Object[]{adminUser, "2"}
@@ -163,7 +163,7 @@ public class CreateWebAppTestCase {
 
     @DataProvider
     public Object[][] inValidUserModeDataProvider() throws Exception {
-        User appPublisher = appMServer.getSuperTenant().getTenantUser("AppPublisher");
+        User appPublisher = appMServer.getSuperTenant().getTenantUser(AppmTestConstants.TestUsers.APP_PUBLISHER);
         return new Object[][]{
                 new Object[]{appPublisher, "3"}
         };

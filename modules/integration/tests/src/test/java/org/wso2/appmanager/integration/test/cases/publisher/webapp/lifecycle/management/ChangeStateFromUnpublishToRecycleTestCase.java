@@ -138,7 +138,7 @@ public class ChangeStateFromUnpublishToRecycleTestCase {
     @DataProvider
     public Object[][] validUserModeDataProvider() throws Exception {
         User adminUser = appMServer.getSuperTenant().getTenantAdmin();
-        User appPublisher = appMServer.getSuperTenant().getTenantUser("AppPublisher");
+        User appPublisher = appMServer.getSuperTenant().getTenantUser(AppmTestConstants.TestUsers.APP_PUBLISHER);
         return new Object[][]{
                 new Object[]{adminUser.getUserName(), adminUser.getPassword(), app1Uuid},
                 new Object[]{appPublisher.getUserName(), appPublisher.getPassword(), app2Uuid}
@@ -147,7 +147,7 @@ public class ChangeStateFromUnpublishToRecycleTestCase {
 
     @DataProvider
     public Object[][] inValidUserModeDataProvider() throws Exception {
-        User appCreator = appMServer.getSuperTenant().getTenantUser("AppCreator");
+        User appCreator = appMServer.getSuperTenant().getTenantUser(AppmTestConstants.TestUsers.APP_CREATOR);
         return new Object[][]{
                 new Object[]{appCreator.getUserName(), appCreator.getPassword(), app3Uuid}
         };
