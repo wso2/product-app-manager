@@ -35,7 +35,9 @@ import java.util.Map;
 
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
-
+/**
+ * Test case which verifies the ability of appCreator logging in to publisher.
+ */
 public class PublisherLoginTestCase {
 
     private static final String TEST_DESCRIPTION = "Verify login to App Manager Publisher";
@@ -49,7 +51,7 @@ public class PublisherLoginTestCase {
                                                              TestUserMode.SUPER_TENANT_ADMIN);
         backEndUrl = appMServer.getContextUrls().getWebAppURLHttps();
         appmPublisherRestClient = new APPMPublisherRestClient(backEndUrl);
-        user = appMServer.getSuperTenant().getTenantUser("AppCreator");
+        user = appMServer.getSuperTenant().getTenantUser(AppmTestConstants.TestUsers.APP_CREATOR);
     }
 
     @Test(description = TEST_DESCRIPTION)
@@ -65,5 +67,4 @@ public class PublisherLoginTestCase {
     public void closeDown() throws Exception {
         appmPublisherRestClient.logout();
     }
-
 }

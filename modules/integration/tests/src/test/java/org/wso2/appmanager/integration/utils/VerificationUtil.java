@@ -18,7 +18,6 @@
 
 package org.wso2.appmanager.integration.utils;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,8 +33,7 @@ public class VerificationUtil {
     public static void checkErrors(HttpResponse response) throws Exception {
         JSONObject jsonObject = new JSONObject(response.getData());
         if ((Boolean) jsonObject.get(AppmTestConstants.ERROR)) {
-            throw new Exception("Operation not successful: " + jsonObject.get("message")
-                    .toString());
+            throw new Exception("Operation not successful: " + jsonObject.get("message").toString());
         }
     }
 
@@ -49,8 +47,7 @@ public class VerificationUtil {
         JSONObject jsonObject = new JSONObject(response.getData());
         String status = (String) jsonObject.get(AppmTestConstants.STATUS);
         if (!status.equalsIgnoreCase("success")) {
-            throw new Exception("Operation not successful: " + jsonObject.get("messages")
-                    .toString());
+            throw new Exception("Operation not successful: " + jsonObject.get("messages").toString());
         }
     }
 

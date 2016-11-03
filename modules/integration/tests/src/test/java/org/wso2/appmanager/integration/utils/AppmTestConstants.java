@@ -84,8 +84,6 @@ public class AppmTestConstants {
         public static final String ADD_ROLES = "/publisher/asset/webapp/id/";
         public static final String LOGIN_URL = "/publisher/api/authenticate?action=login";
         public static final String LOGOUT_URL = "/publisher/api/authenticate?action=logout";
-
-
     }
 
     public class StoreRestApis {
@@ -93,7 +91,6 @@ public class AppmTestConstants {
         public static final String LOGOUT_URL = "/store/apis/user/logout";
         public static final String SUBSCRIBE_FOR_APPS = "/store/resources/webapp/v1/subscription/app";
         public static final String UNSUBSCRIBE_FOR_APPS = "/store/resources/webapp/v1/unsubscription/app";
-
         public static final String RATING_FOR_APPS = "/store/apis/rate?id={id}&type={appType}&value={ratingValue}";
     }
 
@@ -107,7 +104,6 @@ public class AppmTestConstants {
         public static final String ID = "{id}";
         public static final String APP_TYPE = "{appType}";
         public static final String RATING_VALUE = "{ratingValue}";
-
     }
 
     public class LifeCycleStatus {
@@ -126,6 +122,7 @@ public class AppmTestConstants {
         public static final String APP_CREATOR = "AppCreator";
         public static final String ADMIN = "AdminUser";
         public static final String APP_PUBLISHER = "AppPublisher";
+        public static final String SUBSCRIBER = "Subscriber";
     }
 
     public class AuditLogActions{

@@ -29,7 +29,9 @@ import org.wso2.carbon.automation.engine.context.beans.User;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
 import static org.testng.Assert.assertTrue;
-
+/**
+ * Test case which verifies the ability of admin retrieving app properties.
+ */
 public class RetrieveAppPropertyTestCase {
     private static final String TEST_DESCRIPTION = "Verify Retrieving Web Apps Properties";
     private APPMPublisherRestClient appmPublisherRestClient;
@@ -41,7 +43,7 @@ public class RetrieveAppPropertyTestCase {
     private String userName;
     private String password;
     private String backEndUrl;
-
+    private String appId;
 
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
@@ -59,8 +61,8 @@ public class RetrieveAppPropertyTestCase {
 
     @Test(description = TEST_DESCRIPTION)
     public void testAppPropertyRetrieval() throws Exception {
-        HttpResponse response = appmPublisherRestClient.webAppCreate(appName, context, appVersion,
-                                                                     trackingCode, userName);
+        HttpResponse response = appmPublisherRestClient.webAppCreate(appName, context, appVersion, trackingCode,
+                                                                     userName);
         JSONObject responseData = new JSONObject(response.getData());
         String uuid = responseData.getString(AppmTestConstants.ID);
         String appType = AppmTestConstants.WEB_APP;
@@ -70,7 +72,7 @@ public class RetrieveAppPropertyTestCase {
         JSONObject jsonObject = new JSONObject(appPropertyResponse.getData());
 
         //Check App Id
-        String appId = (String) jsonObject.get(AppmTestConstants.ID);
+        appId = (String) jsonObject.get(AppmTestConstants.ID);
         assertTrue((appId.equals(uuid) == true), "Unable to Retrieve application id.");
 
         //Check App Type
@@ -90,6 +92,7 @@ public class RetrieveAppPropertyTestCase {
 
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
+        appmPublisherRestClient.deleteApp(appId);
         appmPublisherRestClient.logout();
     }
 }

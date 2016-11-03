@@ -34,6 +34,9 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+/**
+ * Test case which verifies the ability of appCreator creating a new WebApp.
+ */
 public class PublisherCreateWebAppTestCase {
 
     private static final String TEST_DESCRIPTION = "Verify Creating a Web App";
@@ -44,7 +47,7 @@ public class PublisherCreateWebAppTestCase {
     private String trackingCode = "AM_" + appName;
     private String backEndUrl;
     private String appCreatorUserName;
-
+    private String appId;
 
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
@@ -54,7 +57,7 @@ public class PublisherCreateWebAppTestCase {
         appmPublisherRestClient = new APPMPublisherRestClient(backEndUrl);
 
         //User who has only app creating permission.
-        User appCreator = appMServer.getSuperTenant().getTenantUser("AppCreator");
+        User appCreator = appMServer.getSuperTenant().getTenantUser(AppmTestConstants.TestUsers.APP_CREATOR);
         appCreatorUserName = appCreator.getUserName();
         appmPublisherRestClient.login(appCreatorUserName, appCreator.getPassword());
     }
@@ -70,11 +73,13 @@ public class PublisherCreateWebAppTestCase {
         JSONObject appCreateResponseData = new JSONObject(appCreateResponse.getData());
         assertEquals(appCreateResponseData.getString(AppmTestConstants.MESSAGE), "asset added",
                      "Asset has not added successfully");
-        assertNotNull(appCreateResponseData.getString(AppmTestConstants.ID), "app id is null");
+        appId = appCreateResponseData.getString(AppmTestConstants.ID);
+        assertNotNull(appId, "app id is null");
     }
 
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
+        appmPublisherRestClient.deleteApp(appId);
         appmPublisherRestClient.logout();
     }
 }

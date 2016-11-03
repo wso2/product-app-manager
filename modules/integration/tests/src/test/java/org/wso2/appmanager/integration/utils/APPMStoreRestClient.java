@@ -86,9 +86,7 @@ public class APPMStoreRestClient {
     public HttpResponse logout() throws Exception {
         this.requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "text/html");
 
-        HttpResponse response = HttpRequestUtil.doGet(backEndUrl
-                                                      + AppmTestConstants.StoreRestApis
-                                                                      .LOGOUT_URL,
+        HttpResponse response = HttpRequestUtil.doGet(backEndUrl + AppmTestConstants.StoreRestApis.LOGOUT_URL,
                                                       requestHeaders);
         if (response.getResponseCode() == 200) {
             this.requestHeaders.clear();
@@ -97,7 +95,6 @@ public class APPMStoreRestClient {
             System.out.println(response);
             throw new Exception("User Logout failed from Store! " + response.getData());
         }
-
     }
 
     /**
@@ -112,10 +109,8 @@ public class APPMStoreRestClient {
         checkAuthentication();
         requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/x-www-form-urlencoded");
         String payload = subscriptionRequest.generateRequestParameters();
-        HttpResponse response = HttpRequestUtil.doPost(new URL(
-                backEndUrl + AppmTestConstants.StoreRestApis.SUBSCRIBE_FOR_APPS)
-                , payload
-                , requestHeaders);
+        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl + AppmTestConstants.StoreRestApis
+                .SUBSCRIBE_FOR_APPS) , payload , requestHeaders);
         if (response.getResponseCode() == 200) {
             VerificationUtil.checkErrors(response);
             return response;
@@ -143,7 +138,7 @@ public class APPMStoreRestClient {
             VerificationUtil.checkErrors(response);
             return response;
         } else {
-            throw new Exception("Application Unsubscription failed> " + response.getData());
+            throw new Exception("Application Unsubscription failed! " + response.getData());
         }
     }
 
@@ -164,8 +159,7 @@ public class APPMStoreRestClient {
         ratingUrl = ratingUrl.replace(AppmTestConstants.VariableTemplates.ID, id);
         ratingUrl = ratingUrl.replace(AppmTestConstants.VariableTemplates.RATING_VALUE,
                                       String.valueOf(ratingValue));
-        HttpResponse response = HttpRequestUtil.doGet(backEndUrl +
-                                                              ratingUrl, requestHeaders);
+        HttpResponse response = HttpRequestUtil.doGet(backEndUrl + ratingUrl, requestHeaders);
         return response;
     }
 
