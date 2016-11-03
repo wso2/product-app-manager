@@ -137,7 +137,7 @@ public class ChangeStateFromCreateToInReviewTestCase {
     @DataProvider
     public Object[][] validUserModeDataProvider() throws Exception {
         User adminUser = appMServer.getSuperTenant().getTenantAdmin();
-        User appCreator = appMServer.getSuperTenant().getTenantUser("AppCreator");
+        User appCreator = appMServer.getSuperTenant().getTenantUser(AppmTestConstants.TestUsers.APP_CREATOR);
         return new Object[][]{
                 new Object[]{adminUser.getUserName(), adminUser.getPassword(), app1Uuid},
                 new Object[]{appCreator.getUserName(), appCreator.getPassword(), app2Uuid}
@@ -146,7 +146,7 @@ public class ChangeStateFromCreateToInReviewTestCase {
 
     @DataProvider
     public Object[][] inValidUserModeDataProvider() throws Exception {
-        User appPublisher = appMServer.getSuperTenant().getTenantUser("AppPublisher");
+        User appPublisher = appMServer.getSuperTenant().getTenantUser(AppmTestConstants.TestUsers.APP_PUBLISHER);
         return new Object[][]{
                 new Object[]{appPublisher.getUserName(), appPublisher.getPassword(), app3Uuid}
         };

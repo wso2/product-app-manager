@@ -39,7 +39,7 @@ public class HttpUtil {
      */
     public static HttpResponse doPut(URL endpoint, String putBody, Map<String, String> headers) throws IOException {
         HttpURLConnection urlConnection = null;
-        OutputStream out = null;
+        OutputStream outputStream = null;
         Writer writer = null;
         try {
             urlConnection = (HttpURLConnection) endpoint.openConnection();
@@ -48,15 +48,15 @@ public class HttpUtil {
 
             setHeadersToRequest(urlConnection, headers);
 
-            out = urlConnection.getOutputStream();
-            writer = new OutputStreamWriter(out, "UTF-8");
+            outputStream = urlConnection.getOutputStream();
+            writer = new OutputStreamWriter(outputStream, "UTF-8");
             writer.write(putBody);
             writer.close();
             String response = readResponse(urlConnection);
             Map<String, String> responseHeaders = readHeadersFromResponse(urlConnection);
             return new HttpResponse(response, urlConnection.getResponseCode(), responseHeaders);
         } finally {
-            closeAll(urlConnection, writer, out);
+            closeAll(urlConnection, writer, outputStream);
         }
     }
 
@@ -98,7 +98,7 @@ public class HttpUtil {
     public static HttpResponse doPost(URL endpoint, String postBody, Map<String, String> headers) throws IOException {
         HttpURLConnection urlConnection = null;
         Writer writer = null;
-        OutputStream out = null;
+        OutputStream outputStream = null;
         try {
             urlConnection = (HttpURLConnection) endpoint.openConnection();
             urlConnection.setRequestMethod("POST");
@@ -110,8 +110,8 @@ public class HttpUtil {
             // setting headers
             setHeadersToRequest(urlConnection, headers);
 
-            out = urlConnection.getOutputStream();
-            writer = new OutputStreamWriter(out, "UTF-8");
+            outputStream = urlConnection.getOutputStream();
+            writer = new OutputStreamWriter(outputStream, "UTF-8");
             writer.write(postBody);
             writer.close();
 
@@ -119,7 +119,7 @@ public class HttpUtil {
             Map<String, String> responseHeaders = readHeadersFromResponse(urlConnection);
             return new HttpResponse(response, urlConnection.getResponseCode(), responseHeaders);
         } finally {
-            closeAll(urlConnection, writer, out);
+            closeAll(urlConnection, writer, outputStream);
         }
     }
 
@@ -131,83 +131,83 @@ public class HttpUtil {
      * @throws IOException on errors.
      */
     public static HttpResponse doGet(String endpoint, Map<String, String> headers) throws IOException {
-        HttpURLConnection conn = null;
+        HttpURLConnection httpURLConnection = null;
         HttpResponse httpResponse;
         try {
             URL url = new URL(endpoint);
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setDoOutput(true);
-            conn.setReadTimeout(30000);
+            httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setRequestMethod("GET");
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setReadTimeout(30000);
 
             // setting headers
-            setHeadersToRequest(conn, headers);
+            setHeadersToRequest(httpURLConnection, headers);
 
-            String response = readResponse(conn);
-            httpResponse = new HttpResponse(response, conn.getResponseCode());
-            httpResponse.setResponseMessage(conn.getResponseMessage());
+            String response = readResponse(httpURLConnection);
+            httpResponse = new HttpResponse(response, httpURLConnection.getResponseCode());
+            httpResponse.setResponseMessage(httpURLConnection.getResponseMessage());
             return httpResponse;
         } finally {
-            closeAll(conn, null, null);
+            closeAll(httpURLConnection, null, null);
         }
     }
 
-    private static void closeAll(HttpURLConnection urlConnection, Writer writer, OutputStream out) throws IOException {
-        if (urlConnection != null) {
-            urlConnection.disconnect();
+    private static void closeAll(HttpURLConnection httpURLConnection, Writer writer, OutputStream outputStream) throws IOException {
+        if (httpURLConnection != null) {
+            httpURLConnection.disconnect();
         }
-        if (out != null) {
-            out.close();
+        if (outputStream != null) {
+            outputStream.close();
         }
         if (writer != null) {
             writer.close();
         }
     }
 
-    private static void setHeadersToRequest(HttpURLConnection urlConnection, Map<String, String> headers) {
-        if (headers != null && headers.size() > 0) {
-            Iterator<String> itr = headers.keySet().iterator();
-            while (itr.hasNext()) {
-                String key = itr.next();
-                urlConnection.setRequestProperty(key, headers.get(key));
+    private static void setHeadersToRequest(HttpURLConnection urlConnection, Map<String, String> headersMap) {
+        if (headersMap != null && headersMap.size() > 0) {
+            Iterator<String> iterator = headersMap.keySet().iterator();
+            while (iterator.hasNext()) {
+                String key = iterator.next();
+                urlConnection.setRequestProperty(key, headersMap.get(key));
             }
         }
     }
 
-    private static String readResponse(HttpURLConnection urlConnection) throws IOException {
-        InputStream in = null;
-        BufferedReader rd = null;
+    private static String readResponse(HttpURLConnection httpURLConnection) throws IOException {
+        InputStream inputStream = null;
+        BufferedReader bufferedReader = null;
         try {
-            StringBuilder sb = new StringBuilder();
-            int responseCode = urlConnection.getResponseCode();
+            StringBuilder stringBuilder = new StringBuilder();
+            int responseCode = httpURLConnection.getResponseCode();
             if (responseCode / 100 == 2) { //For 20X response codes.
-                in = urlConnection.getInputStream();
+                inputStream = httpURLConnection.getInputStream();
             } else {
-                in = urlConnection.getErrorStream();
+                inputStream = httpURLConnection.getErrorStream();
             }
-            rd = new BufferedReader(new InputStreamReader(in));
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
-            while ((line = rd.readLine()) != null) {
-                sb.append(line);
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line);
             }
-            return sb.toString();
+            return stringBuilder.toString();
         } finally {
-            if (rd != null) {
-                rd.close();
+            if (bufferedReader != null) {
+                bufferedReader.close();
             }
-            if (in != null) {
-                in.close();
+            if (inputStream != null) {
+                inputStream.close();
             }
         }
     }
 
-    private static Map<String, String> readHeadersFromResponse(HttpURLConnection urlConnection) {
-        Iterator<String> itr = urlConnection.getHeaderFields().keySet().iterator();
+    private static Map<String, String> readHeadersFromResponse(HttpURLConnection httpURLConnection) {
+        Iterator<String> iterator = httpURLConnection.getHeaderFields().keySet().iterator();
         Map<String, String> responseHeaders = new HashMap();
-        while (itr.hasNext()) {
-            String key = itr.next();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
             if (key != null) {
-                responseHeaders.put(key, urlConnection.getHeaderField(key));
+                responseHeaders.put(key, httpURLConnection.getHeaderField(key));
             }
         }
         return responseHeaders;
