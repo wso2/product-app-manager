@@ -35,9 +35,6 @@ public class APPMAdminDashboardRestClient {
 
     public APPMAdminDashboardRestClient(String backEndUrl) throws MalformedURLException {
         this.backEndUrl = backEndUrl;
-        if (requestHeaders.get(AppmTestConstants.CONTENT_TYPE) == null) {
-            this.requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/json");
-        }
     }
 
     /**

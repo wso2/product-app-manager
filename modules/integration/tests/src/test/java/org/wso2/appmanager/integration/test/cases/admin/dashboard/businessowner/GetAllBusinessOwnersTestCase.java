@@ -55,7 +55,7 @@ public class GetAllBusinessOwnersTestCase {
         createBusinessOwner("owner2");
         createBusinessOwner("owner3");
         HttpResponse getBusinessOwnersResponse =  appmAdminDashboardRestClient.getBusinessOwners();
-        // logout from admin dashboard rest client.
+        // Logout from admin dashboard rest client.
         appmAdminDashboardRestClient.logout();
 
         Assert.assertEquals(getBusinessOwnersResponse.getResponseMessage(), AppmTestConstants.OK.toUpperCase(),

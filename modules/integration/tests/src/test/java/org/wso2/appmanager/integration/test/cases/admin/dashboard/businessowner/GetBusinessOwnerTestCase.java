@@ -70,10 +70,11 @@ public class GetBusinessOwnerTestCase {
         String addedBusinessOwnerDescription = businessOwner.getBusinessOwnerDescription();
 
         // Retrieve business owner from received json object.
-        String receivedBusinessOwnerName = jsonObject.getString(AppmTestConstants.BUSINESS_OWNER_NAME);
-        String receivedBusinessOwnerEmail = jsonObject.getString(AppmTestConstants.BUSINESS_OWNER_EMAIL);
-        String receivedBusinessOwnerDescription = jsonObject.getString(AppmTestConstants.BUSINESS_OWNER_DESCRIPTION);
-        String receivedBusinessOwnerSite = jsonObject.getString(AppmTestConstants.BUSINESS_OWNER_SITE);
+        String receivedBusinessOwnerName = jsonObject.getString(AppmTestConstants.BusinessOwner.BUSINESS_OWNER_NAME);
+        String receivedBusinessOwnerEmail = jsonObject.getString(AppmTestConstants.BusinessOwner.BUSINESS_OWNER_EMAIL);
+        String receivedBusinessOwnerDescription = jsonObject.getString(AppmTestConstants.BusinessOwner
+                                                                               .BUSINESS_OWNER_DESCRIPTION);
+        String receivedBusinessOwnerSite = jsonObject.getString(AppmTestConstants.BusinessOwner.BUSINESS_OWNER_SITE);
 
         Assert.assertEquals(receivedBusinessOwnerName, addedBusinessOwnerName, "Expected business owner is " +
                 addedBusinessOwnerName + ". But received name : " + receivedBusinessOwnerName);

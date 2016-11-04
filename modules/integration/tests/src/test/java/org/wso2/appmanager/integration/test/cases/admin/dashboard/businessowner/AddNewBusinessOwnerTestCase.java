@@ -40,7 +40,6 @@ public class AddNewBusinessOwnerTestCase {
     private APPMAdminDashboardRestClient appmAdminDashboardRestClient;
     private String businessOwnerName = "AddNewBusinessOwnerTestCase_";
 
-
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
         appMServerSuperTenant = new AutomationContext(AppmTestConstants.APP_MANAGER, TestUserMode.SUPER_TENANT_ADMIN);
@@ -51,7 +50,7 @@ public class AddNewBusinessOwnerTestCase {
             automationContext) throws Exception {
         String backEndUrl = automationContext.getContextUrls().getWebAppURLHttps();
         appmAdminDashboardRestClient = new APPMAdminDashboardRestClient(backEndUrl);
-        // login to admin dashboard rest client.
+        // Login to admin dashboard rest client.
         appmAdminDashboardRestClient.login(userName, password);
         BusinessOwner businessOwner = new BusinessOwner();
         String businessOwnerUniqueName = businessOwnerName.concat(userName);
@@ -59,9 +58,9 @@ public class AddNewBusinessOwnerTestCase {
         businessOwner.setBusinessOwnerEmail(businessOwnerUniqueName.concat("abc.com"));
         businessOwner.setBusinessOwnerSite(businessOwnerUniqueName.concat(".com"));
         businessOwner.setBusinessOwnerDescription("test description for ".concat(businessOwnerUniqueName));
-        // add new business owner.
+        // Add new business owner.
         HttpResponse addBusinessOwnerResponse =  appmAdminDashboardRestClient.addBusinessOwner(businessOwner);
-        // logout from admin dashboard rest client.
+        // Logout from admin dashboard rest client.
         appmAdminDashboardRestClient.logout();
 
         JSONObject jsonObject = new JSONObject(addBusinessOwnerResponse.getData());

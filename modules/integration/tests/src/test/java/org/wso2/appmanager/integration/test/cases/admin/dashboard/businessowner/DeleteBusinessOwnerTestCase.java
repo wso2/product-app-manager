@@ -53,7 +53,7 @@ public class DeleteBusinessOwnerTestCase {
 
         int businessOwnerId = createBusinessOwner(appmAdminDashboardRestClient, userName);
         HttpResponse deleteBusinessOwnerResponse =  appmAdminDashboardRestClient.deleteBusinessOwner(businessOwnerId);
-        // logout from admin dashboard rest client.
+        // Logout from admin dashboard rest client.
         appmAdminDashboardRestClient.logout();
 
         JSONObject jsonObject = new JSONObject(deleteBusinessOwnerResponse.getData());

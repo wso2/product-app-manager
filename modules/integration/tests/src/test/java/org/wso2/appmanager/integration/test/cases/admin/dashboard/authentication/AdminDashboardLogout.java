@@ -1,3 +1,20 @@
+/*
+*Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*
+*WSO2 Inc. licenses this file to you under the Apache License,
+*Version 2.0 (the "License"); you may not use this file except
+*in compliance with the License.
+*You may obtain a copy of the License at
+*
+*http://www.apache.org/licenses/LICENSE-2.0
+*
+*Unless required by applicable law or agreed to in writing,
+*software distributed under the License is distributed on an
+*"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+*KIND, either express or implied.  See the License for the
+*specific language governing permissions and limitations
+*under the License.
+*/
 package org.wso2.appmanager.integration.test.cases.admin.dashboard.authentication;
 
 import org.json.JSONObject;
@@ -38,10 +55,10 @@ public class AdminDashboardLogout {
     @Test(description = TEST_DESCRIPTION)
     public void testAdminDashboardLogin() throws Exception {
         HttpResponse logoutResponseData = appmAdminDashboardRestClient.logout();
-        JSONObject publisherLogoutJsonObject = new JSONObject(logoutResponseData.getData());
-        String dataResponse = publisherLogoutJsonObject.getString(AppmTestConstants.ERROR);
-        assertTrue(dataResponse == "false", "Logout from Admin dashboard is not allowed for user : " + userName +
-                "who has enough privileges.");
+        JSONObject adminDashboardLogoutJsonObject = new JSONObject(logoutResponseData.getData());
+        String dataResponse = adminDashboardLogoutJsonObject.getString(AppmTestConstants.ERROR);
+        assertTrue(AppmTestConstants.FALSE.equals(dataResponse), "Logout from Admin dashboard is not allowed for " +
+                "user : " + userName + "who has enough privileges.");
         String session = logoutResponseData.getHeaders().get(AppmTestConstants.SET_COOKIE);
         assertNull(session, "Session is not null");
     }

@@ -56,10 +56,7 @@ public class BusinessOwnerCreateRequest  extends AbstractRequest {
         JSONObject businessOwnerCustomProperties = new JSONObject();
         if (businessOwnerPropertiesList != null) {
             for(int i = 0; i < businessOwnerPropertiesList.size(); i++) {
-                JSONArray propertiesArray = new JSONArray();
                 try {
-                    propertiesArray.put(0, businessOwnerPropertiesList.get(i).getPropertyValue());
-                    propertiesArray.put(1, businessOwnerPropertiesList.get(i).isShowingInStore());
                     businessOwnerCustomProperties.put(businessOwnerPropertiesList.get(i).getPropertyId(),
                                                       businessOwnerCustomProperties);
                 } catch (JSONException e) {
