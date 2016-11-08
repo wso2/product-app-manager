@@ -92,7 +92,7 @@
             <class name="org.wso2.appmanager.integration.restapi.testcases.publisher.MobileAppTagsTestCase"/>
             <class name="org.wso2.appmanager.integration.restapi.testcases.publisher.MobileAppStaticContentsTestCase"/>
             <class name="org.wso2.appmanager.integration.restapi.testcases.publisher.MobileAppBinariesTestCase"/>
-            <class name="org.wso2.appmanager.integration.restapi.testcases.publisher.MobileAppCreateNewVersionTestCase"/>
+            <!--<class name="org.wso2.appmanager.integration.restapi.testcases.publisher.MobileAppCreateNewVersionTestCase"/>-->
 
 
             <!-- ********** REST Test cases - Store side ********** -->
