@@ -52,7 +52,7 @@ public class DeleteBusinessOwnerTestCase {
         appmAdminDashboardRestClient.login(userName, password);
 
         int businessOwnerId = createBusinessOwner(appmAdminDashboardRestClient, userName);
-        HttpResponse deleteBusinessOwnerResponse =  appmAdminDashboardRestClient.deleteBusinessOwner(businessOwnerId);
+        HttpResponse deleteBusinessOwnerResponse = appmAdminDashboardRestClient.deleteBusinessOwner(businessOwnerId);
         // Logout from admin dashboard rest client.
         appmAdminDashboardRestClient.logout();
 
@@ -62,7 +62,7 @@ public class DeleteBusinessOwnerTestCase {
     }
 
     private int createBusinessOwner(APPMAdminDashboardRestClient appmAdminDashboardRestClient, String userName) throws
-                                                                                                       Exception {
+                                                                                                                Exception {
         BusinessOwner businessOwner = new BusinessOwner();
         String businessOwnerUniqueName = businessOwnerName.concat(userName);
         businessOwner.setBusinessOwnerName(businessOwnerUniqueName);
@@ -74,9 +74,11 @@ public class DeleteBusinessOwnerTestCase {
 
     @DataProvider
     public static Object[][] validUserModeDataProvider() throws Exception {
-        User superTenantAdminUser = appMServerSuperTenant.getSuperTenant().getTenantUser(AppmTestConstants.TestUsers.ADMIN);
+        User superTenantAdminUser = appMServerSuperTenant.getSuperTenant().getTenantUser(
+                AppmTestConstants.TestUsers.ADMIN);
         return new Object[][]{
-                new Object[]{superTenantAdminUser.getUserName(), superTenantAdminUser.getPassword(), appMServerSuperTenant},
+                new Object[]{superTenantAdminUser.getUserName(), superTenantAdminUser.getPassword(),
+                        appMServerSuperTenant},
         };
     }
 }

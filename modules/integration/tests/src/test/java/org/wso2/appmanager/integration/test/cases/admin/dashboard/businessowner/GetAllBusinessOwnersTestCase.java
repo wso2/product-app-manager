@@ -38,7 +38,6 @@ public class GetAllBusinessOwnersTestCase {
     private String businessOwnerName = "GetAllBusinessOwnersTestCase_";
     private static AutomationContext appMServerSuperTenant;
 
-
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
         appMServerSuperTenant = new AutomationContext(AppmTestConstants.APP_MANAGER, TestUserMode.SUPER_TENANT_ADMIN);
@@ -54,7 +53,7 @@ public class GetAllBusinessOwnersTestCase {
         createBusinessOwner("owner1");
         createBusinessOwner("owner2");
         createBusinessOwner("owner3");
-        HttpResponse getBusinessOwnersResponse =  appmAdminDashboardRestClient.getBusinessOwners();
+        HttpResponse getBusinessOwnersResponse = appmAdminDashboardRestClient.getBusinessOwners();
         // Logout from admin dashboard rest client.
         appmAdminDashboardRestClient.logout();
 
@@ -73,9 +72,11 @@ public class GetAllBusinessOwnersTestCase {
 
     @DataProvider
     public static Object[][] validUserModeDataProvider() throws Exception {
-        User superTenantAdminUser = appMServerSuperTenant.getSuperTenant().getTenantUser(AppmTestConstants.TestUsers.ADMIN);
+        User superTenantAdminUser = appMServerSuperTenant.getSuperTenant().getTenantUser(
+                AppmTestConstants.TestUsers.ADMIN);
         return new Object[][]{
-                new Object[]{superTenantAdminUser.getUserName(), superTenantAdminUser.getPassword(), appMServerSuperTenant},
+                new Object[]{superTenantAdminUser.getUserName(), superTenantAdminUser.getPassword(),
+                        appMServerSuperTenant},
         };
     }
 }

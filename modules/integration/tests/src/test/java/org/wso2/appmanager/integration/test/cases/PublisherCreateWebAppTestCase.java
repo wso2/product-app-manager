@@ -38,8 +38,7 @@ import static org.testng.Assert.assertTrue;
  * Test case which verifies the ability of appCreator creating a new WebApp.
  */
 public class PublisherCreateWebAppTestCase {
-
-    private static final String TEST_DESCRIPTION = "Verify Creating a Web App";
+    private static final String TEST_DESCRIPTION = "Verify Creating a Web App.";
     private APPMPublisherRestClient appmPublisherRestClient;
     private String appName = "PublisherCreateWebAppTestCase";
     private String appVersion = "1.0.0";
@@ -72,7 +71,7 @@ public class PublisherCreateWebAppTestCase {
         assertTrue(appCreateResponseCode == 200, appCreateResponseCode + " status code received.");
         JSONObject appCreateResponseData = new JSONObject(appCreateResponse.getData());
         assertEquals(appCreateResponseData.getString(AppmTestConstants.MESSAGE), "asset added",
-                     "Asset has not added successfully");
+                     "Asset has not added successfully.");
         appId = appCreateResponseData.getString(AppmTestConstants.ID);
         assertNotNull(appId, "app id is null");
     }

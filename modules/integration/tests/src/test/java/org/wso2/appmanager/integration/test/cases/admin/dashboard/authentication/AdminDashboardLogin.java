@@ -32,10 +32,10 @@ import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Test case which verifies the ability of appCreator, appPublisher and admin users of logging to admin dashboard.
+ * Test case which verifies the ability of AppCreator, AppPublisher and admin users of logging to admin dashboard.
  */
 public class AdminDashboardLogin {
-    private static final String TEST_DESCRIPTION = "Verify login to Admin Dashboard";
+    private static final String TEST_DESCRIPTION = "Verify login to admin dashboard";
     private String backEndUrl;
     private static AutomationContext appMServer;
 
@@ -51,10 +51,10 @@ public class AdminDashboardLogin {
         HttpResponse response = appmAdminDashboardRestClient.login(userName, password);
         JSONObject adminDashboardLoginJsonObject = new JSONObject(response.getData());
         String dataResponse = adminDashboardLoginJsonObject.getString(AppmTestConstants.ERROR);
-        assertTrue(AppmTestConstants.FALSE.equals(dataResponse), "Login to Admin dashboard is not allowed for user : " +
+        assertTrue(AppmTestConstants.FALSE.equals(dataResponse), "Login to admin dashboard is not allowed for user : " +
                 userName + " who has enough privileges to login.");
         String session = response.getHeaders().get(AppmTestConstants.SET_COOKIE);
-        assertNotNull(session, "Session is null");
+        assertNotNull(session, "Session is null.");
         appmAdminDashboardRestClient.logout();
     }
 
@@ -64,7 +64,7 @@ public class AdminDashboardLogin {
         HttpResponse response = appmAdminDashboardRestClient.login(userName, password);
         JSONObject adminDashboardLoginJsonObject = new JSONObject(response.getData());
         String dataResponse = adminDashboardLoginJsonObject.getString(AppmTestConstants.ERROR);
-        assertTrue(AppmTestConstants.TRUE.equals(dataResponse), "Login to Admin dashboard is allowed for user : " +
+        assertTrue(AppmTestConstants.TRUE.equals(dataResponse), "Login to admin dashboard is allowed for user : " +
                 userName + " who hasn't sufficient privileges to login.");
     }
 

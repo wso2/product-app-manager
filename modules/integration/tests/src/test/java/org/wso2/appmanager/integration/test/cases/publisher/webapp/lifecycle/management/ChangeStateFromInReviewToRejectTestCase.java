@@ -40,12 +40,11 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Test case which verifies the ability of appCreator, appPublisher and admin users of changing WebApp life cycle
- * state from 'In review' to 'Reject'.
+ * Test case which verifies the ability of AppCreator, AppPublisher and admin users of changing WebApp life cycle state
+ * from 'in review' to 'reject'.
  */
 public class ChangeStateFromInReviewToRejectTestCase {
-
-    private static final String TEST_DESCRIPTION = "Verify reject a WebApp in-review";
+    private static final String TEST_DESCRIPTION = "Verify reject a WebApp in-review.";
     private static AutomationContext appMServer;
     private APPMPublisherRestClient appmPublisherRestClient;
     private String appName = "ChangeStateFromInReviewToRejectTestCase";
@@ -89,7 +88,7 @@ public class ChangeStateFromInReviewToRejectTestCase {
         publisherRestClient.logout();
         int responseCode = httpResponse.getResponseCode();
         assertTrue(responseCode == 200, "Excepted status code is 200 for user :" + userName + ". But received status " +
-                "code is " + responseCode);
+                "code is " + responseCode + ".");
         assertEquals(responseData.getString(AppmTestConstants.STATUS), "Success", "Changing WebApp life cycle state " +
                 "from in review to reject failed for user : " + userName + " who has sufficient privileges to change" +
                 " life cycle status.");
@@ -107,7 +106,7 @@ public class ChangeStateFromInReviewToRejectTestCase {
         publisherRestClient.logout();
         int responseCode = httpResponse.getResponseCode();
         assertTrue(responseCode == 401, "Excepted status code is 401 for user :" + userName + ". But received " +
-                "status code is " + responseCode);
+                "status code is " + responseCode + ".");
         assertEquals(responseData.getString(AppmTestConstants.STATUS), "Access Denied", "Changing WebApp life cycle " +
                 "state from in review to reject allowed for user : " + userName + " who has insufficient privileges " +
                 "to change life cycle status.");
@@ -115,7 +114,7 @@ public class ChangeStateFromInReviewToRejectTestCase {
 
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
-        // Deleted created WebApps by admin.
+        // Delete created WebApps by admin.
         appmPublisherRestClient.deleteApp(app1Uuid);
         appmPublisherRestClient.deleteApp(app2Uuid);
         appmPublisherRestClient.deleteApp(app3Uuid);
@@ -123,7 +122,7 @@ public class ChangeStateFromInReviewToRejectTestCase {
         appmPublisherRestClient.logout();
     }
 
-    private String createWebAppAndSubmitForReview (String appPrefix) throws Exception {
+    private String createWebAppAndSubmitForReview(String appPrefix) throws Exception {
         PolicyGroup defaultPolicyGroup = WebAppUtil.createDefaultPolicy();
         HttpResponse response = appmPublisherRestClient.addPolicyGroup(defaultPolicyGroup);
         String policyId = WebAppUtil.getPolicyId(response);
@@ -154,4 +153,3 @@ public class ChangeStateFromInReviewToRejectTestCase {
         };
     }
 }
-

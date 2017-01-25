@@ -40,12 +40,11 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Test case which verifies the ability of appCreator, appPublisher and admin users of changing WebApp life cycle state
- * from 'Publish' to 'Deprecate'.
+ * Test case which verifies the ability of AppCreator, AppPublisher and admin users of changing WebApp life cycle state
+ * from 'publish' to 'deprecate'.
  */
 public class ChangeStateFromPublishToDeprecateTestCase {
-
-    private static final String TEST_DESCRIPTION = "Verify deprecating a published WebApp";
+    private static final String TEST_DESCRIPTION = "Verify deprecating a published WebApp.";
     private static AutomationContext appMServer = null;
     private APPMPublisherRestClient appmPublisherRestClient;
     private String appName = "ChangeStateFromPublishToDeprecateTestCase";
@@ -88,7 +87,7 @@ public class ChangeStateFromPublishToDeprecateTestCase {
         publisherRestClient.logout();
         int responseCode = httpResponse.getResponseCode();
         assertTrue(responseCode == 200, "Excepted status code is 200 for user :" + userName + ". But received status " +
-                "code is " + responseCode);
+                "code is " + responseCode + ".");
         assertEquals(responseData.getString(AppmTestConstants.STATUS), "Success", "Changing WebApp life cycle state " +
                 "from publish to deprecate failed for user : " + userName + " who has sufficient privileges to change" +
                 " life cycle status.");
@@ -106,7 +105,7 @@ public class ChangeStateFromPublishToDeprecateTestCase {
         publisherRestClient.logout();
         int responseCode = httpResponse.getResponseCode();
         assertTrue(responseCode == 401, "Excepted status code is 401 for user :" + userName + ". But received " +
-                "status code is " + responseCode);
+                "status code is " + responseCode + ".");
         assertEquals(responseData.getString(AppmTestConstants.STATUS), "Access Denied", "Changing WebApp life cycle " +
                 "state from publish to deprecate allowed for user : " + userName + " who has insufficient privileges " +
                 "to change life cycle status.");

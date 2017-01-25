@@ -40,10 +40,10 @@ public class APPMAdminDashboardRestClient {
     /**
      * Login to Admin Dashboard.
      *
-     * @param userName String.
-     * @param password String.
-     * @return httpResponse HttpResponse.
-     * @throws Exception on errors.
+     * @param userName User name
+     * @param password Password
+     * @return httpResponse {@link HttpResponse} object
+     * @throws Exception on errors while trying to login to admin dashboard
      */
     public HttpResponse login(String userName, String password) throws Exception {
         requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "application/x-www-form-urlencoded");
@@ -53,20 +53,20 @@ public class APPMAdminDashboardRestClient {
         if (response.getResponseCode() == 200) {
             String session = getSession(response.getHeaders());
             if (session == null) {
-                throw new Exception("No session cookie found with response");
+                throw new Exception("No session cookie found with response.");
             }
             setSession(session);
             return response;
         } else {
-            throw new Exception("User Login failed! " + response.getData());
+            throw new Exception("User login failed! " + response.getData());
         }
     }
 
     /**
      * Logout from admin dashboard.
      *
-     * @return httpResponse HttpResponse.
-     * @throws Exception on errors.
+     * @return httpResponse {@link HttpResponse}
+     * @throws Exception on errors while trying to logout from admin dashboard
      */
     public HttpResponse logout() throws Exception {
         HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl + AppmTestConstants.AdminDashBoardApis
@@ -89,9 +89,10 @@ public class APPMAdminDashboardRestClient {
 
     /**
      * Add a new business owner.
-     * @param businessOwner
-     * @return
-     * @throws Exception
+     *
+     * @param businessOwner {@link BusinessOwner} object
+     * @return {@link HttpResponse} object
+     * @throws Exception on errors while trying to add business owner
      */
     public HttpResponse addBusinessOwner(BusinessOwner businessOwner) throws Exception {
         BusinessOwnerCreateRequest businessOwnerCreateRequest = new BusinessOwnerCreateRequest(businessOwner);
@@ -109,9 +110,10 @@ public class APPMAdminDashboardRestClient {
 
     /**
      * Delete business owner.
-     * @param businessOwnerId
-     * @return
-     * @throws Exception
+     *
+     * @param businessOwnerId Business owner id
+     * @return {@link HttpResponse} object
+     * @throws Exception on errors while trying to delete business owner
      */
     public HttpResponse deleteBusinessOwner(int businessOwnerId) throws Exception {
         HttpResponse response = HttpUtil.doDelete(new URL(backEndUrl + AppmTestConstants.AdminDashBoardApis
@@ -122,9 +124,10 @@ public class APPMAdminDashboardRestClient {
 
     /**
      * Get Business owner by Id.
-     * @param businessOwnerId
-     * @return
-     * @throws Exception
+     *
+     * @param businessOwnerId Business owner id
+     * @return {@link HttpResponse} object
+     * @throws Exception on errors while trying to get business owner
      */
     public HttpResponse getBusinessOwner(int businessOwnerId) throws Exception {
         HttpResponse response = HttpRequestUtil.doGet(backEndUrl + AppmTestConstants.AdminDashBoardApis
@@ -135,8 +138,9 @@ public class APPMAdminDashboardRestClient {
 
     /**
      * Get all business owners.
-     * @return
-     * @throws Exception
+     *
+     * @return {@link HttpResponse} object
+     * @throws Exception on errors while trying to get business owners
      */
     public HttpResponse getBusinessOwners() throws Exception {
         HttpResponse response = HttpRequestUtil.doGet(backEndUrl + AppmTestConstants.AdminDashBoardApis
@@ -147,9 +151,10 @@ public class APPMAdminDashboardRestClient {
 
     /**
      * Update business owner.
-     * @param businessOwner
-     * @return
-     * @throws Exception
+     *
+     * @param businessOwner {@link BusinessOwner} object
+     * @return {@link HttpResponse} object
+     * @throws Exception on errors while trying to update business owner
      */
     public HttpResponse updateBusinessOwner(BusinessOwner businessOwner) throws Exception {
         BusinessOwnerCreateRequest businessOwnerCreateRequest = new BusinessOwnerCreateRequest(businessOwner);

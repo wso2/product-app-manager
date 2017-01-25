@@ -34,7 +34,7 @@ import static org.testng.Assert.assertTrue;
  * Test case which verifies the ability of admin user of logout from admin dashboard.
  */
 public class AdminDashboardLogout {
-    private static final String TEST_DESCRIPTION = "Verify Admin Dashboard Logout";
+    private static final String TEST_DESCRIPTION = "Verify admin dashboard Logout";
     private APPMAdminDashboardRestClient appmAdminDashboardRestClient;
     private static AutomationContext appMServer;
     private String backEndUrl;
@@ -57,10 +57,9 @@ public class AdminDashboardLogout {
         HttpResponse logoutResponseData = appmAdminDashboardRestClient.logout();
         JSONObject adminDashboardLogoutJsonObject = new JSONObject(logoutResponseData.getData());
         String dataResponse = adminDashboardLogoutJsonObject.getString(AppmTestConstants.ERROR);
-        assertTrue(AppmTestConstants.FALSE.equals(dataResponse), "Logout from Admin dashboard is not allowed for " +
+        assertTrue(AppmTestConstants.FALSE.equals(dataResponse), "Logout from admin dashboard is not allowed for " +
                 "user : " + userName + "who has enough privileges.");
         String session = logoutResponseData.getHeaders().get(AppmTestConstants.SET_COOKIE);
-        assertNull(session, "Session is not null");
+        assertNull(session, "Session is not null.");
     }
-
 }
