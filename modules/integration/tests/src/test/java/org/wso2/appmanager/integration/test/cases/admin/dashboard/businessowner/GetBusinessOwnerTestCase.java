@@ -54,7 +54,7 @@ public class GetBusinessOwnerTestCase {
 
         BusinessOwner businessOwner = createBusinessOwner();
         // Get business owner by id.
-        HttpResponse getBusinessOwnerResponse =  appmAdminDashboardRestClient.getBusinessOwner(
+        HttpResponse getBusinessOwnerResponse = appmAdminDashboardRestClient.getBusinessOwner(
                 businessOwner.getBusinessOwnerId());
         // Logout from admin dashboard rest client.
         appmAdminDashboardRestClient.logout();
@@ -70,20 +70,21 @@ public class GetBusinessOwnerTestCase {
         String addedBusinessOwnerDescription = businessOwner.getBusinessOwnerDescription();
 
         // Retrieve business owner from received json object.
-        String receivedBusinessOwnerName = jsonObject.getString(AppmTestConstants.BUSINESS_OWNER_NAME);
-        String receivedBusinessOwnerEmail = jsonObject.getString(AppmTestConstants.BUSINESS_OWNER_EMAIL);
-        String receivedBusinessOwnerDescription = jsonObject.getString(AppmTestConstants.BUSINESS_OWNER_DESCRIPTION);
-        String receivedBusinessOwnerSite = jsonObject.getString(AppmTestConstants.BUSINESS_OWNER_SITE);
+        String receivedBusinessOwnerName = jsonObject.getString(AppmTestConstants.BusinessOwner.BUSINESS_OWNER_NAME);
+        String receivedBusinessOwnerEmail = jsonObject.getString(AppmTestConstants.BusinessOwner.BUSINESS_OWNER_EMAIL);
+        String receivedBusinessOwnerDescription = jsonObject.getString(AppmTestConstants.BusinessOwner
+                                                                               .BUSINESS_OWNER_DESCRIPTION);
+        String receivedBusinessOwnerSite = jsonObject.getString(AppmTestConstants.BusinessOwner.BUSINESS_OWNER_SITE);
 
         Assert.assertEquals(receivedBusinessOwnerName, addedBusinessOwnerName, "Expected business owner is " +
-                addedBusinessOwnerName + ". But received name : " + receivedBusinessOwnerName);
+                addedBusinessOwnerName + ". But received name : " + receivedBusinessOwnerName + ".");
         Assert.assertEquals(receivedBusinessOwnerEmail, addedBusinessOwnerEmail, "Expected business owner email " +
-                "is " + addedBusinessOwnerEmail + ". But received email : " + receivedBusinessOwnerEmail);
+                "is " + addedBusinessOwnerEmail + ". But received email : " + receivedBusinessOwnerEmail + ".");
         Assert.assertEquals(addedBusinessOwnerSite, receivedBusinessOwnerSite, "Expected business owner site is " +
-                addedBusinessOwnerSite + ". But received site : " + receivedBusinessOwnerSite);
+                addedBusinessOwnerSite + ". But received site : " + receivedBusinessOwnerSite + ".");
         Assert.assertEquals(addedBusinessOwnerDescription, receivedBusinessOwnerDescription, "Expected business owner" +
                 " description is " + addedBusinessOwnerDescription + ". But received description : " +
-                receivedBusinessOwnerDescription);
+                receivedBusinessOwnerDescription + ".");
     }
 
     private BusinessOwner createBusinessOwner() throws Exception {
@@ -98,9 +99,11 @@ public class GetBusinessOwnerTestCase {
 
     @DataProvider
     public static Object[][] validUserModeDataProvider() throws Exception {
-        User superTenantAdminUser = appMServerSuperTenant.getSuperTenant().getTenantUser(AppmTestConstants.TestUsers.ADMIN);
+        User superTenantAdminUser = appMServerSuperTenant.getSuperTenant().getTenantUser(
+                AppmTestConstants.TestUsers.ADMIN);
         return new Object[][]{
-                new Object[]{superTenantAdminUser.getUserName(), superTenantAdminUser.getPassword(), appMServerSuperTenant},
+                new Object[]{superTenantAdminUser.getUserName(), superTenantAdminUser.getPassword(),
+                        appMServerSuperTenant},
         };
     }
 }

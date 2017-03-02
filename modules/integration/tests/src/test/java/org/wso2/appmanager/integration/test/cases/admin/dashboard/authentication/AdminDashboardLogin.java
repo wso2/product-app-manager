@@ -32,10 +32,10 @@ import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Test case which verifies the ability of appCreator, appPublisher and admin users of logging to admin dashboard.
+ * Test case which verifies the ability of AppCreator, AppPublisher and admin users of logging to admin dashboard.
  */
 public class AdminDashboardLogin {
-    private static final String TEST_DESCRIPTION = "Verify login to Admin Dashboard";
+    private static final String TEST_DESCRIPTION = "Verify login to admin dashboard";
     private String backEndUrl;
     private static AutomationContext appMServer;
 
@@ -49,12 +49,12 @@ public class AdminDashboardLogin {
     public void testAdminDashboardLoginWithValidUsers(String userName, String password) throws Exception {
         APPMAdminDashboardRestClient appmAdminDashboardRestClient = new APPMAdminDashboardRestClient(backEndUrl);
         HttpResponse response = appmAdminDashboardRestClient.login(userName, password);
-        JSONObject publisherLogoutJsonObject = new JSONObject(response.getData());
-        String dataResponse = publisherLogoutJsonObject.getString(AppmTestConstants.ERROR);
-        assertTrue(dataResponse == "false", "Login to Admin dashboard is not allowed for user : " + userName + " who " +
-                "has enough privileges to login.");
+        JSONObject adminDashboardLoginJsonObject = new JSONObject(response.getData());
+        String dataResponse = adminDashboardLoginJsonObject.getString(AppmTestConstants.ERROR);
+        assertTrue(AppmTestConstants.FALSE.equals(dataResponse), "Login to admin dashboard is not allowed for user : " +
+                userName + " who has enough privileges to login.");
         String session = response.getHeaders().get(AppmTestConstants.SET_COOKIE);
-        assertNotNull(session, "Session is null");
+        assertNotNull(session, "Session is null.");
         appmAdminDashboardRestClient.logout();
     }
 
@@ -62,10 +62,10 @@ public class AdminDashboardLogin {
     public void testAdminDashboardLoginWithInValidUsers(String userName, String password) throws Exception {
         APPMAdminDashboardRestClient appmAdminDashboardRestClient = new APPMAdminDashboardRestClient(backEndUrl);
         HttpResponse response = appmAdminDashboardRestClient.login(userName, password);
-        JSONObject publisherLogoutJsonObject = new JSONObject(response.getData());
-        String dataResponse = publisherLogoutJsonObject.getString(AppmTestConstants.ERROR);
-        assertTrue(dataResponse == "true", "Login to Admin dashboard is allowed for user : " + userName + " who " +
-                "hasn't sufficient privileges to login.");
+        JSONObject adminDashboardLoginJsonObject = new JSONObject(response.getData());
+        String dataResponse = adminDashboardLoginJsonObject.getString(AppmTestConstants.ERROR);
+        assertTrue(AppmTestConstants.TRUE.equals(dataResponse), "Login to admin dashboard is allowed for user : " +
+                userName + " who hasn't sufficient privileges to login.");
     }
 
     @DataProvider
@@ -78,8 +78,8 @@ public class AdminDashboardLogin {
 
     @DataProvider
     public static Object[][] inValidUserModeDataProvider() throws Exception {
-        User appCreator = appMServer.getSuperTenant().getTenantUser("AppCreator");
-        User appPublisher = appMServer.getSuperTenant().getTenantUser("AppPublisher");
+        User appCreator = appMServer.getSuperTenant().getTenantUser(AppmTestConstants.TestUsers.APP_CREATOR);
+        User appPublisher = appMServer.getSuperTenant().getTenantUser(AppmTestConstants.TestUsers.APP_PUBLISHER);
         return new Object[][]{
                 new Object[]{appCreator.getUserName(), appCreator.getPassword()},
                 new Object[]{appPublisher.getUserName(), appPublisher.getPassword()}

@@ -40,12 +40,11 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Test case which verifies the ability of appCreator, appPublisher and admin users of changing WebApp life cycle state
- * from 'Unpublish' to 'Recycle'.
+ * Test case which verifies the ability of AppCreator, AppPublisher and admin users of changing WebApp life cycle state
+ * from 'unpublish' to 'recycle'.
  */
 public class ChangeStateFromUnpublishToRecycleTestCase {
-
-    private static final String TEST_DESCRIPTION = "Verify recycling an unpublished WebApp";
+    private static final String TEST_DESCRIPTION = "Verify recycling an unpublished WebApp.";
     private static AutomationContext appMServer = null;
     private APPMPublisherRestClient appmPublisherRestClient;
     private String appName = "ChangeStateFromUnpublishToRecycleTestCase";
@@ -87,7 +86,7 @@ public class ChangeStateFromUnpublishToRecycleTestCase {
         publisherRestClient.logout();
         int responseCode = httpResponse.getResponseCode();
         assertTrue(responseCode == 200, "Excepted status code is 200 for user :" + userName + ". But received status " +
-                "code is " + responseCode);
+                "code is " + responseCode + ".");
         assertEquals(responseData.getString(AppmTestConstants.STATUS), "Success", "Changing WebApp life cycle state " +
                 "from unpublish to recycle failed for user : " + userName + " who has sufficient privileges to change" +
                 " life cycle status.");
@@ -105,7 +104,7 @@ public class ChangeStateFromUnpublishToRecycleTestCase {
         publisherRestClient.logout();
         int responseCode = httpResponse.getResponseCode();
         assertTrue(responseCode == 401, "Excepted status code is 401 for user :" + userName + ". But received " +
-                "status code is " + responseCode);
+                "status code is " + responseCode + ".");
         assertEquals(responseData.getString(AppmTestConstants.STATUS), "Access Denied", "Changing WebApp life cycle " +
                 "state from unpublish to recycle allowed for user : " + userName + " who has insufficient privileges " +
                 "to change life cycle status.");
@@ -138,7 +137,7 @@ public class ChangeStateFromUnpublishToRecycleTestCase {
     @DataProvider
     public Object[][] validUserModeDataProvider() throws Exception {
         User adminUser = appMServer.getSuperTenant().getTenantAdmin();
-        User appPublisher = appMServer.getSuperTenant().getTenantUser("AppPublisher");
+        User appPublisher = appMServer.getSuperTenant().getTenantUser(AppmTestConstants.TestUsers.APP_PUBLISHER);
         return new Object[][]{
                 new Object[]{adminUser.getUserName(), adminUser.getPassword(), app1Uuid},
                 new Object[]{appPublisher.getUserName(), appPublisher.getPassword(), app2Uuid}
@@ -147,7 +146,7 @@ public class ChangeStateFromUnpublishToRecycleTestCase {
 
     @DataProvider
     public Object[][] inValidUserModeDataProvider() throws Exception {
-        User appCreator = appMServer.getSuperTenant().getTenantUser("AppCreator");
+        User appCreator = appMServer.getSuperTenant().getTenantUser(AppmTestConstants.TestUsers.APP_CREATOR);
         return new Object[][]{
                 new Object[]{appCreator.getUserName(), appCreator.getPassword(), app3Uuid}
         };

@@ -24,16 +24,6 @@ public class AppmTestConstants {
 
     public static final String AVERAGE = "average";
 
-    public static final String BUSINESS_OWNER_ID = "businessOwnerId";
-
-    public static final String BUSINESS_OWNER_NAME = "businessOwnerName";
-
-    public static final String BUSINESS_OWNER_EMAIL= "businessOwnerEmail";
-
-    public static final String BUSINESS_OWNER_DESCRIPTION = "businessOwnerDescription";
-
-    public static final String BUSINESS_OWNER_SITE = "businessOwnerSite";
-
     public static final String CONTENT_TYPE = "Content-Type";
 
     public static final String COOKIE = "Cookie";
@@ -41,6 +31,8 @@ public class AppmTestConstants {
     public static final String DATA = "data";
 
     public static final String ERROR = "error";
+
+    public static final String FALSE = "false";
 
     public static final String ID = "id";
 
@@ -61,6 +53,8 @@ public class AppmTestConstants {
     public static final String SUCCESS = "success";
 
     public static final String TYPE = "type";
+
+    public static final String TRUE = "true";
 
     public static final String USER = "user";
 
@@ -84,8 +78,6 @@ public class AppmTestConstants {
         public static final String ADD_ROLES = "/publisher/asset/webapp/id/";
         public static final String LOGIN_URL = "/publisher/api/authenticate?action=login";
         public static final String LOGOUT_URL = "/publisher/api/authenticate?action=logout";
-
-
     }
 
     public class StoreRestApis {
@@ -93,7 +85,6 @@ public class AppmTestConstants {
         public static final String LOGOUT_URL = "/store/apis/user/logout";
         public static final String SUBSCRIBE_FOR_APPS = "/store/resources/webapp/v1/subscription/app";
         public static final String UNSUBSCRIBE_FOR_APPS = "/store/resources/webapp/v1/unsubscription/app";
-
         public static final String RATING_FOR_APPS = "/store/apis/rate?id={id}&type={appType}&value={ratingValue}";
     }
 
@@ -107,7 +98,6 @@ public class AppmTestConstants {
         public static final String ID = "{id}";
         public static final String APP_TYPE = "{appType}";
         public static final String RATING_VALUE = "{ratingValue}";
-
     }
 
     public class LifeCycleStatus {
@@ -126,6 +116,7 @@ public class AppmTestConstants {
         public static final String APP_CREATOR = "AppCreator";
         public static final String ADMIN = "AdminUser";
         public static final String APP_PUBLISHER = "AppPublisher";
+        public static final String SUBSCRIBER = "Subscriber";
     }
 
     public class AuditLogActions{
@@ -135,5 +126,13 @@ public class AppmTestConstants {
         public static final String LIFE_CYCLE_ACTION_PERFORMED = "LifecycleActionPerformed-";
         public static final String ASSET_DELETED = "AssetDeleted";
         public static final String USER_LOGGED_OUT = "UserLoggedOut";
+    }
+
+    public class BusinessOwner {
+        public static final String BUSINESS_OWNER_ID = "businessOwnerId";
+        public static final String BUSINESS_OWNER_NAME = "businessOwnerName";
+        public static final String BUSINESS_OWNER_EMAIL= "businessOwnerEmail";
+        public static final String BUSINESS_OWNER_DESCRIPTION = "businessOwnerDescription";
+        public static final String BUSINESS_OWNER_SITE = "businessOwnerSite";
     }
 }

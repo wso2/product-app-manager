@@ -32,7 +32,9 @@ import org.wso2.carbon.automation.engine.context.beans.User;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
 import static org.testng.Assert.assertTrue;
-
+/**
+ * Test case which verifies the ability of Subscriber logging out from store.
+ */
 public class StoreLogoutTestCase {
     private static final String TEST_DESCRIPTION = "Verify Store Logout";
     private APPMStoreRestClient appmStoreRestClient;
@@ -48,11 +50,11 @@ public class StoreLogoutTestCase {
 
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
-        AutomationContext appMServer = new AutomationContext(AppmTestConstants.APP_MANAGER,
-                                                             TestUserMode.SUPER_TENANT_ADMIN);
+        AutomationContext appMServer = new AutomationContext(AppmTestConstants.APP_MANAGER, TestUserMode
+                .SUPER_TENANT_ADMIN);
         backEndUrl = appMServer.getContextUrls().getWebAppURLHttps();
 
-        user = appMServer.getSuperTenant().getTenantUser("Subscriber");
+        user = appMServer.getSuperTenant().getTenantUser(AppmTestConstants.TestUsers.SUBSCRIBER);
         userName = user.getUserName();
         password = user.getPassword();
 
@@ -67,10 +69,5 @@ public class StoreLogoutTestCase {
         JSONObject payload = new JSONObject(storeLogoutResponse.getData());
         assertTrue(responseCode == 200, responseCode + " status code received.");
         assertTrue(!(Boolean) payload.get("error"), "Error when try to logout form store.");
-    }
-
-    @AfterClass(alwaysRun = true)
-    public void closeDown() throws Exception {
-
     }
 }

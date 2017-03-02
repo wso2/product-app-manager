@@ -29,7 +29,7 @@ import java.util.List;
  * This class is used to generate the payload for business owner creation.
  */
 
-public class BusinessOwnerCreateRequest  extends AbstractRequest {
+public class BusinessOwnerCreateRequest extends AbstractRequest {
     private static final Log log = LogFactory.getLog(BusinessOwnerCreateRequest.class);
     private BusinessOwner businessOwner;
 
@@ -44,7 +44,7 @@ public class BusinessOwnerCreateRequest  extends AbstractRequest {
 
     @Override
     public void init() {
-        if(businessOwner.getBusinessOwnerId() != 0) {
+        if (businessOwner.getBusinessOwnerId() != 0) {
             addParameter("businessOwnerId", String.valueOf(businessOwner.getBusinessOwnerId()));
         }
         addParameter("businessOwnerName", checkValue(businessOwner.getBusinessOwnerName()));
@@ -55,11 +55,8 @@ public class BusinessOwnerCreateRequest  extends AbstractRequest {
         List<BusinessOwnerProperty> businessOwnerPropertiesList = businessOwner.getBusinessOwnerPropertiesList();
         JSONObject businessOwnerCustomProperties = new JSONObject();
         if (businessOwnerPropertiesList != null) {
-            for(int i = 0; i < businessOwnerPropertiesList.size(); i++) {
-                JSONArray propertiesArray = new JSONArray();
+            for (int i = 0; i < businessOwnerPropertiesList.size(); i++) {
                 try {
-                    propertiesArray.put(0, businessOwnerPropertiesList.get(i).getPropertyValue());
-                    propertiesArray.put(1, businessOwnerPropertiesList.get(i).isShowingInStore());
                     businessOwnerCustomProperties.put(businessOwnerPropertiesList.get(i).getPropertyId(),
                                                       businessOwnerCustomProperties);
                 } catch (JSONException e) {

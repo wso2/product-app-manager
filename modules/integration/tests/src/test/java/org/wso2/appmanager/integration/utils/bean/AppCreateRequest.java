@@ -1202,7 +1202,4 @@ public class AppCreateRequest extends AbstractRequest {
     public String getOverviewMakeAsDefaultVersion() {
         return overviewMakeAsDefaultVersion;
     }
-
-
-
 }

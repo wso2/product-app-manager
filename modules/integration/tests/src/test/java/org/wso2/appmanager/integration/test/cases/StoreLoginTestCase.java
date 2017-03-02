@@ -35,10 +35,11 @@ import java.util.Map;
 
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
-
+/**
+ * Test case which verifies the ability of subscriber logging in to store.
+ */
 
 public class StoreLoginTestCase{
-
     private static final String TEST_DESCRIPTION = "Verify login to App Manager Store";
     private APPMStoreRestClient appmStoreRestClient;
     private String backEndUrl;
@@ -46,11 +47,11 @@ public class StoreLoginTestCase{
 
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
-        AutomationContext appMServer = new AutomationContext(AppmTestConstants.APP_MANAGER,
-                                                             TestUserMode.SUPER_TENANT_ADMIN);
+        AutomationContext appMServer = new AutomationContext(AppmTestConstants.APP_MANAGER, TestUserMode
+                .SUPER_TENANT_ADMIN);
         backEndUrl = appMServer.getContextUrls().getWebAppURLHttps();
         appmStoreRestClient = new APPMStoreRestClient(backEndUrl);
-        user = appMServer.getSuperTenant().getTenantUser("Subscriber");
+        user = appMServer.getSuperTenant().getTenantUser(AppmTestConstants.TestUsers.SUBSCRIBER);
     }
 
     @Test(description = TEST_DESCRIPTION)
@@ -64,6 +65,6 @@ public class StoreLoginTestCase{
 
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
-
+        appmStoreRestClient.logout();
     }
 }

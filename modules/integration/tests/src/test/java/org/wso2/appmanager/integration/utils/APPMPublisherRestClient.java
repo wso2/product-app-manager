@@ -184,10 +184,8 @@ public class APPMPublisherRestClient {
                 + "=[]&policyGroupDesc="
                 + policyDesc;
 
-        HttpResponse response = HttpUtil.doPost(new URL(backEndUrl
-                                                       + AppmTestConstants.PubliserRestApis
-                                                                                  .ADD_POLICY_GROUP),
-                                                       payload, requestHeaders);
+        HttpResponse response = HttpUtil.doPost(new URL(backEndUrl + AppmTestConstants.PubliserRestApis
+                .ADD_POLICY_GROUP), payload, requestHeaders);
         return response;
     }
 
@@ -203,11 +201,8 @@ public class APPMPublisherRestClient {
         String roles = appRequest.getRoles();
         this.requestHeaders.put(AppmTestConstants.CONTENT_TYPE,
                                 "application/x-www-form-urlencoded");
-        HttpResponse response =
-                HttpRequestUtil.doPost(new URL(backEndUrl
-                                       + AppmTestConstants.PubliserRestApis.CREATE_APP),
-                                       payload,
-                                       requestHeaders);
+        HttpResponse response = HttpRequestUtil.doPost(new URL(backEndUrl + AppmTestConstants.PubliserRestApis
+                .CREATE_APP), payload, requestHeaders);
         if (response.getResponseCode() == 200) {
             VerificationUtil.checkAppCreateRes(response);
             JSONObject jsonObject = new JSONObject(response.getData());
@@ -274,10 +269,8 @@ public class APPMPublisherRestClient {
     private HttpResponse addRole(String roles, String appId) throws Exception {
         String role = roles;
         this.requestHeaders.put("Content-Type", "application/json");
-        HttpResponse response =
-                HttpUtil.doPost(new URL(backEndUrl + "/publisher/asset/webapp/id/" +
-                                                appId + "/permissions"),
-                                "[{\"role\":\"" + role +
+        HttpResponse response = HttpUtil.doPost(new URL(backEndUrl + "/publisher/asset/webapp/id/" + appId +
+                                                                "/permissions"), "[{\"role\":\"" + role +
                                         "\",\"permissions\":[\"GET\",\"PUT\",\"DELETE\"," +
                                         "\"AUTHORIZE\"]}]",
                                 requestHeaders);
@@ -296,13 +289,12 @@ public class APPMPublisherRestClient {
      * @throws Exception on errors.
      */
     public HttpResponse publishWebApp(String appId) throws Exception {
-
         //Submit the app for review
-        changeState(appId, "Submit for Review");
+        changeState(appId, AppmTestConstants.LifeCycleStatus.SUBMIT_FOR_REVIEW);
         //Approve the app
-        changeState(appId, "Approve");
+        changeState(appId, AppmTestConstants.LifeCycleStatus.APPROVE);
         //Publish the app
-        HttpResponse response = changeState(appId, "Publish");
+        HttpResponse response = changeState(appId, AppmTestConstants.LifeCycleStatus.PUBLISH);
         return response;
     }
 
@@ -319,10 +311,8 @@ public class APPMPublisherRestClient {
         this.requestHeaders.put(AppmTestConstants.CONTENT_TYPE, "");
         String encodedState = toState.replaceAll(" ", "%20");
 
-        HttpResponse response =
-                HttpUtil.doPut(new URL(backEndUrl + "/publisher/api/lifecycle/"
-                                       + encodedState + "/webapp/" + appId), "",
-                                         requestHeaders);
+        HttpResponse response = HttpUtil.doPut(new URL(backEndUrl + "/publisher/api/lifecycle/" + encodedState +
+                                                               "/webapp/" + appId), "", requestHeaders);
         return response;
     }
 

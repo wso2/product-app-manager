@@ -40,11 +40,11 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 /**
- * This Test class verifies the ability of appCreator, appPublisher and admin users of changing web app life cycle
- * state from 'In review' to 'Reject'
+ * This Test class verifies the ability of AppCreator, AppPublisher and admin users of changing WebApp life cycle state
+ * from 'in review' to 'reject'.
  */
 public class ChangeStateFromCreateToInReviewTestCase {
-    private static final String TEST_DESCRIPTION = "Verify Submitting a created web app for review";
+    private static final String TEST_DESCRIPTION = "Verify submitting a created WebApp for review.";
     private APPMPublisherRestClient appmPublisherRestClient;
     private static AutomationContext appMServer;
     private String appName = "ChangeStateFromCreateToInReviewTestCase";
@@ -69,7 +69,7 @@ public class ChangeStateFromCreateToInReviewTestCase {
         // Login to publisher by AppCreator user.
         appmPublisherRestClient.login(appCreatorUserName, appCreatorPassword);
 
-        // Multiple web apps are created for multiple users.
+        // Multiple WebApps are created for multiple users.
         app1Uuid = createWebApp("1");
         app2Uuid = createWebApp("2");
         app3Uuid = createWebApp("3");
@@ -88,7 +88,7 @@ public class ChangeStateFromCreateToInReviewTestCase {
         publisherRestClient.logout();
         int responseCode = httpResponse.getResponseCode();
         assertTrue(responseCode == 200, "Excepted status code is 200 for user :" + userName + ". But received status " +
-                "code is "  + responseCode);
+                "code is " + responseCode + ".");
         assertEquals(responseData.getString(AppmTestConstants.STATUS), "Success", "Changing web app life cycle state " +
                 "from create to review failed for user : " + userName + " who has sufficient privileges to change " +
                 "life cycle status.");
@@ -107,7 +107,7 @@ public class ChangeStateFromCreateToInReviewTestCase {
         publisherRestClient.logout();
         int responseCode = httpResponse.getResponseCode();
         assertTrue(responseCode == 401, "Excepted status code is 401 for user :" + userName + ". But received " +
-                "status code is " + responseCode);
+                "status code is " + responseCode + ".");
         assertEquals(responseData.getString(AppmTestConstants.STATUS), "Access Denied", "Changing web app life cycle " +
                 "state from create to review allowed for user : " + userName + " who has insufficient privileges to " +
                 "change life cycle status.");
@@ -115,7 +115,7 @@ public class ChangeStateFromCreateToInReviewTestCase {
 
     @AfterClass(alwaysRun = true)
     public void closeDown() throws Exception {
-        // Deleted created web app by AppCreator.
+        // Deleted created WebApps by AppCreator.
         appmPublisherRestClient.deleteApp(app1Uuid);
         appmPublisherRestClient.deleteApp(app2Uuid);
         appmPublisherRestClient.deleteApp(app3Uuid);
@@ -128,7 +128,7 @@ public class ChangeStateFromCreateToInReviewTestCase {
         HttpResponse response = appmPublisherRestClient.addPolicyGroup(defaultPolicyGroup);
         String policyId = WebAppUtil.getPolicyId(response);
         List<WebAppResource> webAppResources = WebAppUtil.createDefaultResources(policyId);
-        WebApp webApp = WebAppUtil.createBasicWebApp(appCreatorUserName, appName + appPrefix, context +appPrefix,
+        WebApp webApp = WebAppUtil.createBasicWebApp(appCreatorUserName, appName + appPrefix, context + appPrefix,
                                                      appVersion, "http://wso2.com/", webAppResources);
         appmPublisherRestClient.createWebApp(webApp);
         return webApp.getAppId();
@@ -137,7 +137,7 @@ public class ChangeStateFromCreateToInReviewTestCase {
     @DataProvider
     public Object[][] validUserModeDataProvider() throws Exception {
         User adminUser = appMServer.getSuperTenant().getTenantAdmin();
-        User appCreator = appMServer.getSuperTenant().getTenantUser("AppCreator");
+        User appCreator = appMServer.getSuperTenant().getTenantUser(AppmTestConstants.TestUsers.APP_CREATOR);
         return new Object[][]{
                 new Object[]{adminUser.getUserName(), adminUser.getPassword(), app1Uuid},
                 new Object[]{appCreator.getUserName(), appCreator.getPassword(), app2Uuid}
@@ -146,12 +146,9 @@ public class ChangeStateFromCreateToInReviewTestCase {
 
     @DataProvider
     public Object[][] inValidUserModeDataProvider() throws Exception {
-        User appPublisher = appMServer.getSuperTenant().getTenantUser("AppPublisher");
+        User appPublisher = appMServer.getSuperTenant().getTenantUser(AppmTestConstants.TestUsers.APP_PUBLISHER);
         return new Object[][]{
                 new Object[]{appPublisher.getUserName(), appPublisher.getPassword(), app3Uuid}
         };
     }
 }
-
-
-

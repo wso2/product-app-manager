@@ -30,7 +30,9 @@ import org.wso2.carbon.automation.engine.context.AutomationContext;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.automation.engine.context.beans.User;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
-
+/**
+ * Test case which verifies the ability of subscribers rating apps.
+ */
 public class RatingTestCase {
     private static final String TEST_DESCRIPTION = "Test web application ratings";
     private APPMPublisherRestClient appmPublisherRestClient;
@@ -45,11 +47,9 @@ public class RatingTestCase {
     private String password;
     private String backEndUrl;
 
-
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
-        appMServer = new AutomationContext(AppmTestConstants.APP_MANAGER,
-                                           TestUserMode.SUPER_TENANT_ADMIN);
+        appMServer = new AutomationContext(AppmTestConstants.APP_MANAGER, TestUserMode.SUPER_TENANT_ADMIN);
         backEndUrl = appMServer.getContextUrls().getWebAppURLHttps();
         appmPublisherRestClient = new APPMPublisherRestClient(backEndUrl);
 
@@ -63,8 +63,8 @@ public class RatingTestCase {
 
     @Test(description = TEST_DESCRIPTION)
     public void testWebAppRating() throws Exception {
-        HttpResponse response = appmPublisherRestClient.webAppCreate(appName, context, appVersion,
-                                                                     trackingCode, userName);
+        HttpResponse response = appmPublisherRestClient.webAppCreate(appName, context, appVersion, trackingCode,
+                                                                     userName);
         JSONObject responseData = new JSONObject(response.getData());
         String uuid = responseData.getString(AppmTestConstants.ID);
         appmPublisherRestClient.publishWebApp(uuid);
@@ -72,8 +72,7 @@ public class RatingTestCase {
         final int ratingValue1 = 3;
 
         // Subscribe and rate to app from admin user
-        HttpResponse adminUserResponse = subscribeAndRateApplication(adminUser, appName, userName,
-                                                                     appVersion,
+        HttpResponse adminUserResponse = subscribeAndRateApplication(adminUser, appName, userName, appVersion,
                                                                      uuid, ratingValue1);
         JSONObject responseData1 = new JSONObject(adminUserResponse.getData());
         Assert.assertEquals(adminUserResponse.getResponseCode(), 200, "Response code mismatch");
@@ -87,35 +86,26 @@ public class RatingTestCase {
         final int ratingValue2 = 5;
 
         // Subscribe and rate to app from testuser1
-        HttpResponse testUserResponse = subscribeAndRateApplication(testUser, appName, userName,
-                                                                    appVersion,
+        HttpResponse testUserResponse = subscribeAndRateApplication(testUser, appName, userName, appVersion,
                                                                     uuid, ratingValue2);
         Assert.assertEquals(testUserResponse.getResponseCode(), 200, "Response code mismatch");
         JSONObject responseData2 = new JSONObject(testUserResponse.getData());
         Assert.assertEquals(responseData2.getDouble("user"), 5.0,
-                            "Error while rating the web application as user : " +
-                                    testUser.getUserName());
+                            "Error while rating the web application as user : " + testUser.getUserName());
         Assert.assertEquals(responseData2.getDouble("average"), 4.0,
-                            "Error while retrieving the average rating for user : " +
-                                    testUser.getUserName());
-
+                            "Error while retrieving the average rating for user : " + testUser.getUserName());
     }
 
-    private HttpResponse subscribeAndRateApplication(User loginUser, String appName,
-                                                     String userName,
-                                                     String appVersion, String uuid,
-                                                     int ratingValue)
-            throws Exception {
+    private HttpResponse subscribeAndRateApplication(User loginUser, String appName, String userName,String appVersion,
+                                                     String uuid, int ratingValue) throws Exception {
         //Login to store
         appmStoreRestClient.login(loginUser.getUserName(), loginUser.getPassword());
-        SubscriptionRequest adminSubscriptionRequest = new SubscriptionRequest(appName, userName,
-                                                                               appVersion);
+        SubscriptionRequest adminSubscriptionRequest = new SubscriptionRequest(appName, userName, appVersion);
         //Send Subscription request.
         appmStoreRestClient.subscribeForApplication(adminSubscriptionRequest);
 
         //Rate web application
-        HttpResponse response = appmStoreRestClient.rateApplication(uuid, AppmTestConstants.WEB_APP,
-                                                                    ratingValue);
+        HttpResponse response = appmStoreRestClient.rateApplication(uuid, AppmTestConstants.WEB_APP, ratingValue);
         //Logout from store
         appmStoreRestClient.logout();
         return response;

@@ -39,7 +39,6 @@ public class UpdateBusinessOwnerTestCase {
     private String businessOwnerName = "UpdateBusinessOwnerTestCase";
     private static AutomationContext appMServerSuperTenant;
 
-
     @BeforeClass(alwaysRun = true)
     public void startUp() throws Exception {
         appMServerSuperTenant = new AutomationContext(AppmTestConstants.APP_MANAGER, TestUserMode.SUPER_TENANT_ADMIN);

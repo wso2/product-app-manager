@@ -31,9 +31,10 @@ import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
-
+/**
+ * Test case which verifies the ability of admin user publishing a webapp.
+ */
 public class WebAppPublishTestCase {
-
     private static final String TEST_DESCRIPTION = "Verify Publishing a Web App";
     private APPMPublisherRestClient appmPublisherRestClient;
     private String appName = "WebAppPublishTestCase";
@@ -51,41 +52,37 @@ public class WebAppPublishTestCase {
                                                              TestUserMode.SUPER_TENANT_ADMIN);
         backEndUrl = appMServer.getContextUrls().getWebAppURLHttps();
         appmPublisherRestClient = new APPMPublisherRestClient(backEndUrl);
-        User appCreator = appMServer.getSuperTenant().getTenantUser("AdminUser");
+        User appCreator = appMServer.getSuperTenant().getTenantUser(AppmTestConstants.TestUsers.ADMIN);
         String userName = appCreator.getUserName();
         appmPublisherRestClient.login(userName, appCreator.getPassword());
-        HttpResponse appCreateResponse = appmPublisherRestClient.webAppCreate(appName, context,
-                                                                              appVersion,
+        HttpResponse appCreateResponse = appmPublisherRestClient.webAppCreate(appName, context, appVersion,
                                                                               trackingCode, userName);
         JSONObject appCreateResponseData = new JSONObject(appCreateResponse.getData());
         uuid = appCreateResponseData.getString(AppmTestConstants.ID);
-
-
     }
 
     @Test(description = TEST_DESCRIPTION)
     public void testPublisherCreateWebApp() throws Exception {
-        HttpResponse submitHttpResponse = appmPublisherRestClient.changeState(uuid,
-                                                                              "Submit for Review");
+        HttpResponse submitHttpResponse = appmPublisherRestClient.changeState(uuid, AppmTestConstants.LifeCycleStatus
+                .SUBMIT_FOR_REVIEW);
         int submitHttpResponseCode = submitHttpResponse.getResponseCode();
-        assertTrue(submitHttpResponseCode == 200,
-                   submitHttpResponseCode + " status code received.");
+        assertTrue(submitHttpResponseCode == 200, submitHttpResponseCode + " status code received.");
         JSONObject submittedResponseData = new JSONObject(submitHttpResponse.getData());
         assertEquals(submittedResponseData.getString(AppmTestConstants.STATUS), "Success",
                      "Asset has not submitted for review successfully");
 
-        HttpResponse approvedHttpResponse = appmPublisherRestClient.changeState(uuid, "Approve");
+        HttpResponse approvedHttpResponse = appmPublisherRestClient.changeState(uuid, AppmTestConstants
+                .LifeCycleStatus.APPROVE);
         int approvedHttpResponseCode = approvedHttpResponse.getResponseCode();
-        assertTrue(approvedHttpResponseCode == 200,
-                   approvedHttpResponseCode + " status code received.");
+        assertTrue(approvedHttpResponseCode == 200, approvedHttpResponseCode + " status code received.");
         JSONObject approvedResponseData = new JSONObject(approvedHttpResponse.getData());
         assertEquals(approvedResponseData.getString(AppmTestConstants.STATUS), "Success",
                      "Asset has not approved");
 
-        HttpResponse publishedHttpResponse = appmPublisherRestClient.changeState(uuid, "Publish");
+        HttpResponse publishedHttpResponse = appmPublisherRestClient.changeState(uuid, AppmTestConstants
+                .LifeCycleStatus.PUBLISH);
         int publishedHttpResponseCode = publishedHttpResponse.getResponseCode();
-        assertTrue(publishedHttpResponseCode == 200,
-                   publishedHttpResponseCode + " status code received.");
+        assertTrue(publishedHttpResponseCode == 200, publishedHttpResponseCode + " status code received.");
         JSONObject publishedResponseData = new JSONObject(publishedHttpResponse.getData());
         assertEquals(publishedResponseData.getString(AppmTestConstants.STATUS), "Success",
                      "Asset has not published");

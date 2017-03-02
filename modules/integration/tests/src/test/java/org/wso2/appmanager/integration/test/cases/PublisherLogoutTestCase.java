@@ -30,7 +30,9 @@ import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
-
+/**
+ * Test case which verifies the ability of appCreator logging out from publisher.
+ */
 public class PublisherLogoutTestCase {
     private static final String TEST_DESCRIPTION = "Verify Publisher Logout";
     private APPMPublisherRestClient appmPublisherRestClient;
@@ -50,7 +52,7 @@ public class PublisherLogoutTestCase {
         backEndUrl = appMServer.getContextUrls().getWebAppURLHttps();
         appmPublisherRestClient = new APPMPublisherRestClient(backEndUrl);
 
-        user = appMServer.getSuperTenant().getTenantUser("AppCreator");
+        user = appMServer.getSuperTenant().getTenantUser(AppmTestConstants.TestUsers.APP_CREATOR);
         userName = user.getUserName();
         password = user.getPassword();
 
@@ -63,14 +65,11 @@ public class PublisherLogoutTestCase {
 
         HttpResponse publisherLogoutResponseData = appmPublisherRestClient.logout();
         int publisherLogoutResponseCode = publisherLogoutResponseData.getResponseCode();
-        assertTrue(publisherLogoutResponseCode == 200,
-                   publisherLogoutResponseCode + " status code received.");
-        JSONObject publisherLogoutJsonObject = new JSONObject(
-                publisherLogoutResponseData.getData());
+        assertTrue(publisherLogoutResponseCode == 200, publisherLogoutResponseCode + " status code received.");
+        JSONObject publisherLogoutJsonObject = new JSONObject(publisherLogoutResponseData.getData());
         String dataResponse = publisherLogoutJsonObject.getString(AppmTestConstants.DATA);
         JSONObject dataJsonObject = new JSONObject(dataResponse);
-        assertEquals(dataJsonObject.getString(AppmTestConstants.MESSAGE),
-                     "User Logged out successfully",
+        assertEquals(dataJsonObject.getString(AppmTestConstants.MESSAGE), "User Logged out successfully",
                      "User didn't logout successfully");
     }
 

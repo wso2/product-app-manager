@@ -18,7 +18,9 @@
 package org.wso2.appmanager.integration.utils.bean;
 
 import java.util.List;
-
+/**
+ * Business owner model class.
+ */
 public class BusinessOwner {
     private int businessOwnerId;
     private String businessOwnerName;
