@@ -778,7 +778,7 @@ public interface Task {
             public class CustomHelloWorldFunction implements Function {
             private MessageContext synCtx;
 
-            private Log log = LogFactory.getLog(CustomHelloWorldFunction.class);
+            private static final Log log = LogFactory.getLog(CustomHelloWorldFunction.class);
             private static final Log trace = LogFactory.getLog(SynapseConstants.TRACE_LOGGER);
 
             private String NULL_STRING = "";
