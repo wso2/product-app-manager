@@ -2,6 +2,13 @@ WSO2 App Manager
 ========================
 [![Build Status](https://wso2.org/jenkins/job/product-app-manager/badge/icon)](https://wso2.org/jenkins/job/product-app-manager)
 
+
+---
+This repository is no longer used for development. 
+
+WSO2 App Manager was created as a mechanism to offer a standalone solution for publishing and managing all aspects of an application and its lifecycle. We currently have this capability within [WSO2 Identity Server (WSO2 IS)](https://github.com/wso2/product-is), and we encourage you to continue to use WSO2 IS to manage your applications.
+
+---
 WSO2 App Manager (AppM) is a powerful platform for creating, managing,
 consuming and monitoring web/mobile Applications. It combines tried and tested SOA best practices
 with modern day Application provisioning, management principles, governing and security
